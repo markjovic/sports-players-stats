@@ -200,7 +200,7 @@ const pendingPrefixes = allPrefixes.filter(p => !donePrefixes.has(p));
 console.log(`  ${allPrefixes.length} prefix dirs | ${donePrefixes.size} already done | ${pendingPrefixes.length} remaining`);
 
 let updated = 0, skipped = 0, sinceCommit = 0;
-let totalUnreg = 0, playersWithUnreg = 0;
+let totalUnreg = 0, playersWithUnreg = 0, totalUnmeasurable = 0;
 
 for (const prefix of pendingPrefixes) {
   const prefixDir = path.join(playersDir, prefix);
@@ -237,15 +237,33 @@ for (const prefix of pendingPrefixes) {
     // This is an ID LIST, not a derived statistic. It is rebuilt wholesale with
     // games[] on every run, so it cannot drift the way a stored stat total would —
     // which is exactly why stored `rstats` was rejected and this was not.
+    // ⚠ THE SEASON TEST IS THE WHOLE POINT — read this before touching it.
+    // The first version checked only whether the player had ANY registration
+    // anywhere, and emitted 1,252,627 entries on 2026-08-21. That is the RAW
+    // foreign count from the consolidation audit, and the audit splits it for a
+    // reason:
+    //   1,115,172  we hold this player's registrations FOR THAT SEASON and neither
+    //              team matched → genuinely unregistered (fill-in or one-off)
+    //     137,455  we hold NO registration for that season at all → the list is
+    //              incomplete there and it says NOTHING
+    // Emitting the second group labels a real registered season as a fill-in on the
+    // player screen — a false accusation, not a gap. Absence of evidence is not
+    // evidence of absence, and `u` must only ever carry the measurable kind.
     const regTids = new Set();
-    for (const t of (Array.isArray(player.teams) ? player.teams : [])) if (t?.tid) regTids.add(t.tid);
+    const regSids = new Set();
+    for (const t of (Array.isArray(player.teams) ? player.teams : [])) {
+      if (t?.tid) regTids.add(t.tid);
+      if (t?.sid) regSids.add(t.sid);
+    }
     for (const se of (Array.isArray(player.seasons) ? player.seasons : [])) {
+      if (se?.sid) regSids.add(se.sid);
       for (const r of (Array.isArray(se.regs) ? se.regs : [])) if (r?.tid) regTids.add(r.tid);
     }
     const unreg = [];
+    let unmeasurable = 0;
     // A player with NO registrations at all is unmeasurable, not unregistered —
-    // emitting every appearance as unregistered would be a lie about 1,908 players
-    // whose profile was never fetched.
+    // emitting every appearance would be a lie about the 1,908 players whose
+    // profile was never fetched.
     if (regTids.size) {
       for (const gid of sorted) {
         const meta = gameMeta.get(gid);
@@ -253,11 +271,15 @@ for (const prefix of pendingPrefixes) {
         const [gsid, h, a] = meta;
         if (!gsid) continue;
         if ((h && regTids.has(h)) || (a && regTids.has(a))) continue;   // registered: normal card
+        // THE SEASON TEST. No registration held for this season → we cannot say the
+        // player was unregistered, only that we do not know. Skip it.
+        if (!regSids.has(gsid)) { unmeasurable++; continue; }
         // Record the team they appeared FOR where it can be told apart, otherwise
         // the home side. StatTrack shows this as the team name on the row.
         unreg.push(`${gid}|${gsid}|${h ?? a ?? ''}`);
       }
     }
+    totalUnmeasurable += unmeasurable;
     const existingU = player.u;
 
     // Skip only when BOTH fields already match — a player whose games[] is
@@ -321,6 +343,7 @@ console.log(`  Games processed      : ${totalGames.toLocaleString()}`);
 console.log(`  Player appearances   : ${totalAppearances.toLocaleString()}`);
 console.log(`  Unresolved p[] ids   : ${unresolved.toLocaleString()}`);
 console.log(`  Unregistered (u)     : ${totalUnreg.toLocaleString()} appearances across ${playersWithUnreg.toLocaleString()} players`);
+console.log(`  Not emitted (unknown): ${totalUnmeasurable.toLocaleString()} appearances in seasons we hold NO registration for — cannot be called unregistered`);
 console.log(`  Player files updated : ${updated.toLocaleString()}`);
 console.log(`  Player files skipped : ${skipped.toLocaleString()}`);
 console.log(`  Mode                 : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
