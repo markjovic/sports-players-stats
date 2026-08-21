@@ -1,0 +1,66 @@
+# .github/workflows/probe-duplicate-profiles.yml
+name: Probe Duplicate Profiles
+
+# READ-ONLY. No writes, no commits, no data-write lock.
+#
+# size-duplicate-profiles found 2,895 pairs of same-named player files holding the
+# SAME game ids — 122,866 duplicated appearances, one human counted twice in each.
+# It cannot say which file is real: offline both are 36-char uuids carrying data.
+#
+# PlayHQ can. On 2026-08-21 /public/profile/20b2df06.../statistics resolved while
+# /public/profile/f806d1b6.../statistics returned "There was a problem getting the
+# profile". This asks that question through the API for both sides of each pair and
+# sorts the answer into the four cases that need different work:
+#
+#   BOTH resolve  → PlayHQ really issues two profiles per person. Nothing to
+#                   delete; only a merge helps, and a merge keyed on a name match
+#                   is a judgement needing its own decision.
+#   ONE resolves  → the other uuid is not a PlayHQ profile and that file should not
+#                   exist. The only case with a clean fix — and it raises the
+#                   question of what created it.
+#   NEITHER       → both unknown to PlayHQ. Something invented both.
+#   PRIVATE       → cannot be judged this way; a private profile still exists.
+#
+# Two calls per pair, de-duplicated across pairs, paced ~0.7s. A 200-pair sample is
+# ~400 calls and about five minutes; --all is 5,790 calls and roughly an hour.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'Pairs to probe. Start with 200 — the proportions decide what the fix is, and a sample gives them.'
+        required: false
+        default: '200'
+        type: string
+      all:
+        description: 'Probe EVERY pair instead of a sample (~5,790 calls, ~1 hour). Only worth it once the sample says which case dominates.'
+        required: false
+        default: false
+        type: boolean
+      seed:
+        description: 'Sampling seed — the same seed probes the same pairs'
+        required: false
+        default: '20260821'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Probe duplicate profiles
+        run: |
+          ARGS="--sample=${{ inputs.sample }} --seed=${{ inputs.seed }}"
+          if [ "${{ inputs.all }}" = "true" ] || [ "${{ inputs.all }}" = "True" ]; then ARGS="$ARGS --all"; fi
+          node --max-old-space-size=8192 scripts/probe-duplicate-profiles.js $ARGS
