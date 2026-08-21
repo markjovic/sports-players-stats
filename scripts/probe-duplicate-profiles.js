@@ -47,6 +47,9 @@ const num = (f, d) => {
 const ALL    = args.includes('--all');
 const SAMPLE = num('sample', 200);
 const SEED   = num('seed', 20260821);
+// 700ms cost 834 pairs to CloudFront on the first full run. 1500 is the floor now,
+// and --pace= raises it further if the wall is still hit.
+const PACE_MS = num('pace', 1500);
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 function mulberry32(a) {
@@ -360,14 +363,52 @@ async function main() {
   }
   console.log('  probing    : ' + pairs.length.toLocaleString() + ' pairs (' + (pairs.length * 2).toLocaleString() + ' calls)\n');
 
+  // ── VERDICT CACHE ──────────────────────────────────────────────────────────
+  // The 2026-08-21 run asked 5,511 profiles in an hour, hit CloudFront on 834
+  // pairs, and threw EVERY verdict away when the runner was destroyed. A re-run
+  // therefore starts from zero and re-asks the 4,677 that already answered.
+  //
+  // Verdicts are cached to disk and reloaded, so a second dispatch asks only the
+  // ones that never got an answer. `cloudfront-block` and every other transport
+  // outcome are NOT cached — only real answers are, so a block is always retried
+  // and never mistaken for a result.
+  const CACHE = path.join(ROOT, 'reports', 'duplicate-profile-verdicts.json');
   const seen = new Map();          // uuid -> verdict, so a uuid in two pairs is asked once
+  try {
+    const prev = JSON.parse(fs.readFileSync(CACHE, 'utf8'));
+    for (const [u, v] of Object.entries(prev.verdicts || {})) seen.set(u, v);
+    console.log('  verdict cache: ' + seen.size.toLocaleString() + ' profile(s) already answered — these will not be asked again');
+  } catch (e) { console.log('  verdict cache: none yet (first run)'); }
+  const saveCache = () => {
+    try {
+      fs.mkdirSync(path.dirname(CACHE), { recursive: true });
+      fs.writeFileSync(CACHE, JSON.stringify({ saved: new Date().toISOString(),
+        verdicts: Object.fromEntries(seen) }, null, 1));
+    } catch (e) { console.log('  ⚠ could not save verdict cache: ' + e.message); }
+  };
+  // Only ANSWERS are cached. A transport outcome must always be retried, or one
+  // throttled afternoon becomes a permanent verdict.
+  const ANSWERS = new Set(['resolves', 'private', 'notfound']);
+  let asked = 0, blocked = 0;
   const ask = async (u) => {
     if (seen.has(u)) return seen.get(u);
     const v = await profileExists(u);
-    seen.set(u, v);
-    await sleep(700);
+    asked++;
+    if (ANSWERS.has(v)) seen.set(u, v);
+    else blocked++;
+    // Back off hard on a block rather than carrying on into a wall: the previous
+    // run lost 834 pairs by pacing straight through one. PACE_MS is the floor,
+    // and a block adds a cooling period that decays as clean calls return.
+    if (v === 'cloudfront-block' || v === 'http-429') {
+      cool = Math.min(30000, (cool || PACE_MS) * 2);
+      await sleep(cool);
+    } else if (cool > PACE_MS) {
+      cool = Math.max(PACE_MS, Math.floor(cool / 2));
+    }
+    await sleep(Math.max(PACE_MS, cool));
     return v;
   };
+  let cool = 0;
 
   const buckets = new Map();
   const oneResolves = [];
@@ -384,11 +425,20 @@ async function main() {
     else cls = 'other: ' + va + ' / ' + vb;
     buckets.set(cls, (buckets.get(cls) || 0) + 1);
     done++;
-    if (done % 25 === 0) console.log('  … ' + done + '/' + pairs.length + ' pairs, ' + seen.size + ' profiles asked');
+    if (done % 25 === 0) {
+      console.log('  … ' + done + '/' + pairs.length + ' pairs · asked ' + asked +
+                  ' · cached ' + seen.size + ' · blocked ' + blocked + (cool > PACE_MS ? ' · cooling ' + cool + 'ms' : ''));
+      saveCache();   // survive a timeout: the next dispatch resumes from here
+    }
   }
 
+  saveCache();
   const pc = (a, b) => b ? (100 * a / b).toFixed(1) : '0.0';
   console.log('\n════════════════════════════════════════════════');
+  if (blocked) {
+    console.log('  ⚠ ' + blocked.toLocaleString() + ' call(s) were BLOCKED or throttled and got no answer.');
+    console.log('    They are NOT cached. Re-dispatch and only those are asked again.');
+  }
   console.log('  pairs classified : ' + done.toLocaleString() + '   (profiles asked: ' + seen.size.toLocaleString() + ')');
   for (const [k, v] of [...buckets.entries()].sort((a, b) => b[1] - a[1])) {
     console.log('    ' + String(v).padStart(6) + '  (' + pc(v, done).padStart(5) + '%)  ' + k);
