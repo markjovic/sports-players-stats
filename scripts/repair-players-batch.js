@@ -65,6 +65,28 @@ const MIN_GAP = Number((args.find(a => a.startsWith('--min-gap=')) || '').replac
 const MAX_PLAYERS = Number((args.find(a => a.startsWith('--max-players=')) || '').replace('--max-players=', '') || '0');
 const APPLY = args.includes('--apply');
 const RETRY_DEAD = args.includes('--retry-dead');
+// ── --retry-open ─────────────────────────────────────────────────────────────
+// "done" has always meant PROCESSED, never FIXED. A player looked at once was
+// excluded for ever, even while still short 190 games — which is how Logan Testa
+// (gp=191, games=1), Fletcher Whyley (174/1) and Amelia Sava (154/1) sat in the
+// worst-20 list while a min-gap=1 run reported only 408 players due. "Players at
+// gap>=1 not yet settled: 0" was never a statement about the gap.
+//
+// A player is OPEN if their gap is still >= MIN_GAP. That is computed offline from
+// their own file, so re-admitting costs nothing until they are actually fetched,
+// and a player whose gap closed is not re-admitted at all — the campaign still
+// converges.
+//
+// The guard against futile re-work is an attempt counter, not exclusion: a player
+// whose gap cannot close (private profile, uncaptured rosters, games absent) would
+// otherwise be re-fetched every run for ever. Same shape as spectator-backfill's
+// spcm. --retry-open-limit=0 disables the cap.
+const RETRY_OPEN = args.includes('--retry-open');
+const RETRY_OPEN_LIMIT = (() => {
+  const a = args.find(x => x.startsWith('--retry-open-limit='));
+  const v = a ? Number(a.split('=')[1]) : 3;
+  return Number.isFinite(v) && v >= 0 ? v : 3;
+})();
 // Per-player lines every N players instead of every player. A 10,000-player run
 // wrote 10,000 player lines plus a full campaign table every 25, which buried the
 // one thing that mattered — whether the run had finished. Dead profiles and
@@ -696,6 +718,55 @@ async function main() {
     }
     console.log(`  --retry-dead: re-admitted ${readmitted.toLocaleString()} player(s) previously retired on a transport failure`);
     for (const x of sample) console.log(`      e.g. ${x}`);
+
+    // NOT_FOUND was PROVEN TRANSIENT on 2026-08-19: probe-notfound returned it for
+    // 25 of 100 players one day and 1 of 50 the next, on the same seed, and the one
+    // that persisted was a private profile failing on BOTH endpoints. So a player
+    // retired on `5 NOT_FOUND: failed to find profile` was written off by a bad
+    // moment, not by an answer. 637 sit in the dead list on that status.
+    let nf = 0;
+    const nfSample = [];
+    for (const [uuid, rec] of Object.entries(progress.dead || {})) {
+      const status = typeof rec === 'string' ? rec : (rec && rec.status) || '';
+      const msg = (rec && rec.msg) || status;
+      if (!/NOT_FOUND|failed to find profile/i.test(String(msg))) continue;
+      delete progress.dead[uuid];
+      nf++;
+      if (nfSample.length < 5) nfSample.push(`${uuid} (${String(msg).slice(0, 60)})`);
+    }
+    if (nf) {
+      console.log(`  --retry-dead: also re-admitted ${nf.toLocaleString()} player(s) retired on NOT_FOUND — proven transient 2026-08-19, not a permanent answer`);
+      for (const x of nfSample) console.log(`      e.g. ${x}`);
+    }
+    if (!APPLY) console.log('      (dry-run — the re-admission is not written back to the progress file)');
+  }
+
+  // Re-admit players whose gap is STILL open. Done here, before the ranking pass,
+  // so the worklist sees them as unsettled.
+  let reopened = 0, reopenCapped = 0;
+  const reopenSample = [];
+  if (RETRY_OPEN) {
+    const playersDirRO = path.join(ROOT, 'players');
+    for (const [uuid, rec] of Object.entries(progress.done || {})) {
+      const shard = uuid.slice(0, 2);
+      let p;
+      try { p = JSON.parse(fs.readFileSync(path.join(playersDirRO, shard, `${uuid}.json`), 'utf8')); } catch { continue; }
+      let gp = 0, hasGp = false;
+      for (const sp of Object.values(p.sports || {})) if (sp && typeof sp.gp === 'number') { gp += sp.gp; hasGp = true; }
+      if (!hasGp) continue;
+      const gap = gp - (Array.isArray(p.games) ? p.games.length : 0);
+      if (gap < MIN_GAP) continue;                       // gap closed, or below threshold: leave settled
+      const att = (rec && rec.att) || 1;
+      if (RETRY_OPEN_LIMIT > 0 && att >= RETRY_OPEN_LIMIT) { reopenCapped++; continue; }
+      delete progress.done[uuid];
+      if (!progress.attempts) progress.attempts = {};
+      progress.attempts[uuid] = att;                     // carried into the new record below
+      reopened++;
+      if (reopenSample.length < 10) reopenSample.push(`${uuid} gap=${gap} attempt=${att + 1} ${JSON.stringify(p.name || '?')}`);
+    }
+    console.log(`  --retry-open: re-admitted ${reopened.toLocaleString()} player(s) whose gap is STILL >= ${MIN_GAP} despite being marked done`);
+    for (const x of reopenSample) console.log(`      e.g. ${x}`);
+    if (reopenCapped) console.log(`      ${reopenCapped.toLocaleString()} left settled — already attempted ${RETRY_OPEN_LIMIT}x without closing (raise with --retry-open-limit=N, 0 = no cap)`);
     if (!APPLY) console.log('      (dry-run — the re-admission is not written back to the progress file)');
   }
 
@@ -1071,7 +1142,13 @@ async function main() {
       }
     }
 
-    progress.done[t.uuid] = { v: 2, gap: t.gap, appended, self, lag, aliasOk, aliasGap, legacy, uncap, absent, odd, pts };
+    // `att` counts how many times this player has been PROCESSED WITHOUT the gap
+    // closing. It is what stops --retry-open re-fetching an unfixable player for
+    // ever, and it is the only reason a still-open player is ever left alone.
+    const priorAtt = (progress.attempts && progress.attempts[t.uuid]) || 0;
+    progress.done[t.uuid] = { v: 2, gap: t.gap, appended, self, lag, aliasOk, aliasGap, legacy, uncap, absent, odd, pts,
+                              att: priorAtt + 1 };
+    if (progress.attempts) delete progress.attempts[t.uuid];
     doneCount++; totalAppends += appended; sinceCommit++;
     run.appended += appended; run.self += self; run.lag += lag; run.aliasOk += aliasOk;
     run.aliasGap += aliasGap; run.legacy += legacy; run.uncap += uncap; run.absent += absent; run.odd += odd;
