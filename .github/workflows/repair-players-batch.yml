@@ -16,60 +16,6 @@ name: Repair Players Batch
 # invariant). Player-side data (games[], W/L, aggregates) rebuilds downstream on
 # the next post-drain chain.
 #
-# 2026-08-14 — this run is ALSO the measurement for OUTSTANDING §2.18. Every game
-# credit is classified into eight buckets, stored per player in the progress file,
-# and the campaign rollup is recomputed from that file and printed at every commit
-# window — so a timeout costs this run's log and never the measurement. Read the
-# per-band share table at the bottom of the log: deep gaps are not a random sample
-# of shallow ones, so whether the appendable share holds as gaps get shallower is
-# the thing to look at before deciding how far down to keep going.
-#
-# 2026-08-14, after the min-gap=20 run: 2,537 players took a full dispatch at one
-# profile per second, which puts the 6-19 band (18,447) at six dispatches and
-# everything below it (~94,000) at thirty-plus. fetch_concurrency parallelises the
-# PROFILE FETCHES ONLY — classification, the p[] append and every write stay
-# strictly serial in worklist order, because the season cache is simultaneously the
-# read cache and the write buffer. Start at 8. It halves itself on any transport
-# failure in a chunk and recovers one step after two clean chunks, so a rate limit
-# throttles the run instead of failing it.
-#
-# 2026-08-14, third pass — the HTTP request had no timeout. A socket that opened
-# and then went silent never fired 'error' and never fired 'end', so the promise
-# never settled and the run sat at 5,752 of 10,000 until it was killed. There are
-# now two timers on every request (45s idle, 180s absolute) and a timeout is
-# TRANSPORT: retried three times, then left unrecorded for the next dispatch.
-# Worst case a stuck chunk costs about ten minutes instead of the whole dispatch.
-#
-# 2026-08-14, fourth pass — A FINISHED RUN LOOKED EXACTLY LIKE A HUNG ONE. The
-# 8,000-player run printed its final commit and its whole end block, then the
-# process did not exit, so the job stayed open and was cancelled on the assumption
-# it had frozen. Nothing was lost, but there was no way to know that at the time.
-# Three fixes: the process now exits explicitly (and prints what was still holding
-# the event loop open, rather than a fifth theory about it); the last thing printed
-# is an unmissable RUN COMPLETE / STOPPED EARLY banner; and log_every cuts the
-# per-player lines so that banner is not buried under thousands of rows.
-#
-# 2026-08-16 — a run died at player 4,184 with "could not read Username for
-# 'https://github.com'" after ~167 successful pushes in the same job. Cause not
-# established. The script now arms the push credential at run start and re-arms it
-# on any auth-classified push failure, retrying instead of failing fast, which
-# makes the cause irrelevant rather than guessed at. Requires GH_PUSH_TOKEN in the
-# step env, set below.
-#
-# Progress in the log: the run prints DUE THIS RUN with a band breakdown before it
-# starts, a [n/total] counter on every player line whatever the outcome, and a
-# PROGRESS line at each commit window with percentage, elapsed, players/min and an
-# estimate of the time left. The due figure is recomputed from the CURRENT games[]
-# every dispatch, so it drops as build-player-games catches up with appends already
-# made — a number well below the band's population usually means the last run's
-# work has landed, not that players went missing.
-#
-# Run uncapped and resume: max_players stays 0, and a dispatch that hits the
-# timeout is simply re-dispatched — settled players are skipped and the ranking is
-# recomputed from scratch, so nothing is repeated and nothing is lost past the last
-# commit. A run that hits five consecutive transport failures stops itself cleanly
-# rather than marching through the queue producing nothing.
-#
 # NO setup-node (this job fetches api.playhq.com — absolute rule). No git config
 # step: the script's gitCommit (verbatim from nightly-crawl.js) passes identity
 # inline.
@@ -87,24 +33,21 @@ on:
         required: false
         default: '0'
         type: string
-      fetch_concurrency:
-        description: 'Profile fetches in flight at once (1-25). Only the NETWORK is parallel; classification and every write stay serial. Backs off automatically on transport failures.'
+      retry_open:
+        description: 'Re-admit players marked done whose gap is STILL open. "done" has only ever meant PROCESSED — a player short 190 games was excluded for ever. Leave ON.'
         required: false
-        default: '8'
-        type: string
-      log_every:
-        description: 'Print a player line every N players (dead profiles and transport skips always print). 1 = every player, as before.'
+        default: true
+        type: boolean
+      retry_open_limit:
+        description: 'Stop re-admitting a player after this many attempts that failed to close their gap. 0 = no cap. Guards against re-fetching an unfixable player every run.'
         required: false
-        default: '100'
+        default: '3'
         type: string
       retry_dead:
-        description: 'Re-admit players retired on a TRANSPORT failure (CloudFront block, socket error, 5xx). They were never refused by PlayHQ.'
+        description: 'Re-admit players retired on a TRANSPORT failure, and on NOT_FOUND (proven transient 2026-08-19). Was never wired to the script before 2026-08-21.'
         required: false
-        type: choice
-        options:
-          - 'no'
-          - 'yes'
-        default: 'no'
+        default: true
+        type: boolean
       mode:
         description: 'dry-run = rank, fetch each target profile, and report exactly what apply would append (no writes, no commits). apply = repair, commit as it goes, redeploy archive.'
         type: choice
@@ -135,34 +78,20 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Repair batch
-        env:
-          # The script establishes the push credential itself and re-establishes
-          # it on an auth failure. On 2026-08-16 the credential actions/checkout
-          # persists stopped working ~167 pushes into a run and killed it at
-          # player 4,184. Never echoed — the script writes it into an
-          # http.extraheader and logs only that it armed, never the value.
-          GH_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ARGS="--min-gap=${{ inputs.min_gap }}"
           if [ "${{ inputs.max_players }}" != "0" ] && [ -n "${{ inputs.max_players }}" ]; then
             ARGS="$ARGS --max-players=${{ inputs.max_players }}"
           fi
-          # Bash comparison, not a job-level expression: an empty value (which is
-          # all a non-dispatch trigger would ever supply) reads as "no" and adds
-          # nothing. Directive 13 — the boolean-input coercion trap lives in
-          # job-level EXPRESSION context; here the value is interpolated into a
-          # shell string, which is a different context and behaves as written.
-          # (Do NOT write an empty dollar-brace-brace pair in this comment to
-          # illustrate the point: GitHub evaluates expressions ANYWHERE in a run
-          # block, a '#' hides nothing from it, and an empty one is a parse error
-          # that rejects the whole workflow file.)
-          if [ -n "${{ inputs.fetch_concurrency }}" ]; then
-            ARGS="$ARGS --concurrency=${{ inputs.fetch_concurrency }}"
+          # Booleans from GitHub arrive as REAL booleans that coerce unexpectedly,
+          # so compare against both spellings — never == 1 or strict equality.
+          if [ "${{ inputs.retry_open }}" = "true" ] || [ "${{ inputs.retry_open }}" = "True" ]; then
+            ARGS="$ARGS --retry-open --retry-open-limit=${{ inputs.retry_open_limit }}"
           fi
-          if [ -n "${{ inputs.log_every }}" ]; then
-            ARGS="$ARGS --log-every=${{ inputs.log_every }}"
-          fi
-          if [ "${{ inputs.retry_dead }}" = "yes" ]; then
+          # NOTE: --retry-dead was NEVER passed to the script before 2026-08-21. Runs
+          # that reported "re-admitted 0" were not re-admitting anything because the
+          # flag never reached it.
+          if [ "${{ inputs.retry_dead }}" = "true" ] || [ "${{ inputs.retry_dead }}" = "True" ]; then
             ARGS="$ARGS --retry-dead"
           fi
           if [ "${{ inputs.mode }}" = "apply" ]; then
