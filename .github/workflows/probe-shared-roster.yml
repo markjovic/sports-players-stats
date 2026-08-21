@@ -1,0 +1,58 @@
+# .github/workflows/probe-shared-roster.yml
+name: Probe Shared Roster
+
+# READ-ONLY, offline, zero API calls. No writes, no commits, no data-write lock.
+#
+# THE QUESTION IT SETTLES, and everything about the duplicate hunt depends on it.
+#
+# size-duplicate-profiles pairs two player files when they hold the SAME game id —
+# 2,895 pairs, 122,866 appearances. But games[] is built by build-player-games FROM
+# THE ROSTER, so a game can only be in both files if BOTH ids are in that game's
+# p[]. And two ids in one p[] is what TWO PEOPLE look like — twins on the same team
+# — not what one person with two profiles looks like. One person's two ids should
+# appear in DIFFERENT games, never both in one.
+#
+# So the pairing test may be finding siblings rather than duplicates, or it may be
+# finding damage: the repair campaign appended 388 games to the emptier Tahlia
+# Parker file on 2026-08-21, which would write a second id into rosters that already
+# held the first and produce exactly this shape.
+#
+# This prints what the rosters ACTUALLY contain for a pair's shared games, split
+# four ways: both ids present, only one, or neither. Until that is known, widening
+# or narrowing the duplicate search is guesswork.
+#
+# Defaults to the Tahlia Parker pair — the case that started this.
+
+on:
+  workflow_dispatch:
+    inputs:
+      a:
+        description: 'First uuid (defaults to the PlayHQ-resolving Tahlia Parker profile)'
+        required: false
+        default: '20b2df06-37f4-48a9-8477-1f6185bc7533'
+        type: string
+      b:
+        description: 'Second uuid (defaults to the one PlayHQ will not serve)'
+        required: false
+        default: 'f806d1b6-f87f-4434-be56-62a67f54f5bb'
+        type: string
+      show:
+        description: 'How many example games to print per category'
+        required: false
+        default: '20'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Probe shared roster
+        run: |
+          node --max-old-space-size=8192 scripts/probe-shared-roster.js \
+            --a=${{ inputs.a }} --b=${{ inputs.b }} --show=${{ inputs.show }}
