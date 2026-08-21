@@ -160,14 +160,19 @@ const sids = fs.readdirSync(gamesDir).filter(f => f.endsWith('.json'));
 
 // Map<uuid, Set<gid>> — uuid is always FULL length here (resolved below)
 const playerGames = new Map();
+// Map<gid, [sid, homeTid, awayTid]> — needed ONLY to emit `u` below. Held for the
+// gids we actually see, so it is bounded by the same 2.37M games phase 1 walks.
+const gameMeta = new Map();
 let totalGames = 0, totalAppearances = 0, unresolved = 0;
 
 for (const fname of sids) {
   let gf;
   try { gf = readJson(path.join(gamesDir, fname)); } catch { continue; }
+  const sid = fname.replace(/\.json$/, '');
   for (const [gameId, g] of Object.entries(gf.games ?? {})) {
     if (!g.p?.length) continue;
     totalGames++;
+    gameMeta.set(gameId, [sid, g.h ?? null, g.a ?? null]);
     for (const entry of g.p) {
       const rawId = entry.id;
       if (!rawId) continue;
@@ -195,6 +200,7 @@ const pendingPrefixes = allPrefixes.filter(p => !donePrefixes.has(p));
 console.log(`  ${allPrefixes.length} prefix dirs | ${donePrefixes.size} already done | ${pendingPrefixes.length} remaining`);
 
 let updated = 0, skipped = 0, sinceCommit = 0;
+let totalUnreg = 0, playersWithUnreg = 0;
 
 for (const prefix of pendingPrefixes) {
   const prefixDir = path.join(playersDir, prefix);
@@ -211,16 +217,70 @@ for (const prefix of pendingPrefixes) {
     const sorted = gids ? [...gids].sort() : [];
     const existing = player.games;
 
-    // Skip if already identical
-    if (Array.isArray(existing) &&
+    // ── `u`: appearances the player holds NO REGISTRATION for ────────────────
+    // Added 2026-08-21 (design decision in stattrack_html_design.md, View 1).
+    //
+    // WHY IT MUST BE EMITTED HERE RATHER THAN DERIVED IN THE APP. games[] is a flat
+    // list of game IDS WITH NO SEASON, and StatTrack only ever reaches a game
+    // season-first: it fetches games/bv/{sid}.json when a season card expands, and
+    // season cards are built from seasons[].regs[]. An appearance for a team the
+    // player never registered with therefore has no card, no season, and nothing
+    // telling the app which file to load. It cannot find those games at all — 82,424
+    // of them were simply invisible.
+    //
+    // Format "gid|sid|tid": 28 bytes, measured. [g,s,t] is 34 and {g,s,t} is 46.
+    // Grouping by season/team looks cheapest at ~20 but LOSES at one game per team
+    // (37 vs 28) because the ids amortise across nothing, and the real density is
+    // 2.07 unregistered appearances per affected player. Whole-repo cost 2.2 MB
+    // against the 314 MB games[] already occupies — 0.28% more ids.
+    //
+    // This is an ID LIST, not a derived statistic. It is rebuilt wholesale with
+    // games[] on every run, so it cannot drift the way a stored stat total would —
+    // which is exactly why stored `rstats` was rejected and this was not.
+    const regTids = new Set();
+    for (const t of (Array.isArray(player.teams) ? player.teams : [])) if (t?.tid) regTids.add(t.tid);
+    for (const se of (Array.isArray(player.seasons) ? player.seasons : [])) {
+      for (const r of (Array.isArray(se.regs) ? se.regs : [])) if (r?.tid) regTids.add(r.tid);
+    }
+    const unreg = [];
+    // A player with NO registrations at all is unmeasurable, not unregistered —
+    // emitting every appearance as unregistered would be a lie about 1,908 players
+    // whose profile was never fetched.
+    if (regTids.size) {
+      for (const gid of sorted) {
+        const meta = gameMeta.get(gid);
+        if (!meta) continue;                       // game not in games/bv this run
+        const [gsid, h, a] = meta;
+        if (!gsid) continue;
+        if ((h && regTids.has(h)) || (a && regTids.has(a))) continue;   // registered: normal card
+        // Record the team they appeared FOR where it can be told apart, otherwise
+        // the home side. StatTrack shows this as the team name on the row.
+        unreg.push(`${gid}|${gsid}|${h ?? a ?? ''}`);
+      }
+    }
+    const existingU = player.u;
+
+    // Skip only when BOTH fields already match — a player whose games[] is
+    // unchanged may still be gaining `u` on the run that introduces it.
+    const gamesSame = Array.isArray(existing) &&
         existing.length === sorted.length &&
-        existing.every((g, i) => g === sorted[i])) {
+        existing.every((g, i) => g === sorted[i]);
+    const uSame = (unreg.length === 0)
+        ? existingU === undefined
+        : (Array.isArray(existingU) && existingU.length === unreg.length &&
+           existingU.every((x, i) => x === unreg[i]));
+    if (gamesSame && uSame) {
       skipped++;
       continue;
     }
 
     if (sorted.length > 0) player.games = sorted;
     else delete player.games;
+
+    if (unreg.length > 0) player.u = unreg;
+    else delete player.u;
+    totalUnreg += unreg.length;
+    if (unreg.length) playersWithUnreg++;
 
     if (!DRY_RUN) writeJson(playerPath, player);
     updated++;
@@ -260,6 +320,7 @@ console.log(`  Seasons scanned      : ${sids.length.toLocaleString()}`);
 console.log(`  Games processed      : ${totalGames.toLocaleString()}`);
 console.log(`  Player appearances   : ${totalAppearances.toLocaleString()}`);
 console.log(`  Unresolved p[] ids   : ${unresolved.toLocaleString()}`);
+console.log(`  Unregistered (u)     : ${totalUnreg.toLocaleString()} appearances across ${playersWithUnreg.toLocaleString()} players`);
 console.log(`  Player files updated : ${updated.toLocaleString()}`);
 console.log(`  Player files skipped : ${skipped.toLocaleString()}`);
 console.log(`  Mode                 : ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
