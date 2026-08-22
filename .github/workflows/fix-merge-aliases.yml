@@ -1,0 +1,82 @@
+# .github/workflows/fix-merge-aliases.yml
+name: Fix Merge Aliases
+
+# WRITES when mode=apply. Takes the data-write lock. DRY RUN BY DEFAULT.
+#
+# merge-phantom-profiles wrote alias entries on 2026-08-22 pointing 2,482 phantom
+# players' ids at their real profile, and did not record which entries it created.
+# probe-my-aliases could therefore only guess: it saw 4,342 candidates against the
+# 3,024 the merge reported, and measured a 13.6% foreign rate against a 4.2% repo
+# baseline without being able to say which entries that rate belonged to.
+#
+# THE ALIAS TABLE BEFORE THE MERGE IS IN GIT HISTORY. This finds the merge commit
+# by its own message, takes its first parent, and diffs — giving the EXACT set of
+# added entries with no estimation and no self-mapping confusion.
+#
+# It then judges every appearance each added entry delivers against that player's
+# own registrations, and removes ONLY entries where every appearance is foreign and
+# there are at least `min_foreign` of them. A mixed entry is left alone: an alias
+# delivering real appearances plus a few fill-ins is doing its job, and PlayHQ's
+# own box scores carry a "Fill-in" row.
+#
+# REVERSIBLE. Removals are written to reports/removed-merge-aliases.json BEFORE
+# anything is deleted. Only players/aliases is touched — never players/ or games/ —
+# and build-player-games re-derives every player file from the alias table.
+#
+# AFTER apply: run build-player-games, or the player files still reflect the old
+# resolution.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry-run reports exactly what apply would remove and writes nothing. Read it first.'
+        required: false
+        default: 'dry-run'
+        type: choice
+        options: [dry-run, apply]
+      min_foreign:
+        description: 'Only remove an entry delivering at least this many foreign appearances. 1-2 foreign is far more likely a fill-in than a bad mapping.'
+        required: false
+        default: '3'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          # NOT shallow: the baseline commit must be reachable, and fetch-depth 1
+          # would make the diff impossible.
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fix merge aliases
+        run: |
+          ARGS="--min-foreign=${{ inputs.min_foreign }}"
+          if [ "${{ inputs.mode }}" = "apply" ]; then ARGS="$ARGS --apply"; fi
+          node --max-old-space-size=8192 scripts/fix-merge-aliases.js $ARGS
+
+      - name: Upload the removal record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: removed-merge-aliases
+          path: reports/removed-merge-aliases.json
+          retention-days: 90
+          if-no-files-found: ignore
