@@ -84,8 +84,20 @@ function main() {
       const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'players', k.slice(0, 2), k + '.json'), 'utf8'));
       const tids = new Set(), sids = new Set();
       for (const se of (p.seasons || [])) {
-        if (se?.sid) sids.add(se.sid);
-        for (const r of (se?.regs || [])) if (r?.tid) tids.add(r.tid);
+        const regs = Array.isArray(se?.regs) ? se.regs : [];
+        for (const r of regs) if (r?.tid) tids.add(r.tid);
+        // ⚠ ONLY A SEASON WITH A REAL REGISTRATION IS MEASURABLE.
+        // build-player-games back-fills `{sid, regs: []}` for every season a player
+        // has GAMES in, so "does the keeper have this season?" is now ALWAYS true
+        // and can never mark anything unmeasurable. The 2026-08-22 run reported
+        // `unmeasurable: 0` across 147,739 appearances, which is impossible — those
+        // games were being counted FOREIGN when the honest answer is that we hold
+        // no registration for that season and therefore know nothing.
+        //
+        // Same gate as build-player-games. I added it there and did not carry it
+        // here, which is how a 13.7% "foreign" rate was produced from seasons that
+        // cannot be judged at all.
+        if (se?.sid && regs.some(r => r && r.tid)) sids.add(se.sid);
       }
       regOf.set(k, { tids, sids, name: p.name || '?' });
     } catch (e) { /* keeper file missing — reported below */ }
