@@ -34,6 +34,11 @@ on:
         required: false
         default: false
         type: boolean
+      heal_season_names:
+        description: 'Also re-offer players holding a registration with a team id but NO season/team/grade names. Until 2026-08-22 this script fetched those names and discarded them, so affected seasons render as "." and "?" in StatTrack. Cheap: only players with something to heal are fetched.'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -180,10 +185,14 @@ jobs:
           # now re-fetches ~1,615 players in that shard and touches nothing else.
           # force=true + shards=[] is unchanged (repo-wide clear, then every shard).
           FORCE_FETCH: ${{ (inputs.force == true || inputs.force == 'true') && 'true' || '' }}
+          # Same boolean handling as the two above — a UI dispatch sends a real
+          # boolean, a chained `gh workflow run --field` sends a string.
+          HEAL_SEASON_NAMES: ${{ (inputs.heal_season_names == true || inputs.heal_season_names == 'true') && 'true' || '' }}
         run: |
           ARGS=(--shard=${{ matrix.shard }})
           [ -n "$RECHECK_PRIVATE" ] && ARGS+=(--recheck-private)
           [ -n "$FORCE_FETCH" ] && ARGS+=(--force)
+          [ -n "$HEAL_SEASON_NAMES" ] && ARGS+=(--heal-season-names)
           echo "ARGS=${ARGS[*]}"
           node scripts/fetch-profile-stats.js "${ARGS[@]}"
 
@@ -656,6 +665,10 @@ jobs:
           # (the clear-stats-checked job must run once, not every run) — recheck_private
           # has no such one-shot side effect, so it propagates.
           NEXT_RECHECK: ${{ (inputs.recheck_private == true || inputs.recheck_private == 'true') && 'true' || 'false' }}
+          # MUST be carried through the chain. Every link is a fresh dispatch, so a
+          # field not passed here reverts to its default — a heal sweep would cover
+          # the first pass and then silently stop, which looks like completion.
+          NEXT_HEAL: ${{ (inputs.heal_season_names == true || inputs.heal_season_names == 'true') && 'true' || 'false' }}
         run: |
           next_run=$(( NEXT_RUN + 1 ))
           /tmp/gh-dispatch.sh fetch-profile-stats-matrix.yml \
@@ -664,6 +677,7 @@ jobs:
             --field "consecutive_apply_failures=${NEXT_APPLY_FAILS}" \
             --field "force=false" \
             --field "recheck_private=${NEXT_RECHECK}" \
+            --field "heal_season_names=${NEXT_HEAL}" \
             --field "shards=${NEXT_SHARDS}"
 
       # ── Terminal: dispatch the post-drain chain ────────────────────────────
