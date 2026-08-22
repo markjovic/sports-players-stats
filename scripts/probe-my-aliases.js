@@ -54,17 +54,26 @@ function main() {
   //    keepers. Those are the ones this tool is responsible for.
   const aliasDir = path.join(ROOT, 'players', 'aliases');
   const mine = new Map();            // aliasId -> keeper
-  let totalAliases = 0;
+  let totalAliases = 0, selfMappings = 0;
   for (const f of fs.readdirSync(aliasDir)) {
     if (!f.endsWith('.json')) continue;
     let m; try { m = JSON.parse(fs.readFileSync(path.join(aliasDir, f), 'utf8')); } catch (e) { continue; }
     for (const [k, v] of Object.entries(m)) {
       totalAliases++;
-      if (keepers.has(v)) mine.set(k, v);
+      if (!keepers.has(v)) continue;
+      // ⚠ EXCLUDE SELF-MAPPINGS. A player's own 13-char prefix maps to their own
+      // uuid, and that entry has existed since long before this merge. The first
+      // version of this probe collected "every alias pointing at a keeper", which
+      // swept those up too: 6,533 entries reported against 3,024 actually written,
+      // and pre-existing appearances attributed to work done yesterday.
+      // An alias I wrote points a DIFFERENT id at the keeper.
+      if (k === v.slice(0, 13)) { selfMappings++; continue; }
+      mine.set(k, v);
     }
   }
   console.log('  alias entries in the table            : ' + n(totalAliases));
-  console.log('  entries pointing at one of my keepers : ' + n(mine.size) + '   ← the ones to check');
+  console.log('  self-mappings excluded (pre-existing) : ' + n(selfMappings) + '   ← a keeper\'s own prefix; NOT written by the merge');
+  console.log('  entries the merge actually wrote      : ' + n(mine.size) + '   ← the ones to check');
   console.log('');
 
   // 3. Every keeper's registered team ids and seasons, so an appearance can be
@@ -113,6 +122,13 @@ function main() {
     }
   }
 
+  // Foreign appearances clustered in ONE season are a property of that season, not
+  // of 40 separate aliases. The 2026-08-22 run had season 3eb78b60 on nearly every
+  // line, which is the shape of a season whose registrations we do not hold rather
+  // than a shape of bad aliasing.
+  const bySeason = new Map();
+  for (const [, s2] of stat) for (const x of s2.samples) bySeason.set(x.sid, (bySeason.get(x.sid) || 0) + 1);
+
   let correct = 0, noEffect = 0, suspect = 0, unknownKeeper = 0;
   let apOk = 0, apForeign = 0, apUnmeasurable = 0;
   const suspects = [];
@@ -135,6 +151,13 @@ function main() {
   console.log('      FOREIGN (regs held, neither matched)  : ' + n(apForeign) + '  (' + pct(apForeign, apOk + apForeign + apUnmeasurable) + '%)');
   console.log('      unmeasurable (no regs for that season): ' + n(apUnmeasurable));
   console.log('');
+  const topSeasons = [...bySeason.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8);
+  if (topSeasons.length) {
+    console.log('  FOREIGN APPEARANCES BY SEASON (sampled) — one season dominating means the');
+    console.log('  season lacks registrations, NOT that many aliases are wrong:');
+    for (const [sid, c] of topSeasons) console.log('    ' + sid + '  ' + n(c) + ' suspect alias(es) cite it');
+    console.log('');
+  }
   console.log('  ⚠ FOREIGN IS NOT THE SAME AS WRONG. A fill-in plays a real game for a team');
   console.log('    they never registered with, and PlayHQ box scores carry a "Fill-in" row for');
   console.log('    exactly that. The repo-wide foreign rate is 4.2%. Compare the figure above');
