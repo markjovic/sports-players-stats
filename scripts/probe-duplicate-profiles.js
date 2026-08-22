@@ -375,15 +375,32 @@ async function main() {
   const CACHE = path.join(ROOT, 'reports', 'duplicate-profile-verdicts.json');
   const seen = new Map();          // uuid -> verdict, so a uuid in two pairs is asked once
   try {
-    const prev = JSON.parse(fs.readFileSync(CACHE, 'utf8'));
+    const rawCache = fs.readFileSync(CACHE, 'utf8');
+    let prev;
+    try { prev = JSON.parse(rawCache); }
+    catch (parseErr) {
+      // A truncated cache is not fatal — salvage every COMPLETE entry rather than
+      // discarding thousands of answers because the last one was cut short.
+      prev = { verdicts: {} };
+      let salvaged = 0;
+      for (const m of rawCache.matchAll(/"([0-9a-f-]{36})":\s*"([a-z-]+)"/g)) { prev.verdicts[m[1]] = m[2]; salvaged++; }
+      console.log('  ⚠ verdict cache was truncated — salvaged ' + salvaged.toLocaleString() + ' complete entries');
+    }
     for (const [u, v] of Object.entries(prev.verdicts || {})) seen.set(u, v);
     console.log('  verdict cache: ' + seen.size.toLocaleString() + ' profile(s) already answered — these will not be asked again');
   } catch (e) { console.log('  verdict cache: none yet (first run)'); }
+  // ATOMIC WRITE. fs.writeFileSync is not atomic: the 2026-08-22 run was killed
+  // mid-write and produced a verdict file truncated in the middle of a string.
+  // Since that file is the resume cache, a corrupt one would make the next run
+  // start from zero — the exact failure it exists to prevent. Write to a temp file
+  // and rename, which is atomic on the same filesystem.
   const saveCache = () => {
     try {
       fs.mkdirSync(path.dirname(CACHE), { recursive: true });
-      fs.writeFileSync(CACHE, JSON.stringify({ saved: new Date().toISOString(),
+      const tmp = CACHE + '.tmp';
+      fs.writeFileSync(tmp, JSON.stringify({ saved: new Date().toISOString(),
         verdicts: Object.fromEntries(seen) }, null, 1));
+      fs.renameSync(tmp, CACHE);
     } catch (e) { console.log('  ⚠ could not save verdict cache: ' + e.message); }
   };
   // Only ANSWERS are cached. A transport outcome must always be retried, or one
