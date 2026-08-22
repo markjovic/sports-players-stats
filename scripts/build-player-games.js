@@ -201,6 +201,7 @@ console.log(`  ${allPrefixes.length} prefix dirs | ${donePrefixes.size} already 
 
 let updated = 0, skipped = 0, sinceCommit = 0;
 let totalUnreg = 0, playersWithUnreg = 0, totalUnmeasurable = 0;
+let seasonsAdded = 0, playersSeasonsAdded = 0;
 let unregWritten = 0, playersUnregWritten = 0;   // this run's delta, reported separately
 
 for (const prefix of pendingPrefixes) {
@@ -257,8 +258,16 @@ for (const prefix of pendingPrefixes) {
       if (t?.sid) regSids.add(t.sid);
     }
     for (const se of (Array.isArray(player.seasons) ? player.seasons : [])) {
-      if (se?.sid) regSids.add(se.sid);
-      for (const r of (Array.isArray(se.regs) ? se.regs : [])) if (r?.tid) regTids.add(r.tid);
+      const regs = Array.isArray(se?.regs) ? se.regs : [];
+      for (const r of regs) if (r?.tid) regTids.add(r.tid);
+      // ⚠ ONLY A SEASON WITH AT LEAST ONE REGISTRATION COUNTS AS MEASURABLE.
+      // The season back-fill below adds `{sid, regs: []}` for seasons the player
+      // has GAMES in but no recorded registration. That entry means "they played
+      // here", NOT "we hold their registrations here" — and if it were treated as
+      // the latter, every appearance in it would be emitted as an unregistered
+      // appearance on the next run. That is the exact false accusation the season
+      // test was added to prevent, arriving by a different door.
+      if (se?.sid && regs.some(r => r && r.tid)) regSids.add(se.sid);
     }
     const unreg = [];
     let unmeasurable = 0;
@@ -291,6 +300,48 @@ for (const prefix of pendingPrefixes) {
     totalUnmeasurable += unmeasurable;
     totalUnreg += unreg.length;
     if (unreg.length) playersWithUnreg++;
+    // ── seasons[] MUST COVER EVERY SEASON THE PLAYER HAS GAMES IN ───────────
+    // Added 2026-08-22. seasons[] was a PARTIAL record: the nightly crawl writes a
+    // season when it sees the player in a game it captured, and fetch-profile-stats
+    // writes seasons the API reports. Neither guarantees coverage, and nothing ever
+    // reconciled seasons[] against games[].
+    //
+    // The contradiction that exposed it: probe-both-resolve found Jida Mccrae
+    // Cooper's two files holding 196 OF THE SAME GAMES with ZERO shared seasons.
+    // A game belongs to exactly one season, so that is impossible — both players
+    // held games from seasons neither listed. Any comparison keyed on seasons[]
+    // was therefore meaningless, which invalidated 158 of 208 "unclear" pairs.
+    //
+    // THIS IS THE RIGHT PLACE FOR THE FIX, and the only place that also prevents
+    // drift: this tool owns games[], it already knows each game's season from the
+    // phase-1 scan, and it rebuilds every run — so a season can never again be
+    // present in games[] and absent from seasons[].
+    //
+    // It ADDS ONLY. Names, regs and stats on an existing season are never touched:
+    // those come from fetch-profile-stats and the crawl, which know things this
+    // tool does not. A season added here carries the sid and, where gameTids
+    // records it, the team — enough for it to be found, not enough to pretend it
+    // is fully described.
+    if (!Array.isArray(player.seasons)) player.seasons = [];
+    const haveSids = new Set(player.seasons.map(x => x && x.sid).filter(Boolean));
+    const gameTids = (player.gameTids && typeof player.gameTids === 'object') ? player.gameTids : {};
+    const addSeason = new Map();                  // sid -> Set(tid)
+    for (const gid of sorted) {
+      const meta = gameMeta.get(gid);
+      if (!meta) continue;
+      const gsid = meta[0];
+      if (!gsid || haveSids.has(gsid)) continue;
+      if (!addSeason.has(gsid)) addSeason.set(gsid, new Set());
+      const t = gameTids[gid];
+      if (t) addSeason.get(gsid).add(t);
+    }
+    for (const [gsid, tids] of addSeason) {
+      const entry = { sid: gsid, regs: [...tids].map(t => ({ tid: t })) };
+      player.seasons.push(entry);
+      seasonsAdded++;
+    }
+    if (addSeason.size) playersSeasonsAdded++;
+
     const existingU = player.u;
 
     // Skip only when BOTH fields already match — a player whose games[] is
@@ -302,7 +353,9 @@ for (const prefix of pendingPrefixes) {
         ? existingU === undefined
         : (Array.isArray(existingU) && existingU.length === unreg.length &&
            existingU.every((x, i) => x === unreg[i]));
-    if (gamesSame && uSame) {
+    // A player whose games[] and u are both unchanged may STILL have gained a
+    // season above — skipping on the first two alone would silently drop it.
+    if (gamesSame && uSame && addSeason.size === 0) {
       skipped++;
       continue;
     }
@@ -353,6 +406,7 @@ console.log(`  Seasons scanned      : ${sids.length.toLocaleString()}`);
 console.log(`  Games processed      : ${totalGames.toLocaleString()}`);
 console.log(`  Player appearances   : ${totalAppearances.toLocaleString()}`);
 console.log(`  Unresolved p[] ids   : ${unresolved.toLocaleString()}`);
+console.log(`  Seasons back-filled  : ${seasonsAdded.toLocaleString()} season(s) added to ${playersSeasonsAdded.toLocaleString()} player file(s) — present in games[] but missing from seasons[]`);
 console.log(`  Unregistered (u)     : ${totalUnreg.toLocaleString()} appearances across ${playersWithUnreg.toLocaleString()} players  [repo total, not this run's delta]`);
 console.log(`    of which newly written this run: ${unregWritten.toLocaleString()} across ${playersUnregWritten.toLocaleString()} player file(s)`);
 console.log(`  Not emitted (unknown): ${totalUnmeasurable.toLocaleString()} appearances in seasons we hold NO registration for — cannot be called unregistered`);
