@@ -1,0 +1,73 @@
+# .github/workflows/probe-both-resolve.yml
+name: Probe Both Resolve
+
+# READ-ONLY as far as player data goes. Writes one report. No data-write lock.
+#
+# THE REMAINING 416. merge-phantom-profiles cleared 2,482 phantoms and took the
+# duplicate population from 2,895 pairs / 122,866 appearances down to 416 / 6,616.
+# For every one of those 416, BOTH uuids resolve on PlayHQ — so neither is a
+# phantom and neither can be deleted.
+#
+# THEY ARE NOT ALL DUPLICATES, and that is the point. The detector finds pairs BY
+# SHARED GAMES, which preferentially catches SIBLINGS and same-named teammates:
+# two real people on one team sheet share nearly every game, while one person's
+# two profiles split their seasons and share few. The population already shows the
+# pattern — Zachariah and Ezekiel Tawadros are two separate real players.
+#
+# This fetches both profiles and prints what distinguishes them:
+#   · gender differs                → two people, decisive
+#   · same team, same season, twice → one person, a real duplicate
+#   · shares most of the smaller career, different teams → teammates
+#   · otherwise                     → unclear, left for a human
+#
+# It STATES A LEANING AND TAKES NO ACTION. Merging two siblings because they share
+# a surname and a team is worse than leaving 6,616 appearances double-counted. Two
+# PlayHQ links are printed per pair so each can be settled by eye, and the full
+# list is written to reports/both-resolve-pairs.json rather than living in a log.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'Pairs to examine, largest shared-game count first. 0 = all 416.'
+        required: false
+        default: '0'
+        type: string
+      pace:
+        description: 'Milliseconds between calls. 700 hit CloudFront on 2026-08-21; 1000 ran 5,511 calls clean.'
+        required: false
+        default: '1000'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Probe both-resolve pairs
+        run: |
+          ARGS="--pace=${{ inputs.pace }}"
+          if [ "${{ inputs.sample }}" != "0" ] && [ -n "${{ inputs.sample }}" ]; then ARGS="$ARGS --sample=${{ inputs.sample }}"; fi
+          node --max-old-space-size=8192 scripts/probe-both-resolve.js $ARGS
+
+      # contents: read, so the report cannot be committed — it must be an artifact
+      # or it dies with the runner, which is exactly what happened to the first
+      # duplicate-pair report on 2026-08-21.
+      - name: Upload the pair list
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: both-resolve-pairs
+          path: reports/both-resolve-pairs.json
+          retention-days: 30
+          if-no-files-found: warn
