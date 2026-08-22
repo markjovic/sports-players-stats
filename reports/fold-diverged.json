@@ -1,31 +1,179 @@
 {
   "advisory": "ADVISORY ONLY. This file is a single path overwritten by EVERY fold run, including a 1-player one, so it is not a durable record. Do not build any repair, check or audit on it — reconstruct from the player data instead (spectatorIds[] is the source of truth). See claude_context.md trap T6.",
-  "generatedAt": "2026-08-21T18:32:23.903Z",
+  "generatedAt": "2026-08-22T13:37:39.145Z",
   "dryRun": false,
-  "filesScanned": 421610,
-  "folded": 3,
-  "promotes": 2,
-  "merges": 1,
-  "indexShardsTouched": 6,
-  "aliasEntriesScanned": 498296,
-  "aliasValuesRepointed": 0,
-  "aliasShardsTouched": 0,
+  "filesScanned": 419127,
+  "folded": 31,
+  "promotes": 22,
+  "merges": 9,
+  "indexShardsTouched": 55,
+  "aliasEntriesScanned": 498322,
+  "aliasValuesRepointed": 21,
+  "aliasShardsTouched": 21,
   "entries": [
     {
-      "apiId": "fd06b509-72a9-432f-848a-53314b5380b6",
+      "apiId": "76dd3ffe-69f0-402a-bd40-14187e8e03b6",
       "action": "merge",
-      "oldKey": "40e82379-baa1-42f8-a585-f3a1ed256908",
-      "keeper": "fd06b509-72a9-432f-848a-53314b5380b6"
+      "oldKey": "026fa6f1-2136-4930-b75b-a79078d3a585",
+      "keeper": "026fa6f1-2136-4930-b75b-a79078d3a585"
     },
     {
-      "apiId": "4699dd3b-4afe-4950-9f7e-2b3c63af778e",
+      "apiId": "e1aface0-0b42-4918-9d74-fb1d269204ef",
       "action": "promote",
-      "oldKey": "4ad912a4-c18b-406d-9c6b-27815e39593f"
+      "oldKey": "03ae3112-8a02-4f40-bb51-2c5e8a80c910"
     },
     {
-      "apiId": "9130bc10-8bdc-4618-bd49-9c10668bcb83",
+      "apiId": "03d35c49-169c-4709-a46d-bc8f41365192",
       "action": "promote",
-      "oldKey": "9c7b3a25-46be-4df7-abc0-baab842f7aef"
+      "oldKey": "08488d94-7ca7-4787-b235-e9c32545a5a5"
+    },
+    {
+      "apiId": "315d25d8-6dd0-4b12-9310-279f67fbf872",
+      "action": "promote",
+      "oldKey": "0cd3b937-bfc5-4893-9957-e0e03435fb61"
+    },
+    {
+      "apiId": "cc05a725-b5c4-4baa-a94f-8c924621c139",
+      "action": "promote",
+      "oldKey": "23f24050-8efc-4f11-9e5b-429a175071c0"
+    },
+    {
+      "apiId": "49914710-1deb-4a43-8536-a2667a5f4a49",
+      "action": "merge",
+      "oldKey": "2708ba22-61a6-41f5-9463-ff4145f705c0",
+      "keeper": "2708ba22-61a6-41f5-9463-ff4145f705c0"
+    },
+    {
+      "apiId": "49e848ff-ff39-4356-aee9-ac1a664380fd",
+      "action": "promote",
+      "oldKey": "29ba52e9-643a-4643-a4bf-67937ad4dd71"
+    },
+    {
+      "apiId": "43e20d28-c937-426e-afbc-03c5034dca61",
+      "action": "promote",
+      "oldKey": "3f71e9f9-770d-4768-a951-3be7a3135c81"
+    },
+    {
+      "apiId": "5da08a00-fee4-46cd-965b-4fd81a5393fd",
+      "action": "promote",
+      "oldKey": "431ae064-75e6-49c5-b2d5-ce9419ef1ec2"
+    },
+    {
+      "apiId": "798fc201-82c2-4dc7-bef3-98a97d051f6d",
+      "action": "merge",
+      "oldKey": "4f91aa33-91bc-4910-ae27-a118e0167582",
+      "keeper": "798fc201-82c2-4dc7-bef3-98a97d051f6d"
+    },
+    {
+      "apiId": "b7c2b5fd-248e-4385-9e06-dcc691d55a86",
+      "action": "promote",
+      "oldKey": "5c8e32f0-2bfd-4242-9216-fa262754889f"
+    },
+    {
+      "apiId": "010e19a8-ceb7-4e4a-8c55-5411dba48ed0",
+      "action": "promote",
+      "oldKey": "6679975b-5b55-48ec-b78d-14b0205106ff"
+    },
+    {
+      "apiId": "0464e100-e3de-4159-9d61-d839b66c38a4",
+      "action": "promote",
+      "oldKey": "6a8b69ab-bdd9-4301-90d6-280fcb1ba3e3"
+    },
+    {
+      "apiId": "f5dc2dca-9969-4b3b-b87e-5b11da155132",
+      "action": "promote",
+      "oldKey": "718b6c2d-dd33-4c58-aee7-adbaf2f7a187"
+    },
+    {
+      "apiId": "899c36d1-2e5d-43aa-9ef2-82742d246e45",
+      "action": "promote",
+      "oldKey": "740928c5-afef-438c-8287-815145e079b2"
+    },
+    {
+      "apiId": "b202cff4-6800-4f10-975e-996069c4f6b2",
+      "action": "promote",
+      "oldKey": "76bb0536-141e-48f4-b784-e26c1fedfda2"
+    },
+    {
+      "apiId": "449e57e1-6223-4c7c-945d-ca5a6fcee003",
+      "action": "promote",
+      "oldKey": "7761d783-7abb-4b21-a268-ed6a05ec7f3b"
+    },
+    {
+      "apiId": "a6e07d13-f52a-447e-8190-e199dd7d6450",
+      "action": "promote",
+      "oldKey": "77bce604-b1c0-4b99-9ed0-8938a6bdf6c1"
+    },
+    {
+      "apiId": "fe4fcd3d-361f-4b6c-bf03-cbca09232781",
+      "action": "promote",
+      "oldKey": "844f41a9-727c-4aba-8ed1-c96a8b09f247"
+    },
+    {
+      "apiId": "4bbf7774-e52f-43b4-b458-50680b6fecc7",
+      "action": "merge",
+      "oldKey": "8b82cdec-3b92-475d-b218-65b8bade3224",
+      "keeper": "4bbf7774-e52f-43b4-b458-50680b6fecc7"
+    },
+    {
+      "apiId": "ceb7652c-b8ba-47ac-9e17-0fd4b596492c",
+      "action": "promote",
+      "oldKey": "8dfc2d01-da7f-4f71-9cc3-52b3006385cb"
+    },
+    {
+      "apiId": "55e00a03-6561-4d64-8006-38b10fc71345",
+      "action": "merge",
+      "oldKey": "99f402fa-82d2-453a-9687-16270bd74bf7",
+      "keeper": "55e00a03-6561-4d64-8006-38b10fc71345"
+    },
+    {
+      "apiId": "e25caacc-5866-4dcf-b894-5261991d3ebe",
+      "action": "promote",
+      "oldKey": "a2c9ddef-a91d-4402-86c8-a86b919b7f08"
+    },
+    {
+      "apiId": "453f4911-d847-4368-94dc-7a350eaaecb7",
+      "action": "merge",
+      "oldKey": "aa0592d9-add2-4646-9b8f-05ab26b82b37",
+      "keeper": "aa0592d9-add2-4646-9b8f-05ab26b82b37"
+    },
+    {
+      "apiId": "4090502e-a830-4033-a5c2-95fb564798aa",
+      "action": "merge",
+      "oldKey": "b47f1442-d48c-40cf-8423-8961cb6aa7a6",
+      "keeper": "b47f1442-d48c-40cf-8423-8961cb6aa7a6"
+    },
+    {
+      "apiId": "ebcd5a11-2f20-4f30-a0f1-773c04e75cc9",
+      "action": "promote",
+      "oldKey": "b4a95ba3-5b61-417a-b7c2-05411a4ec82e"
+    },
+    {
+      "apiId": "87eacd3f-121f-4def-ba9a-241a3336f7a4",
+      "action": "promote",
+      "oldKey": "cbe24677-903e-4f15-b86f-0e6d94af7ef8"
+    },
+    {
+      "apiId": "9eb75eb3-f68d-47cb-84a6-053059780f13",
+      "action": "merge",
+      "oldKey": "cfb647e2-5e14-4286-9a85-ea2fe436c68d",
+      "keeper": "cfb647e2-5e14-4286-9a85-ea2fe436c68d"
+    },
+    {
+      "apiId": "d1ef4d0b-6d42-4355-a210-f342bb57a4f4",
+      "action": "promote",
+      "oldKey": "d426b2a5-d329-428b-aa6d-20d53392f055"
+    },
+    {
+      "apiId": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+      "action": "merge",
+      "oldKey": "f5dcbb95-1d4a-4b2f-bc6c-0ab48e1d4f08",
+      "keeper": "f5dcbb95-1d4a-4b2f-bc6c-0ab48e1d4f08"
+    },
+    {
+      "apiId": "05d0296c-bbd6-40ca-bc1e-568c1c66566d",
+      "action": "promote",
+      "oldKey": "f6f9b093-7925-4ef0-b936-45630d224cff"
     }
   ]
 }
