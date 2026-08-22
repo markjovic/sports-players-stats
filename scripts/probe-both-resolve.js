@@ -314,20 +314,71 @@ async function main() {
       for (const g of games) { const a = holders.get(g); if (a) a.push(uuid); else holders.set(g, [uuid]); }
     }
   }
+  // ── THE DECISIVE TEST: who is actually IN the roster ───────────────────────
+  // games[] is built FROM p[], so a game held by both files means both ids were in
+  // that team sheet. TWO ids in ONE p[] is what TWO PEOPLE look like — siblings or
+  // same-named teammates. One person's two profiles cannot both be listed as
+  // separate players in the same game.
+  //
+  // This is the test that settled Tahlia Parker (378 of 385 shared games carried
+  // both ids, which proved a spectator id had been stubbed as a second player) and
+  // it was not carried into this tool. Everything above is circumstantial by
+  // comparison: gender is an age grade, season lists were incomplete until
+  // 2026-08-22, and share-rate is a heuristic. The roster is the record.
+  const wantGids = new Set();
+  {
+    const tmp = new Map();
+    for (const [g, list] of holders) if (list.length > 1) tmp.set(g, list);
+    for (const [g, list] of tmp) {
+      for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {
+        const a = meta.get(list[i]), b = meta.get(list[j]);
+        if (a && b && a.key && a.key === b.key) { wantGids.add(g); break; }
+      }
+    }
+  }
+  // gid -> Set of 13-char ids present in that game's p[]
+  const rosterIds = new Map();
+  const gamesDir = path.join(ROOT, 'games', 'bv');
+  for (const f of fs.readdirSync(gamesDir)) {
+    if (!f.endsWith('.json')) continue;
+    let sg; try { sg = JSON.parse(fs.readFileSync(path.join(gamesDir, f), 'utf8')); } catch (e) { continue; }
+    for (const gid of Object.keys(sg.games || {})) {
+      if (!wantGids.has(gid)) continue;
+      const g = sg.games[gid];
+      rosterIds.set(gid, new Set((Array.isArray(g.p) ? g.p : []).map(x => x && x.id).filter(Boolean)));
+    }
+  }
+  console.log('  shared games with a roster loaded: ' + n(rosterIds.size) + ' of ' + n(wantGids.size));
+
+  // Every id that resolves to a given player: its own prefix, its spectatorIds, and
+  // any alias pointing at it.
+  const aliasTo = new Map();
+  try {
+    const ad = path.join(ROOT, 'players', 'aliases');
+    for (const f of fs.readdirSync(ad)) {
+      if (!f.endsWith('.json')) continue;
+      const m = JSON.parse(fs.readFileSync(path.join(ad, f), 'utf8'));
+      for (const k of Object.keys(m)) aliasTo.set(k, m[k]);
+    }
+  } catch (e) { console.log('  players/aliases unreadable: ' + e.message); }
+
   const pairShared = new Map();
-  for (const [, list] of holders) {
+  const pairGids = new Map();
+  for (const [gid, list] of holders) {
     if (list.length < 2) continue;
     for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {
       const a = meta.get(list[i]), b = meta.get(list[j]);
       if (!a || !b || !a.key || a.key !== b.key) continue;
       const k = list[i] < list[j] ? list[i] + '|' + list[j] : list[j] + '|' + list[i];
       pairShared.set(k, (pairShared.get(k) || 0) + 1);
+      if (!pairGids.has(k)) pairGids.set(k, []);
+      pairGids.get(k).push(gid);
     }
   }
   holders.clear();
   let pairs = [...pairShared.entries()].map(([k, shared]) => {
     const [ua, ub] = k.split('|');
-    return { ua, ub, shared, a: meta.get(ua), b: meta.get(ub) };
+    return { ua, ub, shared, gids: pairGids.get(k) || [], a: meta.get(ua), b: meta.get(ub) };
   }).sort((x, y) => y.shared - x.shared);
   console.log('  pairs still sharing games: ' + n(pairs.length));
   if (SAMPLE) pairs = pairs.slice(0, SAMPLE);
@@ -382,8 +433,34 @@ async function main() {
     }
     const shareRate = pct(p.shared, Math.min(p.a.games, p.b.games) || 1);
 
+    // THE ROSTER TEST. For each shared game, is each side's id actually in p[]?
+    const idsFor = (uuid, m) => {
+      const set = new Set([uuid.slice(0, 13)]);
+      for (const x of (m.spectatorIds || [])) if (x) set.add(String(x));
+      for (const [k, v] of aliasTo) if (v === uuid) set.add(k);
+      return set;
+    };
+    const idsA = idsFor(p.ua, p.a), idsB = idsFor(p.ub, p.b);
+    let rBoth = 0, rOne = 0, rNeither = 0, rSeen = 0;
+    for (const gid of p.gids) {
+      const r = rosterIds.get(gid);
+      if (!r) continue;
+      rSeen++;
+      const hasA = [...idsA].some(x => r.has(x));
+      const hasB = [...idsB].some(x => r.has(x));
+      if (hasA && hasB) rBoth++; else if (hasA || hasB) rOne++; else rNeither++;
+    }
+    const bothRate = pct(rBoth, rSeen || 1);
+
     let leaning;
-    if (genderDiff) { leaning = 'TWO PEOPLE — ' + p.a.gender + ' vs ' + p.b.gender + ', a real gender conflict'; twoPeople++; }
+    // ROSTER FIRST. It is the record; everything else is inference.
+    if (rSeen >= 3 && Number(bothRate) >= 80) {
+      leaning = 'TWO PEOPLE — both ids in the SAME team sheet in ' + bothRate + '% of shared games';
+      twoPeople++;
+    } else if (rSeen >= 3 && Number(bothRate) <= 20) {
+      leaning = 'ONE PERSON — only ONE id per team sheet (' + bothRate + '% carry both): a split identity, not two players';
+      onePerson++;
+    } else if (genderDiff) { leaning = 'TWO PEOPLE — ' + p.a.gender + ' vs ' + p.b.gender + ', a real gender conflict'; twoPeople++; }
     else if (sameTeamSeasons > 0) { leaning = 'ONE PERSON? — same team in ' + sameTeamSeasons + ' shared season(s)'; onePerson++; }
     else if (fa && fb && fa === fb && p.a.gender !== p.b.gender) {
       // Same gender family, different label: Boys/Men or Girls/Women. That is a
@@ -400,6 +477,7 @@ async function main() {
     const looksLikeSeason = /^(summer|winter|autumn|spring|term)\b|\b20\d\d(\/\d\d)?$/i.test(String(p.a.name || '').trim());
     if (looksLikeSeason) badName++;
     rows.push({ a: p.ua, b: p.ub, name: p.a.name, badName: looksLikeSeason, shared: p.shared, shareRate,
+                rosterGames: rSeen, rosterBoth: rBoth, rosterOne: rOne, rosterNeither: rNeither, bothRate,
                 gA: p.a.gender, gB: p.b.gender, gamesA: p.a.games, gamesB: p.b.games,
                 sidsA: p.a.sids.size, sidsB: p.b.sids.size, sharedSids: sharedSids.length,
                 sidOverlap, sameTeamSeasons, leaning });
@@ -408,10 +486,16 @@ async function main() {
 
   console.log('\n════════════════════════════════════════════════');
   console.log('  pairs examined : ' + n(rows.length) + (failed ? '   (' + failed + ' could not be fetched)' : ''));
-  console.log('    two people (real gender conflict)             : ' + n(rows.filter(r => r.leaning.startsWith('TWO PEOPLE —')).length));
-  console.log('    two people? (share most of the smaller career): ' + n(rows.filter(r => r.leaning.startsWith('TWO PEOPLE?')).length));
-  console.log('    one person? (same team, same season)          : ' + n(onePerson));
-  console.log('    unclear                                       : ' + n(unclear));
+  // Every count derived from `leaning`, ONE source. The running counters were
+  // double-counting: a pair settled by the roster test still incremented the
+  // same-team counter, so the categories summed to more than the pairs examined.
+  const has = (f) => n(rows.filter(f).length);
+  console.log('    TWO PEOPLE — both ids in the same team sheet  : ' + has(r => r.leaning.includes('SAME team sheet')) + '   ← DECISIVE: two entries, two people');
+  console.log('    ONE PERSON — only one id per team sheet       : ' + has(r => r.leaning.includes('only ONE id per')) + '   ← DECISIVE: a real duplicate');
+  console.log('    two people (real gender conflict)             : ' + has(r => r.leaning.startsWith('TWO PEOPLE \u2014') && !r.leaning.includes('SAME team sheet')));
+  console.log('    two people? (share most of the smaller career): ' + has(r => r.leaning.startsWith('TWO PEOPLE?')));
+  console.log('    one person? (circumstantial)                  : ' + has(r => r.leaning.startsWith('ONE PERSON?')));
+  console.log('    unclear                                       : ' + has(r => r.leaning.startsWith('UNCLEAR')));
   if (badName) console.log('    ⚠ pairs whose NAME looks like a season       : ' + n(badName) + '   ← corrupt name field, not a duplicate — fix the name, not the pair');
   console.log('');
   console.log('  ── EVERY PAIR ──');
@@ -421,6 +505,8 @@ async function main() {
     console.log('      ' + r.b + '  games=' + r.gamesB + ' seasons=' + r.sidsB + ' gender=' + (r.gB || '—'));
     console.log('      shared games ' + r.shared + ' (' + r.shareRate + '% of the smaller career) · shared seasons ' +
                 r.sharedSids + ' (' + r.sidOverlap + '%) · same team in ' + r.sameTeamSeasons);
+    console.log('      ROSTER: of ' + r.rosterGames + ' shared games checked \u2014 both ids present ' + r.rosterBoth +
+                ' (' + r.bothRate + '%) · one id ' + r.rosterOne + ' · neither ' + r.rosterNeither);
     console.log('      https://www.playhq.com/public/profile/' + r.a + '/statistics');
     console.log('      https://www.playhq.com/public/profile/' + r.b + '/statistics');
   }
