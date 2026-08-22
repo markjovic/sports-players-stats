@@ -125,6 +125,23 @@ function needsSeasonNames(p) {
   return false;
 }
 
+// ⚠ A GIVE-UP COUNTER IS NOT OPTIONAL — WITHOUT IT THE MATRIX NEVER TERMINATES.
+// Some registrations can never be healed: the API no longer returns that team, so
+// tn/gn stay empty however many times the player is fetched. needsSeasonNames then
+// stays true FOR EVER, the player is re-offered every run, statsChecked changes so
+// the file IS written, `written > 0` resets consecutive_zeros, and the chain
+// retriggers until it hits the 150-run ceiling. Observed 2026-08-22: the sweep
+// looped on a handful of records.
+//
+// --recheck-private already had this shape as nameHealAttempts; this mirrors it.
+// The counter is CLEARED on success, so a player who becomes healable later is
+// never permanently excluded.
+const SEASON_HEAL_LIMIT = 2;
+function selectForSeasonHeal(p) {
+  if (!needsSeasonNames(p)) return false;
+  return ((p && p.seasonHealAttempts) || 0) < SEASON_HEAL_LIMIT;
+}
+
 // ─── Config ──────────────────────────────────────────────────────────────────
 
 const API_URL     = 'https://api.playhq.com/graphql';
@@ -1114,6 +1131,13 @@ async function finishOk(uuid, player, result, stats, prefix, short) {
     : { v: parsed.maxGameThreePt ?? null };
   bk.statsChecked   = new Date().toISOString();
 
+  // Track heal attempts so an UNHEALABLE player stops being re-offered — this is
+  // what lets the matrix chain reach zero writes and stop.
+  if (HEAL_SEASON_NAMES) {
+    if (needsSeasonNames(player)) player.seasonHealAttempts = ((player.seasonHealAttempts || 0) + 1);
+    else if (player.seasonHealAttempts !== undefined) delete player.seasonHealAttempts;
+  }
+
   writePlayer(uuid, player);
   stats.written++;
   const fo = Object.values(parsed.foulOuts).reduce((a, b) => a + b, 0);
@@ -1218,7 +1242,7 @@ async function main() {
   const uuids = Object.keys(index);
   console.log(`  UUIDs in shard: ${uuids.length}`);
 
-  let recheckable = 0, healable = 0;
+  let recheckable = 0, healable = 0, healExhausted = 0;
   const allToFetch = FORCE
     ? uuids
     : uuids.filter(uuid => {
@@ -1228,7 +1252,8 @@ async function main() {
           // statsChecked present. Normally done — unless this is a private
           // re-check sweep and the player is one of the withheld population.
           if (RECHECK_PRIVATE && p.private === true) { recheckable++; return true; }
-          if (HEAL_SEASON_NAMES && needsSeasonNames(p)) { healable++; return true; }
+          if (HEAL_SEASON_NAMES && selectForSeasonHeal(p)) { healable++; return true; }
+          if (HEAL_SEASON_NAMES && needsSeasonNames(p)) healExhausted++;
           return false;
         } catch { return true; }
       });
@@ -1249,7 +1274,10 @@ async function main() {
 
   console.log(`  Already done (statsChecked present): ${stats.skipped}`);
   if (RECHECK_PRIVATE) console.log(`  Re-offered (private:true, statsChecked present): ${recheckable}`);
-  if (HEAL_SEASON_NAMES) console.log(`  Re-offered (season/team names missing, statsChecked present): ${healable}`);
+  if (HEAL_SEASON_NAMES) {
+    console.log(`  Re-offered (season/team names missing, statsChecked present): ${healable}`);
+    if (healExhausted) console.log(`  Not re-offered (still nameless after ${SEASON_HEAL_LIMIT} attempts — the API does not return those teams): ${healExhausted}`);
+  }
   console.log(`  To fetch: ${stats.toFetch}`);
 
   if (stats.toFetch === 0) {
