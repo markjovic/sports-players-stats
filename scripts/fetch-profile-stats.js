@@ -87,11 +87,42 @@ const NAME_HEAL_MAX_ATTEMPTS = 3;
 // stats and clears private via finishOk, which already sets private = false on
 // every successful fetch. Intended cadence: season boundaries.
 const RECHECK_PRIVATE = args.includes('--recheck-private');
+// --heal-season-names re-offers players holding a registration with a TID BUT NO
+// NAMES, without the cost of a repo-wide --force.
+//
+// WHY IT IS NEEDED. Until 2026-08-22 the season back-fill in this script wrote
+// `regs.push({ tid })` and discarded the season, team and grade names the query had
+// already fetched. Every season written by that path therefore has a tid, sometimes
+// a {wins,losses} block, and no words at all — StatTrack renders them as "." and
+// "?". Tahlia Parker shows ONE named season out of thirty against a career of 389
+// games. The writer is fixed; the DATA is not, and statsChecked makes every
+// affected player permanently skipped.
+//
+// The selector is exact rather than a guess: a season is affected if it has a reg
+// with a tid and no tn AND no gn. Players with nothing to heal are never fetched,
+// so this costs one call per genuinely affected player instead of 419,127.
+const HEAL_SEASON_NAMES = args.includes('--heal-season-names');
 const MAX   = (() => { const a = args.find(a => a.startsWith('--max=')); return a ? parseInt(a.split('=')[1]) : Infinity; })();
 
 if (!SHARD || !/^[0-9a-f]{2}$/.test(SHARD)) {
-  console.error('Usage: node scripts/fetch-profile-stats.js --shard=<00-ff> [--force] [--recheck-private]');
+  console.error('Usage: node scripts/fetch-profile-stats.js --shard=<00-ff> [--force] [--recheck-private] [--heal-season-names]');
   process.exit(1);
+}
+
+// Does this player hold a registration that has a team id but NO NAMES? That is the
+// exact signature of a season written by the pre-2026-08-22 back-fill, which threw
+// away the names its own query had already fetched.
+//
+// A reg with a tid and neither tn nor gn is affected. A reg with EITHER is not —
+// one name is enough for the card to render something meaningful, and re-fetching
+// for the second is not worth a call.
+function needsSeasonNames(p) {
+  for (const se of (Array.isArray(p?.seasons) ? p.seasons : [])) {
+    for (const r of (Array.isArray(se?.regs) ? se.regs : [])) {
+      if (r && r.tid && !r.tn && !r.gn) return true;
+    }
+  }
+  return false;
 }
 
 // ─── Config ──────────────────────────────────────────────────────────────────
@@ -1187,7 +1218,7 @@ async function main() {
   const uuids = Object.keys(index);
   console.log(`  UUIDs in shard: ${uuids.length}`);
 
-  let recheckable = 0;
+  let recheckable = 0, healable = 0;
   const allToFetch = FORCE
     ? uuids
     : uuids.filter(uuid => {
@@ -1197,6 +1228,7 @@ async function main() {
           // statsChecked present. Normally done — unless this is a private
           // re-check sweep and the player is one of the withheld population.
           if (RECHECK_PRIVATE && p.private === true) { recheckable++; return true; }
+          if (HEAL_SEASON_NAMES && needsSeasonNames(p)) { healable++; return true; }
           return false;
         } catch { return true; }
       });
@@ -1217,6 +1249,7 @@ async function main() {
 
   console.log(`  Already done (statsChecked present): ${stats.skipped}`);
   if (RECHECK_PRIVATE) console.log(`  Re-offered (private:true, statsChecked present): ${recheckable}`);
+  if (HEAL_SEASON_NAMES) console.log(`  Re-offered (season/team names missing, statsChecked present): ${healable}`);
   console.log(`  To fetch: ${stats.toFetch}`);
 
   if (stats.toFetch === 0) {
