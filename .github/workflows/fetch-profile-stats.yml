@@ -54,3 +54,41 @@ jobs:
           if [ "${{ inputs.heal_season_names }}" = "true" ] || [ "${{ inputs.heal_season_names }}" = "True" ]; then ARGS="$ARGS --heal-season-names"; fi
           if [ -n "${{ inputs.max }}" ]; then ARGS="$ARGS --max=${{ inputs.max }}"; fi
           node scripts/fetch-profile-stats.js $ARGS
+
+      # ⚠ THIS WORKFLOW HAD NO COMMIT STEP UNTIL 2026-08-22.
+      # It checked out, configured git, ran the script — and stopped. The script
+      # writes player files to disk and does NOT commit; the MATRIX workflow handles
+      # that in a separate package-and-apply job. So every single-shard dispatch did
+      # its work and the runner was destroyed with it. The `Configure git` step above
+      # made it look complete, and the script's own "Written: 32" line reports files
+      # written TO DISK, which was true and meant nothing.
+      #
+      # Found when a --heal-season-names run on shard 20 reported 32 written and the
+      # committed file was byte-identical afterwards.
+      - name: Commit and push
+        run: |
+          # Per-path staging. NEVER `git add -A`: this repo is ~8.6GB / 419k files
+          # and -A walks the whole index.
+          git add -- "players/${{ inputs.shard }}" || true
+          git add -- "players/indexes/${{ inputs.shard }}.json" || true
+          staged="$(git diff --staged --shortstat)"
+          if [ -z "$staged" ]; then
+            echo "  Nothing to commit — the run changed no files."
+            exit 0
+          fi
+          echo "  staging: $staged"
+          git commit -q -m "fetch-profile-stats: shard ${{ inputs.shard }}"
+          # Many writers share this branch, so the push retries with jitter and
+          # THROWS when exhausted rather than reporting a clean no-op.
+          for i in $(seq 1 40); do
+            git merge --abort 2>/dev/null || true
+            if git fetch origin main && git merge -X ours FETCH_HEAD --no-edit --no-stat && git push origin main; then
+              echo "  ✔ pushed (attempt $i)"
+              exit 0
+            fi
+            wait=$(( (RANDOM % 60) + 5 ))
+            echo "  … push attempt $i failed, retrying in ${wait}s"
+            sleep "$wait"
+          done
+          echo "  ✗ push failed after 40 attempts"
+          exit 1
