@@ -1,0 +1,46 @@
+# .github/workflows/probe-my-aliases.yml
+name: Probe My Aliases
+
+# READ-ONLY, offline, zero API calls. No writes, no commits, no data-write lock.
+# Safe to run alongside anything.
+#
+# WHY. merge-phantom-profiles wrote 3,024 alias entries on 2026-08-22, each
+# pointing a phantom player's ids at the real PlayHQ profile. size-report then
+# reported 165,626 appearances arriving via an alias into a roster the player was
+# not in, across 9,751 alias ids. Nothing connected those two facts — this does.
+#
+# It works out exactly which alias entries that merge wrote, then checks every
+# appearance each one delivers against the keeper's own registrations:
+#   NO EFFECT  the id is in no roster — the alias changed nothing
+#   CORRECT    every appearance is for a team the keeper is registered to
+#   SUSPECT    it delivers appearances the keeper has no registration for
+#
+# FOREIGN IS NOT THE SAME AS WRONG — a fill-in is a real appearance for a team the
+# player never joined, and the repo-wide foreign rate is 4.2%. The report prints
+# the rate so it can be compared against that baseline rather than read as a count
+# of errors.
+#
+# Reversing one is a single line: delete the entry from players/aliases and re-run
+# build-player-games. Nothing here writes.
+
+on:
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'How many suspect aliases to list, worst first'
+        required: false
+        default: '40'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Probe my aliases
+        run: node --max-old-space-size=8192 scripts/probe-my-aliases.js --show=${{ inputs.show }}
