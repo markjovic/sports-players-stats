@@ -13,11 +13,20 @@ name: Fix Merge Aliases
 # by its own message, takes its first parent, and diffs — giving the EXACT set of
 # added entries with no estimation and no self-mapping confusion.
 #
-# It then judges every appearance each added entry delivers against that player's
-# own registrations, and removes ONLY entries where every appearance is foreign and
-# there are at least `min_foreign` of them. A mixed entry is left alone: an alias
-# delivering real appearances plus a few fill-ins is doing its job, and PlayHQ's
-# own box scores carry a "Fill-in" row.
+# NOTHING IS REMOVED ON COUNTS. "Every appearance is foreign" is not a test for a
+# bad alias — a player who only ever fills in looks exactly the same, and removing
+# them would delete real appearances.
+#
+# Every candidate is put to PLAYHQ. The spectator box score returns each roster
+# entry's profileID AND name, so the name PlayHQ has for that id is compared with
+# the keeper's:
+#   SAME NAME      one person, the appearance is a fill-in — KEPT
+#   DIFFERENT NAME the id is somebody else, the alias is wrong — REMOVED
+#   NO ANSWER      box unavailable — KEPT, an unanswered question is not evidence
+# Mixed entries never become candidates at all.
+#
+# This job therefore FETCHES api/spectator.playhq.com, so it must never gain a
+# setup-node step.
 #
 # REVERSIBLE. Removals are written to reports/removed-merge-aliases.json BEFORE
 # anything is deleted. Only players/aliases is touched — never players/ or games/ —
@@ -35,6 +44,11 @@ on:
         default: 'dry-run'
         type: choice
         options: [dry-run, apply]
+      max_inspect:
+        description: 'Cap how many candidates are put to PlayHQ. 0 = all. Start with 50 to see which way the verdicts fall before committing to the full set.'
+        required: false
+        default: '0'
+        type: string
       min_foreign:
         description: 'Only remove an entry delivering at least this many foreign appearances. 1-2 foreign is far more likely a fill-in than a bad mapping.'
         required: false
@@ -68,7 +82,7 @@ jobs:
 
       - name: Fix merge aliases
         run: |
-          ARGS="--min-foreign=${{ inputs.min_foreign }}"
+          ARGS="--min-foreign=${{ inputs.min_foreign }} --max-inspect=${{ inputs.max_inspect }}"
           if [ "${{ inputs.mode }}" = "apply" ]; then ARGS="$ARGS --apply"; fi
           node --max-old-space-size=8192 scripts/fix-merge-aliases.js $ARGS
 
