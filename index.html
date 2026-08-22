@@ -71,6 +71,16 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .vback{color:var(--accent);font-size:0.83rem;padding:3px 0;white-space:nowrap;flex-shrink:0;margin-top:2px}
 .vback:hover{opacity:0.75}
 .vtitle{font-size:1.05rem;font-weight:600;line-height:1.3}
+/* The player's uuid, on the page (2026-08-21). PlayHQ issues more than one profile
+   for some people — Tahlia Parker has an api-id file carrying the credits with no
+   season names, and a spectator-id file carrying the full names, holding 385 of the
+   same games between them. Two pages titled identically, and no way to tell which
+   is which without opening devtools. It is also the id the PlayHQ link uses, so it
+   is exactly what you need when one of the two resolves and the other does not.
+   Click to copy. */
+.vuuid{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:0.62rem;color:var(--text3);
+  margin-top:3px;cursor:pointer;user-select:all;letter-spacing:-0.2px}
+.vuuid:hover{color:var(--text2)}
 .vsub{font-size:0.78rem;color:var(--text2);margin-top:2px}
 
 .avi{width:44px;height:44px;border-radius:50%;background:var(--elevated);border:2px solid var(--accent-dim);display:flex;align-items:center;justify-content:center;font-size:0.95rem;font-weight:700;color:var(--accent);flex-shrink:0}
@@ -79,6 +89,15 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 /* Recorded-appearance bar (2026-08-21). Sits UNDER .cstats, separated by a dashed
    rule so it reads as a second source rather than another PlayHQ column. Accent
    colour marks it as ours; PlayHQ's row stays full-brightness above it. */
+/* Unregistered appearances (2026-08-21). Its own section because these games have
+   NO REGISTRATION and therefore no season card to sit inside. Orange rather than
+   accent: this is information about provenance, not a statistic. */
+.unreg-pill{background:var(--elevated);color:var(--text2);font-size:0.58rem;font-weight:700;padding:1px 6px;border-radius:6px}
+.unreg-tog{margin-left:auto;font-size:0.64rem;color:var(--text2);font-weight:400;text-transform:none;letter-spacing:0;cursor:pointer;display:flex;align-items:center;gap:5px}
+.unreg-tog input{accent-color:var(--accent);width:12px;height:12px;cursor:pointer}
+.unreg-note{font-size:0.66rem;color:var(--text2);line-height:1.45;padding:0 0 8px}
+.unreg-hdr{border-left:3px solid var(--c-po)}
+.bdg.bFill{background:rgba(255,109,0,0.15);color:var(--c-po);font-size:0.55rem;font-weight:700;padding:0 5px;border-radius:4px;margin-right:6px}
 .recbar{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;
   padding:7px 12px 9px;background:var(--surface);border-top:1px dashed var(--border)}
 .recbar-l{font-size:0.62rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase}
@@ -332,7 +351,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.74</span>
+      <span class="rail-ver">Beta 0.78</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -1078,6 +1097,7 @@ function renderPlayer(p){
     <div class="avi">${esc(inits(p.name))}</div>
     <div style="flex:1;min-width:0"><div class="vtitle">${esc(displayName(p,uuid))}${privBadge(p)}</div>
     <div class="vsub">${esc([p.gender,club].filter(Boolean).join(' \u00b7 '))}</div>
+    <div class="vuuid" title="Click to copy" onclick="navigator.clipboard&&navigator.clipboard.writeText('${esc(uuid)}')">${esc(uuid)}</div>
     ${isPrivate(p)?'':`<a class="phq-lnk" href="https://www.playhq.com/public/profile/${esc(uuid)}/statistics" target="_blank" rel="noopener" style="display:inline-flex;margin:4px 0 0;padding:3px 8px;font-size:0.72rem">View on PlayHQ \u2197</a>`}
     </div></div>`;
   // A PRIVATE profile publishes no statistics, so every OFFICIAL cell shows an em
@@ -1155,11 +1175,35 @@ function renderPlayer(p){
       gfApps:Math.max(a.gfApps||0,s.gfApps??0),
       gfWins:Math.max(a.gfWins||0,s.gfWins??0)
     };},{});
+    // ── GP FROM games[] WHEN THE REG HAS NO STATS ────────────────────────────
+    // reg.stats is written by fetch-profile-stats from PlayHQ's per-season figures.
+    // A season back-filled from the API's stats response carries a tid and often
+    // {wins,losses} but NO gp — so the card rendered "0 GP" for a player who had
+    // played 27 games. Tahlia Parker showed 1 populated season out of 30 against a
+    // career of 389.
+    //
+    // The file already holds the answer: gameTids maps every gid in games[] to the
+    // team it was played for. Counting the player's own games against this card's
+    // tid is EXACT, costs nothing, and needs no fetch.
+    //
+    // PlayHQ's figure still wins where it exists — it is canonical, and a game we
+    // hold that PlayHQ does not credit must not silently inflate a season total.
+    // This fills a HOLE; it never overwrites.
+    let gpFromGames=0;
+    {
+      const gt=p.gameTids||{};
+      const mine=Array.isArray(p.games)?p.games:[];
+      const tids=new Set(regs.map(r=>r.tid).filter(Boolean));
+      for(const gid of mine) if(tids.has(gt[gid])) gpFromGames++;
+    }
+    const stGp=st.gp||gpFromGames;
+    const gpIsOurs=!st.gp&&gpFromGames>0;
+
     // All grade names joined — no assumption about order
     const allGrades=abbreviateGrades([...new Set(regs.map(r=>r.gn||r.tn||'?'))]);
     const cid=`sc-${gi}`;
     const teamLink=`<span class="sc-grade" onclick="event.stopPropagation();loadTeam('${esc(tid)}','${esc(sn.sid)}')">${esc(allGrades)} \u2192</span>`;
-    const ppg=st.gp?(st.pts/st.gp).toFixed(1):'\u2014';
+    const ppg=st.gp?(st.pts/st.gp).toFixed(1):'\u2014';   // PPG only where PlayHQ gave both
     // W/L/D is per sid:tid — all regs with same tid have the same value.
     // Take from first reg only to avoid multiplication when regraded (multiple regs, same tid).
     const _wldReg=regs[0]?.stats;
@@ -1184,18 +1228,132 @@ function renderPlayer(p){
             </div>
           </div>
         </div>
-        <div style="flex:7;min-width:0;display:flex;flex-direction:row">${[[st.gp||0,'GP',null],[ppg,'PPG',null],[st.pts||0,'PTS',null],[st.fg||0,'FG',null],[st.ft||0,'FT',null],[st.threePt||0,'3PT',null],[st.fouls||0,'F',null]].map(([v,l,c],i)=>statCell(v,l,i===6,c)).join('')}${regW||regL?`<div class="sstat"><div class="ssv" style="font-size:0.68rem;display:flex;gap:3px;justify-content:center;align-items:baseline;white-space:nowrap;font-variant-numeric:tabular-nums">${regW?`<span style="color:var(--win)">${regW}W</span>`:''}${regL?`<span style="color:var(--loss)">${regL}L</span>`:''}${regD?`<span style="color:var(--draw)">${regD}D</span>`:''}</div><div class="ssl">${regWinPct??''}</div></div>`:''}</div>
+        <div style="flex:7;min-width:0;display:flex;flex-direction:row">${[[stGp||0,'GP',gpIsOurs?'var(--accent)':null],[ppg,'PPG',null],[st.pts||0,'PTS',null],[st.fg||0,'FG',null],[st.ft||0,'FT',null],[st.threePt||0,'3PT',null],[st.fouls||0,'F',null]].map(([v,l,c],i)=>statCell(v,l,i===6,c)).join('')}${regW||regL?`<div class="sstat"><div class="ssv" style="font-size:0.68rem;display:flex;gap:3px;justify-content:center;align-items:baseline;white-space:nowrap;font-variant-numeric:tabular-nums">${regW?`<span style="color:var(--win)">${regW}W</span>`:''}${regL?`<span style="color:var(--loss)">${regL}L</span>`:''}${regD?`<span style="color:var(--draw)">${regD}D</span>`:''}</div><div class="ssl">${regWinPct??''}</div></div>`:''}</div>
       </div>
       <div class="sc-games" id="${esc(cid)}-g"></div>
     </div>`;
   });
   h+='</div>';
+  h+=renderUnreg(p);
   h+=renderGradeSnapshot(p.seasons||[]);
   h+=`<div class="slist"><div class="sec-lbl" style="display:flex;align-items:center;justify-content:space-between">Opponent stats <button class="rbtn" style="border:0.5px solid var(--border-strong);padding:3px 10px;border-radius:var(--radius);color:var(--text-primary);font-size:0.72rem" onclick="buildOppStats('${esc(uuid)}',this)">Compute ↗</button></div><div id="opp-stats-${esc(uuid)}"><div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Click Compute to analyse head-to-head records.</div></div></div>`;
   ve.innerHTML=h;
   // Store groups on element for toggleGames
   ve._groups=groups;
   if(cs.finalsStats)hydrateFinals(uuid,cs.finalsStats);
+}
+
+/* ── UNREGISTERED APPEARANCES ─────────────────────────────────────────────────
+   Games where the player is named in the team sheet but holds NO REGISTRATION with
+   either team — PlayHQ's own "Fill-in" case, plus one-off appearances. Real games;
+   PlayHQ credits them to no career total, which is why they are separated from the
+   season list rather than folded into it.
+
+   WHY THIS NEEDS THE `u` FIELD AND CANNOT BE DERIVED HERE. games[] is a flat list
+   of game ids with NO SEASON, and this app only ever reaches a game season-first:
+   S.games[sid] is fetched when a season card expands, and season cards are built
+   from seasons[].regs[]. An unregistered appearance has no registration, therefore
+   no card, therefore nothing tells the app which season file to load. 1,115,257 of
+   them were simply invisible until build-player-games began emitting
+   `u: ["gid|sid|tid", ...]` on 2026-08-21.
+
+   `u` carries ONLY the measurable kind. An appearance in a season we hold no
+   registration for at all is NOT emitted — absence of evidence is not evidence of
+   absence, and labelling it a fill-in would be a false accusation about a real
+   season. 137,384 are withheld on that basis. */
+function renderUnreg(p){
+  const raw=Array.isArray(p.u)?p.u:[];
+  if(!raw.length)return '';
+  // Group by season. Team names are NOT in the player file for a team the player
+  // never registered with, so they are resolved from the game records on expand.
+  const bySid=new Map();
+  for(const e of raw){
+    const [gid,sid,tid]=String(e).split('|');
+    if(!gid||!sid)continue;
+    if(!bySid.has(sid))bySid.set(sid,[]);
+    bySid.get(sid).push({gid,tid:tid||null});
+  }
+  if(!bySid.size)return '';
+  const order=[...bySid.keys()].sort((a,b)=>{
+    const an=S.idx?.seasons?.[a]?.name||'',bn=S.idx?.seasons?.[b]?.name||'';
+    return bn.localeCompare(an);
+  });
+  // Count what is actually RENDERED, not raw.length — a malformed entry that gets
+  // filtered above would otherwise make the pill disagree with the cards below it.
+  let shown=0; for(const v of bySid.values()) shown+=v.length;
+  let h=`<div class="slist" id="unreg-sec">
+    <div class="sec-lbl" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span>Unregistered appearances</span>
+      <span class="unreg-pill">${shown}</span>
+      <label class="unreg-tog"><input type="checkbox" checked onchange="el('unreg-body').classList.toggle('hidden',!this.checked)"> Show</label>
+    </div>
+    <div class="unreg-note">Named in the team sheet but holding no registration with either team \u2014 fill-ins and one-off games. Real appearances; PlayHQ credits them to no career total, so they are not in the figures above.</div>
+    <div id="unreg-body">`;
+  order.forEach((sid,ui)=>{
+    const list=bySid.get(sid);
+    const meta=S.idx?.seasons?.[sid];
+    const nm=meta?.name||sid;
+    const org=meta?.orgName||'';
+    const cid=`ur-${ui}`;
+    h+=`<div class="sc">
+      <div class="sc-hdr unreg-hdr" data-cid="${esc(cid)}" data-sid="${esc(sid)}" data-pairs="${esc(list.map(x=>x.gid+':'+(x.tid||'')).join(','))}" onclick="toggleUnreg(this)">
+        <div class="sc-info">
+          <div style="display:flex;align-items:flex-start;gap:5px">
+            <span class="chev" style="flex-shrink:0;margin-top:3px">\u25b6</span>
+            <div style="min-width:0">
+              <div class="sc-name">${esc(nm)}</div>
+              <div style="font-size:0.72rem;color:var(--text3)">${esc(org)}</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:0 0 auto;padding-right:12px;font-size:0.74rem;color:var(--text2);font-variant-numeric:tabular-nums">${list.length} game${list.length===1?'':'s'}</div>
+      </div>
+      <div class="sc-games" id="${esc(cid)}-g"></div>
+    </div>`;
+  });
+  h+='</div></div>';
+  return h;
+}
+
+async function toggleUnreg(hdr){
+  const open=hdr.classList.toggle('open');
+  const cid=hdr.dataset.cid;
+  const ge=el(cid+'-g');
+  ge.classList.toggle('open',open);
+  if(!open||ge.dataset.loaded)return;
+  const sid=hdr.dataset.sid;
+  const uuid=S.playerUuid;
+  // gid:tid pairs, straight from `u`. The team is recorded there because an
+  // unregistered appearance has no reg to infer it from — every other card in this
+  // view gets its tid from the registration.
+  const pairs=(hdr.dataset.pairs||'').split(',').filter(Boolean).map(x=>x.split(':'));
+  ge.innerHTML='<div class="load-row">Loading games\u2026</div>';
+  if(!S.games[sid]){const d=await sgj('games/bv',sid);S.games[sid]=d||{games:{}};}
+  const all=S.games[sid]?.games||{};
+  const rows=pairs.map(([gid,tid])=>[gid,all[gid],tid]).filter(([,g])=>g)
+    .sort((a,b)=>(b[1].d||'').localeCompare(a[1].d||''));
+  if(!rows.length){ge.innerHTML='<div class="load-row">No game records found.</div>';ge.dataset.loaded='1';return;}
+  // Markup copied from toggleGames rather than invented: same grow / g-row /
+  // g-info / g-opp / g-rn structure and the same buildGameStatRow, so these rows
+  // are styled and hydrated by exactly the code that already handles game rows.
+  // padWld is false here — there is no registration, so no W/L column to align to.
+  ge.innerHTML=rows.map(([gid,g,tid])=>{
+    const ctx=gameCtx(g,tid||g.h);
+    const stored=storedStats(g,uuid);
+    const oppN=(ctx.oppN||'\u2014').slice(0,30);
+    const fc=finalClass(g.rn);
+    const forN=(tid===g.h?g.hn:tid===g.a?g.an:'')||'';
+    return`<div class="grow${fc?' '+fc:''}" data-gid="${esc(gid)}" data-sid="${esc(sid)}">
+      <div class="g-row">
+        <div class="g-info">
+          <div class="g-opp"><span class="bdg bFill">FILL-IN</span>${ctx.oppId?`<span style="cursor:pointer;text-decoration:underline;text-decoration-color:var(--border)" onclick="openOpp('${esc(ctx.oppId)}','${esc(sid)}','${esc(uuid)}')">${esc(oppN)}</span>`:esc(oppN)}</div>
+          <div class="g-rn">${esc(g.rn||'')}${g.d?' \u00b7 '+esc(fmtD(g.d)):''}${forN?' \u00b7 for '+esc(forN):''}</div>
+        </div>
+        <div id="gstats-${esc(gid)}" style="flex:7;min-width:0;display:flex;flex-direction:row">${buildGameStatRow(g,ctx,stored,false)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  ge.dataset.loaded='1';
 }
 
 async function toggleGames(hdr){
