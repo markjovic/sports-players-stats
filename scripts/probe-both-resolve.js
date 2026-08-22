@@ -333,7 +333,7 @@ async function main() {
   if (SAMPLE) pairs = pairs.slice(0, SAMPLE);
 
   const rows = [];
-  let twoPeople = 0, onePerson = 0, unclear = 0, failed = 0;
+  let twoPeople = 0, onePerson = 0, unclear = 0, failed = 0, badName = 0;
   const seen = new Map();
   const askGender = async (u) => {
     if (seen.has(u)) return seen.get(u);
@@ -357,7 +357,20 @@ async function main() {
     const la = await askGender(p.ua), lb = await askGender(p.ub);
     if (!la.live || !lb.live) { failed++; continue; }
 
-    const genderDiff = p.a.gender && p.b.gender && p.a.gender !== p.b.gender;
+    // ⚠ GENDER IS AN AGE-GRADE LABEL, NOT A SEX. The 2026-08-22 run reported 52
+    // pairs as "two people — different gender" and almost all were Men/Boys or
+    // Girls/Women: THE SAME PERSON'S JUNIOR AND SENIOR GRADES. A player who came
+    // through juniors carries both, so a raw string comparison flags the single
+    // strongest evidence of ONE person as proof of two.
+    //
+    // Only a genuine conflict counts: male-coded against female-coded. Everything
+    // else — the same family, or Unknown/Mixed/absent — says nothing either way.
+    const MALE = new Set(['boys', 'men', 'male']);
+    const FEMALE = new Set(['girls', 'women', 'female']);
+    const fam = (g) => { const x = String(g || '').trim().toLowerCase();
+      return MALE.has(x) ? 'M' : FEMALE.has(x) ? 'F' : null; };
+    const fa = fam(p.a.gender), fb = fam(p.b.gender);
+    const genderDiff = fa && fb && fa !== fb;
     const sharedSids = [...p.a.sids].filter(s => p.b.sids.has(s));
     const sidOverlap = pct(sharedSids.length, Math.min(p.a.sids.size, p.b.sids.size) || 1);
     // Same season AND same team: two people can share a team, but ONE person
@@ -370,12 +383,23 @@ async function main() {
     const shareRate = pct(p.shared, Math.min(p.a.games, p.b.games) || 1);
 
     let leaning;
-    if (genderDiff) { leaning = 'TWO PEOPLE — different gender recorded'; twoPeople++; }
+    if (genderDiff) { leaning = 'TWO PEOPLE — ' + p.a.gender + ' vs ' + p.b.gender + ', a real gender conflict'; twoPeople++; }
     else if (sameTeamSeasons > 0) { leaning = 'ONE PERSON? — same team in ' + sameTeamSeasons + ' shared season(s)'; onePerson++; }
+    else if (fa && fb && fa === fb && p.a.gender !== p.b.gender) {
+      // Same gender family, different label: Boys/Men or Girls/Women. That is a
+      // player ageing out of juniors into seniors — one person, two grades.
+      leaning = 'ONE PERSON? — ' + p.a.gender + ' vs ' + p.b.gender + ': junior/senior grades of one player';
+      onePerson++;
+    }
     else if (Number(shareRate) >= 80) { leaning = 'TWO PEOPLE? — ' + shareRate + '% of the smaller career shared: teammates, not a split identity'; twoPeople++; }
     else { leaning = 'UNCLEAR'; unclear++; }
 
-    rows.push({ a: p.ua, b: p.ub, name: p.a.name, shared: p.shared, shareRate,
+    // "Winter 2026" appeared as a player NAME four times in the 2026-08-22 run.
+    // That is a corrupt name field, not a duplicate, and it makes every same-named
+    // pair a false match. Flagged rather than silently compared.
+    const looksLikeSeason = /^(summer|winter|autumn|spring|term)\b|\b20\d\d(\/\d\d)?$/i.test(String(p.a.name || '').trim());
+    if (looksLikeSeason) badName++;
+    rows.push({ a: p.ua, b: p.ub, name: p.a.name, badName: looksLikeSeason, shared: p.shared, shareRate,
                 gA: p.a.gender, gB: p.b.gender, gamesA: p.a.games, gamesB: p.b.games,
                 sidsA: p.a.sids.size, sidsB: p.b.sids.size, sharedSids: sharedSids.length,
                 sidOverlap, sameTeamSeasons, leaning });
@@ -384,14 +408,15 @@ async function main() {
 
   console.log('\n════════════════════════════════════════════════');
   console.log('  pairs examined : ' + n(rows.length) + (failed ? '   (' + failed + ' could not be fetched)' : ''));
-  console.log('    two people (different gender)                : ' + n(twoPeople - rows.filter(r => r.leaning.startsWith('TWO PEOPLE?')).length));
+  console.log('    two people (real gender conflict)             : ' + n(rows.filter(r => r.leaning.startsWith('TWO PEOPLE —')).length));
   console.log('    two people? (share most of the smaller career): ' + n(rows.filter(r => r.leaning.startsWith('TWO PEOPLE?')).length));
   console.log('    one person? (same team, same season)          : ' + n(onePerson));
   console.log('    unclear                                       : ' + n(unclear));
+  if (badName) console.log('    ⚠ pairs whose NAME looks like a season       : ' + n(badName) + '   ← corrupt name field, not a duplicate — fix the name, not the pair');
   console.log('');
   console.log('  ── EVERY PAIR ──');
   for (const r of rows) {
-    console.log('    ' + JSON.stringify(r.name) + '  ' + r.leaning);
+    console.log('    ' + JSON.stringify(r.name) + (r.badName ? '  ⚠ NAME LOOKS LIKE A SEASON' : '') + '  ' + r.leaning);
     console.log('      ' + r.a + '  games=' + r.gamesA + ' seasons=' + r.sidsA + ' gender=' + (r.gA || '—'));
     console.log('      ' + r.b + '  games=' + r.gamesB + ' seasons=' + r.sidsB + ' gender=' + (r.gB || '—'));
     console.log('      shared games ' + r.shared + ' (' + r.shareRate + '% of the smaller career) · shared seasons ' +
