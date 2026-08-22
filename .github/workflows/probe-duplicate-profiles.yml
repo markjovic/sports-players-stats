@@ -70,10 +70,16 @@ jobs:
       # ARTIFACT or it does not exist.
       - name: Restore previous verdict cache
         uses: actions/download-artifact@v4
-        continue-on-error: true          # first run has nothing to restore
+        # continue-on-error is REQUIRED, not defensive: the first run has no
+        # artifact and download-artifact FAILS THE STEP rather than returning
+        # empty. The 2026-08-22 run logged "Artifact not found" as an error for
+        # exactly this reason — expected, and it must not stop the job.
+        continue-on-error: true
         with:
           name: duplicate-profile-verdicts
           path: /tmp/cache
+          # Look in this repo's previous runs of this workflow.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Probe duplicate profiles
         run: |
