@@ -150,29 +150,103 @@ const HEADERS_SPECTATOR = {
   'tenant': 'bv', 'x-phq-tenant': 'bv', 'content-type': 'application/json',
 };
 
+// ⚠ SESSION LOCK — copied VERBATIM from repair-players-batch.js.
+// The first version had no lock: 8 concurrent calls each saw a missing cookie and
+// each fired its own refresh. The 2026-08-23 run printed "Session refreshed" eight
+// times in a row before collapsing to concurrency 1, because the refreshes were
+// invalidating each other. This is exactly what the promise lock exists to prevent
+// and it is documented in the project notes; I did not copy it.
 let sessionCookie = null;
+let sessionPromise = null;
+
+const HEADERS_BASE = {
+  'accept':       '*/*',
+  'origin':       'https://www.playhq.com',
+  'user-agent':   'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
+  'tenant':       'basketball-victoria',
+  'content-type': 'application/json',
+};
+
+
+const COOKIE_QUERIES = [
+  {
+    operationName: 'TenantConfig',
+    variables: {},
+    query: 'query TenantConfig { tenantConfiguration { label } }',
+  },
+  {
+    operationName: 'ProfileSearch',
+    variables: { fullName: 'a' },
+    query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
+  },
+];
 
 async function refreshSession() {
-  const body = { operationName: 'TenantConfig', variables: {},
-    query: 'query TenantConfig { tenantConfiguration { label } }' };
-  for (let attempt = 1; attempt <= 10; attempt++) {
-    if (attempt > 1) await sleep(attempt * 3000);
-    try {
-      const { rawCookies } = await doFetch(API_URL, body, HEADERS_MAIN);
-      if (!rawCookies) continue;
-      const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies])
-        .map(c => c.split(';')[0].trim());
-      const get = n => arr.find(p => p.startsWith(n + '=')) || null;
-      const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
-      if (tier && session && sub) {
+  // If a refresh is already in flight, wait for it rather than firing another
+  if (sessionPromise) return sessionPromise;
+
+  // 2026-07-30 — TWO bugs fixed here, both exposed by a 413k forced sweep:
+  //
+  // (1) A socket-level failure ESCAPED the 10-attempt loop entirely. The retry
+  //     loop only ever retried the "response arrived but carried no usable
+  //     cookies" case (`continue`). An exception from doFetch — ECONNRESET,
+  //     socket hang up, DNS — propagated out of BOTH for-loops, rejected the
+  //     promise and killed the shard with `FATAL: read ECONNRESET`. A normal
+  //     nightly refreshes a handful of times; a forced sweep refreshes every 28
+  //     batches across 256 shards, so a rare reset became near-certain somewhere.
+  //     Network errors are now caught per request and treated as a failed
+  //     attempt, so all 10 attempts are actually used.
+  //
+  // (2) `sessionPromise` was NOT cleared on the throw path — the assignment at
+  //     the end of the loop was skipped when doFetch threw, leaving a REJECTED
+  //     promise cached in the lock. Every later refreshSession() would return
+  //     that same rejected promise from the `if (sessionPromise)` fast path, so
+  //     the shard could never recover even if the caller retried. Now cleared in
+  //     a `.finally()`, which runs on success, throw AND rejection.
+  sessionPromise = (async () => {
+    let lastErr = null;
+    for (let attempt = 1; attempt <= 10; attempt++) {
+      if (attempt > 1) await sleep(attempt * 5000);
+      for (const body of COOKIE_QUERIES) {
+        let res;
+        try {
+          res = await doFetch(API_URL, {
+            method:  'POST',
+            headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
+            body:    JSON.stringify(body),
+          });
+        } catch (err) {
+          lastErr = err;
+          console.log(`  … session refresh attempt ${attempt} network error: ${err.code || err.message} — retrying`);
+          continue;
+        }
+        const raw = res.headers.get('set-cookie');
+        if (!raw) continue;
+        // Extract each named cookie value, then reassemble in the exact order
+        // the mobile client sends them: phq_tier first, phq_session, phq_sub.
+        // (The server returns them in a different order in set-cookie headers.)
+        const parts = raw.split(',').map(c => c.trim().split(';')[0]);
+        const get = (name) => {
+          const p = parts.find(c => c.startsWith(name + '='));
+          return p || null;
+        };
+        const tier    = get('phq_tier');
+        const session = get('phq_session');
+        const sub     = get('phq_sub');
+        if (!tier || !session || !sub) continue;
         sessionCookie = `${tier}; ${session}; ${sub}`;
+        // NOTE: the exact string "Session refreshed (attempt N)" is used as
+        // verification evidence in OUTSTANDING §A — do not reword it.
         console.log(`  Session refreshed (attempt ${attempt})`);
         return;
       }
-    } catch (_) {}
-  }
-  throw new Error('Failed to obtain session after 10 attempts');
+    }
+    throw new Error(`Failed to obtain session cookie after 10 attempts${lastErr ? ` (last network error: ${lastErr.code || lastErr.message})` : ''}`);
+  })().finally(() => { sessionPromise = null; });
+
+  return sessionPromise;
 }
+
 
 // ─── Spectator query — nightly-crawl.js, verbatim ─────────────────────────────
 
@@ -371,13 +445,110 @@ async function creditedGameIds(uuid) {
         for (const gs of (ts.gradeStatistics || [])) {
           for (const g of (gs.gameStatistics || [])) {
             const id = g?.game?.id;
-            if (id) { out.add(String(id)); out.add(String(id).slice(0, 8)); }
+            if (id) { out.add(String(id)); out.add(String(id).slice(0, 8)); out.games = (out.games || 0) + 1; }
           }
         }
       }
     }
   }
   return out;
+}
+
+// ── WHICH PROFILE SHOULD THIS ALIAS POINT AT? ───────────────────────────────
+// Finding a bad alias is half a job: 900f4fe6-bec3 is a REAL spectator id for a
+// REAL person, so deleting the entry orphans their appearances. It has to be
+// REPOINTED, and this works out at what.
+//
+// profileSearch(fullName:) returns every profile carrying that name — exactly the
+// candidate set the original matcher chose from, except this time the choice is
+// made on EVIDENCE: which candidate's publicProfileStatistics actually credits the
+// games this alias delivers.
+//
+// Returns the winning uuid ONLY when exactly one candidate credits them. Two
+// candidates crediting the same games, or none, returns null — never a guess, the
+// same discipline as the matchers in lib/namespace-resolve.cjs.
+const SEARCH_QUERY = `query ProfileSearch($fullName: String!) {
+  profileSearch(fullName: $fullName) { result { id firstName lastName } }
+}`;
+
+async function findCorrectTarget(name, gids, creditCache) {
+  if (!name || !gids.length) return { uuid: null, why: 'no name or no games' };
+  if (!sessionCookie) await refreshSession();
+  let res;
+  try {
+    res = await doFetch(API_URL,
+      { operationName: 'ProfileSearch', variables: { fullName: name }, query: SEARCH_QUERY },
+      { ...HEADERS_MAIN, 'Cookie': sessionCookie });
+  } catch (e) { return { uuid: null, why: 'search failed: ' + e.message }; }
+  const j = res && res.body;
+  if (!j || j.errors) return { uuid: null, why: 'search error' };
+  const cands = (j.data?.profileSearch?.result || []).map(r => r && r.id).filter(Boolean);
+  if (!cands.length) return { uuid: null, why: 'no profile carries that name' };
+
+  const winners = [];
+  for (const c of cands) {
+    let credits = creditCache.get(c);
+    if (credits === undefined) {
+      credits = await creditedGameIds(c);
+      creditCache.set(c, credits);
+    }
+    if (!credits) continue;
+    if (gids.some(g => credits.has(g) || credits.has(String(g).slice(0, 8)))) winners.push(c);
+  }
+  if (winners.length === 1) return { uuid: winners[0], why: 'sole profile crediting these games', candidates: cands.length };
+  if (winners.length > 1) return { uuid: null, why: winners.length + ' profiles credit these games — ambiguous, never guess', candidates: cands.length };
+  return { uuid: null, why: 'no profile among ' + cands.length + ' with this name credits these games', candidates: cands.length };
+}
+
+// ── RESUME AND INCREMENTAL WRITE ────────────────────────────────────────────
+// A 54,328-profile audit will not finish inside one 350-minute job. Written the
+// obvious way it would hit the ceiling at 90% and lose everything, and a second
+// dispatch would start from zero. That is precisely what happened to the first
+// duplicate-pair audit: an hour of calls, report written only at the end, runner
+// destroyed, nothing to show.
+//
+// So: verdicts are cached to disk, restored at start, and BOTH files are written
+// every SAVE_EVERY profiles. Writes are atomic (temp + rename) because a cache
+// killed mid-write was truncated on 2026-08-22 and a corrupt cache defeats the
+// whole point. A truncated cache is salvaged on load rather than discarded.
+const CACHE_PATH  = path.join(ROOT, 'reports', 'alias-credit-cache.json');
+const REPORT_PATH = path.join(ROOT, 'reports', 'alias-credit-audit.json');
+const SAVE_EVERY  = num('save-every', 250);
+
+function atomicWrite(p, obj) {
+  try {
+    fs.mkdirSync(path.dirname(p), { recursive: true });
+    const tmp = p + '.tmp';
+    fs.writeFileSync(tmp, JSON.stringify(obj, null, 1));
+    fs.renameSync(tmp, p);
+    return true;
+  } catch (e) { console.log('  ⚠ write failed for ' + path.basename(p) + ': ' + e.message); return false; }
+}
+
+function loadCache() {
+  const out = new Map();
+  let raw;
+  try { raw = fs.readFileSync(CACHE_PATH, 'utf8'); } catch (e) { return out; }
+  let j;
+  try { j = JSON.parse(raw); }
+  catch (parseErr) {
+    // Salvage every complete entry rather than throwing away thousands because
+    // the last one was cut short.
+    let n2 = 0;
+    for (const m of raw.matchAll(/"([0-9a-f-]{36})":\s*(\[[^\]]*\]|null)/g)) {
+      try { out.set(m[1], m[2] === 'null' ? null : new Set(JSON.parse(m[2]))); n2++; } catch (e) {}
+    }
+    console.log('  ⚠ verdict cache was truncated — salvaged ' + n2.toLocaleString() + ' complete entries');
+    return out;
+  }
+  for (const [k, v] of Object.entries(j.credits || {})) out.set(k, v === null ? null : new Set(v));
+  return out;
+}
+
+function saveCache(cache) {
+  const credits = {};
+  for (const [k, v] of cache) credits[k] = v === null ? null : [...v];
+  atomicWrite(CACHE_PATH, { saved: new Date().toISOString(), credits });
 }
 
 async function main() {
@@ -402,6 +573,7 @@ async function main() {
 
   // 2. Which games does each alias id actually deliver? One pass over games/bv.
   const wanted = new Map();
+  const seenName = new Map();     // alias id -> the name PlayHQ's roster gives it
   for (const a of alias) wanted.set(a.id, []);
   const gamesDir = path.join(ROOT, 'games', 'bv');
   for (const f of fs.readdirSync(gamesDir)) {
@@ -411,8 +583,12 @@ async function main() {
       for (const e of (Array.isArray(g.p) ? g.p : [])) {
         const id = e && e.id;
         if (!id) continue;
-        const arr = wanted.get(id) || wanted.get(String(id).slice(0, TRUNC_LEN));
+        const key = wanted.has(id) ? id : String(id).slice(0, TRUNC_LEN);
+        const arr = wanted.get(key);
         if (arr && arr.length < 6) arr.push(gid);
+        // p[] does not store names, so the alias's own display name comes from the
+        // TARGET player file — which is the name the original matcher matched on.
+        if (arr && !seenName.has(key)) seenName.set(key, null);
       }
     }
   }
@@ -442,27 +618,34 @@ async function main() {
   console.log('  concurrency: ' + CONCURRENCY + ' (backs off on transport trouble, recovers after two clean chunks)');
   console.log('');
 
-  const creditCache = new Map();
-  let supported = 0, unsupported = 0, noAnswer = 0, done = 0;
+  // Restore anything a previous dispatch already answered.
+  const creditCache = loadCache();
+  if (creditCache.size) console.log('  restored ' + n(creditCache.size) + ' cached profile verdict(s) — these are not asked again');
+  let supported = 0, unsupported = 0, noAnswer = 0, done = 0, sinceSave = 0;
   const bad = [];
-  let conc = CONCURRENCY, cleanChunks = 0, consecutiveFail = 0, stop = false;
+  let conc = CONCURRENCY, cleanStreak = 0, consecutiveFail = 0, stop = false;
 
   for (let cursor = 0; cursor < targets.length && !stop; ) {
     const chunk = targets.slice(cursor, cursor + conc);
     cursor += chunk.length;
-    const got = await Promise.all(chunk.map(async (t) => ({ t, credits: await creditedGameIds(t) })));
+    // Skip anything already cached from a previous dispatch.
+    const toAsk = chunk.filter(t => !creditCache.has(t));
+    const asked = await Promise.all(toAsk.map(async (t) => ({ t, credits: await creditedGameIds(t) })));
+    const got = chunk.map(t => ({ t, credits: creditCache.has(t) ? creditCache.get(t) : (asked.find(x => x.t === t) || {}).credits }));
 
     let chunkFail = 0;
     for (const { t, credits } of got) {
-      creditCache.set(t, credits);
-      if (!credits) chunkFail++;
+      creditCache.set(t, credits === undefined ? null : credits);
+      // Only count a FRESH failure against the backoff — a cached null is an old
+      // answer, not the endpoint refusing us now.
+      if (!credits && toAsk.includes(t)) chunkFail++;
       for (const a of byTarget.get(t)) {
         const gids = wanted.get(a.id) || [];
         if (!credits) { noAnswer++; }
         else {
           const hit = gids.filter(g => credits.has(g) || credits.has(String(g).slice(0, 8)));
           if (hit.length) supported++;
-          else { unsupported++; bad.push({ ...a, gids, creditedCount: credits.size }); }
+          else { unsupported++; bad.push({ ...a, gids, creditedCount: credits.games || 0 }); }
         }
         done++;
       }
@@ -471,25 +654,83 @@ async function main() {
     // A whole chunk failing is the endpoint refusing us, not bad luck. Back off,
     // and stop entirely after three in a row rather than burning the queue while
     // LOOKING like the audit ran.
-    if (chunkFail === chunk.length && chunk.length > 1) {
+    // ⚠ TWO BUGS FIXED HERE 2026-08-23, both of which made a stuck run WORSE.
+    //
+    // (1) RECOVERY COULD NEVER FIRE AT CONCURRENCY 1. cleanChunks only incremented
+    //     when a chunk had ZERO failures, but at concurrency 1 a single failure is
+    //     a 100% failure — so it backed off, reset the counter, and never climbed
+    //     back. The run crawled at one call per five seconds for 54,328 profiles.
+    //     Recovery is now driven by a clean STREAK, and a chunk that mostly
+    //     succeeds no longer counts as a failure at all.
+    //
+    // (2) THE HARD STOP WAS EXEMPT AT CONCURRENCY 1. It was guarded by
+    //     `chunk.length > 1`, so once collapsed to 1 every failed chunk was
+    //     exempt and the run could never stop itself — it would burn the whole
+    //     job ceiling achieving nothing while LOOKING like it was working.
+    const failRate = chunkFail / chunk.length;
+
+    if (chunkFail === chunk.length) {
       consecutiveFail++;
-      if (consecutiveFail >= 3) {
-        console.log('\n  ✗ three consecutive chunks failed outright — stopping cleanly. Re-dispatch to continue.');
+      if (consecutiveFail >= 10) {
+        console.log('\n  ✗ ten consecutive chunks failed outright — the endpoint is refusing us.');
+        console.log('    Stopping cleanly rather than burning the job ceiling. Re-dispatch to continue.');
         stop = true;
       }
     } else consecutiveFail = 0;
 
-    if (chunkFail > 0) {
+    // Back off only on a MATERIAL failure rate. One bad call in eight is noise and
+    // used to halve the concurrency.
+    if (failRate > 0.5) {
       conc = Math.max(1, Math.floor(conc * 0.6));
-      cleanChunks = 0;
+      cleanStreak = 0;
       console.log('  … backing off to concurrency ' + conc + ' (' + chunkFail + ' of ' + chunk.length + ' failed)');
       await new Promise(r => setTimeout(r, 5000));
-    } else if (++cleanChunks >= 2 && conc < CONCURRENCY) {
-      conc = Math.min(CONCURRENCY, conc + 2);
-      cleanChunks = 0;
+    } else {
+      cleanStreak++;
+      if (cleanStreak >= 3 && conc < CONCURRENCY) {
+        conc = Math.min(CONCURRENCY, conc + Math.max(1, Math.floor(conc * 0.5)));
+        cleanStreak = 0;
+        console.log('  … recovering to concurrency ' + conc);
+      }
+    }
+    // Save BOTH files periodically so a run killed at the job ceiling still
+    // yields everything it did, and the next dispatch resumes from it.
+    sinceSave += chunk.length;
+    if (sinceSave >= SAVE_EVERY) {
+      sinceSave = 0;
+      saveCache(creditCache);
+      atomicWrite(REPORT_PATH, { generated: new Date().toISOString(), partial: true,
+        audited: done, supported, unsupported, noAnswer, unsupportedEntries: bad });
     }
     if (PACE_MS) await new Promise(r => setTimeout(r, PACE_MS));
     if (done % 500 < chunk.length) console.log('  … ' + n(done) + '/' + n(delivering.length) + '  supported ' + n(supported) + ' · UNSUPPORTED ' + n(unsupported) + ' · no answer ' + n(noAnswer) + '  (conc ' + conc + ')');
+  }
+
+  // ── RESOLVE THE CORRECT TARGET FOR EACH UNSUPPORTED ALIAS ────────────────
+  // Without this the audit produces a list of problems and no way to act on them.
+  if (bad.length) {
+    console.log('');
+    console.log('  ══ RESOLVING THE CORRECT TARGET FOR ' + n(bad.length) + ' UNSUPPORTED ALIAS(ES) ══');
+    let resolved = 0, ambiguous = 0, unresolved = 0, k = 0;
+    for (const b of bad) {
+      // The name to search is the one on the file the alias currently points at —
+      // that is the name the original matcher used to make the wrong choice.
+      let nm = null;
+      try {
+        const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'players', b.target.slice(0, 2), b.target + '.json'), 'utf8'));
+        nm = p.name || null;
+      } catch (e) {}
+      const r = await findCorrectTarget(nm, b.gids, creditCache);
+      b.searchedName = nm;
+      b.correctTarget = r.uuid;
+      b.resolution = r.why;
+      if (r.uuid) resolved++; else if (String(r.why).includes('ambiguous')) ambiguous++; else unresolved++;
+      if (++k % 25 === 0) console.log('  … ' + k + '/' + bad.length + '  resolved ' + resolved + ' · ambiguous ' + ambiguous + ' · unresolved ' + unresolved);
+    }
+    console.log('');
+    console.log('    REPOINTABLE — one profile credits the games : ' + n(resolved) + '   ← actionable');
+    console.log('    ambiguous — several credit them             : ' + n(ambiguous) + '   ← never guess');
+    console.log('    no candidate credits them                   : ' + n(unresolved));
   }
 
   const judged = supported + unsupported;
@@ -504,21 +745,24 @@ async function main() {
   console.log('  whose target credits NONE of its games is the exact shape of the');
   console.log('  900f4fe6-bec3 -> d6c25c0c error, and it is the population to inspect.');
   console.log('');
+
+
   for (const b of bad.slice(0, 40)) {
-    console.log('    ' + b.id + ' -> ' + b.target + '   target credits ' + n(b.creditedCount / 2) + ' games, NONE of these:');
+    console.log('    ' + b.id + ' -> ' + b.target + '   target credits ' + n(b.creditedCount) + ' games, NONE of these:');
     console.log('        ' + b.gids.join(' '));
+    if (b.correctTarget) console.log('        SHOULD POINT AT: ' + b.correctTarget + '  (' + b.resolution + ')');
+    else if (b.resolution) console.log('        no repoint: ' + b.resolution);
   }
   if (bad.length > 40) console.log('    … and ' + n(bad.length - 40) + ' more');
 
-  try {
-    const out = path.join(ROOT, 'reports', 'alias-credit-audit.json');
-    fs.mkdirSync(path.dirname(out), { recursive: true });
-    fs.writeFileSync(out, JSON.stringify({ generated: new Date().toISOString(),
-      audited: delivering.length, supported, unsupported, noAnswer,
-      unsupportedEntries: bad }, null, 1));
-    console.log('');
-    console.log('  FULL LIST WRITTEN: reports/alias-credit-audit.json');
-  } catch (e) { console.log('  ⚠ could not write report: ' + e.message); }
+  saveCache(creditCache);
+  const complete = done >= delivering.length;
+  atomicWrite(REPORT_PATH, { generated: new Date().toISOString(), partial: !complete,
+    audited: done, ofTotal: delivering.length, supported, unsupported, noAnswer,
+    unsupportedEntries: bad });
+  console.log('');
+  console.log('  WRITTEN: reports/alias-credit-audit.json' + (complete ? '' : '  ⚠ PARTIAL — re-dispatch to continue'));
+  console.log('  WRITTEN: reports/alias-credit-cache.json (' + n(creditCache.size) + ' verdicts; the next run skips these)');
 }
 
 main()
