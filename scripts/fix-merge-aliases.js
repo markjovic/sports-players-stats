@@ -475,9 +475,40 @@ async function main() {
   }
 
   // ── 4. Walk games once and judge every appearance each added entry delivers ─
+  // A RETARGET that moved an entry off a player whose FILE NO LONGER EXISTS is the
+  // merge doing its job: that player was a phantom, it was dissolved, and anything
+  // pointing at it had to follow. A retarget away from a player who still exists is
+  // a different act entirely and is reported separately.
+  //
+  // The phantom set is derived from the diff itself — this tool deliberately does
+  // not read duplicate-profile-pairs.json, because the git history is the
+  // authority on what actually changed and the report is only what was planned.
+  // (An earlier version referenced `acted` here, a variable belonging to
+  // merge-phantom-profiles.js and not in scope in this script at all.)
+  //
+  // CAVEAT, stated because it matters: a retarget away from a player who was never
+  // fetched at all looks identical to one away from a dissolved phantom — both have
+  // no file. So "followed a phantom" is a floor, and "something ELSE" is the group
+  // that is definitely worth inspecting rather than the only one that could be.
+  const stillExists = (uuid) => fs.existsSync(path.join(ROOT, 'players', uuid.slice(0, 2), uuid + '.json'));
+
   const check = new Map();
-  for (const k of added.keys()) check.set(k, { target: added.get(k), inRoster: 0, foreign: 0, unmeasurable: 0, samples: [] });
-  for (const [k, v] of changed) check.set(k, { target: v.to, retargeted: v.from, inRoster: 0, foreign: 0, unmeasurable: 0, samples: [] });
+  for (const k of added.keys()) {
+    check.set(k, { kind: 'added', target: added.get(k), inRoster: 0, foreign: 0, unmeasurable: 0, samples: [] });
+  }
+  for (const [k, v] of changed) {
+    const followedPhantom = !stillExists(v.from);
+    check.set(k, { kind: followedPhantom ? 'retarget-followed-phantom' : 'retarget-other',
+                   target: v.to, from: v.from, inRoster: 0, foreign: 0, unmeasurable: 0, samples: [] });
+  }
+  const kindCount = new Map();
+  for (const [, c] of check) kindCount.set(c.kind, (kindCount.get(c.kind) || 0) + 1);
+  console.log('  ENTRIES THIS TOOL WILL JUDGE : ' + n(check.size));
+  console.log('    newly added by the merge              : ' + n(kindCount.get('added') || 0));
+  console.log('    retargeted OFF a dissolved phantom    : ' + n(kindCount.get('retarget-followed-phantom') || 0) + '   ← the merge doing its job');
+  console.log('    retargeted from something ELSE        : ' + n(kindCount.get('retarget-other') || 0) +
+              ((kindCount.get('retarget-other') || 0) ? '   ⚠ not explained by the merge — inspect' : ''));
+  console.log('');
 
   const gamesDir = path.join(ROOT, 'games', 'bv');
   for (const f of fs.readdirSync(gamesDir)) {
@@ -514,7 +545,10 @@ async function main() {
     else mixed++;
   }
 
-  console.log('  ══ EVERY ENTRY THE MERGE ADDED, JUDGED ════════════════════════════');
+  // The first version headed this "EVERY ENTRY THE MERGE ADDED" while counting
+  // added AND retargeted together — 250 reported added above, 3,339 judged below,
+  // with nothing saying why the two disagreed.
+  console.log('  ══ EVERY ENTRY THE MERGE ADDED **OR RETARGETED**, JUDGED ══════════');
   console.log('    delivers nothing at all                 : ' + n(silent) + '   ← harmless');
   console.log('    every appearance is one they belong in  : ' + n(allIn) + '   ← correct');
   console.log('    mixed: some belong, some do not         : ' + n(mixed) + '   ← LEFT ALONE (fill-ins are real)');
@@ -550,7 +584,8 @@ async function main() {
   console.log('');
   for (const r of remove.slice(0, 30)) {
     const t = regOf.get(r.target);
-    console.log('    REMOVE ' + r.id + ' -> ' + r.target + '  keeper is ' + JSON.stringify(t ? t.name : '?'));
+    console.log('    REMOVE ' + r.id + ' -> ' + r.target + '  keeper is ' + JSON.stringify(t ? t.name : '?') +
+                '   [' + r.kind + (r.from ? ', was ' + r.from : '') + ']');
     for (const sn of (r.seenNames || [])) console.log('        PlayHQ calls this id ' + JSON.stringify(sn.name) + ' in game ' + sn.gid);
   }
   if (remove.length > 30) console.log('    … and ' + (remove.length - 30) + ' more');
@@ -565,7 +600,7 @@ async function main() {
   fs.writeFileSync(outPath, JSON.stringify({
     removed: new Date().toISOString(),
     baseline,
-    entries: remove.map(r => ({ id: r.id, target: r.target, foreign: r.foreign,
+    entries: remove.map(r => ({ id: r.id, target: r.target, kind: r.kind, from: r.from || null, foreign: r.foreign,
                                verdict: r.verdict, playhqNames: r.seenNames, samples: r.samples })),
   }, null, 1));
   console.log('  recorded ' + n(remove.length) + ' removals in reports/removed-merge-aliases.json (restore by hand from this)');
