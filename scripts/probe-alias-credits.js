@@ -150,100 +150,51 @@ const HEADERS_SPECTATOR = {
   'tenant': 'bv', 'x-phq-tenant': 'bv', 'content-type': 'application/json',
 };
 
-// ⚠ SESSION LOCK — copied VERBATIM from repair-players-batch.js.
-// The first version had no lock: 8 concurrent calls each saw a missing cookie and
-// each fired its own refresh. The 2026-08-23 run printed "Session refreshed" eight
-// times in a row before collapsing to concurrency 1, because the refreshes were
-// invalidating each other. This is exactly what the promise lock exists to prevent
-// and it is documented in the project notes; I did not copy it.
+// ── SESSION, with a lock ────────────────────────────────────────────────────
+// ⚠ TWO SEPARATE MISTAKES LIVED HERE.
+//
+// (1) NO LOCK. Eight concurrent calls each saw a missing cookie and each fired
+//     its own refresh, invalidating one another. The 2026-08-23 run printed
+//     "Session refreshed" eight times and then collapsed to concurrency 1.
+//
+// (2) THE FIX FOR (1) WAS COPIED FROM THE WRONG CLIENT. repair-players-batch uses
+//     `fetch`, so its refreshSession calls doFetch({method, headers, body}) and
+//     reads `res.headers.get('set-cookie')`. THIS file uses the raw https client
+//     from spectator-backfill: doFetch(url, body, headers) returning
+//     {status, rawCookies, body, rawText}. `res.headers` is a plain object here,
+//     so `.get` was undefined and the run died with
+//     "Cannot read properties of undefined (reading 'get')" on the FIRST refresh.
+//
+// So: the REFRESH BODY is spectator-backfill's, verbatim, because that is the
+// client this file has. The LOCK is the only thing taken from
+// repair-players-batch, and it is client-agnostic.
 let sessionCookie = null;
 let sessionPromise = null;
 
-const HEADERS_BASE = {
-  'accept':       '*/*',
-  'origin':       'https://www.playhq.com',
-  'user-agent':   'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
-  'tenant':       'basketball-victoria',
-  'content-type': 'application/json',
-};
-
-
-const COOKIE_QUERIES = [
-  {
-    operationName: 'TenantConfig',
-    variables: {},
-    query: 'query TenantConfig { tenantConfiguration { label } }',
-  },
-  {
-    operationName: 'ProfileSearch',
-    variables: { fullName: 'a' },
-    query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }',
-  },
-];
-
 async function refreshSession() {
-  // If a refresh is already in flight, wait for it rather than firing another
+  // A refresh already in flight? Wait for it rather than firing another.
   if (sessionPromise) return sessionPromise;
-
-  // 2026-07-30 — TWO bugs fixed here, both exposed by a 413k forced sweep:
-  //
-  // (1) A socket-level failure ESCAPED the 10-attempt loop entirely. The retry
-  //     loop only ever retried the "response arrived but carried no usable
-  //     cookies" case (`continue`). An exception from doFetch — ECONNRESET,
-  //     socket hang up, DNS — propagated out of BOTH for-loops, rejected the
-  //     promise and killed the shard with `FATAL: read ECONNRESET`. A normal
-  //     nightly refreshes a handful of times; a forced sweep refreshes every 28
-  //     batches across 256 shards, so a rare reset became near-certain somewhere.
-  //     Network errors are now caught per request and treated as a failed
-  //     attempt, so all 10 attempts are actually used.
-  //
-  // (2) `sessionPromise` was NOT cleared on the throw path — the assignment at
-  //     the end of the loop was skipped when doFetch threw, leaving a REJECTED
-  //     promise cached in the lock. Every later refreshSession() would return
-  //     that same rejected promise from the `if (sessionPromise)` fast path, so
-  //     the shard could never recover even if the caller retried. Now cleared in
-  //     a `.finally()`, which runs on success, throw AND rejection.
   sessionPromise = (async () => {
-    let lastErr = null;
+    const body = { operationName: 'TenantConfig', variables: {},
+      query: 'query TenantConfig { tenantConfiguration { label } }' };
     for (let attempt = 1; attempt <= 10; attempt++) {
-      if (attempt > 1) await sleep(attempt * 5000);
-      for (const body of COOKIE_QUERIES) {
-        let res;
-        try {
-          res = await doFetch(API_URL, {
-            method:  'POST',
-            headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
-            body:    JSON.stringify(body),
-          });
-        } catch (err) {
-          lastErr = err;
-          console.log(`  … session refresh attempt ${attempt} network error: ${err.code || err.message} — retrying`);
-          continue;
+      if (attempt > 1) await sleep(attempt * 3000);
+      try {
+        const { rawCookies } = await doFetch(API_URL, body, HEADERS_MAIN);
+        if (!rawCookies) continue;
+        const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies])
+          .map(c => c.split(';')[0].trim());
+        const get = n2 => arr.find(p => p.startsWith(n2 + '=')) || null;
+        const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
+        if (tier && session && sub) {
+          sessionCookie = `${tier}; ${session}; ${sub}`;
+          console.log(`  Session refreshed (attempt ${attempt})`);
+          return;
         }
-        const raw = res.headers.get('set-cookie');
-        if (!raw) continue;
-        // Extract each named cookie value, then reassemble in the exact order
-        // the mobile client sends them: phq_tier first, phq_session, phq_sub.
-        // (The server returns them in a different order in set-cookie headers.)
-        const parts = raw.split(',').map(c => c.trim().split(';')[0]);
-        const get = (name) => {
-          const p = parts.find(c => c.startsWith(name + '='));
-          return p || null;
-        };
-        const tier    = get('phq_tier');
-        const session = get('phq_session');
-        const sub     = get('phq_sub');
-        if (!tier || !session || !sub) continue;
-        sessionCookie = `${tier}; ${session}; ${sub}`;
-        // NOTE: the exact string "Session refreshed (attempt N)" is used as
-        // verification evidence in OUTSTANDING §A — do not reword it.
-        console.log(`  Session refreshed (attempt ${attempt})`);
-        return;
-      }
+      } catch (_) {}
     }
-    throw new Error(`Failed to obtain session cookie after 10 attempts${lastErr ? ` (last network error: ${lastErr.code || lastErr.message})` : ''}`);
-  })().finally(() => { sessionPromise = null; });
-
+    throw new Error('Failed to obtain session after 10 attempts');
+  })().finally(() => { sessionPromise = null; });   // cleared on success AND on throw
   return sessionPromise;
 }
 
