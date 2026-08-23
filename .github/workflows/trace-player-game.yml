@@ -1,0 +1,49 @@
+# .github/workflows/trace-player-game.yml
+name: Trace Player Game
+
+# READ-ONLY, offline, zero API calls. No writes, no commits, no data-write lock.
+#
+# WHY. Every diagnostic before this one reasoned about a symptom and several were
+# wrong. This traces a single value end to end: for one player, it takes each game
+# in their games[] and prints EVERY id in that game's roster, what the alias table
+# maps each id to, and therefore whether build-player-games could have written it.
+#
+# THE CASE IT WAS BUILT FOR. Bailey Walton e9dee630-ab52-4056-b1fb-c68bd6bd8b3b
+# holds 6 games whose rosters do NOT contain his id. build-player-games writes
+# games[] ONLY from p[], and it has run many times since, yet the entries survive.
+# So either an id in those rosters ALIASES to him, or something other than
+# build-player-games wrote them. Those are the only two possibilities, and this
+# distinguishes them by inspection rather than inference.
+#
+# Leave `games` blank to trace every game in the player's games[] — only the
+# unexplained ones are printed in full, so the output stays readable.
+
+on:
+  workflow_dispatch:
+    inputs:
+      player:
+        description: 'Player uuid to trace'
+        required: true
+        default: 'e9dee630-ab52-4056-b1fb-c68bd6bd8b3b'
+        type: string
+      games:
+        description: 'Comma-separated game ids to trace in full. Blank = every game in games[], printing only the unexplained ones.'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  trace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trace
+        run: |
+          ARGS="--player=${{ inputs.player }}"
+          if [ -n "${{ inputs.games }}" ]; then ARGS="$ARGS --games=${{ inputs.games }}"; fi
+          node --max-old-space-size=8192 scripts/trace-player-game.js $ARGS
