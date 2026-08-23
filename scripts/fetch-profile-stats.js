@@ -65,6 +65,9 @@ const https = require('https');
 const {
   GRADE_PLAYERS_QUERY, gradePageFilter, PROFILE_SEARCH_QUERY,
   matchFromGrade, matchFromGradeRosterByName, matchFromSearch, isPlaceholderName,
+  // Shared with scan-season-name-contamination so the guard and the scanner cannot
+  // drift apart again — they previously agreed with each other and were both wrong.
+  looksLikeSeasonName,
 } = require('./lib/namespace-resolve.cjs');
 const { TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
 
@@ -982,7 +985,14 @@ async function finishOk(uuid, player, result, stats, prefix, short) {
   // in that case, because deleting the field would dirty the file and cause a write
   // on every run for no benefit.
   const curName      = player.name;
-  const contaminated = !!curName && (player.seasons || []).some(sn => normName(sn.sn) === normName(curName));
+  // TWO TESTS. The self-match alone is what let players named "Winter 2026" survive
+  // every pass: it only fires when the name equals a season string ON THIS FILE, and
+  // a file whose own seasons are unnamed — which was most of them until 2026-08-22
+  // — has nothing to match against. The shape test catches a season label whoever
+  // carries it, and is shared with scan-season-name-contamination through
+  // lib/namespace-resolve.cjs so the two cannot drift apart again.
+  const selfMatch    = !!curName && (player.seasons || []).some(sn => normName(sn.sn) === normName(curName));
+  const contaminated = selfMatch || looksLikeSeasonName(curName);
   if (!curName || isPlaceholderName(curName) || contaminated) {
     if (FORCE && player.nameHealAttempts !== undefined) delete player.nameHealAttempts;
     const attempts = Number(player.nameHealAttempts) || 0;

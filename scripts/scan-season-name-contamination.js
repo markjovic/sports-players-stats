@@ -55,6 +55,24 @@ function normName(s) {
     .trim();
 }
 // Verbatim from lib/namespace-resolve.cjs.
+// ⚠ COPIED VERBATIM from lib/namespace-resolve.cjs, like normName and
+// isPlaceholderName above. This file deliberately has no imports so it can be run
+// against any checkout, but that is also how it drifted from the guard in
+// fetch-profile-stats and how both came to agree with each other while being
+// wrong. If this changes, change it in the lib and copy it here again.
+const SEASON_WORD = '(?:summer|winter|autumn|spring|term|season)';
+const YEARISH = '(?:19|20)\\d{2}(?:\\s*\\/\\s*\\d{2,4})?';
+function looksLikeSeasonName(name) {
+  const t = String(name || '').trim();
+  if (!t) return false;
+  // "Winter 2026", "Summer 2025/26", "Term 1, 2024", "2026 Winter"
+  if (new RegExp(`^${SEASON_WORD}\\b[^a-z]*${YEARISH}$`, 'i').test(t)) return true;
+  if (new RegExp(`^${YEARISH}[^a-z]*${SEASON_WORD}$`, 'i').test(t)) return true;
+  // A bare year or year range and nothing else: "2026", "2025/26"
+  if (new RegExp(`^${YEARISH}$`).test(t)) return true;
+  return false;
+}
+
 function isPlaceholderName(name) {
   return !name || /^player\s*#/i.test(String(name).trim());
 }
@@ -67,6 +85,7 @@ function main() {
   let alsoPrivate = 0;          // player.private === true
   let hasStatsChecked = 0;      // sports.Basketball.statsChecked present
   let placeholderAlready = 0;   // name already a placeholder (NOT counted as contaminated)
+  let bySelfMatch = 0, byShapeCount = 0, byShapeOnly = 0;
 
   const bySeasonString = {};    // which season strings show up as names, + counts
   const sample = [];            // up to 50 example records for review
@@ -93,9 +112,25 @@ function main() {
         (p.seasons || []).map(s => normName(s.sn)).filter(Boolean)
       );
 
-      if (!seasonNames.has(normedName)) continue;
+      // TWO TESTS, and the second is why this scan reported 0 of 411,576 while
+      // players named "Winter 2026" were visible in StatTrack search.
+      //
+      //   selfMatch — the name equals a season string ON THIS FILE. The original
+      //     test, and it is worthless whenever the file's own seasons are unnamed:
+      //     the season back-fill wrote seasons with NO names at all until
+      //     2026-08-22, so most contaminated files had nothing to match against.
+      //
+      //   byShape — the name LOOKS like a season label whoever carries it.
+      //     Shared with fetch-profile-stats via lib/namespace-resolve.cjs so the
+      //     scanner and the guard cannot drift apart again, which is exactly how
+      //     they came to agree with each other and both be wrong.
+      const selfMatch = seasonNames.has(normedName);
+      const byShape   = looksLikeSeasonName(name);
+      if (!selfMatch && !byShape) continue;
+      if (selfMatch) bySelfMatch++;
+      if (byShape) byShapeCount++;
+      if (byShape && !selfMatch) byShapeOnly++;
 
-      // Contaminated: the display name IS one of this file's season strings.
       contaminated++;
 
       const hasGames = Array.isArray(p.games) && p.games.length > 0;
@@ -131,6 +166,9 @@ function main() {
     generatedAt: new Date().toISOString(),
     playerFilesScanned: files,
     contaminated,
+    bySelfMatch,              // name equals a season string on this player's own file
+    byShape: byShapeCount,    // name LOOKS like a season label, whoever carries it
+    byShapeOnly,              // caught ONLY by shape — invisible to the original test
     breakdown: {
       recoverableFromGames,   // repair can restore a real name (re-crawl / games cross-ref)
       notRecoverable,         // only honest value is the placeholder
@@ -152,7 +190,10 @@ function main() {
   L.push('| metric | value |');
   L.push('| --- | --- |');
   L.push(`| player files scanned | ${files} |`);
-  L.push(`| **CONTAMINATED (name == own seasons[].sn)** | **${contaminated}** |`);
+  L.push(`| **CONTAMINATED (either test)** | **${contaminated}** |`);
+  L.push(`| ├ name == a season string on its OWN file | ${bySelfMatch} |`);
+  L.push(`| ├ name LOOKS like a season label | ${byShapeCount} |`);
+  L.push(`| └ **caught ONLY by shape** — the original test could never see these | **${byShapeOnly}** |`);
   L.push(`| — recoverable from games[] | ${recoverableFromGames} |`);
   L.push(`| — not recoverable (placeholder only) | ${notRecoverable} |`);
   L.push(`| — also private | ${alsoPrivate} |`);
@@ -171,7 +212,7 @@ function main() {
   if (process.env.GITHUB_STEP_SUMMARY) {
     try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary); } catch (_) {}
   }
-  log(`DONE. scanned=${files} contaminated=${contaminated} recoverable=${recoverableFromGames} notRecoverable=${notRecoverable}`);
+  log(`DONE. scanned=${files} contaminated=${contaminated} (self-match ${bySelfMatch}, by-shape ${byShapeCount}, shape-only ${byShapeOnly}) recoverable=${recoverableFromGames} notRecoverable=${notRecoverable}`);
 }
 
 main();
