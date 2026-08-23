@@ -49,11 +49,6 @@ on:
         required: false
         default: '0'
         type: string
-      min_foreign:
-        description: 'Only remove an entry delivering at least this many foreign appearances. 1-2 foreign is far more likely a fill-in than a bad mapping.'
-        required: false
-        default: '3'
-        type: string
 
 permissions:
   contents: write
@@ -82,7 +77,11 @@ jobs:
 
       - name: Fix merge aliases
         run: |
-          ARGS="--min-foreign=${{ inputs.min_foreign }} --max-inspect=${{ inputs.max_inspect }}"
+          # NO --min-foreign. It was removed on 2026-08-22: once PlayHQ became the
+          # judge, a threshold stopped deciding what is REMOVED and started deciding
+          # what is ASKED ABOUT — so an alias putting two appearances on the wrong
+          # player would never be checked. Every candidate is asked.
+          ARGS="--max-inspect=${{ inputs.max_inspect }}"
           if [ "${{ inputs.mode }}" = "apply" ]; then ARGS="$ARGS --apply"; fi
           node --max-old-space-size=8192 scripts/fix-merge-aliases.js $ARGS
 
