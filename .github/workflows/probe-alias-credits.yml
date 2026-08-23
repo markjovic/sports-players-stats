@@ -1,0 +1,80 @@
+# .github/workflows/probe-alias-credits.yml
+name: Probe Alias Credits
+
+# READ-ONLY as far as player and game data goes. Writes one report artifact.
+# No data-write lock.
+#
+# THE QUESTION. players/aliases holds ~498,000 entries mapping a spectator id to an
+# api profile. Every one was written by matchFromGrade or matchFromGradeRosterByName
+# in lib/namespace-resolve.cjs, which decide by EXACT NAME — plus team id in the
+# first, name alone within one grade in the second. NEITHER EVER CHECKED whether
+# the profile it picked actually credits the games that alias delivers.
+#
+# The worked example, established 2026-08-23:
+#   900f4fe6-bec3   appears in PlayHQ box scores as "Jida McCrae-Cooper" and is NOT
+#                   a PlayHQ profile — the case aliases exist for.
+#   our alias sends it to d6c25c0c-e1e4-… , a DIFFERENT PlayHQ profile with a
+#                   similar name and different statistics.
+#   60eeeaa9-ab28-… is the profile that actually credits those games (310 of them).
+# So ~198 appearances sit on the wrong player. size-report listed this alias third
+# in "worst offenders" and the cause was never established until now.
+#
+# This applies the test the matcher should have used: does the TARGET profile's
+# publicProfileStatistics credit the games this alias delivers?
+#   SUPPORTED    it credits at least one — backed by PlayHQ
+#   UNSUPPORTED  it credits NONE of them — the shape of the error above
+#   NO ANSWER    private, throttled, or no games located — no verdict
+#
+# UNSUPPORTED is not proof on its own: a profile can be private, or PlayHQ can omit
+# a season. It is the population to inspect, and nothing is changed here.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'Aliases to audit. Start with 200 — the supported/unsupported ratio is what decides whether this is a handful or thousands.'
+        required: false
+        default: '200'
+        type: string
+      all:
+        description: 'Audit EVERY name-matched alias instead of a sample. Only worth it once the sample shows the scale.'
+        required: false
+        default: false
+        type: boolean
+      pace:
+        description: 'Milliseconds between profile calls. 1000 ran 5,511 calls clean on 2026-08-22; 700 hit CloudFront.'
+        required: false
+        default: '1000'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Probe alias credits
+        run: |
+          ARGS="--sample=${{ inputs.sample }} --pace=${{ inputs.pace }}"
+          if [ "${{ inputs.all }}" = "true" ] || [ "${{ inputs.all }}" = "True" ]; then ARGS="$ARGS --all"; fi
+          node --max-old-space-size=8192 scripts/probe-alias-credits.js $ARGS
+
+      # contents: read, so the report cannot be committed — it must be an artifact
+      # or it dies with the runner, as the first duplicate-pair report did.
+      - name: Upload the audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alias-credit-audit
+          path: reports/alias-credit-audit.json
+          retention-days: 90
+          if-no-files-found: warn
