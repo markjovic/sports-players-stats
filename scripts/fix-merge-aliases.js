@@ -27,10 +27,25 @@
 //   FOREIGN      we hold their registrations for that season and neither team
 //                matched — the population that might be wrong
 //
-// AN ENTRY IS REMOVED only when EVERY appearance it delivers is FOREIGN and it
-// delivers at least --min-foreign of them. A mixed entry is left alone: an alias
-// delivering real appearances plus some fill-ins is doing its job, and fill-ins are
-// real games that PlayHQ itself marks "Fill-in".
+// NOTHING IS REMOVED ON COUNTS. "Every appearance is foreign" is NOT a test for a
+// bad alias: a player who only ever fills in looks exactly like that, and removing
+// them would delete real appearances.
+//
+// Every candidate is put to PLAYHQ. The spectator box score returns each roster
+// entry's `profileID` AND `name`, so the name PlayHQ has for that id is compared
+// against the keeper's:
+//   SAME NAME      one person. The alias is CORRECT and the appearance is a
+//                  fill-in. KEPT, whatever the counts say.
+//   DIFFERENT NAME the id belongs to somebody else. The alias is wrong. REMOVED.
+//   NO ANSWER      the box cannot be fetched (paper-scored, throttled, gone).
+//                  KEPT — an unanswered question is not evidence.
+// A mixed entry — some appearances theirs, some not — is never a candidate at all.
+//
+// There is deliberately NO THRESHOLD on how many foreign appearances an entry must
+// deliver. One earlier version had --min-foreign=3, which stopped being a removal
+// rule the moment PlayHQ became the judge and became a rule about what gets ASKED:
+// an alias putting two appearances on the wrong player would never be checked and
+// never fixed, to save two API calls.
 //
 // REMOVAL IS REVERSIBLE. The removed entries are written to
 // reports/removed-merge-aliases.json before anything is deleted, so the exact map
@@ -41,7 +56,6 @@
 // Usage:
 //   node scripts/fix-merge-aliases.js                       # dry run
 //   node scripts/fix-merge-aliases.js --apply
-//   node scripts/fix-merge-aliases.js --apply --min-foreign=5
 
 'use strict';
 const fs = require('fs');
@@ -61,9 +75,12 @@ const numArg = (f, d) => {
   const v = a ? Number(a.split('=')[1]) : NaN;
   return Number.isFinite(v) && v >= 0 ? v : d;
 };
-// An entry delivering ONE foreign appearance and nothing else is far more likely a
-// fill-in than a bad mapping. Require a few before removing.
-const MIN_FOREIGN = numArg('min-foreign', 3);
+// NO THRESHOLD. There was a --min-foreign here, defaulting to 3, on the reasoning
+// that one or two foreign appearances are more likely a fill-in than a bad
+// mapping. That became obsolete the moment PlayHQ became the judge: a threshold no
+// longer decides what is REMOVED, it decides what is ASKED ABOUT — so an alias
+// putting two appearances on the wrong player would never be checked and never
+// fixed, purely to save two API calls. Every candidate is asked.
 const MERGE_MSG = 'merge-phantom-profiles';
 
 const n = (x) => Number(x || 0).toLocaleString();
@@ -493,7 +510,7 @@ async function main() {
     const seen = c.inRoster + c.foreign + c.unmeasurable;
     if (!seen) { silent++; continue; }
     if (c.foreign === 0) { allIn++; continue; }
-    if (c.inRoster === 0 && c.unmeasurable === 0 && c.foreign >= MIN_FOREIGN) { allForeign++; candidates.push({ id, ...c }); }
+    if (c.inRoster === 0 && c.unmeasurable === 0) { allForeign++; candidates.push({ id, ...c }); }
     else mixed++;
   }
 
@@ -501,7 +518,7 @@ async function main() {
   console.log('    delivers nothing at all                 : ' + n(silent) + '   ← harmless');
   console.log('    every appearance is one they belong in  : ' + n(allIn) + '   ← correct');
   console.log('    mixed: some belong, some do not         : ' + n(mixed) + '   ← LEFT ALONE (fill-ins are real)');
-  console.log('    EVERY appearance foreign, >=' + MIN_FOREIGN + ' of them  : ' + n(allForeign) + '   ← CANDIDATES, now put to PlayHQ');
+  console.log('    every appearance foreign (any number)   : ' + n(allForeign) + '   ← CANDIDATES, every one put to PlayHQ');
   if (noTarget) console.log('    target player file missing              : ' + n(noTarget));
   console.log('');
   console.log('    appearances delivered : ' + n(apIn + apForeign + apUnmeasurable));
@@ -548,7 +565,6 @@ async function main() {
   fs.writeFileSync(outPath, JSON.stringify({
     removed: new Date().toISOString(),
     baseline,
-    minForeign: MIN_FOREIGN,
     entries: remove.map(r => ({ id: r.id, target: r.target, foreign: r.foreign,
                                verdict: r.verdict, playhqNames: r.seenNames, samples: r.samples })),
   }, null, 1));
