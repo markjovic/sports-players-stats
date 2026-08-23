@@ -89,6 +89,38 @@ function isPlaceholderName(name) {
   return !name || /^player\s*#/i.test(String(name).trim());
 }
 
+// Does this string LOOK like a season label rather than a person's name?
+//
+// WHY THIS EXISTS SEPARATELY FROM THE SELF-MATCH TEST. Both fetch-profile-stats and
+// scan-season-name-contamination decided a name was contaminated by comparing it
+// against THAT PLAYER'S OWN seasons[].sn. That misses every case where the season
+// names on the file are absent or different — which is most of them, since the
+// season back-fill wrote seasons with no names at all until 2026-08-22.
+// scan-season-name-contamination consequently reported 0 contaminated of 411,576
+// files while players literally named "Winter 2026" were visible in StatTrack
+// search.
+//
+// A season label is recognisable by SHAPE, whoever carries it. Nobody is named
+// "Winter 2026" or "Summer 2025/26" or "Term 1, 2024". This is deliberately narrow:
+// it must never fire on a real person, so it requires a season word ANCHORED to a
+// year, or a bare year / year-range with nothing else.
+//
+// Deliberately NOT matched: "Summer", "Winter", "Autumn", "Spring" alone. Those are
+// real given names, and flagging Summer Curtis (a real player in this data) would
+// be worse than missing a contaminated file.
+const SEASON_WORD = '(?:summer|winter|autumn|spring|term|season)';
+const YEARISH = '(?:19|20)\\d{2}(?:\\s*\\/\\s*\\d{2,4})?';
+function looksLikeSeasonName(name) {
+  const t = String(name || '').trim();
+  if (!t) return false;
+  // "Winter 2026", "Summer 2025/26", "Term 1, 2024", "2026 Winter"
+  if (new RegExp(`^${SEASON_WORD}\\b[^a-z]*${YEARISH}$`, 'i').test(t)) return true;
+  if (new RegExp(`^${YEARISH}[^a-z]*${SEASON_WORD}$`, 'i').test(t)) return true;
+  // A bare year or year range and nothing else: "2026", "2025/26"
+  if (new RegExp(`^${YEARISH}$`).test(t)) return true;
+  return false;
+}
+
 // Match a player within ONE grade's (aggregated, all-pages) gradePlayerStatistics
 // results, by exact team.id AND exact normalised full name. Returns a single
 // api-namespace profile.id, or null when there are zero matches OR more than
@@ -160,6 +192,7 @@ module.exports = {
   PROFILE_SEARCH_QUERY,
   normName,
   isPlaceholderName,
+  looksLikeSeasonName,
   matchFromGrade,
   matchFromGradeRosterByName,
   matchFromSearch,
