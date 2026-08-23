@@ -34,6 +34,11 @@ on:
         required: false
         default: false
         type: boolean
+      heal_names:
+        description: 'Also re-offer players whose NAME is wrong — a "Player #..." placeholder or a season label like "Winter 2026". 158 such files found 2026-08-23, all recoverable. Without this the name guard never fires, because affected players already carry statsChecked and are skipped.'
+        required: false
+        default: false
+        type: boolean
       heal_season_names:
         description: 'Also re-offer players holding a registration with a team id but NO season/team/grade names. Until 2026-08-22 this script fetched those names and discarded them, so affected seasons render as "." and "?" in StatTrack. Cheap: only players with something to heal are fetched.'
         required: false
@@ -188,11 +193,13 @@ jobs:
           # Same boolean handling as the two above — a UI dispatch sends a real
           # boolean, a chained `gh workflow run --field` sends a string.
           HEAL_SEASON_NAMES: ${{ (inputs.heal_season_names == true || inputs.heal_season_names == 'true') && 'true' || '' }}
+          HEAL_NAMES: ${{ (inputs.heal_names == true || inputs.heal_names == 'true') && 'true' || '' }}
         run: |
           ARGS=(--shard=${{ matrix.shard }})
           [ -n "$RECHECK_PRIVATE" ] && ARGS+=(--recheck-private)
           [ -n "$FORCE_FETCH" ] && ARGS+=(--force)
           [ -n "$HEAL_SEASON_NAMES" ] && ARGS+=(--heal-season-names)
+          [ -n "$HEAL_NAMES" ] && ARGS+=(--heal-names)
           echo "ARGS=${ARGS[*]}"
           node scripts/fetch-profile-stats.js "${ARGS[@]}"
 
@@ -669,6 +676,10 @@ jobs:
           # field not passed here reverts to its default — a heal sweep would cover
           # the first pass and then silently stop, which looks like completion.
           NEXT_HEAL: ${{ (inputs.heal_season_names == true || inputs.heal_season_names == 'true') && 'true' || 'false' }}
+          # Carried through the chain for the same reason as the others: every link
+          # is a fresh dispatch, so a field not passed reverts to its default and
+          # the sweep would cover one pass then silently stop.
+          NEXT_HEAL_NAMES: ${{ (inputs.heal_names == true || inputs.heal_names == 'true') && 'true' || 'false' }}
         run: |
           next_run=$(( NEXT_RUN + 1 ))
           /tmp/gh-dispatch.sh fetch-profile-stats-matrix.yml \
@@ -678,6 +689,7 @@ jobs:
             --field "force=false" \
             --field "recheck_private=${NEXT_RECHECK}" \
             --field "heal_season_names=${NEXT_HEAL}" \
+            --field "heal_names=${NEXT_HEAL_NAMES}" \
             --field "shards=${NEXT_SHARDS}"
 
       # ── Terminal: dispatch the post-drain chain ────────────────────────────

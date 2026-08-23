@@ -1,0 +1,45 @@
+# .github/workflows/scan-roster-id-forms.yml
+name: Scan Roster Id Forms
+
+# READ-ONLY, offline, zero API calls. No writes, no commits, no data-write lock.
+#
+# THE QUESTION, asked of every roster in the repo rather than one player: are p[]
+# ids stored in a MIXTURE of forms, and does that mixture list anybody twice?
+#
+# This is not hypothetical. On 2026-08-23 a single Bailey Walton roster was printed
+# containing both `e9dee630-ab52` and `e9dee630-ab52-4056-b1fb-c68bd6bd8b3b`, and
+# five diagnostics that compared ids literally reported him ABSENT from rosters he
+# was plainly in — inventing a "split identity" that never existed.
+#
+# It counts three things, all from stored data, none inferred:
+#   1. How many p[] entries are 13-char, how many 36-char, how many neither.
+#   2. How many rosters contain the SAME PERSON under both forms — one human listed
+#      twice, which inflates anything counting p[] ENTRIES (team stats, roster
+#      sizes). It does NOT inflate games[]: build-player-games resolves both forms
+#      to one uuid and collects into a Set.
+#   3. Which seasons carry the most, with samples.
+#
+# WHAT IT CANNOT TELL YOU: whether two DIFFERENT ids are one person. That is the
+# aliasing question and only PlayHQ answers it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'How many duplicate-roster samples to print'
+        required: false
+        default: '30'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan roster id forms
+        run: node --max-old-space-size=8192 scripts/scan-roster-id-forms.js --show=${{ inputs.show }}

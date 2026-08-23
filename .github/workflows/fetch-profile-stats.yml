@@ -13,6 +13,11 @@ on:
         required: false
         default: false
         type: boolean
+      heal_names:
+        description: 'Also re-offer players whose NAME is a "Player #..." placeholder or a season label like "Winter 2026".'
+        required: false
+        default: false
+        type: boolean
       heal_season_names:
         description: 'Also re-offer players holding a registration with a team id but NO season/team/grade names (the pre-2026-08-22 back-fill discarded them). Only players with something to heal are fetched.'
         required: false
@@ -52,6 +57,7 @@ jobs:
           if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
           # Booleans arrive as a real boolean from the UI and a string when chained.
           if [ "${{ inputs.heal_season_names }}" = "true" ] || [ "${{ inputs.heal_season_names }}" = "True" ]; then ARGS="$ARGS --heal-season-names"; fi
+          if [ "${{ inputs.heal_names }}" = "true" ] || [ "${{ inputs.heal_names }}" = "True" ]; then ARGS="$ARGS --heal-names"; fi
           if [ -n "${{ inputs.max }}" ]; then ARGS="$ARGS --max=${{ inputs.max }}"; fi
           node scripts/fetch-profile-stats.js $ARGS
 
