@@ -464,7 +464,18 @@ async function findCorrectTarget(name, gids, creditCache) {
 // whole point. A truncated cache is salvaged on load rather than discarded.
 const CACHE_PATH  = path.join(ROOT, 'reports', 'alias-credit-cache.json');
 const REPORT_PATH = path.join(ROOT, 'reports', 'alias-credit-audit.json');
-const SAVE_EVERY  = num('save-every', 250);
+const SAVE_EVERY  = num('save-every', 50);
+// ⚠ THE SESSION EXPIRES AND MUST BE RE-OBTAINED ON A CYCLE.
+// The 2026-08-23 run got 503 profiles in, then EVERY call failed — 8 of 8, then
+// 4 of 4, all the way to 1 of 1 — and the backoff read that as the endpoint
+// refusing us. It was not. The session had simply gone stale, and this script
+// only refreshed when sessionCookie was falsy, which happens exactly once at
+// startup. Every later call was hitting a dead session for ever.
+//
+// fetch-profile-stats logs "↺ Session refresh before batch 2" — it re-obtains the
+// session EVERY batch, and spectator-backfill does the same on a cycle. That is
+// the documented behaviour of this endpoint and I did not copy it.
+const REFRESH_EVERY = num('refresh-every', 250);
 
 function atomicWrite(p, obj) {
   try {
@@ -575,10 +586,18 @@ async function main() {
   let supported = 0, unsupported = 0, noAnswer = 0, done = 0, sinceSave = 0;
   const bad = [];
   let conc = CONCURRENCY, cleanStreak = 0, consecutiveFail = 0, stop = false;
+  let sinceRefresh = 0;
 
   for (let cursor = 0; cursor < targets.length && !stop; ) {
     const chunk = targets.slice(cursor, cursor + conc);
     cursor += chunk.length;
+    // Re-obtain the session on a cycle, BEFORE the calls that would otherwise
+    // fail against a stale one.
+    if (sinceRefresh >= REFRESH_EVERY) {
+      sinceRefresh = 0;
+      sessionCookie = null;
+      await refreshSession();
+    }
     // Skip anything already cached from a previous dispatch.
     const toAsk = chunk.filter(t => !creditCache.has(t));
     const asked = await Promise.all(toAsk.map(async (t) => ({ t, credits: await creditedGameIds(t) })));
@@ -620,6 +639,14 @@ async function main() {
     //     job ceiling achieving nothing while LOOKING like it was working.
     const failRate = chunkFail / chunk.length;
 
+    // A WHOLE chunk failing is the signature of a dead session, not of the
+    // endpoint refusing us — force a refresh and let the next chunk prove it.
+    if (chunkFail === chunk.length && chunk.length > 0) {
+      sessionCookie = null;
+      sinceRefresh = 0;
+      try { await refreshSession(); } catch (e) { console.log('  ⚠ session refresh failed: ' + e.message); }
+    }
+
     if (chunkFail === chunk.length) {
       consecutiveFail++;
       if (consecutiveFail >= 10) {
@@ -646,6 +673,7 @@ async function main() {
     }
     // Save BOTH files periodically so a run killed at the job ceiling still
     // yields everything it did, and the next dispatch resumes from it.
+    sinceRefresh += toAsk.length;
     sinceSave += chunk.length;
     if (sinceSave >= SAVE_EVERY) {
       sinceSave = 0;
