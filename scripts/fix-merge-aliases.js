@@ -519,7 +519,10 @@ async function main() {
       for (const e of (Array.isArray(g.p) ? g.p : [])) {
         const id = e && e.id;
         if (!id) continue;
-        const c = check.get(id);
+        // Roster ids come in BOTH the 13-char and full 36-char forms; a literal
+        // lookup finds only one of them.
+        let c = check.get(id);
+        if (!c) c = check.get(String(id).slice(0, 13));
         if (!c) continue;
         const reg = regOf.get(c.target);
         if (!reg) { c.unmeasurable++; continue; }

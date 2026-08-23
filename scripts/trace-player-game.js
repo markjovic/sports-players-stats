@@ -33,7 +33,53 @@ const arg = (f, d) => { const a = args.find(x => x.startsWith('--' + f + '=')); 
 const PLAYER = arg('player', '');
 const ONLY = String(arg('games', '')).split(',').map(x => x.trim()).filter(Boolean);
 if (!PLAYER) { console.error('ABORT: need --player=<uuid>'); process.exit(1); }
-const TRUNC = 13;
+// ── DOES THIS ROSTER ID BELONG TO THIS PLAYER? ───────────────────────────────
+//
+// ⚠ THE BUG THIS EXISTS TO KILL. p[] entries are NOT one length. A roster can hold
+// the 13-char truncation `e9dee630-ab52` OR the full 36-char uuid
+// `e9dee630-ab52-4056-b1fb-c68bd6bd8b3b`, and BOTH FORMS APPEAR IN THE SAME ROSTER
+// for the same person. build-player-games handles this because it calls
+// resolveToFullUuid. Five separate diagnostics did NOT: each built its own id set
+// from `uuid.slice(0, 13)` and compared it literally.
+//
+// The consequence was not a cosmetic mis-count. On 2026-08-23 trace-player-game
+// reported "NOTHING IN THIS ROSTER" for all 19 of Bailey Walton's games while his
+// FULL uuid was printed in every single roster listing on the same screen — and
+// probe-shared-roster had already produced the "6 games, only A present" result
+// that made him look like a split identity. He was never one.
+//
+// Every id-vs-player comparison in every diagnostic goes through this. If a roster
+// id is a prefix of the player's uuid, or the player's uuid starts with it, or it
+// is one of their spectatorIds, or an alias points it at them, it is theirs.
+// The canonical truncation length. Defined in lib/uuid-prefix.cjs; repeated here
+// rather than imported so this file keeps its no-dependency property, and asserted
+// against that file by the caller check below.
+const TRUNC_LEN = 13;
+
+function playerIdSet(uuid, player, aliasTo) {
+  const set = new Set();
+  const full = String(uuid || '');
+  if (!full) return set;
+  set.add(full);                        // the full 36-char form
+  set.add(full.slice(0, TRUNC_LEN));    // the 13-char truncation
+  for (const x of ((player && player.spectatorIds) || [])) if (x) set.add(String(x));
+  if (aliasTo) for (const [k, v] of aliasTo) if (v === full) set.add(k);
+  return set;
+}
+
+// Test a single roster id against that set. Handles the length mismatch in BOTH
+// directions, because either form can be the one stored.
+function rosterIdMatches(rosterId, idSet) {
+  const id = String(rosterId || '');
+  if (!id) return false;
+  if (idSet.has(id)) return true;
+  if (idSet.has(id.slice(0, TRUNC_LEN))) return true;
+  for (const mine of idSet) {
+    if (mine.length !== id.length && (mine.startsWith(id) || id.startsWith(mine))) return true;
+  }
+  return false;
+}
+
 const n = (x) => Number(x || 0).toLocaleString();
 
 function main() {
@@ -57,9 +103,7 @@ function main() {
       for (const [k, v] of Object.entries(m)) { aliasTo.set(k, v); aliasCount++; }
     }
   } catch (e) { console.log('  ⚠ players/aliases unreadable: ' + e.message); }
-  const mine = new Set([PLAYER.slice(0, TRUNC)]);
-  for (const x of (p.spectatorIds || [])) if (x) mine.add(String(x));
-  for (const [k, v] of aliasTo) if (v === PLAYER) mine.add(k);
+  const mine = playerIdSet(PLAYER, p, aliasTo);
   console.log('  alias table entries : ' + n(aliasCount));
   console.log('  ids that resolve to THIS player: ' + [...mine].join(' '));
   console.log('');
@@ -80,7 +124,7 @@ function main() {
       found++;
       const g = sg.games[gid];
       const ids = (Array.isArray(g.p) ? g.p : []).map(x => x && x.id).filter(Boolean);
-      const hits = ids.filter(id => mine.has(id));
+      const hits = ids.filter(id => rosterIdMatches(id, mine));
       const flags = (g.spc ? 'spc ' : '') + (g.dg ? 'dg ' : '') + (!g.spc && !g.dg ? 'NO FLAG' : '');
       if (hits.length) reachable++; else { unreachable++; unreachableGames.push({ gid, sid, ids, flags }); }
       if (ONLY.length || !hits.length) {
@@ -91,7 +135,7 @@ function main() {
         // player is visible rather than inferred.
         for (const id of ids) {
           const t = aliasTo.get(id);
-          const mark = mine.has(id) ? '  <-- THIS PLAYER' : '';
+          const mark = rosterIdMatches(id, mine) ? '  <-- THIS PLAYER' : '';
           console.log('      ' + id + (t ? '  -> ' + t : '  (no alias entry; resolves to itself)') + mark);
         }
         console.log('');

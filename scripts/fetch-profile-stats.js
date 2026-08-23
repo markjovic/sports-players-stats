@@ -105,10 +105,22 @@ const RECHECK_PRIVATE = args.includes('--recheck-private');
 // with a tid and no tn AND no gn. Players with nothing to heal are never fetched,
 // so this costs one call per genuinely affected player instead of 419,127.
 const HEAL_SEASON_NAMES = args.includes('--heal-season-names');
+// --heal-names re-offers players whose PLAYER NAME is wrong: a `Player #...`
+// placeholder, or a season label like "Winter 2026".
+//
+// WITHOUT THIS THE GUARD IS DORMANT. The name heal lives inside finishOk, and
+// finishOk only runs for players the shard actually FETCHES — but every affected
+// player already carries statsChecked, so they are skipped and the heal never
+// fires. Widening the guard on 2026-08-22 made it correct and changed nothing.
+//
+// scan-season-name-contamination found 158 such files, 138 of them invisible to
+// the old self-match test. All 158 have games and none are private, so every one
+// is recoverable. One call per affected player.
+const HEAL_NAMES = args.includes('--heal-names');
 const MAX   = (() => { const a = args.find(a => a.startsWith('--max=')); return a ? parseInt(a.split('=')[1]) : Infinity; })();
 
 if (!SHARD || !/^[0-9a-f]{2}$/.test(SHARD)) {
-  console.error('Usage: node scripts/fetch-profile-stats.js --shard=<00-ff> [--force] [--recheck-private] [--heal-season-names]');
+  console.error('Usage: node scripts/fetch-profile-stats.js --shard=<00-ff> [--force] [--recheck-private] [--heal-season-names] [--heal-names]');
   process.exit(1);
 }
 
@@ -139,6 +151,18 @@ function needsSeasonNames(p) {
 // --recheck-private already had this shape as nameHealAttempts; this mirrors it.
 // The counter is CLEARED on success, so a player who becomes healable later is
 // never permanently excluded.
+// Is this player's NAME wrong? Placeholder or season label — the same two tests the
+// guard in finishOk applies, so selection and repair cannot disagree.
+//
+// No separate attempt limit: the existing nameHealAttempts counter already caps
+// futile retries, so a player who cannot be healed stops being offered by it.
+function selectForNameHeal(p) {
+  const nm = p && p.name;
+  if (isPlaceholderName(nm)) return true;
+  if (looksLikeSeasonName(nm)) return true;
+  return false;
+}
+
 const SEASON_HEAL_LIMIT = 2;
 function selectForSeasonHeal(p) {
   if (!needsSeasonNames(p)) return false;
@@ -1252,7 +1276,7 @@ async function main() {
   const uuids = Object.keys(index);
   console.log(`  UUIDs in shard: ${uuids.length}`);
 
-  let recheckable = 0, healable = 0, healExhausted = 0;
+  let recheckable = 0, healable = 0, healExhausted = 0, nameHealable = 0;
   const allToFetch = FORCE
     ? uuids
     : uuids.filter(uuid => {
@@ -1263,6 +1287,7 @@ async function main() {
           // re-check sweep and the player is one of the withheld population.
           if (RECHECK_PRIVATE && p.private === true) { recheckable++; return true; }
           if (HEAL_SEASON_NAMES && selectForSeasonHeal(p)) { healable++; return true; }
+          if (HEAL_NAMES && selectForNameHeal(p)) { nameHealable++; return true; }
           if (HEAL_SEASON_NAMES && needsSeasonNames(p)) healExhausted++;
           return false;
         } catch { return true; }
@@ -1284,6 +1309,7 @@ async function main() {
 
   console.log(`  Already done (statsChecked present): ${stats.skipped}`);
   if (RECHECK_PRIVATE) console.log(`  Re-offered (private:true, statsChecked present): ${recheckable}`);
+  if (HEAL_NAMES) console.log(`  Re-offered (player NAME is a placeholder or a season label): ${nameHealable}`);
   if (HEAL_SEASON_NAMES) {
     console.log(`  Re-offered (season/team names missing, statsChecked present): ${healable}`);
     if (healExhausted) console.log(`  Not re-offered (still nameless after ${SEASON_HEAL_LIMIT} attempts — the API does not return those teams): ${healExhausted}`);
