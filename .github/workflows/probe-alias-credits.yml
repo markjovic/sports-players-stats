@@ -53,6 +53,16 @@ on:
         required: false
         default: '250'
         type: string
+      refresh_every:
+        description: 'Re-obtain the session every N profile calls. The 2026-08-23 run died at 503 because the session went stale and was never refreshed — fetch-profile-stats refreshes every batch.'
+        required: false
+        default: '250'
+        type: string
+      chain:
+        description: 'Re-dispatch itself when the audit is still PARTIAL. 54,328 profiles will not fit in one job; each link resumes from the cache.'
+        required: false
+        default: true
+        type: boolean
       pace:
         description: 'Extra milliseconds between CHUNKS. 0 normally — concurrency and the backoff do the pacing. Raise only if the endpoint pushes back.'
         required: false
@@ -95,7 +105,7 @@ jobs:
 
       - name: Probe alias credits
         run: |
-          ARGS="--sample=${{ inputs.sample }} --pace=${{ inputs.pace }} --concurrency=${{ inputs.concurrency }} --save-every=${{ inputs.save_every }}"
+          ARGS="--sample=${{ inputs.sample }} --pace=${{ inputs.pace }} --concurrency=${{ inputs.concurrency }} --save-every=${{ inputs.save_every }} --refresh-every=${{ inputs.refresh_every }}"
           if [ "${{ inputs.all }}" = "true" ] || [ "${{ inputs.all }}" = "True" ]; then ARGS="$ARGS --all"; fi
           node --max-old-space-size=8192 scripts/probe-alias-credits.js $ARGS
 
@@ -124,3 +134,41 @@ jobs:
           retention-days: 90
           overwrite: true
           if-no-files-found: warn
+
+      # ⚠ MUST COME AFTER THE CACHE UPLOAD. Dispatched first, the next link could
+      # start before its cache artifact existed and would redo everything this run
+      # just did.
+      # Chain the next link ONLY while the report says partial. Reading the report
+      # rather than the exit code means a run that finished early because it was
+      # already complete does not spawn a pointless dispatch.
+      - name: Chain the next run
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO: ${{ github.repository }}
+          CHAIN: ${{ (inputs.chain == true || inputs.chain == 'true') && 'true' || '' }}
+        run: |
+          if [ -z "$CHAIN" ]; then echo "  chaining disabled"; exit 0; fi
+          if [ ! -f reports/alias-credit-audit.json ]; then echo "  no report — not chaining"; exit 0; fi
+          PARTIAL=$(node -e "try{console.log(JSON.parse(require('fs').readFileSync('reports/alias-credit-audit.json','utf8')).partial?'yes':'no')}catch(e){console.log('no')}")
+          if [ "$PARTIAL" != "yes" ]; then echo "  audit COMPLETE — not chaining"; exit 0; fi
+          echo "  audit is partial — dispatching the next link"
+          # A chain-critical dispatch is never one-shot; fail FAST on HTTP 4xx
+          # because retrying a bad input buries the real error.
+          for i in $(seq 1 10); do
+            if out=$(gh workflow run probe-alias-credits.yml --repo "$GH_REPO" \
+                 --field all=true \
+                 --field concurrency=${{ inputs.concurrency }} \
+                 --field save_every=${{ inputs.save_every }} \
+                 --field refresh_every=${{ inputs.refresh_every }} \
+                 --field pace=${{ inputs.pace }} \
+                 --field chain=true 2>&1); then
+              echo "  ✓ dispatched (attempt $i)"; exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ permanent error — not retrying"; exit 1
+            fi
+            sleep $(( i * 10 ))
+          done
+          echo "  ✗ dispatch failed after 10 attempts"; exit 1
