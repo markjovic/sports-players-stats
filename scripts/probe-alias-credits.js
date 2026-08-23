@@ -50,7 +50,20 @@ const num = (f, d) => {
 };
 const ALL     = args.includes('--all');
 const SAMPLE  = num('sample', 200);
-const PACE_MS = num('pace', 1000);
+const PACE_MS = num('pace', 0);   // legacy serial pacing; 0 = rely on concurrency
+// ── CONCURRENCY, not a serial sleep ─────────────────────────────────────────
+// The first version looped one call at a time with a 1s sleep, which made an
+// 81,632-alias audit a 23-hour job. That pace was carried over from a probe
+// against spectator.playhq.com, where 700ms hit CloudFront. THIS endpoint is
+// api.playhq.com/graphql, where the documented behaviour is entirely different:
+// start high, cap 1000, back off on 429. repair-players-batch runs 8 profile
+// fetches concurrently as a matter of course and fetch-profile-stats runs 30.
+//
+// Chunked rather than a sliding window, copied from repair-players-batch: a chunk
+// boundary is a natural place to back off, the in-flight count is obvious, and
+// there is no queue to reason about. Backs off to 60% on transport trouble and
+// recovers after two clean chunks.
+const CONCURRENCY = Math.max(1, Math.min(50, num('concurrency', 8)));
 const SEED    = num('seed', 20260823);
 const API_URL = 'https://api.playhq.com/graphql';
 const TRUNC_LEN = 13;
@@ -416,24 +429,67 @@ async function main() {
   console.log('  auditing ' + n(delivering.length) + ' alias(es), one profile call each, ' + PACE_MS + 'ms pace');
   console.log('');
 
+  // One call per TARGET PROFILE, not per alias — several aliases can point at the
+  // same player and the answer is identical for all of them.
+  const byTarget = new Map();
+  for (const a of delivering) {
+    if (!byTarget.has(a.target)) byTarget.set(a.target, []);
+    byTarget.get(a.target).push(a);
+  }
+  const targets = [...byTarget.keys()];
+  console.log('  distinct target profiles to ask: ' + n(targets.length) +
+              '  (' + n(delivering.length) + ' aliases share them)');
+  console.log('  concurrency: ' + CONCURRENCY + ' (backs off on transport trouble, recovers after two clean chunks)');
+  console.log('');
+
   const creditCache = new Map();
   let supported = 0, unsupported = 0, noAnswer = 0, done = 0;
   const bad = [];
-  for (const a of delivering) {
-    const gids = wanted.get(a.id) || [];
-    let credits = creditCache.get(a.target);
-    if (credits === undefined) {
-      credits = await creditedGameIds(a.target);
-      creditCache.set(a.target, credits);
-      await new Promise(r => setTimeout(r, PACE_MS));
+  let conc = CONCURRENCY, cleanChunks = 0, consecutiveFail = 0, stop = false;
+
+  for (let cursor = 0; cursor < targets.length && !stop; ) {
+    const chunk = targets.slice(cursor, cursor + conc);
+    cursor += chunk.length;
+    const got = await Promise.all(chunk.map(async (t) => ({ t, credits: await creditedGameIds(t) })));
+
+    let chunkFail = 0;
+    for (const { t, credits } of got) {
+      creditCache.set(t, credits);
+      if (!credits) chunkFail++;
+      for (const a of byTarget.get(t)) {
+        const gids = wanted.get(a.id) || [];
+        if (!credits) { noAnswer++; }
+        else {
+          const hit = gids.filter(g => credits.has(g) || credits.has(String(g).slice(0, 8)));
+          if (hit.length) supported++;
+          else { unsupported++; bad.push({ ...a, gids, creditedCount: credits.size }); }
+        }
+        done++;
+      }
     }
-    if (!credits) { noAnswer++; }
-    else {
-      const hit = gids.filter(g => credits.has(g) || credits.has(String(g).slice(0, 8)));
-      if (hit.length) supported++;
-      else { unsupported++; bad.push({ ...a, gids, creditedCount: credits.size }); }
+
+    // A whole chunk failing is the endpoint refusing us, not bad luck. Back off,
+    // and stop entirely after three in a row rather than burning the queue while
+    // LOOKING like the audit ran.
+    if (chunkFail === chunk.length && chunk.length > 1) {
+      consecutiveFail++;
+      if (consecutiveFail >= 3) {
+        console.log('\n  ✗ three consecutive chunks failed outright — stopping cleanly. Re-dispatch to continue.');
+        stop = true;
+      }
+    } else consecutiveFail = 0;
+
+    if (chunkFail > 0) {
+      conc = Math.max(1, Math.floor(conc * 0.6));
+      cleanChunks = 0;
+      console.log('  … backing off to concurrency ' + conc + ' (' + chunkFail + ' of ' + chunk.length + ' failed)');
+      await new Promise(r => setTimeout(r, 5000));
+    } else if (++cleanChunks >= 2 && conc < CONCURRENCY) {
+      conc = Math.min(CONCURRENCY, conc + 2);
+      cleanChunks = 0;
     }
-    if (++done % 25 === 0) console.log('  … ' + done + '/' + delivering.length + '  supported ' + supported + ' · UNSUPPORTED ' + unsupported + ' · no answer ' + noAnswer);
+    if (PACE_MS) await new Promise(r => setTimeout(r, PACE_MS));
+    if (done % 500 < chunk.length) console.log('  … ' + n(done) + '/' + n(delivering.length) + '  supported ' + n(supported) + ' · UNSUPPORTED ' + n(unsupported) + ' · no answer ' + n(noAnswer) + '  (conc ' + conc + ')');
   }
 
   const judged = supported + unsupported;
