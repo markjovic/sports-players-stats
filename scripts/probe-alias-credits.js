@@ -40,6 +40,7 @@ const fs     = require('fs');
 const path   = require('path');
 const crypto = require('crypto');
 const https  = require('https');
+const { execSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -473,6 +474,12 @@ async function findCorrectTarget(name, gids, creditCache) {
 // every SAVE_EVERY profiles. Writes are atomic (temp + rename) because a cache
 // killed mid-write was truncated on 2026-08-22 and a corrupt cache defeats the
 // whole point. A truncated cache is salvaged on load rather than discarded.
+// ⚠ THE CACHE IS COMMITTED TO THE REPO, NOT KEPT AS AN ARTIFACT.
+// The artifact route silently failed twice on 2026-08-23: download-artifact
+// without a run-id only sees artifacts from the CURRENT run, so every dispatch
+// restored nothing and re-asked all 54,328 profiles from cold. Reaching across
+// runs needs a lookup for the last successful run id plus a token — three more
+// things to get wrong. A committed file is simply there after checkout.
 const CACHE_PATH  = path.join(ROOT, 'reports', 'alias-credit-cache.json');
 const REPORT_PATH = path.join(ROOT, 'reports', 'alias-credit-audit.json');
 const SAVE_EVERY  = num('save-every', 50);
@@ -487,6 +494,9 @@ const SAVE_EVERY  = num('save-every', 50);
 // session EVERY batch, and spectator-backfill does the same on a cycle. That is
 // the documented behaviour of this endpoint and I did not copy it.
 const REFRESH_EVERY = num('refresh-every', 250);
+// Commit far less often than the disk write: each commit is a push against a busy
+// branch, and 40-attempt retries are expensive if fired every few seconds.
+const COMMIT_EVERY  = num('commit-every', 5000);
 
 function atomicWrite(p, obj) {
   try {
@@ -527,6 +537,41 @@ function loadResolve() {
 }
 function saveResolve(m) {
   atomicWrite(RESOLVE_PATH, { saved: new Date().toISOString(), resolutions: Object.fromEntries(m) });
+}
+
+// Commit the caches and the report. Without this every chain link starts cold.
+// Git in this repo: explicit per-path add (NEVER -A on 419k files), fetch plus
+// merge -X ours, single-line message, push retry with jitter that THROWS on
+// exhaustion rather than reporting a clean no-op.
+const GIT = { cwd: ROOT, stdio: 'pipe', timeout: 10 * 60 * 1000, maxBuffer: 512 * 1024 * 1024 };
+function commitCaches(complete, doneCount, total) {
+  const paths = ['reports/alias-credit-cache.json', 'reports/alias-resolve-cache.json', 'reports/alias-credit-audit.json'];
+  try {
+    for (const p of paths) {
+      try { execSync('git add -- ' + p, GIT); } catch (e) { /* a file may not exist yet */ }
+    }
+    const staged = execSync('git diff --staged --shortstat', GIT).toString().trim();
+    if (!staged) { console.log('  nothing to commit'); return; }
+    console.log('  staging: ' + staged);
+    const msg = 'probe-alias-credits: ' + doneCount + '/' + total + (complete ? ' complete' : ' partial');
+    execSync('git commit -q -m "' + msg + '"', GIT);
+    for (let attempt = 1; attempt <= 40; attempt++) {
+      try { execSync('git merge --abort', GIT); } catch (e) {}
+      try {
+        console.log('  … fetch/merge/push (attempt ' + attempt + ')');
+        execSync('git fetch origin main', GIT);
+        execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', GIT);
+        execSync('git push origin main', GIT);
+        console.log('  ✔ pushed');
+        return;
+      } catch (e) {
+        if (attempt === 40) throw new Error('push failed after 40 attempts');
+        const wait = 1 + Math.floor(Math.random() * 60);
+        console.log('  … push attempt ' + attempt + ' failed, retrying in ' + wait + 's');
+        try { execSync('sleep ' + wait, { stdio: 'pipe', timeout: (wait + 30) * 1000 }); } catch (e2) {}
+      }
+    }
+  } catch (e) { console.log('  ⚠ commit failed: ' + e.message); }
 }
 
 function saveCache(cache) {
@@ -608,7 +653,7 @@ async function main() {
   let supported = 0, unsupported = 0, noAnswer = 0, noCredits = 0, done = 0, sinceSave = 0;
   const bad = [];
   let conc = CONCURRENCY, cleanStreak = 0, consecutiveFail = 0, stop = false;
-  let sinceRefresh = 0;
+  let sinceRefresh = 0, lastCommitAt = 0;
 
   for (let cursor = 0; cursor < targets.length && !stop; ) {
     const chunk = targets.slice(cursor, cursor + conc);
@@ -709,7 +754,10 @@ async function main() {
       sinceSave = 0;
       saveCache(creditCache);
       atomicWrite(REPORT_PATH, { generated: new Date().toISOString(), partial: true,
-        audited: done, supported, unsupported, noAnswer, unsupportedEntries: bad });
+        audited: done, supported, unsupported, noAnswer, noCredits, unsupportedEntries: bad });
+      // Commit on a slower cycle than the disk write — a killed run must leave its
+      // progress IN THE REPO, not merely on a runner that is about to vanish.
+      if (done - lastCommitAt >= COMMIT_EVERY) { lastCommitAt = done; commitCaches(false, done, delivering.length); }
     }
     if (PACE_MS) await new Promise(r => setTimeout(r, PACE_MS));
     if (done % 500 < chunk.length) console.log('  … ' + n(done) + '/' + n(delivering.length) + '  supported ' + n(supported) + ' · UNSUPPORTED ' + n(unsupported) + ' · no answer ' + n(noAnswer) + '  (conc ' + conc + ')');
@@ -781,6 +829,7 @@ async function main() {
   console.log('');
   console.log('  WRITTEN: reports/alias-credit-audit.json' + (complete ? '' : '  ⚠ PARTIAL — re-dispatch to continue'));
   console.log('  WRITTEN: reports/alias-credit-cache.json (' + n(creditCache.size) + ' verdicts; the next run skips these)');
+  commitCaches(complete, done, delivering.length);
 }
 
 main()
