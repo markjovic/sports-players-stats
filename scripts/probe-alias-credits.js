@@ -424,15 +424,26 @@ const SEARCH_QUERY = `query ProfileSearch($fullName: String!) {
 
 async function findCorrectTarget(name, gids, creditCache) {
   if (!name || !gids.length) return { uuid: null, why: 'no name or no games' };
+  // ⚠ THE SESSION EXPIRES HERE TOO. The main loop refreshes on a cycle; this did
+  // not — it only refreshed when the cookie was FALSY, which never happens once
+  // one exists. So by the time resolution ran at the end of a five-hour job every
+  // search hit a dead session: 940 of 980 unsupported aliases got no repoint for
+  // a reason with nothing to do with the data.
+  //
+  // One retry with a forced refresh, because a stale session is the overwhelmingly
+  // likely cause and a second attempt costs one call.
   if (!sessionCookie) await refreshSession();
-  let res;
-  try {
-    res = await doFetch(API_URL,
-      { operationName: 'ProfileSearch', variables: { fullName: name }, query: SEARCH_QUERY },
-      { ...HEADERS_MAIN, 'Cookie': sessionCookie });
-  } catch (e) { return { uuid: null, why: 'search failed: ' + e.message }; }
-  const j = res && res.body;
-  if (!j || j.errors) return { uuid: null, why: 'search error' };
+  const attempt = async () => doFetch(API_URL,
+    { operationName: 'ProfileSearch', variables: { fullName: name }, query: SEARCH_QUERY },
+    { ...HEADERS_MAIN, 'Cookie': sessionCookie });
+  let res, j;
+  try { res = await attempt(); j = res && res.body; } catch (e) { j = null; }
+  if (!j || j.errors) {
+    sessionCookie = null;
+    try { await refreshSession(); } catch (e) { return { uuid: null, why: 'session refresh failed' }; }
+    try { res = await attempt(); j = res && res.body; } catch (e) { return { uuid: null, why: 'search failed: ' + e.message }; }
+  }
+  if (!j || j.errors) return { uuid: null, why: 'search error after refresh' };
   const cands = (j.data?.profileSearch?.result || []).map(r => r && r.id).filter(Boolean);
   if (!cands.length) return { uuid: null, why: 'no profile carries that name' };
 
@@ -505,6 +516,17 @@ function loadCache() {
   }
   for (const [k, v] of Object.entries(j.credits || {})) out.set(k, v === null ? null : new Set(v));
   return out;
+}
+
+// Resolutions cached separately from credit verdicts: they are the expensive part
+// to redo and the part that failed wholesale on 2026-08-23.
+const RESOLVE_PATH = path.join(ROOT, 'reports', 'alias-resolve-cache.json');
+function loadResolve() {
+  try { return new Map(Object.entries(JSON.parse(fs.readFileSync(RESOLVE_PATH, 'utf8')).resolutions || {})); }
+  catch (e) { return new Map(); }
+}
+function saveResolve(m) {
+  atomicWrite(RESOLVE_PATH, { saved: new Date().toISOString(), resolutions: Object.fromEntries(m) });
 }
 
 function saveCache(cache) {
@@ -583,7 +605,7 @@ async function main() {
   // Restore anything a previous dispatch already answered.
   const creditCache = loadCache();
   if (creditCache.size) console.log('  restored ' + n(creditCache.size) + ' cached profile verdict(s) — these are not asked again');
-  let supported = 0, unsupported = 0, noAnswer = 0, done = 0, sinceSave = 0;
+  let supported = 0, unsupported = 0, noAnswer = 0, noCredits = 0, done = 0, sinceSave = 0;
   const bad = [];
   let conc = CONCURRENCY, cleanStreak = 0, consecutiveFail = 0, stop = false;
   let sinceRefresh = 0;
@@ -615,6 +637,14 @@ async function main() {
         else {
           const hit = gids.filter(g => credits.has(g) || credits.has(String(g).slice(0, 8)));
           if (hit.length) supported++;
+          else if (!(credits.games || 0)) {
+            // ⚠ NOT UNSUPPORTED. PlayHQ returns NO statistics at all for this
+            // profile, so it cannot credit these games or any others. That says
+            // nothing about whether the alias is right — the same class of
+            // non-answer as a private profile, and counting it as unsupported
+            // inflated the 2026-08-23 figure with entries carrying no information.
+            noCredits++;
+          }
           else { unsupported++; bad.push({ ...a, gids, creditedCount: credits.games || 0 }); }
         }
         done++;
@@ -691,6 +721,7 @@ async function main() {
     console.log('');
     console.log('  ══ RESOLVING THE CORRECT TARGET FOR ' + n(bad.length) + ' UNSUPPORTED ALIAS(ES) ══');
     let resolved = 0, ambiguous = 0, unresolved = 0, k = 0;
+    const resolveCache = loadResolve();
     for (const b of bad) {
       // The name to search is the one on the file the alias currently points at —
       // that is the name the original matcher used to make the wrong choice.
@@ -699,7 +730,13 @@ async function main() {
         const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'players', b.target.slice(0, 2), b.target + '.json'), 'utf8'));
         nm = p.name || null;
       } catch (e) {}
-      const r = await findCorrectTarget(nm, b.gids, creditCache);
+      // Cached like the credit verdicts: a resolution that already succeeded is
+      // never redone, so a re-dispatch retries only what failed.
+      let r = resolveCache.get(b.id);
+      if (!r || !r.uuid) {
+        r = await findCorrectTarget(nm, b.gids, creditCache);
+        if (r && r.uuid) resolveCache.set(b.id, r);
+      }
       b.searchedName = nm;
       b.correctTarget = r.uuid;
       b.resolution = r.why;
@@ -707,6 +744,7 @@ async function main() {
       if (++k % 25 === 0) console.log('  … ' + k + '/' + bad.length + '  resolved ' + resolved + ' · ambiguous ' + ambiguous + ' · unresolved ' + unresolved);
     }
     console.log('');
+    saveResolve(resolveCache);
     console.log('    REPOINTABLE — one profile credits the games : ' + n(resolved) + '   ← actionable');
     console.log('    ambiguous — several credit them             : ' + n(ambiguous) + '   ← never guess');
     console.log('    no candidate credits them                   : ' + n(unresolved));
@@ -718,6 +756,7 @@ async function main() {
   console.log('    SUPPORTED    : ' + n(supported) + '  (' + pct(supported, judged) + '% of judged)   ← the alias is backed by PlayHQ');
   console.log('    UNSUPPORTED  : ' + n(unsupported) + '  (' + pct(unsupported, judged) + '% of judged)   ← target credits NONE of them');
   console.log('    no answer    : ' + n(noAnswer) + '   ← private / throttled / no verdict');
+  console.log('    target credits NOTHING at all : ' + n(noCredits) + '   ← PlayHQ returns no statistics for it; says nothing either way');
   console.log('');
   console.log('  UNSUPPORTED does not prove the alias wrong by itself — a profile can be');
   console.log('  private, or PlayHQ can omit a season. But an alias written on a NAME MATCH');
