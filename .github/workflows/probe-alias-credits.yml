@@ -70,7 +70,7 @@ on:
         type: string
 
 permissions:
-  contents: read
+  contents: write   # the caches are COMMITTED, not kept as artifacts
 
 jobs:
   probe:
@@ -81,27 +81,22 @@ jobs:
         with:
           ref: main
           fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # A 54,328-profile audit will not fit in one job. Verdicts are cached and
-      # restored so each dispatch continues instead of restarting. First run has no
-      # artifact and download-artifact FAILS the step rather than returning empty,
-      # so continue-on-error is required, not defensive.
-      - name: Restore previous verdict cache
-        uses: actions/download-artifact@v4
-        continue-on-error: true
-        with:
-          name: alias-credit-cache
-          path: /tmp/cache
-
-      - name: Stage the restored cache
+      # NO ARTIFACT RESTORE. download-artifact without a run-id only sees the
+      # CURRENT run's artifacts, so every dispatch restored nothing and re-asked
+      # all 54,328 profiles from cold — twice, silently, on 2026-08-23. The caches
+      # are committed to the repo instead and arrive with the checkout.
+      - name: Configure git
         run: |
-          mkdir -p reports
-          n=0
-          for f in alias-credit-cache.json alias-resolve-cache.json; do
-            if [ -f "/tmp/cache/$f" ]; then cp "/tmp/cache/$f" reports/; n=$((n+1)); fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Show what the checkout restored
+        run: |
+          for f in reports/alias-credit-cache.json reports/alias-resolve-cache.json; do
+            if [ -f "$f" ]; then echo "  $f  $(wc -c < "$f") bytes"; else echo "  $f  absent — starting cold"; fi
           done
-          if [ "$n" -gt 0 ]; then echo "  restored $n cache file(s) from the previous run";
-          else echo "  no previous cache — starting cold"; fi
 
       - name: Probe alias credits
         run: |
@@ -125,17 +120,7 @@ jobs:
           retention-days: 90
           if-no-files-found: warn
 
-      - name: Upload the verdict cache for the next run
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: alias-credit-cache
-          path: |
-            reports/alias-credit-cache.json
-            reports/alias-resolve-cache.json
-          retention-days: 90
-          overwrite: true
-          if-no-files-found: warn
+      # The caches live in the repo now; this artifact is only a convenience copy.
 
       # ⚠ MUST COME AFTER THE CACHE UPLOAD. Dispatched first, the next link could
       # start before its cache artifact existed and would redo everything this run
