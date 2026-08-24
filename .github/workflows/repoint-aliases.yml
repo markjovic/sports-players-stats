@@ -1,0 +1,90 @@
+# .github/workflows/repoint-aliases.yml
+name: Repoint Aliases
+
+# WRITES when mode=apply. Takes the data-write lock. DRY RUN BY DEFAULT.
+#
+# probe-alias-credits audited all 81,636 name-matched alias entries against PlayHQ
+# and found 874 whose target credits NONE of the games that alias delivers. For 128
+# of them exactly one profile carrying that name DOES credit those games. This
+# repoints those — and only those.
+#
+# THE ERROR BEING CORRECTED, established 2026-08-23:
+#   900f4fe6-bec3   is in PlayHQ box scores as "Jida McCrae-Cooper" and is NOT a
+#                   PlayHQ profile — the case aliases exist for.
+#   our alias sent it to d6c25c0c-e1e4-… , a DIFFERENT profile with a similar name.
+#   60eeeaa9-ab28-… is the profile that actually credits those games.
+# The alias came from matchFromGrade / matchFromGradeRosterByName, which decide on
+# an EXACT NAME MATCH and never check whether the chosen profile credits the games.
+#
+# IT RE-VERIFIES RATHER THAN TRUSTING THE REPORT. The audit ran over hours; the
+# table may have changed since. Every repoint is re-asked NOW — does the proposed
+# target credit these games, and does the current one still not? Both must hold.
+#
+# IT REFUSES to touch an alias whose current value no longer matches the audit, to
+# point at a uuid with no player file, to point an id at itself, or to write
+# anything outside players/aliases.
+#
+# REVERSIBLE: every change is written to reports/alias-repoint-log.json BEFORE any
+# shard is modified, with the exact before and after.
+#
+# NO actions/setup-node — this job fetches api.playhq.com.
+#
+# AFTER apply: run build-player-games, or player files keep the old resolution.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry-run re-verifies everything and reports exactly what apply would change. Read it first.'
+        required: false
+        default: 'dry-run'
+        type: choice
+        options: [dry-run, apply]
+      max:
+        description: 'Cap how many repoints to consider. 0 = all. Useful for applying a handful first.'
+        required: false
+        default: '0'
+        type: string
+      concurrency:
+        description: 'Profile calls in flight during re-verification.'
+        required: false
+        default: '4'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  repoint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Repoint aliases
+        run: |
+          ARGS="--max=${{ inputs.max }} --concurrency=${{ inputs.concurrency }}"
+          if [ "${{ inputs.mode }}" = "apply" ]; then ARGS="$ARGS --apply"; fi
+          node --max-old-space-size=8192 scripts/repoint-aliases.js $ARGS
+
+      - name: Upload the reversal log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alias-repoint-log
+          path: reports/alias-repoint-log.json
+          retention-days: 90
+          if-no-files-found: ignore
