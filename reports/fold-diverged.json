@@ -1,36 +1,25 @@
 {
   "advisory": "ADVISORY ONLY. This file is a single path overwritten by EVERY fold run, including a 1-player one, so it is not a durable record. Do not build any repair, check or audit on it — reconstruct from the player data instead (spectatorIds[] is the source of truth). See claude_context.md trap T6.",
-  "generatedAt": "2026-08-23T17:49:48.940Z",
+  "generatedAt": "2026-08-24T18:47:06.298Z",
   "dryRun": false,
-  "filesScanned": 419366,
-  "folded": 4,
-  "promotes": 3,
-  "merges": 1,
-  "indexShardsTouched": 8,
-  "aliasEntriesScanned": 498570,
-  "aliasValuesRepointed": 1,
-  "aliasShardsTouched": 1,
+  "filesScanned": 419404,
+  "folded": 2,
+  "promotes": 2,
+  "merges": 0,
+  "indexShardsTouched": 4,
+  "aliasEntriesScanned": 498609,
+  "aliasValuesRepointed": 0,
+  "aliasShardsTouched": 0,
   "entries": [
     {
-      "apiId": "6c30d8d9-9402-47c7-997e-7ddcb9905c1f",
+      "apiId": "5589712a-a58e-49c1-840d-20f4e3470119",
       "action": "promote",
-      "oldKey": "434bc6dc-c037-4a14-9573-780190fac20b"
+      "oldKey": "c00cddce-3588-4f7e-b3f0-0001e1866420"
     },
     {
-      "apiId": "b20ea18d-088b-4b30-8d75-109a3f268db0",
+      "apiId": "fdc0c9e8-b64e-4398-b63f-a1120e864d44",
       "action": "promote",
-      "oldKey": "45e14014-5907-4b00-8bee-5327119c502b"
-    },
-    {
-      "apiId": "a35d0815-d54a-4c59-955f-6a92d35260d1",
-      "action": "promote",
-      "oldKey": "59c18813-eafe-4fa7-bbe1-dabf2a13d4e8"
-    },
-    {
-      "apiId": "befbcccd-9c49-4ce1-a122-b3fb089f4a14",
-      "action": "merge",
-      "oldKey": "f720e912-4d2c-401b-8b48-d8f0ca6caa3b",
-      "keeper": "befbcccd-9c49-4ce1-a122-b3fb089f4a14"
+      "oldKey": "f892ae04-c25d-4adf-a522-6e9fa8f45b2d"
     }
   ]
 }
