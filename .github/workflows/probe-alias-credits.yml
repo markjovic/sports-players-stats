@@ -96,12 +96,12 @@ jobs:
       - name: Stage the restored cache
         run: |
           mkdir -p reports
-          if [ -f /tmp/cache/alias-credit-cache.json ]; then
-            cp /tmp/cache/alias-credit-cache.json reports/
-            echo "  restored verdict cache from the previous run"
-          else
-            echo "  no previous cache — starting cold"
-          fi
+          n=0
+          for f in alias-credit-cache.json alias-resolve-cache.json; do
+            if [ -f "/tmp/cache/$f" ]; then cp "/tmp/cache/$f" reports/; n=$((n+1)); fi
+          done
+          if [ "$n" -gt 0 ]; then echo "  restored $n cache file(s) from the previous run";
+          else echo "  no previous cache — starting cold"; fi
 
       - name: Probe alias credits
         run: |
@@ -130,7 +130,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: alias-credit-cache
-          path: reports/alias-credit-cache.json
+          path: |
+            reports/alias-credit-cache.json
+            reports/alias-resolve-cache.json
           retention-days: 90
           overwrite: true
           if-no-files-found: warn
