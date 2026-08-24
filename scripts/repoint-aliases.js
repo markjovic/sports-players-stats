@@ -383,17 +383,43 @@ const GIT = { cwd: ROOT, stdio: 'pipe', timeout: 10 * 60 * 1000, maxBuffer: 512 
 async function main() {
   console.log('repoint-aliases — ' + (APPLY ? 'APPLY (writes and commits)' : 'DRY RUN (writes nothing)'));
 
-  // ── 1. The audit ──────────────────────────────────────────────────────────
-  let report;
-  try { report = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'alias-credit-audit.json'), 'utf8')); }
-  catch (e) { console.error('ABORT: reports/alias-credit-audit.json not readable — ' + e.message); process.exit(1); }
-  if (report.partial) {
-    console.log('  ⚠ the audit is marked PARTIAL — only the aliases it reached are considered');
+  // ── 1. WHERE THE REPOINTS COME FROM ───────────────────────────────────────
+  // reports/alias-resolve-cache.json is the primary source: it holds the 128
+  // resolutions and nothing else, at 18 KB. The audit report is accepted as a
+  // fallback but is NOT required — on 2026-08-23 it was written to the runner and
+  // never reached the repo, while the resolve cache survived, and there is no
+  // reason to make an 18 KB answer depend on a 32 MB file being present.
+  //
+  // Everything else is reconstructed locally: the CURRENT target from the live
+  // alias table, and the games each alias delivers from games/bv. Neither needs
+  // the audit, and both are more up to date than it.
+  let cands = [];
+  let src = null;
+  try {
+    const rc = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'alias-resolve-cache.json'), 'utf8'));
+    for (const [id, r] of Object.entries(rc.resolutions || {})) {
+      if (r && r.uuid) cands.push({ id, correctTarget: r.uuid, why: r.why });
+    }
+    src = 'reports/alias-resolve-cache.json';
+  } catch (e) { /* fall through to the audit */ }
+
+  if (!cands.length) {
+    try {
+      const report = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'alias-credit-audit.json'), 'utf8'));
+      if (report.partial) console.log('  ⚠ the audit is marked PARTIAL — only the aliases it reached are considered');
+      for (const x of (report.unsupportedEntries || [])) {
+        if (x && x.id && x.correctTarget) cands.push({ id: x.id, correctTarget: x.correctTarget, gids: x.gids });
+      }
+      src = 'reports/alias-credit-audit.json';
+    } catch (e) {}
   }
-  const all = (report.unsupportedEntries || []);
-  let cands = all.filter(x => x && x.id && x.correctTarget && x.target && x.correctTarget !== x.target);
-  console.log('  unsupported entries in the audit : ' + n(all.length));
-  console.log('  with a resolved correctTarget    : ' + n(cands.length));
+  if (!cands.length) {
+    console.error('ABORT: no repoints found. Expected reports/alias-resolve-cache.json (preferred)');
+    console.error('  or reports/alias-credit-audit.json. Run probe-alias-credits first.');
+    process.exit(1);
+  }
+  console.log('  source                           : ' + src);
+  console.log('  proposed repoints                : ' + n(cands.length));
   if (MAX) { cands = cands.slice(0, MAX); console.log('  limited by --max to              : ' + n(cands.length)); }
   if (!cands.length) { console.log('  nothing to do'); return; }
 
@@ -406,6 +432,34 @@ async function main() {
     for (const [k, v] of Object.entries(m)) { current.set(k, v); shardOf.set(k, f); }
   }
   console.log('  alias entries currently in the table: ' + n(current.size));
+
+  // The games each candidate alias delivers, read from the roster store rather
+  // than taken from the report — this is what the re-verification is checked
+  // against, so it must reflect the CURRENT data, not what it was hours ago.
+  const wantIds = new Set(cands.map(c => c.id));
+  const delivered = new Map();
+  for (const id of wantIds) delivered.set(id, []);
+  const gamesDir = path.join(ROOT, 'games', 'bv');
+  for (const f of fs.readdirSync(gamesDir)) {
+    if (!f.endsWith('.json')) continue;
+    let sg; try { sg = JSON.parse(fs.readFileSync(path.join(gamesDir, f), 'utf8')); } catch (e) { continue; }
+    for (const [gid, g] of Object.entries(sg.games || {})) {
+      for (const e of (Array.isArray(g.p) ? g.p : [])) {
+        const id = e && e.id;
+        if (!id) continue;
+        const key = wantIds.has(id) ? id : String(id).slice(0, TRUNC_LEN);
+        const arr = delivered.get(key);
+        if (arr && arr.length < 6 && wantIds.has(key)) arr.push(gid);
+      }
+    }
+  }
+  for (const c of cands) {
+    c.gids = delivered.get(c.id) || [];
+    c.target = current.get(c.id);
+  }
+  const noGames = cands.filter(c => !c.gids.length).length;
+  if (noGames) console.log('  ' + n(noGames) + ' candidate(s) deliver no appearances — nothing to verify against, skipped');
+  cands = cands.filter(c => c.gids.length);
   console.log('');
 
   // ── 3. Refuse anything that has moved, then RE-VERIFY against PlayHQ ───────
@@ -413,7 +467,7 @@ async function main() {
   for (const c of cands) {
     const now = current.get(c.id);
     if (now === undefined)      { skipped.push({ ...c, why: 'alias entry no longer exists' }); continue; }
-    if (now !== c.target)       { skipped.push({ ...c, why: 'alias now points at ' + now + ', not the audited ' + c.target }); continue; }
+    if (now === c.correctTarget) { skipped.push({ ...c, why: 'already points at the proposed target' }); continue; }
     if (c.correctTarget === c.id || String(c.correctTarget).slice(0, TRUNC_LEN) === c.id) {
       skipped.push({ ...c, why: 'would point the id at itself' }); continue;
     }
