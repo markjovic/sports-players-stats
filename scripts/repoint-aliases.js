@@ -432,6 +432,15 @@ async function main() {
     }
   });
 
+  addFrom('squad-evidence-audit.json', () => {
+    const sq = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'squad-evidence-audit.json'), 'utf8'));
+    for (const e of (sq.entries || [])) {
+      if (e && e.correctTarget && !cmap.has(e.id)) {
+        cmap.set(e.id, { id: e.id, correctTarget: e.correctTarget, why: 'teammates identify the club and grade; one candidate matches', from: 'squad-evidence' });
+      }
+    }
+  });
+
   addFrom('unresolved-alias-audit.json', () => {
     const ur = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'unresolved-alias-audit.json'), 'utf8'));
     for (const e of (ur.entries || [])) {
