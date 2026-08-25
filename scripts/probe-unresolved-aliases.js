@@ -1,46 +1,38 @@
-// scripts/repoint-aliases.js
+// scripts/probe-unresolved-aliases.js
 //
-// WRITES when --apply. Takes the data-write lock. DRY RUN BY DEFAULT.
+// Fetches PlayHQ box scores. Writes and COMMITS one report. No data-write lock.
 //
-// WHAT IT DOES. probe-alias-credits audited all 81,636 name-matched alias entries
-// against PlayHQ and found 874 whose target credits NONE of the games that alias
-// delivers. For 128 of them exactly one profile carrying that name DOES credit
-// those games. This repoints those 128 — and only those 128.
+// THE LAST 40. probe-shared-name-aliases examined the 87 aliases whose name is
+// shared by several players and settled 47 of them from registrations alone:
+// 24 CONFIRMED, 23 REPOINTED (applied 2026-08-24). It could not settle:
 //
-// THE ERROR BEING CORRECTED, from 2026-08-23:
-//   900f4fe6-bec3  appears in PlayHQ box scores as "Jida McCrae-Cooper" and is NOT
-//                  a PlayHQ profile — the case aliases exist for.
-//   our alias sent it to d6c25c0c-e1e4-… , a DIFFERENT profile, similar name.
-//   60eeeaa9-ab28-… is the profile that actually credits those games.
-// The alias was written by matchFromGrade / matchFromGradeRosterByName on an EXACT
-// NAME MATCH, which never checked whether the chosen profile credits the games.
+//   4 AMBIGUOUS  — two same-named candidates BOTH hold registrations fitting the
+//                  games. Zachary Price, Samara Ballis, and — note — Ethan Belcher
+//                  and Harrison Belcher, who look like brothers on one team, which
+//                  is exactly why both fit.
+//   36 NONE-FIT  — NO candidate holds a registration for those seasons, so our
+//                  registration data is incomplete for them. That says nothing
+//                  about whether the alias is right.
 //
-// ── WHY THIS RE-VERIFIES RATHER THAN TRUSTING THE REPORT ────────────────────
-// The audit ran over several hours. Between then and now the alias table may have
-// changed, a player file may have moved, or PlayHQ may return something different.
-// So for EVERY candidate this re-asks PlayHQ: does correctTarget credit these
-// games, and does the current target still not? Both must hold or it is skipped.
-// A repoint applied from a stale report is exactly the class of error this whole
-// exercise exists to clean up.
+// Neither group is unsettleable. They are unsettleable BY THE TESTS BUILT SO FAR.
+// The evidence that settles them is the one that settled Jida McCrae-Cooper by
+// hand: open a box score for a game the alias delivers and read what PlayHQ calls
+// that id, alongside every candidate and what each was registered to.
 //
-// ── WHAT IT REFUSES TO DO ───────────────────────────────────────────────────
-//   · touch any alias whose current value no longer matches the report
-//   · point at a uuid with no player file
-//   · point an id at itself
-//   · apply anything the re-verification does not confirm
-//   · write player or game data — ONLY players/aliases
+// THIS PRINTS EVERYTHING NEEDED TO DECIDE, IN ONE SCREEN PER ALIAS:
+//   · the PlayHQ NAME and jersey NUMBER for the alias id, per game sampled
+//   · which team the id was on in that game, and whether that is home or away
+//   · every same-named candidate, their registration for THAT season and team,
+//     their career size, and their PlayHQ profile link
+//   · a VERDICT where the evidence is decisive, and a plain statement of what is
+//     missing where it is not
 //
-// REVERSIBLE. Every change is written to reports/alias-repoint-log.json BEFORE
-// any shard is modified, with the exact before and after, so the table can be put
-// back by hand.
-//
-// AFTER apply: run build-player-games. The alias table is corrected but every
-// player file still reflects the old resolution until it is rebuilt.
+// It NEVER writes an alias. Anything it settles goes through repoint-aliases,
+// which re-verifies independently.
 //
 // Usage:
-//   node scripts/repoint-aliases.js                 # dry run, re-verifies everything
-//   node scripts/repoint-aliases.js --apply
-//   node scripts/repoint-aliases.js --apply --max=20
+//   node scripts/probe-unresolved-aliases.js                 # all 40
+//   node scripts/probe-unresolved-aliases.js --games=4       # sample more games each
 
 'use strict';
 const fs     = require('fs');
@@ -51,17 +43,22 @@ const { execSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
-const APPLY = args.includes('--apply');
 const num = (f, d) => {
   const a = args.find(x => x.startsWith('--' + f + '='));
   const v = a ? Number(a.split('=')[1]) : NaN;
   return Number.isFinite(v) && v > 0 ? v : d;
 };
-const MAX = num('max', 0);                 // 0 = all
-const CONCURRENCY = Math.max(1, Math.min(20, num('concurrency', 4)));
+const GAMES_PER = num('games', 3);
 const API_URL = 'https://api.playhq.com/graphql';
 const TRUNC_LEN = 13;
 const n = (x) => Number(x || 0).toLocaleString();
+
+const normName = s => String(s == null ? '' : s).normalize('NFKC')
+  .replace(/[\u2018\u2019\u201A\u201B\u2032\u02BC]/g, "'")
+  .replace(/[\u201C\u201D\u201E\u201F\u2033]/g, '"')
+  .replace(/[\u2010-\u2015\u2212]/g, '-')
+  .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase().replace(/\s+/g, ' ').trim();
 
 const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
 const GAMES_DIR     = path.join(ROOT, 'games', 'bv');
@@ -378,247 +375,196 @@ async function creditedGameIds(uuid) {
 }
 
 
-const GIT = { cwd: ROOT, stdio: 'pipe', timeout: 10 * 60 * 1000, maxBuffer: 512 * 1024 * 1024 };
+
+const _GIT = { cwd: ROOT, stdio: 'pipe', timeout: 10 * 60 * 1000, maxBuffer: 512 * 1024 * 1024 };
+const REPORT = 'reports/unresolved-alias-audit.json';
+
+// A report uploaded only as an artifact does not exist to the next workflow.
+function commitReport(message) {
+  try {
+    execSync('git add -- ' + REPORT, _GIT);
+    const staged = execSync('git diff --staged --shortstat', _GIT).toString().trim();
+    if (!staged) { console.log('  nothing to commit'); return; }
+    console.log('  staging: ' + staged);
+    execSync('git commit -q -m "probe-unresolved-aliases: ' + String(message).replace(/"/g, "'") + '"', _GIT);
+    for (let a = 1; a <= 40; a++) {
+      try { execSync('git merge --abort', _GIT); } catch (e) {}
+      try {
+        console.log('  … fetch/merge/push (attempt ' + a + ')');
+        execSync('git fetch origin main', _GIT);
+        execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', _GIT);
+        execSync('git push origin main', _GIT);
+        console.log('  ✔ pushed');
+        return;
+      } catch (e) {
+        if (a === 40) throw new Error('push failed after 40 attempts');
+        const w = 1 + Math.floor(Math.random() * 60);
+        console.log('  … push attempt ' + a + ' failed, retrying in ' + w + 's');
+        try { execSync('sleep ' + w, { stdio: 'pipe', timeout: (w + 30) * 1000 }); } catch (e2) {}
+      }
+    }
+  } catch (e) { console.log('  ⚠ commit failed: ' + e.message); }
+}
 
 async function main() {
-  console.log('repoint-aliases — ' + (APPLY ? 'APPLY (writes and commits)' : 'DRY RUN (writes nothing)'));
+  console.log('probe-unresolved-aliases — the 4 ambiguous and 36 none-fit, in full');
 
-  // ── 1. WHERE THE REPOINTS COME FROM ───────────────────────────────────────
-  // reports/alias-resolve-cache.json is the primary source: it holds the 128
-  // resolutions and nothing else, at 18 KB. The audit report is accepted as a
-  // fallback but is NOT required — on 2026-08-23 it was written to the runner and
-  // never reached the repo, while the resolve cache survived, and there is no
-  // reason to make an 18 KB answer depend on a 32 MB file being present.
-  //
-  // Everything else is reconstructed locally: the CURRENT target from the live
-  // alias table, and the games each alias delivers from games/bv. Neither needs
-  // the audit, and both are more up to date than it.
-  // THREE SOURCES, ALL READ, deduplicated by alias id. Reading only the first one
-  // that happened to exist was a trap: alias-resolve-cache.json holds the ORIGINAL
-  // 128 credit-based resolutions and would have masked the 23 found later by
-  // shared-name registration matching, silently, with no indication anything had
-  // been skipped.
-  //
-  //   alias-resolve-cache.json     — from probe-alias-credits: the profile PlayHQ
-  //                                  credits with these games
-  //   shared-name-alias-audit.json — from probe-shared-name-aliases: for names
-  //                                  SEVERAL players share, the only candidate
-  //                                  whose registrations fit the games
-  //   alias-credit-audit.json      — the full audit, as a fallback
-  //
-  // Every candidate is re-verified against PlayHQ below regardless of source, so a
-  // disagreement between two reports cannot slip through: the check decides.
-  const cmap = new Map();
-  const sources = [];
-  const addFrom = (label, fn2) => {
-    let before = cmap.size;
-    try { fn2(); } catch (e) { return; }
-    if (cmap.size > before) sources.push(label + ' (+' + (cmap.size - before) + ')');
+  let audit;
+  try { audit = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'shared-name-alias-audit.json'), 'utf8')); }
+  catch (e) { console.error('ABORT: reports/shared-name-alias-audit.json not readable — ' + e.message); process.exit(1); }
+  const pop = (audit.entries || []).filter(e => e && (e.verdict === 'ambiguous' || e.verdict === 'none-fit'));
+  console.log('  ambiguous : ' + n(pop.filter(e => e.verdict === 'ambiguous').length));
+  console.log('  none-fit  : ' + n(pop.filter(e => e.verdict === 'none-fit').length));
+  if (!pop.length) { console.log('  nothing to do'); return; }
+
+  // Candidate detail: name, career size, and registrations per season.
+  const load = (uuid) => {
+    try {
+      const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'players', uuid.slice(0, 2), uuid + '.json'), 'utf8'));
+      const regs = new Map();
+      for (const se of (p.seasons || [])) {
+        if (!se || !se.sid) continue;
+        const e = { sn: se.sn || null, club: se.club || null, tids: [], tns: [] };
+        for (const r of (se.regs || [])) { if (r && r.tid) { e.tids.push(r.tid); e.tns.push(r.tn || r.gn || null); } }
+        regs.set(se.sid, e);
+      }
+      return { uuid, name: p.name || '?', games: (p.games || []).length,
+               gp: p.sports?.Basketball?.gp ?? null, private: p.private === true, regs };
+    } catch (e) { return { uuid, name: '(no player file)', games: 0, gp: null, regs: new Map() }; }
   };
 
-  addFrom('alias-resolve-cache.json', () => {
-    const rc = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'alias-resolve-cache.json'), 'utf8'));
-    for (const [id, r] of Object.entries(rc.resolutions || {})) {
-      if (r && r.uuid && !cmap.has(id)) cmap.set(id, { id, correctTarget: r.uuid, why: r.why, from: 'credits' });
-    }
-  });
-
-  addFrom('shared-name-alias-audit.json', () => {
-    const sn = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'shared-name-alias-audit.json'), 'utf8'));
-    for (const e of (sn.entries || [])) {
-      if (e && e.verdict === 'repoint' && e.correctTarget && !cmap.has(e.id)) {
-        cmap.set(e.id, { id: e.id, correctTarget: e.correctTarget, why: 'only candidate whose registrations fit', from: 'shared-name' });
-      }
-    }
-  });
-
-  addFrom('unresolved-alias-audit.json', () => {
-    const ur = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'unresolved-alias-audit.json'), 'utf8'));
-    for (const e of (ur.entries || [])) {
-      if (e && e.correctTarget && !cmap.has(e.id)) {
-        cmap.set(e.id, { id: e.id, correctTarget: e.correctTarget, why: 'box score named the team; one candidate registered to it', from: 'box-score-team' });
-      }
-    }
-  });
-
-  addFrom('alias-credit-audit.json', () => {
-    const report = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'alias-credit-audit.json'), 'utf8'));
-    if (report.partial) console.log('  ⚠ the credit audit is marked PARTIAL');
-    for (const x of (report.unsupportedEntries || [])) {
-      if (x && x.id && x.correctTarget && !cmap.has(x.id)) cmap.set(x.id, { id: x.id, correctTarget: x.correctTarget, from: 'credit-audit' });
-    }
-  });
-
-  let cands = [...cmap.values()];
-  const src = sources.join(', ') || 'none';
-  if (!cands.length) {
-    console.error('ABORT: no repoints found. Expected any of reports/alias-resolve-cache.json,');
-    console.error('  reports/shared-name-alias-audit.json, reports/alias-credit-audit.json.');
-    process.exit(1);
-  }
-  console.log('  sources read                     : ' + src);
-  console.log('  proposed repoints                : ' + n(cands.length));
-  if (MAX) { cands = cands.slice(0, MAX); console.log('  limited by --max to              : ' + n(cands.length)); }
-  if (!cands.length) { console.log('  nothing to do'); return; }
-
-  // ── 2. Current state of the alias table ───────────────────────────────────
-  const aliasDir = path.join(ROOT, 'players', 'aliases');
-  const shardOf = new Map(), current = new Map();
-  for (const f of fs.readdirSync(aliasDir)) {
-    if (!f.endsWith('.json')) continue;
-    let m; try { m = JSON.parse(fs.readFileSync(path.join(aliasDir, f), 'utf8')); } catch (e) { continue; }
-    for (const [k, v] of Object.entries(m)) { current.set(k, v); shardOf.set(k, f); }
-  }
-  console.log('  alias entries currently in the table: ' + n(current.size));
-
-  // The games each candidate alias delivers, read from the roster store rather
-  // than taken from the report — this is what the re-verification is checked
-  // against, so it must reflect the CURRENT data, not what it was hours ago.
-  const wantIds = new Set(cands.map(c => c.id));
-  const delivered = new Map();
-  for (const id of wantIds) delivered.set(id, []);
+  // The games each alias delivers, with season and both teams.
+  const wantIds = new Set(pop.map(e => e.id));
+  const games = new Map();
+  for (const id of wantIds) games.set(id, []);
   const gamesDir = path.join(ROOT, 'games', 'bv');
+  const teamName = new Map();
   for (const f of fs.readdirSync(gamesDir)) {
     if (!f.endsWith('.json')) continue;
+    const sid = path.basename(f, '.json');
     let sg; try { sg = JSON.parse(fs.readFileSync(path.join(gamesDir, f), 'utf8')); } catch (e) { continue; }
     for (const [gid, g] of Object.entries(sg.games || {})) {
       for (const e of (Array.isArray(g.p) ? g.p : [])) {
-        const id = e && e.id;
-        if (!id) continue;
-        const key = wantIds.has(id) ? id : String(id).slice(0, TRUNC_LEN);
-        const arr = delivered.get(key);
-        if (arr && arr.length < 6 && wantIds.has(key)) arr.push(gid);
+        const raw = e && e.id;
+        if (!raw) continue;
+        const key = wantIds.has(raw) ? raw : String(raw).slice(0, TRUNC_LEN);
+        const arr = games.get(key);
+        if (arr && wantIds.has(key) && arr.length < GAMES_PER) {
+          arr.push({ gid, sid, h: g.h, a: g.a, spc: !!g.spc, dg: !!g.dg });
+        }
       }
     }
   }
-  for (const c of cands) {
-    c.gids = delivered.get(c.id) || [];
-    c.target = current.get(c.id);
-  }
-  const noGames = cands.filter(c => !c.gids.length).length;
-  if (noGames) console.log('  ' + n(noGames) + ' candidate(s) deliver no appearances — nothing to verify against, skipped');
-  cands = cands.filter(c => c.gids.length);
-  console.log('');
 
-  // ── 3. Refuse anything that has moved, then RE-VERIFY against PlayHQ ───────
-  const planned = [], skipped = [];
-  for (const c of cands) {
-    const now = current.get(c.id);
-    if (now === undefined)      { skipped.push({ ...c, why: 'alias entry no longer exists' }); continue; }
-    if (now === c.correctTarget) { skipped.push({ ...c, why: 'already points at the proposed target' }); continue; }
-    if (c.correctTarget === c.id || String(c.correctTarget).slice(0, TRUNC_LEN) === c.id) {
-      skipped.push({ ...c, why: 'would point the id at itself' }); continue;
+  const out = [];
+  let decided = 0, undecided = 0, k = 0;
+  for (const e of pop) {
+    const gs = games.get(e.id) || [];
+    const cands = (e.candidates || []).map(c => load(c.uuid));
+    const row = { id: e.id, name: e.name, verdict: e.verdict, target: e.target, games: gs, box: [], candidates: [], decision: null };
+
+    // Ask PlayHQ what it calls this id, in each sampled game.
+    for (const g of gs) {
+      const r = await gqlSpectator(g.gid);
+      if (!r || !r.ok) { row.box.push({ gid: g.gid, error: 'no box score' }); continue; }
+      let found = null;
+      for (const side of ['home', 'away']) {
+        for (const p of (r.game?.statistics?.[side]?.players || [])) {
+          const pid = String(p.profileID || '');
+          if (!pid) continue;                    // a Fill-in row carries NO id
+          // Match in BOTH directions and at either length. A bare
+          // `pid.slice(0, 13) === id` is the T37 fault — roster and box-score ids
+          // are not one length, and comparing at a fixed offset silently misses.
+          if (pid === e.id || pid.startsWith(e.id) || e.id.startsWith(pid)) {
+            found = { gid: g.gid, sid: g.sid, side, name: String(p.name || '').trim(),
+                      number: p.playerNumber || null, profileID: pid,
+                      team: side === 'home' ? g.h : g.a };
+          }
+        }
+      }
+      row.box.push(found || { gid: g.gid, sid: g.sid, error: 'id not in the box score' });
     }
-    const pf = path.join(ROOT, 'players', c.correctTarget.slice(0, 2), c.correctTarget + '.json');
-    if (!fs.existsSync(pf))     { skipped.push({ ...c, why: 'no player file for the proposed target' }); continue; }
-    planned.push(c);
-  }
-  console.log('  ══ RE-VERIFYING ' + n(planned.length) + ' CANDIDATE(S) AGAINST PLAYHQ ═══════════════');
-  console.log('  The audit ran over hours. Each repoint is re-asked NOW: does the proposed');
-  console.log('  target credit these games, and does the current target still not?');
 
-  const confirmed = [], rejected = [];
-  const cache = new Map();
-  const credits = async (uuid) => {
-    if (cache.has(uuid)) return cache.get(uuid);
-    const r = await creditedGameIds(uuid);
-    cache.set(uuid, r);
-    return r;
-  };
-  let k = 0;
-  for (let i = 0; i < planned.length; i += CONCURRENCY) {
-    const chunk = planned.slice(i, i + CONCURRENCY);
-    await Promise.all(chunk.map(async (c) => {
-      const [good, bad] = [await credits(c.correctTarget), await credits(c.target)];
-      const hits = (set) => set && c.gids.some(g => set.has(g) || set.has(String(g).slice(0, 8)));
-      if (!good)        { rejected.push({ ...c, why: 'proposed target gave no answer now' }); return; }
-      if (!hits(good))  { rejected.push({ ...c, why: 'proposed target does NOT credit these games now' }); return; }
-      if (bad && hits(bad)) { rejected.push({ ...c, why: 'current target DOES credit them now — the audit is stale' }); return; }
-      confirmed.push(c);
-    }));
-    k += chunk.length;
-    if (k % 25 < chunk.length) console.log('  … ' + k + '/' + planned.length + '  confirmed ' + confirmed.length + ' · rejected ' + rejected.length);
-  }
-
-  console.log('');
-  console.log('    CONFIRMED — safe to repoint : ' + n(confirmed.length));
-  console.log('    rejected on re-check        : ' + n(rejected.length));
-  console.log('    skipped before any call     : ' + n(skipped.length));
-  console.log('');
-  for (const s of skipped.slice(0, 15)) console.log('    SKIP  ' + s.id + '  ' + s.why);
-  for (const r of rejected.slice(0, 15)) console.log('    REJECT ' + r.id + '  ' + r.why);
-  if (skipped.length + rejected.length) console.log('');
-  for (const c of confirmed.slice(0, 40)) {
-    console.log('    REPOINT ' + c.id + '   [' + (c.from || '?') + ']');
-    console.log('        from ' + c.target);
-    console.log('        to   ' + c.correctTarget);
-  }
-  if (confirmed.length > 40) console.log('    … and ' + n(confirmed.length - 40) + ' more');
-  console.log('');
-
-  if (!APPLY) { console.log('  DRY RUN — nothing written. Re-run with --apply.'); return; }
-  if (!confirmed.length) { console.log('  nothing confirmed; nothing to write'); return; }
-
-  // ── 4. Record BEFORE writing ──────────────────────────────────────────────
-  const logPath = path.join(ROOT, 'reports', 'alias-repoint-log.json');
-  fs.mkdirSync(path.dirname(logPath), { recursive: true });
-  fs.writeFileSync(logPath, JSON.stringify({
-    applied: new Date().toISOString(),
-    note: 'restore by setting each id back to `from` in players/aliases/<first two chars>.json',
-    entries: confirmed.map(c => ({ id: c.id, from: c.target, to: c.correctTarget, games: c.gids })),
-  }, null, 1));
-  console.log('  recorded ' + n(confirmed.length) + ' change(s) in reports/alias-repoint-log.json BEFORE touching the table');
-
-  // ── 5. Write, one shard at a time ─────────────────────────────────────────
-  const byShard = new Map();
-  for (const c of confirmed) {
-    const sh = shardOf.get(c.id);
-    if (!sh) continue;
-    if (!byShard.has(sh)) byShard.set(sh, []);
-    byShard.get(sh).push(c);
-  }
-  let written = 0;
-  for (const [sh, list] of byShard) {
-    const p = path.join(aliasDir, sh);
-    let m; try { m = JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { console.log('  ⚠ unreadable shard ' + sh); continue; }
-    for (const c of list) {
-      if (m[c.id] !== c.target) { console.log('  ⚠ ' + c.id + ' changed under us — left alone'); continue; }
-      m[c.id] = c.correctTarget;
-      written++;
+    // For each candidate, what did they hold in the seasons these games are in?
+    for (const c of cands) {
+      const per = gs.map(g => {
+        const r = c.regs.get(g.sid);
+        if (!r) return { sid: g.sid, held: null };
+        const onSide = r.tids.includes(g.h) ? 'home' : r.tids.includes(g.a) ? 'away' : null;
+        return { sid: g.sid, held: { sn: r.sn, club: c.regs.get(g.sid).club, tids: r.tids, tns: r.tns, onSide } };
+      });
+      row.candidates.push({ uuid: c.uuid, name: c.name, games: c.games, gp: c.gp, private: c.private,
+                            isCurrent: c.uuid === e.target, perSeason: per,
+                            link: 'https://www.playhq.com/public/profile/' + c.uuid + '/statistics' });
     }
-    const sorted = {};
-    for (const key of Object.keys(m).sort()) sorted[key] = m[key];
-    fs.writeFileSync(p, JSON.stringify(sorted));      // minified, matching the store
-  }
-  console.log('  repointed ' + n(written) + ' entrie(s) across ' + n(byShard.size) + ' shard(s)');
 
-  // ── 6. Commit ─────────────────────────────────────────────────────────────
-  for (const p of ['players/aliases', 'reports/alias-repoint-log.json']) {
-    try { execSync('git add -- ' + p, GIT); } catch (e) {}
+    // Decide ONLY where the box score names a team a single candidate was on.
+    const sides = row.box.filter(b => b && b.team);
+    if (sides.length) {
+      const fits = row.candidates.filter(c => c.perSeason.some(p =>
+        p.held && p.held.tids.some(t => sides.some(s => s.team === t))));
+      if (fits.length === 1) { row.decision = { verdict: 'repoint-or-confirm', uuid: fits[0].uuid,
+        why: 'the box score names the TEAM, and only this candidate was registered to it that season' }; decided++; }
+      else if (fits.length > 1) { row.decision = { verdict: 'still ambiguous', why: fits.length + ' candidates were registered to that exact team' }; undecided++; }
+      else { row.decision = { verdict: 'no candidate registered to that team', why: 'our registration data does not cover it' }; undecided++; }
+    } else { row.decision = { verdict: 'no box score', why: 'PlayHQ does not retain one for these games' }; undecided++; }
+
+    out.push(row);
+    if (++k % 5 === 0) console.log('  … ' + k + '/' + pop.length + '  decided ' + decided + ' · undecided ' + undecided);
   }
-  const staged = execSync('git diff --staged --shortstat', GIT).toString().trim();
-  if (!staged) { console.log('  nothing staged'); return; }
-  console.log('  staging: ' + staged);
-  execSync('git commit -q -m "repoint-aliases: ' + written + ' alias entries repointed to the profile that credits their games"', GIT);
-  for (let attempt = 1; attempt <= 40; attempt++) {
-    try { execSync('git merge --abort', GIT); } catch (e) {}
-    try {
-      console.log('  … fetch/merge/push (attempt ' + attempt + ')');
-      execSync('git fetch origin main', GIT);
-      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', GIT);
-      execSync('git push origin main', GIT);
-      console.log('  ✔ pushed');
-      break;
-    } catch (e) {
-      if (attempt === 40) throw new Error('push failed after 40 attempts');
-      const wait = 1 + Math.floor(Math.random() * 60);
-      console.log('  … push attempt ' + attempt + ' failed, retrying in ' + wait + 's');
-      try { execSync('sleep ' + wait, { stdio: 'pipe', timeout: (wait + 30) * 1000 }); } catch (e2) {}
-    }
-  }
+
+  // ── The full listing ──────────────────────────────────────────────────────
   console.log('');
-  console.log('  NEXT: run build-player-games. Player files still hold the OLD resolution');
-  console.log('  until it rebuilds them from the corrected table.');
+  console.log('  ══ EVERY UNRESOLVED ALIAS, IN FULL ════════════════════════════════');
+  for (const r of out) {
+    console.log('');
+    console.log('  ─────────────────────────────────────────────────────────────────');
+    console.log('  ' + r.id + '   ' + JSON.stringify(r.name) + '   [' + r.verdict + ']');
+    console.log('    currently points at : ' + r.target);
+    console.log('    PLAYHQ BOX SCORE says this id is:');
+    for (const b of r.box) {
+      if (b.error) { console.log('      game ' + b.gid + '  — ' + b.error); continue; }
+      console.log('      game ' + b.gid + ' (season ' + b.sid + ')  ' + JSON.stringify(b.name) +
+                  (b.number ? '  #' + b.number : '') + '  on the ' + b.side + ' team ' + b.team);
+    }
+    console.log('    CANDIDATES carrying that name:');
+    for (const c of r.candidates) {
+      console.log('      ' + c.uuid + (c.isCurrent ? '  [CURRENT]' : '') + (c.private ? '  [PRIVATE]' : ''));
+      console.log('        name ' + JSON.stringify(c.name) + '  · games held ' + n(c.games) + '  · PlayHQ gp ' + (c.gp ?? '—'));
+      for (const p of c.perSeason) {
+        if (!p.held) { console.log('        season ' + p.sid + ': NO registration held'); continue; }
+        console.log('        season ' + p.sid + ': ' + (p.held.sn || '(unnamed)') +
+                    (p.held.club ? ' · ' + p.held.club : '') +
+                    ' · teams ' + (p.held.tids.join(', ') || 'none') +
+                    (p.held.onSide ? '   ← ON THE ' + p.held.onSide.toUpperCase() + ' TEAM OF THIS GAME' : ''));
+        if (p.held.tns.filter(Boolean).length) console.log('              ' + p.held.tns.filter(Boolean).join(' | '));
+      }
+      console.log('        ' + c.link);
+    }
+    console.log('    → ' + r.decision.verdict.toUpperCase() + (r.decision.uuid ? ': ' + r.decision.uuid : ''));
+    console.log('      ' + r.decision.why);
+  }
+
+  console.log('');
+  console.log('  ══ SUMMARY ════════════════════════════════════════════════════════');
+  console.log('    decided by the box score\'s team : ' + n(decided));
+  console.log('    still undecided                  : ' + n(undecided));
+  console.log('');
+  console.log('    A decided entry names the team from PlayHQ\'s own box score and finds');
+  console.log('    exactly ONE candidate registered to that team that season. Feed it to');
+  console.log('    repoint-aliases, which re-verifies independently before writing.');
+
+  try {
+    fs.mkdirSync(path.join(ROOT, 'reports'), { recursive: true });
+    fs.writeFileSync(path.join(ROOT, REPORT), JSON.stringify({ generated: new Date().toISOString(),
+      decided, undecided,
+      entries: out.map(r => ({ id: r.id, name: r.name, verdict: r.verdict, target: r.target,
+        correctTarget: r.decision.verdict === 'repoint-or-confirm' && r.decision.uuid !== r.target ? r.decision.uuid : null,
+        decision: r.decision, box: r.box, candidates: r.candidates, games: r.games })) }, null, 1));
+    console.log('');
+    console.log('  WRITTEN: ' + REPORT);
+    commitReport(decided + ' decided, ' + undecided + ' undecided');
+  } catch (e) { console.log('  ⚠ could not write report: ' + e.message); }
 }
 
 main()

@@ -35,10 +35,51 @@
 'use strict';
 const fs     = require('fs');
 const path   = require('path');
+const { execSync } = require('child_process');
 const crypto = require('crypto');
 const https  = require('https');
 
 const ROOT = path.join(__dirname, '..');
+
+// ── COMMIT THE REPORT ────────────────────────────────────────────────────────
+// ⚠ A REPORT UPLOADED ONLY AS A WORKFLOW ARTIFACT DOES NOT EXIST TO THE NEXT
+// WORKFLOW. The checkout will not have it. On 2026-08-24 three tools aborted on
+// their first line for exactly this — probe-alias-credits could not find its own
+// cache, repoint-aliases could not find alias-credit-audit.json, and
+// probe-verdict-conflict could not find both-resolve-pairs.json — each costing a
+// checkout and a dispatch. Related: actions/download-artifact WITHOUT a run-id
+// only sees the CURRENT run's artifacts, so an artifact-based handoff silently
+// restores nothing, every time.
+//
+// If a tool writes a report another tool might read, the tool COMMITS it.
+// Artifacts are a convenience copy, never the channel.
+const _GIT = { cwd: ROOT, stdio: 'pipe', timeout: 10 * 60 * 1000, maxBuffer: 512 * 1024 * 1024 };
+function commitReport(relPath, message) {
+  try {
+    execSync('git add -- ' + relPath, _GIT);
+    const staged = execSync('git diff --staged --shortstat', _GIT).toString().trim();
+    if (!staged) { console.log('  nothing to commit'); return; }
+    console.log('  staging: ' + staged);
+    execSync('git commit -q -m "' + String(message).replace(/"/g, "'") + '"', _GIT);
+    for (let a = 1; a <= 40; a++) {
+      try { execSync('git merge --abort', _GIT); } catch (e) {}
+      try {
+        console.log('  … fetch/merge/push (attempt ' + a + ')');
+        execSync('git fetch origin main', _GIT);
+        execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', _GIT);
+        execSync('git push origin main', _GIT);
+        console.log('  ✔ pushed ' + relPath);
+        return;
+      } catch (e) {
+        if (a === 40) throw new Error('push failed after 40 attempts');
+        const w = 1 + Math.floor(Math.random() * 60);
+        console.log('  … push attempt ' + a + ' failed, retrying in ' + w + 's');
+        try { execSync('sleep ' + w, { stdio: 'pipe', timeout: (w + 30) * 1000 }); } catch (e2) {}
+      }
+    }
+  } catch (e) { console.log('  ⚠ commit failed: ' + e.message); }
+}
+
 const args = process.argv.slice(2);
 const num = (f, d) => {
   const a = args.find(x => x.startsWith('--' + f + '='));
@@ -557,6 +598,7 @@ async function main() {
     const out = path.join(ROOT, 'reports', 'both-resolve-pairs.json');
     fs.mkdirSync(path.dirname(out), { recursive: true });
     fs.writeFileSync(out, JSON.stringify({ generated: new Date().toISOString(), pairs: rows }, null, 1));
+    commitReport('reports/both-resolve-pairs.json', 'both-resolve pairs');
     console.log('\n  FULL LIST WRITTEN: reports/both-resolve-pairs.json (' + rows.length + ' pairs, uncapped)');
   } catch (e) { console.log('  ⚠ could not write report: ' + e.message); }
 
