@@ -393,32 +393,61 @@ async function main() {
   // Everything else is reconstructed locally: the CURRENT target from the live
   // alias table, and the games each alias delivers from games/bv. Neither needs
   // the audit, and both are more up to date than it.
-  let cands = [];
-  let src = null;
-  try {
+  // THREE SOURCES, ALL READ, deduplicated by alias id. Reading only the first one
+  // that happened to exist was a trap: alias-resolve-cache.json holds the ORIGINAL
+  // 128 credit-based resolutions and would have masked the 23 found later by
+  // shared-name registration matching, silently, with no indication anything had
+  // been skipped.
+  //
+  //   alias-resolve-cache.json     — from probe-alias-credits: the profile PlayHQ
+  //                                  credits with these games
+  //   shared-name-alias-audit.json — from probe-shared-name-aliases: for names
+  //                                  SEVERAL players share, the only candidate
+  //                                  whose registrations fit the games
+  //   alias-credit-audit.json      — the full audit, as a fallback
+  //
+  // Every candidate is re-verified against PlayHQ below regardless of source, so a
+  // disagreement between two reports cannot slip through: the check decides.
+  const cmap = new Map();
+  const sources = [];
+  const addFrom = (label, fn2) => {
+    let before = cmap.size;
+    try { fn2(); } catch (e) { return; }
+    if (cmap.size > before) sources.push(label + ' (+' + (cmap.size - before) + ')');
+  };
+
+  addFrom('alias-resolve-cache.json', () => {
     const rc = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'alias-resolve-cache.json'), 'utf8'));
     for (const [id, r] of Object.entries(rc.resolutions || {})) {
-      if (r && r.uuid) cands.push({ id, correctTarget: r.uuid, why: r.why });
+      if (r && r.uuid && !cmap.has(id)) cmap.set(id, { id, correctTarget: r.uuid, why: r.why, from: 'credits' });
     }
-    src = 'reports/alias-resolve-cache.json';
-  } catch (e) { /* fall through to the audit */ }
+  });
 
-  if (!cands.length) {
-    try {
-      const report = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'alias-credit-audit.json'), 'utf8'));
-      if (report.partial) console.log('  ⚠ the audit is marked PARTIAL — only the aliases it reached are considered');
-      for (const x of (report.unsupportedEntries || [])) {
-        if (x && x.id && x.correctTarget) cands.push({ id: x.id, correctTarget: x.correctTarget, gids: x.gids });
+  addFrom('shared-name-alias-audit.json', () => {
+    const sn = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'shared-name-alias-audit.json'), 'utf8'));
+    for (const e of (sn.entries || [])) {
+      if (e && e.verdict === 'repoint' && e.correctTarget && !cmap.has(e.id)) {
+        cmap.set(e.id, { id: e.id, correctTarget: e.correctTarget, why: 'only candidate whose registrations fit', from: 'shared-name' });
       }
-      src = 'reports/alias-credit-audit.json';
-    } catch (e) {}
-  }
+    }
+  });
+
+  addFrom('alias-credit-audit.json', () => {
+    const report = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'alias-credit-audit.json'), 'utf8'));
+    if (report.partial) console.log('  ⚠ the credit audit is marked PARTIAL');
+    for (const x of (report.unsupportedEntries || [])) {
+      if (x && x.id && x.correctTarget && !cmap.has(x.id)) cmap.set(x.id, { id: x.id, correctTarget: x.correctTarget, from: 'credit-audit' });
+    }
+  });
+
+  let cands = [...cmap.values()];
+  const src = sources.join(', ') || 'none';
   if (!cands.length) {
-    console.error('ABORT: no repoints found. Expected reports/alias-resolve-cache.json (preferred)');
-    console.error('  or reports/alias-credit-audit.json. Run probe-alias-credits first.');
+    console.error('ABORT: no repoints found. Expected any of reports/alias-resolve-cache.json,');
+    console.error('  reports/shared-name-alias-audit.json, reports/alias-credit-audit.json.');
     process.exit(1);
   }
-  console.log('  source                           : ' + src);
+  console.log('  sources read                     : ' + src);
   console.log('  proposed repoints                : ' + n(cands.length));
   if (MAX) { cands = cands.slice(0, MAX); console.log('  limited by --max to              : ' + n(cands.length)); }
   if (!cands.length) { console.log('  nothing to do'); return; }
@@ -511,7 +540,7 @@ async function main() {
   for (const r of rejected.slice(0, 15)) console.log('    REJECT ' + r.id + '  ' + r.why);
   if (skipped.length + rejected.length) console.log('');
   for (const c of confirmed.slice(0, 40)) {
-    console.log('    REPOINT ' + c.id);
+    console.log('    REPOINT ' + c.id + '   [' + (c.from || '?') + ']');
     console.log('        from ' + c.target);
     console.log('        to   ' + c.correctTarget);
   }
