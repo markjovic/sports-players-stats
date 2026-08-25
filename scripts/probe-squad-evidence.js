@@ -44,12 +44,20 @@ const ROOT = process.env.SCAN_ROOT || path.join(__dirname, '..');
 const SHOW = Number((process.argv.slice(2).find(a => a.startsWith('--show=')) || '').split('=')[1]) || 40;
 const TRUNC_LEN = 13;
 const n = (x) => Number(x || 0).toLocaleString();
-const REPORT = 'reports/squad-evidence-audit.json';
+// ⚠ EVERY FILE THIS TOOL WRITES IS LISTED HERE, AND commitReport STAGES ALL OF
+// THEM. The first version staged only squad-evidence-audit.json, so the
+// manual-alias-decisions.json stub was written to the runner and died with it —
+// while the report told the reader to go and fill it in. That is the same
+// artifact-versus-repo fault as three earlier tools in this session (directive B),
+// arriving through a helper that was correct for one file and silently wrong for
+// the second.
+const REPORTS = ['reports/squad-evidence-audit.json', 'reports/manual-alias-decisions.json'];
+const REPORT = REPORTS[0];
 
 const _GIT = { cwd: ROOT, stdio: 'pipe', timeout: 10 * 60 * 1000, maxBuffer: 512 * 1024 * 1024 };
 function commitReport(msg) {
   try {
-    execSync('git add -- ' + REPORT, _GIT);
+    for (const f of REPORTS) { try { execSync('git add -- ' + f, _GIT); } catch (e) { /* may not exist */ } }
     const staged = execSync('git diff --staged --shortstat', _GIT).toString().trim();
     if (!staged) { console.log('  nothing to commit'); return; }
     console.log('  staging: ' + staged);
@@ -161,11 +169,12 @@ function main() {
   }
 
   // ── Score each candidate on three independent signals ────────────────────
-  let decided = 0, split = 0, nothing = 0;
+  let decided = 0, split = 0, nothing = 0, identical = 0;
   const rows = [];
   for (const p of pop) {
     const gs = delivered.get(p.id) || [];
     const row = { id: p.id, name: p.name, target: p.target, games: gs.length,
+                  gameList: gs.slice(0, 6).map(g => ({ gid: g.gid, sid: g.sid })),
                   teamEvidence: [], candidates: [], verdict: null };
 
     // 1. WHAT WAS THE TEAM? Read it off the teammates, per game.
@@ -221,24 +230,58 @@ function main() {
         link: 'https://www.playhq.com/public/profile/' + cu + '/statistics' });
     }
 
+    // ── DECIDING ──────────────────────────────────────────────────────────
+    // The first version required every rival to score EXACTLY ZERO, which threw
+    // away landslides: Jack Harrison's current target shares 71 teammates and all
+    // ELEVEN rivals share zero, but one of them scored 1 on something else and the
+    // whole case was filed "undecided". A rule that only fires on a clean sweep
+    // reports overwhelming evidence as no evidence.
+    //
+    // Three outcomes now, and the third is not a weaker version of the second —
+    // it is a DIFFERENT FINDING.
     const scored = row.candidates.filter(c => !c.missing);
     const score = (c) => (c.clubHit * 3) + (c.gradeHit * 2) + Math.min(c.sharedTeammates, 20);
-    scored.sort((a, b) => score(b) - score(a));
-    if (scored.length && score(scored[0]) > 0 && (scored.length === 1 || score(scored[1]) === 0)) {
-      row.verdict = { uuid: scored[0].uuid, why: 'sole candidate matching the club/grade the teammates identify, or sharing their squad',
-                      changes: scored[0].uuid !== p.target };
+    for (const c of scored) c.score = score(c);
+    scored.sort((a, b) => b.score - a.score);
+    const top = scored[0], second = scored[1];
+
+    if (!scored.length || !top || top.score === 0) {
+      row.verdict = { uuid: null, kind: 'nothing', why: 'no candidate matches on club, grade or squad' };
+      nothing++;
+    } else if (second && second.score === top.score && top.score > 0) {
+      // ⚠ IDENTICAL SCORES ARE NOT AMBIGUITY. Two candidates matching the same
+      // teammates, the same club and the same grade to the same degree are far
+      // more likely ONE PERSON SPLIT ACROSS TWO RECORDS than a pair to choose
+      // between. Sage Horn 59/59, Yashvi Shah 39/39, Bethany Perry-Crockart 68/68
+      // all have this shape. That is a MERGE question, not an alias question, and
+      // filing it as "read it by eye" hides a different problem.
+      row.verdict = { uuid: null, kind: 'identical', why: 'two candidates score IDENTICALLY (' + top.score +
+        ') — that is the shape of ONE person split across two records, not a choice between two people',
+        pair: [top.uuid, second.uuid] };
+      identical++;
+    } else if (!second || second.score === 0 || top.score >= second.score * 4) {
+      // A landslide counts: sole scorer, or four times the nearest rival.
+      row.verdict = { uuid: top.uuid, kind: second && second.score ? 'landslide' : 'sole',
+        why: second && second.score
+          ? 'leads ' + top.score + ' to ' + second.score + ' — more than four times the nearest rival'
+          : 'the only candidate matching the club/grade the teammates identify, or sharing their squad',
+        changes: top.uuid !== p.target, margin: top.score - (second ? second.score : 0) };
       decided++;
-    } else if (scored.length && score(scored[0]) > 0) { row.verdict = { uuid: null, why: 'more than one candidate matches — read it by eye' }; split++; }
-    else { row.verdict = { uuid: null, why: 'no candidate matches on club, grade or squad' }; nothing++; }
+    } else {
+      row.verdict = { uuid: null, kind: 'close', why: 'closest rivals score ' + top.score + ' and ' + second.score +
+        ' — too close to call from this evidence' };
+      split++;
+    }
     rows.push(row);
   }
 
   // ── Report ────────────────────────────────────────────────────────────────
   console.log('');
   console.log('  ══ EVIDENCE THE EARLIER TESTS DID NOT USE ═════════════════════════');
-  console.log('    ONE candidate leads, others score nothing : ' + n(decided) + '   ← actionable');
-  console.log('    several match — needs an eye              : ' + n(split));
-  console.log('    nothing matches                           : ' + n(nothing));
+  console.log('    DECIDED — one candidate leads decisively  : ' + n(decided) + '   ← actionable');
+  console.log('    IDENTICAL scores — likely ONE person split : ' + n(identical) + '   ← a MERGE question, not an alias one');
+  console.log('    too close to call                         : ' + n(split) + '   ← needs an eye; see the follow-up below');
+  console.log('    nothing matches                           : ' + n(nothing) + '   ← needs an eye; see the follow-up below');
   console.log('');
   console.log('  The team is identified from the OTHER players in the sheet: their files say');
   console.log('  which club and grade they held that season. The alias id\'s own registration');
@@ -269,13 +312,72 @@ function main() {
     console.log('      ' + r.verdict.why);
   }
 
+  // ── HOW TO FOLLOW UP WHAT IS STILL OPEN ───────────────────────────────────
+  // An unknown with no next step is just a number. Each open case is printed with
+  // the exact game to open, what to look for, and which candidate to compare.
+  const open = rows.filter(r => !r.verdict.uuid);
+  if (open.length) {
+    console.log('');
+    console.log('  ══ FOLLOWING UP THE ' + n(open.length) + ' STILL OPEN ═══════════════════════════════');
+    console.log('  Every one of these has a PlayHQ game you can open. The team sheet shows the');
+    console.log('  jersey number and club; the candidate profiles show the same. That is the');
+    console.log('  comparison no offline test can make, and it is how Jida McCrae-Cooper was');
+    console.log('  settled.');
+    console.log('');
+    for (const r of open) {
+      const k = r.verdict.kind;
+      console.log('  ' + r.id + '  ' + JSON.stringify(r.name) + '   [' + k.toUpperCase() + ']');
+      if (k === 'identical') {
+        console.log('    → NOT an alias question. These two look like ONE person split in two:');
+        console.log('        ' + r.verdict.pair[0]);
+        console.log('        ' + r.verdict.pair[1]);
+        console.log('      Open both profiles. If they are the same person, this is a MERGE —');
+        console.log('      run probe-both-resolve / merge-phantom-profiles on the pair, not this.');
+      } else {
+        const num = [...new Set(r.teamEvidence.map(t => t.number).filter(Boolean))];
+        const clubs = [...new Set(r.teamEvidence.flatMap(t => t.clubs.map(c => c[0])))].slice(0, 3);
+        const grades = [...new Set(r.teamEvidence.flatMap(t => t.grades.map(c => c[0])))].slice(0, 3);
+        console.log('    what the team sheet says:');
+        console.log('      jersey ' + (num.length ? '#' + num.join(', #') : 'not recorded') +
+                    '  ·  club ' + (clubs.length ? clubs.join(' / ') : 'not identifiable from teammates') +
+                    '  ·  grade ' + (grades.length ? grades.join(' / ') : 'not identifiable'));
+        console.log('    open one of these games on PlayHQ and read the team sheet:');
+        for (const g of r.gameList.slice(0, 3)) console.log('      game ' + g.gid + '  in season ' + g.sid);
+        console.log('    then compare against, in order of how well each already fits:');
+        for (const c of r.candidates.filter(x => !x.missing).slice(0, 4)) {
+          console.log('      ' + (c.score !== undefined ? String(c.score).padStart(3) : '  ?') + '  ' +
+                      c.uuid + (c.isCurrent ? ' [CURRENT]' : '') + '  ' + n(c.careerGames) + ' game(s)');
+          console.log('           ' + c.link);
+        }
+        console.log('    if the sheet settles it, add the id and the correct uuid to');
+        console.log('      reports/manual-alias-decisions.json  as  {"' + r.id + '": "<uuid>"}');
+        console.log('      — repoint-aliases reads that file and re-verifies before writing.');
+      }
+      console.log('');
+    }
+  }
+
   try {
     fs.mkdirSync(path.join(ROOT, 'reports'), { recursive: true });
     fs.writeFileSync(path.join(ROOT, REPORT), JSON.stringify({ generated: new Date().toISOString(),
       decided, split, nothing,
       entries: rows.map(r => ({ id: r.id, name: r.name, target: r.target,
         correctTarget: (r.verdict.uuid && r.verdict.changes) ? r.verdict.uuid : null,
-        verdict: r.verdict, teamEvidence: r.teamEvidence, candidates: r.candidates })) }, null, 1));
+        verdict: r.verdict, gameList: r.gameList, teamEvidence: r.teamEvidence,
+        candidates: r.candidates })) }, null, 1));
+
+    // A ready-to-edit stub for the open cases, so following one up is filling in a
+    // blank rather than working out the format.
+    const stubPath = path.join(ROOT, 'reports', 'manual-alias-decisions.json');
+    if (fs.existsSync(stubPath)) {
+      console.log('  reports/manual-alias-decisions.json already exists — left untouched');
+      console.log('  (it may hold decisions you have already entered)');
+    } else if (open.length) {
+      const stub = { note: 'Set each value to the correct player uuid, or leave null. repoint-aliases reads this and RE-VERIFIES every entry against PlayHQ before writing anything.',
+                     decisions: Object.fromEntries(open.filter(r => r.verdict.kind !== 'identical').map(r => [r.id, null])) };
+      fs.writeFileSync(stubPath, JSON.stringify(stub, null, 1));
+      console.log('  WRITTEN: reports/manual-alias-decisions.json (a blank to fill in)');
+    }
     console.log('');
     console.log('  WRITTEN: ' + REPORT);
     console.log('  Entries with a correctTarget are in the shape repoint-aliases reads.');

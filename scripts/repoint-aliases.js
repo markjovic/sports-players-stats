@@ -432,6 +432,16 @@ async function main() {
     }
   });
 
+  // A human decision, taken from a PlayHQ team sheet that no offline test can read.
+  // It is still RE-VERIFIED below like every other source — a decision entered by
+  // hand is not exempt from the check.
+  addFrom('manual-alias-decisions.json', () => {
+    const md = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'manual-alias-decisions.json'), 'utf8'));
+    for (const [id, uuid] of Object.entries(md.decisions || {})) {
+      if (uuid && !cmap.has(id)) cmap.set(id, { id, correctTarget: uuid, why: 'entered by hand from a PlayHQ team sheet', from: 'manual' });
+    }
+  });
+
   addFrom('squad-evidence-audit.json', () => {
     const sq = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'squad-evidence-audit.json'), 'utf8'));
     for (const e of (sq.entries || [])) {
