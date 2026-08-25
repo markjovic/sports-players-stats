@@ -1,0 +1,64 @@
+# .github/workflows/probe-verdict-conflict.yml
+name: Probe Verdict Conflict
+
+# READ-ONLY, offline, ZERO API calls. Writes one report artifact. No lock.
+#
+# TWO AUDITS DISAGREE. This establishes which is sound before anything is applied.
+#
+#   probe-both-resolve        said 185 pairs are TWO PEOPLE, because BOTH uuids
+#                             appear in the same team sheet.
+#   probe-shared-name-aliases wants to repoint 23 aliases, and several of them —
+#                             Jax Reid, Cooper Bailey, Sam Pickering, Marcus Welsh,
+#                             Ella McMahon, Riley Sullivan — are pairs that first
+#                             audit called two people.
+#
+# THE WEAKNESS IN THE ROSTER TEST, which it cannot see itself: "both ids in p[]"
+# counts an id that reached the roster THROUGH AN ALIAS. If a wrong alias put a
+# uuid into those team sheets, the roster test read our own error back as evidence
+# of a second person.
+#
+# So each shared appearance is split by HOW the player is present:
+#   OWN    their own uuid or its 13-char truncation is literally in p[]
+#   ALIAS  only some other id is, which players/aliases maps to them
+#
+#   SOUND     both sides appear under their OWN id somewhere — two ids were
+#             captured independently and the verdict holds whatever the alias
+#             table says.
+#   CIRCULAR  one side is present ONLY via an alias — if that alias is wrong, so
+#             is the two-people verdict.
+#
+# Pairs a pending repoint would touch are flagged, so the overlap between the two
+# audits is explicit rather than inferred.
+#
+# RUN THIS BEFORE APPLYING THE 23 REPOINTS.
+
+on:
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'How many pairs to print in full, circular first.'
+        required: false
+        default: '60'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Probe verdict conflict
+        run: node --max-old-space-size=8192 scripts/probe-verdict-conflict.js --show=${{ inputs.show }}
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verdict-conflict-audit
+          path: reports/verdict-conflict-audit.json
+          retention-days: 90
+          if-no-files-found: warn
