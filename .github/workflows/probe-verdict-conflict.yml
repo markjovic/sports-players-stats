@@ -42,7 +42,7 @@ on:
         type: string
 
 permissions:
-  contents: read
+  contents: write   # the report is COMMITTED, not left in an artifact
 
 jobs:
   probe:
@@ -50,6 +50,13 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Probe verdict conflict
         run: node --max-old-space-size=8192 scripts/probe-verdict-conflict.js --show=${{ inputs.show }}

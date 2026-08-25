@@ -1,0 +1,72 @@
+# .github/workflows/probe-unresolved-aliases.yml
+name: Probe Unresolved Aliases
+
+# Fetches PlayHQ box scores. COMMITS one report. No data-write lock.
+#
+# THE LAST 40. probe-shared-name-aliases settled 47 of the 87 shared-name aliases
+# from registrations alone — 24 confirmed, 23 repointed and applied. It could not
+# settle:
+#   4 AMBIGUOUS  two same-named candidates BOTH hold fitting registrations
+#                (Zachary Price, Samara Ballis, and Ethan/Harrison Belcher, who
+#                look like brothers on one team — which is why both fit)
+#   36 NONE-FIT  NO candidate holds a registration for those seasons, so our
+#                registration data is incomplete. That says nothing about the alias.
+#
+# Neither group is unsettleable — they are unsettleable BY THE TESTS BUILT SO FAR.
+# This applies the evidence that settled Jida McCrae-Cooper by hand: open a box
+# score for a game the alias delivers, read what PlayHQ calls that id AND WHICH
+# TEAM IT WAS ON, and compare against every candidate's registration for that exact
+# season.
+#
+# It prints, per alias, one screen containing everything needed to decide:
+#   · PlayHQ's name and jersey number for the id, per game sampled
+#   · the team it was on, and whether that was home or away
+#   · every same-named candidate, their registration for THAT season and team,
+#     their career size, and their profile link
+#   · a verdict where the team evidence is decisive, or a plain statement of what
+#     is missing where it is not
+#
+# It NEVER writes an alias. Anything decided goes through repoint-aliases, which
+# re-verifies independently before writing.
+#
+# NO actions/setup-node — this job fetches PlayHQ.
+
+on:
+  workflow_dispatch:
+    inputs:
+      games:
+        description: 'Box scores to sample per alias. More games = more chances one is retained, at more calls.'
+        required: false
+        default: '3'
+        type: string
+
+permissions:
+  contents: write   # the report is COMMITTED, not left in an artifact
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Probe unresolved aliases
+        run: node --max-old-space-size=8192 scripts/probe-unresolved-aliases.js --games=${{ inputs.games }}
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unresolved-alias-audit
+          path: reports/unresolved-alias-audit.json
+          retention-days: 90
+          if-no-files-found: warn
