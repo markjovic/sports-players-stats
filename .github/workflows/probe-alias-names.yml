@@ -1,0 +1,92 @@
+# .github/workflows/probe-alias-names.yml
+name: Probe Alias Names
+
+# READ-ONLY as far as player and game data goes. Writes and commits one report.
+# No data-write lock.
+#
+# THE LAST 760. probe-alias-credits checked all 81,636 name-matched aliases against
+# PlayHQ: 77,142 confirmed, 88 repointable, and about 760 where the target profile
+# is not credited with the games the alias delivers AND no other profile with that
+# name is either. The credit test has run out of evidence on those.
+#
+# THIS ASKS A DIFFERENT QUESTION — the one that settled Jida McCrae-Cooper by hand.
+# PlayHQ's spectator box score returns each roster entry's profileID AND NAME, so
+# we can ask PlayHQ directly "who is this id?" and compare against the player the
+# alias points at.
+#
+#   NAME DISAGREES  DECISIVE. PlayHQ calls this id somebody else — the alias is
+#                   wrong and those appearances are on the wrong player.
+#   NAME AGREES     NO CONTRADICTION. ⚠ NOT proof the alias is right: the Jida
+#                   error was itself a same-name case. The report splits this
+#                   group by whether ONE player carries that name (settled) or
+#                   SEVERAL do (still unresolved).
+#   NO NAME         box not retained, or the id is not in it. No verdict, and
+#                   never counted against the alias.
+#
+# Name comparison uses normName from lib/namespace-resolve.cjs — the same fold that
+# CREATED these aliases, so a disagreement here is real and not a quote or hyphen
+# variant.
+#
+# SPECTATOR endpoint, so concurrency is deliberately low (spectator-backfill runs
+# 3). NO actions/setup-node.
+#
+# The report is committed as it goes, so a run killed at the job ceiling keeps its
+# verdicts and the next dispatch resumes from them.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'How many to ask about. Start with 50 — the agree/disagree ratio tells you whether the remaining 760 are mostly fine or mostly wrong.'
+        required: false
+        default: '50'
+        type: string
+      all:
+        description: 'Ask about every unresolved alias instead of a sample.'
+        required: false
+        default: false
+        type: boolean
+      concurrency:
+        description: 'Box-score calls in flight. The spectator endpoint tolerates far less than the main API — 3 is what spectator-backfill uses.'
+        required: false
+        default: '3'
+        type: string
+      save_every:
+        description: 'Commit the report every N judged.'
+        required: false
+        default: '50'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Probe alias names
+        run: |
+          ARGS="--sample=${{ inputs.sample }} --concurrency=${{ inputs.concurrency }} --save-every=${{ inputs.save_every }}"
+          if [ "${{ inputs.all }}" = "true" ] || [ "${{ inputs.all }}" = "True" ]; then ARGS="$ARGS --all"; fi
+          node --max-old-space-size=8192 scripts/probe-alias-names.js $ARGS
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alias-name-audit
+          path: reports/alias-name-audit.json
+          retention-days: 90
+          if-no-files-found: warn
