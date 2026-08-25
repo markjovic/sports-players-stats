@@ -47,13 +47,34 @@ const https  = require('https');
 const { execSync } = require('child_process');
 const ROOT = path.join(__dirname, '..');
 
+// ⚠ EVERY DEPENDENCY OF THE COPIED BLOCK, DECLARED EXPLICITLY.
+// The block below is copied VERBATIM from fetch-profile-stats.js. On the first
+// attempt only six globals were declared, chosen from a list I wrote by hand —
+// and API_URL was not on it, so every session refresh failed with
+// "API_URL is not defined" and the run did nothing. An audit that extracts what
+// the code ACTUALLY references, rather than checking a list of what I expect it
+// to reference, found ELEVEN. This is directive A: enumerate, do not assume.
+const {
+  GRADE_PLAYERS_QUERY, gradePageFilter, PROFILE_SEARCH_QUERY,
+  matchFromGrade, matchFromGradeRosterByName, matchFromSearch, isPlaceholderName,
+  looksLikeSeasonName,
+} = require('./lib/namespace-resolve.cjs');
+const { TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
+const API_URL = 'https://api.playhq.com/graphql';
+const BATCH_DELAY = 1000;
+const RETRY_BASE  = 2000;
+const NAME_HEAL_MAX_ATTEMPTS = 3;
+
 // ⚠ The block below is copied VERBATIM from fetch-profile-stats.js and depends on
 // globals that script declares from its own command line. They are declared here
 // explicitly rather than left to resolve by accident — copying a block means
 // copying its dependencies (2026-08-24 directive A). None of the code paths that
 // use them are reachable from this tool, but an undeclared reference would throw
 // the moment one was.
-const SHARD = null;               // this tool works from a uuid list, not a shard
+// Flags the copied block reads from its parent's command line. This tool works
+// from a uuid list, so none of the paths guarded by them is reachable — but an
+// undeclared reference throws the moment one is.
+const SHARD = null;
 const FORCE = false;
 const RECHECK_PRIVATE = false;
 const HEAL_NAMES = false;
