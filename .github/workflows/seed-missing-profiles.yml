@@ -1,0 +1,86 @@
+# .github/workflows/seed-missing-profiles.yml
+name: Seed Missing Profiles
+
+# WRITES when mode=apply. Takes the data-write lock. DRY RUN BY DEFAULT.
+#
+# THE PROBLEM, established over three probes on 2026-08-24.
+#
+# 40 alias entries send a real PlayHQ profile id to a DIFFERENT player. The box
+# score proves it — for every one, the profileID returned is the alias id expanded
+# to 36 characters:
+#
+#     alias id      20b7995f-d708
+#     PlayHQ says   20b7995f-d708-429c-97d8-c6f3b3601fb3   ← the SAME id
+#     alias sends it to  66e58ba9-b69a-461e-8c90-04d4f062d9c0   ← someone else
+#
+# The alias should be DELETED, not repointed — with no entry the id resolves to
+# itself. But probe-selfalias-check found NONE of the 40 has a player file, so
+# deleting first would ORPHAN every one of those appearances.
+#
+# WHY NO FILE: they are real profiles the pipeline has never fetched.
+# fetch-profile-stats works from players/indexes/{shard}.json and they are not in
+# it; spectator-backfill now refuses to stub anything it cannot confirm (T36). The
+# alias was papering over that gap.
+#
+# THIS DOES IT IN THE ONLY SAFE ORDER:
+#   1. fetch the real name from publicProfile on the ACCOUNT tenant — the canonical
+#      id→name lookup, NOT the box-score display string
+#   2. write a SEED player file and index entry, so the id resolves to itself
+#   3. delete the alias, now that deleting cannot orphan anything
+#
+# It does NOT fetch statistics and does NOT invent games[]. fetch-profile-stats
+# fills the stats on its next pass now the player is indexed, and
+# build-player-games derives games[] from the rosters.
+#
+# NO actions/setup-node — this job fetches api.playhq.com.
+#
+# AFTER apply, in order: fetch-profile-stats for the seeded shards, then
+# build-player-games. Until both run the seeded players exist but hold no games.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry-run fetches the names and shows exactly what apply would seed and delete. Read it first.'
+        required: false
+        default: 'dry-run'
+        type: choice
+        options: [dry-run, apply]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Seed missing profiles
+        run: |
+          ARGS=""
+          if [ "${{ inputs.mode }}" = "apply" ]; then ARGS="--apply"; fi
+          node --max-old-space-size=8192 scripts/seed-missing-profiles.js $ARGS
+
+      - name: Upload the reversal record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seeded-profiles
+          path: reports/seeded-profiles.json
+          retention-days: 90
+          if-no-files-found: ignore
