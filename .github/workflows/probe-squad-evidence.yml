@@ -1,0 +1,69 @@
+# .github/workflows/probe-squad-evidence.yml
+name: Probe Squad Evidence
+
+# READ-ONLY, offline, ZERO API calls. COMMITS one report. No data-write lock.
+#
+# THE 40 THREE TESTS COULD NOT SETTLE, attacked with evidence none of them used.
+#
+# What has already failed on these:
+#   probe-alias-credits        the target credits NONE of the games
+#   probe-alias-names          several players share the name (T40)
+#   probe-shared-name-aliases  no candidate holds a registration for that SEASON
+#   seed-missing-profiles      the ids are spectator-namespace and publicProfile
+#                              returns NOT_FOUND, so the alias is correct (T41)
+#
+# WHAT IS STILL AVAILABLE, all of it already on disk:
+#
+#   1. THE TEAM, FROM ITS OTHER PLAYERS. The alias id's own registration is
+#      missing — that is why the season test failed — but its TEAMMATES' are not.
+#      Their files say which club and grade they held that season, so the team is
+#      identifiable from the sheet. Then: which candidate was at THAT CLUB in THAT
+#      GRADE? Far tighter than "a registration for that season".
+#   2. JERSEY NUMBER, captured by probe-unresolved-aliases and never used.
+#   3. SQUAD OVERLAP — a player and their teammates travel together.
+#
+# Each signal is scored and shown SEPARATELY, because they are independent and can
+# disagree. A verdict is offered only where one candidate leads and no other scores
+# at all; anything closer is printed in full for a human to read.
+#
+# Entries with a correctTarget are in the shape repoint-aliases reads.
+
+on:
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'How many to print in full, decided first.'
+        required: false
+        default: '40'
+        type: string
+
+permissions:
+  contents: write   # the report is COMMITTED, not left in an artifact
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Probe squad evidence
+        run: node --max-old-space-size=8192 scripts/probe-squad-evidence.js --show=${{ inputs.show }}
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: squad-evidence-audit
+          path: reports/squad-evidence-audit.json
+          retention-days: 90
+          if-no-files-found: warn
