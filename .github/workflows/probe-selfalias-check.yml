@@ -1,0 +1,40 @@
+# .github/workflows/probe-selfalias-check.yml
+name: Probe Self Alias Check
+
+# READ-ONLY, offline, ZERO API calls. Prints a report. Writes and commits NOTHING.
+#
+# WHAT probe-unresolved-aliases ACTUALLY FOUND. In ALL 40 of the aliases nothing had
+# settled, the box-score profileID is the ALIAS ID EXPANDED TO 36 CHARACTERS:
+#
+#     alias id      20b7995f-d708
+#     PlayHQ says   20b7995f-d708-429c-97d8-c6f3b3601fb3   ← the SAME id
+#     alias sends it to  66e58ba9-b69a-461e-8c90-04d4f062d9c0   ← someone else
+#
+# These are NOT spectator ids needing an alias. They are real PlayHQ profile ids,
+# and the alias redirects them to a different player. Different from the Jida
+# McCrae-Cooper case, where 900f4fe6-bec3 genuinely was not a profile.
+#
+# So the correction is to DELETE the alias, not repoint it — with no entry the id
+# resolves to itself, which is correct.
+#
+# THIS RUNS FIRST BECAUSE ONE THING DECIDES WHETHER THAT IS SAFE: does a player file
+# exist for the full uuid? If yes, deleting sends those appearances to the right
+# player. If NO file exists, the id resolves to nothing and the appearances are
+# ORPHANED until a profile fetch creates one — so those need fetching first, and the
+# report lists exactly which shards.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check whether deleting these aliases is safe
+        run: node --max-old-space-size=8192 scripts/probe-selfalias-check.js
