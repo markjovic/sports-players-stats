@@ -1,0 +1,62 @@
+# .github/workflows/probe-shared-name-aliases.yml
+name: Probe Shared Name Aliases
+
+# READ-ONLY, offline, ZERO API calls. Writes one report artifact. No lock.
+#
+# THE 87 NOTHING HAS SETTLED. Two audits ran against PlayHQ:
+#   probe-alias-credits — does the target credit the games this alias delivers?
+#                         77,142 yes, 874 no.
+#   probe-alias-names   — who does PlayHQ say this id IS? 739 name agreements,
+#                         5 name variants (Zac/Zachary, hyphen vs space — NOT
+#                         errors), 0 real disagreements.
+#
+# Of the agreements, 652 are settled because only ONE player carries that name.
+# The other 87 are not: SEVERAL share it, the alias was picked by name alone, and
+# neither PlayHQ test can separate them. That is the Jida McCrae-Cooper shape.
+#
+# THE EVIDENCE NOBODY HAS USED, and it needs no API. Every game an alias delivers
+# has a SEASON and TWO TEAMS. Every candidate has registrations — seasons, and team
+# ids within them. A candidate registered to one of those teams that season could
+# have played; one with no registration for the season could not have been on
+# either team sheet.
+#
+#   CONFIRMED       only the current target fits — the alias is right
+#   SHOULD REPOINT  a DIFFERENT candidate fits and the current one does not
+#   ambiguous       several fit — never guessed, printed with PlayHQ links
+#   none fit        registrations too incomplete to say
+#
+# Entries marked repoint carry a correctTarget in the shape repoint-aliases reads.
+#
+# 87 is small enough that the ambiguous remainder can be settled by eye, which is
+# why every candidate is printed with its profile link.
+
+on:
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'How many to print in full, worst first (repoint, then ambiguous).'
+        required: false
+        default: '100'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Probe shared-name aliases
+        run: node --max-old-space-size=8192 scripts/probe-shared-name-aliases.js --show=${{ inputs.show }}
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-name-alias-audit
+          path: reports/shared-name-alias-audit.json
+          retention-days: 90
+          if-no-files-found: warn
