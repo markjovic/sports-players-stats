@@ -1,0 +1,64 @@
+# .github/workflows/build-alias-worklist.yml
+name: Build Alias Worklist
+
+# READ-ONLY, offline, ZERO API calls. COMMITS two files. No data-write lock.
+#
+# TURNS THE LAST 40 ALIASES INTO TWO THINGS YOU CAN ACT ON — no report to read,
+# no ids to copy out by hand.
+#
+# probe-squad-evidence settled 19 of the 40, all CONFIRMING the alias already in
+# place. The other 21 split into two groups needing completely different actions:
+#
+#   15 IDENTICAL  two candidate records score the SAME on club, grade and squad —
+#                 the shape of ONE PERSON SPLIT ACROSS TWO RECORDS, not a choice
+#                 between two people. A MERGE question. This writes
+#                 reports/alias-merge-candidates.json in the shape
+#                 probe-duplicate-profiles reads.
+#
+#   6 CLOSE       only a PlayHQ team sheet separates the candidates. This prints a
+#                 numbered checklist — the exact game URL to open, the name and
+#                 jersey to look for, the club it should be, the profiles to
+#                 compare — and writes reports/manual-alias-decisions.json as a
+#                 blank with one line per case.
+#
+# The game URL needs nothing but the game id (playhq_api_reference.md, "Game URL
+# construction: Only the gameId matters"), so org/competition/grade are `a/a/a`.
+#
+# An existing manual-alias-decisions.json is NEVER overwritten — decisions already
+# entered survive a re-run.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write   # both files are COMMITTED, not left in an artifact
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Build the worklist
+        run: node --max-old-space-size=8192 scripts/build-alias-worklist.js
+
+      - name: Upload both files
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alias-worklist
+          path: |
+            reports/alias-merge-candidates.json
+            reports/manual-alias-decisions.json
+          retention-days: 90
+          if-no-files-found: warn
