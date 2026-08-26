@@ -474,10 +474,31 @@ async function gitCommit(message, dirs) {
 
 function rosterIds(g) { return ((g && g.p) || []).map(x => x && x.id).filter(Boolean); }
 
-function eligible(g) {
-  if (!g) return false;
-  if (g.forfeit || g.bye || g.cancelled || g.abandoned || g.legacy || g.profileOnly || g.hidden) return false;
-  return rosterIds(g).length >= MIN_ROSTER;
+// Returns null when the game is fine, or a STRING saying why it was skipped.
+// It used to return a bare boolean, and the 2026-08-26 repoints run rejected all
+// 67 requested games without printing a single reason — the log said "Nothing to
+// audit", which reads as a clean result and was not one. A skip that cannot be
+// explained is a silent drop.
+function ineligibleReason(g) {
+  if (!g) return 'no game entry';
+  for (const f of ['forfeit', 'bye', 'cancelled', 'abandoned', 'legacy', 'profileOnly', 'hidden']) {
+    if (g[f]) return f;
+  }
+  const n = rosterIds(g).length;
+  if (n === 0) return 'roster empty (no capture yet — needs a sweep, not an audit)';
+  return { rosterSize: n };
+}
+
+// TARGETED runs (--games / --repoint-games) honour the request. MIN_ROSTER and the
+// terminal-state filters exist to stop a SAMPLE wasting calls on games that cannot
+// answer; applied to a named game they throw away the very thing that was asked
+// for. A named game is skipped only when it has no roster to compare at all, and
+// every skip is reported with its reason and flags.
+function eligible(g, targeted) {
+  const r = ineligibleReason(g);
+  if (typeof r === 'string') return r;
+  if (!targeted && r.rosterSize < MIN_ROSTER) return `roster ${r.rosterSize} < min-roster ${MIN_ROSTER}`;
+  return null;
 }
 
 function readRepointGameIds() {
@@ -496,6 +517,7 @@ function readRepointGameIds() {
 function selectGames(done) {
   const files = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).sort();
   const picked = [];
+  const skipped = [];
 
   const wantExplicit = GAMES_ARG ? new Set(GAMES_ARG) : null;
   const wantRepoint  = REPOINT_ONLY ? readRepointGameIds() : null;
@@ -516,10 +538,18 @@ function selectGames(done) {
       if (targeted) {
         if (!targeted.has(gameId)) continue;
         targeted.delete(gameId);
-        if (done.has(gameId) || !eligible(g)) continue;
+        if (done.has(gameId)) { skipped.push({ gameId, seasonId: sid, why: 'already audited in this tag\'s progress' }); continue; }
+        const why = eligible(g, true);
+        if (why) {
+          skipped.push({ gameId, seasonId: sid, why,
+            flags: { spc: g && g.spc || null, dg: g && g.dg || null, st: g && g.st || null },
+            roster: rosterIds(g).length });
+          continue;
+        }
       } else {
         if (takenHere >= PER_SEASON) break;
-        if (done.has(gameId) || !eligible(g)) continue;
+        if (done.has(gameId)) continue;
+        if (eligible(g, false)) continue;
         if (picked.length >= MAX_GAMES) break;
       }
       picked.push({ gameId, seasonId: sid, rosterIds: rosterIds(g) });
@@ -527,8 +557,18 @@ function selectGames(done) {
     }
   }
   console.log(`  selection scanned ${scanned}/${files.length} season files, picked ${picked.length}`);
-  if (targeted && targeted.size) console.log(`  ⚠ ${targeted.size} requested game id(s) not found in games/bv: ${[...targeted].slice(0, 10).join(', ')}`);
-  return picked;
+  if (targeted && targeted.size) console.log(`  ⚠ ${targeted.size} requested game id(s) NOT FOUND in games/bv: ${[...targeted].slice(0, 20).join(', ')}`);
+  if (skipped.length) {
+    const byWhy = {};
+    for (const s2 of skipped) byWhy[s2.why] = (byWhy[s2.why] || 0) + 1;
+    console.log(`  ⚠ ${skipped.length} requested game(s) found but SKIPPED:`);
+    for (const [why, n] of Object.entries(byWhy)) console.log(`      ${n}  ${why}`);
+    for (const s2 of skipped.slice(0, 20)) {
+      console.log(`      ${s2.gameId} season ${s2.seasonId} · ${s2.why} · roster ${s2.roster ?? '-'} · spc=${s2.flags ? s2.flags.spc : '-'} dg=${s2.flags ? s2.flags.dg : '-'} st=${s2.flags ? s2.flags.st : '-'}`);
+    }
+    if (skipped.length > 20) console.log(`      … and ${skipped.length - 20} more, all in the report`);
+  }
+  return { picked, skipped };
 }
 
 // ─── Progress ─────────────────────────────────────────────────────────────────
@@ -561,8 +601,19 @@ async function main() {
   const gameNotes = prog.gameNotes;
 
   console.log('Selecting games');
-  const picked = selectGames(done);
-  if (!picked.length) { console.log('Nothing to audit.'); }
+  const { picked, skipped } = selectGames(done);
+  if (!picked.length) {
+    // Never again report an empty selection as if it were a clean result.
+    console.log('\nNO GAMES SELECTED. This is not a clean audit — nothing was tested.');
+    if (skipped.length) console.log(`${skipped.length} requested game(s) were found and skipped for the reasons above.`);
+    else console.log('No requested game was found in games/bv at all.');
+    const out0 = { generatedAt: new Date().toISOString(), selectedNothing: true, skipped,
+                   args: { maxGames: MAX_GAMES, repointGames: REPOINT_ONLY, games: GAMES_ARG, tag: TAG } };
+    fs.writeFileSync(OUT_FILE, JSON.stringify(out0, null, 2));
+    await gitCommit(`alias audit: selected 0 games, ${skipped.length} skipped with reasons`, [OUT_REL]);
+    console.log(`\nWrote ${OUT_REL}`);
+    return;
+  }
 
   await refreshSession();
 
@@ -618,6 +669,7 @@ async function main() {
 
   const totals = {
     gamesAudited: gameNotes.length,
+    requestedButSkipped: skipped.length,
     gameviewAnswered:  gameNotes.filter(n => n.gameview === 'ok').length,
     spectatorAnswered: gameNotes.filter(n => n.spectator === 'ok').length,
     gamesWithBothSources: gameNotes.filter(n => n.gameview === 'ok' && n.spectator === 'ok').length,
@@ -679,6 +731,7 @@ async function main() {
     duplicateInRoster: dupes,
     rows,
     gameNotes,
+    skipped,
   };
   fs.writeFileSync(OUT_FILE, JSON.stringify(out, null, 2));   // a REPORT, not player data — indented on purpose
   console.log(`\nWrote ${path.relative(ROOT, OUT_FILE)}`);

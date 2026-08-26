@@ -46,6 +46,7 @@ const fs           = require('fs');
 const path         = require('path');
 const { execFileSync } = require('child_process');
 const { resolveToFullUuid, TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
+const { normName } = require('./lib/namespace-resolve.cjs');
 
 const ROOT = path.join(__dirname, '..');
 const ARGS = Object.fromEntries(
@@ -57,11 +58,20 @@ const ARGS = Object.fromEntries(
 const DRY_RUN  = !!ARGS['dry-run'];
 const REPORT   = typeof ARGS.report === 'string' && ARGS.report.trim() ? ARGS.report.trim() : 'reports/alias-vs-playhq-audit.json';
 const IDS_ARG  = typeof ARGS.ids === 'string' ? ARGS.ids.split(',').map(s => s.trim()).filter(Boolean) : null;
+// --names lets a case be opened from a NAME, because the uuid of a player you can
+// only describe by name is exactly what you do not have. It scans all 256
+// players/indexes shards (~158 MB, the authoritative name index) rather than the
+// search shards, whose value format this file has not verified.
+// It is a LOOKUP, not a decision: every id whose indexed name matches is probed
+// and reported. It never picks a winner among matches — picking winners from
+// name matches over our own data is the flaw that produced the suspect repoints.
+const NAMES_ARG = typeof ARGS.names === 'string' ? ARGS.names.split(',').map(s => s.trim()).filter(Boolean) : null;
 const MAX_IDS  = ARGS['max-ids'] ? Math.max(1, parseInt(ARGS['max-ids'], 10)) : 400;
 
 const API_URL       = 'https://api.playhq.com/graphql';
 const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';   // declared for the verbatim block below; unused here
 const PLAYERS_DIR   = path.join(ROOT, 'players');
+const INDEX_DIR     = path.join(ROOT, 'players', 'indexes');
 const REPORTS_DIR   = path.join(ROOT, 'reports');
 const OUT_FILE      = path.join(REPORTS_DIR, 'alias-conflict-diagnosis.json');
 const OUT_REL       = path.relative(ROOT, OUT_FILE);
@@ -395,6 +405,39 @@ function offlineFacts(id) {
   };
 }
 
+// ─── Name lookup ──────────────────────────────────────────────────────────────
+
+function findIdsByName(names) {
+  const wanted = new Map();                       // normalised name -> original spelling
+  for (const n of names) { const k = normName(n); if (k) wanted.set(k, n); }
+  const hits = new Map();                         // original spelling -> [uuid]
+  for (const n of names) hits.set(n, []);
+
+  let files = [];
+  try { files = fs.readdirSync(INDEX_DIR).filter(f => f.endsWith('.json')).sort(); }
+  catch (e) { throw new Error(`cannot read ${path.relative(ROOT, INDEX_DIR)}: ${e.message}`); }
+
+  let scanned = 0;
+  for (const fname of files) {
+    scanned++;
+    if (scanned % 64 === 0) console.log(`  scanned ${scanned}/${files.length} index shards`);
+    let idx;
+    try { idx = JSON.parse(fs.readFileSync(path.join(INDEX_DIR, fname), 'utf8')); } catch { continue; }
+    for (const [uuid, rec] of Object.entries(idx)) {
+      const nm = rec && rec.name;
+      if (!nm) continue;
+      const k = normName(nm);
+      if (!wanted.has(k)) continue;
+      hits.get(wanted.get(k)).push(uuid);
+    }
+  }
+  for (const [n, ids] of hits) {
+    if (!ids.length) console.log(`  "${n}": NO indexed player has this name — check the spelling, or the player is not indexed`);
+    else console.log(`  "${n}": ${ids.length} indexed id(s) — ${ids.slice(0, 8).join(', ')}${ids.length > 8 ? ` (+${ids.length - 8})` : ''}`);
+  }
+  return hits;
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -403,8 +446,12 @@ async function main() {
   fs.mkdirSync(REPORTS_DIR, { recursive: true });
 
   // Cases: either explicit ids, or pulled out of an audit report.
-  let wrong = [], dupes = [];
-  if (!IDS_ARG) {
+  let wrong = [], dupes = [], nameHits = null;
+  if (NAMES_ARG) {
+    console.log(`Looking up ${NAMES_ARG.length} name(s) in players/indexes`);
+    nameHits = findIdsByName(NAMES_ARG);
+  }
+  if (!IDS_ARG && !NAMES_ARG) {
     const rp = path.join(ROOT, REPORT);
     if (!fs.existsSync(rp)) throw new Error(`report not found: ${REPORT} — run audit-aliases-against-playhq first, or pass --ids=`);
     let rep;
@@ -430,8 +477,9 @@ async function main() {
     targets.get(id).cases.add(caseKey);
   };
 
-  if (IDS_ARG) {
-    for (const id of IDS_ARG) want(id, 'explicit', 'explicit');
+  if (IDS_ARG || NAMES_ARG) {
+    for (const id of (IDS_ARG || [])) want(id, 'explicit', 'explicit');
+    if (nameHits) for (const [n, ids] of nameHits) for (const id of ids) want(id, 'matched-by-name', `NAME:${n}`);
   } else {
     for (const r of wrong) {
       const k = `WRONG:${r.gameId}:${r.name}`;
