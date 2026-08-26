@@ -101,11 +101,15 @@ function main() {
   for (const id of wantIds) delivered.set(id, []);
   const gamesDir = path.join(ROOT, 'games', 'bv');
   const seasonFiles = fs.readdirSync(gamesDir).filter(f => f.endsWith('.json'));
+  // gid -> sid for EVERY game, so a candidate's activity can be measured in the
+  // season that actually matters instead of across their whole career.
+  const gameSeason = new Map();
   for (const f of seasonFiles) {
     const sid = path.basename(f, '.json');
     const sg = readJson(path.join(gamesDir, f));
     if (!sg) continue;
     for (const [gid, g] of Object.entries(sg.games || {})) {
+      gameSeason.set(gid, sid);
       const ids = (Array.isArray(g.p) ? g.p : []).map(x => x && x.id).filter(Boolean);
       if (!ids.length) continue;
       for (const raw of ids) {
@@ -216,17 +220,38 @@ function main() {
       // 2. jersey number worn elsewhere — needs the box score, not held offline,
       //    so this is reported as "not testable offline" rather than scored 0.
       // 3. squad overlap: teammates this candidate shares with these games
-      let mateHit = 0;
-      for (const other of c.games) {
-        // a game of theirs is "shared squad" if its roster meets these teammates
-        // — approximated by the teammate set, which is what we hold.
-        if (rosterMates.has(other)) mateHit++;
-      }
-      const sharedTeammates = [...rosterMates].filter(m => m !== cu && info.get(m) &&
-        [...info.get(m).games].some(x => c.games.has(x))).length;
+      // ⚠ THE DECISIVE TEST, AND THE ONE THE FIRST VERSION GOT WRONG.
+      // sharedTeammates counted teammates across a candidate's WHOLE CAREER. Two
+      // profiles belonging to the same human therefore both scored the same — the
+      // Belchers both hit 75 — and every such case came out "identical", which I
+      // then misread as one person split in two. It is not: two PlayHQ profiles
+      // are TWO RECORDS, and the only question is which of them this alias
+      // belongs to.
+      //
+      // The question that answers it: WAS THIS CANDIDATE ACTIVE IN THE SEASON THE
+      // GAME IS IN? A profile with no games and no registration that season cannot
+      // be the person on that team sheet, however large their career.
+      const seasonsHere = new Set(gs.map(g => g.sid));
+      let gamesThisSeason = 0;
+      for (const other of c.games) if (seasonsHere.has(gameSeason.get(other))) gamesThisSeason++;
+      const registeredThisSeason = [...seasonsHere].filter(sid => {
+        const e = c.per.get(sid);
+        return e && e.tids.size > 0;
+      }).length;
+      // Teammates shared IN THESE SEASONS ONLY, not across the whole career.
+      const sharedTeammates = [...rosterMates].filter(m => {
+        if (m === cu) return false;
+        const mi = info.get(m);
+        if (!mi) return false;
+        for (const x of mi.games) {
+          if (seasonsHere.has(gameSeason.get(x)) && c.games.has(x)) return true;
+        }
+        return false;
+      }).length;
 
       row.candidates.push({ uuid: cu, name: c.name, isCurrent: cu === p.target,
         careerGames: c.games.size, clubHit, gradeHit, sharedTeammates,
+        gamesThisSeason, registeredThisSeason,
         link: 'https://www.playhq.com/public/profile/' + cu + '/statistics' });
     }
 
@@ -240,7 +265,11 @@ function main() {
     // Three outcomes now, and the third is not a weaker version of the second —
     // it is a DIFFERENT FINDING.
     const scored = row.candidates.filter(c => !c.missing);
-    const score = (c) => (c.clubHit * 3) + (c.gradeHit * 2) + Math.min(c.sharedTeammates, 20);
+    // Activity in THIS season dominates: a candidate with games there is a real
+    // possibility, one with none is not. Club and grade refine it; career-wide
+    // teammate overlap is now season-scoped and worth least.
+    const score = (c) => (Math.min(c.gamesThisSeason, 30) * 5) + (c.registeredThisSeason * 10) +
+                         (c.clubHit * 3) + (c.gradeHit * 2) + Math.min(c.sharedTeammates, 10);
     for (const c of scored) c.score = score(c);
     scored.sort((a, b) => b.score - a.score);
     const top = scored[0], second = scored[1];
@@ -249,14 +278,20 @@ function main() {
       row.verdict = { uuid: null, kind: 'nothing', why: 'no candidate matches on club, grade or squad' };
       nothing++;
     } else if (second && second.score === top.score && top.score > 0) {
-      // ⚠ IDENTICAL SCORES ARE NOT AMBIGUITY. Two candidates matching the same
-      // teammates, the same club and the same grade to the same degree are far
-      // more likely ONE PERSON SPLIT ACROSS TWO RECORDS than a pair to choose
-      // between. Sage Horn 59/59, Yashvi Shah 39/39, Bethany Perry-Crockart 68/68
-      // all have this shape. That is a MERGE question, not an alias question, and
-      // filing it as "read it by eye" hides a different problem.
-      row.verdict = { uuid: null, kind: 'identical', why: 'two candidates score IDENTICALLY (' + top.score +
-        ') — that is the shape of ONE person split across two records, not a choice between two people',
+      // ⚠ I READ THIS WRONG THE FIRST TIME AND IT MATTERS.
+      // I took identical scores as "one person split across two records" and wrote
+      // out a merge list. That was wrong on the project's own rule: TWO PLAYHQ
+      // PROFILES ARE TWO RECORDS, whether or not the same human is behind them.
+      // Sage Horn genuinely has two profiles; there is nothing to merge. And the
+      // scores were identical only because the teammate count was career-wide, so
+      // two profiles of the same human inevitably matched equally.
+      //
+      // With activity scoped to the season, an identical score now means something
+      // narrow and real: BOTH profiles were active in that season, so the season
+      // cannot separate them. That is a genuine tie for a team sheet to break, not
+      // a merge.
+      row.verdict = { uuid: null, kind: 'tied', why: 'both profiles were active in that season and score identically (' +
+        top.score + ') — the season cannot separate them; the team sheet can',
         pair: [top.uuid, second.uuid] };
       identical++;
     } else if (!second || second.score === 0 || top.score >= second.score * 4) {
@@ -279,7 +314,7 @@ function main() {
   console.log('');
   console.log('  ══ EVIDENCE THE EARLIER TESTS DID NOT USE ═════════════════════════');
   console.log('    DECIDED — one candidate leads decisively  : ' + n(decided) + '   ← actionable');
-  console.log('    IDENTICAL scores — likely ONE person split : ' + n(identical) + '   ← a MERGE question, not an alias one');
+  console.log('    TIED — both active that season            : ' + n(identical) + '   ← needs a team sheet, NOT a merge');
   console.log('    too close to call                         : ' + n(split) + '   ← needs an eye; see the follow-up below');
   console.log('    nothing matches                           : ' + n(nothing) + '   ← needs an eye; see the follow-up below');
   console.log('');
@@ -305,7 +340,10 @@ function main() {
       if (c.missing) { console.log('      ' + c.uuid + '  (no player file)'); continue; }
       console.log('      ' + c.uuid + (c.isCurrent ? '  [CURRENT]' : ''));
       console.log('        ' + JSON.stringify(c.name) + '  · career ' + n(c.careerGames) + ' game(s)');
-      console.log('        club matches ' + c.clubHit + ' · grade matches ' + c.gradeHit + ' · shares ' + c.sharedTeammates + ' teammate(s) with this squad');
+      console.log('        ACTIVE THAT SEASON: ' + n(c.gamesThisSeason) + ' game(s), registered in ' +
+                  c.registeredThisSeason + ' of ' + [...new Set(r.gameList.map(g => g.sid))].length + ' season(s)' +
+                  (c.gamesThisSeason === 0 && c.registeredThisSeason === 0 ? '   ← CANNOT be the player in that team sheet' : ''));
+      console.log('        club matches ' + c.clubHit + ' · grade matches ' + c.gradeHit + ' · shares ' + c.sharedTeammates + ' teammate(s) in those seasons');
       console.log('        ' + c.link);
     }
     console.log('    → ' + (r.verdict.uuid ? ('THIS ONE: ' + r.verdict.uuid + (r.verdict.changes ? '   (CHANGES the alias)' : '   (confirms the current target)')) : 'UNDECIDED'));
@@ -327,13 +365,7 @@ function main() {
     for (const r of open) {
       const k = r.verdict.kind;
       console.log('  ' + r.id + '  ' + JSON.stringify(r.name) + '   [' + k.toUpperCase() + ']');
-      if (k === 'identical') {
-        console.log('    → NOT an alias question. These two look like ONE person split in two:');
-        console.log('        ' + r.verdict.pair[0]);
-        console.log('        ' + r.verdict.pair[1]);
-        console.log('      Open both profiles. If they are the same person, this is a MERGE —');
-        console.log('      run probe-both-resolve / merge-phantom-profiles on the pair, not this.');
-      } else {
+      if (false) {
         const num = [...new Set(r.teamEvidence.map(t => t.number).filter(Boolean))];
         const clubs = [...new Set(r.teamEvidence.flatMap(t => t.clubs.map(c => c[0])))].slice(0, 3);
         const grades = [...new Set(r.teamEvidence.flatMap(t => t.grades.map(c => c[0])))].slice(0, 3);
