@@ -53,6 +53,11 @@ on:
         required: false
         default: '250'
         type: string
+      explain_failures:
+        description: 'OFFLINE. Read the committed report and tally WHY api-id recovery failed. No API calls, no writes.'
+        required: false
+        default: false
+        type: boolean
       reset:
         description: 'Ignore existing progress and start the census again.'
         required: false
@@ -85,6 +90,7 @@ jobs:
       - name: Census wrongly keyed players
         run: |
           ARGS="--max-keys=${{ inputs.max_keys }} --max-games=${{ inputs.max_games }} --games-per-player=${{ inputs.games_per_player }} --commit-every=${{ inputs.commit_every }}"
+          if [ "${{ inputs.explain_failures }}" = "true" ] || [ "${{ inputs.explain_failures }}" = "True" ]; then ARGS="$ARGS --explain-failures"; fi
           if [ "${{ inputs.scan_only }}" = "true" ] || [ "${{ inputs.scan_only }}" = "True" ]; then ARGS="$ARGS --scan-only"; fi
           if [ "${{ inputs.reset }}" = "true" ] || [ "${{ inputs.reset }}" = "True" ]; then ARGS="$ARGS --reset"; fi
           node scripts/census-wrongly-keyed-players.js $ARGS
