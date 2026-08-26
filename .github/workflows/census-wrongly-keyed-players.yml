@@ -1,0 +1,90 @@
+# .github/workflows/census-wrongly-keyed-players.yml
+name: Census Wrongly Keyed Players
+
+# Finds EVERY player file keyed on a non-api id, not just the ones a game sample
+# walked past, and recovers each one's real api id from PlayHQ. Its output feeds
+# Seed apiId From PlayHQ Pairs unchanged.
+#
+# WHY NOT JUST WIDEN THE AUDIT. 4,066 games took 1,400s at 2.9 games/sec; the
+# store holds roughly two million games, so a full sweep is past a hundred hours
+# and STILL only samples the affected people. This asks per PLAYER instead.
+#
+# THE SIGNAL, read from the code. fetch-profile-stats.js markNotObtainable
+# (L872-884) stamps private:true on every player whose namespace recovery failed,
+# and recovery is a three-tier NAME match that is never retried once marked. So
+# every wrongly-keyed player carries private:true — found with zero API calls.
+# private:true is a CANDIDATE set: it also holds genuinely private, correctly
+# keyed profiles. isApiProfile separates them exactly — a real private profile
+# 403s to 'api', a spectator-keyed id 404s to 'not-api'.
+#
+# READ-ONLY against players/ and games/. Writes ONLY
+# reports/wrongly-keyed-census.json and its progress file. It changes no data and
+# proposes no writes.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+#
+# Resumable: progress committed at every interval and on every phase boundary.
+
+on:
+  workflow_dispatch:
+    inputs:
+      scan_only:
+        description: 'Phase 1 only — offline scan for private:true. FREE, no API calls. Run this first to size the job.'
+        required: false
+        default: true
+        type: boolean
+      max_keys:
+        description: 'Cap on phase-2 key tests this run (one API call each).'
+        required: false
+        default: '100000'
+        type: string
+      max_games:
+        description: 'Cap on phase-3 game reads this run (two API calls each).'
+        required: false
+        default: '100000'
+        type: string
+      games_per_player:
+        description: 'Games to try per player before giving up on recovering their api id.'
+        required: false
+        default: '3'
+        type: string
+      commit_every:
+        description: 'Commit progress every N. In-memory progress is lost on timeout.'
+        required: false
+        default: '250'
+        type: string
+      reset:
+        description: 'Ignore existing progress and start the census again.'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: alias-audit
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Census wrongly keyed players
+        run: |
+          ARGS="--max-keys=${{ inputs.max_keys }} --max-games=${{ inputs.max_games }} --games-per-player=${{ inputs.games_per_player }} --commit-every=${{ inputs.commit_every }}"
+          if [ "${{ inputs.scan_only }}" = "true" ] || [ "${{ inputs.scan_only }}" = "True" ]; then ARGS="$ARGS --scan-only"; fi
+          if [ "${{ inputs.reset }}" = "true" ] || [ "${{ inputs.reset }}" = "True" ]; then ARGS="$ARGS --reset"; fi
+          node scripts/census-wrongly-keyed-players.js $ARGS

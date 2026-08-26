@@ -1,0 +1,84 @@
+# .github/workflows/seed-apiid-from-playhq-pairs.yml
+name: Seed apiId From PlayHQ Pairs
+
+# Writes ONE field — player.apiId — on player files whose key is not an api id,
+# using the api id PlayHQ itself supplied in a game record. The EXISTING fold
+# (fold-diverged-players.js) then promotes the file, moves the index entry and
+# repoints the aliases; it selects purely on the presence of that field
+# (scanDiverged L399) and is idempotent.
+#
+# WHY THESE PLAYERS WERE NEVER FIXED BY THE NIGHTLY. fetch-profile-stats.js runs
+# attemptNamespaceRecovery only on a private/inaccessible profile, and that
+# recovery is a three-tier NAME match. When no tier yields exactly one candidate
+# it returns null, markNotObtainable writes statsChecked, and the player is never
+# offered again. Correct behaviour — it stops an endless refetch — but it parks
+# anyone whose name match failed once. The api id here instead comes from PlayHQ's
+# own game record, paired by name AND jersey number inside a single game, with no
+# matching against our own players/ directory anywhere in the chain.
+#
+# EVERY CASE IS RE-VERIFIED AT APPLY TIME, not trusted from the report:
+#   the file key must test 'not-api'  (already api-keyed -> left alone)
+#   the proposed apiId must test 'api' (never point the fold at another spectator id)
+#   the file must exist and carry no apiId already
+# 'unknown' is transport and SKIPS — it is never read as either answer.
+#
+# WRITES ONLY players/{xx}/{uuid}.json (the apiId field) and
+# reports/apiid-seed-log.json. It does NOT move files, touch players/indexes,
+# touch players/aliases, or clear statsChecked — each of those has exactly one
+# writer already and this is not it.
+#
+# Shares concurrency group data-write with the fold, the nightly and the matrix,
+# so it can never race a player-file writer.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry-run = verify every case against PlayHQ and print what would be seeded, writing no player file. apply = write the apiId field.'
+        required: true
+        type: choice
+        options:
+          - dry-run
+          - apply
+        default: dry-run
+      reports:
+        description: 'Comma-separated audit reports to read WRONG rows from.'
+        required: false
+        default: 'reports/alias-vs-playhq-audit-wide.json,reports/alias-vs-playhq-audit.json'
+        type: string
+      max:
+        description: 'Cap on player files considered this run.'
+        required: false
+        default: '1000'
+        type: string
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Seed apiId
+        run: |
+          ARGS="--reports=${{ inputs.reports }} --max=${{ inputs.max }}"
+          if [ "${{ inputs.mode }}" = "apply" ]; then ARGS="$ARGS --apply"; fi
+          node scripts/seed-apiid-from-playhq-pairs.js $ARGS
