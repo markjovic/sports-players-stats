@@ -1,64 +1,42 @@
-// scripts/audit-aliases-against-playhq.js
+// scripts/diagnose-alias-conflicts.js
 //
-// THE TEST THIS PROJECT HAS NEVER HAD.
+// Takes the WRONG rows and the duplicateInRoster rows out of an audit report and
+// asks PlayHQ which namespace each id in them actually belongs to. Read-only
+// against games/ and players/; writes one report.
 //
-// Every alias round so far assembled candidates by name-matching our OWN
-// players/ directory, then picked a winner. If the correct api profile had no
-// player file, or was filed under a different name, it could never be proposed
-// — so the "winner" was the best of a set that may not have contained the right
-// answer. That is why rounds 2 and 3 are suspect and why Max Matthews was
-// confirmed on a figure taken from our own rosters.
+// WHY. The 500-game audit (2026-08-26) returned 5 WRONG out of 461 diverged pairs
+// and 10 duplicates. My WRONG label said "our resolver lands on a different
+// person" and that label was WRONG ITSELF: in all five cases the name we resolve
+// to is the SAME person PlayHQ names (Aston Dyt, Umer Qureshi, Victoria Hu, Jack
+// Telford, Darcy Bendeich). The verdict compares ids and cannot tell "wrong
+// person" from "same person, second id". This script gets the fact the label
+// assumed.
 //
-// This asks a question our data cannot answer for itself. Inside ONE game,
-// PlayHQ gives both:
-//   spectator.playhq.com  -> profileID in the SPECTATOR namespace, with a name
-//                            and a jersey number
-//   api.playhq.com        -> gameView profile.id in the API namespace, with a
-//                            name and the same jersey number
-// Measured 2026-08-26 across 55 ids, 0 unknowns: gameView ids are api-side 18/18,
-// spectator ids are not-api 18/18, controls api 19/19. Pairing the two by
-// normalised name (jersey number as tiebreak when a name repeats) yields a
-// spectator-id -> api-id fact SOURCED FROM PlayHQ, not from us.
+// Three explanations fit the five, and they call for opposite responses:
+//   1. our alias target is itself a SPECTATOR id wearing api clothing — a player
+//      file keyed on the wrong namespace, which is the duplicate-creation failure
+//      isApiProfile was added to spectator-backfill.js to prevent. Darcy Bendeich
+//      is the clearest candidate: the alias maps 423776e0-c910 TO ITSELF while
+//      PlayHQ pairs that spectator id with e358fc8a-593b.
+//   2. the person genuinely holds TWO api profiles, which would contradict the
+//      0.09% api-stability finding in README ("no evidence a person has two
+//      distinct api profiles").
+//   3. gameView's id is not api-side after all — which would contradict the
+//      18/18 measured on 2026-08-26, so it is the least likely, but it is a
+//      hypothesis this script can kill rather than assume.
+// isApiProfile separates them in one call per id.
 //
-// The audit is then one question per pair:
-//   resolveToFullUuid(truncate13(spectatorId)) === apiId ?
-// That is deliberately the PRODUCTION resolver, the same call build-player-games
-// makes at L179, not a raw alias lookup — the thing being tested is where an
-// appearance actually lands, which is indexes-then-aliases, not the alias shard
-// alone. The raw alias entry is reported alongside so an index hit and an alias
-// hit are distinguishable.
+// THE ONLY QUERY IT SENDS is PROFILE_EXISTS_QUERY / isApiProfile, copied verbatim
+// from spectator-backfill.js L282-316. It does NOT call publicProfile: that query
+// is documented in playhq_api_reference.md but I do not have it verbatim from a
+// live script, and the names it would fetch are already in the audit report,
+// supplied by PlayHQ itself.
 //
-// Verdicts. Only CORRECT is fine:
-//   IDENTICAL   spectator id == api id. Not diverged; nothing to get wrong.
-//   CORRECT     diverged, and we resolve to the api id PlayHQ paired it with.
-//   WRONG       diverged, and we resolve to a DIFFERENT person. A live
-//               misattribution, with the game that proves it named.
-//   UNRESOLVED  no index and no alias entry. Appearances land nowhere.
+// 'unknown' is a TRANSPORT outcome and is never read as an answer. An id that
+// comes back unknown is reported as untested, not as either verdict.
 //
-// It also reports DUPLICATE_IN_ROSTER: our p[] holding BOTH ids for one person,
-// found in all five sampled games of season f729667e (bailey sheen). Harmless to
-// build-player-games, which adds to a Set; NOT harmless to anything reading p[]
-// directly — team stats, leaderboards, opposition lookup, StatTrack all see an
-// extra player.
-//
-// WHAT IT DOES NOT DO. It writes nothing to players/, games/ or players/aliases/.
-// It proposes no repoints and reverses nothing. It produces evidence; deciding
-// what to do with a WRONG verdict is a separate, deliberate step.
-//
-// SELECTION IS NOT ALLOWED TO CHEAT. Games are chosen WITHOUT reference to spcm
-// or dgm. The 2026-08-26 probe selected five games our own flags already recorded
-// as spectator failures, then reported spectator failing on them as a finding; it
-// was the flag being accurate and nothing more. Default selection is a stride
-// across every season file, so no flag steers it.
-//
-// TRANSPORT AND QUERIES are copied verbatim from discover-game-backfill.js. No
-// PlayHQ string in this file was written by hand. NO publicProfileStatistics call
-// is made anywhere, so the ~30-call session quota on that operation is not in play.
-//
-// PROGRESS. Long-running and resumable: reports/alias-audit-progress.json holds
-// every game already done plus the running verdicts, and is COMMITTED at every
-// save interval. In-memory progress is lost on timeout. It is deleted on success
-// only.
+// It changes NOTHING. No repoint, no reversal, no player write. It produces the
+// evidence a decision needs.
 
 'use strict';
 
@@ -68,7 +46,6 @@ const fs           = require('fs');
 const path         = require('path');
 const { execFileSync } = require('child_process');
 const { resolveToFullUuid, TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
-const { normName } = require('./lib/namespace-resolve.cjs');
 
 const ROOT = path.join(__dirname, '..');
 const ARGS = Object.fromEntries(
@@ -77,32 +54,17 @@ const ARGS = Object.fromEntries(
     .map(a => { const i = a.indexOf('='); return i === -1 ? [a.slice(2), true] : [a.slice(2, i), a.slice(i + 1)]; })
 );
 
-const DRY_RUN      = !!ARGS['dry-run'];
-const MAX_GAMES    = ARGS['max-games']   ? Math.max(1, parseInt(ARGS['max-games'], 10))   : 500;
-const PER_SEASON   = ARGS['per-season']  ? Math.max(1, parseInt(ARGS['per-season'], 10))  : 2;
-const MIN_ROSTER   = ARGS['min-roster']  ? Math.max(0, parseInt(ARGS['min-roster'], 10))  : 6;
-const CONCURRENCY  = ARGS.concurrency    ? Math.max(1, parseInt(ARGS.concurrency, 10))    : 3;
-const COMMIT_EVERY = ARGS['commit-every'] ? Math.max(1, parseInt(ARGS['commit-every'], 10)) : 100;
-const REPOINT_ONLY = !!ARGS['repoint-games'];
-const GAMES_ARG    = typeof ARGS.games === 'string' ? ARGS.games.split(',').map(s => s.trim()).filter(Boolean) : null;
-const RESET        = !!ARGS.reset;
+const DRY_RUN  = !!ARGS['dry-run'];
+const REPORT   = typeof ARGS.report === 'string' && ARGS.report.trim() ? ARGS.report.trim() : 'reports/alias-vs-playhq-audit.json';
+const IDS_ARG  = typeof ARGS.ids === 'string' ? ARGS.ids.split(',').map(s => s.trim()).filter(Boolean) : null;
+const MAX_IDS  = ARGS['max-ids'] ? Math.max(1, parseInt(ARGS['max-ids'], 10)) : 400;
 
 const API_URL       = 'https://api.playhq.com/graphql';
-const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
-const GAMES_DIR     = path.join(ROOT, 'games', 'bv');
+const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';   // declared for the verbatim block below; unused here
 const PLAYERS_DIR   = path.join(ROOT, 'players');
 const REPORTS_DIR   = path.join(ROOT, 'reports');
-// TAG keeps runs from destroying each other. Without it a --repoint-games run
-// would overwrite the spread-sample report and its evidence would be gone: the
-// 2026-08-26 sample cost 222s and 500 games and is the only measurement of the
-// diverged population that exists. Untagged keeps the original filenames so the
-// committed sample report stays where it is.
-const TAG           = typeof ARGS.tag === 'string' && ARGS.tag.trim() ? ARGS.tag.trim().replace(/[^A-Za-z0-9._-]/g, '-') : null;
-const OUT_FILE      = path.join(REPORTS_DIR, TAG ? `alias-vs-playhq-audit-${TAG}.json` : 'alias-vs-playhq-audit.json');
-const PROGRESS_FILE = path.join(REPORTS_DIR, TAG ? `alias-audit-progress-${TAG}.json`  : 'alias-audit-progress.json');
+const OUT_FILE      = path.join(REPORTS_DIR, 'alias-conflict-diagnosis.json');
 const OUT_REL       = path.relative(ROOT, OUT_FILE);
-const PROGRESS_REL  = path.relative(ROOT, PROGRESS_FILE);
-const ALIAS_LOG     = path.join(REPORTS_DIR, 'alias-repoint-log.json');
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 const t13 = id => String(id || '').slice(0, TRUNC_LEN);
@@ -248,140 +210,67 @@ async function gqlSpectator(gameId) {
     const g = body.data?.game;
     return g ? { ok: true, game: g } : { ok: false, permanent: true, why: 'no-game' };
   } catch (e) { return { ok: false, permanent: false, why: 'network-' + (e.code || e.message || 'err') }; }
-}
-// ─── Concurrency pool — discover-game-backfill.js, verbatim ───────────────────
+}// ─── Namespace test — spectator-backfill.js, verbatim ─────────────────────────
+// PROFILE_EXISTS_QUERY and isApiProfile are copied unchanged from
+// spectator-backfill.js (L282-316). The three-way verdict is the whole point:
+// 'unknown' is a TRANSPORT outcome and is never read as either answer. That is
+// exactly the distinction the last session collapsed when it read a throttled
+// endpoint as "most of the store is not api profiles".
+const PROFILE_EXISTS_QUERY = `query ProfileSeasonStatistics($profileID: ID!) {
+  publicProfileStatistics(profileID: $profileID) { seasonStatistics { name } }
+}`;
 
-async function runPool(tasks, concurrency) {
-  let i = 0;
-  async function worker() {
-    while (i < tasks.length) { await tasks[i++](); }
-  }
-  await Promise.all(Array.from({ length: Math.min(concurrency, tasks.length) }, worker));
-}
-
-// ─── Row readers ──────────────────────────────────────────────────────────────
-// NOT the live parseGameViewPlayers / parseSpectatorPlayers: both DROP rows with
-// no profile id. Correct for a writer, wrong here — a dropped row is the fill-in
-// population, which must be counted and never guessed at.
-
-function gvRows(teamStats) {
-  const rows = [];
-  for (const p of ((teamStats && teamStats.players) || [])) {
-    const pl   = p && p.player;
-    const prof = pl && pl.profile;
-    rows.push({
-      profileId: (prof && prof.id) || null,
-      name: prof ? [prof.firstName, prof.lastName].filter(Boolean).join(' ').trim() : ((pl && pl.name) || null),
-      number: p.playerNumber ?? null,
-      typename: (pl && pl.__typename) || null,
-    });
-  }
-  return rows;
-}
-
-function specRows(teamStats) {
-  const rows = [];
-  for (const p of ((teamStats && teamStats.players) || [])) {
-    rows.push({ profileId: p.profileID || null, name: p.name || null, number: p.playerNumber ?? null });
-  }
-  return rows;
-}
-
-// ─── Pairing ──────────────────────────────────────────────────────────────────
-// A pair is only made when it is UNAMBIGUOUS. One spectator row with that
-// normalised name -> pair it. Several -> require an exact jersey-number match, and
-// if that does not single one out, make NO pair and count it as ambiguous. A wrong
-// pair here would manufacture a false WRONG verdict, which is worse than no
-// verdict: it would send someone reversing a correct alias.
-
-function pairRosters(gvList, specList) {
-  const pairs = [], ambiguous = [];
-  const byName = new Map();
-  for (const r of specList) {
-    if (!r.profileId) continue;
-    const k = normName(r.name);
-    if (!k) continue;
-    if (!byName.has(k)) byName.set(k, []);
-    byName.get(k).push(r);
-  }
-  for (const r of gvList) {
-    if (!r.profileId) continue;
-    const k = normName(r.name);
-    if (!k) continue;
-    const cands = byName.get(k) || [];
-    if (cands.length === 1) { pairs.push({ name: r.name, number: r.number, apiId: r.profileId, spectatorId: cands[0].profileId, by: 'name' }); continue; }
-    if (cands.length > 1) {
-      const m = cands.filter(c => c.number != null && r.number != null && c.number === r.number);
-      if (m.length === 1) { pairs.push({ name: r.name, number: r.number, apiId: r.profileId, spectatorId: m[0].profileId, by: 'name+number' }); continue; }
-      ambiguous.push({ name: r.name, number: r.number, apiId: r.profileId, candidates: cands.length });
-    }
-  }
-  return { pairs, ambiguous };
-}
-
-// ─── The audit ────────────────────────────────────────────────────────────────
-
-const aliasShardCache = new Map();
-function rawAliasEntry(specId) {
-  const shard = String(specId).slice(0, 2).toLowerCase();
-  if (!aliasShardCache.has(shard)) {
-    let obj = {};
-    try { obj = JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, 'aliases', `${shard}.json`), 'utf8')); }
-    catch (e) { if (e.code !== 'ENOENT') throw e; }
-    aliasShardCache.set(shard, obj);
-  }
-  const m = aliasShardCache.get(shard);
-  return m[t13(specId)] || null;
-}
-
-function playerFileExists(uuid) {
-  if (!uuid || uuid.length !== 36) return false;
-  return fs.existsSync(path.join(PLAYERS_DIR, uuid.slice(0, 2).toLowerCase(), `${uuid}.json`));
-}
-
-function playerName(uuid) {
+async function isApiProfile(uuid) {
+  if (!sessionCookie) await refreshSession();
+  let res;
   try {
-    const p = JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, uuid.slice(0, 2).toLowerCase(), `${uuid}.json`), 'utf8'));
-    return p && p.name || null;
-  } catch (e) { return null; }
+    res = await doFetch(API_URL,
+      { operationName: 'ProfileSeasonStatistics', variables: { profileID: uuid }, query: PROFILE_EXISTS_QUERY },
+      { ...HEADERS_MAIN, 'Cookie': sessionCookie });
+  } catch (e) { return 'unknown'; }
+  const raw = res.rawText || '';
+  if (res.status === 403) {
+    if (/DOCTYPE|Request blocked/i.test(raw)) return 'unknown';
+    return 'api';
+  }
+  if (res.status === 404) return 'not-api';
+  if (res.status < 200 || res.status >= 300) return 'unknown';
+  const j = res.body;
+  if (!j) return 'unknown';
+  if (j.errors && j.errors.length) {
+    const m = String(j.errors[0].message || '');
+    if (/NOT_FOUND|failed to find profile/i.test(m)) return 'not-api';
+    return 'unknown';
+  }
+  return (j.data && j.data.publicProfileStatistics !== undefined) ? 'api' : 'not-api';
 }
 
-// One pair -> one verdict. rosterIds is our stored p[] for this game.
-function judge(pair, rosterT13) {
-  const { spectatorId, apiId } = pair;
-  const identical = spectatorId === apiId;
+// ONE DELIBERATE DEVIATION FROM THE CALL SITE IN spectator-backfill.js (L1038-1046),
+// stated rather than hidden. That loop calls isApiProfile sequentially with a 250 ms
+// sleep and never refreshes the session. It probes ~115 ids per sweep and has run
+// clean. playhq_api_reference.md records a per-session JWT quota of roughly 30-35
+// calls on THIS operation specifically, refreshed between batches of 30. The two
+// disagree, and here the disagreement is dangerous in one direction: a
+// quota-exhausted 403 whose body is NOT CloudFront HTML returns 'api', so exhausting
+// the quota would silently label every remaining id an api profile. That is the same
+// shape of misread as last session's 82% claim, running the other way. So this probe
+// refreshes the session every 25 calls. If the run shows that was unnecessary, the
+// evidence for changing the live script will be in the log.
+const NS_REFRESH_EVERY = 25;
+let nsCalls = 0;
+const nsCache = new Map();   // uuid -> 'api' | 'not-api' | 'unknown'
 
-  let resolved = null, resolveError = null;
-  try { resolved = resolveToFullUuid(t13(spectatorId), ROOT); }
-  catch (e) { resolveError = e.message; }
-
-  const alias = rawAliasEntry(spectatorId);
-  const verdict = identical ? 'IDENTICAL'
-                : !resolved  ? 'UNRESOLVED'
-                : resolved === apiId ? 'CORRECT'
-                : 'WRONG';
-
-  const out = {
-    ...pair,
-    identical,
-    resolvesTo: resolved,
-    resolvedVia: alias ? (alias === resolved ? 'alias' : 'index-or-other') : 'index-or-none',
-    rawAliasEntry: alias,
-    resolveError,
-    verdict,
-    apiIdHasPlayerFile: playerFileExists(apiId),
-    // Both ids present in OUR roster for the same person: invisible to
-    // build-player-games (Set), visible as an extra player to everything that
-    // reads p[] directly.
-    duplicateInRoster: rosterT13.has(t13(spectatorId)) && rosterT13.has(t13(apiId)) && !identical,
-    spectatorIdInRoster: rosterT13.has(t13(spectatorId)),
-    apiIdInRoster: rosterT13.has(t13(apiId)),
-  };
-  if (verdict === 'WRONG') {
-    out.weResolveToName = playerName(resolved);
-    out.playhqSaysName  = pair.name;
+async function namespaceVerdict(uuid) {
+  if (nsCache.has(uuid)) return nsCache.get(uuid);
+  if (nsCalls > 0 && nsCalls % NS_REFRESH_EVERY === 0) {
+    console.log(`    (namespace probe: ${nsCalls} calls made, refreshing session)`);
+    await refreshSession();
   }
-  return out;
+  nsCalls++;
+  const v = await isApiProfile(uuid);
+  await sleep(250);
+  nsCache.set(uuid, v);
+  return v;
 }
 // ─── Git commit — discover-game-backfill.js, verbatim ─────────────────────────
 
@@ -468,234 +357,175 @@ async function gitCommit(message, dirs) {
   }
   throw new Error(`gitCommit: exhausted ${MAX} push attempts for "${message}"`);
 }
-// ─── Selection ────────────────────────────────────────────────────────────────
-// NO reference to spc, spcm, dg or dgm. A game either has a roster we can compare
-// or it does not; our own capture flags must not steer which games get audited.
+// ─── Offline facts about an id ────────────────────────────────────────────────
 
-function rosterIds(g) { return ((g && g.p) || []).map(x => x && x.id).filter(Boolean); }
-
-function eligible(g) {
-  if (!g) return false;
-  if (g.forfeit || g.bye || g.cancelled || g.abandoned || g.legacy || g.profileOnly || g.hidden) return false;
-  return rosterIds(g).length >= MIN_ROSTER;
-}
-
-function readRepointGameIds() {
-  if (!fs.existsSync(ALIAS_LOG)) { console.log(`  alias-repoint-log.json absent — no repoint games`); return new Set(); }
-  let raw;
-  try { raw = JSON.parse(fs.readFileSync(ALIAS_LOG, 'utf8')); }
-  catch (e) { console.log(`  alias-repoint-log.json unreadable: ${e.message}`); return new Set(); }
-  const entries = Array.isArray(raw) ? raw : Array.isArray(raw.entries) ? raw.entries : null;
-  if (!entries) { console.log(`  alias-repoint-log.json unrecognised shape. Top-level keys: ${Object.keys(raw).join(', ')}`); return new Set(); }
-  const ids = new Set();
-  for (const e of entries) for (const g of (e && e.games) || []) if (g) ids.add(String(g));
-  console.log(`  alias-repoint-log.json: ${entries.length} entries listing ${ids.size} distinct games`);
-  return ids;
-}
-
-function selectGames(done) {
-  const files = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).sort();
-  const picked = [];
-
-  const wantExplicit = GAMES_ARG ? new Set(GAMES_ARG) : null;
-  const wantRepoint  = REPOINT_ONLY ? readRepointGameIds() : null;
-  const targeted     = wantExplicit || wantRepoint;
-
-  let scanned = 0;
-  for (const fname of files) {
-    if (picked.length >= MAX_GAMES && !targeted) break;
-    if (targeted && !targeted.size) break;
-    scanned++;
-    if (scanned % 400 === 0) console.log(`  scanned ${scanned}/${files.length} season files — picked ${picked.length}`);
-    const sid = fname.replace('.json', '');
-    let gf;
-    try { gf = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, fname), 'utf8')); } catch { continue; }
-
-    let takenHere = 0;
-    for (const [gameId, g] of Object.entries(gf.games || {})) {
-      if (targeted) {
-        if (!targeted.has(gameId)) continue;
-        targeted.delete(gameId);
-        if (done.has(gameId) || !eligible(g)) continue;
-      } else {
-        if (takenHere >= PER_SEASON) break;
-        if (done.has(gameId) || !eligible(g)) continue;
-        if (picked.length >= MAX_GAMES) break;
-      }
-      picked.push({ gameId, seasonId: sid, rosterIds: rosterIds(g) });
-      takenHere++;
-    }
+const aliasShardCache = new Map();
+function rawAliasEntry(id) {
+  const shard = String(id).slice(0, 2).toLowerCase();
+  if (!aliasShardCache.has(shard)) {
+    let obj = {};
+    try { obj = JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, 'aliases', `${shard}.json`), 'utf8')); }
+    catch (e) { if (e.code !== 'ENOENT') throw e; }
+    aliasShardCache.set(shard, obj);
   }
-  console.log(`  selection scanned ${scanned}/${files.length} season files, picked ${picked.length}`);
-  if (targeted && targeted.size) console.log(`  ⚠ ${targeted.size} requested game id(s) not found in games/bv: ${[...targeted].slice(0, 10).join(', ')}`);
-  return picked;
+  return aliasShardCache.get(shard)[t13(id)] || null;
 }
 
-// ─── Progress ─────────────────────────────────────────────────────────────────
-
-function loadProgress() {
-  if (RESET) { console.log('--reset given: ignoring any existing progress file'); return { doneGames: [], rows: [], gameNotes: [] }; }
-  try {
-    const p = JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8'));
-    console.log(`Resuming: ${(p.doneGames || []).length} games already audited, ${(p.rows || []).length} pairs judged`);
-    return { doneGames: p.doneGames || [], rows: p.rows || [], gameNotes: p.gameNotes || [] };
-  } catch (e) { return { doneGames: [], rows: [], gameNotes: [] }; }
+function readPlayer(uuid) {
+  if (!uuid || uuid.length !== 36) return null;
+  try { return JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, uuid.slice(0, 2).toLowerCase(), `${uuid}.json`), 'utf8')); }
+  catch (e) { return null; }
 }
 
-function writeProgress(state) {
-  fs.mkdirSync(REPORTS_DIR, { recursive: true });
-  fs.writeFileSync(PROGRESS_FILE, JSON.stringify(state));
+function offlineFacts(id) {
+  const p = readPlayer(id);
+  let resolves = null, resolveError = null;
+  try { resolves = resolveToFullUuid(t13(id), ROOT); } catch (e) { resolveError = e.message; }
+  return {
+    id,
+    hasPlayerFile: !!p,
+    name: p ? (p.name || null) : null,
+    private: p ? (p.private === true) : null,
+    gamesHeld: p && Array.isArray(p.games) ? p.games.length : null,
+    spectatorIds: p && Array.isArray(p.spectatorIds) ? p.spectatorIds : null,
+    seasonCount: p && Array.isArray(p.seasons) ? p.seasons.length : null,
+    aliasEntryFor: rawAliasEntry(id),
+    truncResolvesTo: resolves,
+    resolveError,
+  };
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
   const t0 = Date.now();
-  console.log('audit-aliases-against-playhq — PlayHQ-sourced spectator/api pairs vs our resolver\n');
-  if (!fs.existsSync(GAMES_DIR)) throw new Error(`games dir not found: ${GAMES_DIR}`);
+  console.log('diagnose-alias-conflicts — which namespace does each conflicting id belong to?\n');
   fs.mkdirSync(REPORTS_DIR, { recursive: true });
 
-  const prog = loadProgress();
-  const done = new Set(prog.doneGames);
-  const rows = prog.rows;
-  const gameNotes = prog.gameNotes;
+  // Cases: either explicit ids, or pulled out of an audit report.
+  let wrong = [], dupes = [];
+  if (!IDS_ARG) {
+    const rp = path.join(ROOT, REPORT);
+    if (!fs.existsSync(rp)) throw new Error(`report not found: ${REPORT} — run audit-aliases-against-playhq first, or pass --ids=`);
+    let rep;
+    try { rep = JSON.parse(fs.readFileSync(rp, 'utf8')); }
+    catch (e) { throw new Error(`report unreadable: ${REPORT} — ${e.message}`); }
+    wrong = Array.isArray(rep.wrong) ? rep.wrong : [];
+    dupes = Array.isArray(rep.duplicateInRoster) ? rep.duplicateInRoster : [];
+    if (!wrong.length && !dupes.length) {
+      console.log(`${REPORT} holds no WRONG rows and no duplicateInRoster rows.`);
+      console.log(`Top-level keys present: ${Object.keys(rep).join(', ')}`);
+      console.log('Nothing to diagnose — this is a clean report, not a failure.');
+      return;
+    }
+    console.log(`${REPORT}: ${wrong.length} WRONG rows, ${dupes.length} duplicate rows`);
+  }
 
-  console.log('Selecting games');
-  const picked = selectGames(done);
-  if (!picked.length) { console.log('Nothing to audit.'); }
+  // Which ids need asking, and why. An id can appear under several reasons.
+  const targets = new Map();
+  const want = (id, role, caseKey) => {
+    if (!id || id.length !== 36) return;
+    if (!targets.has(id)) targets.set(id, { roles: new Set(), cases: new Set() });
+    targets.get(id).roles.add(role);
+    targets.get(id).cases.add(caseKey);
+  };
+
+  if (IDS_ARG) {
+    for (const id of IDS_ARG) want(id, 'explicit', 'explicit');
+  } else {
+    for (const r of wrong) {
+      const k = `WRONG:${r.gameId}:${r.name}`;
+      want(r.spectatorId, 'spectator-id-in-our-roster', k);
+      want(r.apiId,       'playhq-says-this-is-the-api-id', k);
+      want(r.resolvesTo,  'what-our-alias-points-at', k);
+    }
+    for (const r of dupes) {
+      const k = `DUPLICATE:${r.gameId}:${r.name}`;
+      want(r.spectatorId, 'spectator-id-in-our-roster', k);
+      want(r.apiId,       'playhq-says-this-is-the-api-id', k);
+    }
+  }
+
+  const list = [...targets.keys()].slice(0, MAX_IDS);
+  console.log(`\n${targets.size} distinct ids to ask; asking ${list.length} (cap --max-ids=${MAX_IDS}), one at a time`);
+  if (targets.size > list.length) console.log(`  ⚠ ${targets.size - list.length} NOT asked — truncated sample, not a census`);
 
   await refreshSession();
 
-  let processed = 0, sinceCommit = 0;
-  const tasks = picked.map(sel => async () => {
-    const gv = await gqlGameView(sel.gameId);
-    const sp = await gqlSpectator(sel.gameId);
-
-    const note = { gameId: sel.gameId, seasonId: sel.seasonId,
-                   gameview: gv.ok ? 'ok' : gv.why, spectator: sp.ok ? 'ok' : sp.why,
-                   ourRoster: sel.rosterIds.length, pairs: 0, ambiguous: 0,
-                   gvNoProfile: 0, specNoProfile: 0 };
-
-    if (gv.ok && sp.ok) {
-      const gvs = gv.game.statistics || {};
-      const sps = sp.game.statistics || {};
-      const gvList = [...gvRows(gvs.home), ...gvRows(gvs.away)];
-      const spList = [...specRows(sps.home), ...specRows(sps.away)];
-      note.gvNoProfile   = gvList.filter(r => !r.profileId).length;
-      note.specNoProfile = spList.filter(r => !r.profileId).length;
-
-      const { pairs, ambiguous } = pairRosters(gvList, spList);
-      note.pairs = pairs.length;
-      note.ambiguous = ambiguous.length;
-
-      const rosterT13 = new Set(sel.rosterIds.map(t13));
-      for (const p of pairs) rows.push({ gameId: sel.gameId, seasonId: sel.seasonId, ...judge(p, rosterT13) });
-    }
-
-    gameNotes.push(note);
-    done.add(sel.gameId);
-    processed++; sinceCommit++;
-
-    if (processed % 25 === 0) {
-      const w = rows.filter(r => r.verdict === 'WRONG').length;
-      const u = rows.filter(r => r.verdict === 'UNRESOLVED').length;
-      console.log(`  ${processed}/${picked.length} games · ${rows.length} pairs · WRONG ${w} · UNRESOLVED ${u}`);
-    }
-    if (sinceCommit >= COMMIT_EVERY) {
-      sinceCommit = 0;
-      writeProgress({ doneGames: [...done], rows, gameNotes });
-      await gitCommit(`alias audit: progress ${processed}/${picked.length} games, ${rows.length} pairs`, [PROGRESS_REL]);
-    }
-  });
-
-  await runPool(tasks, CONCURRENCY);
-
-  // ── Verdict tallies ─────────────────────────────────────────────────────────
-  const count = v => rows.filter(r => r.verdict === v).length;
-  const wrong      = rows.filter(r => r.verdict === 'WRONG');
-  const unresolved = rows.filter(r => r.verdict === 'UNRESOLVED');
-  const dupes      = rows.filter(r => r.duplicateInRoster);
-
-  const totals = {
-    gamesAudited: gameNotes.length,
-    gameviewAnswered:  gameNotes.filter(n => n.gameview === 'ok').length,
-    spectatorAnswered: gameNotes.filter(n => n.spectator === 'ok').length,
-    gamesWithBothSources: gameNotes.filter(n => n.gameview === 'ok' && n.spectator === 'ok').length,
-    pairsJudged: rows.length,
-    ambiguousUnpaired: gameNotes.reduce((n, g) => n + g.ambiguous, 0),
-    gameviewNoProfileRows:  gameNotes.reduce((n, g) => n + g.gvNoProfile, 0),
-    spectatorNoProfileRows: gameNotes.reduce((n, g) => n + g.specNoProfile, 0),
-    IDENTICAL:  count('IDENTICAL'),
-    CORRECT:    count('CORRECT'),
-    WRONG:      wrong.length,
-    UNRESOLVED: unresolved.length,
-    divergedPairs: count('CORRECT') + wrong.length + unresolved.length,
-    duplicateInRoster: dupes.length,
-    distinctWrongSpectatorIds: new Set(wrong.map(r => t13(r.spectatorId))).size,
-    distinctDuplicatePeople:   new Set(dupes.map(r => t13(r.spectatorId))).size,
-  };
-
-  console.log('\n──── TOTALS ────');
-  for (const [k, v] of Object.entries(totals)) console.log(`  ${k}: ${v}`);
-
-  // A counter without examples is a number that cannot be checked.
-  console.log('\n──── WRONG (our resolver lands on a different person) ────');
-  if (!wrong.length) console.log('  none');
-  for (const r of wrong.slice(0, 40)) {
-    console.log(`  ${r.gameId} · ${r.playhqSaysName} #${r.number}`);
-    console.log(`      spectator ${r.spectatorId}  PlayHQ pairs it with api ${r.apiId}`);
-    console.log(`      we resolve to ${r.resolvesTo} (${r.weResolveToName || 'no name'}) via ${r.resolvedVia}, alias entry ${r.rawAliasEntry || 'none'}`);
+  const facts = new Map();
+  for (const id of list) {
+    const verdict = await namespaceVerdict(id);
+    const off = offlineFacts(id);
+    facts.set(id, { ...off, namespace: verdict, roles: [...targets.get(id).roles], cases: [...targets.get(id).cases] });
+    console.log(`  ${verdict.padEnd(8)} ${id}  file:${off.hasPlayerFile ? 'yes' : 'NO '}  ${off.name || '(no name)'}  games:${off.gamesHeld ?? '-'}`);
   }
-  if (wrong.length > 40) console.log(`  … and ${wrong.length - 40} more, all in the report`);
 
-  console.log('\n──── UNRESOLVED (appearances land nowhere) ────');
-  if (!unresolved.length) console.log('  none');
-  for (const r of unresolved.slice(0, 20)) {
-    console.log(`  ${r.gameId} · ${r.name} #${r.number} · spectator ${r.spectatorId} · PlayHQ api ${r.apiId} · api file exists: ${r.apiIdHasPlayerFile}`);
+  // ── Per case ────────────────────────────────────────────────────────────────
+  // The classification below is stated as an OBSERVATION of three verdicts, not
+  // as a recommendation. Nothing here decides to reverse anything.
+  const cases = [];
+  for (const r of wrong) {
+    const s = facts.get(r.spectatorId), a = facts.get(r.apiId), o = facts.get(r.resolvesTo);
+    let reading;
+    if (!s || !a || !o) reading = 'NOT-FULLY-TESTED (an id was not asked)';
+    else if ([s, a, o].some(x => x.namespace === 'unknown')) reading = 'UNTESTED (transport, ask again)';
+    else if (o.namespace === 'not-api') reading = 'OUR TARGET IS A SPECTATOR ID — player file keyed on the wrong namespace';
+    else if (a.namespace === 'not-api') reading = 'PLAYHQ GAMEVIEW ID IS NOT API-SIDE — contradicts the 18/18 of 2026-08-26, re-measure before believing';
+    else if (o.namespace === 'api' && a.namespace === 'api') reading = 'TWO API PROFILES FOR ONE PERSON — contradicts the 0.09% api-stability claim';
+    else reading = 'unclassified — read the facts below';
+    cases.push({ kind: 'WRONG', gameId: r.gameId, name: r.name, number: r.number,
+                 spectatorId: r.spectatorId, playhqApiId: r.apiId, weResolveTo: r.resolvesTo,
+                 aliasEntry: r.rawAliasEntry, reading,
+                 facts: { spectatorId: s || null, playhqApiId: a || null, weResolveTo: o || null } });
   }
-  if (unresolved.length > 20) console.log(`  … and ${unresolved.length - 20} more`);
-
-  console.log('\n──── DUPLICATE IN ROSTER (p[] holds both ids for one person) ────');
-  if (!dupes.length) console.log('  none');
-  for (const r of dupes.slice(0, 20)) {
-    console.log(`  ${r.gameId} · ${r.name} #${r.number} · spectator ${r.spectatorId} AND api ${r.apiId} both in p[]`);
+  for (const r of dupes) {
+    const s = facts.get(r.spectatorId), a = facts.get(r.apiId);
+    let reading;
+    if (!s || !a) reading = 'NOT-FULLY-TESTED (an id was not asked)';
+    else if (s.namespace === 'unknown' || a.namespace === 'unknown') reading = 'UNTESTED (transport, ask again)';
+    else if (s.truncResolvesTo === r.apiId) reading = 'COSMETIC — both ids fold to one player, so games[] is unaffected; p[] consumers still see an extra player';
+    else if (s.hasPlayerFile && a.hasPlayerFile) reading = 'TWO PLAYER FILES FOR ONE PERSON — appearances are split between them';
+    else reading = 'unclassified — read the facts below';
+    cases.push({ kind: 'DUPLICATE', gameId: r.gameId, name: r.name, number: r.number,
+                 spectatorId: r.spectatorId, playhqApiId: r.apiId, reading,
+                 facts: { spectatorId: s || null, playhqApiId: a || null } });
   }
-  if (dupes.length > 20) console.log(`  … and ${dupes.length - 20} more`);
 
-  console.log('\nHOW TO READ THIS. WRONG is the only verdict that means an alias is');
-  console.log('misdirecting appearances, and each one names the game that proves it.');
-  console.log('IDENTICAL means the person is not diverged and no alias could be wrong.');
-  console.log('ambiguousUnpaired is pairs NOT made because two people in one game share a');
-  console.log('name and no jersey number separated them — those are untested, not clean.');
-  console.log('Games where either source failed produced no pairs and are listed in the report.');
+  console.log('\n──── CASES ────');
+  for (const c of cases) {
+    console.log(`\n[${c.kind}] ${c.name} #${c.number} · game ${c.gameId}`);
+    console.log(`  reading: ${c.reading}`);
+    for (const [label, f] of Object.entries(c.facts)) {
+      if (!f) { console.log(`  ${label}: not asked`); continue; }
+      console.log(`  ${label}: ${f.id}`);
+      console.log(`      namespace ${f.namespace} · player file ${f.hasPlayerFile ? 'yes' : 'NO'} · name ${JSON.stringify(f.name)} · private ${f.private} · games ${f.gamesHeld ?? '-'} · seasons ${f.seasonCount ?? '-'}`);
+      console.log(`      alias entry for its own prefix: ${f.aliasEntryFor || 'none'} · prefix resolves to: ${f.truncResolvesTo || 'null'}`);
+      if (f.spectatorIds) console.log(`      spectatorIds on file: ${JSON.stringify(f.spectatorIds.slice(0, 6))}${f.spectatorIds.length > 6 ? ` (+${f.spectatorIds.length - 6})` : ''}`);
+    }
+  }
+
+  const tally = {};
+  for (const c of cases) tally[`${c.kind}: ${c.reading}`] = (tally[`${c.kind}: ${c.reading}`] || 0) + 1;
+  console.log('\n──── READINGS ────');
+  for (const [k, v] of Object.entries(tally)) console.log(`  ${v}  ${k}`);
+  const nsTally = {};
+  for (const f of facts.values()) nsTally[f.namespace] = (nsTally[f.namespace] || 0) + 1;
+  console.log('\n──── NAMESPACE VERDICTS ────');
+  for (const [k, v] of Object.entries(nsTally)) console.log(`  ${k}: ${v}`);
+  if (nsTally.unknown) console.log(`  ⚠ ${nsTally.unknown} unknown — TRANSPORT, not an answer. Those cases are untested and must be asked again.`);
 
   const out = {
     generatedAt: new Date().toISOString(),
-    args: { maxGames: MAX_GAMES, perSeason: PER_SEASON, minRoster: MIN_ROSTER,
-            concurrency: CONCURRENCY, repointGames: REPOINT_ONLY, games: GAMES_ARG },
-    totals,
-    wrong,
-    unresolved,
-    duplicateInRoster: dupes,
-    rows,
-    gameNotes,
+    sourceReport: IDS_ARG ? null : REPORT,
+    args: { ids: IDS_ARG, maxIds: MAX_IDS },
+    namespaceTally: nsTally,
+    readings: tally,
+    cases,
+    ids: [...facts.values()],
   };
-  fs.writeFileSync(OUT_FILE, JSON.stringify(out, null, 2));   // a REPORT, not player data — indented on purpose
-  console.log(`\nWrote ${path.relative(ROOT, OUT_FILE)}`);
-
-  writeProgress({ doneGames: [...done], rows, gameNotes });
-  await gitCommit(`alias audit: ${totals.gamesAudited} games, ${totals.pairsJudged} pairs, ${totals.WRONG} wrong, ${totals.UNRESOLVED} unresolved`,
-                  [OUT_REL, PROGRESS_REL]);
-
-  // Progress file deleted on SUCCESS only — house rule.
-  if (!DRY_RUN) {
-    try {
-      fs.unlinkSync(PROGRESS_FILE);
-      execFileSync('git', ['rm', '--cached', '-q', '--', PROGRESS_REL], { stdio: 'pipe', cwd: ROOT });
-      await gitCommit('alias audit: run complete, progress file removed', [PROGRESS_REL]);
-    } catch (e) { console.log(`  (progress file cleanup skipped: ${e.message.split('\n')[0]})`); }
-  }
-
+  fs.writeFileSync(OUT_FILE, JSON.stringify(out, null, 2));
+  console.log(`\nWrote ${OUT_REL}`);
+  await gitCommit(`alias conflict diagnosis: ${cases.length} cases, ${facts.size} ids asked`, [OUT_REL]);
   console.log(`\nDone in ${((Date.now() - t0) / 1000).toFixed(0)}s`);
 }
 
