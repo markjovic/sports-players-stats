@@ -1,0 +1,92 @@
+# .github/workflows/probe-roster-sources.yml
+name: Probe Roster Sources
+
+# Decides which record the game-by-game comparator should treat as ground truth,
+# by measuring both on the same 20 games instead of arguing from documents.
+#
+# For each selected game it puts three rosters side by side — our games/bv p[],
+# api.playhq.com gameView -> discoverGame, and spectator.playhq.com game — and
+# reports, in BOTH directions, the ids each holds that the others do not. Rows
+# with no profile id (fill-ins, anonymous participants) are counted and labelled
+# by __typename, never guessed at.
+#
+# READ-ONLY against games/ and players/. Writes and commits exactly ONE file:
+# reports/roster-source-probe.json.
+#
+# Concurrency 1 by construction — 40 calls total. The 2026-08-2x session read a
+# throttled endpoint as a fact about the data; at one request at a time a
+# non-answer cannot be throttling.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+#
+# DELIBERATE DIFFERENCE FROM discover-game-backfill.yml, stated rather than
+# hidden: the concurrency group is NOT data-write. That group exists to stop
+# player-file writers racing each other. This job writes no player or game data,
+# so joining data-write would only make it queue behind the nightly crawl for no
+# safety benefit. Everything else — checkout ref/fetch-depth/token, the git
+# config step, permissions, runs-on, the no-setup-node rule — is copied.
+
+on:
+  workflow_dispatch:
+    inputs:
+      per_block:
+        description: 'Games per selection block (A spc, B dg-no-spc, C alias-repoint, D boxscore-repoint). 5 = 20 games total.'
+        required: false
+        default: '5'
+        type: string
+      min_roster:
+        description: 'Skip games holding fewer than this many roster entries — a two-entry roster compares nothing useful.'
+        required: false
+        default: '6'
+        type: string
+      games:
+        description: 'Comma-separated game ids to probe instead of the four blocks (optional).'
+        required: false
+        default: ''
+        type: string
+      max_namespace_probes:
+        description: 'Cap on publicProfileStatistics calls used to test which namespace an id belongs to. Session is refreshed every 25 calls.'
+        required: false
+        default: '150'
+        type: string
+      skip_namespace:
+        description: 'Roster comparison only — do not ask publicProfileStatistics about any id.'
+        required: false
+        default: false
+        type: boolean
+      dry_run:
+        description: 'Run the probe but do not commit the report (it is still written and printed in full).'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: roster-source-probe
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Probe roster sources
+        run: |
+          ARGS="--per-block=${{ inputs.per_block }} --min-roster=${{ inputs.min_roster }} --max-namespace-probes=${{ inputs.max_namespace_probes }}"
+          if [ "${{ inputs.skip_namespace }}" = "true" ] || [ "${{ inputs.skip_namespace }}" = "True" ]; then ARGS="$ARGS --skip-namespace"; fi
+          if [ -n "${{ inputs.games }}" ]; then ARGS="$ARGS --games=${{ inputs.games }}"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ] || [ "${{ inputs.dry_run }}" = "True" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/probe-roster-sources.js $ARGS
