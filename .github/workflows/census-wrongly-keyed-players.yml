@@ -63,6 +63,11 @@ on:
         required: false
         default: '0'
         type: string
+      why_no_pair:
+        description: 'Why no pair formed (offline)'
+        required: false
+        default: false
+        type: boolean
       reset:
         description: 'Start again, ignore progress'
         required: false
@@ -96,6 +101,7 @@ jobs:
         run: |
           ARGS="--max-keys=${{ inputs.max_keys }} --max-games=${{ inputs.max_games }} --games-per-player=${{ inputs.games_per_player }} --commit-every=${{ inputs.commit_every }}"
           if [ "${{ inputs.diagnose }}" != "0" ] && [ -n "${{ inputs.diagnose }}" ]; then ARGS="$ARGS --diagnose=${{ inputs.diagnose }}"; fi
+          if [ "${{ inputs.why_no_pair }}" = "true" ] || [ "${{ inputs.why_no_pair }}" = "True" ]; then ARGS="$ARGS --why-no-pair"; fi
           if [ "${{ inputs.explain_failures }}" = "true" ] || [ "${{ inputs.explain_failures }}" = "True" ]; then ARGS="$ARGS --explain-failures"; fi
           if [ "${{ inputs.scan_only }}" = "true" ] || [ "${{ inputs.scan_only }}" = "True" ]; then ARGS="$ARGS --scan-only"; fi
           if [ "${{ inputs.reset }}" = "true" ] || [ "${{ inputs.reset }}" = "True" ]; then ARGS="$ARGS --reset"; fi
