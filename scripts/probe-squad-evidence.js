@@ -265,11 +265,22 @@ function main() {
     // Three outcomes now, and the third is not a weaker version of the second —
     // it is a DIFFERENT FINDING.
     const scored = row.candidates.filter(c => !c.missing);
-    // Activity in THIS season dominates: a candidate with games there is a real
-    // possibility, one with none is not. Club and grade refine it; career-wide
-    // teammate overlap is now season-scoped and worth least.
-    const score = (c) => (Math.min(c.gamesThisSeason, 30) * 5) + (c.registeredThisSeason * 10) +
-                         (c.clubHit * 3) + (c.gradeHit * 2) + Math.min(c.sharedTeammates, 10);
+    // ⚠ sharedTeammates IS DELIBERATELY NOT SCORED. It is displayed, and it is
+    // useless as a discriminator: two profiles belonging to the same human, on the
+    // same team, share THE SAME SQUAD, so it returns an identical number for both
+    // by construction. The 2026-08-25 run showed exactly that — Sage Horn 59/59,
+    // Yashvi Shah 39/39, Bailey Sheen 66/66, Kai Nicolaci 71/71 — and because it
+    // was weighted, that identical block drowned the signal that DOES separate
+    // them and 17 cases came out "too close to call".
+    //
+    // What separates them is in the same lines: REGISTRATION that season, then
+    // GAMES that season. Yashvi Shah 5 games / registered 0, against 15 games /
+    // registered 1. Wilson Zhou 7 / 0 against 17 / 1. William Stevens 12 / 0
+    // against 25 / 2. A registration IS the club saying this profile played here;
+    // nothing else in our data says that as directly.
+    const score = (c) => (c.registeredThisSeason * 50) +
+                         (Math.min(c.gamesThisSeason, 40) * 3) +
+                         (c.clubHit * 3) + (c.gradeHit * 2);
     for (const c of scored) c.score = score(c);
     scored.sort((a, b) => b.score - a.score);
     const top = scored[0], second = scored[1];
@@ -294,12 +305,19 @@ function main() {
         top.score + ') — the season cannot separate them; the team sheet can',
         pair: [top.uuid, second.uuid] };
       identical++;
-    } else if (!second || second.score === 0 || top.score >= second.score * 4) {
+    } else if (!second || second.score === 0 ||
+               // A registration that no rival holds is decisive on its own: the
+               // club recorded this profile in that competition and did not record
+               // the other.
+               (top.registeredThisSeason > 0 && second.registeredThisSeason === 0) ||
+               top.score >= second.score * 2) {
       // A landslide counts: sole scorer, or four times the nearest rival.
       row.verdict = { uuid: top.uuid, kind: second && second.score ? 'landslide' : 'sole',
-        why: second && second.score
-          ? 'leads ' + top.score + ' to ' + second.score + ' — more than four times the nearest rival'
-          : 'the only candidate matching the club/grade the teammates identify, or sharing their squad',
+        why: (top.registeredThisSeason > 0 && second && second.registeredThisSeason === 0)
+          ? 'the ONLY candidate REGISTERED that season (' + top.gamesThisSeason + ' games v ' + second.gamesThisSeason + ') — the club recorded this profile in that competition and not the other'
+          : (second && second.score
+            ? 'leads ' + top.score + ' to ' + second.score + ' on registration and games played that season'
+            : 'the only candidate active in that season at all'),
         changes: top.uuid !== p.target, margin: top.score - (second ? second.score : 0) };
       decided++;
     } else {
