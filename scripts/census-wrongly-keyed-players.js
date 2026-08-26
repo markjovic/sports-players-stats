@@ -79,6 +79,13 @@ const OUT_REL       = path.relative(ROOT, OUT_FILE);
 const PROGRESS_REL  = path.relative(ROOT, PROGRESS_FILE);
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+// gitCommit below is copied verbatim from discover-game-backfill.js, and that
+// script gates it on a DRY_RUN const of its own. This file has no dry-run of
+// that kind, so the constant is declared here rather than editing the copied
+// block — an edited copy stops being verbatim and stops being checkable against
+// its source. It cost a full dispatch on 2026-08-26 when the census crashed at
+// its first commit AFTER a 419,427-file scan had completed.
+const DRY_RUN = false;
 const t13 = id => String(id || '').slice(0, TRUNC_LEN);
 const HEX = '0123456789abcdef';
 const ALL_BUCKETS = [];
