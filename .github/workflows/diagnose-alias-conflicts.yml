@@ -1,0 +1,76 @@
+# .github/workflows/diagnose-alias-conflicts.yml
+name: Diagnose Alias Conflicts
+
+# Takes the WRONG rows and duplicateInRoster rows out of an audit report and asks
+# PlayHQ which namespace each id in them actually belongs to.
+#
+# WHY. The 500-game audit returned 5 WRONG out of 461 diverged pairs. The WRONG
+# label read "our resolver lands on a different person" and that label was itself
+# wrong: in all five the name we resolve to is the SAME person PlayHQ names. The
+# verdict compares ids and cannot tell "wrong person" from "same person, second
+# id". Three explanations fit and they call for opposite responses — our alias
+# target is itself a spectator id, or the person holds two api profiles, or
+# gameView is not api-side after all. isApiProfile separates them in one call
+# per id.
+#
+# The ONLY query sent is PROFILE_EXISTS_QUERY / isApiProfile, verbatim from
+# spectator-backfill.js. 'unknown' is transport and is never read as an answer.
+#
+# READ-ONLY against games/ and players/. Writes and commits ONLY
+# reports/alias-conflict-diagnosis.json. It repoints nothing and reverses nothing.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      report:
+        description: 'Audit report to diagnose. Tagged audit runs write alias-vs-playhq-audit-{tag}.json.'
+        required: false
+        default: 'reports/alias-vs-playhq-audit.json'
+        type: string
+      ids:
+        description: 'Comma-separated profile ids to ask about directly, ignoring the report (optional).'
+        required: false
+        default: ''
+        type: string
+      max_ids:
+        description: 'Cap on ids asked. One publicProfileStatistics call each, session refreshed every 25.'
+        required: false
+        default: '400'
+        type: string
+      dry_run:
+        description: 'Run the diagnosis but do not commit (the report is still written and printed in full).'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: alias-audit
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Diagnose alias conflicts
+        run: |
+          ARGS="--report=${{ inputs.report }} --max-ids=${{ inputs.max_ids }}"
+          if [ -n "${{ inputs.ids }}" ]; then ARGS="$ARGS --ids=${{ inputs.ids }}"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ] || [ "${{ inputs.dry_run }}" = "True" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/diagnose-alias-conflicts.js $ARGS
