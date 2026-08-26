@@ -437,7 +437,12 @@ async function main() {
   // hand is not exempt from the check.
   addFrom('manual-alias-decisions.json', () => {
     const md = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'manual-alias-decisions.json'), 'utf8'));
-    for (const [id, uuid] of Object.entries(md.decisions || {})) {
+    for (const [id, v] of Object.entries(md.decisions || {})) {
+      // Accepts both shapes: the bare "id": "uuid" of the first version, and the
+      // richer { decision, player, openTheseGames, chooseBetween } written now.
+      // A file a person has been editing must not stop being readable because the
+      // format grew.
+      const uuid = (v && typeof v === 'object') ? v.decision : v;
       if (uuid && !cmap.has(id)) cmap.set(id, { id, correctTarget: uuid, why: 'entered by hand from a PlayHQ team sheet', from: 'manual' });
     }
   });
