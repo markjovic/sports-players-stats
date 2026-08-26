@@ -532,9 +532,37 @@ async function main() {
     if (!fs.existsSync(pf))     { skipped.push({ ...c, why: 'no player file for the proposed target' }); continue; }
     planned.push(c);
   }
-  console.log('  ══ RE-VERIFYING ' + n(planned.length) + ' CANDIDATE(S) AGAINST PLAYHQ ═══════════════');
-  console.log('  The audit ran over hours. Each repoint is re-asked NOW: does the proposed');
-  console.log('  target credit these games, and does the current target still not?');
+  // Does this player hold a registration in any of the seasons these games are in?
+  // Read from the LIVE player file, not from the report, so a stale report cannot
+  // carry a repoint through.
+  const seasonOfGame = new Map();
+  {
+    const gd = path.join(ROOT, 'games', 'bv');
+    for (const f of fs.readdirSync(gd)) {
+      if (!f.endsWith('.json')) continue;
+      const sid = path.basename(f, '.json');
+      let sg; try { sg = JSON.parse(fs.readFileSync(path.join(gd, f), 'utf8')); } catch (e) { continue; }
+      for (const gid of Object.keys(sg.games || {})) seasonOfGame.set(gid, sid);
+    }
+  }
+  const registeredInSeasonsOf = (uuid, gids) => {
+    let p; try { p = JSON.parse(fs.readFileSync(path.join(ROOT, 'players', uuid.slice(0, 2), uuid + '.json'), 'utf8')); }
+    catch (e) { return false; }
+    const want = new Set((gids || []).map(g => seasonOfGame.get(g)).filter(Boolean));
+    if (!want.size) return false;
+    for (const se of (p.seasons || [])) {
+      if (!se || !se.sid || !want.has(se.sid)) continue;
+      if ((se.regs || []).some(r => r && r.tid)) return true;
+    }
+    return false;
+  };
+
+  console.log('  ══ RE-VERIFYING ' + n(planned.length) + ' CANDIDATE(S) ═══════════════════════');
+  console.log('  Credit-based repoints are re-asked against PlayHQ. Squad-evidence and manual');
+  console.log('  repoints are re-checked on REGISTRATION instead — the credit test cannot judge');
+  console.log('  them, because not being credited is why they reached that tool at all.');
+  console.log('  Nothing is taken on trust from a report: every repoint is re-checked now,');
+  console.log('  against the live alias table and the live player files.');
 
   const confirmed = [], rejected = [];
   const cache = new Map();
@@ -548,12 +576,34 @@ async function main() {
   for (let i = 0; i < planned.length; i += CONCURRENCY) {
     const chunk = planned.slice(i, i + CONCURRENCY);
     await Promise.all(chunk.map(async (c) => {
+      // ⚠ THE CREDIT TEST CANNOT JUDGE THE squad-evidence REPOINTS, AND MUST NOT
+      // BE APPLIED TO THEM. Those 40 aliases reached probe-squad-evidence PRECISELY
+      // BECAUSE no candidate credits their games — that is what "unsupported with no
+      // repoint" meant. Re-asking the same question here would reject every one of
+      // them for the reason they exist, and the run would look like a careful
+      // refusal while actually testing nothing.
+      //
+      // They are verified differently, on the evidence that decided them:
+      // REGISTRATION. A registration is the club entering that player in that
+      // competition; it is a stronger statement about who was there than a game
+      // count derived from rosters we assembled ourselves. So for these the check
+      // is: does the proposed target still hold a registration in the seasons
+      // these games belong to, and does the current target still not?
+      if (c.from === 'squad-evidence' || c.from === 'manual' || c.from === 'box-score-team') {
+        const ok = registeredInSeasonsOf(c.correctTarget, c.gids);
+        const cur = registeredInSeasonsOf(c.target, c.gids);
+        if (!ok)          { rejected.push({ ...c, why: 'proposed target holds NO registration in those seasons — the evidence that decided it no longer stands' }); return; }
+        if (cur && !ok)   { rejected.push({ ...c, why: 'current target is registered and the proposed one is not' }); return; }
+        confirmed.push({ ...c, verifiedBy: 'registration' });
+        return;
+      }
+
       const [good, bad] = [await credits(c.correctTarget), await credits(c.target)];
       const hits = (set) => set && c.gids.some(g => set.has(g) || set.has(String(g).slice(0, 8)));
       if (!good)        { rejected.push({ ...c, why: 'proposed target gave no answer now' }); return; }
       if (!hits(good))  { rejected.push({ ...c, why: 'proposed target does NOT credit these games now' }); return; }
       if (bad && hits(bad)) { rejected.push({ ...c, why: 'current target DOES credit them now — the audit is stale' }); return; }
-      confirmed.push(c);
+      confirmed.push({ ...c, verifiedBy: 'playhq-credits' });
     }));
     k += chunk.length;
     if (k % 25 < chunk.length) console.log('  … ' + k + '/' + planned.length + '  confirmed ' + confirmed.length + ' · rejected ' + rejected.length);
@@ -568,7 +618,7 @@ async function main() {
   for (const r of rejected.slice(0, 15)) console.log('    REJECT ' + r.id + '  ' + r.why);
   if (skipped.length + rejected.length) console.log('');
   for (const c of confirmed.slice(0, 40)) {
-    console.log('    REPOINT ' + c.id + '   [' + (c.from || '?') + ']');
+    console.log('    REPOINT ' + c.id + '   [' + (c.from || '?') + ' · verified by ' + (c.verifiedBy || '?') + ']');
     console.log('        from ' + c.target);
     console.log('        to   ' + c.correctTarget);
   }
