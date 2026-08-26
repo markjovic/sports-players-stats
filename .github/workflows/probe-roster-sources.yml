@@ -30,32 +30,32 @@ on:
   workflow_dispatch:
     inputs:
       per_block:
-        description: 'Games per selection block (A spc, B dg-no-spc, C alias-repoint, D boxscore-repoint). 5 = 20 games total.'
+        description: 'Games per block'
         required: false
         default: '5'
         type: string
       min_roster:
-        description: 'Skip games holding fewer than this many roster entries — a two-entry roster compares nothing useful.'
+        description: 'Skip rosters smaller than'
         required: false
         default: '6'
         type: string
       games:
-        description: 'Comma-separated game ids to probe instead of the four blocks (optional).'
+        description: 'Specific game ids'
         required: false
         default: ''
         type: string
       max_namespace_probes:
-        description: 'Cap on publicProfileStatistics calls used to test which namespace an id belongs to. Session is refreshed every 25 calls.'
+        description: 'Max namespace tests'
         required: false
         default: '150'
         type: string
       skip_namespace:
-        description: 'Roster comparison only — do not ask publicProfileStatistics about any id.'
+        description: 'Skip namespace tests'
         required: false
         default: false
         type: boolean
       dry_run:
-        description: 'Run the probe but do not commit the report (it is still written and printed in full).'
+        description: 'Dry run, do not commit'
         required: false
         default: false
         type: boolean

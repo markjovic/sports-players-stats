@@ -36,7 +36,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'dry-run = verify every case against PlayHQ and print what would be seeded, writing no player file. apply = write the apiId field.'
+        description: 'Dry run first, then apply'
         required: true
         type: choice
         options:
@@ -44,12 +44,12 @@ on:
           - apply
         default: dry-run
       reports:
-        description: 'Comma-separated audit reports to read WRONG rows from.'
+        description: 'Reports to read cases from'
         required: false
         default: 'reports/alias-vs-playhq-audit-wide.json,reports/alias-vs-playhq-audit.json'
         type: string
       max:
-        description: 'Cap on player files considered this run.'
+        description: 'Max players this run'
         required: false
         default: '1000'
         type: string

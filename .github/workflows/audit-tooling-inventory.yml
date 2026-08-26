@@ -1,0 +1,85 @@
+# .github/workflows/audit-tooling-inventory.yml
+name: Audit Tooling Inventory
+
+# Inventories scripts/ and .github/workflows/ and classifies every file, so a
+# deletion list is agreed FROM EVIDENCE rather than from memory.
+#
+# It deletes NOTHING. Deletion stays with cleanup-repo.yml, which already has the
+# dry run, the pre-cleanup recovery tag and the ordering gates. This writes a
+# paste-ready list for those arrays.
+#
+# WHY. 163 workflow files, 37 added or amended in seven days. Each question gets
+# its own script and workflow, they ship as a pair, and nothing is ever retired.
+# A one-question diagnostic should be deleted in the same commit that records its
+# answer — this finds the ones where that never happened.
+#
+# TWO LISTS, KEPT SEPARATE ON PURPOSE:
+#   SAFE           — nothing references it AND a document already records what it
+#                    found. Deleting it loses nothing.
+#   DOCUMENT FIRST — nothing references it and NO document mentions it. Deleting
+#                    it silently discards whatever it established. Write the
+#                    finding into REPO_MANIFEST.md, then move the line to SAFE.
+#
+# Reference detection is deliberately GENEROUS: a script counts as used if ANY
+# workflow mentions its filename anywhere, not only in a `node scripts/x.js` line.
+# Over-counting leaves a dead file in the repo; under-counting puts a LIVE file on
+# a delete list. Those costs are not symmetrical.
+#
+# CHECKOUT. `git log` on a depth-1 checkout returns nothing, so dates need full
+# history. This uses the blobless sparse checkout cleanup-repo.yml already uses
+# for the same reason — scripts/ and .github/workflows/ only, no player or game
+# blobs. If history is unavailable dates report null and no classification
+# depends on them.
+#
+# No network. No setup-node needed (nothing here fetches api.playhq.com either).
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Recent window in days'
+        required: false
+        default: '14'
+        type: string
+      commit:
+        description: 'Commit the reports'
+        required: false
+        default: true
+        type: boolean
+
+concurrency:
+  group: tooling-inventory
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (blobless full history, sparse to scripts + workflows + docs)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          filter: blob:none
+          token: ${{ secrets.GITHUB_TOKEN }}
+          sparse-checkout: |
+            scripts
+            .github/workflows
+            reports
+            /*.md
+          sparse-checkout-cone-mode: false
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Audit tooling inventory
+        run: |
+          ARGS="--days=${{ inputs.days }}"
+          if [ "${{ inputs.commit }}" = "true" ] || [ "${{ inputs.commit }}" = "True" ]; then ARGS="$ARGS --commit"; fi
+          node scripts/audit-tooling-inventory.js $ARGS

@@ -29,42 +29,42 @@ on:
   workflow_dispatch:
     inputs:
       scan_only:
-        description: 'Phase 1 only — offline scan for private:true. FREE, no API calls. Run this first to size the job.'
+        description: 'Scan only, no API calls'
         required: false
         default: true
         type: boolean
       max_keys:
-        description: 'Cap on phase-2 key tests this run (one API call each).'
+        description: 'Max key tests this run'
         required: false
         default: '100000'
         type: string
       max_games:
-        description: 'Cap on phase-3 game reads this run (two API calls each).'
+        description: 'Max game reads this run'
         required: false
         default: '100000'
         type: string
       games_per_player:
-        description: 'Games to try per player before giving up on recovering their api id.'
+        description: 'Games to try per player'
         required: false
         default: '3'
         type: string
       commit_every:
-        description: 'Commit progress every N. In-memory progress is lost on timeout.'
+        description: 'Commit progress every N'
         required: false
         default: '250'
         type: string
       explain_failures:
-        description: 'OFFLINE. Read the committed report and tally WHY api-id recovery failed. No API calls, no writes.'
+        description: 'Explain why recovery failed (offline)'
         required: false
         default: false
         type: boolean
       diagnose:
-        description: 'Re-run recovery on the first N failed players capturing FULL evidence (both rosters, whether the claimed id appears in each, whether the game is in games/bv). Try 50. Touches no progress.'
+        description: 'Diagnose N failed players (try 50)'
         required: false
         default: '0'
         type: string
       reset:
-        description: 'Ignore existing progress and start the census again.'
+        description: 'Start again, ignore progress'
         required: false
         default: false
         type: boolean

@@ -25,27 +25,27 @@ on:
   workflow_dispatch:
     inputs:
       report:
-        description: 'Audit report to diagnose. Tagged audit runs write alias-vs-playhq-audit-{tag}.json.'
+        description: 'Audit report to read'
         required: false
         default: 'reports/alias-vs-playhq-audit.json'
         type: string
       ids:
-        description: 'Comma-separated profile ids to ask about directly, ignoring the report (optional).'
+        description: 'Specific profile ids'
         required: false
         default: ''
         type: string
       names:
-        description: 'Comma-separated player names to look up and diagnose, e.g. Cielo Ward,Dhel Mayek. Every indexed id matching a name is probed; no winner is picked.'
+        description: 'Player names to look up'
         required: false
         default: ''
         type: string
       max_ids:
-        description: 'Cap on ids asked. One publicProfileStatistics call each, session refreshed every 25.'
+        description: 'Max ids to test'
         required: false
         default: '400'
         type: string
       dry_run:
-        description: 'Run the diagnosis but do not commit (the report is still written and printed in full).'
+        description: 'Dry run, do not commit'
         required: false
         default: false
         type: boolean

@@ -32,52 +32,52 @@ on:
   workflow_dispatch:
     inputs:
       max_games:
-        description: 'Games to audit this run. Re-dispatch to continue — progress is committed and resumed.'
+        description: 'Games to audit this run'
         required: false
         default: '500'
         type: string
       per_season:
-        description: 'Games taken per season file, so the sample spreads across the store instead of clustering.'
+        description: 'Games per season'
         required: false
         default: '2'
         type: string
       min_roster:
-        description: 'Skip games holding fewer than this many roster entries.'
+        description: 'Skip rosters smaller than'
         required: false
         default: '6'
         type: string
       concurrency:
-        description: 'Games in flight. Each game makes one gameView and one spectator call. MEASURED 2026-08-11: gameView is clean at 5, hits a sustained 403 wall at 25. Leave at 3.'
+        description: 'Games in flight (leave at 3)'
         required: false
         default: '3'
         type: string
       commit_every:
-        description: 'Commit progress every N games. In-memory progress is lost on timeout.'
+        description: 'Commit progress every N'
         required: false
         default: '100'
         type: string
       repoint_games:
-        description: 'Audit ONLY the games named in reports/alias-repoint-log.json instead of a spread sample.'
+        description: 'Only games from the repoint log'
         required: false
         default: false
         type: boolean
       games:
-        description: 'Comma-separated game ids to audit instead of any sampling (optional).'
+        description: 'Specific game ids'
         required: false
         default: ''
         type: string
       tag:
-        description: 'Names this run so it cannot overwrite another. Blank keeps the original filenames. Use e.g. repoints, wide.'
+        description: 'Name this run (blank = default files)'
         required: false
         default: ''
         type: string
       reset:
-        description: 'Ignore the existing progress file and start the sample again.'
+        description: 'Start again, ignore progress'
         required: false
         default: false
         type: boolean
       dry_run:
-        description: 'Run the audit but do not commit (the report is still written and printed in full).'
+        description: 'Dry run, do not commit'
         required: false
         default: false
         type: boolean
