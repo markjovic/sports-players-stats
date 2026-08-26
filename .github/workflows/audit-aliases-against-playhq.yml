@@ -1,0 +1,110 @@
+# .github/workflows/audit-aliases-against-playhq.yml
+name: Audit Aliases Against PlayHQ
+
+# Tests the alias table against a source that does not come from our own data.
+#
+# Inside ONE game, spectator.playhq.com gives a spectator-namespace profileID with
+# a name and jersey number, and api.playhq.com gameView gives the API-namespace
+# profile.id for the same person. Pairing them by name (jersey number as tiebreak)
+# yields a spectator-id -> api-id fact SOURCED FROM PlayHQ. Every earlier alias
+# round assembled candidates by name-matching our own players/ directory, so it
+# could never propose a profile we did not already hold; this has no such limit.
+#
+# The audit is then one question per pair: does resolveToFullUuid — the same call
+# build-player-games makes — land on the api id PlayHQ paired it with?
+#
+# READ-ONLY against games/ and players/. Writes and commits ONLY
+# reports/alias-vs-playhq-audit.json and reports/alias-audit-progress.json.
+# It proposes no repoints and reverses nothing.
+#
+# Selection makes NO reference to spc/spcm/dg/dgm. The 2026-08-26 probe chose five
+# games our own flags already recorded as spectator failures and then reported
+# spectator failing on them as a finding — that was the flag being accurate and
+# nothing more. Our capture flags must not steer which games get audited.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+# NO publicProfileStatistics call is made, so the ~30-call session quota on that
+# operation is not in play.
+#
+# Resumable: progress is committed every commit_every games and deleted on success.
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_games:
+        description: 'Games to audit this run. Re-dispatch to continue — progress is committed and resumed.'
+        required: false
+        default: '500'
+        type: string
+      per_season:
+        description: 'Games taken per season file, so the sample spreads across the store instead of clustering.'
+        required: false
+        default: '2'
+        type: string
+      min_roster:
+        description: 'Skip games holding fewer than this many roster entries.'
+        required: false
+        default: '6'
+        type: string
+      concurrency:
+        description: 'Games in flight. Each game makes one gameView and one spectator call. MEASURED 2026-08-11: gameView is clean at 5, hits a sustained 403 wall at 25. Leave at 3.'
+        required: false
+        default: '3'
+        type: string
+      commit_every:
+        description: 'Commit progress every N games. In-memory progress is lost on timeout.'
+        required: false
+        default: '100'
+        type: string
+      repoint_games:
+        description: 'Audit ONLY the games named in reports/alias-repoint-log.json instead of a spread sample.'
+        required: false
+        default: false
+        type: boolean
+      games:
+        description: 'Comma-separated game ids to audit instead of any sampling (optional).'
+        required: false
+        default: ''
+        type: string
+      reset:
+        description: 'Ignore the existing progress file and start the sample again.'
+        required: false
+        default: false
+        type: boolean
+      dry_run:
+        description: 'Run the audit but do not commit (the report is still written and printed in full).'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: alias-audit
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Audit aliases against PlayHQ
+        run: |
+          ARGS="--max-games=${{ inputs.max_games }} --per-season=${{ inputs.per_season }} --min-roster=${{ inputs.min_roster }} --concurrency=${{ inputs.concurrency }} --commit-every=${{ inputs.commit_every }}"
+          if [ -n "${{ inputs.games }}" ]; then ARGS="$ARGS --games=${{ inputs.games }}"; fi
+          if [ "${{ inputs.repoint_games }}" = "true" ] || [ "${{ inputs.repoint_games }}" = "True" ]; then ARGS="$ARGS --repoint-games"; fi
+          if [ "${{ inputs.reset }}" = "true" ] || [ "${{ inputs.reset }}" = "True" ]; then ARGS="$ARGS --reset"; fi
+          if [ "${{ inputs.dry_run }}" = "true" ] || [ "${{ inputs.dry_run }}" = "True" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/audit-aliases-against-playhq.js $ARGS
