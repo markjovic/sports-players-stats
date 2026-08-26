@@ -73,6 +73,17 @@ const RESET        = !!ARGS.reset;
 // counter without examples is a number that cannot be checked, and the reasons
 // were sitting in the report unprinted.
 const EXPLAIN      = !!ARGS['explain-failures'];
+// Re-runs phase 3 on the first N players from recoveryFailed, capturing the FULL
+// evidence instead of a verdict string, and writes a separate report. Added
+// 2026-08-26: the first run reported 5,600 attempts as "no pair carried an id this
+// player claims" and 2,766 as "gameView: no-game" without recording whether the
+// claimed id was in either roster, or whether the game id was even in games/bv.
+// Those distinctions call for opposite fixes. It touches no progress file and
+// re-runs nothing else.
+const DIAGNOSE     = ARGS.diagnose ? Math.max(1, parseInt(ARGS.diagnose, 10)) : 0;
+const DIAG_FILE    = path.join(ROOT, 'reports', 'census-recovery-diagnosis.json');
+const DIAG_REL     = path.relative(ROOT, DIAG_FILE);
+const GAMES_DIR    = path.join(ROOT, 'games', 'bv');
 
 const API_URL       = 'https://api.playhq.com/graphql';
 const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
@@ -517,12 +528,131 @@ function explainFailures() {
   }
 }
 
+// Is this game id in games/bv at all, and what does our own roster hold for it?
+// Loaded lazily: one pass over the season files, only in diagnose mode.
+let gamesIndex = null;
+function loadGamesIndex(wanted) {
+  const idx = new Map();
+  let files = [];
+  try { files = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).sort(); } catch { return idx; }
+  for (const f of files) {
+    let gf; try { gf = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, f), 'utf8')); } catch { continue; }
+    for (const gid of wanted) {
+      const g = gf.games && gf.games[gid];
+      if (g && !idx.has(gid)) {
+        idx.set(gid, { seasonId: f.replace('.json', ''),
+                       roster: ((g.p) || []).map(x => x && x.id).filter(Boolean),
+                       spc: g.spc || null, dg: g.dg || null, spcm: g.spcm || null,
+                       st: g.st || null, d: g.d || null, hidden: g.hidden || null });
+      }
+    }
+  }
+  return idx;
+}
+
+async function diagnoseRecovery(n) {
+  if (!fs.existsSync(OUT_FILE)) throw new Error(`no report at ${OUT_REL} — run the census first`);
+  const rep = JSON.parse(fs.readFileSync(OUT_FILE, 'utf8'));
+  const fails = (Array.isArray(rep.recoveryFailed) ? rep.recoveryFailed : []).slice(0, n);
+  if (!fails.length) { console.log('recoveryFailed is empty — nothing to diagnose.'); return; }
+  console.log(`Diagnosing ${fails.length} of ${(rep.recoveryFailed || []).length} failed player(s), full evidence per attempt\n`);
+
+  // Every game these players tried, so we can say whether it exists in games/bv.
+  const wantedGames = new Set();
+  for (const f of fails) for (const t of (f.tried || [])) if (t.gameId) wantedGames.add(t.gameId);
+  console.log(`Loading our own records for ${wantedGames.size} game id(s) (one pass over games/bv)`);
+  gamesIndex = loadGamesIndex(wantedGames);
+  console.log(`  found ${gamesIndex.size} of ${wantedGames.size} in games/bv\n`);
+
+  await refreshSession();
+  const out = [];
+
+  for (const f of fails) {
+    // The player file is the authority on what ids this person claims.
+    let claimedList = [t13(f.uuid)];
+    try {
+      const pf = JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, f.uuid.slice(0, 2).toLowerCase(), `${f.uuid}.json`), 'utf8'));
+      if (Array.isArray(pf.spectatorIds)) claimedList = [...new Set([...claimedList, ...pf.spectatorIds.map(t13)])];
+    } catch (e) { /* reported below as claimedFromFile: false */ }
+    const claimed = new Set(claimedList);
+
+    const attempts = [];
+    for (const t of (f.tried || [])) {
+      const gameId = t.gameId;
+      if (!gameId) continue;
+      const ours = gamesIndex.get(gameId) || null;
+      const gv = await gqlGameView(gameId);
+      const sp = await gqlSpectator(gameId);
+
+      const gvList = gv.ok ? [...gvRows((gv.game.statistics || {}).home), ...gvRows((gv.game.statistics || {}).away)] : [];
+      const spList = sp.ok ? [...specRows((sp.game.statistics || {}).home), ...specRows((sp.game.statistics || {}).away)] : [];
+
+      const specHasClaimed = spList.filter(r => r.profileId && claimed.has(t13(r.profileId)));
+      const gvHasClaimed   = gvList.filter(r => r.profileId && claimed.has(t13(r.profileId)));
+      const ourRosterHasClaimed = ours ? ours.roster.filter(id => claimed.has(t13(id))) : [];
+
+      attempts.push({
+        gameId,
+        inGamesBv: !!ours,
+        ourGame: ours ? { seasonId: ours.seasonId, rosterSize: ours.roster.length, spc: ours.spc, dg: ours.dg, spcm: ours.spcm, st: ours.st, d: ours.d, hidden: ours.hidden } : null,
+        ourRosterHasClaimed,
+        gameview:  { ok: gv.ok, why: gv.why || null, rows: gvList.length, withProfile: gvList.filter(r => r.profileId).length },
+        spectator: { ok: sp.ok, why: sp.why || null, rows: spList.length, withProfile: spList.filter(r => r.profileId).length },
+        claimedFoundInSpectator: specHasClaimed.map(r => ({ id: r.profileId, name: r.name, number: r.number })),
+        claimedFoundInGameview:  gvHasClaimed.map(r => ({ id: r.profileId, name: r.name, number: r.number })),
+        pairsFormed: (gv.ok && sp.ok) ? pairRosters(gvList, spList).length : 0,
+        spectatorRoster: spList.slice(0, 30),
+        gameviewRoster:  gvList.slice(0, 30),
+      });
+
+      console.log(`  ${f.uuid.slice(0, 8)} ${f.name || ''} · game ${gameId}` +
+        ` · in games/bv ${ours ? 'yes' : 'NO'}` +
+        ` · gameView ${gv.ok ? gvList.length + ' rows' : gv.why}` +
+        ` · spectator ${sp.ok ? spList.length + ' rows' : sp.why}` +
+        ` · claimed id in spectator ${specHasClaimed.length} · in gameView ${gvHasClaimed.length}` +
+        ` · in OUR roster ${ourRosterHasClaimed.length}`);
+    }
+    out.push({ uuid: f.uuid, name: f.name, gamesHeld: f.gamesHeld, claimed: [...claimed], attempts });
+  }
+
+  // ── Tallies that answer the two open questions ─────────────────────────────
+  let a = 0, notInGamesBv = 0, claimedInSpec = 0, claimedInGv = 0, claimedInOurRoster = 0, gvNoGame = 0, bothOk = 0;
+  for (const p of out) for (const t of p.attempts) {
+    a++;
+    if (!t.inGamesBv) notInGamesBv++;
+    if (t.claimedFoundInSpectator.length) claimedInSpec++;
+    if (t.claimedFoundInGameview.length) claimedInGv++;
+    if (t.ourRosterHasClaimed.length) claimedInOurRoster++;
+    if (!t.gameview.ok && t.gameview.why === 'no-game') gvNoGame++;
+    if (t.gameview.ok && t.spectator.ok) bothOk++;
+  }
+  console.log('\n──── TALLIES ────');
+  console.log(`  attempts                                   : ${a}`);
+  console.log(`  game NOT present in our games/bv           : ${notInGamesBv}`);
+  console.log(`  gameView returned no-game                  : ${gvNoGame}`);
+  console.log(`  both sources answered                      : ${bothOk}`);
+  console.log(`  a claimed id WAS in PlayHQ's spectator list : ${claimedInSpec}`);
+  console.log(`  a claimed id WAS in PlayHQ's gameView list  : ${claimedInGv}`);
+  console.log(`  a claimed id WAS in OUR OWN p[] roster      : ${claimedInOurRoster}`);
+  console.log('\nREAD IT LIKE THIS. If the claimed id is in OUR roster but not in PlayHQ\'s');
+  console.log('spectator list, our roster holds an id PlayHQ no longer serves. If it is in');
+  console.log('the spectator list but no pair formed, gameView omitted that person and the');
+  console.log('pairing has nothing to join. Those need different fixes.');
+
+  fs.writeFileSync(DIAG_FILE, JSON.stringify({ generatedAt: new Date().toISOString(),
+    sampled: out.length, tallies: { attempts: a, notInGamesBv, gvNoGame, bothOk, claimedInSpec, claimedInGv, claimedInOurRoster },
+    players: out }, null, 2));
+  console.log(`\nWrote ${DIAG_REL}`);
+  await gitCommit(`census: recovery diagnosis on ${out.length} players`, [DIAG_REL]);
+}
+
 async function main() {
   const t0 = Date.now();
   console.log('census-wrongly-keyed-players — every player file keyed on a non-api id\n');
   fs.mkdirSync(REPORTS_DIR, { recursive: true });
 
   if (EXPLAIN) { explainFailures(); return; }
+  if (DIAGNOSE)  { await diagnoseRecovery(DIAGNOSE); return; }
 
   let st = loadProgress();
   if (!st) {
