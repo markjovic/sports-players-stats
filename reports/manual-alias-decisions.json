@@ -1,11 +1,235 @@
 {
- "note": "Set each value to the correct player uuid, or leave null. repoint-aliases reads this and RE-VERIFIES every entry against PlayHQ before writing anything.",
+ "note": "For each entry: open one of openTheseGames, find the player named in lookFor on the team sheet, note the club, then set \"decision\" to the uuid from chooseBetween that played for that club. Leave null if the current target is already right. repoint-aliases reads this and re-verifies every entry before writing.",
  "decisions": {
-  "927ec5c5-8dc0": null,
-  "ff253e44-ac8e": null,
-  "5b1eecde-21c6": null,
-  "b5f2287b-9193": null,
-  "470c92b9-08f6": null,
-  "ee500860-f2e0": null
+  "20b7995f-d708": {
+   "decision": null,
+   "player": "Zachary Price",
+   "lookFor": "\"Zachary Price\" wearing #23",
+   "teamShouldBe": "CC Eagles Basketball Club / Lara Giants Basketball Club (Geelong) / Geelong YMCA Basketball Club",
+   "grade": "(CLUB) Wednesday U16 Boys 2 / (CLUB) Wednesday U16 Boys 3",
+   "openTheseGames": [
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/2c74110a",
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/8177837d",
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/439e5266"
+   ],
+   "chooseBetween": [
+    {
+     "uuid": "c27340cb-ba74-4c10-96aa-f3c5ce17a7ec",
+     "name": "Zachary Price",
+     "isCurrentTarget": false,
+     "activeThatSeason": "1 game(s), registered in 1 season(s)",
+     "careerGames": 2,
+     "profile": "https://www.playhq.com/public/profile/c27340cb-ba74-4c10-96aa-f3c5ce17a7ec/statistics"
+    },
+    {
+     "uuid": "ebcc4ef1-8926-43ba-83c3-0c82f1e31e40",
+     "name": "Zachary Price",
+     "isCurrentTarget": false,
+     "activeThatSeason": "12 game(s), registered in 1 season(s)",
+     "careerGames": 16,
+     "profile": "https://www.playhq.com/public/profile/ebcc4ef1-8926-43ba-83c3-0c82f1e31e40/statistics"
+    },
+    {
+     "uuid": "1201e12f-2fe3-44ae-a05f-9bc6cc4379d4",
+     "name": "Zachary Price",
+     "isCurrentTarget": false,
+     "activeThatSeason": "3 game(s), registered in 0 season(s)",
+     "careerGames": 36,
+     "profile": "https://www.playhq.com/public/profile/1201e12f-2fe3-44ae-a05f-9bc6cc4379d4/statistics"
+    },
+    {
+     "uuid": "12276645-3526-4e3f-aeb2-bf53ed9ad876",
+     "name": "Zachary Price",
+     "isCurrentTarget": false,
+     "activeThatSeason": "0 game(s), registered in 0 season(s)",
+     "careerGames": 80,
+     "profile": "https://www.playhq.com/public/profile/12276645-3526-4e3f-aeb2-bf53ed9ad876/statistics"
+    },
+    {
+     "uuid": "66e58ba9-b69a-461e-8c90-04d4f062d9c0",
+     "name": "Zachary Price",
+     "isCurrentTarget": true,
+     "activeThatSeason": "43 game(s), registered in 1 season(s)",
+     "careerGames": 397,
+     "profile": "https://www.playhq.com/public/profile/66e58ba9-b69a-461e-8c90-04d4f062d9c0/statistics"
+    },
+    {
+     "uuid": "c53078f5-b7c6-441b-b1b6-362e73ee0baf",
+     "name": "Zachary Price",
+     "isCurrentTarget": false,
+     "activeThatSeason": "0 game(s), registered in 0 season(s)",
+     "careerGames": 16,
+     "profile": "https://www.playhq.com/public/profile/c53078f5-b7c6-441b-b1b6-362e73ee0baf/statistics"
+    },
+    {
+     "uuid": "e287c60f-d769-4f66-910c-1d3ed956c3c6",
+     "name": "Zachary Price",
+     "isCurrentTarget": false,
+     "activeThatSeason": "1 game(s), registered in 0 season(s)",
+     "careerGames": 5,
+     "profile": "https://www.playhq.com/public/profile/e287c60f-d769-4f66-910c-1d3ed956c3c6/statistics"
+    }
+   ]
+  },
+  "8db249b0-6322": {
+   "decision": null,
+   "player": "Samara Ballis",
+   "lookFor": "\"Samara Ballis\" wearing #21",
+   "teamShouldBe": "Try Boys Basketball Club / Lara Giants Basketball Club (Geelong) / Sharks Basketball Club (Geelong)",
+   "grade": "All Abilities 2 / WITHDRAWN",
+   "openTheseGames": [
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/c033b76a",
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/57a06b4e",
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/462ae043"
+   ],
+   "chooseBetween": [
+    {
+     "uuid": "3171dc3a-d70c-4a61-b15d-e8dbba06bbf8",
+     "name": "Samara Ballis",
+     "isCurrentTarget": true,
+     "activeThatSeason": "6 game(s), registered in 1 season(s)",
+     "careerGames": 30,
+     "profile": "https://www.playhq.com/public/profile/3171dc3a-d70c-4a61-b15d-e8dbba06bbf8/statistics"
+    },
+    {
+     "uuid": "c1edd96f-16ea-43e2-8c37-d241a941e975",
+     "name": "Samara Ballis",
+     "isCurrentTarget": false,
+     "activeThatSeason": "3 game(s), registered in 1 season(s)",
+     "careerGames": 69,
+     "profile": "https://www.playhq.com/public/profile/c1edd96f-16ea-43e2-8c37-d241a941e975/statistics"
+    }
+   ]
+  },
+  "927ec5c5-8dc0": {
+   "decision": null,
+   "player": "Ethan Belcher",
+   "lookFor": "\"Ethan Belcher\" wearing #9 or #000 or #35",
+   "teamShouldBe": "Bunjil Basketball Club / St Francis Basketball Club / Beavers Basketball Club (Bendigo)",
+   "grade": "Friday U10 Boys 5 / Friday U10 Boys 4",
+   "openTheseGames": [
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/a0444c31",
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/19c1eb1c",
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/73e37409"
+   ],
+   "chooseBetween": [
+    {
+     "uuid": "da6676ee-6d73-4fde-ae2c-18d2626b4530",
+     "name": "Ethan Belcher",
+     "isCurrentTarget": false,
+     "activeThatSeason": "9 game(s), registered in 2 season(s)",
+     "careerGames": 9,
+     "profile": "https://www.playhq.com/public/profile/da6676ee-6d73-4fde-ae2c-18d2626b4530/statistics"
+    },
+    {
+     "uuid": "2abd2870-0622-4a81-bea0-2131e96fefc8",
+     "name": "Ethan Belcher",
+     "isCurrentTarget": true,
+     "activeThatSeason": "16 game(s), registered in 1 season(s)",
+     "careerGames": 16,
+     "profile": "https://www.playhq.com/public/profile/2abd2870-0622-4a81-bea0-2131e96fefc8/statistics"
+    }
+   ]
+  },
+  "ff253e44-ac8e": {
+   "decision": null,
+   "player": "Harrison Belcher",
+   "lookFor": "\"Harrison Belcher\" wearing #14 or #00 or #51",
+   "teamShouldBe": "Bunjil Basketball Club / St Francis Basketball Club / Beavers Basketball Club (Bendigo)",
+   "grade": "Friday U10 Boys 5 / Friday U10 Boys 4",
+   "openTheseGames": [
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/a0444c31",
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/19c1eb1c",
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/73e37409"
+   ],
+   "chooseBetween": [
+    {
+     "uuid": "cdab8d21-8994-42f9-886b-54b392258999",
+     "name": "Harrison Belcher",
+     "isCurrentTarget": false,
+     "activeThatSeason": "9 game(s), registered in 2 season(s)",
+     "careerGames": 9,
+     "profile": "https://www.playhq.com/public/profile/cdab8d21-8994-42f9-886b-54b392258999/statistics"
+    },
+    {
+     "uuid": "9030c69c-937c-4bdb-a177-64e6e18da25d",
+     "name": "Harrison Belcher",
+     "isCurrentTarget": true,
+     "activeThatSeason": "16 game(s), registered in 1 season(s)",
+     "careerGames": 16,
+     "profile": "https://www.playhq.com/public/profile/9030c69c-937c-4bdb-a177-64e6e18da25d/statistics"
+    }
+   ]
+  },
+  "470c92b9-08f6": {
+   "decision": null,
+   "player": "Kevin Huang",
+   "lookFor": "\"Kevin Huang\" wearing #31",
+   "teamShouldBe": "Balwyn Blazers Basketball Club / Ivanhoe Knights Basketball Club (EDJBA) / Mitcham Thunder Basketball Club",
+   "grade": "Boys U15 C Grading / Boys U15 D Grading",
+   "openTheseGames": [
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/42522201",
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/9040ab6c",
+    "https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/ec96e0cd"
+   ],
+   "chooseBetween": [
+    {
+     "uuid": "0b0a719e-4054-4a3a-ac43-80069bda0d99",
+     "name": "Kevin Huang",
+     "isCurrentTarget": false,
+     "activeThatSeason": "0 game(s), registered in 0 season(s)",
+     "careerGames": 33,
+     "profile": "https://www.playhq.com/public/profile/0b0a719e-4054-4a3a-ac43-80069bda0d99/statistics"
+    },
+    {
+     "uuid": "1031bed0-71a0-45d1-bf66-1f065ec8748e",
+     "name": "kevin HUANG",
+     "isCurrentTarget": false,
+     "activeThatSeason": "0 game(s), registered in 0 season(s)",
+     "careerGames": 31,
+     "profile": "https://www.playhq.com/public/profile/1031bed0-71a0-45d1-bf66-1f065ec8748e/statistics"
+    },
+    {
+     "uuid": "4908a0fe-31a8-4753-8290-acfd544b7b25",
+     "name": "Kevin Huang",
+     "isCurrentTarget": false,
+     "activeThatSeason": "0 game(s), registered in 0 season(s)",
+     "careerGames": 49,
+     "profile": "https://www.playhq.com/public/profile/4908a0fe-31a8-4753-8290-acfd544b7b25/statistics"
+    },
+    {
+     "uuid": "5e551de6-4a30-4712-9ada-eb5bf3342a24",
+     "name": "Kevin Huang",
+     "isCurrentTarget": false,
+     "activeThatSeason": "15 game(s), registered in 1 season(s)",
+     "careerGames": 188,
+     "profile": "https://www.playhq.com/public/profile/5e551de6-4a30-4712-9ada-eb5bf3342a24/statistics"
+    },
+    {
+     "uuid": "a7183daf-b240-476a-bec3-904e99537232",
+     "name": "Kevin Huang",
+     "isCurrentTarget": false,
+     "activeThatSeason": "0 game(s), registered in 0 season(s)",
+     "careerGames": 72,
+     "profile": "https://www.playhq.com/public/profile/a7183daf-b240-476a-bec3-904e99537232/statistics"
+    },
+    {
+     "uuid": "b4050cae-3cc4-4373-a3ee-53db2136556b",
+     "name": "KEVIN HUANG",
+     "isCurrentTarget": true,
+     "activeThatSeason": "22 game(s), registered in 1 season(s)",
+     "careerGames": 196,
+     "profile": "https://www.playhq.com/public/profile/b4050cae-3cc4-4373-a3ee-53db2136556b/statistics"
+    },
+    {
+     "uuid": "febd110b-7211-4e07-b582-938de9e82221",
+     "name": "Kevin Huang",
+     "isCurrentTarget": false,
+     "activeThatSeason": "0 game(s), registered in 0 season(s)",
+     "careerGames": 61,
+     "profile": "https://www.playhq.com/public/profile/febd110b-7211-4e07-b582-938de9e82221/statistics"
+    }
+   ]
+  }
  }
 }
