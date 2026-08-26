@@ -1,0 +1,69 @@
+# .github/workflows/prove-player-files-intact.yml
+name: Prove Player Files Intact
+
+# READ-ONLY. Commits one report. Touches no player or game data.
+#
+# ⚠ THIS EXISTS BECAUSE I MADE A CLAIM WITHOUT TESTING IT.
+#
+# verify-players-against-playhq got no answer for 82% of players checked. I said
+# that was because most of the store is spectator-namespace with no api profile.
+# That was an ASSERTION, not a finding. The alternative is far worse and had to be
+# RULED OUT rather than waved away: that valid api profiles were overwritten with
+# spectator ids or alias targets by something that ran this week.
+#
+# Four independent lines of evidence:
+#   1. git log for players/ — every write came from a named commit, listed by count
+#   2. does each file's FILENAME match the `uuid` INSIDE it? A write that replaced
+#      identity breaks that, and the commit that did it is printed per file
+#   3. is the uuid in players/indexes, which is built from api crawls?
+#   4. isApiProfile for those that are not — it separates "a profile with no
+#      statistics" from "not a profile at all", which the earlier run conflated
+#
+# The last point is the likely explanation and I should have tested it before
+# asserting anything: publicProfileStatistics returning nothing does NOT mean the
+# uuid is not a profile.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'Player files to check. 300 is enough to settle it; raise if the first run finds anything.'
+        required: false
+        default: '300'
+        type: string
+      concurrency:
+        description: 'PlayHQ calls in flight.'
+        required: false
+        default: '3'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  prove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0      # ⚠ FULL history — the git log per file IS the evidence
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Prove player files intact
+        run: node --max-old-space-size=8192 scripts/prove-player-files-intact.js --sample=${{ inputs.sample }} --concurrency=${{ inputs.concurrency }}
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: player-file-integrity
+          path: reports/player-file-integrity.json
+          retention-days: 90
+          if-no-files-found: warn
