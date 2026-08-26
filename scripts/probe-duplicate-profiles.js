@@ -45,6 +45,12 @@ const num = (f, d) => {
   return Number.isFinite(v) && v > 0 ? v : d;
 };
 const ALL    = args.includes('--all');
+// --pairs=<file> takes an explicit list instead of discovering pairs by scanning.
+// build-alias-worklist writes reports/alias-merge-candidates.json in exactly this
+// shape: the 15 aliases whose two candidate records score IDENTICALLY on club,
+// grade and squad — the shape of one person split across two records rather than
+// two people. Without this the worklist named a file no tool could read.
+const PAIRS_FILE = (args.find(x => x.startsWith('--pairs=')) || '').split('=')[1] || null;
 const SAMPLE = num('sample', 200);
 const SEED   = num('seed', 20260821);
 // 700ms cost 834 pairs to CloudFront on the first full run. 1500 is the floor now,
@@ -355,7 +361,39 @@ async function main() {
   }).sort((x, y) => y.shared - x.shared);
   console.log('  pairs found: ' + pairs.length.toLocaleString());
 
-  if (!ALL) {
+  // An explicit list REPLACES discovery entirely. The scan above still runs
+  // because `shared` and the per-player meta come from it, so a supplied pair
+  // arrives with the same fields as a discovered one and nothing downstream has
+  // to care where it came from.
+  if (PAIRS_FILE) {
+    let supplied;
+    try { supplied = JSON.parse(fs.readFileSync(path.join(ROOT, PAIRS_FILE), 'utf8')); }
+    catch (e) { console.error('ABORT: --pairs file not readable: ' + PAIRS_FILE + ' — ' + e.message); process.exit(1); }
+    const list = supplied.pairs || supplied.entries || [];
+    if (!list.length) { console.error('ABORT: ' + PAIRS_FILE + ' contains no pairs'); process.exit(1); }
+    const byKey = new Map(pairs.map(p => [[p.ua, p.ub].sort().join('|'), p]));
+    const out = [];
+    let unseen = 0;
+    for (const x of list) {
+      const ua = x.a || x.ua, ub = x.b || x.ub;
+      if (!ua || !ub) continue;
+      const hit = byKey.get([ua, ub].sort().join('|'));
+      if (hit) out.push(hit);
+      else {
+        // Not found by the scan — the two may share no game at all, which is
+        // fine here: the question is whether BOTH uuids resolve on PlayHQ, and
+        // that needs no shared game. Carry it through with shared: 0 rather than
+        // dropping it silently.
+        unseen++;
+        out.push({ ua, ub, shared: 0, a: meta.get(ua) || { name: x.name }, b: meta.get(ub) || { name: x.name } });
+      }
+    }
+    pairs = out;
+    console.log('  supplied from ' + PAIRS_FILE + ': ' + pairs.length.toLocaleString() + ' pair(s)' +
+                (unseen ? '  (' + unseen + ' share no game — probed anyway)' : ''));
+  }
+
+  if (!ALL && !PAIRS_FILE) {
     const rnd = mulberry32(SEED);
     const c = pairs.slice();
     for (let i = c.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [c[i], c[j]] = [c[j], c[i]]; }
