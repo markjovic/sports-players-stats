@@ -89,22 +89,59 @@ function main() {
 
   fs.mkdirSync(path.join(ROOT, 'reports'), { recursive: true });
 
-  // ⚠ THE FILL-IN FILE IS CREATED BEFORE ANYTHING IS STAGED.
-  // The first version wrote it AFTER commitReports ran, so `git add` executed
-  // against a path that did not exist yet and the commit carried only the merge
-  // list — while the checklist below told the reader to go and edit the missing
-  // file. Same class as the stub nearly lost from probe-squad-evidence: staging a
-  // file the code has not written yet fails silently.
-  // The fill-in file, created only if absent so entered decisions survive.
+  // ── THE FILL-IN FILE ──────────────────────────────────────────────────────
+  // ⚠ A LIST OF IDS AND NULLS IS USELESS. The first version wrote exactly that —
+  // six bare ids to fill in — so using it meant reading the ids, finding each one
+  // in the console output, and copying uuids back by hand. Everything needed to
+  // decide is written INTO the file: the name, the games to open, the jersey to
+  // look for, and each candidate with its link and what is known about it.
+  //
+  // It is also REBUILT each run rather than left alone once created. The stale
+  // version listed six aliases, three of which have since been decided
+  // automatically — a file that cannot follow the evidence is worse than none.
+  // Decisions already entered are carried across; nothing typed is lost.
   const stubPath = path.join(ROOT, DECISIONS);
-  if (fs.existsSync(stubPath)) {
-    console.log('  reports/manual-alias-decisions.json already exists — left untouched');
-  } else {
-    fs.writeFileSync(stubPath, JSON.stringify({
-      note: 'Set each value to the winning player uuid, or leave null if the current alias is already right. repoint-aliases reads this and RE-VERIFIES every entry against PlayHQ before writing.',
-      decisions: Object.fromEntries(close.map(e => [e.id, null])) }, null, 1));
-    console.log('  WRITTEN: ' + DECISIONS + ' — one blank line per case above');
+  let previous = {};
+  try {
+    const old = JSON.parse(fs.readFileSync(stubPath, 'utf8'));
+    for (const [k, v] of Object.entries(old.decisions || {})) {
+      const val = (v && typeof v === 'object') ? v.decision : v;
+      if (val) previous[k] = val;
+    }
+  } catch (e) {}
+
+  const decisions = {};
+  for (const e of close) {
+    const nums = [...new Set((e.teamEvidence || []).map(t => t.number).filter(Boolean))];
+    const clubs = [...new Set((e.teamEvidence || []).flatMap(t => (t.clubs || []).map(c => c[0])))].slice(0, 3);
+    const grades = [...new Set((e.teamEvidence || []).flatMap(t => (t.grades || []).map(c => c[0])))].slice(0, 2);
+    decisions[e.id] = {
+      decision: previous[e.id] || null,
+      player: e.name,
+      lookFor: JSON.stringify(e.name) + (nums.length ? ' wearing #' + nums.join(' or #') : ' (no jersey recorded)'),
+      teamShouldBe: clubs.length ? clubs.join(' / ') : 'not identifiable from teammates',
+      grade: grades.length ? grades.join(' / ') : 'not identifiable',
+      openTheseGames: (e.gameList || []).slice(0, 3).map(g => gameUrl(g.gid)),
+      chooseBetween: (e.candidates || []).filter(c => !c.missing).map(c => ({
+        uuid: c.uuid,
+        name: c.name,
+        isCurrentTarget: !!c.isCurrent,
+        activeThatSeason: (c.gamesThisSeason ?? '?') + ' game(s), registered in ' + (c.registeredThisSeason ?? '?') + ' season(s)',
+        careerGames: c.careerGames,
+        profile: c.link,
+      })),
+    };
   }
+  const carried = Object.keys(previous).filter(k => decisions[k]).length;
+  const dropped = Object.keys(previous).filter(k => !decisions[k]);
+  fs.mkdirSync(path.join(ROOT, 'reports'), { recursive: true });
+  fs.writeFileSync(stubPath, JSON.stringify({
+    note: 'For each entry: open one of openTheseGames, find the player named in lookFor on the team sheet, note the club, then set "decision" to the uuid from chooseBetween that played for that club. Leave null if the current target is already right. repoint-aliases reads this and re-verifies every entry before writing.',
+    decisions }, null, 1));
+  console.log('  WRITTEN: ' + DECISIONS + ' — ' + n(close.length) + ' entrie(s), each with the games,');
+  console.log('  the jersey, the club to look for, and the candidates to choose between');
+  if (carried) console.log('  carried across ' + n(carried) + ' decision(s) you had already entered');
+  if (dropped.length) console.log('  ⚠ ' + n(dropped.length) + ' previously-entered decision(s) are no longer open: ' + dropped.join(', '));
 
   // ── 2. The checklist: URL, what to look for, what to write down ──────────
   console.log('  ══ THE WHOLE JOB, IN ORDER ════════════════════════════════════════');
