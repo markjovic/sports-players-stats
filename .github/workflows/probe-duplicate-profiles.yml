@@ -29,6 +29,11 @@ name: Probe Duplicate Profiles
 on:
   workflow_dispatch:
     inputs:
+      pairs_file:
+        description: 'Probe an EXPLICIT list instead of discovering pairs by scanning. Use reports/alias-merge-candidates.json — the 15 aliases whose two candidate records score IDENTICALLY on club, grade and squad, which is the shape of one person split in two rather than two people. Blank = discover as normal.'
+        required: false
+        default: ''
+        type: string
       sample:
         description: 'Pairs to probe. Start with 200 — the proportions decide what the fix is, and a sample gives them.'
         required: false
@@ -84,6 +89,7 @@ jobs:
       - name: Probe duplicate profiles
         run: |
           ARGS="--sample=${{ inputs.sample }} --seed=${{ inputs.seed }}"
+          if [ -n "${{ inputs.pairs_file }}" ]; then ARGS="$ARGS --pairs=${{ inputs.pairs_file }}"; fi
           if [ "${{ inputs.all }}" = "true" ] || [ "${{ inputs.all }}" = "True" ]; then ARGS="$ARGS --all"; fi
           ARGS="$ARGS --pace=${{ inputs.pace }}"
           # Reload the verdict cache from the previous run's artifact, if there was
