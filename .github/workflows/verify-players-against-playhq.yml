@@ -1,0 +1,77 @@
+# .github/workflows/verify-players-against-playhq.yml
+name: Verify Players Against PlayHQ
+
+# READ-ONLY as to data. COMMITS one report. No data-write lock.
+#
+# THE CHECK THAT SHOULD HAVE COME FIRST.
+#
+# One player opened on PlayHQ — Zachary Price, 66e58ba9 — reads 385 games and 2,436
+# points, and StatTrack shows the same. That single comparison says more about
+# whether the database is right than a day of candidate scoring did, because it asks
+# the only question that matters: DO OUR NUMBERS MATCH PLAYHQ'S?
+#
+# This runs it at scale. Per player it compares the games PlayHQ credits against the
+# games our file holds, both directions:
+#   · games WE hold that PlayHQ does NOT credit — what a bad alias looks like
+#   · games PLAYHQ credits that we do NOT hold  — an appearance we are missing
+#
+# A gap is not automatically an error: PlayHQ omits games, which is why StatTrack
+# shows "RECORDED APPEARANCES 397 · 12 not credited by PlayHQ". What matters is the
+# RATE, and whether players WE CHANGED look worse than untouched ones.
+#
+# ⚠ EVERY PLAYER TOUCHED BY A RECENT REPOINT IS ALWAYS CHECKED, on top of the random
+# sample — BOTH SIDES of each change, read from alias-repoint-log.json,
+# boxscore-repoint-log.json and seeded-profiles.json. The profile appearances were
+# moved AWAY from matters as much as the one they went to.
+#
+# NO actions/setup-node — this job fetches api.playhq.com.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'Random untouched players to check as a baseline. 0 = only the recently changed ones.'
+        required: false
+        default: '200'
+        type: string
+      concurrency:
+        description: 'Profile calls in flight.'
+        required: false
+        default: '6'
+        type: string
+      show:
+        description: 'How many of the worst gaps to print in full.'
+        required: false
+        default: '40'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Verify against PlayHQ
+        run: node --max-old-space-size=8192 scripts/verify-players-against-playhq.js --sample=${{ inputs.sample }} --concurrency=${{ inputs.concurrency }} --show=${{ inputs.show }}
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playhq-verification
+          path: reports/playhq-verification.json
+          retention-days: 90
+          if-no-files-found: warn
