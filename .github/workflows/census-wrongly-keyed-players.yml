@@ -58,6 +58,11 @@ on:
         required: false
         default: false
         type: boolean
+      diagnose:
+        description: 'Re-run recovery on the first N failed players capturing FULL evidence (both rosters, whether the claimed id appears in each, whether the game is in games/bv). Try 50. Touches no progress.'
+        required: false
+        default: '0'
+        type: string
       reset:
         description: 'Ignore existing progress and start the census again.'
         required: false
@@ -90,6 +95,7 @@ jobs:
       - name: Census wrongly keyed players
         run: |
           ARGS="--max-keys=${{ inputs.max_keys }} --max-games=${{ inputs.max_games }} --games-per-player=${{ inputs.games_per_player }} --commit-every=${{ inputs.commit_every }}"
+          if [ "${{ inputs.diagnose }}" != "0" ] && [ -n "${{ inputs.diagnose }}" ]; then ARGS="$ARGS --diagnose=${{ inputs.diagnose }}"; fi
           if [ "${{ inputs.explain_failures }}" = "true" ] || [ "${{ inputs.explain_failures }}" = "True" ]; then ARGS="$ARGS --explain-failures"; fi
           if [ "${{ inputs.scan_only }}" = "true" ] || [ "${{ inputs.scan_only }}" = "True" ]; then ARGS="$ARGS --scan-only"; fi
           if [ "${{ inputs.reset }}" = "true" ] || [ "${{ inputs.reset }}" = "True" ]; then ARGS="$ARGS --reset"; fi
