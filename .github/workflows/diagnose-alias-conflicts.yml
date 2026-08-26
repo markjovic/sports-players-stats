@@ -34,6 +34,11 @@ on:
         required: false
         default: ''
         type: string
+      names:
+        description: 'Comma-separated player names to look up and diagnose, e.g. Cielo Ward,Dhel Mayek. Every indexed id matching a name is probed; no winner is picked.'
+        required: false
+        default: ''
+        type: string
       max_ids:
         description: 'Cap on ids asked. One publicProfileStatistics call each, session refreshed every 25.'
         required: false
@@ -72,5 +77,6 @@ jobs:
         run: |
           ARGS="--report=${{ inputs.report }} --max-ids=${{ inputs.max_ids }}"
           if [ -n "${{ inputs.ids }}" ]; then ARGS="$ARGS --ids=${{ inputs.ids }}"; fi
+          if [ -n "${{ inputs.names }}" ]; then ARGS="$ARGS --names=${{ inputs.names }}"; fi
           if [ "${{ inputs.dry_run }}" = "true" ] || [ "${{ inputs.dry_run }}" = "True" ]; then ARGS="$ARGS --dry-run"; fi
           node scripts/diagnose-alias-conflicts.js $ARGS
