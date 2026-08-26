@@ -68,6 +68,11 @@ const MAX_GAMES    = ARGS['max-games'] ? Math.max(0, parseInt(ARGS['max-games'],
 const GAMES_PER    = ARGS['games-per-player'] ? Math.max(1, parseInt(ARGS['games-per-player'], 10)) : 3;
 const COMMIT_EVERY = ARGS['commit-every'] ? Math.max(1, parseInt(ARGS['commit-every'], 10)) : 250;
 const RESET        = !!ARGS.reset;
+// Offline. Reads the committed report and tallies WHY recovery failed. Added
+// 2026-08-26 after a run reported "recoveryFailed: 2928" with no breakdown — a
+// counter without examples is a number that cannot be checked, and the reasons
+// were sitting in the report unprinted.
+const EXPLAIN      = !!ARGS['explain-failures'];
 
 const API_URL       = 'https://api.playhq.com/graphql';
 const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
@@ -469,10 +474,55 @@ function saveProgress(st) { fs.writeFileSync(PROGRESS_FILE, JSON.stringify(st));
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
+function explainFailures() {
+  const p = OUT_FILE;
+  if (!fs.existsSync(p)) throw new Error(`no report at ${OUT_REL} — run the census first`);
+  const rep = JSON.parse(fs.readFileSync(p, 'utf8'));
+  const fails = Array.isArray(rep.recoveryFailed) ? rep.recoveryFailed : [];
+  console.log(`${OUT_REL}: ${fails.length} player(s) where no api id could be recovered\n`);
+  if (!fails.length) return;
+
+  const byReason = {}, bySpectator = {}, byGameview = {};
+  let attempts = 0, noGamesTried = 0;
+  for (const f of fails) {
+    const tried = Array.isArray(f.tried) ? f.tried : [];
+    if (!tried.length) { noGamesTried++; continue; }
+    for (const t of tried) {
+      attempts++;
+      const gv = t.gameview || 'n/a', sp = t.spectator || 'n/a';
+      byGameview[gv]  = (byGameview[gv]  || 0) + 1;
+      bySpectator[sp] = (bySpectator[sp] || 0) + 1;
+      const r = t.why || (gv !== 'ok' ? `gameView: ${gv}` : (sp !== 'ok' ? `spectator: ${sp}` : 'unknown'));
+      byReason[r] = (byReason[r] || 0) + 1;
+    }
+  }
+  const show = (title, obj) => {
+    console.log(`──── ${title} ────`);
+    for (const [k, v] of Object.entries(obj).sort((a, b) => b[1] - a[1]).slice(0, 15)) {
+      console.log(`  ${String(v).padStart(6)}  ${k}`);
+    }
+    console.log('');
+  };
+  console.log(`  ${attempts} game read attempt(s) across ${fails.length} player(s); ${noGamesTried} player(s) had no attempt recorded\n`);
+  show('WHY EACH ATTEMPT FAILED', byReason);
+  show('GAMEVIEW OUTCOME PER ATTEMPT', byGameview);
+  show('SPECTATOR OUTCOME PER ATTEMPT', bySpectator);
+
+  console.log('──── EXAMPLES (first 10 players, with every game they tried) ────');
+  for (const f of fails.slice(0, 10)) {
+    console.log(`  ${f.uuid} (${f.name || 'no name'}) holds ${f.gamesHeld} game(s)`);
+    for (const t of (f.tried || [])) {
+      console.log(`      game ${t.gameId} · gameView ${t.gameview || '-'} · spectator ${t.spectator || '-'}${t.why ? ` · ${t.why}` : ''}`);
+    }
+  }
+}
+
 async function main() {
   const t0 = Date.now();
   console.log('census-wrongly-keyed-players — every player file keyed on a non-api id\n');
   fs.mkdirSync(REPORTS_DIR, { recursive: true });
+
+  if (EXPLAIN) { explainFailures(); return; }
 
   let st = loadProgress();
   if (!st) {
