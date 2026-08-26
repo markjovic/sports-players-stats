@@ -1,0 +1,5723 @@
+{
+  "generatedAt": "2026-08-26T09:33:29.697Z",
+  "args": {
+    "perBlock": 5,
+    "minRoster": 6,
+    "games": null,
+    "maxNamespaceProbes": 150,
+    "skipNamespace": false
+  },
+  "totals": {
+    "games": 15,
+    "gameviewAnswered": 15,
+    "spectatorAnswered": 10,
+    "gameviewFailures": [],
+    "spectatorFailures": [
+      {
+        "gameId": "6e87932d",
+        "block": "B",
+        "why": "graphql:nocode:game could not be found or was not electronically scored",
+        "permanent": true
+      },
+      {
+        "gameId": "f34cfc8c",
+        "block": "B",
+        "why": "graphql:nocode:game could not be found or was not electronically scored",
+        "permanent": true
+      },
+      {
+        "gameId": "f77e101c",
+        "block": "B",
+        "why": "graphql:nocode:game could not be found or was not electronically scored",
+        "permanent": true
+      },
+      {
+        "gameId": "78975486",
+        "block": "B",
+        "why": "graphql:nocode:game could not be found or was not electronically scored",
+        "permanent": true
+      },
+      {
+        "gameId": "94dac291",
+        "block": "B",
+        "why": "graphql:nocode:game could not be found or was not electronically scored",
+        "permanent": true
+      }
+    ],
+    "ourRosterEntries": 204,
+    "gameviewWithProfile": 198,
+    "gameviewNoProfileRows": 6,
+    "spectatorWithProfile": 138,
+    "spectatorNoProfileRows": 3,
+    "oursNotInGameview": 23,
+    "gameviewNotInOurs": 17,
+    "oursNotInSpectator": 6,
+    "spectatorNotInOurs": 0,
+    "samePersonPairs": 137,
+    "samePersonPairsDiffering": 22,
+    "unresolvedOurIds": 0,
+    "namespaceQualifying": 55,
+    "namespaceAsked": 55,
+    "namespaceApi": 37,
+    "namespaceNotApi": 18,
+    "namespaceUnknown": 0,
+    "gameviewSideApi": 18,
+    "gameviewSideNotApi": 0,
+    "spectatorSideApi": 0,
+    "spectatorSideNotApi": 18,
+    "controlApi": 19,
+    "controlNotApi": 0
+  },
+  "namespace": [
+    {
+      "id": "c209d3df-687a-45c2-afc9-db34fdd4e655",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "e95853f5-468d-4ed5-97b4-90d97c8f1d22",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "1f2191a2-ce79-4553-9f02-c254c16f8a81",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "74a4f59e-520c-46e7-ac37-a3911174a323",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "a683b20e-13dd-45eb-8ff5-028be2fed0fd",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "543e1c75-d30d-4a58-80f4-3a214b1a990f",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "127575e1-2eba-4476-8fd2-9c23fa6b54f6",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "eed87444-2f2f-4b2f-a4fa-4a59ac43c79b",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "1a450b43-c001-4685-aef8-a13eaf8b35da",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "4e3ad93b-d039-4303-b484-1d17147de61d",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "401b4701-1bda-4a15-a605-66f07fbc620c",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "c9df8891-5d4c-4d03-967a-11060188080f",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "ab233e2b-e2f3-4105-a2f0-a3317719c4c9",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "bb6753c8-7b6e-4c85-8d95-0e9db4b7009d",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "3e676008-e92e-4b9a-bfc0-5f16bbe155d2",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "f09e7607-05d0-4bbf-a6cc-0eda9705ddf9",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "fbab8b49-cb28-4b4f-a1e4-0969750168a9",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "b500cef1-9e44-4acf-8e80-d3d4e592e591",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "f94ad0df-0619-4abf-88cf-2a5f76e7b4f5",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "745efeb6-12c3-45c5-b1fa-4d89a8b1e5de",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "3d20797b-cd55-4012-945d-1070ac84bf50",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "2b2d18d1-24ee-47bd-abcf-d0dc465e22a4",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "54409b04-004e-459a-8b3c-577bf0aca67d",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "e0405bdf-31df-4e2b-82e5-73927245087b",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "b4bd0e9f-a701-4ca6-ad2e-4a9daf9fba2a",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "32abfcf9-947e-45e5-83d1-768bfa1b4da3",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "e0685f41-e4c8-4a2b-b060-6b4bcbed58bd",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "0244bf23-b4c4-48fc-b933-1aa0170ef475",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "22762806-607d-4f50-8051-4da98aa5829a",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "8b9bf41c-54e7-4785-97cf-d97e0459921c",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "ecb661c2-66eb-49f8-9872-bf38835c0516",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "809d83bf-a3bb-4db1-aea8-ef9b9a137c74",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+      "reasons": [
+        "gameview-side-of-differing-pair"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "d380b48d-2c3e-4543-abf0-14a009fb1fef",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "862a68eb-2a22-4937-b3d3-0b2e3c69a265",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "d513a114-4812-4e34-858c-e5ab18180fe9",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "57fa00c3-61a9-48cc-acc8-3f28533c94fe",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "1c8f58ae-160b-454c-b6bf-e8024901193e",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "c46e8eb8-039c-4b37-84f1-f33f3dade9a5",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "b95c1c4b-8dbc-4d89-8b38-fcd5741ae7cc",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "9466fa05-da47-4383-bbd0-eb2aa74c875a",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "ea9c6d00-8bca-4fe4-813a-faac18ee042d",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "6cbdb0e2-4d81-4a73-9c90-0466ec9f037b",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "c1599aa1-d89b-4160-aa19-6b269020de4e",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "12624af1-3170-4a6f-b2bc-6b321df5d28e",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "b86cf0f4-37e6-4419-a5a8-745beeddfb1d",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "a99562b5-f1af-41b4-a196-eaf4fb70b2e2",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "8bef6c48-d46f-4e8d-8301-f7b9e60df501",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "13a517b6-15c0-4dee-a721-818c2c27ac69",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "9b4c5574-0617-4335-b2b0-b7f4a9962af0",
+      "reasons": [
+        "gameview-side-of-differing-pair",
+        "gameview-not-in-ours"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "52e1bc36-cbd9-49bc-9d7a-e14de20ccfb5",
+      "reasons": [
+        "spectator-side-of-differing-pair"
+      ],
+      "verdict": "not-api"
+    },
+    {
+      "id": "b878dd26-46ae-4015-9762-f8ce14638c38",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    },
+    {
+      "id": "439f5d6c-f38b-46c0-927a-9d0d00e9e60c",
+      "reasons": [
+        "control-agreed-by-all-three"
+      ],
+      "verdict": "api"
+    }
+  ],
+  "games": [
+    {
+      "gameId": "19168353",
+      "seasonId": "00017bb0",
+      "flags": {
+        "spc": 1,
+        "dg": null,
+        "spcm": null,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2024-05-22",
+      "rosterIds": [
+        "c209d3df-687a",
+        "e95853f5-468d",
+        "1d538d45-2327",
+        "c93b4a78-9c65",
+        "02c40740-1528",
+        "f3500bea-8dc1",
+        "64c51ee7-19c9",
+        "1ec823bd-6773",
+        "ed0a592c-c55b",
+        "6e7e7ca6-5c0d",
+        "f728900c-b1aa",
+        "8f630856-b302",
+        "2efc956b-5247",
+        "56a55e8b-ff34",
+        "78ffa3c2-3ea1",
+        "56c76421-934f",
+        "607aa998-eda6"
+      ],
+      "block": "A",
+      "ours": {
+        "count": 17,
+        "ids": [
+          "c209d3df-687a",
+          "e95853f5-468d",
+          "1d538d45-2327",
+          "c93b4a78-9c65",
+          "02c40740-1528",
+          "f3500bea-8dc1",
+          "64c51ee7-19c9",
+          "1ec823bd-6773",
+          "ed0a592c-c55b",
+          "6e7e7ca6-5c0d",
+          "f728900c-b1aa",
+          "8f630856-b302",
+          "2efc956b-5247",
+          "56a55e8b-ff34",
+          "78ffa3c2-3ea1",
+          "56c76421-934f",
+          "607aa998-eda6"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 16,
+        "noProfile": [],
+        "rows": [
+          {
+            "profileId": "c209d3df-687a-45c2-afc9-db34fdd4e655",
+            "name": "Lachlan Darcy",
+            "number": "4",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "e95853f5-468d-4ed5-97b4-90d97c8f1d22",
+            "name": "Zac Borch",
+            "number": "8",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "1d538d45-2327-453d-a7a7-40d9fad73583",
+            "name": "Levi Paton",
+            "number": "9",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "c93b4a78-9c65-48fd-af6d-2e0d141af875",
+            "name": "Sebastian Antesberger",
+            "number": "14",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "02c40740-1528-4c93-8e21-b378368886c4",
+            "name": "Isaac Pietsch",
+            "number": "15",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "f3500bea-8dc1-442d-a144-56300b2732dd",
+            "name": "Hemi Stocks",
+            "number": "21",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "64c51ee7-19c9-42e9-95fb-ca727c17c58b",
+            "name": "Jaxon Kurzman",
+            "number": "35",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "607aa998-eda6-49b3-8b63-6c2eb9165e1b",
+            "name": "Harry Smith",
+            "number": "50",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "ed0a592c-c55b-4975-81ad-022e06d930df",
+            "name": "Matthew Hislop",
+            "number": "1",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "6e7e7ca6-5c0d-4952-a687-bad6af80e1c6",
+            "name": "Archie Martin",
+            "number": "2",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "f728900c-b1aa-4153-bb1e-dd39468704a9",
+            "name": "Samuel Zonneveld",
+            "number": "10",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "8f630856-b302-4bb7-a6bb-c1e0d5016ed5",
+            "name": "Sonny Maliki",
+            "number": "13",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "2efc956b-5247-4fcd-a192-4eecd4db9726",
+            "name": "Harry Haslem",
+            "number": "18",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "56a55e8b-ff34-430f-a03c-0d82ac0d9342",
+            "name": "Kaylen Oborne",
+            "number": "20",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "78ffa3c2-3ea1-4606-9edb-13644277f0c0",
+            "name": "Riley Sheppard",
+            "number": "41",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "56c76421-934f-4b3d-b353-832e12c4fa7d",
+            "name": "Isaac Leeson",
+            "number": "44",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 16,
+        "noProfileCount": 0,
+        "rows": [
+          {
+            "profileId": "c209d3df-687a-45c2-afc9-db34fdd4e655",
+            "name": "Lachlan Darcy",
+            "number": "4"
+          },
+          {
+            "profileId": "e95853f5-468d-4ed5-97b4-90d97c8f1d22",
+            "name": "Zac Borch",
+            "number": "8"
+          },
+          {
+            "profileId": "1d538d45-2327-453d-a7a7-40d9fad73583",
+            "name": "Levi Paton",
+            "number": "9"
+          },
+          {
+            "profileId": "c93b4a78-9c65-48fd-af6d-2e0d141af875",
+            "name": "Sebastian Antesberger",
+            "number": "14"
+          },
+          {
+            "profileId": "02c40740-1528-4c93-8e21-b378368886c4",
+            "name": "Isaac Pietsch",
+            "number": "15"
+          },
+          {
+            "profileId": "f3500bea-8dc1-442d-a144-56300b2732dd",
+            "name": "Hemi Stocks",
+            "number": "21"
+          },
+          {
+            "profileId": "64c51ee7-19c9-42e9-95fb-ca727c17c58b",
+            "name": "Jaxon Kurzman",
+            "number": "35"
+          },
+          {
+            "profileId": "1ec823bd-6773-4109-9614-29c9a213e284",
+            "name": "Harrison Smith",
+            "number": "50"
+          },
+          {
+            "profileId": "ed0a592c-c55b-4975-81ad-022e06d930df",
+            "name": "Matthew Hislop",
+            "number": "1"
+          },
+          {
+            "profileId": "6e7e7ca6-5c0d-4952-a687-bad6af80e1c6",
+            "name": "Archie Martin",
+            "number": "2"
+          },
+          {
+            "profileId": "f728900c-b1aa-4153-bb1e-dd39468704a9",
+            "name": "Samuel Zonneveld",
+            "number": "10"
+          },
+          {
+            "profileId": "8f630856-b302-4bb7-a6bb-c1e0d5016ed5",
+            "name": "Sonny Maliki",
+            "number": "13"
+          },
+          {
+            "profileId": "2efc956b-5247-4fcd-a192-4eecd4db9726",
+            "name": "Harry Haslem",
+            "number": "18"
+          },
+          {
+            "profileId": "56a55e8b-ff34-430f-a03c-0d82ac0d9342",
+            "name": "Kaylen Oborne",
+            "number": "20"
+          },
+          {
+            "profileId": "78ffa3c2-3ea1-4606-9edb-13644277f0c0",
+            "name": "Riley Sheppard",
+            "number": "41"
+          },
+          {
+            "profileId": "56c76421-934f-4b3d-b353-832e12c4fa7d",
+            "name": "Isaac Leeson",
+            "number": "44"
+          }
+        ]
+      },
+      "compare": {
+        "oursNotInGameview": [
+          "1ec823bd-6773"
+        ],
+        "gameviewNotInOurs": [],
+        "oursNotInSpectator": [
+          "607aa998-eda6"
+        ],
+        "spectatorNotInOurs": [],
+        "idPairs": [
+          {
+            "name": "Lachlan Darcy",
+            "number": "4",
+            "gameviewId": "c209d3df-687a-45c2-afc9-db34fdd4e655",
+            "spectatorId": "c209d3df-687a-45c2-afc9-db34fdd4e655",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Zac Borch",
+            "number": "8",
+            "gameviewId": "e95853f5-468d-4ed5-97b4-90d97c8f1d22",
+            "spectatorId": "e95853f5-468d-4ed5-97b4-90d97c8f1d22",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Levi Paton",
+            "number": "9",
+            "gameviewId": "1d538d45-2327-453d-a7a7-40d9fad73583",
+            "spectatorId": "1d538d45-2327-453d-a7a7-40d9fad73583",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Sebastian Antesberger",
+            "number": "14",
+            "gameviewId": "c93b4a78-9c65-48fd-af6d-2e0d141af875",
+            "spectatorId": "c93b4a78-9c65-48fd-af6d-2e0d141af875",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Isaac Pietsch",
+            "number": "15",
+            "gameviewId": "02c40740-1528-4c93-8e21-b378368886c4",
+            "spectatorId": "02c40740-1528-4c93-8e21-b378368886c4",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Hemi Stocks",
+            "number": "21",
+            "gameviewId": "f3500bea-8dc1-442d-a144-56300b2732dd",
+            "spectatorId": "f3500bea-8dc1-442d-a144-56300b2732dd",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Jaxon Kurzman",
+            "number": "35",
+            "gameviewId": "64c51ee7-19c9-42e9-95fb-ca727c17c58b",
+            "spectatorId": "64c51ee7-19c9-42e9-95fb-ca727c17c58b",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Matthew Hislop",
+            "number": "1",
+            "gameviewId": "ed0a592c-c55b-4975-81ad-022e06d930df",
+            "spectatorId": "ed0a592c-c55b-4975-81ad-022e06d930df",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Archie Martin",
+            "number": "2",
+            "gameviewId": "6e7e7ca6-5c0d-4952-a687-bad6af80e1c6",
+            "spectatorId": "6e7e7ca6-5c0d-4952-a687-bad6af80e1c6",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Samuel Zonneveld",
+            "number": "10",
+            "gameviewId": "f728900c-b1aa-4153-bb1e-dd39468704a9",
+            "spectatorId": "f728900c-b1aa-4153-bb1e-dd39468704a9",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Sonny Maliki",
+            "number": "13",
+            "gameviewId": "8f630856-b302-4bb7-a6bb-c1e0d5016ed5",
+            "spectatorId": "8f630856-b302-4bb7-a6bb-c1e0d5016ed5",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Harry Haslem",
+            "number": "18",
+            "gameviewId": "2efc956b-5247-4fcd-a192-4eecd4db9726",
+            "spectatorId": "2efc956b-5247-4fcd-a192-4eecd4db9726",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Kaylen Oborne",
+            "number": "20",
+            "gameviewId": "56a55e8b-ff34-430f-a03c-0d82ac0d9342",
+            "spectatorId": "56a55e8b-ff34-430f-a03c-0d82ac0d9342",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Riley Sheppard",
+            "number": "41",
+            "gameviewId": "78ffa3c2-3ea1-4606-9edb-13644277f0c0",
+            "spectatorId": "78ffa3c2-3ea1-4606-9edb-13644277f0c0",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Isaac Leeson",
+            "number": "44",
+            "gameviewId": "56c76421-934f-4b3d-b353-832e12c4fa7d",
+            "spectatorId": "56c76421-934f-4b3d-b353-832e12c4fa7d",
+            "same": true,
+            "samePrefix13": true
+          }
+        ],
+        "idPairsDiffering": 0,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "c209d3df-687a",
+            "resolvesTo": "c209d3df-687a-45c2-afc9-db34fdd4e655",
+            "error": null
+          },
+          {
+            "rosterId": "e95853f5-468d",
+            "resolvesTo": "e95853f5-468d-4ed5-97b4-90d97c8f1d22",
+            "error": null
+          },
+          {
+            "rosterId": "1d538d45-2327",
+            "resolvesTo": "1d538d45-2327-453d-a7a7-40d9fad73583",
+            "error": null
+          },
+          {
+            "rosterId": "c93b4a78-9c65",
+            "resolvesTo": "c93b4a78-9c65-48fd-af6d-2e0d141af875",
+            "error": null
+          },
+          {
+            "rosterId": "02c40740-1528",
+            "resolvesTo": "02c40740-1528-4c93-8e21-b378368886c4",
+            "error": null
+          },
+          {
+            "rosterId": "f3500bea-8dc1",
+            "resolvesTo": "f3500bea-8dc1-442d-a144-56300b2732dd",
+            "error": null
+          },
+          {
+            "rosterId": "64c51ee7-19c9",
+            "resolvesTo": "64c51ee7-19c9-42e9-95fb-ca727c17c58b",
+            "error": null
+          },
+          {
+            "rosterId": "1ec823bd-6773",
+            "resolvesTo": "1ec823bd-6773-4109-9614-29c9a213e284",
+            "error": null
+          },
+          {
+            "rosterId": "ed0a592c-c55b",
+            "resolvesTo": "ed0a592c-c55b-4975-81ad-022e06d930df",
+            "error": null
+          },
+          {
+            "rosterId": "6e7e7ca6-5c0d",
+            "resolvesTo": "6e7e7ca6-5c0d-4952-a687-bad6af80e1c6",
+            "error": null
+          },
+          {
+            "rosterId": "f728900c-b1aa",
+            "resolvesTo": "f728900c-b1aa-4153-bb1e-dd39468704a9",
+            "error": null
+          },
+          {
+            "rosterId": "8f630856-b302",
+            "resolvesTo": "8f630856-b302-4bb7-a6bb-c1e0d5016ed5",
+            "error": null
+          },
+          {
+            "rosterId": "2efc956b-5247",
+            "resolvesTo": "2efc956b-5247-4fcd-a192-4eecd4db9726",
+            "error": null
+          },
+          {
+            "rosterId": "56a55e8b-ff34",
+            "resolvesTo": "56a55e8b-ff34-430f-a03c-0d82ac0d9342",
+            "error": null
+          },
+          {
+            "rosterId": "78ffa3c2-3ea1",
+            "resolvesTo": "78ffa3c2-3ea1-4606-9edb-13644277f0c0",
+            "error": null
+          },
+          {
+            "rosterId": "56c76421-934f",
+            "resolvesTo": "56c76421-934f-4b3d-b353-832e12c4fa7d",
+            "error": null
+          },
+          {
+            "rosterId": "607aa998-eda6",
+            "resolvesTo": "607aa998-eda6-49b3-8b63-6c2eb9165e1b",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "22667006",
+      "seasonId": "00017bb0",
+      "flags": {
+        "spc": 1,
+        "dg": null,
+        "spcm": null,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2024-04-24",
+      "rosterIds": [
+        "1a450b43-c001",
+        "4e3ad93b-d039",
+        "74a4f59e-520c",
+        "98cd2d81-ee69",
+        "c615c9e4-f0fa",
+        "543e1c75-d30d",
+        "3ed56fbc-d3b2",
+        "7d53ead2-0614",
+        "205f4036-3aa1",
+        "eed87444-2f2f",
+        "17e2af82-5143",
+        "a4bc7bf7-fd78"
+      ],
+      "block": "A",
+      "ours": {
+        "count": 12,
+        "ids": [
+          "1a450b43-c001",
+          "4e3ad93b-d039",
+          "74a4f59e-520c",
+          "98cd2d81-ee69",
+          "c615c9e4-f0fa",
+          "543e1c75-d30d",
+          "3ed56fbc-d3b2",
+          "7d53ead2-0614",
+          "205f4036-3aa1",
+          "eed87444-2f2f",
+          "17e2af82-5143",
+          "a4bc7bf7-fd78"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 12,
+        "noProfile": [],
+        "rows": [
+          {
+            "profileId": "1a450b43-c001-4685-aef8-a13eaf8b35da",
+            "name": "Milla Stegic",
+            "number": "4",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "4e3ad93b-d039-4303-b484-1d17147de61d",
+            "name": "Finn Busfield",
+            "number": "6",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "1f2191a2-ce79-4553-9f02-c254c16f8a81",
+            "name": "Maddi Hay",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "98cd2d81-ee69-4aa0-a3a8-514eea19902a",
+            "name": "Ritz Dalangin",
+            "number": "9",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "c615c9e4-f0fa-476b-96e8-4c9e6929854a",
+            "name": "Riley Cisek",
+            "number": "17",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "a683b20e-13dd-45eb-8ff5-028be2fed0fd",
+            "name": "Lily Lindgren",
+            "number": "20",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "3ed56fbc-d3b2-48fc-bcd2-797f2a57f0ff",
+            "name": "Georgia Desmond",
+            "number": "4",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "7d53ead2-0614-466b-9e91-2fb34ee41f2b",
+            "name": "Emme Kettle",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "205f4036-3aa1-4030-aed4-8553b8f02810",
+            "name": "Stella Fitzpatrick",
+            "number": "8",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "127575e1-2eba-4476-8fd2-9c23fa6b54f6",
+            "name": "Emily Riches",
+            "number": "9",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "17e2af82-5143-4142-9bc9-edfd593e65c7",
+            "name": "Hayley Clarke",
+            "number": "10",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "a4bc7bf7-fd78-422f-a96a-cc3ba00e90e8",
+            "name": "Adele Trigg",
+            "number": "44",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 12,
+        "noProfileCount": 0,
+        "rows": [
+          {
+            "profileId": "1a450b43-c001-4685-aef8-a13eaf8b35da",
+            "name": "Milla Stegic",
+            "number": "4"
+          },
+          {
+            "profileId": "4e3ad93b-d039-4303-b484-1d17147de61d",
+            "name": "Finn Busfield",
+            "number": "6"
+          },
+          {
+            "profileId": "74a4f59e-520c-46e7-ac37-a3911174a323",
+            "name": "Maddi Hay",
+            "number": "7"
+          },
+          {
+            "profileId": "98cd2d81-ee69-4aa0-a3a8-514eea19902a",
+            "name": "Ritz Dalangin",
+            "number": "9"
+          },
+          {
+            "profileId": "c615c9e4-f0fa-476b-96e8-4c9e6929854a",
+            "name": "Riley Cisek",
+            "number": "17"
+          },
+          {
+            "profileId": "543e1c75-d30d-4a58-80f4-3a214b1a990f",
+            "name": "Lily Lindgren",
+            "number": "20"
+          },
+          {
+            "profileId": "3ed56fbc-d3b2-48fc-bcd2-797f2a57f0ff",
+            "name": "Georgia Desmond",
+            "number": "4"
+          },
+          {
+            "profileId": "7d53ead2-0614-466b-9e91-2fb34ee41f2b",
+            "name": "Emme Kettle",
+            "number": "7"
+          },
+          {
+            "profileId": "205f4036-3aa1-4030-aed4-8553b8f02810",
+            "name": "Stella Fitzpatrick",
+            "number": "8"
+          },
+          {
+            "profileId": "eed87444-2f2f-4b2f-a4fa-4a59ac43c79b",
+            "name": "Emily Riches",
+            "number": "9"
+          },
+          {
+            "profileId": "17e2af82-5143-4142-9bc9-edfd593e65c7",
+            "name": "Hayley Clarke",
+            "number": "10"
+          },
+          {
+            "profileId": "a4bc7bf7-fd78-422f-a96a-cc3ba00e90e8",
+            "name": "Adele Trigg",
+            "number": ""
+          }
+        ]
+      },
+      "compare": {
+        "oursNotInGameview": [
+          "74a4f59e-520c",
+          "543e1c75-d30d",
+          "eed87444-2f2f"
+        ],
+        "gameviewNotInOurs": [
+          "1f2191a2-ce79",
+          "a683b20e-13dd",
+          "127575e1-2eba"
+        ],
+        "oursNotInSpectator": [],
+        "spectatorNotInOurs": [],
+        "idPairs": [
+          {
+            "name": "Milla Stegic",
+            "number": "4",
+            "gameviewId": "1a450b43-c001-4685-aef8-a13eaf8b35da",
+            "spectatorId": "1a450b43-c001-4685-aef8-a13eaf8b35da",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Finn Busfield",
+            "number": "6",
+            "gameviewId": "4e3ad93b-d039-4303-b484-1d17147de61d",
+            "spectatorId": "4e3ad93b-d039-4303-b484-1d17147de61d",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Maddi Hay",
+            "number": "7",
+            "gameviewId": "1f2191a2-ce79-4553-9f02-c254c16f8a81",
+            "spectatorId": "74a4f59e-520c-46e7-ac37-a3911174a323",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Ritz Dalangin",
+            "number": "9",
+            "gameviewId": "98cd2d81-ee69-4aa0-a3a8-514eea19902a",
+            "spectatorId": "98cd2d81-ee69-4aa0-a3a8-514eea19902a",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Riley Cisek",
+            "number": "17",
+            "gameviewId": "c615c9e4-f0fa-476b-96e8-4c9e6929854a",
+            "spectatorId": "c615c9e4-f0fa-476b-96e8-4c9e6929854a",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Lily Lindgren",
+            "number": "20",
+            "gameviewId": "a683b20e-13dd-45eb-8ff5-028be2fed0fd",
+            "spectatorId": "543e1c75-d30d-4a58-80f4-3a214b1a990f",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Georgia Desmond",
+            "number": "4",
+            "gameviewId": "3ed56fbc-d3b2-48fc-bcd2-797f2a57f0ff",
+            "spectatorId": "3ed56fbc-d3b2-48fc-bcd2-797f2a57f0ff",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Emme Kettle",
+            "number": "7",
+            "gameviewId": "7d53ead2-0614-466b-9e91-2fb34ee41f2b",
+            "spectatorId": "7d53ead2-0614-466b-9e91-2fb34ee41f2b",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Stella Fitzpatrick",
+            "number": "8",
+            "gameviewId": "205f4036-3aa1-4030-aed4-8553b8f02810",
+            "spectatorId": "205f4036-3aa1-4030-aed4-8553b8f02810",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Emily Riches",
+            "number": "9",
+            "gameviewId": "127575e1-2eba-4476-8fd2-9c23fa6b54f6",
+            "spectatorId": "eed87444-2f2f-4b2f-a4fa-4a59ac43c79b",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Hayley Clarke",
+            "number": "10",
+            "gameviewId": "17e2af82-5143-4142-9bc9-edfd593e65c7",
+            "spectatorId": "17e2af82-5143-4142-9bc9-edfd593e65c7",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Adele Trigg",
+            "number": "44",
+            "gameviewId": "a4bc7bf7-fd78-422f-a96a-cc3ba00e90e8",
+            "spectatorId": "a4bc7bf7-fd78-422f-a96a-cc3ba00e90e8",
+            "same": true,
+            "samePrefix13": true
+          }
+        ],
+        "idPairsDiffering": 3,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "1a450b43-c001",
+            "resolvesTo": "1a450b43-c001-4685-aef8-a13eaf8b35da",
+            "error": null
+          },
+          {
+            "rosterId": "4e3ad93b-d039",
+            "resolvesTo": "4e3ad93b-d039-4303-b484-1d17147de61d",
+            "error": null
+          },
+          {
+            "rosterId": "74a4f59e-520c",
+            "resolvesTo": "1f2191a2-ce79-4553-9f02-c254c16f8a81",
+            "error": null
+          },
+          {
+            "rosterId": "98cd2d81-ee69",
+            "resolvesTo": "98cd2d81-ee69-4aa0-a3a8-514eea19902a",
+            "error": null
+          },
+          {
+            "rosterId": "c615c9e4-f0fa",
+            "resolvesTo": "c615c9e4-f0fa-476b-96e8-4c9e6929854a",
+            "error": null
+          },
+          {
+            "rosterId": "543e1c75-d30d",
+            "resolvesTo": "a683b20e-13dd-45eb-8ff5-028be2fed0fd",
+            "error": null
+          },
+          {
+            "rosterId": "3ed56fbc-d3b2",
+            "resolvesTo": "3ed56fbc-d3b2-48fc-bcd2-797f2a57f0ff",
+            "error": null
+          },
+          {
+            "rosterId": "7d53ead2-0614",
+            "resolvesTo": "7d53ead2-0614-466b-9e91-2fb34ee41f2b",
+            "error": null
+          },
+          {
+            "rosterId": "205f4036-3aa1",
+            "resolvesTo": "205f4036-3aa1-4030-aed4-8553b8f02810",
+            "error": null
+          },
+          {
+            "rosterId": "eed87444-2f2f",
+            "resolvesTo": "127575e1-2eba-4476-8fd2-9c23fa6b54f6",
+            "error": null
+          },
+          {
+            "rosterId": "17e2af82-5143",
+            "resolvesTo": "17e2af82-5143-4142-9bc9-edfd593e65c7",
+            "error": null
+          },
+          {
+            "rosterId": "a4bc7bf7-fd78",
+            "resolvesTo": "a4bc7bf7-fd78-422f-a96a-cc3ba00e90e8",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "36430367",
+      "seasonId": "00017bb0",
+      "flags": {
+        "spc": 1,
+        "dg": null,
+        "spcm": null,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2024-04-24",
+      "rosterIds": [
+        "3e676008-e92e",
+        "31c1551d-5f99",
+        "c9df8891-5d4c",
+        "b6b56a2a-21b6",
+        "bb6753c8-7b6e",
+        "d451c868-e140",
+        "f09e7607-05d0",
+        "d7f487b4-5eef",
+        "eafadee6-14c7",
+        "13f41ed2-945b",
+        "5316fc50-f4d9",
+        "0162bf10-baa8",
+        "02a30975-94ff",
+        "c46ebb6e-04bf"
+      ],
+      "block": "A",
+      "ours": {
+        "count": 14,
+        "ids": [
+          "3e676008-e92e",
+          "31c1551d-5f99",
+          "c9df8891-5d4c",
+          "b6b56a2a-21b6",
+          "bb6753c8-7b6e",
+          "d451c868-e140",
+          "f09e7607-05d0",
+          "d7f487b4-5eef",
+          "eafadee6-14c7",
+          "13f41ed2-945b",
+          "5316fc50-f4d9",
+          "0162bf10-baa8",
+          "02a30975-94ff",
+          "c46ebb6e-04bf"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 14,
+        "noProfile": [
+          {
+            "typename": "DiscoverRegularFillInPlayer",
+            "name": "Fill-in",
+            "number": "6"
+          }
+        ],
+        "rows": [
+          {
+            "profileId": "3e676008-e92e-4b9a-bfc0-5f16bbe155d2",
+            "name": "Harry Callahan",
+            "number": "5",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "f09e7607-05d0-4bbf-a6cc-0eda9705ddf9",
+            "name": "Charlie Kidman",
+            "number": "6",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "31c1551d-5f99-4b72-987b-eb278f5adfbe",
+            "name": "Hugh Fitzpatrick",
+            "number": "8",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "401b4701-1bda-4a15-a605-66f07fbc620c",
+            "name": "Mireu Kim",
+            "number": "9",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "b6b56a2a-21b6-4b95-a45f-77199e79eb13",
+            "name": "Luke Quilty",
+            "number": "12",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "ab233e2b-e2f3-4105-a2f0-a3317719c4c9",
+            "name": "Asher Lawlor",
+            "number": "13",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "d451c868-e140-44d1-8c45-81fa95c85991",
+            "name": "Isaiah Cole",
+            "number": "15",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "c46ebb6e-04bf-4861-9e5a-fd514a75c1b9",
+            "name": "Parker Lee",
+            "number": "21",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "d7f487b4-5eef-47ff-960c-0c1fa73cbad0",
+            "name": "Nader Black",
+            "number": "23",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "eafadee6-14c7-4ab2-8855-2fc5838bb88e",
+            "name": "Ollie Hickey",
+            "number": "24",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "13f41ed2-945b-4c37-8b02-09e5a5c2191f",
+            "name": "Archie Robb",
+            "number": "25",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "5316fc50-f4d9-491e-98ec-c46ce4a68ff9",
+            "name": "Benji Keast",
+            "number": "50",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "0162bf10-baa8-4cc4-a088-4c5225064e47",
+            "name": "Raymond Wang",
+            "number": "66",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "02a30975-94ff-4736-af0a-e3f4c2bccf87",
+            "name": "Isaiah Dunne",
+            "number": "73",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 14,
+        "noProfileCount": 1,
+        "rows": [
+          {
+            "profileId": "3e676008-e92e-4b9a-bfc0-5f16bbe155d2",
+            "name": "Harry Callahan",
+            "number": "5"
+          },
+          {
+            "profileId": "31c1551d-5f99-4b72-987b-eb278f5adfbe",
+            "name": "Hugh Fitzpatrick",
+            "number": "8"
+          },
+          {
+            "profileId": "c9df8891-5d4c-4d03-967a-11060188080f",
+            "name": "Mireu Kim",
+            "number": "9"
+          },
+          {
+            "profileId": "b6b56a2a-21b6-4b95-a45f-77199e79eb13",
+            "name": "Luke Quilty",
+            "number": "12"
+          },
+          {
+            "profileId": "bb6753c8-7b6e-4c85-8d95-0e9db4b7009d",
+            "name": "Asher Lawlor",
+            "number": "13"
+          },
+          {
+            "profileId": "d451c868-e140-44d1-8c45-81fa95c85991",
+            "name": "Isaiah Cole",
+            "number": "15"
+          },
+          {
+            "profileId": "f09e7607-05d0-4bbf-a6cc-0eda9705ddf9",
+            "name": "Charlie Kidman",
+            "number": ""
+          },
+          {
+            "profileId": "d7f487b4-5eef-47ff-960c-0c1fa73cbad0",
+            "name": "Nader Black",
+            "number": "23"
+          },
+          {
+            "profileId": "eafadee6-14c7-4ab2-8855-2fc5838bb88e",
+            "name": "Ollie Hickey",
+            "number": "24"
+          },
+          {
+            "profileId": "13f41ed2-945b-4c37-8b02-09e5a5c2191f",
+            "name": "Archie Robb",
+            "number": "25"
+          },
+          {
+            "profileId": "5316fc50-f4d9-491e-98ec-c46ce4a68ff9",
+            "name": "Benji Keast",
+            "number": "50"
+          },
+          {
+            "profileId": "0162bf10-baa8-4cc4-a088-4c5225064e47",
+            "name": "Raymond Wang",
+            "number": "66"
+          },
+          {
+            "profileId": "02a30975-94ff-4736-af0a-e3f4c2bccf87",
+            "name": "Isaiah Dunne",
+            "number": "73"
+          },
+          {
+            "profileId": "c46ebb6e-04bf-4861-9e5a-fd514a75c1b9",
+            "name": "Parker Lee",
+            "number": ""
+          }
+        ]
+      },
+      "compare": {
+        "oursNotInGameview": [
+          "c9df8891-5d4c",
+          "bb6753c8-7b6e"
+        ],
+        "gameviewNotInOurs": [
+          "401b4701-1bda",
+          "ab233e2b-e2f3"
+        ],
+        "oursNotInSpectator": [],
+        "spectatorNotInOurs": [],
+        "idPairs": [
+          {
+            "name": "Harry Callahan",
+            "number": "5",
+            "gameviewId": "3e676008-e92e-4b9a-bfc0-5f16bbe155d2",
+            "spectatorId": "3e676008-e92e-4b9a-bfc0-5f16bbe155d2",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Charlie Kidman",
+            "number": "6",
+            "gameviewId": "f09e7607-05d0-4bbf-a6cc-0eda9705ddf9",
+            "spectatorId": "f09e7607-05d0-4bbf-a6cc-0eda9705ddf9",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Hugh Fitzpatrick",
+            "number": "8",
+            "gameviewId": "31c1551d-5f99-4b72-987b-eb278f5adfbe",
+            "spectatorId": "31c1551d-5f99-4b72-987b-eb278f5adfbe",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Mireu Kim",
+            "number": "9",
+            "gameviewId": "401b4701-1bda-4a15-a605-66f07fbc620c",
+            "spectatorId": "c9df8891-5d4c-4d03-967a-11060188080f",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Luke Quilty",
+            "number": "12",
+            "gameviewId": "b6b56a2a-21b6-4b95-a45f-77199e79eb13",
+            "spectatorId": "b6b56a2a-21b6-4b95-a45f-77199e79eb13",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Asher Lawlor",
+            "number": "13",
+            "gameviewId": "ab233e2b-e2f3-4105-a2f0-a3317719c4c9",
+            "spectatorId": "bb6753c8-7b6e-4c85-8d95-0e9db4b7009d",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Isaiah Cole",
+            "number": "15",
+            "gameviewId": "d451c868-e140-44d1-8c45-81fa95c85991",
+            "spectatorId": "d451c868-e140-44d1-8c45-81fa95c85991",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Parker Lee",
+            "number": "21",
+            "gameviewId": "c46ebb6e-04bf-4861-9e5a-fd514a75c1b9",
+            "spectatorId": "c46ebb6e-04bf-4861-9e5a-fd514a75c1b9",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Nader Black",
+            "number": "23",
+            "gameviewId": "d7f487b4-5eef-47ff-960c-0c1fa73cbad0",
+            "spectatorId": "d7f487b4-5eef-47ff-960c-0c1fa73cbad0",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Ollie Hickey",
+            "number": "24",
+            "gameviewId": "eafadee6-14c7-4ab2-8855-2fc5838bb88e",
+            "spectatorId": "eafadee6-14c7-4ab2-8855-2fc5838bb88e",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Archie Robb",
+            "number": "25",
+            "gameviewId": "13f41ed2-945b-4c37-8b02-09e5a5c2191f",
+            "spectatorId": "13f41ed2-945b-4c37-8b02-09e5a5c2191f",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Benji Keast",
+            "number": "50",
+            "gameviewId": "5316fc50-f4d9-491e-98ec-c46ce4a68ff9",
+            "spectatorId": "5316fc50-f4d9-491e-98ec-c46ce4a68ff9",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Raymond Wang",
+            "number": "66",
+            "gameviewId": "0162bf10-baa8-4cc4-a088-4c5225064e47",
+            "spectatorId": "0162bf10-baa8-4cc4-a088-4c5225064e47",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Isaiah Dunne",
+            "number": "73",
+            "gameviewId": "02a30975-94ff-4736-af0a-e3f4c2bccf87",
+            "spectatorId": "02a30975-94ff-4736-af0a-e3f4c2bccf87",
+            "same": true,
+            "samePrefix13": true
+          }
+        ],
+        "idPairsDiffering": 2,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "3e676008-e92e",
+            "resolvesTo": "3e676008-e92e-4b9a-bfc0-5f16bbe155d2",
+            "error": null
+          },
+          {
+            "rosterId": "31c1551d-5f99",
+            "resolvesTo": "31c1551d-5f99-4b72-987b-eb278f5adfbe",
+            "error": null
+          },
+          {
+            "rosterId": "c9df8891-5d4c",
+            "resolvesTo": "401b4701-1bda-4a15-a605-66f07fbc620c",
+            "error": null
+          },
+          {
+            "rosterId": "b6b56a2a-21b6",
+            "resolvesTo": "b6b56a2a-21b6-4b95-a45f-77199e79eb13",
+            "error": null
+          },
+          {
+            "rosterId": "bb6753c8-7b6e",
+            "resolvesTo": "ab233e2b-e2f3-4105-a2f0-a3317719c4c9",
+            "error": null
+          },
+          {
+            "rosterId": "d451c868-e140",
+            "resolvesTo": "d451c868-e140-44d1-8c45-81fa95c85991",
+            "error": null
+          },
+          {
+            "rosterId": "f09e7607-05d0",
+            "resolvesTo": "f09e7607-05d0-4bbf-a6cc-0eda9705ddf9",
+            "error": null
+          },
+          {
+            "rosterId": "d7f487b4-5eef",
+            "resolvesTo": "d7f487b4-5eef-47ff-960c-0c1fa73cbad0",
+            "error": null
+          },
+          {
+            "rosterId": "eafadee6-14c7",
+            "resolvesTo": "eafadee6-14c7-4ab2-8855-2fc5838bb88e",
+            "error": null
+          },
+          {
+            "rosterId": "13f41ed2-945b",
+            "resolvesTo": "13f41ed2-945b-4c37-8b02-09e5a5c2191f",
+            "error": null
+          },
+          {
+            "rosterId": "5316fc50-f4d9",
+            "resolvesTo": "5316fc50-f4d9-491e-98ec-c46ce4a68ff9",
+            "error": null
+          },
+          {
+            "rosterId": "0162bf10-baa8",
+            "resolvesTo": "0162bf10-baa8-4cc4-a088-4c5225064e47",
+            "error": null
+          },
+          {
+            "rosterId": "02a30975-94ff",
+            "resolvesTo": "02a30975-94ff-4736-af0a-e3f4c2bccf87",
+            "error": null
+          },
+          {
+            "rosterId": "c46ebb6e-04bf",
+            "resolvesTo": "c46ebb6e-04bf-4861-9e5a-fd514a75c1b9",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "cb14af86",
+      "seasonId": "00017bb0",
+      "flags": {
+        "spc": 1,
+        "dg": null,
+        "spcm": null,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2024-06-05",
+      "rosterIds": [
+        "3d20797b-cd55",
+        "2b2d18d1-24ee",
+        "b500cef1-9e44",
+        "917aa494-2b34",
+        "4f0c76af-d2f5",
+        "60ec63c6-0638",
+        "745efeb6-12c3",
+        "03d627ff-e801",
+        "e0685f41-e4c8",
+        "0244bf23-b4c4",
+        "17d585f2-a0f8",
+        "e9e29f73-23d2",
+        "bb37ecb9-d362",
+        "60096e6c-67b9"
+      ],
+      "block": "A",
+      "ours": {
+        "count": 14,
+        "ids": [
+          "3d20797b-cd55",
+          "2b2d18d1-24ee",
+          "b500cef1-9e44",
+          "917aa494-2b34",
+          "4f0c76af-d2f5",
+          "60ec63c6-0638",
+          "745efeb6-12c3",
+          "03d627ff-e801",
+          "e0685f41-e4c8",
+          "0244bf23-b4c4",
+          "17d585f2-a0f8",
+          "e9e29f73-23d2",
+          "bb37ecb9-d362",
+          "60096e6c-67b9"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 14,
+        "noProfile": [],
+        "rows": [
+          {
+            "profileId": "3d20797b-cd55-4012-945d-1070ac84bf50",
+            "name": "Hartly Ganim",
+            "number": "13",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "2b2d18d1-24ee-47bd-abcf-d0dc465e22a4",
+            "name": "Angus Connoley",
+            "number": "78",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "fbab8b49-cb28-4b4f-a1e4-0969750168a9",
+            "name": "Emmett Keem",
+            "number": "83",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "917aa494-2b34-4606-97cf-82ae619d7186",
+            "name": "Michael Woods",
+            "number": "87",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "4f0c76af-d2f5-4dd0-9976-114dc0d3b5b1",
+            "name": "Maverick Keem",
+            "number": "88",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "60ec63c6-0638-4596-aa67-f05eaf6b5eca",
+            "name": "Brad Keem",
+            "number": "92",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "f94ad0df-0619-4abf-88cf-2a5f76e7b4f5",
+            "name": "Luther Keem",
+            "number": "94",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "03d627ff-e801-491a-9478-0a4d712639bf",
+            "name": "Goanar Riek",
+            "number": "0",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "e0685f41-e4c8-4a2b-b060-6b4bcbed58bd",
+            "name": "Xavier Wilson",
+            "number": "13",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "0244bf23-b4c4-48fc-b933-1aa0170ef475",
+            "name": "Jordan Groves",
+            "number": "23",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "17d585f2-a0f8-4cf4-9bf9-3aa732ab11d0",
+            "name": "Hunter Williamson",
+            "number": "33",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "e9e29f73-23d2-4a81-b24a-c2a8c168a5cd",
+            "name": "Mason Murray",
+            "number": "34",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "bb37ecb9-d362-4389-89da-e0a9e3301540",
+            "name": "Rob Lidgerwood",
+            "number": "37",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "60096e6c-67b9-457f-a7c0-8e5d18a9ec22",
+            "name": "Luke Fitzpatrick",
+            "number": "39",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 14,
+        "noProfileCount": 0,
+        "rows": [
+          {
+            "profileId": "3d20797b-cd55-4012-945d-1070ac84bf50",
+            "name": "Hartly Ganim",
+            "number": "13"
+          },
+          {
+            "profileId": "2b2d18d1-24ee-47bd-abcf-d0dc465e22a4",
+            "name": "Angus Connoley",
+            "number": "78"
+          },
+          {
+            "profileId": "b500cef1-9e44-4acf-8e80-d3d4e592e591",
+            "name": "Emmett Keem",
+            "number": "83"
+          },
+          {
+            "profileId": "917aa494-2b34-4606-97cf-82ae619d7186",
+            "name": "Michael Woods",
+            "number": "87"
+          },
+          {
+            "profileId": "4f0c76af-d2f5-4dd0-9976-114dc0d3b5b1",
+            "name": "Maverick Keem",
+            "number": "88"
+          },
+          {
+            "profileId": "60ec63c6-0638-4596-aa67-f05eaf6b5eca",
+            "name": "Brad Keem",
+            "number": "92"
+          },
+          {
+            "profileId": "745efeb6-12c3-45c5-b1fa-4d89a8b1e5de",
+            "name": "Luther Keem",
+            "number": "94"
+          },
+          {
+            "profileId": "03d627ff-e801-491a-9478-0a4d712639bf",
+            "name": "Goanar Riek",
+            "number": "0"
+          },
+          {
+            "profileId": "e0685f41-e4c8-4a2b-b060-6b4bcbed58bd",
+            "name": "Xavier Wilson",
+            "number": "13"
+          },
+          {
+            "profileId": "0244bf23-b4c4-48fc-b933-1aa0170ef475",
+            "name": "Jordan Groves",
+            "number": "23"
+          },
+          {
+            "profileId": "17d585f2-a0f8-4cf4-9bf9-3aa732ab11d0",
+            "name": "Hunter Williamson",
+            "number": "33"
+          },
+          {
+            "profileId": "e9e29f73-23d2-4a81-b24a-c2a8c168a5cd",
+            "name": "Mason Murray",
+            "number": "34"
+          },
+          {
+            "profileId": "bb37ecb9-d362-4389-89da-e0a9e3301540",
+            "name": "Rob Lidgerwood",
+            "number": "37"
+          },
+          {
+            "profileId": "60096e6c-67b9-457f-a7c0-8e5d18a9ec22",
+            "name": "Luke Fitzpatrick",
+            "number": "39"
+          }
+        ]
+      },
+      "compare": {
+        "oursNotInGameview": [
+          "b500cef1-9e44",
+          "745efeb6-12c3"
+        ],
+        "gameviewNotInOurs": [
+          "fbab8b49-cb28",
+          "f94ad0df-0619"
+        ],
+        "oursNotInSpectator": [],
+        "spectatorNotInOurs": [],
+        "idPairs": [
+          {
+            "name": "Hartly Ganim",
+            "number": "13",
+            "gameviewId": "3d20797b-cd55-4012-945d-1070ac84bf50",
+            "spectatorId": "3d20797b-cd55-4012-945d-1070ac84bf50",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Angus Connoley",
+            "number": "78",
+            "gameviewId": "2b2d18d1-24ee-47bd-abcf-d0dc465e22a4",
+            "spectatorId": "2b2d18d1-24ee-47bd-abcf-d0dc465e22a4",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Emmett Keem",
+            "number": "83",
+            "gameviewId": "fbab8b49-cb28-4b4f-a1e4-0969750168a9",
+            "spectatorId": "b500cef1-9e44-4acf-8e80-d3d4e592e591",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Michael Woods",
+            "number": "87",
+            "gameviewId": "917aa494-2b34-4606-97cf-82ae619d7186",
+            "spectatorId": "917aa494-2b34-4606-97cf-82ae619d7186",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Maverick Keem",
+            "number": "88",
+            "gameviewId": "4f0c76af-d2f5-4dd0-9976-114dc0d3b5b1",
+            "spectatorId": "4f0c76af-d2f5-4dd0-9976-114dc0d3b5b1",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Brad Keem",
+            "number": "92",
+            "gameviewId": "60ec63c6-0638-4596-aa67-f05eaf6b5eca",
+            "spectatorId": "60ec63c6-0638-4596-aa67-f05eaf6b5eca",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Luther Keem",
+            "number": "94",
+            "gameviewId": "f94ad0df-0619-4abf-88cf-2a5f76e7b4f5",
+            "spectatorId": "745efeb6-12c3-45c5-b1fa-4d89a8b1e5de",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Goanar Riek",
+            "number": "0",
+            "gameviewId": "03d627ff-e801-491a-9478-0a4d712639bf",
+            "spectatorId": "03d627ff-e801-491a-9478-0a4d712639bf",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Xavier Wilson",
+            "number": "13",
+            "gameviewId": "e0685f41-e4c8-4a2b-b060-6b4bcbed58bd",
+            "spectatorId": "e0685f41-e4c8-4a2b-b060-6b4bcbed58bd",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Jordan Groves",
+            "number": "23",
+            "gameviewId": "0244bf23-b4c4-48fc-b933-1aa0170ef475",
+            "spectatorId": "0244bf23-b4c4-48fc-b933-1aa0170ef475",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Hunter Williamson",
+            "number": "33",
+            "gameviewId": "17d585f2-a0f8-4cf4-9bf9-3aa732ab11d0",
+            "spectatorId": "17d585f2-a0f8-4cf4-9bf9-3aa732ab11d0",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Mason Murray",
+            "number": "34",
+            "gameviewId": "e9e29f73-23d2-4a81-b24a-c2a8c168a5cd",
+            "spectatorId": "e9e29f73-23d2-4a81-b24a-c2a8c168a5cd",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Rob Lidgerwood",
+            "number": "37",
+            "gameviewId": "bb37ecb9-d362-4389-89da-e0a9e3301540",
+            "spectatorId": "bb37ecb9-d362-4389-89da-e0a9e3301540",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Luke Fitzpatrick",
+            "number": "39",
+            "gameviewId": "60096e6c-67b9-457f-a7c0-8e5d18a9ec22",
+            "spectatorId": "60096e6c-67b9-457f-a7c0-8e5d18a9ec22",
+            "same": true,
+            "samePrefix13": true
+          }
+        ],
+        "idPairsDiffering": 2,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "3d20797b-cd55",
+            "resolvesTo": "3d20797b-cd55-4012-945d-1070ac84bf50",
+            "error": null
+          },
+          {
+            "rosterId": "2b2d18d1-24ee",
+            "resolvesTo": "2b2d18d1-24ee-47bd-abcf-d0dc465e22a4",
+            "error": null
+          },
+          {
+            "rosterId": "b500cef1-9e44",
+            "resolvesTo": "fbab8b49-cb28-4b4f-a1e4-0969750168a9",
+            "error": null
+          },
+          {
+            "rosterId": "917aa494-2b34",
+            "resolvesTo": "917aa494-2b34-4606-97cf-82ae619d7186",
+            "error": null
+          },
+          {
+            "rosterId": "4f0c76af-d2f5",
+            "resolvesTo": "4f0c76af-d2f5-4dd0-9976-114dc0d3b5b1",
+            "error": null
+          },
+          {
+            "rosterId": "60ec63c6-0638",
+            "resolvesTo": "60ec63c6-0638-4596-aa67-f05eaf6b5eca",
+            "error": null
+          },
+          {
+            "rosterId": "745efeb6-12c3",
+            "resolvesTo": "f94ad0df-0619-4abf-88cf-2a5f76e7b4f5",
+            "error": null
+          },
+          {
+            "rosterId": "03d627ff-e801",
+            "resolvesTo": "03d627ff-e801-491a-9478-0a4d712639bf",
+            "error": null
+          },
+          {
+            "rosterId": "e0685f41-e4c8",
+            "resolvesTo": "e0685f41-e4c8-4a2b-b060-6b4bcbed58bd",
+            "error": null
+          },
+          {
+            "rosterId": "0244bf23-b4c4",
+            "resolvesTo": "0244bf23-b4c4-48fc-b933-1aa0170ef475",
+            "error": null
+          },
+          {
+            "rosterId": "17d585f2-a0f8",
+            "resolvesTo": "17d585f2-a0f8-4cf4-9bf9-3aa732ab11d0",
+            "error": null
+          },
+          {
+            "rosterId": "e9e29f73-23d2",
+            "resolvesTo": "e9e29f73-23d2-4a81-b24a-c2a8c168a5cd",
+            "error": null
+          },
+          {
+            "rosterId": "bb37ecb9-d362",
+            "resolvesTo": "bb37ecb9-d362-4389-89da-e0a9e3301540",
+            "error": null
+          },
+          {
+            "rosterId": "60096e6c-67b9",
+            "resolvesTo": "60096e6c-67b9-457f-a7c0-8e5d18a9ec22",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "b6ef2ae8",
+      "seasonId": "00017bb0",
+      "flags": {
+        "spc": 1,
+        "dg": null,
+        "spcm": null,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2024-05-29",
+      "rosterIds": [
+        "e0685f41-e4c8",
+        "0244bf23-b4c4",
+        "03d627ff-e801",
+        "17d585f2-a0f8",
+        "bb37ecb9-d362",
+        "b1c4e85d-fbcd",
+        "6606b095-f3d2",
+        "e0405bdf-31df",
+        "6fe3a9f1-6cf8",
+        "32abfcf9-947e",
+        "b1ba26ef-6f58",
+        "c7731b5d-69ef"
+      ],
+      "block": "A",
+      "ours": {
+        "count": 12,
+        "ids": [
+          "e0685f41-e4c8",
+          "0244bf23-b4c4",
+          "03d627ff-e801",
+          "17d585f2-a0f8",
+          "bb37ecb9-d362",
+          "b1c4e85d-fbcd",
+          "6606b095-f3d2",
+          "e0405bdf-31df",
+          "6fe3a9f1-6cf8",
+          "32abfcf9-947e",
+          "b1ba26ef-6f58",
+          "c7731b5d-69ef"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 12,
+        "noProfile": [],
+        "rows": [
+          {
+            "profileId": "e0685f41-e4c8-4a2b-b060-6b4bcbed58bd",
+            "name": "Xavier Wilson",
+            "number": "13",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "0244bf23-b4c4-48fc-b933-1aa0170ef475",
+            "name": "Jordan Groves",
+            "number": "23",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "03d627ff-e801-491a-9478-0a4d712639bf",
+            "name": "Goanar Riek",
+            "number": "24",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "17d585f2-a0f8-4cf4-9bf9-3aa732ab11d0",
+            "name": "Hunter Williamson",
+            "number": "33",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "bb37ecb9-d362-4389-89da-e0a9e3301540",
+            "name": "Rob Lidgerwood",
+            "number": "37",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "b1c4e85d-fbcd-4e54-b881-f85ac53d5be5",
+            "name": "Harrison Han",
+            "number": "5",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "6606b095-f3d2-4110-a6ab-09de4588e2cd",
+            "name": "Ben Li",
+            "number": "9",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "54409b04-004e-459a-8b3c-577bf0aca67d",
+            "name": "Miller Throckmorton",
+            "number": "10",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "6fe3a9f1-6cf8-4428-ae64-382e88fe5f96",
+            "name": "Kane Dix",
+            "number": "34",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "b4bd0e9f-a701-4ca6-ad2e-4a9daf9fba2a",
+            "name": "Hunter Ellis",
+            "number": "35",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "b1ba26ef-6f58-4633-ad60-8badba222848",
+            "name": "Max A-H",
+            "number": "36",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "c7731b5d-69ef-468c-8469-36f52fabc0c2",
+            "name": "Oliver Daffy",
+            "number": "40",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 12,
+        "noProfileCount": 0,
+        "rows": [
+          {
+            "profileId": "e0685f41-e4c8-4a2b-b060-6b4bcbed58bd",
+            "name": "Xavier Wilson",
+            "number": "13"
+          },
+          {
+            "profileId": "0244bf23-b4c4-48fc-b933-1aa0170ef475",
+            "name": "Jordan Groves",
+            "number": "23"
+          },
+          {
+            "profileId": "03d627ff-e801-491a-9478-0a4d712639bf",
+            "name": "Goanar Riek",
+            "number": "24"
+          },
+          {
+            "profileId": "17d585f2-a0f8-4cf4-9bf9-3aa732ab11d0",
+            "name": "Hunter Williamson",
+            "number": "33"
+          },
+          {
+            "profileId": "bb37ecb9-d362-4389-89da-e0a9e3301540",
+            "name": "Rob Lidgerwood",
+            "number": "37"
+          },
+          {
+            "profileId": "b1c4e85d-fbcd-4e54-b881-f85ac53d5be5",
+            "name": "Harrison Han",
+            "number": "5"
+          },
+          {
+            "profileId": "6606b095-f3d2-4110-a6ab-09de4588e2cd",
+            "name": "Ben Li",
+            "number": "9"
+          },
+          {
+            "profileId": "e0405bdf-31df-4e2b-82e5-73927245087b",
+            "name": "Miller Throckmorton",
+            "number": "10"
+          },
+          {
+            "profileId": "6fe3a9f1-6cf8-4428-ae64-382e88fe5f96",
+            "name": "Kane Dix",
+            "number": "34"
+          },
+          {
+            "profileId": "32abfcf9-947e-45e5-83d1-768bfa1b4da3",
+            "name": "Hunter Ellis",
+            "number": "35"
+          },
+          {
+            "profileId": "b1ba26ef-6f58-4633-ad60-8badba222848",
+            "name": "Max A-H",
+            "number": "36"
+          },
+          {
+            "profileId": "c7731b5d-69ef-468c-8469-36f52fabc0c2",
+            "name": "Oliver Daffy",
+            "number": "40"
+          }
+        ]
+      },
+      "compare": {
+        "oursNotInGameview": [
+          "e0405bdf-31df",
+          "32abfcf9-947e"
+        ],
+        "gameviewNotInOurs": [
+          "54409b04-004e",
+          "b4bd0e9f-a701"
+        ],
+        "oursNotInSpectator": [],
+        "spectatorNotInOurs": [],
+        "idPairs": [
+          {
+            "name": "Xavier Wilson",
+            "number": "13",
+            "gameviewId": "e0685f41-e4c8-4a2b-b060-6b4bcbed58bd",
+            "spectatorId": "e0685f41-e4c8-4a2b-b060-6b4bcbed58bd",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Jordan Groves",
+            "number": "23",
+            "gameviewId": "0244bf23-b4c4-48fc-b933-1aa0170ef475",
+            "spectatorId": "0244bf23-b4c4-48fc-b933-1aa0170ef475",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Goanar Riek",
+            "number": "24",
+            "gameviewId": "03d627ff-e801-491a-9478-0a4d712639bf",
+            "spectatorId": "03d627ff-e801-491a-9478-0a4d712639bf",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Hunter Williamson",
+            "number": "33",
+            "gameviewId": "17d585f2-a0f8-4cf4-9bf9-3aa732ab11d0",
+            "spectatorId": "17d585f2-a0f8-4cf4-9bf9-3aa732ab11d0",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Rob Lidgerwood",
+            "number": "37",
+            "gameviewId": "bb37ecb9-d362-4389-89da-e0a9e3301540",
+            "spectatorId": "bb37ecb9-d362-4389-89da-e0a9e3301540",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Harrison Han",
+            "number": "5",
+            "gameviewId": "b1c4e85d-fbcd-4e54-b881-f85ac53d5be5",
+            "spectatorId": "b1c4e85d-fbcd-4e54-b881-f85ac53d5be5",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Ben Li",
+            "number": "9",
+            "gameviewId": "6606b095-f3d2-4110-a6ab-09de4588e2cd",
+            "spectatorId": "6606b095-f3d2-4110-a6ab-09de4588e2cd",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Miller Throckmorton",
+            "number": "10",
+            "gameviewId": "54409b04-004e-459a-8b3c-577bf0aca67d",
+            "spectatorId": "e0405bdf-31df-4e2b-82e5-73927245087b",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Kane Dix",
+            "number": "34",
+            "gameviewId": "6fe3a9f1-6cf8-4428-ae64-382e88fe5f96",
+            "spectatorId": "6fe3a9f1-6cf8-4428-ae64-382e88fe5f96",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Hunter Ellis",
+            "number": "35",
+            "gameviewId": "b4bd0e9f-a701-4ca6-ad2e-4a9daf9fba2a",
+            "spectatorId": "32abfcf9-947e-45e5-83d1-768bfa1b4da3",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Max A-H",
+            "number": "36",
+            "gameviewId": "b1ba26ef-6f58-4633-ad60-8badba222848",
+            "spectatorId": "b1ba26ef-6f58-4633-ad60-8badba222848",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Oliver Daffy",
+            "number": "40",
+            "gameviewId": "c7731b5d-69ef-468c-8469-36f52fabc0c2",
+            "spectatorId": "c7731b5d-69ef-468c-8469-36f52fabc0c2",
+            "same": true,
+            "samePrefix13": true
+          }
+        ],
+        "idPairsDiffering": 2,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "e0685f41-e4c8",
+            "resolvesTo": "e0685f41-e4c8-4a2b-b060-6b4bcbed58bd",
+            "error": null
+          },
+          {
+            "rosterId": "0244bf23-b4c4",
+            "resolvesTo": "0244bf23-b4c4-48fc-b933-1aa0170ef475",
+            "error": null
+          },
+          {
+            "rosterId": "03d627ff-e801",
+            "resolvesTo": "03d627ff-e801-491a-9478-0a4d712639bf",
+            "error": null
+          },
+          {
+            "rosterId": "17d585f2-a0f8",
+            "resolvesTo": "17d585f2-a0f8-4cf4-9bf9-3aa732ab11d0",
+            "error": null
+          },
+          {
+            "rosterId": "bb37ecb9-d362",
+            "resolvesTo": "bb37ecb9-d362-4389-89da-e0a9e3301540",
+            "error": null
+          },
+          {
+            "rosterId": "b1c4e85d-fbcd",
+            "resolvesTo": "b1c4e85d-fbcd-4e54-b881-f85ac53d5be5",
+            "error": null
+          },
+          {
+            "rosterId": "6606b095-f3d2",
+            "resolvesTo": "6606b095-f3d2-4110-a6ab-09de4588e2cd",
+            "error": null
+          },
+          {
+            "rosterId": "e0405bdf-31df",
+            "resolvesTo": "54409b04-004e-459a-8b3c-577bf0aca67d",
+            "error": null
+          },
+          {
+            "rosterId": "6fe3a9f1-6cf8",
+            "resolvesTo": "6fe3a9f1-6cf8-4428-ae64-382e88fe5f96",
+            "error": null
+          },
+          {
+            "rosterId": "32abfcf9-947e",
+            "resolvesTo": "b4bd0e9f-a701-4ca6-ad2e-4a9daf9fba2a",
+            "error": null
+          },
+          {
+            "rosterId": "b1ba26ef-6f58",
+            "resolvesTo": "b1ba26ef-6f58-4633-ad60-8badba222848",
+            "error": null
+          },
+          {
+            "rosterId": "c7731b5d-69ef",
+            "resolvesTo": "c7731b5d-69ef-468c-8469-36f52fabc0c2",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "6e87932d",
+      "seasonId": "00404092",
+      "flags": {
+        "spc": null,
+        "dg": 1,
+        "spcm": 1,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2026-02-15",
+      "rosterIds": [
+        "ba37bbca-7904",
+        "5c128a74-d44f",
+        "94cd52e4-3ac6",
+        "69fe8a38-5f78",
+        "16a21981-5765",
+        "df065e4e-aef9",
+        "d4dc6669-51d3",
+        "f07f7fbd-0880",
+        "1c146138-aeb7",
+        "9b01a033-ac2e",
+        "ddad2ad5-c0ae",
+        "d7520b3c-0c06",
+        "1b00761c-1e6c",
+        "9c5189bc-4283",
+        "72796602-c5d5",
+        "a7c12f8c-6dcd",
+        "c854d653-c86a"
+      ],
+      "block": "B",
+      "ours": {
+        "count": 17,
+        "ids": [
+          "ba37bbca-7904",
+          "5c128a74-d44f",
+          "94cd52e4-3ac6",
+          "69fe8a38-5f78",
+          "16a21981-5765",
+          "df065e4e-aef9",
+          "d4dc6669-51d3",
+          "f07f7fbd-0880",
+          "1c146138-aeb7",
+          "9b01a033-ac2e",
+          "ddad2ad5-c0ae",
+          "d7520b3c-0c06",
+          "1b00761c-1e6c",
+          "9c5189bc-4283",
+          "72796602-c5d5",
+          "a7c12f8c-6dcd",
+          "c854d653-c86a"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 17,
+        "noProfile": [],
+        "rows": [
+          {
+            "profileId": "16a21981-5765-4f01-91a0-f16d95791c74",
+            "name": "Elias Hanna",
+            "number": "0",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "69fe8a38-5f78-4ca9-b1b3-baf5aab9894d",
+            "name": "Marcus Hanna",
+            "number": "1",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "d4dc6669-51d3-4d25-93d5-4f49c0f640c0",
+            "name": "Aiden Clarke",
+            "number": "4",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "9b01a033-ac2e-411f-a8de-e69e3e526e65",
+            "name": "Jake Stratton",
+            "number": "5",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "94cd52e4-3ac6-4b6e-a679-3d9e29972238",
+            "name": "Lachlan Hoskins",
+            "number": "13",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "c854d653-c86a-4fcb-a7bb-bc1b8403f6dd",
+            "name": "Lachlan Farrugia",
+            "number": "15",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "ba37bbca-7904-4f20-a6d3-1cf2f8863d9a",
+            "name": "Cooper Wright",
+            "number": "22",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "df065e4e-aef9-4fe4-b162-9568b1d587e0",
+            "name": "jet grech",
+            "number": "23",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "5c128a74-d44f-4bdd-9f04-8f23980cac94",
+            "name": "Austin Blanks",
+            "number": "24",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "ddad2ad5-c0ae-4251-91ef-106663f28fc2",
+            "name": "Osama Hazin",
+            "number": "6",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "1b00761c-1e6c-46a7-8a35-392b40d6ba0e",
+            "name": "Jake Di Carluccio",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "d7520b3c-0c06-4ddc-9981-a62ac2f9e0e7",
+            "name": "Michael Cvetkovski",
+            "number": "8",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "f07f7fbd-0880-41de-8e51-433683433b46",
+            "name": "Max Nardo",
+            "number": "11",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "9c5189bc-4283-4d09-9db1-14d3b0ce7f37",
+            "name": "Aleks Starcevic",
+            "number": "13",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "72796602-c5d5-4da7-bd19-c88a012bcf70",
+            "name": "Michael Jreige",
+            "number": "21",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "a7c12f8c-6dcd-40be-a60a-7fef39b750fb",
+            "name": "Matt Nawrocki",
+            "number": "42",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "1c146138-aeb7-4e9b-9601-5df0ace50937",
+            "name": "Tarek Khalifeh",
+            "number": "44",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": false,
+        "why": "graphql:nocode:game could not be found or was not electronically scored",
+        "permanent": true,
+        "withProfile": 0,
+        "noProfileCount": 0,
+        "rows": []
+      },
+      "compare": {
+        "oursNotInGameview": [],
+        "gameviewNotInOurs": [],
+        "oursNotInSpectator": null,
+        "spectatorNotInOurs": null,
+        "idPairs": [],
+        "idPairsDiffering": 0,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "ba37bbca-7904",
+            "resolvesTo": "ba37bbca-7904-4f20-a6d3-1cf2f8863d9a",
+            "error": null
+          },
+          {
+            "rosterId": "5c128a74-d44f",
+            "resolvesTo": "5c128a74-d44f-4bdd-9f04-8f23980cac94",
+            "error": null
+          },
+          {
+            "rosterId": "94cd52e4-3ac6",
+            "resolvesTo": "94cd52e4-3ac6-4b6e-a679-3d9e29972238",
+            "error": null
+          },
+          {
+            "rosterId": "69fe8a38-5f78",
+            "resolvesTo": "69fe8a38-5f78-4ca9-b1b3-baf5aab9894d",
+            "error": null
+          },
+          {
+            "rosterId": "16a21981-5765",
+            "resolvesTo": "16a21981-5765-4f01-91a0-f16d95791c74",
+            "error": null
+          },
+          {
+            "rosterId": "df065e4e-aef9",
+            "resolvesTo": "df065e4e-aef9-4fe4-b162-9568b1d587e0",
+            "error": null
+          },
+          {
+            "rosterId": "d4dc6669-51d3",
+            "resolvesTo": "d4dc6669-51d3-4d25-93d5-4f49c0f640c0",
+            "error": null
+          },
+          {
+            "rosterId": "f07f7fbd-0880",
+            "resolvesTo": "f07f7fbd-0880-41de-8e51-433683433b46",
+            "error": null
+          },
+          {
+            "rosterId": "1c146138-aeb7",
+            "resolvesTo": "1c146138-aeb7-4e9b-9601-5df0ace50937",
+            "error": null
+          },
+          {
+            "rosterId": "9b01a033-ac2e",
+            "resolvesTo": "9b01a033-ac2e-411f-a8de-e69e3e526e65",
+            "error": null
+          },
+          {
+            "rosterId": "ddad2ad5-c0ae",
+            "resolvesTo": "ddad2ad5-c0ae-4251-91ef-106663f28fc2",
+            "error": null
+          },
+          {
+            "rosterId": "d7520b3c-0c06",
+            "resolvesTo": "d7520b3c-0c06-4ddc-9981-a62ac2f9e0e7",
+            "error": null
+          },
+          {
+            "rosterId": "1b00761c-1e6c",
+            "resolvesTo": "1b00761c-1e6c-46a7-8a35-392b40d6ba0e",
+            "error": null
+          },
+          {
+            "rosterId": "9c5189bc-4283",
+            "resolvesTo": "9c5189bc-4283-4d09-9db1-14d3b0ce7f37",
+            "error": null
+          },
+          {
+            "rosterId": "72796602-c5d5",
+            "resolvesTo": "72796602-c5d5-4da7-bd19-c88a012bcf70",
+            "error": null
+          },
+          {
+            "rosterId": "a7c12f8c-6dcd",
+            "resolvesTo": "a7c12f8c-6dcd-40be-a60a-7fef39b750fb",
+            "error": null
+          },
+          {
+            "rosterId": "c854d653-c86a",
+            "resolvesTo": "c854d653-c86a-4fcb-a7bb-bc1b8403f6dd",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "f34cfc8c",
+      "seasonId": "00404092",
+      "flags": {
+        "spc": null,
+        "dg": 1,
+        "spcm": 1,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2026-06-14",
+      "rosterIds": [
+        "21a5949f-7a7f",
+        "c0f4a213-87f1",
+        "e5380a4f-54f3",
+        "fc17cc30-b075",
+        "2727b8f7-de7a",
+        "c835f524-e90e",
+        "a495fbda-f87f"
+      ],
+      "block": "B",
+      "ours": {
+        "count": 7,
+        "ids": [
+          "21a5949f-7a7f",
+          "c0f4a213-87f1",
+          "e5380a4f-54f3",
+          "fc17cc30-b075",
+          "2727b8f7-de7a",
+          "c835f524-e90e",
+          "a495fbda-f87f"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 7,
+        "noProfile": [],
+        "rows": [
+          {
+            "profileId": "21a5949f-7a7f-47c5-bac6-629c1b35c1da",
+            "name": "Shannon McMinn",
+            "number": "3",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "c0f4a213-87f1-486a-924e-5ab17a4d6613",
+            "name": "Alaezar Gebremedhin",
+            "number": "4",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "e5380a4f-54f3-4ddf-9b54-a91907af395f",
+            "name": "Angus Toohey",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "fc17cc30-b075-4dfa-b773-07549777bd90",
+            "name": "Ryan Groves",
+            "number": "14",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "2727b8f7-de7a-4d50-a4c4-8da1bbb44bc3",
+            "name": "Jamal Henwood",
+            "number": "14",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "c835f524-e90e-4a75-8f06-ef4f64f269e3",
+            "name": "Toby Mcclure",
+            "number": "21",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "a495fbda-f87f-4e77-a455-1bce92aa95c7",
+            "name": "Doug Crowe",
+            "number": "22",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": false,
+        "why": "graphql:nocode:game could not be found or was not electronically scored",
+        "permanent": true,
+        "withProfile": 0,
+        "noProfileCount": 0,
+        "rows": []
+      },
+      "compare": {
+        "oursNotInGameview": [],
+        "gameviewNotInOurs": [],
+        "oursNotInSpectator": null,
+        "spectatorNotInOurs": null,
+        "idPairs": [],
+        "idPairsDiffering": 0,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "21a5949f-7a7f",
+            "resolvesTo": "21a5949f-7a7f-47c5-bac6-629c1b35c1da",
+            "error": null
+          },
+          {
+            "rosterId": "c0f4a213-87f1",
+            "resolvesTo": "c0f4a213-87f1-486a-924e-5ab17a4d6613",
+            "error": null
+          },
+          {
+            "rosterId": "e5380a4f-54f3",
+            "resolvesTo": "e5380a4f-54f3-4ddf-9b54-a91907af395f",
+            "error": null
+          },
+          {
+            "rosterId": "fc17cc30-b075",
+            "resolvesTo": "fc17cc30-b075-4dfa-b773-07549777bd90",
+            "error": null
+          },
+          {
+            "rosterId": "2727b8f7-de7a",
+            "resolvesTo": "2727b8f7-de7a-4d50-a4c4-8da1bbb44bc3",
+            "error": null
+          },
+          {
+            "rosterId": "c835f524-e90e",
+            "resolvesTo": "c835f524-e90e-4a75-8f06-ef4f64f269e3",
+            "error": null
+          },
+          {
+            "rosterId": "a495fbda-f87f",
+            "resolvesTo": "a495fbda-f87f-4e77-a455-1bce92aa95c7",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "f77e101c",
+      "seasonId": "00404092",
+      "flags": {
+        "spc": null,
+        "dg": 1,
+        "spcm": 1,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2026-06-14",
+      "rosterIds": [
+        "b788b5c5-72d0",
+        "418e922d-c027",
+        "2ce013ff-0d72",
+        "537af49e-9a08",
+        "43f96ec8-5ae3",
+        "bf125b13-4312",
+        "7c8d40da-3592",
+        "f19b02ed-83e2"
+      ],
+      "block": "B",
+      "ours": {
+        "count": 8,
+        "ids": [
+          "b788b5c5-72d0",
+          "418e922d-c027",
+          "2ce013ff-0d72",
+          "537af49e-9a08",
+          "43f96ec8-5ae3",
+          "bf125b13-4312",
+          "7c8d40da-3592",
+          "f19b02ed-83e2"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 8,
+        "noProfile": [],
+        "rows": [
+          {
+            "profileId": "b788b5c5-72d0-453d-ad8c-4066ae3fbd78",
+            "name": "Hayden Muus",
+            "number": "5",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "418e922d-c027-40c5-bead-ecec2256f872",
+            "name": "Connor Stevenson",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "2ce013ff-0d72-4c1c-a211-d6c253630439",
+            "name": "Luke Bristow",
+            "number": "13",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "537af49e-9a08-47e7-8ebd-78b73a66c2cd",
+            "name": "Lachan Stevenson",
+            "number": "20",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "43f96ec8-5ae3-4499-bc35-d612ed7f2214",
+            "name": "Ayush Mahajan",
+            "number": "21",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "bf125b13-4312-4c81-a245-d342a264c155",
+            "name": "Mackenzie Mordaunt",
+            "number": "23",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "7c8d40da-3592-4b70-b84c-84a42db71e26",
+            "name": "Jacob Schulz",
+            "number": "26",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "f19b02ed-83e2-4660-911e-96b955d01af8",
+            "name": "Jack Nener",
+            "number": "37",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": false,
+        "why": "graphql:nocode:game could not be found or was not electronically scored",
+        "permanent": true,
+        "withProfile": 0,
+        "noProfileCount": 0,
+        "rows": []
+      },
+      "compare": {
+        "oursNotInGameview": [],
+        "gameviewNotInOurs": [],
+        "oursNotInSpectator": null,
+        "spectatorNotInOurs": null,
+        "idPairs": [],
+        "idPairsDiffering": 0,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "b788b5c5-72d0",
+            "resolvesTo": "b788b5c5-72d0-453d-ad8c-4066ae3fbd78",
+            "error": null
+          },
+          {
+            "rosterId": "418e922d-c027",
+            "resolvesTo": "418e922d-c027-40c5-bead-ecec2256f872",
+            "error": null
+          },
+          {
+            "rosterId": "2ce013ff-0d72",
+            "resolvesTo": "2ce013ff-0d72-4c1c-a211-d6c253630439",
+            "error": null
+          },
+          {
+            "rosterId": "537af49e-9a08",
+            "resolvesTo": "537af49e-9a08-47e7-8ebd-78b73a66c2cd",
+            "error": null
+          },
+          {
+            "rosterId": "43f96ec8-5ae3",
+            "resolvesTo": "43f96ec8-5ae3-4499-bc35-d612ed7f2214",
+            "error": null
+          },
+          {
+            "rosterId": "bf125b13-4312",
+            "resolvesTo": "bf125b13-4312-4c81-a245-d342a264c155",
+            "error": null
+          },
+          {
+            "rosterId": "7c8d40da-3592",
+            "resolvesTo": "7c8d40da-3592-4b70-b84c-84a42db71e26",
+            "error": null
+          },
+          {
+            "rosterId": "f19b02ed-83e2",
+            "resolvesTo": "f19b02ed-83e2-4660-911e-96b955d01af8",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "78975486",
+      "seasonId": "0131be56",
+      "flags": {
+        "spc": null,
+        "dg": 1,
+        "spcm": 1,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2021-02-10",
+      "rosterIds": [
+        "b90a0525-8aa2",
+        "0f61ce05-4f19",
+        "8837992c-a7c9",
+        "a4146119-6648",
+        "b28782f9-521d",
+        "bb21d436-15b6",
+        "10e4445a-5c53",
+        "00567d09-42cb",
+        "8d37b367-0082",
+        "8a63c023-6ef4",
+        "62831187-4201",
+        "4c7de92c-bfa7"
+      ],
+      "block": "B",
+      "ours": {
+        "count": 12,
+        "ids": [
+          "b90a0525-8aa2",
+          "0f61ce05-4f19",
+          "8837992c-a7c9",
+          "a4146119-6648",
+          "b28782f9-521d",
+          "bb21d436-15b6",
+          "10e4445a-5c53",
+          "00567d09-42cb",
+          "8d37b367-0082",
+          "8a63c023-6ef4",
+          "62831187-4201",
+          "4c7de92c-bfa7"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 12,
+        "noProfile": [
+          {
+            "typename": "DiscoverRegularFillInPlayer",
+            "name": "Fill-in",
+            "number": "12"
+          },
+          {
+            "typename": "DiscoverRegularFillInPlayer",
+            "name": "Fill-in",
+            "number": "23"
+          }
+        ],
+        "rows": [
+          {
+            "profileId": "8a63c023-6ef4-4d18-ad8a-00b069c73f18",
+            "name": "Nigel Walliss",
+            "number": "00",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "4c7de92c-bfa7-4891-91c4-4d16975eb9e6",
+            "name": "Matthew Lalor",
+            "number": "11",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "a4146119-6648-4db5-87ee-4b1001146f2d",
+            "name": "Simon Yaksich",
+            "number": "14",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "62831187-4201-45f3-b117-db5ed4b1d0bd",
+            "name": "Cameron Nott",
+            "number": "32",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "b28782f9-521d-427c-96a6-16b171f52d26",
+            "name": "Benny Nadler",
+            "number": "42",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "00567d09-42cb-4a9e-9f5a-46361051a8b0",
+            "name": "Justin Mazur",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "10e4445a-5c53-4d9b-9f48-55be04434bd2",
+            "name": "Ben Kemal",
+            "number": "8",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "bb21d436-15b6-42cf-bc1d-720e17c8b4f1",
+            "name": "Ben Edwards",
+            "number": "9",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "0f61ce05-4f19-4ab0-af22-aba6aadb2101",
+            "name": "Luke Leviston",
+            "number": "10",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "8837992c-a7c9-4397-bcde-db36a6ff24bd",
+            "name": "Tom Haines",
+            "number": "34",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "8d37b367-0082-493e-8852-9973df40d855",
+            "name": "Andrew Moon",
+            "number": "38",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "b90a0525-8aa2-4542-8699-ff05eafa2339",
+            "name": "Trevor Fuller",
+            "number": "55",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": false,
+        "why": "graphql:nocode:game could not be found or was not electronically scored",
+        "permanent": true,
+        "withProfile": 0,
+        "noProfileCount": 0,
+        "rows": []
+      },
+      "compare": {
+        "oursNotInGameview": [],
+        "gameviewNotInOurs": [],
+        "oursNotInSpectator": null,
+        "spectatorNotInOurs": null,
+        "idPairs": [],
+        "idPairsDiffering": 0,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "b90a0525-8aa2",
+            "resolvesTo": "b90a0525-8aa2-4542-8699-ff05eafa2339",
+            "error": null
+          },
+          {
+            "rosterId": "0f61ce05-4f19",
+            "resolvesTo": "0f61ce05-4f19-4ab0-af22-aba6aadb2101",
+            "error": null
+          },
+          {
+            "rosterId": "8837992c-a7c9",
+            "resolvesTo": "8837992c-a7c9-4397-bcde-db36a6ff24bd",
+            "error": null
+          },
+          {
+            "rosterId": "a4146119-6648",
+            "resolvesTo": "a4146119-6648-4db5-87ee-4b1001146f2d",
+            "error": null
+          },
+          {
+            "rosterId": "b28782f9-521d",
+            "resolvesTo": "b28782f9-521d-427c-96a6-16b171f52d26",
+            "error": null
+          },
+          {
+            "rosterId": "bb21d436-15b6",
+            "resolvesTo": "bb21d436-15b6-42cf-bc1d-720e17c8b4f1",
+            "error": null
+          },
+          {
+            "rosterId": "10e4445a-5c53",
+            "resolvesTo": "10e4445a-5c53-4d9b-9f48-55be04434bd2",
+            "error": null
+          },
+          {
+            "rosterId": "00567d09-42cb",
+            "resolvesTo": "00567d09-42cb-4a9e-9f5a-46361051a8b0",
+            "error": null
+          },
+          {
+            "rosterId": "8d37b367-0082",
+            "resolvesTo": "8d37b367-0082-493e-8852-9973df40d855",
+            "error": null
+          },
+          {
+            "rosterId": "8a63c023-6ef4",
+            "resolvesTo": "8a63c023-6ef4-4d18-ad8a-00b069c73f18",
+            "error": null
+          },
+          {
+            "rosterId": "62831187-4201",
+            "resolvesTo": "62831187-4201-45f3-b117-db5ed4b1d0bd",
+            "error": null
+          },
+          {
+            "rosterId": "4c7de92c-bfa7",
+            "resolvesTo": "4c7de92c-bfa7-4891-91c4-4d16975eb9e6",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "94dac291",
+      "seasonId": "0131be56",
+      "flags": {
+        "spc": null,
+        "dg": 1,
+        "spcm": 1,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2021-03-24",
+      "rosterIds": [
+        "e4f8d7b0-cdc1",
+        "55406c4a-8c8f",
+        "ac3bc4ca-9d6f",
+        "93b64de6-23d1",
+        "5b8c35ac-403f",
+        "fe953a78-6bf6",
+        "ebbdad1b-4b55",
+        "c9a0a9b0-e082",
+        "07f95792-aef5",
+        "24cc7aa5-a549",
+        "832f9104-183d",
+        "73f8a4f8-272f",
+        "e68e1134-f551",
+        "b993deed-1f9f",
+        "8edd65af-8a2d",
+        "b1ebeb29-ec64"
+      ],
+      "block": "B",
+      "ours": {
+        "count": 16,
+        "ids": [
+          "e4f8d7b0-cdc1",
+          "55406c4a-8c8f",
+          "ac3bc4ca-9d6f",
+          "93b64de6-23d1",
+          "5b8c35ac-403f",
+          "fe953a78-6bf6",
+          "ebbdad1b-4b55",
+          "c9a0a9b0-e082",
+          "07f95792-aef5",
+          "24cc7aa5-a549",
+          "832f9104-183d",
+          "73f8a4f8-272f",
+          "e68e1134-f551",
+          "b993deed-1f9f",
+          "8edd65af-8a2d",
+          "b1ebeb29-ec64"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 16,
+        "noProfile": [
+          {
+            "typename": "DiscoverAnonymousParticipant",
+            "name": "Private player",
+            "number": null
+          }
+        ],
+        "rows": [
+          {
+            "profileId": "24cc7aa5-a549-4cde-9a8c-0d2ce183ce47",
+            "name": "Trevor Collard",
+            "number": "3",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "73f8a4f8-272f-4029-b6f4-ec96d466f3ca",
+            "name": "Attila Meszaros",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "c9a0a9b0-e082-4ae3-9f62-13a7c48af5c2",
+            "name": "Nathanael Preston",
+            "number": "13",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "55406c4a-8c8f-4487-af36-823a204e256e",
+            "name": "Chris McKinnon",
+            "number": "21",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "e4f8d7b0-cdc1-489f-8f26-dcb81c52e9d7",
+            "name": "Axel Dench",
+            "number": "23",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "ebbdad1b-4b55-46b6-a492-45042ac95719",
+            "name": "Julian O'Grady",
+            "number": "25",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "07f95792-aef5-415e-9500-2c950fe9bd8a",
+            "name": "Shane Treacy",
+            "number": "26",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "b993deed-1f9f-4a5d-9b36-42d0ea3f1a7a",
+            "name": "Bernard Tabisz",
+            "number": "42",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "832f9104-183d-4c47-8013-1852596fbaf9",
+            "name": "Adrian Givoye",
+            "number": "44",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "e68e1134-f551-4a23-b0cb-548766803e14",
+            "name": "Matt Field",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "ac3bc4ca-9d6f-4e4b-a92a-6bb44be14cf6",
+            "name": "tankov vladimir",
+            "number": "8",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "b1ebeb29-ec64-402f-80d2-7a35527356a9",
+            "name": "Lleyton Hewitt",
+            "number": "9",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "fe953a78-6bf6-4531-8ff1-2e7a81a138a4",
+            "name": "Jason Blackmore",
+            "number": "10",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "93b64de6-23d1-416f-85ff-4f2267267c94",
+            "name": "Mark Fletcher",
+            "number": "13",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "5b8c35ac-403f-429e-ad86-115acfa58ee3",
+            "name": "Alastair Williams",
+            "number": "22",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "8edd65af-8a2d-451d-857a-dcd667440d57",
+            "name": "Adam Steere",
+            "number": "55",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": false,
+        "why": "graphql:nocode:game could not be found or was not electronically scored",
+        "permanent": true,
+        "withProfile": 0,
+        "noProfileCount": 0,
+        "rows": []
+      },
+      "compare": {
+        "oursNotInGameview": [],
+        "gameviewNotInOurs": [],
+        "oursNotInSpectator": null,
+        "spectatorNotInOurs": null,
+        "idPairs": [],
+        "idPairsDiffering": 0,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "e4f8d7b0-cdc1",
+            "resolvesTo": "e4f8d7b0-cdc1-489f-8f26-dcb81c52e9d7",
+            "error": null
+          },
+          {
+            "rosterId": "55406c4a-8c8f",
+            "resolvesTo": "55406c4a-8c8f-4487-af36-823a204e256e",
+            "error": null
+          },
+          {
+            "rosterId": "ac3bc4ca-9d6f",
+            "resolvesTo": "ac3bc4ca-9d6f-4e4b-a92a-6bb44be14cf6",
+            "error": null
+          },
+          {
+            "rosterId": "93b64de6-23d1",
+            "resolvesTo": "93b64de6-23d1-416f-85ff-4f2267267c94",
+            "error": null
+          },
+          {
+            "rosterId": "5b8c35ac-403f",
+            "resolvesTo": "5b8c35ac-403f-429e-ad86-115acfa58ee3",
+            "error": null
+          },
+          {
+            "rosterId": "fe953a78-6bf6",
+            "resolvesTo": "fe953a78-6bf6-4531-8ff1-2e7a81a138a4",
+            "error": null
+          },
+          {
+            "rosterId": "ebbdad1b-4b55",
+            "resolvesTo": "ebbdad1b-4b55-46b6-a492-45042ac95719",
+            "error": null
+          },
+          {
+            "rosterId": "c9a0a9b0-e082",
+            "resolvesTo": "c9a0a9b0-e082-4ae3-9f62-13a7c48af5c2",
+            "error": null
+          },
+          {
+            "rosterId": "07f95792-aef5",
+            "resolvesTo": "07f95792-aef5-415e-9500-2c950fe9bd8a",
+            "error": null
+          },
+          {
+            "rosterId": "24cc7aa5-a549",
+            "resolvesTo": "24cc7aa5-a549-4cde-9a8c-0d2ce183ce47",
+            "error": null
+          },
+          {
+            "rosterId": "832f9104-183d",
+            "resolvesTo": "832f9104-183d-4c47-8013-1852596fbaf9",
+            "error": null
+          },
+          {
+            "rosterId": "73f8a4f8-272f",
+            "resolvesTo": "73f8a4f8-272f-4029-b6f4-ec96d466f3ca",
+            "error": null
+          },
+          {
+            "rosterId": "e68e1134-f551",
+            "resolvesTo": "e68e1134-f551-4a23-b0cb-548766803e14",
+            "error": null
+          },
+          {
+            "rosterId": "b993deed-1f9f",
+            "resolvesTo": "b993deed-1f9f-4a5d-9b36-42d0ea3f1a7a",
+            "error": null
+          },
+          {
+            "rosterId": "8edd65af-8a2d",
+            "resolvesTo": "8edd65af-8a2d-451d-857a-dcd667440d57",
+            "error": null
+          },
+          {
+            "rosterId": "b1ebeb29-ec64",
+            "resolvesTo": "b1ebeb29-ec64-402f-80d2-7a35527356a9",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "15503083",
+      "seasonId": "f729667e",
+      "flags": {
+        "spc": 1,
+        "dg": null,
+        "spcm": null,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2023-07-15",
+      "rosterIds": [
+        "862a68eb-2a22",
+        "d513a114-4812",
+        "fc94d25b-cb33",
+        "8b9bf41c-54e7",
+        "21baf5e1-6ba9",
+        "c46938ad-0dda",
+        "63cf123d-d89b",
+        "809d83bf-a3bb",
+        "5fcbda4d-b327",
+        "94977f08-7166",
+        "e8273450-3d7b",
+        "7daae6d0-fd4c",
+        "0624f678-73df",
+        "d380b48d-2c3e",
+        "06cd7371-82b5",
+        "29c59354-3cf6"
+      ],
+      "block": "C",
+      "ours": {
+        "count": 16,
+        "ids": [
+          "862a68eb-2a22",
+          "d513a114-4812",
+          "fc94d25b-cb33",
+          "8b9bf41c-54e7",
+          "21baf5e1-6ba9",
+          "c46938ad-0dda",
+          "63cf123d-d89b",
+          "809d83bf-a3bb",
+          "5fcbda4d-b327",
+          "94977f08-7166",
+          "e8273450-3d7b",
+          "7daae6d0-fd4c",
+          "0624f678-73df",
+          "d380b48d-2c3e",
+          "06cd7371-82b5",
+          "29c59354-3cf6"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 15,
+        "noProfile": [],
+        "rows": [
+          {
+            "profileId": "862a68eb-2a22-4937-b3d3-0b2e3c69a265",
+            "name": "Macy King",
+            "number": "6",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "d513a114-4812-4e34-858c-e5ab18180fe9",
+            "name": "Jaelah Milkins",
+            "number": "14",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "fc94d25b-cb33-472a-b2e7-35a95d8145cf",
+            "name": "Lillian Trimble",
+            "number": "21",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "22762806-607d-4f50-8051-4da98aa5829a",
+            "name": "serena villani",
+            "number": "22",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "21baf5e1-6ba9-4007-937f-2fc64444c755",
+            "name": "Tunara Samaranayake",
+            "number": "41",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "c46938ad-0dda-4945-8241-417726335205",
+            "name": "Amber Higginbotham",
+            "number": "49",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "63cf123d-d89b-4cbf-8489-87fb345c313e",
+            "name": "Amira Spinks",
+            "number": "94",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "ecb661c2-66eb-49f8-9872-bf38835c0516",
+            "name": "Bianca Bonifacio",
+            "number": "96",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "name": "Kayla Hofsteede",
+            "number": "2",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "name": "Eden Rebello",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "e8273450-3d7b-494c-8095-25435a52d371",
+            "name": "Zara Dowling",
+            "number": "10",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "name": "Addison Krogh",
+            "number": "23",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "name": "Ella Beary",
+            "number": "39",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "name": "bailey sheen",
+            "number": "43",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "name": "Elise Goode",
+            "number": "44",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 15,
+        "noProfileCount": 0,
+        "rows": [
+          {
+            "profileId": "862a68eb-2a22-4937-b3d3-0b2e3c69a265",
+            "name": "Macy King",
+            "number": "6"
+          },
+          {
+            "profileId": "d513a114-4812-4e34-858c-e5ab18180fe9",
+            "name": "Jaelah Milkins",
+            "number": "14"
+          },
+          {
+            "profileId": "fc94d25b-cb33-472a-b2e7-35a95d8145cf",
+            "name": "Lillian Trimble",
+            "number": "21"
+          },
+          {
+            "profileId": "8b9bf41c-54e7-4785-97cf-d97e0459921c",
+            "name": "Serena Villani",
+            "number": "22"
+          },
+          {
+            "profileId": "21baf5e1-6ba9-4007-937f-2fc64444c755",
+            "name": "Tunara Samaranayake",
+            "number": "41"
+          },
+          {
+            "profileId": "c46938ad-0dda-4945-8241-417726335205",
+            "name": "Amber Higginbotham",
+            "number": "49"
+          },
+          {
+            "profileId": "63cf123d-d89b-4cbf-8489-87fb345c313e",
+            "name": "Amira Spinks",
+            "number": "94"
+          },
+          {
+            "profileId": "809d83bf-a3bb-4db1-aea8-ef9b9a137c74",
+            "name": "Bianca Bonifacio",
+            "number": "96"
+          },
+          {
+            "profileId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "name": "Kayla Hofsteede",
+            "number": "2"
+          },
+          {
+            "profileId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "name": "Eden Rebello",
+            "number": "7"
+          },
+          {
+            "profileId": "e8273450-3d7b-494c-8095-25435a52d371",
+            "name": "Zara Dowling",
+            "number": "10"
+          },
+          {
+            "profileId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "name": "Addison Krogh",
+            "number": "23"
+          },
+          {
+            "profileId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "name": "Ella Beary",
+            "number": "39"
+          },
+          {
+            "profileId": "d380b48d-2c3e-4543-abf0-14a009fb1fef",
+            "name": "Bailey Sheen",
+            "number": "42"
+          },
+          {
+            "profileId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "name": "Elise Goode",
+            "number": "44"
+          }
+        ]
+      },
+      "compare": {
+        "oursNotInGameview": [
+          "8b9bf41c-54e7",
+          "809d83bf-a3bb",
+          "d380b48d-2c3e"
+        ],
+        "gameviewNotInOurs": [
+          "22762806-607d",
+          "ecb661c2-66eb"
+        ],
+        "oursNotInSpectator": [
+          "29c59354-3cf6"
+        ],
+        "spectatorNotInOurs": [],
+        "idPairs": [
+          {
+            "name": "Macy King",
+            "number": "6",
+            "gameviewId": "862a68eb-2a22-4937-b3d3-0b2e3c69a265",
+            "spectatorId": "862a68eb-2a22-4937-b3d3-0b2e3c69a265",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Jaelah Milkins",
+            "number": "14",
+            "gameviewId": "d513a114-4812-4e34-858c-e5ab18180fe9",
+            "spectatorId": "d513a114-4812-4e34-858c-e5ab18180fe9",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Lillian Trimble",
+            "number": "21",
+            "gameviewId": "fc94d25b-cb33-472a-b2e7-35a95d8145cf",
+            "spectatorId": "fc94d25b-cb33-472a-b2e7-35a95d8145cf",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "serena villani",
+            "number": "22",
+            "gameviewId": "22762806-607d-4f50-8051-4da98aa5829a",
+            "spectatorId": "8b9bf41c-54e7-4785-97cf-d97e0459921c",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Tunara Samaranayake",
+            "number": "41",
+            "gameviewId": "21baf5e1-6ba9-4007-937f-2fc64444c755",
+            "spectatorId": "21baf5e1-6ba9-4007-937f-2fc64444c755",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Amber Higginbotham",
+            "number": "49",
+            "gameviewId": "c46938ad-0dda-4945-8241-417726335205",
+            "spectatorId": "c46938ad-0dda-4945-8241-417726335205",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Amira Spinks",
+            "number": "94",
+            "gameviewId": "63cf123d-d89b-4cbf-8489-87fb345c313e",
+            "spectatorId": "63cf123d-d89b-4cbf-8489-87fb345c313e",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Bianca Bonifacio",
+            "number": "96",
+            "gameviewId": "ecb661c2-66eb-49f8-9872-bf38835c0516",
+            "spectatorId": "809d83bf-a3bb-4db1-aea8-ef9b9a137c74",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Kayla Hofsteede",
+            "number": "2",
+            "gameviewId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "spectatorId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Eden Rebello",
+            "number": "7",
+            "gameviewId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "spectatorId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Zara Dowling",
+            "number": "10",
+            "gameviewId": "e8273450-3d7b-494c-8095-25435a52d371",
+            "spectatorId": "e8273450-3d7b-494c-8095-25435a52d371",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Addison Krogh",
+            "number": "23",
+            "gameviewId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "spectatorId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Ella Beary",
+            "number": "39",
+            "gameviewId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "spectatorId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "bailey sheen",
+            "number": "43",
+            "gameviewId": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "spectatorId": "d380b48d-2c3e-4543-abf0-14a009fb1fef",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Elise Goode",
+            "number": "44",
+            "gameviewId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "spectatorId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "same": true,
+            "samePrefix13": true
+          }
+        ],
+        "idPairsDiffering": 3,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "862a68eb-2a22",
+            "resolvesTo": "862a68eb-2a22-4937-b3d3-0b2e3c69a265",
+            "error": null
+          },
+          {
+            "rosterId": "d513a114-4812",
+            "resolvesTo": "d513a114-4812-4e34-858c-e5ab18180fe9",
+            "error": null
+          },
+          {
+            "rosterId": "fc94d25b-cb33",
+            "resolvesTo": "fc94d25b-cb33-472a-b2e7-35a95d8145cf",
+            "error": null
+          },
+          {
+            "rosterId": "8b9bf41c-54e7",
+            "resolvesTo": "22762806-607d-4f50-8051-4da98aa5829a",
+            "error": null
+          },
+          {
+            "rosterId": "21baf5e1-6ba9",
+            "resolvesTo": "21baf5e1-6ba9-4007-937f-2fc64444c755",
+            "error": null
+          },
+          {
+            "rosterId": "c46938ad-0dda",
+            "resolvesTo": "c46938ad-0dda-4945-8241-417726335205",
+            "error": null
+          },
+          {
+            "rosterId": "63cf123d-d89b",
+            "resolvesTo": "63cf123d-d89b-4cbf-8489-87fb345c313e",
+            "error": null
+          },
+          {
+            "rosterId": "809d83bf-a3bb",
+            "resolvesTo": "ecb661c2-66eb-49f8-9872-bf38835c0516",
+            "error": null
+          },
+          {
+            "rosterId": "5fcbda4d-b327",
+            "resolvesTo": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "error": null
+          },
+          {
+            "rosterId": "94977f08-7166",
+            "resolvesTo": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "error": null
+          },
+          {
+            "rosterId": "e8273450-3d7b",
+            "resolvesTo": "e8273450-3d7b-494c-8095-25435a52d371",
+            "error": null
+          },
+          {
+            "rosterId": "7daae6d0-fd4c",
+            "resolvesTo": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "error": null
+          },
+          {
+            "rosterId": "0624f678-73df",
+            "resolvesTo": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "error": null
+          },
+          {
+            "rosterId": "d380b48d-2c3e",
+            "resolvesTo": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "error": null
+          },
+          {
+            "rosterId": "06cd7371-82b5",
+            "resolvesTo": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "error": null
+          },
+          {
+            "rosterId": "29c59354-3cf6",
+            "resolvesTo": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "e7ee40fe",
+      "seasonId": "f729667e",
+      "flags": {
+        "spc": 1,
+        "dg": null,
+        "spcm": null,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2023-06-03",
+      "rosterIds": [
+        "9466fa05-da47",
+        "1c8f58ae-160b",
+        "a5ffa318-a8e5",
+        "b95c1c4b-8dbc",
+        "f4f7fb54-9a08",
+        "fb93b4b8-f963",
+        "6a163dc0-7a20",
+        "c833513c-112e",
+        "5fcbda4d-b327",
+        "94977f08-7166",
+        "31ae3b28-93b9",
+        "7daae6d0-fd4c",
+        "0624f678-73df",
+        "d380b48d-2c3e",
+        "06cd7371-82b5",
+        "29c59354-3cf6"
+      ],
+      "block": "C",
+      "ours": {
+        "count": 16,
+        "ids": [
+          "9466fa05-da47",
+          "1c8f58ae-160b",
+          "a5ffa318-a8e5",
+          "b95c1c4b-8dbc",
+          "f4f7fb54-9a08",
+          "fb93b4b8-f963",
+          "6a163dc0-7a20",
+          "c833513c-112e",
+          "5fcbda4d-b327",
+          "94977f08-7166",
+          "31ae3b28-93b9",
+          "7daae6d0-fd4c",
+          "0624f678-73df",
+          "d380b48d-2c3e",
+          "06cd7371-82b5",
+          "29c59354-3cf6"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 15,
+        "noProfile": [],
+        "rows": [
+          {
+            "profileId": "9466fa05-da47-4383-bbd0-eb2aa74c875a",
+            "name": "Gianna Biswas",
+            "number": "4",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "57fa00c3-61a9-48cc-acc8-3f28533c94fe",
+            "name": "Jada Hamilton",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "a5ffa318-a8e5-49e4-92a8-6647ed71159d",
+            "name": "Chloe Munckton",
+            "number": "9",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "c46e8eb8-039c-4b37-84f1-f33f3dade9a5",
+            "name": "Ella Tubb",
+            "number": "14",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "f4f7fb54-9a08-455e-8a2d-5e4fa1dd1d4f",
+            "name": "Lauren Bruinsma",
+            "number": "23",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "fb93b4b8-f963-40ba-a4ba-b60300159ced",
+            "name": "Isabella Kerr",
+            "number": "28",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "6a163dc0-7a20-44a9-ab96-456b6fd06c49",
+            "name": "Jasmine Meehan",
+            "number": "34",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "c833513c-112e-4ac4-b563-342593da3de2",
+            "name": "Hayley Buck",
+            "number": "49",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "name": "Kayla Hofsteede",
+            "number": "2",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "name": "Eden Rebello",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "name": "Emma Nolan",
+            "number": "11",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "name": "Addison Krogh",
+            "number": "23",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "name": "Ella Beary",
+            "number": "39",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "name": "bailey sheen",
+            "number": "42",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "name": "Elise Goode",
+            "number": "44",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 15,
+        "noProfileCount": 0,
+        "rows": [
+          {
+            "profileId": "9466fa05-da47-4383-bbd0-eb2aa74c875a",
+            "name": "Gianna Biswas",
+            "number": "4"
+          },
+          {
+            "profileId": "1c8f58ae-160b-454c-b6bf-e8024901193e",
+            "name": "Jada Hamilton",
+            "number": "7"
+          },
+          {
+            "profileId": "a5ffa318-a8e5-49e4-92a8-6647ed71159d",
+            "name": "Chloe Munckton",
+            "number": "9"
+          },
+          {
+            "profileId": "b95c1c4b-8dbc-4d89-8b38-fcd5741ae7cc",
+            "name": "Ella Tubb",
+            "number": "14"
+          },
+          {
+            "profileId": "f4f7fb54-9a08-455e-8a2d-5e4fa1dd1d4f",
+            "name": "Lauren Bruinsma",
+            "number": "23"
+          },
+          {
+            "profileId": "fb93b4b8-f963-40ba-a4ba-b60300159ced",
+            "name": "Isabella Kerr",
+            "number": "28"
+          },
+          {
+            "profileId": "6a163dc0-7a20-44a9-ab96-456b6fd06c49",
+            "name": "Jasmine Meehan",
+            "number": "34"
+          },
+          {
+            "profileId": "c833513c-112e-4ac4-b563-342593da3de2",
+            "name": "Hayley Buck",
+            "number": "49"
+          },
+          {
+            "profileId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "name": "Kayla Hofsteede",
+            "number": "2"
+          },
+          {
+            "profileId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "name": "Eden Rebello",
+            "number": "7"
+          },
+          {
+            "profileId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "name": "Emma Nolan",
+            "number": "11"
+          },
+          {
+            "profileId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "name": "Addison Krogh",
+            "number": "23"
+          },
+          {
+            "profileId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "name": "Ella Beary",
+            "number": "39"
+          },
+          {
+            "profileId": "d380b48d-2c3e-4543-abf0-14a009fb1fef",
+            "name": "Bailey Sheen",
+            "number": "42"
+          },
+          {
+            "profileId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "name": "Elise Goode",
+            "number": "44"
+          }
+        ]
+      },
+      "compare": {
+        "oursNotInGameview": [
+          "1c8f58ae-160b",
+          "b95c1c4b-8dbc",
+          "d380b48d-2c3e"
+        ],
+        "gameviewNotInOurs": [
+          "57fa00c3-61a9",
+          "c46e8eb8-039c"
+        ],
+        "oursNotInSpectator": [
+          "29c59354-3cf6"
+        ],
+        "spectatorNotInOurs": [],
+        "idPairs": [
+          {
+            "name": "Gianna Biswas",
+            "number": "4",
+            "gameviewId": "9466fa05-da47-4383-bbd0-eb2aa74c875a",
+            "spectatorId": "9466fa05-da47-4383-bbd0-eb2aa74c875a",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Jada Hamilton",
+            "number": "7",
+            "gameviewId": "57fa00c3-61a9-48cc-acc8-3f28533c94fe",
+            "spectatorId": "1c8f58ae-160b-454c-b6bf-e8024901193e",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Chloe Munckton",
+            "number": "9",
+            "gameviewId": "a5ffa318-a8e5-49e4-92a8-6647ed71159d",
+            "spectatorId": "a5ffa318-a8e5-49e4-92a8-6647ed71159d",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Ella Tubb",
+            "number": "14",
+            "gameviewId": "c46e8eb8-039c-4b37-84f1-f33f3dade9a5",
+            "spectatorId": "b95c1c4b-8dbc-4d89-8b38-fcd5741ae7cc",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Lauren Bruinsma",
+            "number": "23",
+            "gameviewId": "f4f7fb54-9a08-455e-8a2d-5e4fa1dd1d4f",
+            "spectatorId": "f4f7fb54-9a08-455e-8a2d-5e4fa1dd1d4f",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Isabella Kerr",
+            "number": "28",
+            "gameviewId": "fb93b4b8-f963-40ba-a4ba-b60300159ced",
+            "spectatorId": "fb93b4b8-f963-40ba-a4ba-b60300159ced",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Jasmine Meehan",
+            "number": "34",
+            "gameviewId": "6a163dc0-7a20-44a9-ab96-456b6fd06c49",
+            "spectatorId": "6a163dc0-7a20-44a9-ab96-456b6fd06c49",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Hayley Buck",
+            "number": "49",
+            "gameviewId": "c833513c-112e-4ac4-b563-342593da3de2",
+            "spectatorId": "c833513c-112e-4ac4-b563-342593da3de2",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Kayla Hofsteede",
+            "number": "2",
+            "gameviewId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "spectatorId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Eden Rebello",
+            "number": "7",
+            "gameviewId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "spectatorId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Emma Nolan",
+            "number": "11",
+            "gameviewId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "spectatorId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Addison Krogh",
+            "number": "23",
+            "gameviewId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "spectatorId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Ella Beary",
+            "number": "39",
+            "gameviewId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "spectatorId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "bailey sheen",
+            "number": "42",
+            "gameviewId": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "spectatorId": "d380b48d-2c3e-4543-abf0-14a009fb1fef",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Elise Goode",
+            "number": "44",
+            "gameviewId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "spectatorId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "same": true,
+            "samePrefix13": true
+          }
+        ],
+        "idPairsDiffering": 3,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "9466fa05-da47",
+            "resolvesTo": "9466fa05-da47-4383-bbd0-eb2aa74c875a",
+            "error": null
+          },
+          {
+            "rosterId": "1c8f58ae-160b",
+            "resolvesTo": "57fa00c3-61a9-48cc-acc8-3f28533c94fe",
+            "error": null
+          },
+          {
+            "rosterId": "a5ffa318-a8e5",
+            "resolvesTo": "a5ffa318-a8e5-49e4-92a8-6647ed71159d",
+            "error": null
+          },
+          {
+            "rosterId": "b95c1c4b-8dbc",
+            "resolvesTo": "c46e8eb8-039c-4b37-84f1-f33f3dade9a5",
+            "error": null
+          },
+          {
+            "rosterId": "f4f7fb54-9a08",
+            "resolvesTo": "f4f7fb54-9a08-455e-8a2d-5e4fa1dd1d4f",
+            "error": null
+          },
+          {
+            "rosterId": "fb93b4b8-f963",
+            "resolvesTo": "fb93b4b8-f963-40ba-a4ba-b60300159ced",
+            "error": null
+          },
+          {
+            "rosterId": "6a163dc0-7a20",
+            "resolvesTo": "6a163dc0-7a20-44a9-ab96-456b6fd06c49",
+            "error": null
+          },
+          {
+            "rosterId": "c833513c-112e",
+            "resolvesTo": "c833513c-112e-4ac4-b563-342593da3de2",
+            "error": null
+          },
+          {
+            "rosterId": "5fcbda4d-b327",
+            "resolvesTo": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "error": null
+          },
+          {
+            "rosterId": "94977f08-7166",
+            "resolvesTo": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "error": null
+          },
+          {
+            "rosterId": "31ae3b28-93b9",
+            "resolvesTo": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "error": null
+          },
+          {
+            "rosterId": "7daae6d0-fd4c",
+            "resolvesTo": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "error": null
+          },
+          {
+            "rosterId": "0624f678-73df",
+            "resolvesTo": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "error": null
+          },
+          {
+            "rosterId": "d380b48d-2c3e",
+            "resolvesTo": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "error": null
+          },
+          {
+            "rosterId": "06cd7371-82b5",
+            "resolvesTo": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "error": null
+          },
+          {
+            "rosterId": "29c59354-3cf6",
+            "resolvesTo": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "619056bb",
+      "seasonId": "f729667e",
+      "flags": {
+        "spc": 1,
+        "dg": null,
+        "spcm": null,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2023-04-29",
+      "rosterIds": [
+        "5fcbda4d-b327",
+        "94977f08-7166",
+        "e8273450-3d7b",
+        "7daae6d0-fd4c",
+        "31ae3b28-93b9",
+        "0624f678-73df",
+        "d380b48d-2c3e",
+        "06cd7371-82b5",
+        "f4247777-e57c",
+        "6cbdb0e2-4d81",
+        "12624af1-3170",
+        "f259cd5b-a5cd",
+        "a99562b5-f1af",
+        "29c59354-3cf6"
+      ],
+      "block": "C",
+      "ours": {
+        "count": 14,
+        "ids": [
+          "5fcbda4d-b327",
+          "94977f08-7166",
+          "e8273450-3d7b",
+          "7daae6d0-fd4c",
+          "31ae3b28-93b9",
+          "0624f678-73df",
+          "d380b48d-2c3e",
+          "06cd7371-82b5",
+          "f4247777-e57c",
+          "6cbdb0e2-4d81",
+          "12624af1-3170",
+          "f259cd5b-a5cd",
+          "a99562b5-f1af",
+          "29c59354-3cf6"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 13,
+        "noProfile": [
+          {
+            "typename": "DiscoverRegularFillInPlayer",
+            "name": "Fill-in",
+            "number": "8"
+          },
+          {
+            "typename": "DiscoverRegularFillInPlayer",
+            "name": "Fill-in",
+            "number": "72"
+          }
+        ],
+        "rows": [
+          {
+            "profileId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "name": "Kayla Hofsteede",
+            "number": "2",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "name": "Eden Rebello",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "e8273450-3d7b-494c-8095-25435a52d371",
+            "name": "Zara Dowling",
+            "number": "10",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "name": "Addison Krogh",
+            "number": "23",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "name": "Emma Nolan",
+            "number": "24",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "name": "Ella Beary",
+            "number": "39",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "name": "bailey sheen",
+            "number": "42",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "name": "Elise Goode",
+            "number": "44",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "f4247777-e57c-446b-a786-242c96c6e0d8",
+            "name": "Claire Benham",
+            "number": "9",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "ea9c6d00-8bca-4fe4-813a-faac18ee042d",
+            "name": "Brooke Shipston",
+            "number": "15",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "c1599aa1-d89b-4160-aa19-6b269020de4e",
+            "name": "Deborah Okwenna",
+            "number": "18",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "f259cd5b-a5cd-43f1-90ca-8defb4237bdd",
+            "name": "Ashley Jackson",
+            "number": "31",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "b86cf0f4-37e6-4419-a5a8-745beeddfb1d",
+            "name": "Aileeha Lloyd",
+            "number": "61",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 13,
+        "noProfileCount": 2,
+        "rows": [
+          {
+            "profileId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "name": "Kayla Hofsteede",
+            "number": "2"
+          },
+          {
+            "profileId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "name": "Eden Rebello",
+            "number": "7"
+          },
+          {
+            "profileId": "e8273450-3d7b-494c-8095-25435a52d371",
+            "name": "Zara Dowling",
+            "number": "10"
+          },
+          {
+            "profileId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "name": "Addison Krogh",
+            "number": "23"
+          },
+          {
+            "profileId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "name": "Emma Nolan",
+            "number": "24"
+          },
+          {
+            "profileId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "name": "Ella Beary",
+            "number": "39"
+          },
+          {
+            "profileId": "d380b48d-2c3e-4543-abf0-14a009fb1fef",
+            "name": "Bailey Sheen",
+            "number": "42"
+          },
+          {
+            "profileId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "name": "Elise Goode",
+            "number": "44"
+          },
+          {
+            "profileId": "f4247777-e57c-446b-a786-242c96c6e0d8",
+            "name": "Claire Benham",
+            "number": "9"
+          },
+          {
+            "profileId": "6cbdb0e2-4d81-4a73-9c90-0466ec9f037b",
+            "name": "Brooke Shipston",
+            "number": "15"
+          },
+          {
+            "profileId": "12624af1-3170-4a6f-b2bc-6b321df5d28e",
+            "name": "Deborah Okwenna",
+            "number": "18"
+          },
+          {
+            "profileId": "f259cd5b-a5cd-43f1-90ca-8defb4237bdd",
+            "name": "Ashley Jackson",
+            "number": "31"
+          },
+          {
+            "profileId": "a99562b5-f1af-41b4-a196-eaf4fb70b2e2",
+            "name": "Aileeha Lloyd",
+            "number": "61"
+          }
+        ]
+      },
+      "compare": {
+        "oursNotInGameview": [
+          "d380b48d-2c3e",
+          "6cbdb0e2-4d81",
+          "12624af1-3170",
+          "a99562b5-f1af"
+        ],
+        "gameviewNotInOurs": [
+          "ea9c6d00-8bca",
+          "c1599aa1-d89b",
+          "b86cf0f4-37e6"
+        ],
+        "oursNotInSpectator": [
+          "29c59354-3cf6"
+        ],
+        "spectatorNotInOurs": [],
+        "idPairs": [
+          {
+            "name": "Kayla Hofsteede",
+            "number": "2",
+            "gameviewId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "spectatorId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Eden Rebello",
+            "number": "7",
+            "gameviewId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "spectatorId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Zara Dowling",
+            "number": "10",
+            "gameviewId": "e8273450-3d7b-494c-8095-25435a52d371",
+            "spectatorId": "e8273450-3d7b-494c-8095-25435a52d371",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Addison Krogh",
+            "number": "23",
+            "gameviewId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "spectatorId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Emma Nolan",
+            "number": "24",
+            "gameviewId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "spectatorId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Ella Beary",
+            "number": "39",
+            "gameviewId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "spectatorId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "bailey sheen",
+            "number": "42",
+            "gameviewId": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "spectatorId": "d380b48d-2c3e-4543-abf0-14a009fb1fef",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Elise Goode",
+            "number": "44",
+            "gameviewId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "spectatorId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Claire Benham",
+            "number": "9",
+            "gameviewId": "f4247777-e57c-446b-a786-242c96c6e0d8",
+            "spectatorId": "f4247777-e57c-446b-a786-242c96c6e0d8",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Brooke Shipston",
+            "number": "15",
+            "gameviewId": "ea9c6d00-8bca-4fe4-813a-faac18ee042d",
+            "spectatorId": "6cbdb0e2-4d81-4a73-9c90-0466ec9f037b",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Deborah Okwenna",
+            "number": "18",
+            "gameviewId": "c1599aa1-d89b-4160-aa19-6b269020de4e",
+            "spectatorId": "12624af1-3170-4a6f-b2bc-6b321df5d28e",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Ashley Jackson",
+            "number": "31",
+            "gameviewId": "f259cd5b-a5cd-43f1-90ca-8defb4237bdd",
+            "spectatorId": "f259cd5b-a5cd-43f1-90ca-8defb4237bdd",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Aileeha Lloyd",
+            "number": "61",
+            "gameviewId": "b86cf0f4-37e6-4419-a5a8-745beeddfb1d",
+            "spectatorId": "a99562b5-f1af-41b4-a196-eaf4fb70b2e2",
+            "same": false,
+            "samePrefix13": false
+          }
+        ],
+        "idPairsDiffering": 4,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "5fcbda4d-b327",
+            "resolvesTo": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "error": null
+          },
+          {
+            "rosterId": "94977f08-7166",
+            "resolvesTo": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "error": null
+          },
+          {
+            "rosterId": "e8273450-3d7b",
+            "resolvesTo": "e8273450-3d7b-494c-8095-25435a52d371",
+            "error": null
+          },
+          {
+            "rosterId": "7daae6d0-fd4c",
+            "resolvesTo": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "error": null
+          },
+          {
+            "rosterId": "31ae3b28-93b9",
+            "resolvesTo": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "error": null
+          },
+          {
+            "rosterId": "0624f678-73df",
+            "resolvesTo": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "error": null
+          },
+          {
+            "rosterId": "d380b48d-2c3e",
+            "resolvesTo": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "error": null
+          },
+          {
+            "rosterId": "06cd7371-82b5",
+            "resolvesTo": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "error": null
+          },
+          {
+            "rosterId": "f4247777-e57c",
+            "resolvesTo": "f4247777-e57c-446b-a786-242c96c6e0d8",
+            "error": null
+          },
+          {
+            "rosterId": "6cbdb0e2-4d81",
+            "resolvesTo": "ea9c6d00-8bca-4fe4-813a-faac18ee042d",
+            "error": null
+          },
+          {
+            "rosterId": "12624af1-3170",
+            "resolvesTo": "c1599aa1-d89b-4160-aa19-6b269020de4e",
+            "error": null
+          },
+          {
+            "rosterId": "f259cd5b-a5cd",
+            "resolvesTo": "f259cd5b-a5cd-43f1-90ca-8defb4237bdd",
+            "error": null
+          },
+          {
+            "rosterId": "a99562b5-f1af",
+            "resolvesTo": "b86cf0f4-37e6-4419-a5a8-745beeddfb1d",
+            "error": null
+          },
+          {
+            "rosterId": "29c59354-3cf6",
+            "resolvesTo": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "1e1ce367",
+      "seasonId": "f729667e",
+      "flags": {
+        "spc": 1,
+        "dg": null,
+        "spcm": null,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2023-04-22",
+      "rosterIds": [
+        "8bef6c48-d46f",
+        "13a517b6-15c0",
+        "6d6bf0da-b869",
+        "602d0308-662f",
+        "b28f3fff-9d91",
+        "3325e0ab-14f1",
+        "5fcbda4d-b327",
+        "94977f08-7166",
+        "31ae3b28-93b9",
+        "7daae6d0-fd4c",
+        "0624f678-73df",
+        "d380b48d-2c3e",
+        "06cd7371-82b5",
+        "29c59354-3cf6"
+      ],
+      "block": "C",
+      "ours": {
+        "count": 14,
+        "ids": [
+          "8bef6c48-d46f",
+          "13a517b6-15c0",
+          "6d6bf0da-b869",
+          "602d0308-662f",
+          "b28f3fff-9d91",
+          "3325e0ab-14f1",
+          "5fcbda4d-b327",
+          "94977f08-7166",
+          "31ae3b28-93b9",
+          "7daae6d0-fd4c",
+          "0624f678-73df",
+          "d380b48d-2c3e",
+          "06cd7371-82b5",
+          "29c59354-3cf6"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 13,
+        "noProfile": [],
+        "rows": [
+          {
+            "profileId": "8bef6c48-d46f-4e8d-8301-f7b9e60df501",
+            "name": "Briannha Drew",
+            "number": "2",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "13a517b6-15c0-4dee-a721-818c2c27ac69",
+            "name": "Piper Duke",
+            "number": "6",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "6d6bf0da-b869-4a34-9d11-54151e085ffc",
+            "name": "Addison Francis",
+            "number": "21",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "602d0308-662f-4f5b-8eea-da38855e713f",
+            "name": "Ava Palling",
+            "number": "30",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "b28f3fff-9d91-4d82-817a-a67890bc4fe7",
+            "name": "Abby Moffatt",
+            "number": "33",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "3325e0ab-14f1-442b-ab79-18eaea366682",
+            "name": "Georgia Hofsteede",
+            "number": "54",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "name": "Kayla Hofsteede",
+            "number": "2",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "name": "Eden Rebello",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "name": "Emma Nolan",
+            "number": "11",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "name": "Addison Krogh",
+            "number": "23",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "name": "Ella Beary",
+            "number": "39",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "name": "bailey sheen",
+            "number": "42",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "name": "Elise Goode",
+            "number": "44",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 13,
+        "noProfileCount": 0,
+        "rows": [
+          {
+            "profileId": "8bef6c48-d46f-4e8d-8301-f7b9e60df501",
+            "name": "Briannha Drew",
+            "number": "2"
+          },
+          {
+            "profileId": "13a517b6-15c0-4dee-a721-818c2c27ac69",
+            "name": "Piper Duke",
+            "number": "6"
+          },
+          {
+            "profileId": "6d6bf0da-b869-4a34-9d11-54151e085ffc",
+            "name": "Addison Francis",
+            "number": "21"
+          },
+          {
+            "profileId": "602d0308-662f-4f5b-8eea-da38855e713f",
+            "name": "Ava Palling",
+            "number": "30"
+          },
+          {
+            "profileId": "b28f3fff-9d91-4d82-817a-a67890bc4fe7",
+            "name": "Abby Moffatt",
+            "number": "33"
+          },
+          {
+            "profileId": "3325e0ab-14f1-442b-ab79-18eaea366682",
+            "name": "Georgia Hofsteede",
+            "number": "54"
+          },
+          {
+            "profileId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "name": "Kayla Hofsteede",
+            "number": "2"
+          },
+          {
+            "profileId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "name": "Eden Rebello",
+            "number": "7"
+          },
+          {
+            "profileId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "name": "Emma Nolan",
+            "number": "11"
+          },
+          {
+            "profileId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "name": "Addison Krogh",
+            "number": "23"
+          },
+          {
+            "profileId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "name": "Ella Beary",
+            "number": "39"
+          },
+          {
+            "profileId": "d380b48d-2c3e-4543-abf0-14a009fb1fef",
+            "name": "Bailey Sheen",
+            "number": "42"
+          },
+          {
+            "profileId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "name": "Elise Goode",
+            "number": "44"
+          }
+        ]
+      },
+      "compare": {
+        "oursNotInGameview": [
+          "d380b48d-2c3e"
+        ],
+        "gameviewNotInOurs": [],
+        "oursNotInSpectator": [
+          "29c59354-3cf6"
+        ],
+        "spectatorNotInOurs": [],
+        "idPairs": [
+          {
+            "name": "Briannha Drew",
+            "number": "2",
+            "gameviewId": "8bef6c48-d46f-4e8d-8301-f7b9e60df501",
+            "spectatorId": "8bef6c48-d46f-4e8d-8301-f7b9e60df501",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Piper Duke",
+            "number": "6",
+            "gameviewId": "13a517b6-15c0-4dee-a721-818c2c27ac69",
+            "spectatorId": "13a517b6-15c0-4dee-a721-818c2c27ac69",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Addison Francis",
+            "number": "21",
+            "gameviewId": "6d6bf0da-b869-4a34-9d11-54151e085ffc",
+            "spectatorId": "6d6bf0da-b869-4a34-9d11-54151e085ffc",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Ava Palling",
+            "number": "30",
+            "gameviewId": "602d0308-662f-4f5b-8eea-da38855e713f",
+            "spectatorId": "602d0308-662f-4f5b-8eea-da38855e713f",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Abby Moffatt",
+            "number": "33",
+            "gameviewId": "b28f3fff-9d91-4d82-817a-a67890bc4fe7",
+            "spectatorId": "b28f3fff-9d91-4d82-817a-a67890bc4fe7",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Georgia Hofsteede",
+            "number": "54",
+            "gameviewId": "3325e0ab-14f1-442b-ab79-18eaea366682",
+            "spectatorId": "3325e0ab-14f1-442b-ab79-18eaea366682",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Kayla Hofsteede",
+            "number": "2",
+            "gameviewId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "spectatorId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Eden Rebello",
+            "number": "7",
+            "gameviewId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "spectatorId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Emma Nolan",
+            "number": "11",
+            "gameviewId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "spectatorId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Addison Krogh",
+            "number": "23",
+            "gameviewId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "spectatorId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Ella Beary",
+            "number": "39",
+            "gameviewId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "spectatorId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "bailey sheen",
+            "number": "42",
+            "gameviewId": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "spectatorId": "d380b48d-2c3e-4543-abf0-14a009fb1fef",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Elise Goode",
+            "number": "44",
+            "gameviewId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "spectatorId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "same": true,
+            "samePrefix13": true
+          }
+        ],
+        "idPairsDiffering": 1,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "8bef6c48-d46f",
+            "resolvesTo": "8bef6c48-d46f-4e8d-8301-f7b9e60df501",
+            "error": null
+          },
+          {
+            "rosterId": "13a517b6-15c0",
+            "resolvesTo": "13a517b6-15c0-4dee-a721-818c2c27ac69",
+            "error": null
+          },
+          {
+            "rosterId": "6d6bf0da-b869",
+            "resolvesTo": "6d6bf0da-b869-4a34-9d11-54151e085ffc",
+            "error": null
+          },
+          {
+            "rosterId": "602d0308-662f",
+            "resolvesTo": "602d0308-662f-4f5b-8eea-da38855e713f",
+            "error": null
+          },
+          {
+            "rosterId": "b28f3fff-9d91",
+            "resolvesTo": "b28f3fff-9d91-4d82-817a-a67890bc4fe7",
+            "error": null
+          },
+          {
+            "rosterId": "3325e0ab-14f1",
+            "resolvesTo": "3325e0ab-14f1-442b-ab79-18eaea366682",
+            "error": null
+          },
+          {
+            "rosterId": "5fcbda4d-b327",
+            "resolvesTo": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "error": null
+          },
+          {
+            "rosterId": "94977f08-7166",
+            "resolvesTo": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "error": null
+          },
+          {
+            "rosterId": "31ae3b28-93b9",
+            "resolvesTo": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "error": null
+          },
+          {
+            "rosterId": "7daae6d0-fd4c",
+            "resolvesTo": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "error": null
+          },
+          {
+            "rosterId": "0624f678-73df",
+            "resolvesTo": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "error": null
+          },
+          {
+            "rosterId": "d380b48d-2c3e",
+            "resolvesTo": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "error": null
+          },
+          {
+            "rosterId": "06cd7371-82b5",
+            "resolvesTo": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "error": null
+          },
+          {
+            "rosterId": "29c59354-3cf6",
+            "resolvesTo": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "gameId": "1daf55e2",
+      "seasonId": "f729667e",
+      "flags": {
+        "spc": 1,
+        "dg": null,
+        "spcm": null,
+        "dgm": null
+      },
+      "st": "FINAL",
+      "d": "2023-05-06",
+      "rosterIds": [
+        "b878dd26-46ae",
+        "439f5d6c-f38b",
+        "5980f9d4-66bc",
+        "848245a4-784e",
+        "52e1bc36-cbd9",
+        "48edeea5-bcbb",
+        "272adc9b-87b8",
+        "5fcbda4d-b327",
+        "94977f08-7166",
+        "31ae3b28-93b9",
+        "7daae6d0-fd4c",
+        "0624f678-73df",
+        "d380b48d-2c3e",
+        "06cd7371-82b5",
+        "29c59354-3cf6"
+      ],
+      "block": "C",
+      "ours": {
+        "count": 15,
+        "ids": [
+          "b878dd26-46ae",
+          "439f5d6c-f38b",
+          "5980f9d4-66bc",
+          "848245a4-784e",
+          "52e1bc36-cbd9",
+          "48edeea5-bcbb",
+          "272adc9b-87b8",
+          "5fcbda4d-b327",
+          "94977f08-7166",
+          "31ae3b28-93b9",
+          "7daae6d0-fd4c",
+          "0624f678-73df",
+          "d380b48d-2c3e",
+          "06cd7371-82b5",
+          "29c59354-3cf6"
+        ]
+      },
+      "gameview": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 14,
+        "noProfile": [],
+        "rows": [
+          {
+            "profileId": "b878dd26-46ae-4015-9762-f8ce14638c38",
+            "name": "Ashae Van Eyk",
+            "number": "6",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "439f5d6c-f38b-46c0-927a-9d0d00e9e60c",
+            "name": "Nyah O'Sullivan",
+            "number": "11",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "5980f9d4-66bc-47df-aafe-6c8073c1b9b1",
+            "name": "Kayla Nanscawen-Brown",
+            "number": "13",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "848245a4-784e-4754-89cc-6145c7ae71a4",
+            "name": "Kaitlyn O'Loughlin",
+            "number": "16",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "9b4c5574-0617-4335-b2b0-b7f4a9962af0",
+            "name": "Emily Loftus",
+            "number": "24",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "48edeea5-bcbb-466b-b9b9-ceba8ecd4a88",
+            "name": "Olivia Lang",
+            "number": "27",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "272adc9b-87b8-4738-913a-546ac0783b4a",
+            "name": "Esther Dube",
+            "number": "30",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "name": "Kayla Hofsteede",
+            "number": "2",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "name": "Eden Rebello",
+            "number": "7",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "name": "Addison Krogh",
+            "number": "23",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "name": "Emma Nolan",
+            "number": "24",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "name": "Ella Beary",
+            "number": "39",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "name": "bailey sheen",
+            "number": "42",
+            "typename": "DiscoverParticipant"
+          },
+          {
+            "profileId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "name": "Elise Goode",
+            "number": "44",
+            "typename": "DiscoverParticipant"
+          }
+        ]
+      },
+      "spectator": {
+        "ok": true,
+        "why": null,
+        "permanent": null,
+        "withProfile": 14,
+        "noProfileCount": 0,
+        "rows": [
+          {
+            "profileId": "b878dd26-46ae-4015-9762-f8ce14638c38",
+            "name": "Ashae Van Eyk",
+            "number": "6"
+          },
+          {
+            "profileId": "439f5d6c-f38b-46c0-927a-9d0d00e9e60c",
+            "name": "Nyah O'Sullivan",
+            "number": "11"
+          },
+          {
+            "profileId": "5980f9d4-66bc-47df-aafe-6c8073c1b9b1",
+            "name": "Kayla Nanscawen-Brown",
+            "number": "13"
+          },
+          {
+            "profileId": "848245a4-784e-4754-89cc-6145c7ae71a4",
+            "name": "Kaitlyn O'Loughlin",
+            "number": "16"
+          },
+          {
+            "profileId": "52e1bc36-cbd9-49bc-9d7a-e14de20ccfb5",
+            "name": "Emily Loftus",
+            "number": "24"
+          },
+          {
+            "profileId": "48edeea5-bcbb-466b-b9b9-ceba8ecd4a88",
+            "name": "Olivia Lang",
+            "number": "27"
+          },
+          {
+            "profileId": "272adc9b-87b8-4738-913a-546ac0783b4a",
+            "name": "Esther Dube",
+            "number": "30"
+          },
+          {
+            "profileId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "name": "Kayla Hofsteede",
+            "number": "2"
+          },
+          {
+            "profileId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "name": "Eden Rebello",
+            "number": "7"
+          },
+          {
+            "profileId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "name": "Emma Nolan",
+            "number": "11"
+          },
+          {
+            "profileId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "name": "Addison Krogh",
+            "number": "23"
+          },
+          {
+            "profileId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "name": "Ella Beary",
+            "number": "39"
+          },
+          {
+            "profileId": "d380b48d-2c3e-4543-abf0-14a009fb1fef",
+            "name": "Bailey Sheen",
+            "number": "42"
+          },
+          {
+            "profileId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "name": "Elise Goode",
+            "number": "44"
+          }
+        ]
+      },
+      "compare": {
+        "oursNotInGameview": [
+          "52e1bc36-cbd9",
+          "d380b48d-2c3e"
+        ],
+        "gameviewNotInOurs": [
+          "9b4c5574-0617"
+        ],
+        "oursNotInSpectator": [
+          "29c59354-3cf6"
+        ],
+        "spectatorNotInOurs": [],
+        "idPairs": [
+          {
+            "name": "Ashae Van Eyk",
+            "number": "6",
+            "gameviewId": "b878dd26-46ae-4015-9762-f8ce14638c38",
+            "spectatorId": "b878dd26-46ae-4015-9762-f8ce14638c38",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Nyah O'Sullivan",
+            "number": "11",
+            "gameviewId": "439f5d6c-f38b-46c0-927a-9d0d00e9e60c",
+            "spectatorId": "439f5d6c-f38b-46c0-927a-9d0d00e9e60c",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Kayla Nanscawen-Brown",
+            "number": "13",
+            "gameviewId": "5980f9d4-66bc-47df-aafe-6c8073c1b9b1",
+            "spectatorId": "5980f9d4-66bc-47df-aafe-6c8073c1b9b1",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Kaitlyn O'Loughlin",
+            "number": "16",
+            "gameviewId": "848245a4-784e-4754-89cc-6145c7ae71a4",
+            "spectatorId": "848245a4-784e-4754-89cc-6145c7ae71a4",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Emily Loftus",
+            "number": "24",
+            "gameviewId": "9b4c5574-0617-4335-b2b0-b7f4a9962af0",
+            "spectatorId": "52e1bc36-cbd9-49bc-9d7a-e14de20ccfb5",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Olivia Lang",
+            "number": "27",
+            "gameviewId": "48edeea5-bcbb-466b-b9b9-ceba8ecd4a88",
+            "spectatorId": "48edeea5-bcbb-466b-b9b9-ceba8ecd4a88",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Esther Dube",
+            "number": "30",
+            "gameviewId": "272adc9b-87b8-4738-913a-546ac0783b4a",
+            "spectatorId": "272adc9b-87b8-4738-913a-546ac0783b4a",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Kayla Hofsteede",
+            "number": "2",
+            "gameviewId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "spectatorId": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Eden Rebello",
+            "number": "7",
+            "gameviewId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "spectatorId": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Addison Krogh",
+            "number": "23",
+            "gameviewId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "spectatorId": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Emma Nolan",
+            "number": "24",
+            "gameviewId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "spectatorId": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "Ella Beary",
+            "number": "39",
+            "gameviewId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "spectatorId": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "same": true,
+            "samePrefix13": true
+          },
+          {
+            "name": "bailey sheen",
+            "number": "42",
+            "gameviewId": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "spectatorId": "d380b48d-2c3e-4543-abf0-14a009fb1fef",
+            "same": false,
+            "samePrefix13": false
+          },
+          {
+            "name": "Elise Goode",
+            "number": "44",
+            "gameviewId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "spectatorId": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "same": true,
+            "samePrefix13": true
+          }
+        ],
+        "idPairsDiffering": 2,
+        "unresolvedOurIds": [],
+        "resolution": [
+          {
+            "rosterId": "b878dd26-46ae",
+            "resolvesTo": "b878dd26-46ae-4015-9762-f8ce14638c38",
+            "error": null
+          },
+          {
+            "rosterId": "439f5d6c-f38b",
+            "resolvesTo": "439f5d6c-f38b-46c0-927a-9d0d00e9e60c",
+            "error": null
+          },
+          {
+            "rosterId": "5980f9d4-66bc",
+            "resolvesTo": "5980f9d4-66bc-47df-aafe-6c8073c1b9b1",
+            "error": null
+          },
+          {
+            "rosterId": "848245a4-784e",
+            "resolvesTo": "848245a4-784e-4754-89cc-6145c7ae71a4",
+            "error": null
+          },
+          {
+            "rosterId": "52e1bc36-cbd9",
+            "resolvesTo": "9b4c5574-0617-4335-b2b0-b7f4a9962af0",
+            "error": null
+          },
+          {
+            "rosterId": "48edeea5-bcbb",
+            "resolvesTo": "48edeea5-bcbb-466b-b9b9-ceba8ecd4a88",
+            "error": null
+          },
+          {
+            "rosterId": "272adc9b-87b8",
+            "resolvesTo": "272adc9b-87b8-4738-913a-546ac0783b4a",
+            "error": null
+          },
+          {
+            "rosterId": "5fcbda4d-b327",
+            "resolvesTo": "5fcbda4d-b327-4a77-a16d-51521ac4095e",
+            "error": null
+          },
+          {
+            "rosterId": "94977f08-7166",
+            "resolvesTo": "94977f08-7166-40fd-a9bf-f3c2b80cf1f1",
+            "error": null
+          },
+          {
+            "rosterId": "31ae3b28-93b9",
+            "resolvesTo": "31ae3b28-93b9-44bd-8f50-ca14b0e038e8",
+            "error": null
+          },
+          {
+            "rosterId": "7daae6d0-fd4c",
+            "resolvesTo": "7daae6d0-fd4c-4f8c-9eeb-a9a05be0a447",
+            "error": null
+          },
+          {
+            "rosterId": "0624f678-73df",
+            "resolvesTo": "0624f678-73df-434a-83e0-2ea9c108e6d3",
+            "error": null
+          },
+          {
+            "rosterId": "d380b48d-2c3e",
+            "resolvesTo": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "error": null
+          },
+          {
+            "rosterId": "06cd7371-82b5",
+            "resolvesTo": "06cd7371-82b5-4687-8a88-6f2e7aaad50e",
+            "error": null
+          },
+          {
+            "rosterId": "29c59354-3cf6",
+            "resolvesTo": "29c59354-3cf6-43e6-b78b-9c4483022c40",
+            "error": null
+          }
+        ]
+      }
+    }
+  ]
+}
