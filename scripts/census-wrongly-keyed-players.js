@@ -81,6 +81,11 @@ const EXPLAIN      = !!ARGS['explain-failures'];
 // Those distinctions call for opposite fixes. It touches no progress file and
 // re-runs nothing else.
 const DIAGNOSE     = ARGS.diagnose ? Math.max(1, parseInt(ARGS.diagnose, 10)) : 0;
+// OFFLINE. Reads the saved diagnosis and shows, per attempt, the spectator row
+// carrying the claimed id next to the gameView rows — to establish WHY no pair
+// formed. Added 2026-08-26: 145/145 attempts had the claimed id present in
+// PlayHQ's spectator list and still produced no pair, and pairing joins on name.
+const WHYNOPAIR    = !!ARGS['why-no-pair'];
 const DIAG_FILE    = path.join(ROOT, 'reports', 'census-recovery-diagnosis.json');
 const DIAG_REL     = path.relative(ROOT, DIAG_FILE);
 const GAMES_DIR    = path.join(ROOT, 'games', 'bv');
@@ -550,6 +555,60 @@ function loadGamesIndex(wanted) {
   return idx;
 }
 
+function whyNoPair() {
+  if (!fs.existsSync(DIAG_FILE)) throw new Error(`no diagnosis at ${DIAG_REL} — run the diagnose mode first`);
+  const rep = JSON.parse(fs.readFileSync(DIAG_FILE, 'utf8'));
+  let attempts = 0, nameBlank = 0, nameSet = 0, numberSet = 0, numberBlank = 0;
+  let gvNameForSameNumber = 0, uniqueNumberOnSide = 0, sameCount = 0;
+  const examples = [];
+
+  for (const p of (rep.players || [])) {
+    const claimed = new Set(p.claimed || []);
+    for (const t of (p.attempts || [])) {
+      const spec = t.spectatorRoster || [], gv = t.gameviewRoster || [];
+      if (!spec.length || !gv.length) continue;
+      const row = spec.find(r => r.profileId && claimed.has(String(r.profileId).slice(0, TRUNC_LEN)));
+      if (!row) continue;
+      attempts++;
+      const hasName = !!(row.name && String(row.name).trim());
+      hasName ? nameSet++ : nameBlank++;
+      const hasNum = row.number !== null && row.number !== undefined && String(row.number) !== '';
+      hasNum ? numberSet++ : numberBlank++;
+      if (spec.length === gv.length) sameCount++;
+
+      // Would a jersey-number match be decisive?
+      const sameNum = hasNum ? gv.filter(g => String(g.number) === String(row.number)) : [];
+      if (sameNum.length === 1) uniqueNumberOnSide++;
+      if (sameNum.length === 1 && sameNum[0].name) gvNameForSameNumber++;
+
+      if (examples.length < 12) {
+        examples.push({ player: p.name, gameId: t.gameId,
+          specRow: { id: row.profileId, name: row.name, number: row.number },
+          gvSameNumber: sameNum.map(g => ({ id: g.profileId, name: g.name, number: g.number })),
+          specRows: spec.length, gvRows: gv.length });
+      }
+    }
+  }
+
+  console.log(`${DIAG_REL}: ${attempts} attempt(s) where the claimed id was found in the spectator roster\n`);
+  console.log('──── THE SPECTATOR ROW CARRYING OUR PLAYER ────');
+  console.log(`  name present : ${nameSet}`);
+  console.log(`  name BLANK   : ${nameBlank}   <- pairing joins on name, so these can never pair`);
+  console.log(`  number present: ${numberSet}`);
+  console.log(`  number blank  : ${numberBlank}`);
+  console.log(`  rosters equal in size: ${sameCount}/${attempts}`);
+  console.log('\n──── WOULD JERSEY NUMBER BE DECISIVE INSTEAD? ────');
+  console.log(`  exactly one gameView row shares that number : ${uniqueNumberOnSide}/${attempts}`);
+  console.log(`  ...and that row carries a name              : ${gvNameForSameNumber}`);
+  console.log('\n──── EXAMPLES ────');
+  for (const e of examples) {
+    console.log(`  ${e.player} · game ${e.gameId} · spectator ${e.specRows} rows, gameView ${e.gvRows} rows`);
+    console.log(`      our player's spectator row: id ${e.specRow.id} · name ${JSON.stringify(e.specRow.name)} · number ${JSON.stringify(e.specRow.number)}`);
+    console.log(`      gameView rows with that number: ${e.gvSameNumber.length ? JSON.stringify(e.gvSameNumber) : 'none'}`);
+  }
+  console.log('\nNOTE: this reads the SAVED rosters. No API calls, nothing written.');
+}
+
 async function diagnoseRecovery(n) {
   if (!fs.existsSync(OUT_FILE)) throw new Error(`no report at ${OUT_REL} — run the census first`);
   const rep = JSON.parse(fs.readFileSync(OUT_FILE, 'utf8'));
@@ -653,6 +712,7 @@ async function main() {
 
   if (EXPLAIN) { explainFailures(); return; }
   if (DIAGNOSE)  { await diagnoseRecovery(DIAGNOSE); return; }
+  if (WHYNOPAIR) { whyNoPair(); return; }
 
   let st = loadProgress();
   if (!st) {
