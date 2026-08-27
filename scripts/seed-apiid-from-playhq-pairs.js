@@ -74,6 +74,14 @@ const REPORTS = typeof ARGS.reports === 'string' && ARGS.reports.trim()
   ? ARGS.reports.split(',').map(s => s.trim()).filter(Boolean)
   : ['reports/alias-vs-playhq-audit-wide.json', 'reports/alias-vs-playhq-audit.json'];
 const MAX     = ARGS.max ? Math.max(1, parseInt(ARGS.max, 10)) : 1000;
+// Every run prints this. A run whose output is questioned can then be tied to a
+// specific version of the file instead of argued about: on 2026-08-26 two runs
+// produced byte-identical output including the elapsed seconds, and there was no
+// way to tell from the log which code had executed.
+const BUILD = 'names-v2-surname-anchored (equal/subset, else surname must match: equal|prefix|contains|typo<=2)';
+// Offline. Re-evaluates the name filter over the report and prints the verdicts.
+// No API calls, no writes, seconds not minutes.
+const NAMES_ONLY = !!ARGS['names-only'];
 
 const API_URL       = 'https://api.playhq.com/graphql';
 const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';  // declared for the verbatim block; unused
@@ -592,7 +600,8 @@ function collectCases() {
 
 async function main() {
   const t0 = Date.now();
-  console.log(`seed-apiid-from-playhq-pairs — ${APPLY ? 'APPLY (will write)' : 'DRY RUN (writes nothing)'}\n`);
+  console.log(`seed-apiid-from-playhq-pairs — ${APPLY ? 'APPLY (will write)' : 'DRY RUN (writes nothing)'}`);
+  console.log(`build: ${BUILD}\n`);
   fs.mkdirSync(REPORTS_DIR, { recursive: true });
 
   console.log('Collecting cases');
@@ -603,6 +612,26 @@ async function main() {
     return;
   }
   console.log(`  ${cases.length} distinct player file(s) to consider\n`);
+
+  if (NAMES_ONLY) {
+    const acc = [], rej = [], und = [];
+    for (const c of cases) {
+      const n = nameCheck(c);
+      const line = `${JSON.stringify(n.ourFileName)} vs ${JSON.stringify(n.theirName)}  [${c.pairedBy}]`;
+      (n.namesAgree === true ? acc : n.namesAgree === false ? rej : und).push(line);
+    }
+    console.log(`──── NAME FILTER ONLY (offline, no API calls) ────`);
+    console.log(`  accepted     : ${acc.length}`);
+    console.log(`  rejected     : ${rej.length}`);
+    console.log(`  cannot judge : ${und.length}`);
+    console.log('\n  first 40 ACCEPTED:');
+    for (const l of acc.slice(0, 40)) console.log('    ' + l);
+    console.log('\n  first 40 REJECTED:');
+    for (const l of rej.slice(0, 40)) console.log('    ' + l);
+    console.log('\n  cannot judge:');
+    for (const l of und.slice(0, 20)) console.log('    ' + l);
+    return;
+  }
 
   // ── How each api id was arrived at ──────────────────────────────────────────
   // 'name' and 'name+number' are PlayHQ's OWN claim: both rosters agree who that
