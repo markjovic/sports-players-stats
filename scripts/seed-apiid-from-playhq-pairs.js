@@ -395,6 +395,45 @@ function writePlayer(uuid, player) {
   fs.writeFileSync(playerPath(uuid), JSON.stringify(player), 'utf8');
 }
 
+// ─── Surname agreement — a REJECT filter, never a matcher ─────────────────────
+// 2026-08-26: the merge-keeper check surfaced 15 cases and 5 of them paired
+// DIFFERENT PEOPLE — Sam Danger against Josh Allen, Liam Treeby against Jack
+// Giddens, Charlotte Mitchell against Harper Bygrave, Cleo Hopper against
+// Jocelyn Field, and a season-label stub "Winter 2026" against Evie Fasciale.
+// All five came from elimination. It only caught them because the stub happened
+// to outweigh the target; the same errors sit undetected among the cases where
+// the target is larger, and there a stub's games would merge onto a stranger.
+//
+// In all 15, surname agreed for every correct pair (Lachlan/Lachie Wheatley,
+// Will/William Gurry, Josh/Joshua Beasy) and disagreed for every wrong one.
+//
+// This is used ONLY to reject. It never selects a target, never breaks a tie and
+// never proposes anything. A name heuristic that can only discard is safe; the
+// same heuristic used to CHOOSE is what made the earlier alias rounds unsound.
+const PLACEHOLDER_NAME = /^(player\s*#|unknown|^\s*$)/i;
+const SEASON_LABEL = /\b(summer|winter|autumn|spring|season)\b.*\b(19|20)\d\d\b|\b(19|20)\d\d\b.*\b(summer|winter|autumn|spring|season)\b/i;
+
+function nameUsable(n) {
+  if (!n || !String(n).trim()) return false;
+  if (PLACEHOLDER_NAME.test(String(n))) return false;
+  if (SEASON_LABEL.test(String(n))) return false;
+  return true;
+}
+function surname(n) {
+  const parts = String(n).toLowerCase().replace(/[^a-z\s'-]/g, ' ').split(/\s+/).filter(Boolean);
+  return parts.length ? parts[parts.length - 1] : '';
+}
+// Agreement is deliberately loose on GIVEN names (Lachie/Lachlan) and strict on
+// the surname, because that is where the measured signal was.
+function namesAgree(a, b) {
+  if (!nameUsable(a) || !nameUsable(b)) return null;      // null = cannot judge
+  const sa = surname(a), sb = surname(b);
+  if (!sa || !sb) return null;
+  if (sa === sb) return true;
+  if (sa.startsWith(sb) || sb.startsWith(sa)) return true; // O'Brien / OBrien style
+  return false;
+}
+
 // ─── Who would survive the fold's merge ───────────────────────────────────────
 // fold-diverged-players.js L539-544: keeper = the record with MORE games[]
 // entries, ties to the api-keyed one; final = clone(keeper); unionScaffold then
@@ -426,6 +465,20 @@ function keeperOutlook(c) {
     // a real, credited profile would become a private one with no stats.
     stubWouldOverwriteRealProfile: !keeperIsTarget && target.private !== true,
   };
+}
+
+// The name we compare against: the target file's name when one exists, otherwise
+// the name PlayHQ's gameView gave for the api id.
+function nameCheck(c) {
+  const src = readPlayer(c.uuid);
+  const ourName = (src && src.name) || c.ourName || null;
+  let theirName = c.gameviewName || c.name || null;
+  const tp = playerPath(c.apiId);
+  if (fs.existsSync(tp)) {
+    try { const t = JSON.parse(fs.readFileSync(tp, 'utf8')); if (t && t.name) theirName = t.name; } catch {}
+  }
+  const agree = namesAgree(ourName, theirName);
+  return { ourFileName: ourName, theirName, namesAgree: agree };
 }
 
 // ─── Case collection ──────────────────────────────────────────────────────────
@@ -542,6 +595,7 @@ async function main() {
                   gamesHeld: c.gamesHeld,
                   targetHasPlayerFile: fs.existsSync(playerPath(c.apiId)),
                   ...keeperOutlook(c),
+                  ...nameCheck(c),
                   spectatorIds: [...c.spectatorIds], games: [...c.games],
                   conflictingApiIds: [...c.conflictingApiIds] };
 
@@ -567,6 +621,18 @@ async function main() {
     if (typeof player.apiId === 'string' && player.apiId) {
       skipped.push({ ...rec, why: `already carries apiId ${player.apiId} — the fold will act on it; not overwriting` });
       console.log(`  SKIP ${c.uuid.slice(0, 8)} ${c.name} — already has apiId`);
+      continue;
+    }
+
+    // Reject on surname disagreement BEFORE spending API calls on it.
+    if (rec.namesAgree === false) {
+      skipped.push({ ...rec, why: `surnames disagree: "${rec.ourFileName}" vs "${rec.theirName}" — refusing (elimination produced 5 known wrong pairs of this shape)` });
+      console.log(`  SKIP ${c.uuid.slice(0, 8)} — "${rec.ourFileName}" vs "${rec.theirName}" (different people)`);
+      continue;
+    }
+    if (rec.namesAgree === null && c.pairedBy === 'elimination') {
+      skipped.push({ ...rec, why: `one name unusable ("${rec.ourFileName}" / "${rec.theirName}") and the pair came from elimination — no independent check available` });
+      console.log(`  SKIP ${c.uuid.slice(0, 8)} — name unusable and pair was inferred`);
       continue;
     }
 
