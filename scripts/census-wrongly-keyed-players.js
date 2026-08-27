@@ -86,6 +86,9 @@ const DIAGNOSE     = ARGS.diagnose ? Math.max(1, parseInt(ARGS.diagnose, 10)) : 
 // formed. Added 2026-08-26: 145/145 attempts had the claimed id present in
 // PlayHQ's spectator list and still produced no pair, and pairing joins on name.
 const WHYNOPAIR    = !!ARGS['why-no-pair'];
+// Re-runs phase 3 for players already marked done whose recovery failed, so an
+// improved matcher can revisit them without re-testing 7,606 keys.
+const REDO_FAILED  = !!ARGS['redo-failed'];
 const DIAG_FILE    = path.join(ROOT, 'reports', 'census-recovery-diagnosis.json');
 const DIAG_REL     = path.relative(ROOT, DIAG_FILE);
 const GAMES_DIR    = path.join(ROOT, 'games', 'bv');
@@ -402,20 +405,20 @@ async function gitCommit(message, dirs) {
 }
 // ─── Row readers (probe-local: the live parsers DROP no-profile rows) ─────────
 
-function gvRows(ts) {
+function gvRows(ts, side) {
   const out = [];
   for (const p of ((ts && ts.players) || [])) {
     const pl = p && p.player, pr = pl && pl.profile;
     out.push({ profileId: (pr && pr.id) || null,
                name: pr ? [pr.firstName, pr.lastName].filter(Boolean).join(' ').trim() : ((pl && pl.name) || null),
-               number: p.playerNumber ?? null });
+               number: p.playerNumber ?? null, side: side || null });
   }
   return out;
 }
-function specRows(ts) {
+function specRows(ts, side) {
   const out = [];
   for (const p of ((ts && ts.players) || [])) {
-    out.push({ profileId: p.profileID || null, name: p.name || null, number: p.playerNumber ?? null });
+    out.push({ profileId: p.profileID || null, name: p.name || null, number: p.playerNumber ?? null, side: side || null });
   }
   return out;
 }
@@ -436,10 +439,38 @@ function pairRosters(gvList, spList) {
     if (!r.profileId) continue;
     const k = normName(r.name); if (!k) continue;
     const c = byName.get(k) || [];
-    if (c.length === 1) { pairs.push({ name: r.name, number: r.number, apiId: r.profileId, spectatorId: c[0].profileId }); continue; }
+    if (c.length === 1) { pairs.push({ name: r.name, number: r.number, apiId: r.profileId, spectatorId: c[0].profileId, by: 'name' }); continue; }
     if (c.length > 1) {
       const m = c.filter(x => x.number != null && r.number != null && x.number === r.number);
-      if (m.length === 1) pairs.push({ name: r.name, number: r.number, apiId: r.profileId, spectatorId: m[0].profileId });
+      if (m.length === 1) pairs.push({ name: r.name, number: r.number, apiId: r.profileId, spectatorId: m[0].profileId, by: 'name+number' });
+    }
+  }
+
+  // ── ELIMINATION ────────────────────────────────────────────────────────────
+  // Names cannot join a diverged person: measured 2026-08-26, the spectator row
+  // carries the name the CLUB entered and the gameView row carries the PlayHQ
+  // ACCOUNT name — "Nathan Hargrave" against "Nate Hargrave", "Maxwell Miller"
+  // against "Max Miller", "William Robertson" against "Will Robertson". Jersey
+  // number is no fallback either: only 63 of 104 had a unique number match, and
+  // one gameView row sharing our player's number was a DIFFERENT PERSON
+  // (Molly McPhee #7 against Kate Pratt #7). Matching on either would have
+  // produced confident, wrong api ids and written them to player files.
+  //
+  // Elimination needs neither. Within ONE SIDE of ONE game, once every row that
+  // matched exactly is removed, if exactly one row remains on each side they are
+  // the same person by exhaustion. Two or more remaining on either side and it
+  // refuses — a leftover pool of two is a coin toss, and a coin toss here becomes
+  // a wrong apiId on a real player file.
+  const pairedGv   = new Set(pairs.map(p => p.apiId));
+  const pairedSpec = new Set(pairs.map(p => p.spectatorId));
+  for (const side of ['home', 'away']) {
+    const gvLeft = gvList.filter(r => r.profileId && r.side === side && !pairedGv.has(r.profileId));
+    const spLeft = spList.filter(r => r.profileId && r.side === side && !pairedSpec.has(r.profileId));
+    if (gvLeft.length === 1 && spLeft.length === 1) {
+      pairs.push({ name: spLeft[0].name, number: spLeft[0].number,
+                   apiId: gvLeft[0].profileId, spectatorId: spLeft[0].profileId,
+                   by: 'elimination', eliminationSide: side,
+                   gameviewName: gvLeft[0].name, spectatorName: spLeft[0].name });
     }
   }
   return pairs;
@@ -643,8 +674,8 @@ async function diagnoseRecovery(n) {
       const gv = await gqlGameView(gameId);
       const sp = await gqlSpectator(gameId);
 
-      const gvList = gv.ok ? [...gvRows((gv.game.statistics || {}).home), ...gvRows((gv.game.statistics || {}).away)] : [];
-      const spList = sp.ok ? [...specRows((sp.game.statistics || {}).home), ...specRows((sp.game.statistics || {}).away)] : [];
+      const gvList = gv.ok ? [...gvRows((gv.game.statistics || {}).home, 'home'), ...gvRows((gv.game.statistics || {}).away, 'away')] : [];
+      const spList = sp.ok ? [...specRows((sp.game.statistics || {}).home, 'home'), ...specRows((sp.game.statistics || {}).away, 'away')] : [];
 
       const specHasClaimed = spList.filter(r => r.profileId && claimed.has(t13(r.profileId)));
       const gvHasClaimed   = gvList.filter(r => r.profileId && claimed.has(t13(r.profileId)));
@@ -761,6 +792,13 @@ async function main() {
   console.log(`  unknown (transport)     : ${unknownKeys}  — decided nothing, will be retried on the next run`);
 
   // ── Phase 3: recover each confirmed player's api id from one of its games ───
+  if (REDO_FAILED) {
+    const failedIds = new Set((st.gameFailures || []).map(f => f.uuid));
+    const before = st.done.length;
+    st.done = st.done.filter(u => !failedIds.has(u));
+    st.gameFailures = [];
+    console.log(`  --redo-failed: ${before - st.done.length} previously-failed player(s) returned to the queue`);
+  }
   const doneSet = new Set(st.done);
   const todo = confirmed.filter(c => !doneSet.has(c.uuid));
   console.log(`\nPhase 3 — recovering api ids for ${todo.length} player(s), up to ${GAMES_PER} game(s) each`);
@@ -779,8 +817,8 @@ async function main() {
       const sp = await gqlSpectator(gameId);
       if (!gv.ok || !sp.ok) { tried.push({ gameId, gameview: gv.ok ? 'ok' : gv.why, spectator: sp.ok ? 'ok' : sp.why }); continue; }
       const gvs = gv.game.statistics || {}, sps = sp.game.statistics || {};
-      const pairs = pairRosters([...gvRows(gvs.home), ...gvRows(gvs.away)],
-                                [...specRows(sps.home), ...specRows(sps.away)]);
+      const pairs = pairRosters([...gvRows(gvs.home, 'home'), ...gvRows(gvs.away, 'away')],
+                                [...specRows(sps.home, 'home'), ...specRows(sps.away, 'away')]);
       // Identify by ID: the pair whose spectator id this player already claims.
       const hit = pairs.find(p => claimed.has(t13(p.spectatorId)));
       if (!hit) { tried.push({ gameId, gameview: 'ok', spectator: 'ok', why: 'no pair carried an id this player claims' }); continue; }
@@ -791,8 +829,12 @@ async function main() {
     if (found) {
       st.wrong.push({ resolvesTo: c.uuid, apiId: found.apiId, name: found.name,
                       spectatorId: found.spectatorId, gameId: found.gameId,
-                      number: found.number, gamesHeld: c.gamesHeld, ourName: c.name });
-      console.log(`  ✓ ${c.uuid.slice(0, 8)} ${c.name || '(no name)'} -> api ${found.apiId.slice(0, 8)} (game ${found.gameId}, holds ${c.gamesHeld} games)`);
+                      number: found.number, gamesHeld: c.gamesHeld, ourName: c.name,
+                      pairedBy: found.by || 'name',
+                      gameviewName: found.gameviewName || null, spectatorName: found.spectatorName || null });
+      console.log(`  ✓ ${c.uuid.slice(0, 8)} ${c.name || '(no name)'} -> api ${found.apiId.slice(0, 8)} by ${found.by || 'name'}` +
+        (found.by === 'elimination' ? ` [${found.spectatorName} = ${found.gameviewName}]` : '') +
+        ` (game ${found.gameId}, holds ${c.gamesHeld} games)`);
     } else {
       st.gameFailures.push({ uuid: c.uuid, name: c.name, gamesHeld: c.gamesHeld, tried });
       console.log(`  ✗ ${c.uuid.slice(0, 8)} ${c.name || '(no name)'} — no api id recovered from ${c.games.length} game(s)`);
