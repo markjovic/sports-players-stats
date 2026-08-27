@@ -395,6 +395,39 @@ function writePlayer(uuid, player) {
   fs.writeFileSync(playerPath(uuid), JSON.stringify(player), 'utf8');
 }
 
+// ─── Who would survive the fold's merge ───────────────────────────────────────
+// fold-diverged-players.js L539-544: keeper = the record with MORE games[]
+// entries, ties to the api-keyed one; final = clone(keeper); unionScaffold then
+// merges ONLY seasons, games, teams, gameTids and name from the loser (L111-153).
+// It does NOT merge `private`, `statsChecked` or any stats block.
+//
+// So when OUR STUB holds more games than the real api file, the stub becomes the
+// keeper and the merged record inherits private:true and statsChecked from it
+// while the real profile's stats are dropped. games[] would look correct, which
+// is what makes that failure quiet. These cases are counted and named here so the
+// decision is made before the write, not discovered after it.
+function keeperOutlook(c) {
+  const tp = playerPath(c.apiId);
+  if (!fs.existsSync(tp)) return { foldAction: 'promote', keeperWouldBe: null };
+  let target = null;
+  try { target = JSON.parse(fs.readFileSync(tp, 'utf8')); } catch { return { foldAction: 'merge', keeperWouldBe: 'unreadable-target' }; }
+  const source = readPlayer(c.uuid);
+  const sGames = source && Array.isArray(source.games) ? source.games.length : 0;
+  const tGames = Array.isArray(target.games) ? target.games.length : 0;
+  const keeperIsTarget = tGames >= sGames;   // fold: tGames > sGames, ties to api-keyed
+  return {
+    foldAction: 'merge',
+    keeperWouldBe: keeperIsTarget ? 'api-file (correct)' : 'OUR STUB',
+    sourceGames: sGames, targetGames: tGames,
+    targetName: target.name || null,
+    targetIsPrivate: target.private === true,
+    sourceIsPrivate: source ? source.private === true : null,
+    // Only dangerous when the stub wins AND the target is not already private:
+    // a real, credited profile would become a private one with no stats.
+    stubWouldOverwriteRealProfile: !keeperIsTarget && target.private !== true,
+  };
+}
+
 // ─── Case collection ──────────────────────────────────────────────────────────
 // Reads the WRONG rows out of one or more audit reports. A WRONG row means: for
 // a real game, PlayHQ paired this spectator id with this api id, and our
@@ -508,6 +541,7 @@ async function main() {
                   pairedBy: c.pairedBy, gameviewName: c.gameviewName, spectatorName: c.spectatorName,
                   gamesHeld: c.gamesHeld,
                   targetHasPlayerFile: fs.existsSync(playerPath(c.apiId)),
+                  ...keeperOutlook(c),
                   spectatorIds: [...c.spectatorIds], games: [...c.games],
                   conflictingApiIds: [...c.conflictingApiIds] };
 
@@ -570,11 +604,24 @@ async function main() {
   }
 
   // ── Report ──────────────────────────────────────────────────────────────────
-  const merges = written.filter(w => w.targetHasPlayerFile).length;
+  const merges  = written.filter(w => w.targetHasPlayerFile).length;
+  const stubWins = written.filter(w => w.keeperWouldBe === 'OUR STUB');
+  const dangerous = written.filter(w => w.stubWouldOverwriteRealProfile);
   console.log('\n──── TOTALS ────');
   console.log(`  cases considered : ${considered}`);
   console.log(`  of those, fold would MERGE into an existing file : ${merges}`);
   console.log(`  of those, fold would promote into empty space    : ${written.length - merges}`);
+  console.log(`  merges where OUR STUB would be the keeper        : ${stubWins.length}`);
+  console.log(`  ...of those, target is NOT already private       : ${dangerous.length}   <- these lose a real profile's stats`);
+  if (dangerous.length) {
+    console.log('\n──── MERGES THAT WOULD OVERWRITE A REAL PROFILE ────');
+    console.log('  The stub holds more games, so the fold keeps the stub and the real');
+    console.log('  profile\'s stats and private flag are replaced. Games survive; stats do not.');
+    for (const w of dangerous.slice(0, 30)) {
+      console.log(`  ${w.uuid} (${w.ourName || w.name}) ${w.sourceGames} games  ->  ${w.apiId} (${w.targetName}) ${w.targetGames} games`);
+    }
+    if (dangerous.length > 30) console.log(`  … and ${dangerous.length - 30} more, all in the log`);
+  }
   console.log(`  ${APPLY ? 'seeded' : 'would seed'} : ${written.length}`);
   console.log(`  skipped          : ${skipped.length}`);
   if (skipped.length) {
