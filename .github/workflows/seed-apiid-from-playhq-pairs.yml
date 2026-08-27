@@ -48,6 +48,11 @@ on:
         required: false
         default: 'reports/alias-vs-playhq-audit-wide.json,reports/alias-vs-playhq-audit.json'
         type: string
+      names_only:
+        description: 'Name filter only, offline (seconds)'
+        required: false
+        default: false
+        type: boolean
       max:
         description: 'Max players this run'
         required: false
@@ -80,5 +85,6 @@ jobs:
       - name: Seed apiId
         run: |
           ARGS="--reports=${{ inputs.reports }} --max=${{ inputs.max }}"
+          if [ "${{ inputs.names_only }}" = "true" ] || [ "${{ inputs.names_only }}" = "True" ]; then ARGS="$ARGS --names-only"; fi
           if [ "${{ inputs.mode }}" = "apply" ]; then ARGS="$ARGS --apply"; fi
           node scripts/seed-apiid-from-playhq-pairs.js $ARGS
