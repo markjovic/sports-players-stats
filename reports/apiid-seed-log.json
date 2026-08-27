@@ -1,41 +1,11 @@
 {
-  "generatedAt": "2026-08-27T10:14:47.770Z",
+  "generatedAt": "2026-08-27T10:53:04.797Z",
   "mode": "dry-run",
   "reports": [
     "reports/wrongly-keyed-census.json"
   ],
   "reversal": "delete the apiId field from each listed file — valid only until fold-diverged-players runs",
   "seeded": [
-    {
-      "uuid": "00894313-ec38-4dd0-8bb4-4b70bea27b4f",
-      "apiId": "bd3bd482-8246-49c7-9f3d-061ee66ef2d9",
-      "name": "Sashi Shearn",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 6,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 6,
-      "targetGames": 437,
-      "targetName": "sashi shearn",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "sashi shearn",
-      "namesAgree": null,
-      "spectatorIds": [
-        "00894313-ec38-4dd0-8bb4-4b70bea27b4f"
-      ],
-      "games": [
-        "0c1ea4b8"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
     {
       "uuid": "03dde4ac-a59e-4467-bd5c-aaaaa1e84e19",
       "apiId": "87935e8d-3279-49f0-a0d2-4747a3d3872a",
@@ -86,36 +56,6 @@
       ],
       "games": [
         "0218cdcb"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "115492bd-b96f-47ee-9a90-664b5cd1548e",
-      "apiId": "0b1952aa-fac2-4280-b95e-01b6bf42fd1e",
-      "name": "Lucas Song",
-      "ourName": "Lucas Song",
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 67,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "OUR STUB",
-      "sourceGames": 67,
-      "targetGames": 1,
-      "targetName": "Lucas Song",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": true,
-      "ourFileName": "Lucas Song",
-      "theirName": "Lucas Song",
-      "namesAgree": true,
-      "spectatorIds": [
-        "115492bd-b96f-47ee-9a90-664b5cd1548e"
-      ],
-      "games": [
-        "0a6ff5d1"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -253,36 +193,6 @@
       "wouldWrite": true
     },
     {
-      "uuid": "278d6dab-b6f4-46aa-bb55-ceab35dc2046",
-      "apiId": "a90c900d-46dc-4b9f-b331-2908c9428abc",
-      "name": "Bowie Kingdom",
-      "ourName": "Player #278d6dab-b6f4",
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 18,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 18,
-      "targetGames": 80,
-      "targetName": "Bowie Kingdom",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": "Player #278d6dab-b6f4",
-      "theirName": "Bowie Kingdom",
-      "namesAgree": null,
-      "spectatorIds": [
-        "278d6dab-b6f4-46aa-bb55-ceab35dc2046"
-      ],
-      "games": [
-        "115ff081"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
       "uuid": "289b5b69-200f-4c73-ad05-88bf96f606ec",
       "apiId": "ac1185d6-3bc2-472f-a003-f3feb17fe33c",
       "name": "Adrian Johansen",
@@ -374,66 +284,6 @@
       ],
       "games": [
         "0202fa4d"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "2dc6893c-11cc-4c52-b092-fc66dba60c8b",
-      "apiId": "cdf7d8d0-e832-4a17-a42a-58fe4b70988f",
-      "name": "Aiden O'Brien",
-      "ourName": "Aiden O'Brien",
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 8,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "OUR STUB",
-      "sourceGames": 8,
-      "targetGames": 2,
-      "targetName": "Aiden O'Brien",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": true,
-      "ourFileName": "Aiden O'Brien",
-      "theirName": "Aiden O'Brien",
-      "namesAgree": true,
-      "spectatorIds": [
-        "2dc6893c-11cc-4c52-b092-fc66dba60c8b"
-      ],
-      "games": [
-        "617d5ba1"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "2f58caf4-fc3a-4c52-bdb5-b9d5ac0ecdba",
-      "apiId": "150776ce-ebaf-4f7b-bd83-5e1a38655ab2",
-      "name": "Caleb Lynn",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 39,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 39,
-      "targetGames": 49,
-      "targetName": "Caleb Lynn",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "Caleb Lynn",
-      "namesAgree": null,
-      "spectatorIds": [
-        "2f58caf4-fc3a-4c52-bdb5-b9d5ac0ecdba"
-      ],
-      "games": [
-        "0a62b937"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -667,36 +517,6 @@
       "wouldWrite": true
     },
     {
-      "uuid": "4933b64e-68b9-45d4-8902-f4fb458682e8",
-      "apiId": "fcb89981-71de-41f7-b9c0-578f5a1e13a4",
-      "name": "rafael marchese",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 38,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 38,
-      "targetGames": 57,
-      "targetName": "rafael marchese",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "rafael marchese",
-      "namesAgree": null,
-      "spectatorIds": [
-        "4933b64e-68b9-45d4-8902-f4fb458682e8"
-      ],
-      "games": [
-        "0d82f5fc"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
       "uuid": "4b6563f3-d71c-4c9c-9ce8-72a1466fe391",
       "apiId": "19690ffc-7bf0-4125-9a8d-2994435550d2",
       "name": "Albert Collier",
@@ -722,36 +542,6 @@
       ],
       "games": [
         "23d398d2"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "4c983b24-5200-4638-ad75-a61b1f730b99",
-      "apiId": "d482b9f0-fe37-4383-85f2-7ef7c8d83442",
-      "name": "Billy Jarvis",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 15,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 15,
-      "targetGames": 39,
-      "targetName": "Billy Jarvis",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "Billy Jarvis",
-      "namesAgree": null,
-      "spectatorIds": [
-        "4c983b24-5200-4638-ad75-a61b1f730b99"
-      ],
-      "games": [
-        "0088ae47"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -877,66 +667,6 @@
       "wouldWrite": true
     },
     {
-      "uuid": "531c8270-abab-4f06-8579-314a4396be40",
-      "apiId": "5b3986fa-8b86-4707-985f-5e4e70687458",
-      "name": "Emily Moyes",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 80,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 80,
-      "targetGames": 100,
-      "targetName": "Emily Moyes",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "Emily Moyes",
-      "namesAgree": null,
-      "spectatorIds": [
-        "531c8270-abab-4f06-8579-314a4396be40"
-      ],
-      "games": [
-        "07152798"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "5e38c397-56df-4934-b339-6a156eb584c7",
-      "apiId": "6520d1f8-1d52-419a-bd4f-eb4ede9fed50",
-      "name": "bailey moore",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 76,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 76,
-      "targetGames": 84,
-      "targetName": "bailey moore",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "bailey moore",
-      "namesAgree": null,
-      "spectatorIds": [
-        "5e38c397-56df-4934-b339-6a156eb584c7"
-      ],
-      "games": [
-        "0591fe92"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
       "uuid": "5e56ef20-55d1-489d-a451-79353dda9c60",
       "apiId": "30f1e37e-8516-4e23-802f-956ea46f4e0a",
       "name": "Liam O'Neill",
@@ -1010,36 +740,6 @@
       ],
       "games": [
         "0aa43733"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "64715f0e-efc5-45c4-8c4f-ba170bf9430f",
-      "apiId": "5f1eeb2d-c234-48c2-be73-5fac69f37990",
-      "name": "Evie Randello",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 1,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 1,
-      "targetGames": 4,
-      "targetName": "Evie Randello",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "Evie Randello",
-      "namesAgree": null,
-      "spectatorIds": [
-        "64715f0e-efc5-45c4-8c4f-ba170bf9430f"
-      ],
-      "games": [
-        "fb646a48"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -1147,36 +847,6 @@
       "wouldWrite": true
     },
     {
-      "uuid": "73497533-e104-4d90-8565-417248e42251",
-      "apiId": "7dcca34e-d35a-4219-8121-63ccc74bfbb1",
-      "name": "Ella Roberts",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 40,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 40,
-      "targetGames": 60,
-      "targetName": "Ella Roberts",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "Ella Roberts",
-      "namesAgree": null,
-      "spectatorIds": [
-        "73497533-e104-4d90-8565-417248e42251"
-      ],
-      "games": [
-        "07defbaf"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
       "uuid": "735e78da-aa0e-4f42-b98b-c92774b8d6e0",
       "apiId": "cad4b8c5-282b-4b55-8558-6d320e1713f0",
       "name": "James Draper",
@@ -1256,36 +926,6 @@
       ],
       "games": [
         "1fbfe816"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "77d7d29e-5dcd-4a56-975a-6d3ff4ddb31b",
-      "apiId": "cdf7d8d0-e832-4a17-a42a-58fe4b70988f",
-      "name": "Aiden O'Brien",
-      "ourName": "Aiden O'Brien",
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 13,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "OUR STUB",
-      "sourceGames": 13,
-      "targetGames": 2,
-      "targetName": "Aiden O'Brien",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": true,
-      "ourFileName": "Aiden O'Brien",
-      "theirName": "Aiden O'Brien",
-      "namesAgree": true,
-      "spectatorIds": [
-        "77d7d29e-5dcd-4a56-975a-6d3ff4ddb31b"
-      ],
-      "games": [
-        "32ea40bd"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -1405,66 +1045,6 @@
       "wouldWrite": true
     },
     {
-      "uuid": "83532dd6-92c4-44ac-b189-c5e8f43309de",
-      "apiId": "c4cbe765-db42-4603-a587-84208e97cd8c",
-      "name": "Archer Drapos",
-      "ourName": "Archer Drapos",
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 19,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "OUR STUB",
-      "sourceGames": 19,
-      "targetGames": 1,
-      "targetName": "Archer Drapos",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": true,
-      "ourFileName": "Archer Drapos",
-      "theirName": "Archer Drapos",
-      "namesAgree": true,
-      "spectatorIds": [
-        "83532dd6-92c4-44ac-b189-c5e8f43309de"
-      ],
-      "games": [
-        "1914c17c"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "84c61cb3-c9a7-4d3a-8f1e-a2b07b4cb272",
-      "apiId": "f6d8b7f5-fe12-46a4-b617-cab69a64c7e4",
-      "name": "Blake Jensen-Muir",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 27,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 27,
-      "targetGames": 47,
-      "targetName": "Blake Jensen-Muir",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "Blake Jensen-Muir",
-      "namesAgree": null,
-      "spectatorIds": [
-        "84c61cb3-c9a7-4d3a-8f1e-a2b07b4cb272"
-      ],
-      "games": [
-        "07376a07"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
       "uuid": "85287188-597a-4b92-b0da-1ee3fd6b96a9",
       "apiId": "a681d6b5-ca57-4210-a589-4a06981a8e96",
       "name": "lewis zeffiro",
@@ -1514,36 +1094,6 @@
       ],
       "games": [
         "099a2961"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "86412ce8-cf00-4185-bcf5-f25921a1e60b",
-      "apiId": "cdd29459-cef6-4fd6-ab44-30927af5825e",
-      "name": "Paul Fatouros",
-      "ourName": "Player #86412ce8-cf00",
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 56,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 56,
-      "targetGames": 73,
-      "targetName": "Paul Fatouros",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": "Player #86412ce8-cf00",
-      "theirName": "Paul Fatouros",
-      "namesAgree": null,
-      "spectatorIds": [
-        "86412ce8-cf00-4185-bcf5-f25921a1e60b"
-      ],
-      "games": [
-        "0373f9c3"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -1699,36 +1249,6 @@
       "wouldWrite": true
     },
     {
-      "uuid": "8b8bcf7e-b95c-4fc8-a520-b8c3c643db55",
-      "apiId": "e11a5e3c-1ddd-40a9-b9a8-5d9bed465cba",
-      "name": "Luca Bode",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 45,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 45,
-      "targetGames": 85,
-      "targetName": "Luca Bode",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "Luca Bode",
-      "namesAgree": null,
-      "spectatorIds": [
-        "8b8bcf7e-b95c-4fc8-a520-b8c3c643db55"
-      ],
-      "games": [
-        "04456ca7"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
       "uuid": "90ba3cb0-879e-4832-ae90-840b5396ec7c",
       "apiId": "e66efaeb-cac0-4cdc-9907-49b9dbe9458b",
       "name": "Benjamin Morgan",
@@ -1759,36 +1279,6 @@
       "wouldWrite": true
     },
     {
-      "uuid": "96f80736-08b2-4da2-a025-b0cf39d1d474",
-      "apiId": "0b045f51-f42e-4f08-93bf-0ef8101e6e56",
-      "name": "Ava Thompson",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 32,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 32,
-      "targetGames": 34,
-      "targetName": "Ava Thompson",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "Ava Thompson",
-      "namesAgree": null,
-      "spectatorIds": [
-        "96f80736-08b2-4da2-a025-b0cf39d1d474"
-      ],
-      "games": [
-        "0508db4f"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
       "uuid": "9c699533-78b0-4304-9faf-465128f8b5c1",
       "apiId": "a1c367cd-fdf1-4215-8dd4-4310e4f3a4b8",
       "name": "Gavin Dale",
@@ -1808,36 +1298,6 @@
       ],
       "games": [
         "008f122b"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "9eddb99e-944c-4e88-923d-5eaebbccbb5a",
-      "apiId": "cdf7d8d0-e832-4a17-a42a-58fe4b70988f",
-      "name": "Aiden O'Brien",
-      "ourName": "Aiden O'Brien",
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 10,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "OUR STUB",
-      "sourceGames": 10,
-      "targetGames": 2,
-      "targetName": "Aiden O'Brien",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": true,
-      "ourFileName": "Aiden O'Brien",
-      "theirName": "Aiden O'Brien",
-      "namesAgree": true,
-      "spectatorIds": [
-        "9eddb99e-944c-4e88-923d-5eaebbccbb5a"
-      ],
-      "games": [
-        "5ae727fb"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -1892,36 +1352,6 @@
       ],
       "games": [
         "36df2feb"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "a78d1609-7a88-4e21-b7a9-fffa045dc65b",
-      "apiId": "8b488d84-f787-45b1-b0cb-0b79dcd13acd",
-      "name": "Jordan Junkeer",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 24,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 24,
-      "targetGames": 31,
-      "targetName": "Jordan Junkeer",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "Jordan Junkeer",
-      "namesAgree": null,
-      "spectatorIds": [
-        "a78d1609-7a88-4e21-b7a9-fffa045dc65b"
-      ],
-      "games": [
-        "12a8caaa"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -2035,36 +1465,6 @@
       "wouldWrite": true
     },
     {
-      "uuid": "c07e10c1-c4bb-4e18-953c-23390c584a3b",
-      "apiId": "09bfd3d9-42a6-4d8c-bf3e-5018c693a26f",
-      "name": "Jeremmy Hu",
-      "ourName": "Jeremmy Hu",
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 40,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "OUR STUB",
-      "sourceGames": 40,
-      "targetGames": 1,
-      "targetName": "Jeremmy Hu",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": true,
-      "ourFileName": "Jeremmy Hu",
-      "theirName": "Jeremmy Hu",
-      "namesAgree": true,
-      "spectatorIds": [
-        "c07e10c1-c4bb-4e18-953c-23390c584a3b"
-      ],
-      "games": [
-        "00175873"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
       "uuid": "c08ca6f3-6e87-4f66-ab78-ddaf6a507b0d",
       "apiId": "b48d089c-0c9f-4841-abd5-ca2ee287ce19",
       "name": "Aaron Blackshaw",
@@ -2095,66 +1495,6 @@
       "wouldWrite": true
     },
     {
-      "uuid": "c29e609b-71c1-49a8-a7c2-70a008cdf557",
-      "apiId": "f1b945ec-0f85-46ed-a41d-f09ec85219b5",
-      "name": "Jake Chirio",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 33,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 33,
-      "targetGames": 36,
-      "targetName": "Jake Chirio",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "Jake Chirio",
-      "namesAgree": null,
-      "spectatorIds": [
-        "c29e609b-71c1-49a8-a7c2-70a008cdf557"
-      ],
-      "games": [
-        "0a3fdbbb"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "c4566f65-231b-41bd-a9bf-eaf65e0887f9",
-      "apiId": "4bd7e428-50ae-40d5-babf-e06a727028bf",
-      "name": "Ned London",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 6,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 6,
-      "targetGames": 153,
-      "targetName": "Ned London",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "Ned London",
-      "namesAgree": null,
-      "spectatorIds": [
-        "c4566f65-231b-41bd-a9bf-eaf65e0887f9"
-      ],
-      "games": [
-        "26270be5"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
       "uuid": "c870d808-88a7-403c-a323-da1f11c773e4",
       "apiId": "75d95df8-e691-4440-9e8e-e4ddba586f15",
       "name": "Charlie Durham",
@@ -2180,36 +1520,6 @@
       ],
       "games": [
         "0429733d"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "cb170366-737a-493f-a29c-83b1518074c1",
-      "apiId": "22432fed-7e1f-4ca9-ada2-e8f1a2c5cfc2",
-      "name": "Rad Dinovic",
-      "ourName": "Rad Dinovic",
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 16,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "OUR STUB",
-      "sourceGames": 16,
-      "targetGames": 1,
-      "targetName": "Rad Dinovic",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": true,
-      "ourFileName": "Rad Dinovic",
-      "theirName": "Rad Dinovic",
-      "namesAgree": true,
-      "spectatorIds": [
-        "cb170366-737a-493f-a29c-83b1518074c1"
-      ],
-      "games": [
-        "080b0497"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -2287,66 +1597,6 @@
       "wouldWrite": true
     },
     {
-      "uuid": "d242686b-4599-4dda-8fcd-45852db74dee",
-      "apiId": "edee8a5e-a775-4a56-8668-b38d1071ebca",
-      "name": "Josh Beasy",
-      "ourName": "Josh Beasy",
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 6,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "OUR STUB",
-      "sourceGames": 6,
-      "targetGames": 1,
-      "targetName": "Joshua Beasy",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": true,
-      "ourFileName": "Josh Beasy",
-      "theirName": "Joshua Beasy",
-      "namesAgree": true,
-      "spectatorIds": [
-        "d242686b-4599-4dda-8fcd-45852db74dee"
-      ],
-      "games": [
-        "0eec1e24"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "d3453297-453e-42cf-8dc8-2b701400bb0b",
-      "apiId": "ec151bf0-c1e8-4ec5-abb9-9e43a627cc62",
-      "name": "Kya Wiebenga",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 26,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 26,
-      "targetGames": 41,
-      "targetName": "Kya Wiebenga",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "Kya Wiebenga",
-      "namesAgree": null,
-      "spectatorIds": [
-        "d3453297-453e-42cf-8dc8-2b701400bb0b"
-      ],
-      "games": [
-        "0db61891"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
       "uuid": "d424abfc-a273-418e-8dfe-e4935559650b",
       "apiId": "e0bfdff4-1f62-4f2d-b2fe-e2c71d770b8d",
       "name": "Daniel Russo",
@@ -2402,36 +1652,6 @@
       ],
       "games": [
         "1d1224e8"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "dc9ccfcf-ae24-49d7-b1f9-617ed4a93f34",
-      "apiId": "750abf18-b7c6-42b6-9acb-baf77cfec142",
-      "name": "silas Coates",
-      "ourName": null,
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 27,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "api-file (correct)",
-      "sourceGames": 27,
-      "targetGames": 36,
-      "targetName": "silas Coates",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": false,
-      "ourFileName": null,
-      "theirName": "silas Coates",
-      "namesAgree": null,
-      "spectatorIds": [
-        "dc9ccfcf-ae24-49d7-b1f9-617ed4a93f34"
-      ],
-      "games": [
-        "12a8caaa"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -2600,36 +1820,6 @@
       ],
       "games": [
         "0c21aa7f"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "f4917b3e-0e7f-4caa-8f8f-37449e09f4d7",
-      "apiId": "579df113-d588-40cc-a7e4-e4225bba6e62",
-      "name": "Evie Fasciale",
-      "ourName": "Winter 2026",
-      "pairedBy": "name",
-      "gameviewName": null,
-      "spectatorName": null,
-      "gamesHeld": 8,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "OUR STUB",
-      "sourceGames": 8,
-      "targetGames": 1,
-      "targetName": "Evie Fasciale",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": true,
-      "ourFileName": "Winter 2026",
-      "theirName": "Evie Fasciale",
-      "namesAgree": null,
-      "spectatorIds": [
-        "f4917b3e-0e7f-4caa-8f8f-37449e09f4d7"
-      ],
-      "games": [
-        "305e5589"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -3464,36 +2654,6 @@
       ],
       "games": [
         "00dab2ff"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "04bca1f8-158a-4926-99d0-4f6228c89ac6",
-      "apiId": "0895af77-502e-461b-a3f1-d1a34e875c07",
-      "name": "Lachlan Wheatley",
-      "ourName": "Lachlan Wheatley",
-      "pairedBy": "elimination",
-      "gameviewName": "Lachie Wheatley",
-      "spectatorName": "Lachlan Wheatley",
-      "gamesHeld": 5,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "OUR STUB",
-      "sourceGames": 5,
-      "targetGames": 3,
-      "targetName": "Lachie Wheatley",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": true,
-      "ourFileName": "Lachlan Wheatley",
-      "theirName": "Lachie Wheatley",
-      "namesAgree": true,
-      "spectatorIds": [
-        "04bca1f8-158a-4926-99d0-4f6228c89ac6"
-      ],
-      "games": [
-        "c82f43c0"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -16502,36 +15662,6 @@
       ],
       "games": [
         "58c9cee8"
-      ],
-      "conflictingApiIds": [],
-      "wouldWrite": true
-    },
-    {
-      "uuid": "6764c28a-ba30-4946-93d1-3caddd439214",
-      "apiId": "7709decb-9aaf-4a16-9436-2b9647825dc6",
-      "name": "Will Gurry",
-      "ourName": "Will Gurry",
-      "pairedBy": "elimination",
-      "gameviewName": "William Gurry",
-      "spectatorName": "Will Gurry",
-      "gamesHeld": 10,
-      "targetHasPlayerFile": true,
-      "foldAction": "merge",
-      "keeperWouldBe": "OUR STUB",
-      "sourceGames": 10,
-      "targetGames": 1,
-      "targetName": "William Gurry",
-      "targetIsPrivate": false,
-      "sourceIsPrivate": true,
-      "stubWouldOverwriteRealProfile": true,
-      "ourFileName": "Will Gurry",
-      "theirName": "William Gurry",
-      "namesAgree": true,
-      "spectatorIds": [
-        "6764c28a-ba30-4946-93d1-3caddd439214"
-      ],
-      "games": [
-        "280d451e"
       ],
       "conflictingApiIds": [],
       "wouldWrite": true
@@ -36945,6 +36075,66 @@
   ],
   "skipped": [
     {
+      "uuid": "00894313-ec38-4dd0-8bb4-4b70bea27b4f",
+      "apiId": "bd3bd482-8246-49c7-9f3d-061ee66ef2d9",
+      "name": "Sashi Shearn",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 6,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 6,
+      "targetGames": 437,
+      "targetName": "sashi shearn",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "sashi shearn",
+      "namesAgree": null,
+      "spectatorIds": [
+        "00894313-ec38-4dd0-8bb4-4b70bea27b4f"
+      ],
+      "games": [
+        "0c1ea4b8"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"sashi shearn\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "115492bd-b96f-47ee-9a90-664b5cd1548e",
+      "apiId": "0b1952aa-fac2-4280-b95e-01b6bf42fd1e",
+      "name": "Lucas Song",
+      "ourName": "Lucas Song",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 67,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "OUR STUB",
+      "sourceGames": 67,
+      "targetGames": 1,
+      "targetName": "Lucas Song",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": true,
+      "ourFileName": "Lucas Song",
+      "theirName": "Lucas Song",
+      "namesAgree": true,
+      "spectatorIds": [
+        "115492bd-b96f-47ee-9a90-664b5cd1548e"
+      ],
+      "games": [
+        "0a6ff5d1"
+      ],
+      "conflictingApiIds": [],
+      "why": "stub holds more games (67) than the real profile (1), so the fold would keep the stub and drop that profile's stats permanently"
+    },
+    {
       "uuid": "16fe2dc1-26d2-4fa6-8e89-e8805412a6ba",
       "apiId": "cd5a80c8-beae-45e6-b712-a8499eeeb053",
       "name": "Jericho Apaitia-Vague",
@@ -37005,6 +36195,96 @@
       "why": "surnames disagree: \"Zoe Monkley\" vs \"Zoe Hall\" — refusing (elimination produced 5 known wrong pairs of this shape)"
     },
     {
+      "uuid": "278d6dab-b6f4-46aa-bb55-ceab35dc2046",
+      "apiId": "a90c900d-46dc-4b9f-b331-2908c9428abc",
+      "name": "Bowie Kingdom",
+      "ourName": "Player #278d6dab-b6f4",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 18,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 18,
+      "targetGames": 80,
+      "targetName": "Bowie Kingdom",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": "Player #278d6dab-b6f4",
+      "theirName": "Bowie Kingdom",
+      "namesAgree": null,
+      "spectatorIds": [
+        "278d6dab-b6f4-46aa-bb55-ceab35dc2046"
+      ],
+      "games": [
+        "115ff081"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"Player #278d6dab-b6f4\" / \"Bowie Kingdom\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "2dc6893c-11cc-4c52-b092-fc66dba60c8b",
+      "apiId": "cdf7d8d0-e832-4a17-a42a-58fe4b70988f",
+      "name": "Aiden O'Brien",
+      "ourName": "Aiden O'Brien",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 8,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "OUR STUB",
+      "sourceGames": 8,
+      "targetGames": 2,
+      "targetName": "Aiden O'Brien",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": true,
+      "ourFileName": "Aiden O'Brien",
+      "theirName": "Aiden O'Brien",
+      "namesAgree": true,
+      "spectatorIds": [
+        "2dc6893c-11cc-4c52-b092-fc66dba60c8b"
+      ],
+      "games": [
+        "617d5ba1"
+      ],
+      "conflictingApiIds": [],
+      "why": "stub holds more games (8) than the real profile (2), so the fold would keep the stub and drop that profile's stats permanently"
+    },
+    {
+      "uuid": "2f58caf4-fc3a-4c52-bdb5-b9d5ac0ecdba",
+      "apiId": "150776ce-ebaf-4f7b-bd83-5e1a38655ab2",
+      "name": "Caleb Lynn",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 39,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 39,
+      "targetGames": 49,
+      "targetName": "Caleb Lynn",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "Caleb Lynn",
+      "namesAgree": null,
+      "spectatorIds": [
+        "2f58caf4-fc3a-4c52-bdb5-b9d5ac0ecdba"
+      ],
+      "games": [
+        "0a62b937"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"Caleb Lynn\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
       "uuid": "3537235f-c4b5-4816-9c5f-812fc19c551e",
       "apiId": "b5f5df68-e18b-4843-8db9-76cb179e8af6",
       "name": "Hugo Robertson",
@@ -37032,7 +36312,7 @@
         "14c07465"
       ],
       "conflictingApiIds": [],
-      "why": "proposed apiId tested 'not-api' — only 'api' may be written"
+      "why": "stub holds more games (7) than the real profile (1), so the fold would keep the stub and drop that profile's stats permanently"
     },
     {
       "uuid": "417ab2ce-f282-4d9c-a3b9-9e0602861658",
@@ -37065,6 +36345,156 @@
       "why": "surnames disagree: \"Mojgan Rashidiy\" vs \"Paymaan Anwar\" — refusing (elimination produced 5 known wrong pairs of this shape)"
     },
     {
+      "uuid": "4933b64e-68b9-45d4-8902-f4fb458682e8",
+      "apiId": "fcb89981-71de-41f7-b9c0-578f5a1e13a4",
+      "name": "rafael marchese",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 38,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 38,
+      "targetGames": 57,
+      "targetName": "rafael marchese",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "rafael marchese",
+      "namesAgree": null,
+      "spectatorIds": [
+        "4933b64e-68b9-45d4-8902-f4fb458682e8"
+      ],
+      "games": [
+        "0d82f5fc"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"rafael marchese\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "4c983b24-5200-4638-ad75-a61b1f730b99",
+      "apiId": "d482b9f0-fe37-4383-85f2-7ef7c8d83442",
+      "name": "Billy Jarvis",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 15,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 15,
+      "targetGames": 39,
+      "targetName": "Billy Jarvis",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "Billy Jarvis",
+      "namesAgree": null,
+      "spectatorIds": [
+        "4c983b24-5200-4638-ad75-a61b1f730b99"
+      ],
+      "games": [
+        "0088ae47"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"Billy Jarvis\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "531c8270-abab-4f06-8579-314a4396be40",
+      "apiId": "5b3986fa-8b86-4707-985f-5e4e70687458",
+      "name": "Emily Moyes",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 80,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 80,
+      "targetGames": 100,
+      "targetName": "Emily Moyes",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "Emily Moyes",
+      "namesAgree": null,
+      "spectatorIds": [
+        "531c8270-abab-4f06-8579-314a4396be40"
+      ],
+      "games": [
+        "07152798"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"Emily Moyes\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "5e38c397-56df-4934-b339-6a156eb584c7",
+      "apiId": "6520d1f8-1d52-419a-bd4f-eb4ede9fed50",
+      "name": "bailey moore",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 76,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 76,
+      "targetGames": 84,
+      "targetName": "bailey moore",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "bailey moore",
+      "namesAgree": null,
+      "spectatorIds": [
+        "5e38c397-56df-4934-b339-6a156eb584c7"
+      ],
+      "games": [
+        "0591fe92"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"bailey moore\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "64715f0e-efc5-45c4-8c4f-ba170bf9430f",
+      "apiId": "5f1eeb2d-c234-48c2-be73-5fac69f37990",
+      "name": "Evie Randello",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 1,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 1,
+      "targetGames": 4,
+      "targetName": "Evie Randello",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "Evie Randello",
+      "namesAgree": null,
+      "spectatorIds": [
+        "64715f0e-efc5-45c4-8c4f-ba170bf9430f"
+      ],
+      "games": [
+        "fb646a48"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"Evie Randello\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
       "uuid": "6e0c9b82-18c1-48ed-955c-5bc427ca5d87",
       "apiId": "bb6d8897-9713-4fd6-b1cb-c391c7f13c17",
       "name": "Subhaan Anwar",
@@ -37087,6 +36517,396 @@
       ],
       "conflictingApiIds": [],
       "why": "surnames disagree: \"Mojgan Rashidiy\" vs \"Subhaan Anwar\" — refusing (elimination produced 5 known wrong pairs of this shape)"
+    },
+    {
+      "uuid": "73497533-e104-4d90-8565-417248e42251",
+      "apiId": "7dcca34e-d35a-4219-8121-63ccc74bfbb1",
+      "name": "Ella Roberts",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 40,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 40,
+      "targetGames": 60,
+      "targetName": "Ella Roberts",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "Ella Roberts",
+      "namesAgree": null,
+      "spectatorIds": [
+        "73497533-e104-4d90-8565-417248e42251"
+      ],
+      "games": [
+        "07defbaf"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"Ella Roberts\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "77d7d29e-5dcd-4a56-975a-6d3ff4ddb31b",
+      "apiId": "cdf7d8d0-e832-4a17-a42a-58fe4b70988f",
+      "name": "Aiden O'Brien",
+      "ourName": "Aiden O'Brien",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 13,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "OUR STUB",
+      "sourceGames": 13,
+      "targetGames": 2,
+      "targetName": "Aiden O'Brien",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": true,
+      "ourFileName": "Aiden O'Brien",
+      "theirName": "Aiden O'Brien",
+      "namesAgree": true,
+      "spectatorIds": [
+        "77d7d29e-5dcd-4a56-975a-6d3ff4ddb31b"
+      ],
+      "games": [
+        "32ea40bd"
+      ],
+      "conflictingApiIds": [],
+      "why": "stub holds more games (13) than the real profile (2), so the fold would keep the stub and drop that profile's stats permanently"
+    },
+    {
+      "uuid": "83532dd6-92c4-44ac-b189-c5e8f43309de",
+      "apiId": "c4cbe765-db42-4603-a587-84208e97cd8c",
+      "name": "Archer Drapos",
+      "ourName": "Archer Drapos",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 19,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "OUR STUB",
+      "sourceGames": 19,
+      "targetGames": 1,
+      "targetName": "Archer Drapos",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": true,
+      "ourFileName": "Archer Drapos",
+      "theirName": "Archer Drapos",
+      "namesAgree": true,
+      "spectatorIds": [
+        "83532dd6-92c4-44ac-b189-c5e8f43309de"
+      ],
+      "games": [
+        "1914c17c"
+      ],
+      "conflictingApiIds": [],
+      "why": "stub holds more games (19) than the real profile (1), so the fold would keep the stub and drop that profile's stats permanently"
+    },
+    {
+      "uuid": "84c61cb3-c9a7-4d3a-8f1e-a2b07b4cb272",
+      "apiId": "f6d8b7f5-fe12-46a4-b617-cab69a64c7e4",
+      "name": "Blake Jensen-Muir",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 27,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 27,
+      "targetGames": 47,
+      "targetName": "Blake Jensen-Muir",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "Blake Jensen-Muir",
+      "namesAgree": null,
+      "spectatorIds": [
+        "84c61cb3-c9a7-4d3a-8f1e-a2b07b4cb272"
+      ],
+      "games": [
+        "07376a07"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"Blake Jensen-Muir\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "86412ce8-cf00-4185-bcf5-f25921a1e60b",
+      "apiId": "cdd29459-cef6-4fd6-ab44-30927af5825e",
+      "name": "Paul Fatouros",
+      "ourName": "Player #86412ce8-cf00",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 56,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 56,
+      "targetGames": 73,
+      "targetName": "Paul Fatouros",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": "Player #86412ce8-cf00",
+      "theirName": "Paul Fatouros",
+      "namesAgree": null,
+      "spectatorIds": [
+        "86412ce8-cf00-4185-bcf5-f25921a1e60b"
+      ],
+      "games": [
+        "0373f9c3"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"Player #86412ce8-cf00\" / \"Paul Fatouros\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "8b8bcf7e-b95c-4fc8-a520-b8c3c643db55",
+      "apiId": "e11a5e3c-1ddd-40a9-b9a8-5d9bed465cba",
+      "name": "Luca Bode",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 45,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 45,
+      "targetGames": 85,
+      "targetName": "Luca Bode",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "Luca Bode",
+      "namesAgree": null,
+      "spectatorIds": [
+        "8b8bcf7e-b95c-4fc8-a520-b8c3c643db55"
+      ],
+      "games": [
+        "04456ca7"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"Luca Bode\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "96f80736-08b2-4da2-a025-b0cf39d1d474",
+      "apiId": "0b045f51-f42e-4f08-93bf-0ef8101e6e56",
+      "name": "Ava Thompson",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 32,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 32,
+      "targetGames": 34,
+      "targetName": "Ava Thompson",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "Ava Thompson",
+      "namesAgree": null,
+      "spectatorIds": [
+        "96f80736-08b2-4da2-a025-b0cf39d1d474"
+      ],
+      "games": [
+        "0508db4f"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"Ava Thompson\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "9eddb99e-944c-4e88-923d-5eaebbccbb5a",
+      "apiId": "cdf7d8d0-e832-4a17-a42a-58fe4b70988f",
+      "name": "Aiden O'Brien",
+      "ourName": "Aiden O'Brien",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 10,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "OUR STUB",
+      "sourceGames": 10,
+      "targetGames": 2,
+      "targetName": "Aiden O'Brien",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": true,
+      "ourFileName": "Aiden O'Brien",
+      "theirName": "Aiden O'Brien",
+      "namesAgree": true,
+      "spectatorIds": [
+        "9eddb99e-944c-4e88-923d-5eaebbccbb5a"
+      ],
+      "games": [
+        "5ae727fb"
+      ],
+      "conflictingApiIds": [],
+      "why": "stub holds more games (10) than the real profile (2), so the fold would keep the stub and drop that profile's stats permanently"
+    },
+    {
+      "uuid": "a78d1609-7a88-4e21-b7a9-fffa045dc65b",
+      "apiId": "8b488d84-f787-45b1-b0cb-0b79dcd13acd",
+      "name": "Jordan Junkeer",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 24,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 24,
+      "targetGames": 31,
+      "targetName": "Jordan Junkeer",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "Jordan Junkeer",
+      "namesAgree": null,
+      "spectatorIds": [
+        "a78d1609-7a88-4e21-b7a9-fffa045dc65b"
+      ],
+      "games": [
+        "12a8caaa"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"Jordan Junkeer\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "c07e10c1-c4bb-4e18-953c-23390c584a3b",
+      "apiId": "09bfd3d9-42a6-4d8c-bf3e-5018c693a26f",
+      "name": "Jeremmy Hu",
+      "ourName": "Jeremmy Hu",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 40,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "OUR STUB",
+      "sourceGames": 40,
+      "targetGames": 1,
+      "targetName": "Jeremmy Hu",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": true,
+      "ourFileName": "Jeremmy Hu",
+      "theirName": "Jeremmy Hu",
+      "namesAgree": true,
+      "spectatorIds": [
+        "c07e10c1-c4bb-4e18-953c-23390c584a3b"
+      ],
+      "games": [
+        "00175873"
+      ],
+      "conflictingApiIds": [],
+      "why": "stub holds more games (40) than the real profile (1), so the fold would keep the stub and drop that profile's stats permanently"
+    },
+    {
+      "uuid": "c29e609b-71c1-49a8-a7c2-70a008cdf557",
+      "apiId": "f1b945ec-0f85-46ed-a41d-f09ec85219b5",
+      "name": "Jake Chirio",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 33,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 33,
+      "targetGames": 36,
+      "targetName": "Jake Chirio",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "Jake Chirio",
+      "namesAgree": null,
+      "spectatorIds": [
+        "c29e609b-71c1-49a8-a7c2-70a008cdf557"
+      ],
+      "games": [
+        "0a3fdbbb"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"Jake Chirio\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "c4566f65-231b-41bd-a9bf-eaf65e0887f9",
+      "apiId": "4bd7e428-50ae-40d5-babf-e06a727028bf",
+      "name": "Ned London",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 6,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 6,
+      "targetGames": 153,
+      "targetName": "Ned London",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "Ned London",
+      "namesAgree": null,
+      "spectatorIds": [
+        "c4566f65-231b-41bd-a9bf-eaf65e0887f9"
+      ],
+      "games": [
+        "26270be5"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"Ned London\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "cb170366-737a-493f-a29c-83b1518074c1",
+      "apiId": "22432fed-7e1f-4ca9-ada2-e8f1a2c5cfc2",
+      "name": "Rad Dinovic",
+      "ourName": "Rad Dinovic",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 16,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "OUR STUB",
+      "sourceGames": 16,
+      "targetGames": 1,
+      "targetName": "Rad Dinovic",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": true,
+      "ourFileName": "Rad Dinovic",
+      "theirName": "Rad Dinovic",
+      "namesAgree": true,
+      "spectatorIds": [
+        "cb170366-737a-493f-a29c-83b1518074c1"
+      ],
+      "games": [
+        "080b0497"
+      ],
+      "conflictingApiIds": [],
+      "why": "stub holds more games (16) than the real profile (1), so the fold would keep the stub and drop that profile's stats permanently"
     },
     {
       "uuid": "cc44ffd8-8458-4b6d-a705-e02f01dd6e8e",
@@ -37119,6 +36939,66 @@
       "why": "surnames disagree: \"Zac Aitken\" vs \"Zac Tebby\" — refusing (elimination produced 5 known wrong pairs of this shape)"
     },
     {
+      "uuid": "d242686b-4599-4dda-8fcd-45852db74dee",
+      "apiId": "edee8a5e-a775-4a56-8668-b38d1071ebca",
+      "name": "Josh Beasy",
+      "ourName": "Josh Beasy",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 6,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "OUR STUB",
+      "sourceGames": 6,
+      "targetGames": 1,
+      "targetName": "Joshua Beasy",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": true,
+      "ourFileName": "Josh Beasy",
+      "theirName": "Joshua Beasy",
+      "namesAgree": true,
+      "spectatorIds": [
+        "d242686b-4599-4dda-8fcd-45852db74dee"
+      ],
+      "games": [
+        "0eec1e24"
+      ],
+      "conflictingApiIds": [],
+      "why": "stub holds more games (6) than the real profile (1), so the fold would keep the stub and drop that profile's stats permanently"
+    },
+    {
+      "uuid": "d3453297-453e-42cf-8dc8-2b701400bb0b",
+      "apiId": "ec151bf0-c1e8-4ec5-abb9-9e43a627cc62",
+      "name": "Kya Wiebenga",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 26,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 26,
+      "targetGames": 41,
+      "targetName": "Kya Wiebenga",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "Kya Wiebenga",
+      "namesAgree": null,
+      "spectatorIds": [
+        "d3453297-453e-42cf-8dc8-2b701400bb0b"
+      ],
+      "games": [
+        "0db61891"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"Kya Wiebenga\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
       "uuid": "d767f588-af76-4201-9993-ed45add65292",
       "apiId": "b7e2b530-2d98-4caf-820f-c2941f718633",
       "name": "Levi Dyt",
@@ -37149,6 +37029,66 @@
       "why": "surnames disagree: \"Levi Kelso\" vs \"Levi Dyt\" — refusing (elimination produced 5 known wrong pairs of this shape)"
     },
     {
+      "uuid": "dc9ccfcf-ae24-49d7-b1f9-617ed4a93f34",
+      "apiId": "750abf18-b7c6-42b6-9acb-baf77cfec142",
+      "name": "silas Coates",
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 27,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "api-file (correct)",
+      "sourceGames": 27,
+      "targetGames": 36,
+      "targetName": "silas Coates",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": false,
+      "ourFileName": null,
+      "theirName": "silas Coates",
+      "namesAgree": null,
+      "spectatorIds": [
+        "dc9ccfcf-ae24-49d7-b1f9-617ed4a93f34"
+      ],
+      "games": [
+        "12a8caaa"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"null\" / \"silas Coates\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
+      "uuid": "f4917b3e-0e7f-4caa-8f8f-37449e09f4d7",
+      "apiId": "579df113-d588-40cc-a7e4-e4225bba6e62",
+      "name": "Evie Fasciale",
+      "ourName": "Winter 2026",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null,
+      "gamesHeld": 8,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "OUR STUB",
+      "sourceGames": 8,
+      "targetGames": 1,
+      "targetName": "Evie Fasciale",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": true,
+      "ourFileName": "Winter 2026",
+      "theirName": "Evie Fasciale",
+      "namesAgree": null,
+      "spectatorIds": [
+        "f4917b3e-0e7f-4caa-8f8f-37449e09f4d7"
+      ],
+      "games": [
+        "305e5589"
+      ],
+      "conflictingApiIds": [],
+      "why": "name unusable (\"Winter 2026\" / \"Evie Fasciale\") and this would MERGE into an existing file — no independent check available"
+    },
+    {
       "uuid": "02fed171-13c4-4b49-b9a4-21336bbea1c2",
       "apiId": "a632d532-b46e-4a9e-9e6b-7a226cec3f53",
       "name": "Michelle Sheridan",
@@ -37177,6 +37117,36 @@
       ],
       "conflictingApiIds": [],
       "why": "surnames disagree: \"Michelle Sheridan\" vs \"Michelle Sambell\" — refusing (elimination produced 5 known wrong pairs of this shape)"
+    },
+    {
+      "uuid": "04bca1f8-158a-4926-99d0-4f6228c89ac6",
+      "apiId": "0895af77-502e-461b-a3f1-d1a34e875c07",
+      "name": "Lachlan Wheatley",
+      "ourName": "Lachlan Wheatley",
+      "pairedBy": "elimination",
+      "gameviewName": "Lachie Wheatley",
+      "spectatorName": "Lachlan Wheatley",
+      "gamesHeld": 5,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "OUR STUB",
+      "sourceGames": 5,
+      "targetGames": 3,
+      "targetName": "Lachie Wheatley",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": true,
+      "ourFileName": "Lachlan Wheatley",
+      "theirName": "Lachie Wheatley",
+      "namesAgree": true,
+      "spectatorIds": [
+        "04bca1f8-158a-4926-99d0-4f6228c89ac6"
+      ],
+      "games": [
+        "c82f43c0"
+      ],
+      "conflictingApiIds": [],
+      "why": "stub holds more games (5) than the real profile (3), so the fold would keep the stub and drop that profile's stats permanently"
     },
     {
       "uuid": "055cb3d4-932d-441b-a7e8-5e626fea7d85",
@@ -38139,6 +38109,36 @@
       "why": "surnames disagree: \"Jesse Weninger\" vs \"Paul MURTY\" — refusing (elimination produced 5 known wrong pairs of this shape)"
     },
     {
+      "uuid": "6764c28a-ba30-4946-93d1-3caddd439214",
+      "apiId": "7709decb-9aaf-4a16-9436-2b9647825dc6",
+      "name": "Will Gurry",
+      "ourName": "Will Gurry",
+      "pairedBy": "elimination",
+      "gameviewName": "William Gurry",
+      "spectatorName": "Will Gurry",
+      "gamesHeld": 10,
+      "targetHasPlayerFile": true,
+      "foldAction": "merge",
+      "keeperWouldBe": "OUR STUB",
+      "sourceGames": 10,
+      "targetGames": 1,
+      "targetName": "William Gurry",
+      "targetIsPrivate": false,
+      "sourceIsPrivate": true,
+      "stubWouldOverwriteRealProfile": true,
+      "ourFileName": "Will Gurry",
+      "theirName": "William Gurry",
+      "namesAgree": true,
+      "spectatorIds": [
+        "6764c28a-ba30-4946-93d1-3caddd439214"
+      ],
+      "games": [
+        "280d451e"
+      ],
+      "conflictingApiIds": [],
+      "why": "stub holds more games (10) than the real profile (1), so the fold would keep the stub and drop that profile's stats permanently"
+    },
+    {
       "uuid": "69baf266-450e-418d-b964-ae6f8f641778",
       "apiId": "f94d6df5-8a77-4ef8-8215-c4c33fef43f6",
       "name": "Liam Treeby",
@@ -38856,7 +38856,7 @@
         "015eba0f"
       ],
       "conflictingApiIds": [],
-      "why": "one name unusable (\"null\" / \"Alex De Bolfo\") and the pair came from elimination — no independent check available"
+      "why": "name unusable (\"null\" / \"Alex De Bolfo\") and this would MERGE into an existing file — no independent check available"
     },
     {
       "uuid": "a33f641c-73d1-4774-a672-4a7266e75cfe",
@@ -39924,7 +39924,7 @@
         "07376a07"
       ],
       "conflictingApiIds": [],
-      "why": "one name unusable (\"null\" / \"Tommy Keyte\") and the pair came from elimination — no independent check available"
+      "why": "name unusable (\"null\" / \"Tommy Keyte\") and this would MERGE into an existing file — no independent check available"
     },
     {
       "uuid": "fbd16540-e83c-4072-8e04-92884b7d7e33",
@@ -40018,7 +40018,7 @@
     }
   ],
   "namespaceTally": {
-    "not-api": 1242,
-    "api": 1076
+    "not-api": 1211,
+    "api": 1049
   }
 }
