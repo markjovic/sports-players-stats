@@ -410,28 +410,93 @@ function writePlayer(uuid, player) {
 // This is used ONLY to reject. It never selects a target, never breaks a tie and
 // never proposes anything. A name heuristic that can only discard is safe; the
 // same heuristic used to CHOOSE is what made the earlier alias rounds unsound.
-const PLACEHOLDER_NAME = /^(player\s*#|unknown|^\s*$)/i;
+const PLACEHOLDER_NAME = /^(player\s*#|unknown|\s*$)/i;
 const SEASON_LABEL = /\b(summer|winter|autumn|spring|season)\b.*\b(19|20)\d\d\b|\b(19|20)\d\d\b.*\b(summer|winter|autumn|spring|season)\b/i;
+// Administrative text clubs type into a name field. Real examples from the
+// 2026-08-26 dry run: "Samuel McFarlane Transfer Error", "Jesse Wilson - Transfer error".
+const ADMIN_NOISE = /\b(transfer\s*error|duplicate|do\s*not\s*use|test|jr|snr|sr|ii|iii)\b/gi;
 
 function nameUsable(n) {
   if (!n || !String(n).trim()) return false;
-  if (PLACEHOLDER_NAME.test(String(n))) return false;
+  if (PLACEHOLDER_NAME.test(String(n).trim())) return false;
   if (SEASON_LABEL.test(String(n))) return false;
   return true;
 }
-function surname(n) {
-  const parts = String(n).toLowerCase().replace(/[^a-z\s'-]/g, ' ').split(/\s+/).filter(Boolean);
-  return parts.length ? parts[parts.length - 1] : '';
+
+// Strip diacritics, fold BOTH apostrophe characters and hyphens, drop admin noise.
+// "Liam O\u2019Neill" and "Liam O'Neill" must land identically — on 2026-08-26 that
+// pair was rejected as two different people purely over the glyph.
+function tokens(n) {
+  return String(n)
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(ADMIN_NOISE, ' ')
+    .toLowerCase()
+    .replace(/[\u2018\u2019'`]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(t => t.length > 0);
 }
-// Agreement is deliberately loose on GIVEN names (Lachie/Lachlan) and strict on
-// the surname, because that is where the measured signal was.
+
+function editDistance(a, b) {
+  if (a === b) return 0;
+  const m = a.length, n = b.length;
+  if (Math.abs(m - n) > 3) return 99;
+  let prev = Array.from({ length: n + 1 }, (_, j) => j);
+  for (let i = 1; i <= m; i++) {
+    const cur = [i];
+    for (let j = 1; j <= n; j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    }
+    prev = cur;
+  }
+  return prev[n];
+}
+
+// A REJECT filter. It never selects a target, never breaks a tie and never
+// proposes anything — it can only discard work. Using names to CHOOSE is what
+// made the earlier alias rounds unsound; using them to DISCARD costs at worst a
+// fix that can be found again later.
+//
+// Each rule was earned from a real pair in the 2026-08-26 dry run:
+//   equal token sets           Blackshaw Aaron = Aaron Blackshaw   (order reversed)
+//   one set inside the other   Javier Castillo < Javier Castillo Argueta
+//   two or more shared tokens  Avaa Hishongwa-Gibb / Avaa Hishwanga-Gibb
+//   one token differs, prefix  Matt Darcy / Matthew D'Arcy
+//   one token differs, typo    Charlotte Robetson / Charlotte Robertson
+//
+// A single shared GIVEN name is deliberately NOT enough: Zoe Monkley against
+// Zoe Hall is two different people, and elimination produced that pair.
+function surnameOf(toks) { return toks.length ? toks[toks.length - 1] : ''; }
+
+// Two surnames are the same name when they are equal, one is a prefix of the
+// other, one contains the other (Alex CarltonDoney / Alexander Carlton-Doney),
+// or they are within a two-character typo (Charlotte Robetson / Robertson).
+function surnamesMatch(x, y) {
+  if (!x || !y) return false;
+  if (x === y) return true;
+  if (x.startsWith(y) || y.startsWith(x)) return true;
+  if (x.length >= 4 && y.length >= 4 && (x.includes(y) || y.includes(x))) return true;
+  return editDistance(x, y) <= 2 && Math.min(x.length, y.length) >= 5;
+}
+
 function namesAgree(a, b) {
   if (!nameUsable(a) || !nameUsable(b)) return null;      // null = cannot judge
-  const sa = surname(a), sb = surname(b);
-  if (!sa || !sb) return null;
-  if (sa === sb) return true;
-  if (sa.startsWith(sb) || sb.startsWith(sa)) return true; // O'Brien / OBrien style
-  return false;
+  const A = tokens(a), B = tokens(b);
+  if (!A.length || !B.length) return null;
+  const sa = new Set(A), sb = new Set(B);
+  const onlyA = [...sa].filter(t => !sb.has(t));
+  const onlyB = [...sb].filter(t => !sa.has(t));
+
+  // Same tokens in any order, or one name entirely inside the other.
+  // Blackshaw Aaron = Aaron Blackshaw; Javier Castillo < Javier Castillo Argueta.
+  if (!onlyA.length || !onlyB.length) return true;
+
+  // Otherwise the SURNAME must agree. A shared given name is never enough:
+  // Zoe Monkley against Zoe Hall is two people, and so is Paygan-Lily Wilkie
+  // against Paygan-Lily Jephson — where the hyphenated given name alone supplies
+  // two shared tokens, which is why token overlap cannot be the test.
+  return surnamesMatch(surnameOf(A), surnameOf(B));
 }
 
 // ─── Who would survive the fold's merge ───────────────────────────────────────
