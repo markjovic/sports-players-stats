@@ -78,7 +78,7 @@ const MAX     = ARGS.max ? Math.max(1, parseInt(ARGS.max, 10)) : 1000;
 // specific version of the file instead of argued about: on 2026-08-26 two runs
 // produced byte-identical output including the elapsed seconds, and there was no
 // way to tell from the log which code had executed.
-const BUILD = 'names-v2-surname-anchored (equal/subset, else surname must match: equal|prefix|contains|typo<=2)';
+const BUILD = 'names-v2-surname-anchored + merge-safety (stub-keeper and unjudgeable-merge excluded)';
 // Offline. Re-evaluates the name filter over the report and prints the verdicts.
 // No API calls, no writes, seconds not minutes.
 const NAMES_ONLY = !!ARGS['names-only'];
@@ -724,9 +724,26 @@ async function main() {
       console.log(`  SKIP ${c.uuid.slice(0, 8)} — "${rec.ourFileName}" vs "${rec.theirName}" (different people)`);
       continue;
     }
-    if (rec.namesAgree === null && c.pairedBy === 'elimination') {
-      skipped.push({ ...rec, why: `one name unusable ("${rec.ourFileName}" / "${rec.theirName}") and the pair came from elimination — no independent check available` });
-      console.log(`  SKIP ${c.uuid.slice(0, 8)} — name unusable and pair was inferred`);
+    // 'cannot judge' now blocks ANY merge, not only elimination pairs. The
+    // 2026-08-26 dry run had a season-label stub "Winter 2026" holding 8 games
+    // about to merge over Evie Fasciale's real profile: its name is unusable, so
+    // no check applies, and it had arrived by name rather than elimination.
+    if (rec.namesAgree === null && (c.pairedBy === 'elimination' || rec.targetHasPlayerFile)) {
+      skipped.push({ ...rec, why: `name unusable ("${rec.ourFileName}" / "${rec.theirName}") and this would ${rec.targetHasPlayerFile ? 'MERGE into an existing file' : 'come from elimination'} — no independent check available` });
+      console.log(`  SKIP ${c.uuid.slice(0, 8)} — name unusable, refusing`);
+      continue;
+    }
+
+    // The stub would win the fold's keeper contest and replace a real profile.
+    // fold-diverged-players.js clones the keeper and unions only seasons, games,
+    // teams, gameTids and name — so the merged file inherits the stub's
+    // private:true AND statsChecked. Being api-keyed but marked checked, it is
+    // then never re-fetched by fetch-profile-stats: the stats loss is permanent
+    // and silent, while games[] looks correct. Not worth it for 11 players when
+    // the alternative is leaving them exactly as they are today.
+    if (rec.stubWouldOverwriteRealProfile) {
+      skipped.push({ ...rec, why: `stub holds more games (${rec.sourceGames}) than the real profile (${rec.targetGames}), so the fold would keep the stub and drop that profile's stats permanently` });
+      console.log(`  SKIP ${c.uuid.slice(0, 8)} ${rec.ourFileName} — stub would outweigh and overwrite the real profile`);
       continue;
     }
 
@@ -774,7 +791,8 @@ async function main() {
   console.log(`  merges where OUR STUB would be the keeper        : ${stubWins.length}`);
   console.log(`  ...of those, target is NOT already private       : ${dangerous.length}   <- these lose a real profile's stats`);
   if (dangerous.length) {
-    console.log('\n──── MERGES THAT WOULD OVERWRITE A REAL PROFILE ────');
+    console.log('\n──── ⚠ STILL IN THE SEED SET AND WOULD OVERWRITE A REAL PROFILE ────');
+    console.log('  These should have been excluded. If any appear, STOP and do not apply.');
     console.log('  The stub holds more games, so the fold keeps the stub and the real');
     console.log('  profile\'s stats and private flag are replaced. Games survive; stats do not.');
     for (const w of dangerous.slice(0, 30)) {
