@@ -421,7 +421,11 @@ function collectCases() {
       const uuid = r.resolvesTo;
       if (!uuid || !isFullUuid(uuid)) continue;
       if (!byUuid.has(uuid)) {
-        byUuid.set(uuid, { uuid, apiId: r.apiId, name: r.name, spectatorIds: new Set(), games: new Set(), conflictingApiIds: new Set() });
+        byUuid.set(uuid, { uuid, apiId: r.apiId, name: r.name, ourName: r.ourName || null,
+                           pairedBy: r.pairedBy || 'name',
+                           gameviewName: r.gameviewName || null, spectatorName: r.spectatorName || null,
+                           gamesHeld: r.gamesHeld ?? null,
+                           spectatorIds: new Set(), games: new Set(), conflictingApiIds: new Set() });
       }
       const c = byUuid.get(uuid);
       c.spectatorIds.add(r.spectatorId);
@@ -449,6 +453,48 @@ async function main() {
   }
   console.log(`  ${cases.length} distinct player file(s) to consider\n`);
 
+  // ── How each api id was arrived at ──────────────────────────────────────────
+  // 'name' and 'name+number' are PlayHQ's OWN claim: both rosters agree who that
+  // is. 'elimination' is an INFERENCE — within one side of one game, once every
+  // exact match is removed, one row left on each side is taken to be the same
+  // person. It is what recovered most of these, because a diverged player's
+  // spectator row carries the name the club typed and the gameView row carries
+  // the PlayHQ account name ("Nathan Hargrave" against "Nate Hargrave"). It would
+  // be wrong if, in the same game and on the same side, spectator listed someone
+  // gameView omitted AND gameView listed someone spectator omitted. That rate has
+  // not been measured. Read this split before applying.
+  const byMethod = {};
+  for (const c of cases) byMethod[c.pairedBy] = (byMethod[c.pairedBy] || 0) + 1;
+  console.log('──── HOW EACH api id WAS DERIVED ────');
+  for (const [k, v] of Object.entries(byMethod).sort((a, b) => b[1] - a[1])) {
+    console.log(`  ${String(v).padStart(5)}  ${k}${k === 'elimination' ? '   <- inference, not PlayHQ\'s own claim' : ''}`);
+  }
+  const elim = cases.filter(c => c.pairedBy === 'elimination').slice(0, 10);
+  if (elim.length) {
+    console.log('\n  examples of elimination pairs (the two name forms it joined):');
+    for (const c of elim) console.log(`    ${c.spectatorName || c.ourName || '?'}  =  ${c.gameviewName || '?'}`);
+  }
+
+  // ── Targets claimed by more than one of our files ───────────────────────────
+  // The fold MERGES when a file already sits at the target id. Two of our files
+  // pointing at one api id therefore become one player. Usually right — one human
+  // with two stubs — but it is a merge of real data and it must be visible BEFORE
+  // it happens, not discovered afterwards.
+  const byTarget = new Map();
+  for (const c of cases) {
+    if (!byTarget.has(c.apiId)) byTarget.set(c.apiId, []);
+    byTarget.get(c.apiId).push(c);
+  }
+  const shared = [...byTarget.entries()].filter(([, v]) => v.length > 1);
+  console.log(`\n──── api ids CLAIMED BY MORE THAN ONE OF OUR PLAYER FILES ────`);
+  console.log(`  ${shared.length} target(s) — the fold will MERGE the files pointing at each`);
+  for (const [apiId, list] of shared.slice(0, 15)) {
+    console.log(`  ${apiId}`);
+    for (const c of list) console.log(`      ${c.uuid}  ${c.ourName || c.name || '(no name)'}  ${c.gamesHeld ?? '?'} games`);
+  }
+  if (shared.length > 15) console.log(`  … and ${shared.length - 15} more, all in the log`);
+  console.log('');
+
   await refreshSession();
 
   const written = [], skipped = [];
@@ -458,7 +504,10 @@ async function main() {
     if (considered >= MAX) { skipped.push({ ...c, spectatorIds: [...c.spectatorIds], games: [...c.games], conflictingApiIds: [...c.conflictingApiIds], why: `--max=${MAX} reached` }); continue; }
     considered++;
 
-    const rec = { uuid: c.uuid, apiId: c.apiId, name: c.name,
+    const rec = { uuid: c.uuid, apiId: c.apiId, name: c.name, ourName: c.ourName,
+                  pairedBy: c.pairedBy, gameviewName: c.gameviewName, spectatorName: c.spectatorName,
+                  gamesHeld: c.gamesHeld,
+                  targetHasPlayerFile: fs.existsSync(playerPath(c.apiId)),
                   spectatorIds: [...c.spectatorIds], games: [...c.games],
                   conflictingApiIds: [...c.conflictingApiIds] };
 
@@ -508,7 +557,9 @@ async function main() {
 
     if (!APPLY) {
       written.push({ ...rec, wouldWrite: true });
-      console.log(`  WOULD SEED ${c.uuid.slice(0, 8)} ${c.name} -> apiId ${c.apiId.slice(0, 8)} (key not-api, target api, ${rec.games.length} game(s))`);
+      console.log(`  WOULD SEED ${c.uuid.slice(0, 8)} ${c.ourName || c.name} -> ${c.apiId.slice(0, 8)}` +
+        ` · by ${c.pairedBy}` +
+        ` · fold will ${rec.targetHasPlayerFile ? 'MERGE (a file already exists at the target)' : 'promote into empty space'}`);
       continue;
     }
 
@@ -519,8 +570,11 @@ async function main() {
   }
 
   // ── Report ──────────────────────────────────────────────────────────────────
+  const merges = written.filter(w => w.targetHasPlayerFile).length;
   console.log('\n──── TOTALS ────');
   console.log(`  cases considered : ${considered}`);
+  console.log(`  of those, fold would MERGE into an existing file : ${merges}`);
+  console.log(`  of those, fold would promote into empty space    : ${written.length - merges}`);
   console.log(`  ${APPLY ? 'seeded' : 'would seed'} : ${written.length}`);
   console.log(`  skipped          : ${skipped.length}`);
   if (skipped.length) {
