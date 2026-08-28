@@ -596,8 +596,47 @@ function loadGamesIndex(wanted) {
   return idx;
 }
 
+// One pass over games/bv, built lazily and only for the ids asked about.
+let ourGamesCache = null;
+function buildOurGames(wanted) {
+  const idx = new Map();
+  let files = [];
+  try { files = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).sort(); } catch { return idx; }
+  for (const f of files) {
+    let gf; try { gf = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, f), 'utf8')); } catch { continue; }
+    for (const gid of wanted) {
+      if (idx.has(gid)) continue;
+      const g = gf.games && gf.games[gid];
+      if (!g) continue;
+      idx.set(gid, { seasonId: f.replace('.json', ''),
+                     spc: g.spc || null, dg: g.dg || null, spcm: g.spcm || null, dgm: g.dgm || null,
+                     legacy: g.legacy || null, hidden: g.hidden || null, st: g.st || null, d: g.d || null,
+                     h: g.h || null, a: g.a || null,
+                     rosterSize: ((g.p) || []).length });
+    }
+  }
+  return idx;
+}
+function ourGameRecord(gameId) { return (ourGamesCache && ourGamesCache.get(gameId)) || null; }
+
 async function whoseGames(uuids) {
   console.log(`Listing the competition of every game we hold for ${uuids.length} player(s)\n`);
+
+  // Collect every game id first so games/bv is scanned once, not per player.
+  const wantedGames = new Set();
+  for (const uuid of uuids) {
+    try {
+      const p = JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, uuid.slice(0, 2).toLowerCase(), `${uuid}.json`), 'utf8'));
+      for (const g of (Array.isArray(p.games) ? p.games : [])) {
+        const id = typeof g === 'string' ? g : (g && (g.id || g.gid));
+        if (id) wantedGames.add(id);
+      }
+    } catch (e) {}
+  }
+  console.log(`Reading our own record for ${wantedGames.size} game id(s) (one pass over games/bv)`);
+  ourGamesCache = buildOurGames(wantedGames);
+  console.log(`  found ${ourGamesCache.size} of ${wantedGames.size} in games/bv\n`);
+
   await refreshSession();
   const out = [];
   for (const uuid of uuids) {
@@ -609,7 +648,25 @@ async function whoseGames(uuids) {
     const rows = [];
     for (const gameId of games) {
       const gv = await gqlGameView(gameId);
-      if (!gv.ok) { console.log(`      ${gameId}  — gameView ${gv.why}`); rows.push({ gameId, error: gv.why }); continue; }
+
+      // gameView has no record. Do not stop there — WHERE the game came from is
+      // readable from our own store and from spectator, and the answer decides
+      // whether it was captured by the live-scoring service and later dropped by
+      // PlayHQ, or is legacy from an older capture era, or something else. On
+      // 2026-08-27 all 17 of Max Matthews' games returned no-game and there was no
+      // way to tell which.
+      if (!gv.ok) {
+        const ours = ourGameRecord(gameId);
+        const sp = await gqlSpectator(gameId);
+        const line = `      ${gameId}  — gameView ${gv.why}` +
+          (ours ? ` · in games/bv season ${ours.seasonId} · spc=${ours.spc} dg=${ours.dg} spcm=${ours.spcm} dgm=${ours.dgm}` +
+                  ` legacy=${ours.legacy} hidden=${ours.hidden} · date ${ours.d} · roster ${ours.rosterSize}`
+                : ' · NOT FOUND in games/bv') +
+          ` · spectator ${sp.ok ? ((sp.game.statistics ? 'answers' : 'answers, no statistics')) : sp.why}`;
+        console.log(line);
+        rows.push({ gameId, error: gv.why, ourGame: ours, spectator: sp.ok ? 'ok' : sp.why });
+        continue;
+      }
       const g = gv.game || {};
       const grade  = (g.round && g.round.grade) || {};
       const season = grade.season || {};
