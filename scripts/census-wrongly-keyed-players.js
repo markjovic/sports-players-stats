@@ -89,6 +89,16 @@ const WHYNOPAIR    = !!ARGS['why-no-pair'];
 // Re-runs phase 3 for players already marked done whose recovery failed, so an
 // improved matcher can revisit them without re-testing 7,606 keys.
 const REDO_FAILED  = !!ARGS['redo-failed'];
+// Asks gameView what COMPETITION each of a player's games belongs to, and prints
+// it. Added 2026-08-27 to settle a claim that should never have been made without
+// it: Will Crawford's PlayHQ page shows an empty Basketball VIC tab and 5 netball
+// games, and our store holds 5 games for that id — from which "we captured netball
+// games into games/bv" was asserted. Two counts both being 5 is not evidence that
+// they are the same five games. This prints the competition and grade of every
+// game we hold for a player, so the question is answered by reading rather than
+// by inference. No new query: GV_QUERY already returns competition, season, grade
+// and organisation.
+const WHOSE_GAMES = typeof ARGS['whose-games'] === 'string' ? ARGS['whose-games'].split(',').map(x => x.trim()).filter(Boolean) : null;
 const DIAG_FILE    = path.join(ROOT, 'reports', 'census-recovery-diagnosis.json');
 const DIAG_REL     = path.relative(ROOT, DIAG_FILE);
 const GAMES_DIR    = path.join(ROOT, 'games', 'bv');
@@ -586,6 +596,40 @@ function loadGamesIndex(wanted) {
   return idx;
 }
 
+async function whoseGames(uuids) {
+  console.log(`Listing the competition of every game we hold for ${uuids.length} player(s)\n`);
+  await refreshSession();
+  const out = [];
+  for (const uuid of uuids) {
+    let p = null;
+    try { p = JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, uuid.slice(0, 2).toLowerCase(), `${uuid}.json`), 'utf8')); }
+    catch (e) { console.log(`  ${uuid}: no player file (${e.code || e.message})`); out.push({ uuid, error: 'no player file' }); continue; }
+    const games = Array.isArray(p.games) ? p.games.map(g => (typeof g === 'string' ? g : (g && (g.id || g.gid)))).filter(Boolean) : [];
+    console.log(`  ${uuid}  ${JSON.stringify(p.name || null)}  holds ${games.length} game(s)`);
+    const rows = [];
+    for (const gameId of games) {
+      const gv = await gqlGameView(gameId);
+      if (!gv.ok) { console.log(`      ${gameId}  — gameView ${gv.why}`); rows.push({ gameId, error: gv.why }); continue; }
+      const g = gv.game || {};
+      const grade  = (g.round && g.round.grade) || {};
+      const season = grade.season || {};
+      const comp   = season.competition || {};
+      const org    = comp.organisation || {};
+      const row = { gameId, competition: comp.name || null, season: season.name || null,
+                    grade: grade.name || null, organisation: org.name || null, date: g.date || null };
+      rows.push(row);
+      console.log(`      ${gameId}  comp ${JSON.stringify(row.competition)} · season ${JSON.stringify(row.season)} · grade ${JSON.stringify(row.grade)} · org ${JSON.stringify(row.organisation)}`);
+    }
+    out.push({ uuid, name: p.name || null, gamesHeld: games.length, games: rows });
+  }
+  const file = path.join(REPORTS_DIR, 'whose-games.json');
+  fs.writeFileSync(file, JSON.stringify({ generatedAt: new Date().toISOString(), players: out }, null, 2));
+  console.log(`\nWrote ${path.relative(ROOT, file)}`);
+  console.log('Read the competition and organisation names. If they are basketball, these are');
+  console.log('ordinary uncredited basketball games and nothing crossed a sport boundary.');
+  await gitCommit(`whose-games: ${out.length} player(s)`, [path.relative(ROOT, file)]);
+}
+
 function whyNoPair() {
   if (!fs.existsSync(DIAG_FILE)) throw new Error(`no diagnosis at ${DIAG_REL} — run the diagnose mode first`);
   const rep = JSON.parse(fs.readFileSync(DIAG_FILE, 'utf8'));
@@ -744,6 +788,7 @@ async function main() {
   if (EXPLAIN) { explainFailures(); return; }
   if (DIAGNOSE)  { await diagnoseRecovery(DIAGNOSE); return; }
   if (WHYNOPAIR) { whyNoPair(); return; }
+  if (WHOSE_GAMES) { await whoseGames(WHOSE_GAMES); return; }
 
   let st = loadProgress();
   if (!st) {
