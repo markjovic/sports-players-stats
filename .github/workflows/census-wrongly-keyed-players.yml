@@ -73,6 +73,11 @@ on:
         required: false
         default: false
         type: boolean
+      whose_games:
+        description: 'List each game''s competition for these player ids'
+        required: false
+        default: ''
+        type: string
       reset:
         description: 'Start again, ignore progress'
         required: false
@@ -106,6 +111,7 @@ jobs:
         run: |
           ARGS="--max-keys=${{ inputs.max_keys }} --max-games=${{ inputs.max_games }} --games-per-player=${{ inputs.games_per_player }} --commit-every=${{ inputs.commit_every }}"
           if [ "${{ inputs.diagnose }}" != "0" ] && [ -n "${{ inputs.diagnose }}" ]; then ARGS="$ARGS --diagnose=${{ inputs.diagnose }}"; fi
+          if [ -n "${{ inputs.whose_games }}" ]; then ARGS="$ARGS --whose-games=${{ inputs.whose_games }}"; fi
           if [ "${{ inputs.redo_failed }}" = "true" ] || [ "${{ inputs.redo_failed }}" = "True" ]; then ARGS="$ARGS --redo-failed"; fi
           if [ "${{ inputs.why_no_pair }}" = "true" ] || [ "${{ inputs.why_no_pair }}" = "True" ]; then ARGS="$ARGS --why-no-pair"; fi
           if [ "${{ inputs.explain_failures }}" = "true" ] || [ "${{ inputs.explain_failures }}" = "True" ]; then ARGS="$ARGS --explain-failures"; fi
