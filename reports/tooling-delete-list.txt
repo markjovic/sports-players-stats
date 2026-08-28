@@ -1,0 +1,17 @@
+# reports/tooling-delete-list.txt
+# generated 2026-08-28T06:18:01.013Z by scripts/audit-tooling-inventory.js
+#
+# Paste into the SCRIPTS=( ) / WORKFLOWS=( ) arrays in cleanup-repo.yml.
+# Run cleanup-repo with dry_run=true FIRST and read the list it prints.
+#
+# SAFE — nothing references these and a document already records what they found:
+#
+# DOCUMENT FIRST — nothing references these, but NO document mentions them.
+# Deleting one discards whatever it established. Write the finding into
+# REPO_MANIFEST.md in the same commit, then move the line up into SAFE.
+  # scripts/diagnose-nameless-players.js
+  # scripts/probe-session-throwaway.js
+#
+# BROKEN WORKFLOWS — these call a script that is not in the repo. They cannot
+# run. Confirm the script was deleted deliberately, then remove the workflow:
+  .github/workflows/backfill.yml

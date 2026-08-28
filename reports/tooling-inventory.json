@@ -1,0 +1,3603 @@
+{
+  "generatedAt": "2026-08-28T06:18:01.019Z",
+  "docsPresent": {
+    "manifest": false,
+    "context": false,
+    "tasks": false
+  },
+  "counts": {
+    "scripts": 97,
+    "libs": 2,
+    "workflows": 118,
+    "recentScripts": 46,
+    "recentWorkflows": 47,
+    "safeDelete": 0,
+    "documentFirst": 2,
+    "brokenWorkflows": 1
+  },
+  "safeDelete": [],
+  "documentFirst": [
+    "scripts/diagnose-nameless-players.js",
+    "scripts/probe-session-throwaway.js"
+  ],
+  "brokenWorkflows": [
+    ".github/workflows/backfill.yml"
+  ],
+  "scripts": [
+    {
+      "path": "scripts/audit-aliases-against-playhq.js",
+      "base": "audit-aliases-against-playhq.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "audit-aliases-against-playhq.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-28T11:48:04+10:00",
+      "ageDays": 0,
+      "recent": true,
+      "bytes": 52343
+    },
+    {
+      "path": "scripts/audit-seasons-gaps.js",
+      "base": "audit-seasons-gaps.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "audit-seasons-gaps.yml"
+      ],
+      "requiredBy": [
+        "repair-duplicate-regs.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-01T19:53:23+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 25543
+    },
+    {
+      "path": "scripts/audit-tooling-inventory.js",
+      "base": "audit-tooling-inventory.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "audit-tooling-inventory.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-26T23:37:44+10:00",
+      "ageDays": 1,
+      "recent": true,
+      "bytes": 21034
+    },
+    {
+      "path": "scripts/audit-uuid-collisions.js",
+      "base": "audit-uuid-collisions.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "audit-uuid-collisions.yml"
+      ],
+      "requiredBy": [
+        "lib/uuid-prefix.cjs"
+      ],
+      "documented": false,
+      "lastCommit": "2026-07-10T15:29:51+10:00",
+      "ageDays": 49,
+      "recent": false,
+      "bytes": 4785
+    },
+    {
+      "path": "scripts/build-alias-worklist.js",
+      "base": "build-alias-worklist.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "build-alias-worklist.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-26T13:09:41+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 10795
+    },
+    {
+      "path": "scripts/build-finals-stats.js",
+      "base": "build-finals-stats.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "audit-seasons-gaps.yml",
+        "build-finals-stats.yml",
+        "rebuild-chain.yml"
+      ],
+      "requiredBy": [
+        "audit-seasons-gaps.js",
+        "build-team-stats.js",
+        "check-roster-freshness.js",
+        "db-audit.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-05T23:33:18+10:00",
+      "ageDays": 22,
+      "recent": false,
+      "bytes": 32051
+    },
+    {
+      "path": "scripts/build-leaderboards.js",
+      "base": "build-leaderboards.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "build-leaderboards.yml",
+        "post-drain-chain.yml",
+        "rebuild-chain.yml"
+      ],
+      "requiredBy": [
+        "audit-seasons-gaps.js",
+        "build-finals-stats.js",
+        "build-records.js",
+        "find-flag-collisions.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-01T22:08:15+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 27365
+    },
+    {
+      "path": "scripts/build-player-games.js",
+      "base": "build-player-games.js",
+      "klass": "SCHEDULED",
+      "usedByWorkflows": [
+        "build-player-games.yml",
+        "overnight-chain.yml",
+        "rebuild-chain.yml",
+        "weekly-indexes.yml"
+      ],
+      "requiredBy": [
+        "build-records.js",
+        "size-report.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-22T17:55:37+10:00",
+      "ageDays": 5,
+      "recent": true,
+      "bytes": 22064
+    },
+    {
+      "path": "scripts/build-records.js",
+      "base": "build-records.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "build-records.yml",
+        "post-drain-chain.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-07-31T15:35:36+10:00",
+      "ageDays": 28,
+      "recent": false,
+      "bytes": 19624
+    },
+    {
+      "path": "scripts/build-search-index.js",
+      "base": "build-search-index.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "build-search-index.yml",
+        "post-drain-chain.yml",
+        "rebuild-chain.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-02T22:58:57+10:00",
+      "ageDays": 25,
+      "recent": false,
+      "bytes": 8900
+    },
+    {
+      "path": "scripts/build-team-stats.js",
+      "base": "build-team-stats.js",
+      "klass": "SCHEDULED",
+      "usedByWorkflows": [
+        "build-team-stats.yml",
+        "nightly-crawl.yml",
+        "post-drain-chain.yml",
+        "weekly-indexes.yml"
+      ],
+      "requiredBy": [
+        "check-roster-freshness.js",
+        "discover-fixtures.js",
+        "discover-game-backfill.js",
+        "nightly-crawl.js",
+        "repair-players-batch.js",
+        "spectator-backfill.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-07-28T22:47:18+10:00",
+      "ageDays": 30,
+      "recent": false,
+      "bytes": 14889
+    },
+    {
+      "path": "scripts/build-venue-indexes.js",
+      "base": "build-venue-indexes.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "build-venue-indexes.yml",
+        "post-drain-chain.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-06-29T07:58:49Z",
+      "ageDays": 59,
+      "recent": false,
+      "bytes": 6335
+    },
+    {
+      "path": "scripts/build-win-loss.js",
+      "base": "build-win-loss.js",
+      "klass": "SCHEDULED",
+      "usedByWorkflows": [
+        "build-win-loss.yml",
+        "nightly-crawl.yml",
+        "rebuild-chain.yml",
+        "weekly-future-fixtures.yml",
+        "weekly-indexes.yml"
+      ],
+      "requiredBy": [
+        "build-finals-stats.js",
+        "build-leaderboards.js",
+        "build-team-stats.js",
+        "check-roster-freshness.js",
+        "repair-reg-sibling-sync.js",
+        "size-opposition-index.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-04T11:00:44+10:00",
+      "ageDays": 24,
+      "recent": false,
+      "bytes": 17862
+    },
+    {
+      "path": "scripts/census-wrongly-keyed-players.js",
+      "base": "census-wrongly-keyed-players.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "census-wrongly-keyed-players.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-27T10:47:44+10:00",
+      "ageDays": 1,
+      "recent": true,
+      "bytes": 58470
+    },
+    {
+      "path": "scripts/check-roster-freshness.js",
+      "base": "check-roster-freshness.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "check-roster-freshness.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-07-28T22:47:18+10:00",
+      "ageDays": 30,
+      "recent": false,
+      "bytes": 18186
+    },
+    {
+      "path": "scripts/clear-stats-checked.js",
+      "base": "clear-stats-checked.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "clear-stats-checked.yml",
+        "fetch-profile-stats-matrix.yml"
+      ],
+      "requiredBy": [
+        "fetch-profile-stats.js",
+        "seed-missing-profiles.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-06-27T18:17:07+10:00",
+      "ageDays": 61,
+      "recent": false,
+      "bytes": 4139
+    },
+    {
+      "path": "scripts/count-stats-checked.js",
+      "base": "count-stats-checked.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "count-stats-checked.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-06-26T15:43:46+10:00",
+      "ageDays": 63,
+      "recent": false,
+      "bytes": 1343
+    },
+    {
+      "path": "scripts/db-audit.js",
+      "base": "db-audit.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "db-audit.yml"
+      ],
+      "requiredBy": [
+        "build-finals-stats.js",
+        "find-flag-collisions.js",
+        "probe-stattrack-shapes.cjs",
+        "probe-stattrack-shapes.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-02T22:58:57+10:00",
+      "ageDays": 25,
+      "recent": false,
+      "bytes": 53920
+    },
+    {
+      "path": "scripts/diagnose-alias-conflicts.js",
+      "base": "diagnose-alias-conflicts.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "diagnose-alias-conflicts.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-26T22:53:54+10:00",
+      "ageDays": 1,
+      "recent": true,
+      "bytes": 41111
+    },
+    {
+      "path": "scripts/diagnose-forfeit-game.js",
+      "base": "diagnose-forfeit-game.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "diagnose-forfeit-game.yml"
+      ],
+      "requiredBy": [
+        "repair-forfeit-score.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-02T11:46:54+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 10513
+    },
+    {
+      "path": "scripts/diagnose-id-field-lengths.js",
+      "base": "diagnose-id-field-lengths.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "cleanup-repo.yml",
+        "diagnose-id-field-lengths.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-07-10T22:03:04+10:00",
+      "ageDays": 48,
+      "recent": false,
+      "bytes": 3369
+    },
+    {
+      "path": "scripts/diagnose-nameless-players.js",
+      "base": "diagnose-nameless-players.js",
+      "klass": "ORPHAN: no workflow, nothing requires it, undocumented",
+      "usedByWorkflows": [],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-06-27T17:25:46+10:00",
+      "ageDays": 61,
+      "recent": false,
+      "bytes": 1713
+    },
+    {
+      "path": "scripts/diagnose-nightly-health.js",
+      "base": "diagnose-nightly-health.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "diagnose-nightly-health.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-06-27T12:13:13+10:00",
+      "ageDays": 62,
+      "recent": false,
+      "bytes": 11134
+    },
+    {
+      "path": "scripts/diagnose.js",
+      "base": "diagnose.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "diagnose.yml"
+      ],
+      "requiredBy": [
+        "probe-stattrack-shapes.cjs",
+        "probe-stattrack-shapes.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-06-29T07:58:49Z",
+      "ageDays": 59,
+      "recent": false,
+      "bytes": 14408
+    },
+    {
+      "path": "scripts/discover-fixtures.js",
+      "base": "discover-fixtures.js",
+      "klass": "SCHEDULED",
+      "usedByWorkflows": [
+        "discover-fixtures.yml",
+        "overnight-chain.yml",
+        "probe-grade-ladder.yml",
+        "weekly-indexes.yml"
+      ],
+      "requiredBy": [
+        "discover-game-backfill.js",
+        "nightly-crawl.js",
+        "probe-api-limits.js",
+        "probe-discover-teams.js",
+        "probe-grade-ladder.js",
+        "repair-legacy-flags.js",
+        "repair-players-batch.js",
+        "size-locked-resweep.js",
+        "spectator-backfill.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-20T20:09:51+10:00",
+      "ageDays": 7,
+      "recent": true,
+      "bytes": 45200
+    },
+    {
+      "path": "scripts/discover-game-backfill.js",
+      "base": "discover-game-backfill.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "discover-game-backfill.yml",
+        "overnight-chain.yml"
+      ],
+      "requiredBy": [
+        "audit-aliases-against-playhq.js",
+        "audit-tooling-inventory.js",
+        "census-wrongly-keyed-players.js",
+        "diagnose-alias-conflicts.js",
+        "probe-roster-sources.js",
+        "seed-apiid-from-playhq-pairs.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-20T20:09:51+10:00",
+      "ageDays": 7,
+      "recent": true,
+      "bytes": 66905
+    },
+    {
+      "path": "scripts/discover-seasons.js",
+      "base": "discover-seasons.js",
+      "klass": "SCHEDULED",
+      "usedByWorkflows": [
+        "discover-fixtures.yml",
+        "discover-seasons-matrix.yml",
+        "discover-seasons.yml",
+        "repair-duplicate-regs.yml",
+        "test-backfill.yml"
+      ],
+      "requiredBy": [
+        "build-records.js",
+        "discover-fixtures.js",
+        "probe-discover-teams.js",
+        "repair-duplicate-regs.js",
+        "size-report.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-20T20:09:51+10:00",
+      "ageDays": 7,
+      "recent": true,
+      "bytes": 58659
+    },
+    {
+      "path": "scripts/fetch-profile-stats.js",
+      "base": "fetch-profile-stats.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "add-player.yml",
+        "audit-seasons-gaps.yml",
+        "census-wrongly-keyed-players.yml",
+        "fetch-profile-stats-matrix.yml",
+        "fetch-profile-stats.yml",
+        "probe-alias-stats.yml",
+        "probe-registrations.yml",
+        "seed-apiid-from-playhq-pairs.yml"
+      ],
+      "requiredBy": [
+        "audit-seasons-gaps.js",
+        "build-win-loss.js",
+        "census-wrongly-keyed-players.js",
+        "db-audit.js",
+        "discover-game-backfill.js",
+        "discover-seasons.js",
+        "fix-merge-aliases.js",
+        "fold-diverged-players.js",
+        "nightly-crawl.js",
+        "probe-alias-credits.js",
+        "probe-alias-names.js",
+        "probe-alias-stats.js",
+        "probe-api-limits.js",
+        "probe-missing-games.js",
+        "probe-notfound.js",
+        "probe-registrations.js",
+        "probe-unresolved-aliases.js",
+        "prove-player-files-intact.js",
+        "recheck-private-profiles.js",
+        "repair-duplicate-regs.js",
+        "repair-reg-sibling-sync.js",
+        "repair-season-names.js",
+        "repoint-aliases.js",
+        "scan-season-name-contamination.js",
+        "seed-apiid-from-playhq-pairs.js",
+        "seed-missing-profiles.js",
+        "spectator-backfill.js",
+        "synthesize-missing-games.js",
+        "verify-players-against-playhq.js",
+        "lib/namespace-resolve.cjs"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-23T23:30:43+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 69765
+    },
+    {
+      "path": "scripts/find-flag-collisions.js",
+      "base": "find-flag-collisions.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "find-flag-collisions.yml"
+      ],
+      "requiredBy": [
+        "repair-legacy-flags.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-02T11:46:54+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 18968
+    },
+    {
+      "path": "scripts/find-players-by-team.js",
+      "base": "find-players-by-team.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "find-players-by-team.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-07-07T19:02:44+10:00",
+      "ageDays": 51,
+      "recent": false,
+      "bytes": 4956
+    },
+    {
+      "path": "scripts/fix-merge-aliases.js",
+      "base": "fix-merge-aliases.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "fix-merge-aliases.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-23T23:30:43+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 35772
+    },
+    {
+      "path": "scripts/fold-diverged-players.js",
+      "base": "fold-diverged-players.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "fold-diverged-players.yml",
+        "seed-apiid-from-playhq-pairs.yml"
+      ],
+      "requiredBy": [
+        "discover-game-backfill.js",
+        "find-flag-collisions.js",
+        "nightly-crawl.js",
+        "repair-players-batch.js",
+        "seed-apiid-from-playhq-pairs.js",
+        "spectator-backfill.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-10T08:50:35+10:00",
+      "ageDays": 18,
+      "recent": false,
+      "bytes": 29443
+    },
+    {
+      "path": "scripts/merge-phantom-profiles.js",
+      "base": "merge-phantom-profiles.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "merge-phantom-profiles.yml"
+      ],
+      "requiredBy": [
+        "fix-merge-aliases.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-22T08:05:11+10:00",
+      "ageDays": 6,
+      "recent": true,
+      "bytes": 10871
+    },
+    {
+      "path": "scripts/nightly-crawl.js",
+      "base": "nightly-crawl.js",
+      "klass": "SCHEDULED",
+      "usedByWorkflows": [
+        "audit-seasons-gaps.yml",
+        "nightly-crawl.yml",
+        "repair-players-batch.yml",
+        "weekly-future-fixtures.yml"
+      ],
+      "requiredBy": [
+        "diagnose-forfeit-game.js",
+        "discover-fixtures.js",
+        "discover-game-backfill.js",
+        "discover-seasons.js",
+        "fetch-profile-stats.js",
+        "find-flag-collisions.js",
+        "fix-merge-aliases.js",
+        "probe-alias-credits.js",
+        "probe-alias-names.js",
+        "probe-api-limits.js",
+        "probe-session-throwaway.js",
+        "probe-unresolved-aliases.js",
+        "probe-wrong-rosters.js",
+        "prove-player-files-intact.js",
+        "rebuild-player-index.js",
+        "repair-duplicate-regs.js",
+        "repair-forfeit-score.js",
+        "repair-players-batch.js",
+        "repair-season-names.js",
+        "repoint-aliases.js",
+        "salvage-spectator-names.js",
+        "scan-complete-rounds.js",
+        "seed-missing-profiles.js",
+        "spectator-backfill.js",
+        "test-api.js",
+        "verify-players-against-playhq.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-10T08:50:12+10:00",
+      "ageDays": 18,
+      "recent": false,
+      "bytes": 59754
+    },
+    {
+      "path": "scripts/probe-absent-games.js",
+      "base": "probe-absent-games.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-absent-games.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-20T10:05:01+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 18881
+    },
+    {
+      "path": "scripts/probe-alias-credits.js",
+      "base": "probe-alias-credits.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-alias-credits.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-24T14:55:21+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 43944
+    },
+    {
+      "path": "scripts/probe-alias-names.js",
+      "base": "probe-alias-names.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-alias-names.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-25T10:18:50+10:00",
+      "ageDays": 3,
+      "recent": true,
+      "bytes": 28106
+    },
+    {
+      "path": "scripts/probe-alias-stats.js",
+      "base": "probe-alias-stats.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-alias-stats.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-18T15:32:59+10:00",
+      "ageDays": 10,
+      "recent": true,
+      "bytes": 24879
+    },
+    {
+      "path": "scripts/probe-api-limits.js",
+      "base": "probe-api-limits.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-api-limits.yml"
+      ],
+      "requiredBy": [
+        "nightly-crawl.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-07-04T05:32:11+10:00",
+      "ageDays": 55,
+      "recent": false,
+      "bytes": 20547
+    },
+    {
+      "path": "scripts/probe-both-resolve.js",
+      "base": "probe-both-resolve.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-both-resolve.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-25T18:24:45+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 30834
+    },
+    {
+      "path": "scripts/probe-discover-teams.js",
+      "base": "probe-discover-teams.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-discover-teams.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-20T13:45:22+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 17973
+    },
+    {
+      "path": "scripts/probe-duplicate-profiles.js",
+      "base": "probe-duplicate-profiles.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-duplicate-profiles.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-26T10:15:39+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 27139
+    },
+    {
+      "path": "scripts/probe-grade-ladder.js",
+      "base": "probe-grade-ladder.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-grade-ladder.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-20T11:42:32+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 17112
+    },
+    {
+      "path": "scripts/probe-missing-games.js",
+      "base": "probe-missing-games.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-missing-games.yml"
+      ],
+      "requiredBy": [
+        "probe-player.js",
+        "repair-player.js",
+        "repair-players-batch.js",
+        "synthesize-missing-games.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-06T08:39:25+10:00",
+      "ageDays": 22,
+      "recent": false,
+      "bytes": 18811
+    },
+    {
+      "path": "scripts/probe-my-aliases.js",
+      "base": "probe-my-aliases.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-my-aliases.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-23T23:30:43+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 13854
+    },
+    {
+      "path": "scripts/probe-notfound.js",
+      "base": "probe-notfound.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-notfound.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-20T09:43:01+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 25599
+    },
+    {
+      "path": "scripts/probe-player.js",
+      "base": "probe-player.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-player.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-14T23:26:43+10:00",
+      "ageDays": 13,
+      "recent": true,
+      "bytes": 22063
+    },
+    {
+      "path": "scripts/probe-registrations.js",
+      "base": "probe-registrations.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-registrations.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-19T18:44:14+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 23250
+    },
+    {
+      "path": "scripts/probe-roster-sources.js",
+      "base": "probe-roster-sources.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-roster-sources.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-26T19:25:09+10:00",
+      "ageDays": 1,
+      "recent": true,
+      "bytes": 50089
+    },
+    {
+      "path": "scripts/probe-selfalias-check.js",
+      "base": "probe-selfalias-check.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-selfalias-check.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-25T20:38:47+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 5383
+    },
+    {
+      "path": "scripts/probe-session-throwaway.js",
+      "base": "probe-session-throwaway.js",
+      "klass": "ORPHAN: no workflow, nothing requires it, undocumented",
+      "usedByWorkflows": [],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-07-11T16:12:01+10:00",
+      "ageDays": 48,
+      "recent": false,
+      "bytes": 4361
+    },
+    {
+      "path": "scripts/probe-setup-node-fingerprint.js",
+      "base": "probe-setup-node-fingerprint.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-setup-node-fingerprint.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-07-16T20:54:59+10:00",
+      "ageDays": 42,
+      "recent": false,
+      "bytes": 4054
+    },
+    {
+      "path": "scripts/probe-shared-name-aliases.js",
+      "base": "probe-shared-name-aliases.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-shared-name-aliases.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-25T18:24:45+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 12352
+    },
+    {
+      "path": "scripts/probe-shared-roster.js",
+      "base": "probe-shared-roster.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-shared-roster.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-23T23:30:43+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 10319
+    },
+    {
+      "path": "scripts/probe-squad-evidence.js",
+      "base": "probe-squad-evidence.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-squad-evidence.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-26T11:21:14+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 25728
+    },
+    {
+      "path": "scripts/probe-stattrack-shapes.cjs",
+      "base": "probe-stattrack-shapes.cjs",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-stattrack-shapes.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-07-16T23:24:00+10:00",
+      "ageDays": 42,
+      "recent": false,
+      "bytes": 26488
+    },
+    {
+      "path": "scripts/probe-stattrack-shapes.js",
+      "base": "probe-stattrack-shapes.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-stattrack-shapes.yml"
+      ],
+      "requiredBy": [
+        "probe-stattrack-shapes.cjs"
+      ],
+      "documented": false,
+      "lastCommit": "2026-07-16T23:05:46+10:00",
+      "ageDays": 42,
+      "recent": false,
+      "bytes": 26487
+    },
+    {
+      "path": "scripts/probe-unresolved-aliases.js",
+      "base": "probe-unresolved-aliases.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-unresolved-aliases.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-25T18:24:45+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 29729
+    },
+    {
+      "path": "scripts/probe-verdict-conflict.js",
+      "base": "probe-verdict-conflict.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-verdict-conflict.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-25T18:24:45+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 11952
+    },
+    {
+      "path": "scripts/probe-wrong-rosters.js",
+      "base": "probe-wrong-rosters.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "probe-wrong-rosters.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-19T16:51:14+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 21738
+    },
+    {
+      "path": "scripts/prove-player-files-intact.js",
+      "base": "prove-player-files-intact.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "prove-player-files-intact.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-26T18:32:29+10:00",
+      "ageDays": 1,
+      "recent": true,
+      "bytes": 26666
+    },
+    {
+      "path": "scripts/rebuild-player-index.js",
+      "base": "rebuild-player-index.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "rebuild-player-index.yml"
+      ],
+      "requiredBy": [
+        "db-audit.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-07-17T16:00:58+10:00",
+      "ageDays": 42,
+      "recent": false,
+      "bytes": 10754
+    },
+    {
+      "path": "scripts/recheck-forfeit-games.js",
+      "base": "recheck-forfeit-games.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "recheck-forfeit-games.yml"
+      ],
+      "requiredBy": [
+        "diagnose-forfeit-game.js",
+        "repair-forfeit-score.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-06-29T07:58:49Z",
+      "ageDays": 59,
+      "recent": false,
+      "bytes": 9077
+    },
+    {
+      "path": "scripts/recheck-private-profiles.js",
+      "base": "recheck-private-profiles.js",
+      "klass": "SCHEDULED",
+      "usedByWorkflows": [
+        "recheck-private-profiles.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-07-10T21:57:47+10:00",
+      "ageDays": 48,
+      "recent": false,
+      "bytes": 17729
+    },
+    {
+      "path": "scripts/redirect-exposure.js",
+      "base": "redirect-exposure.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "redirect-exposure.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-07-16T13:22:14+10:00",
+      "ageDays": 43,
+      "recent": false,
+      "bytes": 6762
+    },
+    {
+      "path": "scripts/repair-duplicate-regs.js",
+      "base": "repair-duplicate-regs.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "repair-duplicate-regs.yml"
+      ],
+      "requiredBy": [
+        "repair-reg-sibling-sync.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-01T18:27:40+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 15640
+    },
+    {
+      "path": "scripts/repair-forfeit-score.js",
+      "base": "repair-forfeit-score.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "repair-forfeit-score.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-02T11:51:42+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 9866
+    },
+    {
+      "path": "scripts/repair-legacy-flags.js",
+      "base": "repair-legacy-flags.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "repair-legacy-flags.yml"
+      ],
+      "requiredBy": [
+        "repair-forfeit-score.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-02T12:01:52+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 15721
+    },
+    {
+      "path": "scripts/repair-player.js",
+      "base": "repair-player.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "repair-player.yml"
+      ],
+      "requiredBy": [
+        "probe-player.js",
+        "repair-players-batch.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-14T23:26:43+10:00",
+      "ageDays": 13,
+      "recent": true,
+      "bytes": 22072
+    },
+    {
+      "path": "scripts/repair-players-batch.js",
+      "base": "repair-players-batch.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "overnight-chain.yml",
+        "repair-players-batch.yml"
+      ],
+      "requiredBy": [
+        "build-player-games.js",
+        "probe-player.js",
+        "probe-registrations.js",
+        "repair-player.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-21T19:43:55+10:00",
+      "ageDays": 6,
+      "recent": true,
+      "bytes": 70590
+    },
+    {
+      "path": "scripts/repair-reg-sibling-sync.js",
+      "base": "repair-reg-sibling-sync.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "repair-reg-sibling-sync.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-01T20:33:27+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 13789
+    },
+    {
+      "path": "scripts/repair-season-names.js",
+      "base": "repair-season-names.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "cleanup-repo.yml",
+        "repair-season-names.yml"
+      ],
+      "requiredBy": [
+        "db-audit.js",
+        "fetch-profile-stats.js",
+        "salvage-spectator-names.js",
+        "seed-missing-profiles.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-02T22:58:57+10:00",
+      "ageDays": 25,
+      "recent": false,
+      "bytes": 24793
+    },
+    {
+      "path": "scripts/repoint-aliases.js",
+      "base": "repoint-aliases.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "repoint-aliases.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-26T13:09:41+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 36776
+    },
+    {
+      "path": "scripts/report-alias-index.js",
+      "base": "report-alias-index.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "report-alias-index.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-07-14T08:38:22+10:00",
+      "ageDays": 45,
+      "recent": false,
+      "bytes": 2378
+    },
+    {
+      "path": "scripts/salvage-spectator-names.js",
+      "base": "salvage-spectator-names.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "salvage-spectator-names.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-02T22:58:57+10:00",
+      "ageDays": 25,
+      "recent": false,
+      "bytes": 20413
+    },
+    {
+      "path": "scripts/scan-complete-rounds.js",
+      "base": "scan-complete-rounds.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "scan-complete-rounds.yml"
+      ],
+      "requiredBy": [
+        "nightly-crawl.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-07T13:01:03+10:00",
+      "ageDays": 21,
+      "recent": false,
+      "bytes": 9868
+    },
+    {
+      "path": "scripts/scan-roster-id-forms.js",
+      "base": "scan-roster-id-forms.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "scan-roster-id-forms.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-23T23:40:34+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 6404
+    },
+    {
+      "path": "scripts/scan-season-name-contamination.js",
+      "base": "scan-season-name-contamination.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "scan-season-name-contamination.yml"
+      ],
+      "requiredBy": [
+        "repair-season-names.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-23T22:29:21+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 10008
+    },
+    {
+      "path": "scripts/seed-apiid-from-playhq-pairs.js",
+      "base": "seed-apiid-from-playhq-pairs.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "seed-apiid-from-playhq-pairs.yml"
+      ],
+      "requiredBy": [
+        "census-wrongly-keyed-players.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-27T20:20:52+10:00",
+      "ageDays": 0,
+      "recent": true,
+      "bytes": 55880
+    },
+    {
+      "path": "scripts/seed-missing-profiles.js",
+      "base": "seed-missing-profiles.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "seed-missing-profiles.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-25T21:49:28+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 65885
+    },
+    {
+      "path": "scripts/size-appearance-gaps.js",
+      "base": "size-appearance-gaps.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "size-appearance-gaps.yml"
+      ],
+      "requiredBy": [
+        "size-report.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-05T12:14:44+10:00",
+      "ageDays": 23,
+      "recent": false,
+      "bytes": 10922
+    },
+    {
+      "path": "scripts/size-duplicate-profiles.js",
+      "base": "size-duplicate-profiles.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "size-duplicate-profiles.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-21T22:04:41+10:00",
+      "ageDays": 6,
+      "recent": true,
+      "bytes": 8508
+    },
+    {
+      "path": "scripts/size-locked-backfill.js",
+      "base": "size-locked-backfill.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "size-locked-backfill.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-03T17:34:07+10:00",
+      "ageDays": 24,
+      "recent": false,
+      "bytes": 10310
+    },
+    {
+      "path": "scripts/size-locked-resweep.js",
+      "base": "size-locked-resweep.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "size-locked-resweep.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-03T19:48:55+10:00",
+      "ageDays": 24,
+      "recent": false,
+      "bytes": 10194
+    },
+    {
+      "path": "scripts/size-missing-gids.js",
+      "base": "size-missing-gids.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "size-missing-gids.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-05T00:00:55+10:00",
+      "ageDays": 23,
+      "recent": false,
+      "bytes": 9184
+    },
+    {
+      "path": "scripts/size-opposition-index.js",
+      "base": "size-opposition-index.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "size-opposition-index.yml"
+      ],
+      "requiredBy": [
+        "size-locked-backfill.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-02T19:02:19+10:00",
+      "ageDays": 25,
+      "recent": false,
+      "bytes": 13467
+    },
+    {
+      "path": "scripts/size-report.js",
+      "base": "size-report.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "size-report.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-20T15:05:43+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 62019
+    },
+    {
+      "path": "scripts/size-spectator-queue.js",
+      "base": "size-spectator-queue.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "size-spectator-queue.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-06T08:58:20+10:00",
+      "ageDays": 22,
+      "recent": false,
+      "bytes": 8052
+    },
+    {
+      "path": "scripts/spectator-backfill.js",
+      "base": "spectator-backfill.js",
+      "klass": "SCHEDULED",
+      "usedByWorkflows": [
+        "diagnose-alias-conflicts.yml",
+        "overnight-chain.yml",
+        "spectator-backfill.yml"
+      ],
+      "requiredBy": [
+        "census-wrongly-keyed-players.js",
+        "diagnose-alias-conflicts.js",
+        "discover-game-backfill.js",
+        "probe-roster-sources.js",
+        "probe-wrong-rosters.js",
+        "seed-apiid-from-playhq-pairs.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-21T22:38:35+10:00",
+      "ageDays": 6,
+      "recent": true,
+      "bytes": 62245
+    },
+    {
+      "path": "scripts/synthesize-missing-games.js",
+      "base": "synthesize-missing-games.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "synthesize-missing-games.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-07T18:58:59+10:00",
+      "ageDays": 20,
+      "recent": false,
+      "bytes": 17224
+    },
+    {
+      "path": "scripts/test-api.js",
+      "base": "test-api.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "test-api.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-07-03T23:17:31+10:00",
+      "ageDays": 55,
+      "recent": false,
+      "bytes": 27476
+    },
+    {
+      "path": "scripts/trace-player-game.js",
+      "base": "trace-player-game.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "trace-player-game.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-23T23:30:43+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 8841
+    },
+    {
+      "path": "scripts/update-team-index.js",
+      "base": "update-team-index.js",
+      "klass": "SCHEDULED",
+      "usedByWorkflows": [
+        "nightly-crawl.yml",
+        "update-team-index.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-06-29T07:58:49Z",
+      "ageDays": 59,
+      "recent": false,
+      "bytes": 6209
+    },
+    {
+      "path": "scripts/update-venue-lookup.js",
+      "base": "update-venue-lookup.js",
+      "klass": "SCHEDULED",
+      "usedByWorkflows": [
+        "nightly-crawl.yml",
+        "update-venue-lookup.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-06-29T07:58:49Z",
+      "ageDays": 59,
+      "recent": false,
+      "bytes": 8537
+    },
+    {
+      "path": "scripts/verify-enrich.js",
+      "base": "verify-enrich.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "verify-enrich.yml"
+      ],
+      "requiredBy": [
+        "probe-stattrack-shapes.cjs",
+        "probe-stattrack-shapes.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-07-14T23:09:24+10:00",
+      "ageDays": 44,
+      "recent": false,
+      "bytes": 3756
+    },
+    {
+      "path": "scripts/verify-p-redundancy.js",
+      "base": "verify-p-redundancy.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "verify-p-redundancy.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-07-10T11:24:04+10:00",
+      "ageDays": 49,
+      "recent": false,
+      "bytes": 6611
+    },
+    {
+      "path": "scripts/verify-players-against-playhq.js",
+      "base": "verify-players-against-playhq.js",
+      "klass": "DISPATCH-ONLY",
+      "usedByWorkflows": [
+        "verify-players-against-playhq.yml"
+      ],
+      "requiredBy": [],
+      "documented": false,
+      "lastCommit": "2026-08-26T14:48:32+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 26992
+    },
+    {
+      "path": "scripts/lib/namespace-resolve.cjs",
+      "base": "namespace-resolve.cjs",
+      "klass": "LIBRARY (required by other scripts)",
+      "usedByWorkflows": [
+        "probe-alias-credits.yml",
+        "probe-alias-names.yml"
+      ],
+      "requiredBy": [
+        "audit-aliases-against-playhq.js",
+        "census-wrongly-keyed-players.js",
+        "db-audit.js",
+        "diagnose-alias-conflicts.js",
+        "fetch-profile-stats.js",
+        "fold-diverged-players.js",
+        "probe-alias-credits.js",
+        "probe-alias-names.js",
+        "probe-alias-stats.js",
+        "probe-roster-sources.js",
+        "probe-shared-name-aliases.js",
+        "probe-stattrack-shapes.cjs",
+        "probe-stattrack-shapes.js",
+        "repair-season-names.js",
+        "scan-season-name-contamination.js",
+        "seed-missing-profiles.js",
+        "size-report.js"
+      ],
+      "documented": false,
+      "lastCommit": "2026-08-23T23:31:09+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 12041
+    },
+    {
+      "path": "scripts/lib/uuid-prefix.cjs",
+      "base": "uuid-prefix.cjs",
+      "klass": "LIBRARY (required by other scripts)",
+      "usedByWorkflows": [],
+      "requiredBy": [
+        "audit-aliases-against-playhq.js",
+        "audit-seasons-gaps.js",
+        "build-finals-stats.js",
+        "build-leaderboards.js",
+        "build-player-games.js",
+        "build-records.js",
+        "build-search-index.js",
+        "build-team-stats.js",
+        "build-win-loss.js",
+        "census-wrongly-keyed-players.js",
+        "check-roster-freshness.js",
+        "diagnose-alias-conflicts.js",
+        "diagnose-id-field-lengths.js",
+        "discover-game-backfill.js",
+        "fetch-profile-stats.js",
+        "fold-diverged-players.js",
+        "nightly-crawl.js",
+        "probe-alias-stats.js",
+        "probe-both-resolve.js",
+        "probe-my-aliases.js",
+        "probe-roster-sources.js",
+        "probe-shared-roster.js",
+        "probe-stattrack-shapes.cjs",
+        "probe-stattrack-shapes.js",
+        "rebuild-player-index.js",
+        "redirect-exposure.js",
+        "repair-season-names.js",
+        "report-alias-index.js",
+        "salvage-spectator-names.js",
+        "seed-apiid-from-playhq-pairs.js",
+        "seed-missing-profiles.js",
+        "size-opposition-index.js",
+        "size-report.js",
+        "spectator-backfill.js",
+        "trace-player-game.js",
+        "lib/namespace-resolve.cjs"
+      ],
+      "documented": false,
+      "lastCommit": "2026-07-16T13:59:05+10:00",
+      "ageDays": 43,
+      "recent": false,
+      "bytes": 12498
+    }
+  ],
+  "workflows": [
+    {
+      "path": ".github/workflows/add-player.yml",
+      "displayName": "Add Player",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "fetch-profile-stats.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-16T20:49:48+10:00",
+      "ageDays": 42,
+      "recent": false,
+      "bytes": 8875
+    },
+    {
+      "path": ".github/workflows/audit-aliases-against-playhq.yml",
+      "displayName": "Audit Aliases Against PlayHQ",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "audit-aliases-against-playhq.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-28T11:47:51+10:00",
+      "ageDays": 0,
+      "recent": true,
+      "bytes": 4580
+    },
+    {
+      "path": ".github/workflows/audit-seasons-gaps.yml",
+      "displayName": "Audit seasons[] gaps + duplicate regs (read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "audit-seasons-gaps.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-01T13:33:43+10:00",
+      "ageDays": 27,
+      "recent": false,
+      "bytes": 2063
+    },
+    {
+      "path": ".github/workflows/audit-tooling-inventory.yml",
+      "displayName": "Audit Tooling Inventory",
+      "klass": "PARTLY BROKEN: missing x.js",
+      "invokes": [
+        "x.js",
+        "audit-tooling-inventory.js"
+      ],
+      "missingScripts": [
+        "x.js"
+      ],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-27T09:19:47+10:00",
+      "ageDays": 1,
+      "recent": true,
+      "bytes": 3194
+    },
+    {
+      "path": ".github/workflows/audit-uuid-collisions.yml",
+      "displayName": "Audit UUID Prefix Collisions (read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "audit-uuid-collisions.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-10T15:29:34+10:00",
+      "ageDays": 49,
+      "recent": false,
+      "bytes": 1061
+    },
+    {
+      "path": ".github/workflows/backfill.yml",
+      "displayName": "Backfill (Phase A — results)",
+      "klass": "BROKEN: calls script(s) that do not exist — backfill.js",
+      "invokes": [
+        "backfill.js"
+      ],
+      "missingScripts": [
+        "backfill.js"
+      ],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-12T15:48:33+10:00",
+      "ageDays": 16,
+      "recent": false,
+      "bytes": 3666
+    },
+    {
+      "path": ".github/workflows/build-alias-worklist.yml",
+      "displayName": "Build Alias Worklist",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "build-alias-worklist.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-26T09:27:10+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 2365
+    },
+    {
+      "path": ".github/workflows/build-finals-stats.yml",
+      "displayName": "Build Finals Stats",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "build-finals-stats.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-31T11:04:27+10:00",
+      "ageDays": 28,
+      "recent": false,
+      "bytes": 4551
+    },
+    {
+      "path": ".github/workflows/build-leaderboards.yml",
+      "displayName": "Build Leaderboards",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "build-leaderboards.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-06T08:34:04+10:00",
+      "ageDays": 22,
+      "recent": false,
+      "bytes": 2911
+    },
+    {
+      "path": ".github/workflows/build-player-games.yml",
+      "displayName": "Build Player Games",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "build-player-games.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-16T20:49:48+10:00",
+      "ageDays": 42,
+      "recent": false,
+      "bytes": 1311
+    },
+    {
+      "path": ".github/workflows/build-records.yml",
+      "displayName": "Build Single-Game Records",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "build-records.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-06T08:34:04+10:00",
+      "ageDays": 22,
+      "recent": false,
+      "bytes": 2386
+    },
+    {
+      "path": ".github/workflows/build-search-index.yml",
+      "displayName": "Build Search Index",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "build-search-index.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-06T08:34:04+10:00",
+      "ageDays": 22,
+      "recent": false,
+      "bytes": 1546
+    },
+    {
+      "path": ".github/workflows/build-team-stats.yml",
+      "displayName": "Build Team Stats",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "build-team-stats.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-07T18:51:57+10:00",
+      "ageDays": 20,
+      "recent": false,
+      "bytes": 4771
+    },
+    {
+      "path": ".github/workflows/build-venue-indexes.yml",
+      "displayName": "Build Venue Indexes",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "build-venue-indexes.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-16T20:49:48+10:00",
+      "ageDays": 42,
+      "recent": false,
+      "bytes": 719
+    },
+    {
+      "path": ".github/workflows/build-win-loss.yml",
+      "displayName": "Build Win-Loss Records",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "build-win-loss.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-06-27T22:57:13+10:00",
+      "ageDays": 61,
+      "recent": false,
+      "bytes": 972
+    },
+    {
+      "path": ".github/workflows/census-wrongly-keyed-players.yml",
+      "displayName": "Census Wrongly Keyed Players",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "census-wrongly-keyed-players.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-27T10:47:32+10:00",
+      "ageDays": 1,
+      "recent": true,
+      "bytes": 4405
+    },
+    {
+      "path": ".github/workflows/check-roster-freshness.yml",
+      "displayName": "Check roster freshness (A3)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "check-roster-freshness.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-28T22:47:47+10:00",
+      "ageDays": 30,
+      "recent": false,
+      "bytes": 2559
+    },
+    {
+      "path": ".github/workflows/cleanup-repo.yml",
+      "displayName": "Cleanup Repo",
+      "klass": "PARTLY BROKEN: missing migrate-phase1.js, migrate-phase2.js, migrate-phase3.js, migrate-player-index.js, migrate-team-lookup.js, migrate-games.sh, normalise-game-structure.js, augment-game-grades.js, augment-team-index.js, augment-venue-lookup.js, backfill-fixtures.js, backfill-game-scores.js, backfill-hidden-games.js, backfill-jersey-numbers.js, backfill-missing-players.js, backfill-venue.js, backfill-spectator.js, bootstrap-fixture-progress.js, cleanup-empty-cats.js, cleanup-flag-collisions.js, cleanup-player-pgstats.js, recover-discovered-seasons.js, recover-missing-seasons.js, patch-team-stats-fixtures.js, infer-game-grades.js, reaudit-game-grades.js, rebuild-player-stats.js, fix-forfeit-player-records.js, fix-game-boxscore.js, fix-game-status.js, fix-null-records.js, fix-regraded-teamstats.js, build-forfeit-index.js, audit-sample.js, classify-games.js, fetch-player-profiles.js, build-foulout-stats.js, fetch-playhq.js, fetch-leaderboard-records.js, probe-api-schema.js, probe-games.js, probe-lineup.js, probe-rest-api.js, probe-team-members.js, explore-playhq-auth.js, fetch-lineup-auth.js, db-report.js, repo-size.js, find-missing-game-data.js, find-missing-team-players.js, find-season-players.js, lookup-grade-players.js, roster-lookup.js, team-lookup-utils.js, diagnose-coverage-and-uuids.js, diagnose-game-structure.js, diagnose-hidden-gaps.js, diagnose-null-profiles.js, diagnose-season-games.js, inspect-failed-games.js, inspect-game-schema.js, inspect-game-sizes.js, test-failed-uuids.js, inspect-player-file.js, inspect-hidden-reclassified.js, diagnose-player-stats.js, find-game-id.js, test-grade-concurrency.js, test-profile-query.js, test-discover-game.js, test-schema-fields.js, test-gps-count.js, search-team-stats.js, rekey-apply.js, rekey-enrich.js, rekey-plan.js, reconcile-people.js, repair-aliases.js, repair-generate-candidates.js, classify-flagged-merges.js, build-alias-inverse.js, backfill-generate-candidates.js, backfill-collision-stats.js, backfill-player-records.js, backfill-player-names.js, backfill-hidden-boxscores.js, resolve-known-collisions.js, audit-uuid-recovery-misattribution.js, recover-uuids-from-git-history.js, strip-redundant-fields.js, migrate-data-dir.js, migrate-uuid-truncation.js, fix-foulouts-type.js, fix-player-names.js, fix-corrupt-player-names.js, reorganise-repo.js, diagnose-unresolved-prefixes.js, diagnose-redundancy.js, diagnose-namespace-mismatch.js, diagnose-profile-identity-namespace.js, diagnose-grade-pagination.js, diagnose-missing-player-files.js, diagnose-ambiguous-fresh.js, diagnose-api-stability.js, diagnose-uuid-classification.js, diagnose-uuid-population.js, diagnose-season-name-records.js, diagnose-win-loss.js, diagnose-win-loss-ambiguous.js, diagnose-win-loss-skipped.js, hold-check.js, .augment-game-grades-progress.js, .augment-venue-progress.js, .backfill-jersey-progress.js, .fetch-player-profiles-progress.js, .reaudit-grade-map.js, .reaudit-phase2-progress.js, .reaudit-phase3-progress.js, .rebuild-player-stats-progress.js, .failed-uuids.js, .backfill-player-records-progress.js, .backfill-names-progress.js, .backfill-hidden-boxscores-progress.js, build-alias-index.js, fix-uuid-prefix-length.js, cleanup-dead-artifacts.js",
+      "invokes": [
+        "migrate-phase1.js",
+        "migrate-phase2.js",
+        "migrate-phase3.js",
+        "migrate-player-index.js",
+        "migrate-team-lookup.js",
+        "migrate-games.sh",
+        "normalise-game-structure.js",
+        "augment-game-grades.js",
+        "augment-team-index.js",
+        "augment-venue-lookup.js",
+        "backfill-fixtures.js",
+        "backfill-game-scores.js",
+        "backfill-hidden-games.js",
+        "backfill-jersey-numbers.js",
+        "backfill-missing-players.js",
+        "backfill-venue.js",
+        "backfill-spectator.js",
+        "bootstrap-fixture-progress.js",
+        "cleanup-empty-cats.js",
+        "cleanup-flag-collisions.js",
+        "cleanup-player-pgstats.js",
+        "recover-discovered-seasons.js",
+        "recover-missing-seasons.js",
+        "patch-team-stats-fixtures.js",
+        "infer-game-grades.js",
+        "reaudit-game-grades.js",
+        "rebuild-player-stats.js",
+        "fix-forfeit-player-records.js",
+        "fix-game-boxscore.js",
+        "fix-game-status.js",
+        "fix-null-records.js",
+        "fix-regraded-teamstats.js",
+        "build-forfeit-index.js",
+        "audit-sample.js",
+        "classify-games.js",
+        "fetch-player-profiles.js",
+        "build-foulout-stats.js",
+        "fetch-playhq.js",
+        "fetch-leaderboard-records.js",
+        "probe-api-schema.js",
+        "probe-games.js",
+        "probe-lineup.js",
+        "probe-rest-api.js",
+        "probe-team-members.js",
+        "explore-playhq-auth.js",
+        "fetch-lineup-auth.js",
+        "db-report.js",
+        "repo-size.js",
+        "find-missing-game-data.js",
+        "find-missing-team-players.js",
+        "find-season-players.js",
+        "lookup-grade-players.js",
+        "roster-lookup.js",
+        "team-lookup-utils.js",
+        "diagnose-coverage-and-uuids.js",
+        "diagnose-game-structure.js",
+        "diagnose-hidden-gaps.js",
+        "diagnose-null-profiles.js",
+        "diagnose-season-games.js",
+        "inspect-failed-games.js",
+        "inspect-game-schema.js",
+        "inspect-game-sizes.js",
+        "test-failed-uuids.js",
+        "inspect-player-file.js",
+        "inspect-hidden-reclassified.js",
+        "diagnose-player-stats.js",
+        "find-game-id.js",
+        "test-grade-concurrency.js",
+        "test-profile-query.js",
+        "test-discover-game.js",
+        "test-schema-fields.js",
+        "test-gps-count.js",
+        "search-team-stats.js",
+        "rekey-apply.js",
+        "rekey-enrich.js",
+        "rekey-plan.js",
+        "reconcile-people.js",
+        "repair-aliases.js",
+        "repair-generate-candidates.js",
+        "repair-season-names.js",
+        "classify-flagged-merges.js",
+        "build-alias-inverse.js",
+        "backfill-generate-candidates.js",
+        "backfill-collision-stats.js",
+        "backfill-player-records.js",
+        "backfill-player-names.js",
+        "backfill-hidden-boxscores.js",
+        "resolve-known-collisions.js",
+        "audit-uuid-recovery-misattribution.js",
+        "recover-uuids-from-git-history.js",
+        "strip-redundant-fields.js",
+        "migrate-data-dir.js",
+        "migrate-uuid-truncation.js",
+        "fix-foulouts-type.js",
+        "fix-player-names.js",
+        "fix-corrupt-player-names.js",
+        "reorganise-repo.js",
+        "diagnose-unresolved-prefixes.js",
+        "diagnose-redundancy.js",
+        "diagnose-namespace-mismatch.js",
+        "diagnose-profile-identity-namespace.js",
+        "diagnose-grade-pagination.js",
+        "diagnose-missing-player-files.js",
+        "diagnose-ambiguous-fresh.js",
+        "diagnose-api-stability.js",
+        "diagnose-uuid-classification.js",
+        "diagnose-uuid-population.js",
+        "diagnose-season-name-records.js",
+        "diagnose-win-loss.js",
+        "diagnose-win-loss-ambiguous.js",
+        "diagnose-win-loss-skipped.js",
+        "hold-check.js",
+        ".augment-game-grades-progress.js",
+        ".augment-venue-progress.js",
+        ".backfill-jersey-progress.js",
+        ".fetch-player-profiles-progress.js",
+        ".reaudit-grade-map.js",
+        ".reaudit-phase2-progress.js",
+        ".reaudit-phase3-progress.js",
+        ".rebuild-player-stats-progress.js",
+        ".failed-uuids.js",
+        ".backfill-player-records-progress.js",
+        ".backfill-names-progress.js",
+        ".backfill-hidden-boxscores-progress.js",
+        "build-alias-index.js",
+        "fix-uuid-prefix-length.js",
+        "cleanup-dead-artifacts.js"
+      ],
+      "missingScripts": [
+        "migrate-phase1.js",
+        "migrate-phase2.js",
+        "migrate-phase3.js",
+        "migrate-player-index.js",
+        "migrate-team-lookup.js",
+        "migrate-games.sh",
+        "normalise-game-structure.js",
+        "augment-game-grades.js",
+        "augment-team-index.js",
+        "augment-venue-lookup.js",
+        "backfill-fixtures.js",
+        "backfill-game-scores.js",
+        "backfill-hidden-games.js",
+        "backfill-jersey-numbers.js",
+        "backfill-missing-players.js",
+        "backfill-venue.js",
+        "backfill-spectator.js",
+        "bootstrap-fixture-progress.js",
+        "cleanup-empty-cats.js",
+        "cleanup-flag-collisions.js",
+        "cleanup-player-pgstats.js",
+        "recover-discovered-seasons.js",
+        "recover-missing-seasons.js",
+        "patch-team-stats-fixtures.js",
+        "infer-game-grades.js",
+        "reaudit-game-grades.js",
+        "rebuild-player-stats.js",
+        "fix-forfeit-player-records.js",
+        "fix-game-boxscore.js",
+        "fix-game-status.js",
+        "fix-null-records.js",
+        "fix-regraded-teamstats.js",
+        "build-forfeit-index.js",
+        "audit-sample.js",
+        "classify-games.js",
+        "fetch-player-profiles.js",
+        "build-foulout-stats.js",
+        "fetch-playhq.js",
+        "fetch-leaderboard-records.js",
+        "probe-api-schema.js",
+        "probe-games.js",
+        "probe-lineup.js",
+        "probe-rest-api.js",
+        "probe-team-members.js",
+        "explore-playhq-auth.js",
+        "fetch-lineup-auth.js",
+        "db-report.js",
+        "repo-size.js",
+        "find-missing-game-data.js",
+        "find-missing-team-players.js",
+        "find-season-players.js",
+        "lookup-grade-players.js",
+        "roster-lookup.js",
+        "team-lookup-utils.js",
+        "diagnose-coverage-and-uuids.js",
+        "diagnose-game-structure.js",
+        "diagnose-hidden-gaps.js",
+        "diagnose-null-profiles.js",
+        "diagnose-season-games.js",
+        "inspect-failed-games.js",
+        "inspect-game-schema.js",
+        "inspect-game-sizes.js",
+        "test-failed-uuids.js",
+        "inspect-player-file.js",
+        "inspect-hidden-reclassified.js",
+        "diagnose-player-stats.js",
+        "find-game-id.js",
+        "test-grade-concurrency.js",
+        "test-profile-query.js",
+        "test-discover-game.js",
+        "test-schema-fields.js",
+        "test-gps-count.js",
+        "search-team-stats.js",
+        "rekey-apply.js",
+        "rekey-enrich.js",
+        "rekey-plan.js",
+        "reconcile-people.js",
+        "repair-aliases.js",
+        "repair-generate-candidates.js",
+        "classify-flagged-merges.js",
+        "build-alias-inverse.js",
+        "backfill-generate-candidates.js",
+        "backfill-collision-stats.js",
+        "backfill-player-records.js",
+        "backfill-player-names.js",
+        "backfill-hidden-boxscores.js",
+        "resolve-known-collisions.js",
+        "audit-uuid-recovery-misattribution.js",
+        "recover-uuids-from-git-history.js",
+        "strip-redundant-fields.js",
+        "migrate-data-dir.js",
+        "migrate-uuid-truncation.js",
+        "fix-foulouts-type.js",
+        "fix-player-names.js",
+        "fix-corrupt-player-names.js",
+        "reorganise-repo.js",
+        "diagnose-unresolved-prefixes.js",
+        "diagnose-redundancy.js",
+        "diagnose-namespace-mismatch.js",
+        "diagnose-profile-identity-namespace.js",
+        "diagnose-grade-pagination.js",
+        "diagnose-missing-player-files.js",
+        "diagnose-ambiguous-fresh.js",
+        "diagnose-api-stability.js",
+        "diagnose-uuid-classification.js",
+        "diagnose-uuid-population.js",
+        "diagnose-season-name-records.js",
+        "diagnose-win-loss.js",
+        "diagnose-win-loss-ambiguous.js",
+        "diagnose-win-loss-skipped.js",
+        "hold-check.js",
+        ".augment-game-grades-progress.js",
+        ".augment-venue-progress.js",
+        ".backfill-jersey-progress.js",
+        ".fetch-player-profiles-progress.js",
+        ".reaudit-grade-map.js",
+        ".reaudit-phase2-progress.js",
+        ".reaudit-phase3-progress.js",
+        ".rebuild-player-stats-progress.js",
+        ".failed-uuids.js",
+        ".backfill-player-records-progress.js",
+        ".backfill-names-progress.js",
+        ".backfill-hidden-boxscores-progress.js",
+        "build-alias-index.js",
+        "fix-uuid-prefix-length.js",
+        "cleanup-dead-artifacts.js"
+      ],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-16T21:13:53+10:00",
+      "ageDays": 42,
+      "recent": false,
+      "bytes": 24700
+    },
+    {
+      "path": ".github/workflows/clear-stats-checked.yml",
+      "displayName": "Clear Stats Checked",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "clear-stats-checked.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-06-27T18:16:41+10:00",
+      "ageDays": 61,
+      "recent": false,
+      "bytes": 979
+    },
+    {
+      "path": ".github/workflows/count-stats-checked.yml",
+      "displayName": "Count Stats Checked",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "count-stats-checked.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-06-26T15:43:30+10:00",
+      "ageDays": 63,
+      "recent": false,
+      "bytes": 349
+    },
+    {
+      "path": ".github/workflows/db-audit.yml",
+      "displayName": "DB Audit",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "db-audit.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-10T10:27:23+10:00",
+      "ageDays": 49,
+      "recent": false,
+      "bytes": 1127
+    },
+    {
+      "path": ".github/workflows/deploy-pages.yml",
+      "displayName": "Deploy Pages",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-07T13:00:49+10:00",
+      "ageDays": 21,
+      "recent": false,
+      "bytes": 9766
+    },
+    {
+      "path": ".github/workflows/diagnose-alias-conflicts.yml",
+      "displayName": "Diagnose Alias Conflicts",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "diagnose-alias-conflicts.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-27T09:19:47+10:00",
+      "ageDays": 1,
+      "recent": true,
+      "bytes": 2859
+    },
+    {
+      "path": ".github/workflows/diagnose-forfeit-game.yml",
+      "displayName": "Diagnose forfeit game (read-only probe)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "diagnose-forfeit-game.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-02T11:46:41+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 1696
+    },
+    {
+      "path": ".github/workflows/diagnose-id-field-lengths.yml",
+      "displayName": "Diagnose ID Field Lengths (read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "diagnose-id-field-lengths.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-10T22:02:52+10:00",
+      "ageDays": 48,
+      "recent": false,
+      "bytes": 1090
+    },
+    {
+      "path": ".github/workflows/diagnose-nightly-health.yml",
+      "displayName": "Diagnose Nightly Health",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "diagnose-nightly-health.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-06-27T12:12:55+10:00",
+      "ageDays": 62,
+      "recent": false,
+      "bytes": 940
+    },
+    {
+      "path": ".github/workflows/diagnose.yml",
+      "displayName": "Diagnose",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "diagnose.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-06-26T23:56:06+10:00",
+      "ageDays": 62,
+      "recent": false,
+      "bytes": 1144
+    },
+    {
+      "path": ".github/workflows/discover-fixtures.yml",
+      "displayName": "Discover fixtures",
+      "klass": "SCHEDULED",
+      "invokes": [
+        "discover-fixtures.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": true,
+      "lastCommit": "2026-08-20T14:00:20+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 9192
+    },
+    {
+      "path": ".github/workflows/discover-game-backfill.yml",
+      "displayName": "Discover Game Backfill",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "discover-game-backfill.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-11T23:47:08+10:00",
+      "ageDays": 16,
+      "recent": false,
+      "bytes": 2825
+    },
+    {
+      "path": ".github/workflows/discover-seasons-matrix.yml",
+      "displayName": "Discover Seasons (Matrix)",
+      "klass": "SCHEDULED",
+      "invokes": [
+        "discover-seasons.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": true,
+      "lastCommit": "2026-08-10T11:13:30+10:00",
+      "ageDays": 18,
+      "recent": false,
+      "bytes": 17500
+    },
+    {
+      "path": ".github/workflows/discover-seasons.yml",
+      "displayName": "Discover Seasons (detection)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "discover-seasons.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-06T15:29:03+10:00",
+      "ageDays": 53,
+      "recent": false,
+      "bytes": 2438
+    },
+    {
+      "path": ".github/workflows/fetch-profile-stats-matrix.yml",
+      "displayName": "Fetch Profile Stats (Matrix)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "clear-stats-checked.js",
+        "fetch-profile-stats.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-23T23:30:08+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 40023
+    },
+    {
+      "path": ".github/workflows/fetch-profile-stats.yml",
+      "displayName": "Fetch Profile Stats",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "fetch-profile-stats.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-23T23:30:08+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 4272
+    },
+    {
+      "path": ".github/workflows/find-code-refs.yml",
+      "displayName": "Find code references (grep — GitHub search substitute)",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-31T23:23:38+10:00",
+      "ageDays": 27,
+      "recent": false,
+      "bytes": 4597
+    },
+    {
+      "path": ".github/workflows/find-flag-collisions.yml",
+      "displayName": "Find flag collisions (read-only diagnostic)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "find-flag-collisions.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-02T11:46:41+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 1791
+    },
+    {
+      "path": ".github/workflows/find-players-by-team.yml",
+      "displayName": "Advanced Player Search",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "find-players-by-team.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-07T19:03:27+10:00",
+      "ageDays": 51,
+      "recent": false,
+      "bytes": 1072
+    },
+    {
+      "path": ".github/workflows/find-root-json-refs.yml",
+      "displayName": "Find Root JSON References",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-06-29T16:51:15+10:00",
+      "ageDays": 59,
+      "recent": false,
+      "bytes": 1142
+    },
+    {
+      "path": ".github/workflows/fix-merge-aliases.yml",
+      "displayName": "Fix Merge Aliases",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "fix-merge-aliases.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-23T18:58:02+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 3855
+    },
+    {
+      "path": ".github/workflows/fold-diverged-players.yml",
+      "displayName": "Fold diverged players (api-canonical maintenance)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "fold-diverged-players.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-09T08:40:01+10:00",
+      "ageDays": 19,
+      "recent": false,
+      "bytes": 3318
+    },
+    {
+      "path": ".github/workflows/generate-roster.yml",
+      "displayName": "Generate Roster Report",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-07T23:07:30+10:00",
+      "ageDays": 51,
+      "recent": false,
+      "bytes": 2789
+    },
+    {
+      "path": ".github/workflows/graduate-seasons.yml",
+      "displayName": "Graduate Seasons",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-10T11:13:30+10:00",
+      "ageDays": 18,
+      "recent": false,
+      "bytes": 23111
+    },
+    {
+      "path": ".github/workflows/merge-phantom-profiles.yml",
+      "displayName": "Merge Phantom Profiles",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "merge-phantom-profiles.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-22T08:05:34+10:00",
+      "ageDays": 6,
+      "recent": true,
+      "bytes": 3141
+    },
+    {
+      "path": ".github/workflows/nightly-crawl.yml",
+      "displayName": "Nightly Crawl",
+      "klass": "SCHEDULED",
+      "invokes": [
+        "nightly-crawl.js",
+        "build-team-stats.js",
+        "update-team-index.js",
+        "update-venue-lookup.js",
+        "build-win-loss.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": true,
+      "lastCommit": "2026-08-10T11:13:30+10:00",
+      "ageDays": 18,
+      "recent": false,
+      "bytes": 21122
+    },
+    {
+      "path": ".github/workflows/overnight-chain.yml",
+      "displayName": "Overnight Chain",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "spectator-backfill.js",
+        "discover-game-backfill.js",
+        "build-player-games.js",
+        "repair-players-batch.js",
+        "discover-fixtures.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-21T11:27:15+10:00",
+      "ageDays": 7,
+      "recent": true,
+      "bytes": 13690
+    },
+    {
+      "path": ".github/workflows/post-drain-chain.yml",
+      "displayName": "Post-Drain Chain",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "build-team-stats.js",
+        "build-venue-indexes.js",
+        "build-search-index.js",
+        "build-records.js",
+        "build-leaderboards.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-07T18:59:15+10:00",
+      "ageDays": 20,
+      "recent": false,
+      "bytes": 16562
+    },
+    {
+      "path": ".github/workflows/probe-absent-games.yml",
+      "displayName": "Probe Absent Games",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-absent-games.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-20T10:04:43+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 2079
+    },
+    {
+      "path": ".github/workflows/probe-alias-credits.yml",
+      "displayName": "Probe Alias Credits",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-alias-credits.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-24T14:54:59+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 7990
+    },
+    {
+      "path": ".github/workflows/probe-alias-names.yml",
+      "displayName": "Probe Alias Names",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-alias-names.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-25T10:18:09+10:00",
+      "ageDays": 3,
+      "recent": true,
+      "bytes": 3614
+    },
+    {
+      "path": ".github/workflows/probe-alias-stats.yml",
+      "displayName": "Probe Alias Stats",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-alias-stats.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-18T15:02:05+10:00",
+      "ageDays": 10,
+      "recent": true,
+      "bytes": 2714
+    },
+    {
+      "path": ".github/workflows/probe-api-limits.yml",
+      "displayName": "Probe API Limits",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-api-limits.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-04T05:32:28+10:00",
+      "ageDays": 55,
+      "recent": false,
+      "bytes": 2715
+    },
+    {
+      "path": ".github/workflows/probe-both-resolve.yml",
+      "displayName": "Probe Both Resolve",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-both-resolve.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-25T18:25:01+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 3233
+    },
+    {
+      "path": ".github/workflows/probe-discover-teams.yml",
+      "displayName": "Probe Discover Teams",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-discover-teams.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-20T13:45:10+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 2078
+    },
+    {
+      "path": ".github/workflows/probe-duplicate-profiles.yml",
+      "displayName": "Probe Duplicate Profiles",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-duplicate-profiles.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-26T10:15:25+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 5660
+    },
+    {
+      "path": ".github/workflows/probe-grade-ladder.yml",
+      "displayName": "Probe Grade Ladder",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-grade-ladder.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-20T11:42:19+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 2353
+    },
+    {
+      "path": ".github/workflows/probe-missing-games.yml",
+      "displayName": "Probe Missing Games (read-only diagnostic)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-missing-games.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-05T23:59:20+10:00",
+      "ageDays": 22,
+      "recent": false,
+      "bytes": 1299
+    },
+    {
+      "path": ".github/workflows/probe-my-aliases.yml",
+      "displayName": "Probe My Aliases",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-my-aliases.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-22T23:25:31+10:00",
+      "ageDays": 5,
+      "recent": true,
+      "bytes": 1721
+    },
+    {
+      "path": ".github/workflows/probe-notfound.yml",
+      "displayName": "Probe Not Found",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-notfound.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-19T22:26:35+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 2069
+    },
+    {
+      "path": ".github/workflows/probe-player.yml",
+      "displayName": "Probe Player",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-player.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-14T23:27:00+10:00",
+      "ageDays": 13,
+      "recent": true,
+      "bytes": 1906
+    },
+    {
+      "path": ".github/workflows/probe-registrations.yml",
+      "displayName": "Probe Registrations",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-registrations.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-19T18:08:46+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 2181
+    },
+    {
+      "path": ".github/workflows/probe-roster-sources.yml",
+      "displayName": "Probe Roster Sources",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-roster-sources.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-27T09:19:47+10:00",
+      "ageDays": 1,
+      "recent": true,
+      "bytes": 3373
+    },
+    {
+      "path": ".github/workflows/probe-selfalias-check.yml",
+      "displayName": "Probe Self Alias Check",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-selfalias-check.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-25T20:29:02+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 1553
+    },
+    {
+      "path": ".github/workflows/probe-setup-node-fingerprint.yml",
+      "displayName": "Probe setup-node fingerprint (controlled test, read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-setup-node-fingerprint.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-16T20:54:40+10:00",
+      "ageDays": 42,
+      "recent": false,
+      "bytes": 3019
+    },
+    {
+      "path": ".github/workflows/probe-shared-name-aliases.yml",
+      "displayName": "Probe Shared Name Aliases",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-shared-name-aliases.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-25T18:25:01+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 2721
+    },
+    {
+      "path": ".github/workflows/probe-shared-roster.yml",
+      "displayName": "Probe Shared Roster",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-shared-roster.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-21T22:21:02+10:00",
+      "ageDays": 6,
+      "recent": true,
+      "bytes": 2211
+    },
+    {
+      "path": ".github/workflows/probe-squad-evidence.yml",
+      "displayName": "Probe Squad Evidence",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-squad-evidence.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-25T22:48:04+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 2610
+    },
+    {
+      "path": ".github/workflows/probe-stattrack-shapes.yml",
+      "displayName": "Probe StatTrack Shapes (read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-stattrack-shapes.js",
+        "probe-stattrack-shapes.cjs"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-16T23:14:38+10:00",
+      "ageDays": 42,
+      "recent": false,
+      "bytes": 2225
+    },
+    {
+      "path": ".github/workflows/probe-unresolved-aliases.yml",
+      "displayName": "Probe Unresolved Aliases",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-unresolved-aliases.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-25T18:25:01+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 2812
+    },
+    {
+      "path": ".github/workflows/probe-verdict-conflict.yml",
+      "displayName": "Probe Verdict Conflict",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-verdict-conflict.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-25T18:25:01+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 2671
+    },
+    {
+      "path": ".github/workflows/probe-wrong-rosters.yml",
+      "displayName": "Probe Wrong Rosters",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "probe-wrong-rosters.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-19T14:59:36+10:00",
+      "ageDays": 9,
+      "recent": true,
+      "bytes": 2200
+    },
+    {
+      "path": ".github/workflows/prove-player-files-intact.yml",
+      "displayName": "Prove Player Files Intact",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "prove-player-files-intact.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-26T18:32:17+10:00",
+      "ageDays": 1,
+      "recent": true,
+      "bytes": 2615
+    },
+    {
+      "path": ".github/workflows/rebuild-chain.yml",
+      "displayName": "Rebuild Chain (one-off, post-backfill)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "build-player-games.js",
+        "build-win-loss.js",
+        "build-finals-stats.js",
+        "build-search-index.js",
+        "build-leaderboards.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-06T19:54:13+10:00",
+      "ageDays": 21,
+      "recent": false,
+      "bytes": 7344
+    },
+    {
+      "path": ".github/workflows/rebuild-player-index.yml",
+      "displayName": "Rebuild player index (migration 3b-3)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "rebuild-player-index.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-16T08:27:21+10:00",
+      "ageDays": 43,
+      "recent": false,
+      "bytes": 2291
+    },
+    {
+      "path": ".github/workflows/recheck-forfeit-games.yml",
+      "displayName": "recheck-forfeit-games",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "recheck-forfeit-games.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-06-23T22:13:45+10:00",
+      "ageDays": 65,
+      "recent": false,
+      "bytes": 864
+    },
+    {
+      "path": ".github/workflows/recheck-private-profiles.yml",
+      "displayName": "Recheck Private Profiles",
+      "klass": "SCHEDULED",
+      "invokes": [
+        "recheck-private-profiles.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": true,
+      "lastCommit": "2026-06-23T20:12:03+10:00",
+      "ageDays": 65,
+      "recent": false,
+      "bytes": 1164
+    },
+    {
+      "path": ".github/workflows/redirect-exposure.yml",
+      "displayName": "Redirect exposure (diagnostic, read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "redirect-exposure.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-16T13:22:30+10:00",
+      "ageDays": 43,
+      "recent": false,
+      "bytes": 684
+    },
+    {
+      "path": ".github/workflows/repair-duplicate-regs.yml",
+      "displayName": "Repair duplicate regs (one-off)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "repair-duplicate-regs.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-01T18:27:54+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 2314
+    },
+    {
+      "path": ".github/workflows/repair-forfeit-score.yml",
+      "displayName": "Repair forfeit score (one game)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "repair-forfeit-score.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-02T11:51:29+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 2300
+    },
+    {
+      "path": ".github/workflows/repair-legacy-flags.yml",
+      "displayName": "Repair stale legacy flags (one-off)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "repair-legacy-flags.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-31T23:56:12+10:00",
+      "ageDays": 27,
+      "recent": false,
+      "bytes": 3494
+    },
+    {
+      "path": ".github/workflows/repair-player.yml",
+      "displayName": "Repair Player",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "repair-player.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-14T23:27:00+10:00",
+      "ageDays": 13,
+      "recent": true,
+      "bytes": 6219
+    },
+    {
+      "path": ".github/workflows/repair-players-batch.yml",
+      "displayName": "Repair Players Batch",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "repair-players-batch.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-21T20:37:19+10:00",
+      "ageDays": 6,
+      "recent": true,
+      "bytes": 7709
+    },
+    {
+      "path": ".github/workflows/repair-reg-sibling-sync.yml",
+      "displayName": "Repair reg sibling stats sync (one-off)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "repair-reg-sibling-sync.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-01T20:33:15+10:00",
+      "ageDays": 26,
+      "recent": false,
+      "bytes": 2920
+    },
+    {
+      "path": ".github/workflows/repair-season-names.yml",
+      "displayName": "Repair season-name contamination",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "repair-season-names.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-17T14:37:51+10:00",
+      "ageDays": 42,
+      "recent": false,
+      "bytes": 2632
+    },
+    {
+      "path": ".github/workflows/repoint-aliases.yml",
+      "displayName": "Repoint Aliases",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "repoint-aliases.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-24T20:03:45+10:00",
+      "ageDays": 3,
+      "recent": true,
+      "bytes": 3315
+    },
+    {
+      "path": ".github/workflows/report-alias-index.yml",
+      "displayName": "Alias index report (no rebuild)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "report-alias-index.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-14T08:38:06+10:00",
+      "ageDays": 45,
+      "recent": false,
+      "bytes": 1793
+    },
+    {
+      "path": ".github/workflows/restore-deleted-file.yml",
+      "displayName": "Restore Deleted File",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-06-29T17:55:55+10:00",
+      "ageDays": 59,
+      "recent": false,
+      "bytes": 1521
+    },
+    {
+      "path": ".github/workflows/salvage-spectator-names.yml",
+      "displayName": "Salvage spectator names (one-time)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "salvage-spectator-names.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-17T22:39:38+10:00",
+      "ageDays": 41,
+      "recent": false,
+      "bytes": 3216
+    },
+    {
+      "path": ".github/workflows/scan-complete-rounds.yml",
+      "displayName": "Scan Complete Rounds (backfill)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "scan-complete-rounds.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-05T10:26:28+10:00",
+      "ageDays": 54,
+      "recent": false,
+      "bytes": 2266
+    },
+    {
+      "path": ".github/workflows/scan-roster-id-forms.yml",
+      "displayName": "Scan Roster Id Forms",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "scan-roster-id-forms.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-23T23:30:08+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 1716
+    },
+    {
+      "path": ".github/workflows/scan-season-name-contamination.yml",
+      "displayName": "Scan season-name contamination (read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "scan-season-name-contamination.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-17T12:21:42+10:00",
+      "ageDays": 42,
+      "recent": false,
+      "bytes": 1591
+    },
+    {
+      "path": ".github/workflows/seed-apiid-from-playhq-pairs.yml",
+      "displayName": "Seed apiId From PlayHQ Pairs",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "seed-apiid-from-playhq-pairs.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-27T20:20:11+10:00",
+      "ageDays": 0,
+      "recent": true,
+      "bytes": 3475
+    },
+    {
+      "path": ".github/workflows/seed-missing-profiles.yml",
+      "displayName": "Seed Missing Profiles",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "seed-missing-profiles.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-25T21:37:04+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 3078
+    },
+    {
+      "path": ".github/workflows/size-appearance-gaps.yml",
+      "displayName": "Size Appearance Gaps (read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "size-appearance-gaps.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-05T12:14:30+10:00",
+      "ageDays": 23,
+      "recent": false,
+      "bytes": 1142
+    },
+    {
+      "path": ".github/workflows/size-duplicate-profiles.yml",
+      "displayName": "Size Duplicate Profiles",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "size-duplicate-profiles.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-21T21:49:44+10:00",
+      "ageDays": 6,
+      "recent": true,
+      "bytes": 1926
+    },
+    {
+      "path": ".github/workflows/size-gap-players.yml",
+      "displayName": "Size Gap Players",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-07T19:57:05+10:00",
+      "ageDays": 20,
+      "recent": false,
+      "bytes": 5442
+    },
+    {
+      "path": ".github/workflows/size-locked-backfill.yml",
+      "displayName": "Size Locked-Season Backfill (read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "size-locked-backfill.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-03T17:33:54+10:00",
+      "ageDays": 24,
+      "recent": false,
+      "bytes": 1616
+    },
+    {
+      "path": ".github/workflows/size-locked-resweep.yml",
+      "displayName": "Size Locked Re-sweep (read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "size-locked-resweep.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-03T19:48:38+10:00",
+      "ageDays": 24,
+      "recent": false,
+      "bytes": 1464
+    },
+    {
+      "path": ".github/workflows/size-locked-split.yml",
+      "displayName": "Size Locked Split",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-07T05:57:59+10:00",
+      "ageDays": 21,
+      "recent": false,
+      "bytes": 8583
+    },
+    {
+      "path": ".github/workflows/size-misses.yml",
+      "displayName": "Size Misses",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-18T14:46:36+10:00",
+      "ageDays": 10,
+      "recent": true,
+      "bytes": 8431
+    },
+    {
+      "path": ".github/workflows/size-missing-gids.yml",
+      "displayName": "Size Missing Gids (read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "size-missing-gids.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-05T00:00:26+10:00",
+      "ageDays": 23,
+      "recent": false,
+      "bytes": 1357
+    },
+    {
+      "path": ".github/workflows/size-negative-gap.yml",
+      "displayName": "Size Negative Gap",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-18T14:46:36+10:00",
+      "ageDays": 10,
+      "recent": true,
+      "bytes": 17347
+    },
+    {
+      "path": ".github/workflows/size-opposition-index.yml",
+      "displayName": "Size opposition index (read-only sizer)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "size-opposition-index.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-02T19:02:06+10:00",
+      "ageDays": 25,
+      "recent": false,
+      "bytes": 1469
+    },
+    {
+      "path": ".github/workflows/size-pages-artifact.yml",
+      "displayName": "Size Pages Artifact (read-only)",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-06T22:15:07+10:00",
+      "ageDays": 21,
+      "recent": false,
+      "bytes": 3370
+    },
+    {
+      "path": ".github/workflows/size-repair-rosters.yml",
+      "displayName": "Size Repair Rosters",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-18T14:46:36+10:00",
+      "ageDays": 10,
+      "recent": true,
+      "bytes": 13953
+    },
+    {
+      "path": ".github/workflows/size-report.yml",
+      "displayName": "Size Report",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "size-report.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-20T15:06:00+10:00",
+      "ageDays": 8,
+      "recent": true,
+      "bytes": 7614
+    },
+    {
+      "path": ".github/workflows/size-resweep.yml",
+      "displayName": "Size Resweep",
+      "klass": "CALLS NO SCRIPT (composite, dispatcher, or inline shell) — read before judging",
+      "invokes": [],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-07T21:39:44+10:00",
+      "ageDays": 20,
+      "recent": false,
+      "bytes": 2939
+    },
+    {
+      "path": ".github/workflows/size-spectator-queue.yml",
+      "displayName": "Size Spectator Queue (read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "size-spectator-queue.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-05T23:36:25+10:00",
+      "ageDays": 22,
+      "recent": false,
+      "bytes": 1268
+    },
+    {
+      "path": ".github/workflows/spectator-backfill.yml",
+      "displayName": "Spectator Backfill",
+      "klass": "SCHEDULED",
+      "invokes": [
+        "spectator-backfill.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": true,
+      "lastCommit": "2026-08-20T17:37:12+10:00",
+      "ageDays": 7,
+      "recent": true,
+      "bytes": 10629
+    },
+    {
+      "path": ".github/workflows/synthesize-missing-games.yml",
+      "displayName": "Synthesize Missing Games",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "synthesize-missing-games.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-07T18:59:15+10:00",
+      "ageDays": 20,
+      "recent": false,
+      "bytes": 6044
+    },
+    {
+      "path": ".github/workflows/test-api.yml",
+      "displayName": "Test API",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "test-api.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-03T23:17:48+10:00",
+      "ageDays": 55,
+      "recent": false,
+      "bytes": 784
+    },
+    {
+      "path": ".github/workflows/test-backfill.yml",
+      "displayName": "Test Pre-Season Backfill",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "discover-seasons.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-07T20:46:14+10:00",
+      "ageDays": 51,
+      "recent": false,
+      "bytes": 2744
+    },
+    {
+      "path": ".github/workflows/trace-player-game.yml",
+      "displayName": "Trace Player Game",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "trace-player-game.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-23T23:07:45+10:00",
+      "ageDays": 4,
+      "recent": true,
+      "bytes": 1891
+    },
+    {
+      "path": ".github/workflows/update-team-index.yml",
+      "displayName": "Update Team Index",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "update-team-index.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-06-23T18:43:53+10:00",
+      "ageDays": 65,
+      "recent": false,
+      "bytes": 846
+    },
+    {
+      "path": ".github/workflows/update-venue-lookup.yml",
+      "displayName": "Update Venue Lookup",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "update-venue-lookup.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-06-23T18:43:53+10:00",
+      "ageDays": 65,
+      "recent": false,
+      "bytes": 1085
+    },
+    {
+      "path": ".github/workflows/verify-enrich.yml",
+      "displayName": "Verify enrich (validity scan, read-only)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "verify-enrich.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-14T23:09:10+10:00",
+      "ageDays": 44,
+      "recent": false,
+      "bytes": 923
+    },
+    {
+      "path": ".github/workflows/verify-p-redundancy.yml",
+      "displayName": "Verify p[] Redundancy (one-off diagnostic)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "verify-p-redundancy.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-07-10T11:23:50+10:00",
+      "ageDays": 49,
+      "recent": false,
+      "bytes": 1439
+    },
+    {
+      "path": ".github/workflows/verify-players-against-playhq.yml",
+      "displayName": "Verify Players Against PlayHQ",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "verify-players-against-playhq.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-26T14:48:15+10:00",
+      "ageDays": 2,
+      "recent": true,
+      "bytes": 2825
+    },
+    {
+      "path": ".github/workflows/weekly-future-fixtures.yml",
+      "displayName": "Future Fixtures (manual — full round-forward sweep)",
+      "klass": "DISPATCH-ONLY",
+      "invokes": [
+        "nightly-crawl.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": false,
+      "lastCommit": "2026-08-01T13:12:18+10:00",
+      "ageDays": 27,
+      "recent": false,
+      "bytes": 5404
+    },
+    {
+      "path": ".github/workflows/weekly-indexes.yml",
+      "displayName": "Weekly Indexes",
+      "klass": "SCHEDULED",
+      "invokes": [
+        "discover-fixtures.js",
+        "build-team-stats.js",
+        "build-player-games.js",
+        "build-win-loss.js"
+      ],
+      "missingScripts": [],
+      "hasSchedule": true,
+      "lastCommit": "2026-08-14T14:32:10+10:00",
+      "ageDays": 14,
+      "recent": true,
+      "bytes": 6911
+    }
+  ]
+}
