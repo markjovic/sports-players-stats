@@ -50,7 +50,13 @@ const num = (f, d) => {
 };
 const SAMPLE = num('sample', 200);
 const SEED = num('seed', 20260826);
-const CONCURRENCY = Math.max(1, Math.min(12, num('concurrency', 6)));
+// DEFAULT 1, not 6. On 2026-08-26 a run at concurrency 3 returned 82% "no answer"
+// and that was read as a fact about the data — it was throttling. The run on
+// 2026-08-27 used this file's old default of 6 and returned 846 no-answers out of
+// 1,026, the same 82%, making every percentage in its output unreliable. This
+// endpoint answers reliably at 1 and the run is slower; a slow true answer beats a
+// fast false one. Raise it deliberately with --concurrency=N if you want to.
+const CONCURRENCY = Math.max(1, Math.min(12, num('concurrency', 1)));
 const SHOW = num('show', 40);
 const API_URL = 'https://api.playhq.com/graphql';
 const TRUNC_LEN = 13;
@@ -408,12 +414,34 @@ async function main() {
   // ── 1. Everyone touched by a recent change, BOTH SIDES ────────────────────
   const changed = new Map();                     // uuid -> reason
   const mark = (u, why) => { if (u && !changed.has(u)) changed.set(u, why); };
+  // apiid-seed-log.json added 2026-08-27: 1,211 player files were given an apiId
+  // that day and folded to it, and NONE of them were in this script's scope — it
+  // reported "26 players touched by a recent change" while the repair went
+  // unverified. Both sides are marked: the old key we moved away from and the api
+  // id we moved to.
+  //
+  // boxscore-repoint-log.json HAS NEVER EXISTED (confirmed 2026-08-27). It is kept
+  // in this list only so its absence is visible rather than silent. The 88 + 23
+  // repoints of rounds 1 and 2 have NO log anywhere, so 111 changes cannot be
+  // reversed by reading a file — only by reconstructing from git history of
+  // players/aliases/. That is not a gap this script can close; it is recorded here
+  // so nobody concludes from a clean run that those 111 were checked.
   for (const [file, label] of [['alias-repoint-log.json', 'repointed'],
                                ['boxscore-repoint-log.json', 'box-score repoint'],
-                               ['seeded-profiles.json', 'seeded']]) {
+                               ['seeded-profiles.json', 'seeded'],
+                               ['apiid-seed-log.json', 'apiId seeded 2026-08-27']]) {
     try {
       const d = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', file), 'utf8'));
-      for (const e of (d.entries || [])) {
+      // Shapes differ between logs: {entries:[]}, a bare array, or {seeded:[]}.
+      // Reading only d.entries is why apiid-seed-log.json would have contributed
+      // nothing even once its name was on the list.
+      const list = Array.isArray(d) ? d
+                 : Array.isArray(d.entries) ? d.entries
+                 : Array.isArray(d.seeded)  ? d.seeded
+                 : [];
+      if (!list.length) console.log(`  (${file}: no usable entries — absent, or a shape this reader does not know)`);
+      for (const e of list) {
+        mark(e.apiId, label + ' (moved to)');
         // BOTH sides: the profile we moved appearances AWAY from is as likely to be
         // wrong now as the one we moved them TO.
         mark(e.from, label + ' (moved away from)');
