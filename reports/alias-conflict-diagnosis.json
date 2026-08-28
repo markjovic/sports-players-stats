@@ -1,1185 +1,49 @@
 {
-  "generatedAt": "2026-08-26T11:21:02.121Z",
-  "sourceReport": "reports/alias-vs-playhq-audit.json",
+  "generatedAt": "2026-08-28T03:31:08.734Z",
+  "sourceReport": null,
   "args": {
-    "ids": null,
+    "ids": [
+      "5ec52065-1da6-4446-aa30-17f935682752",
+      "61484830-7379-4d13-bec3-76a4c3d9c38c",
+      "df504d60-b68a-4d1a-8a70-368c4e5f3871",
+      "9457208a-d682-4f75-9c75-dfe6303f925c",
+      "f4fab057-bf65-43dc-9ca8-bc8f4f21d768",
+      "66291923-6376-4586-b60d-d7bf07e3cc26",
+      "91cc564e-c564-4eb2-bc15-c5c2a2fa9f89",
+      "2ae56dca-1496-4d0d-9e96-c17471eaecd5"
+    ],
     "maxIds": 400
   },
   "namespaceTally": {
-    "not-api": 19,
-    "api": 15
+    "not-api": 4,
+    "api": 4
   },
-  "readings": {
-    "WRONG: OUR TARGET IS A SPECTATOR ID — player file keyed on the wrong namespace": 5,
-    "DUPLICATE: COSMETIC — both ids fold to one player, so games[] is unaffected; p[] consumers still see an extra player": 10
-  },
-  "cases": [
-    {
-      "kind": "WRONG",
-      "gameId": "11771083",
-      "name": "aston dyt",
-      "number": "4",
-      "spectatorId": "9912ea56-d349-43c9-b52c-a9ec6d2251a8",
-      "playhqApiId": "ca86562a-04a9-4b7b-a48a-10105296ee05",
-      "weResolveTo": "15634b09-d96f-4192-8b46-477cde6b8fd5",
-      "aliasEntry": "15634b09-d96f-4192-8b46-477cde6b8fd5",
-      "reading": "OUR TARGET IS A SPECTATOR ID — player file keyed on the wrong namespace",
-      "facts": {
-        "spectatorId": {
-          "id": "9912ea56-d349-43c9-b52c-a9ec6d2251a8",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "15634b09-d96f-4192-8b46-477cde6b8fd5",
-          "truncResolvesTo": "15634b09-d96f-4192-8b46-477cde6b8fd5",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "WRONG:11771083:aston dyt"
-          ]
-        },
-        "playhqApiId": {
-          "id": "ca86562a-04a9-4b7b-a48a-10105296ee05",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": null,
-          "truncResolvesTo": null,
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "WRONG:11771083:aston dyt"
-          ]
-        },
-        "weResolveTo": {
-          "id": "15634b09-d96f-4192-8b46-477cde6b8fd5",
-          "hasPlayerFile": true,
-          "name": "Aston Dyt",
-          "private": false,
-          "gamesHeld": 63,
-          "spectatorIds": [
-            "106d732e-c243",
-            "15634b09-d96f",
-            "9912ea56-d349",
-            "a88838ca-9276"
-          ],
-          "seasonCount": 12,
-          "aliasEntryFor": "15634b09-d96f-4192-8b46-477cde6b8fd5",
-          "truncResolvesTo": "15634b09-d96f-4192-8b46-477cde6b8fd5",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "what-our-alias-points-at"
-          ],
-          "cases": [
-            "WRONG:11771083:aston dyt"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "WRONG",
-      "gameId": "23476767",
-      "name": "Umer Qureshi",
-      "number": "13",
-      "spectatorId": "14245e60-6551-4e2c-8ccc-9ab9b209af67",
-      "playhqApiId": "447d6559-91ed-4442-82c2-76d2171d4c91",
-      "weResolveTo": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
-      "aliasEntry": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
-      "reading": "OUR TARGET IS A SPECTATOR ID — player file keyed on the wrong namespace",
-      "facts": {
-        "spectatorId": {
-          "id": "14245e60-6551-4e2c-8ccc-9ab9b209af67",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
-          "truncResolvesTo": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "WRONG:23476767:Umer Qureshi"
-          ]
-        },
-        "playhqApiId": {
-          "id": "447d6559-91ed-4442-82c2-76d2171d4c91",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": null,
-          "truncResolvesTo": null,
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "WRONG:23476767:Umer Qureshi"
-          ]
-        },
-        "weResolveTo": {
-          "id": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
-          "hasPlayerFile": true,
-          "name": "Umer Qureshi",
-          "private": false,
-          "gamesHeld": 131,
-          "spectatorIds": [
-            "14245e60-6551",
-            "fddc7452-f48a"
-          ],
-          "seasonCount": 14,
-          "aliasEntryFor": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
-          "truncResolvesTo": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "what-our-alias-points-at"
-          ],
-          "cases": [
-            "WRONG:23476767:Umer Qureshi"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "WRONG",
-      "gameId": "14178947",
-      "name": "Victoria Hu",
-      "number": "18",
-      "spectatorId": "44d33283-9693-4af4-a02b-7f2adde547c4",
-      "playhqApiId": "b4f12da1-0f05-4a3d-8cd1-8c662852cec5",
-      "weResolveTo": "64666499-c2f3-4001-b439-063d80617392",
-      "aliasEntry": "64666499-c2f3-4001-b439-063d80617392",
-      "reading": "OUR TARGET IS A SPECTATOR ID — player file keyed on the wrong namespace",
-      "facts": {
-        "spectatorId": {
-          "id": "44d33283-9693-4af4-a02b-7f2adde547c4",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "64666499-c2f3-4001-b439-063d80617392",
-          "truncResolvesTo": "64666499-c2f3-4001-b439-063d80617392",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "WRONG:14178947:Victoria Hu"
-          ]
-        },
-        "playhqApiId": {
-          "id": "b4f12da1-0f05-4a3d-8cd1-8c662852cec5",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": null,
-          "truncResolvesTo": null,
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "WRONG:14178947:Victoria Hu"
-          ]
-        },
-        "weResolveTo": {
-          "id": "64666499-c2f3-4001-b439-063d80617392",
-          "hasPlayerFile": true,
-          "name": "Victoria Hu",
-          "private": false,
-          "gamesHeld": 260,
-          "spectatorIds": [
-            "265d370e-ed10",
-            "44d33283-9693",
-            "62c6b435-9fb4",
-            "64666499-c2f3",
-            "a838faa1-89e5",
-            "bea06270-8a75",
-            "d8928449-2f53"
-          ],
-          "seasonCount": 22,
-          "aliasEntryFor": "64666499-c2f3-4001-b439-063d80617392",
-          "truncResolvesTo": "64666499-c2f3-4001-b439-063d80617392",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "what-our-alias-points-at"
-          ],
-          "cases": [
-            "WRONG:14178947:Victoria Hu"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "WRONG",
-      "gameId": "10187451",
-      "name": "Jack Telford",
-      "number": "13",
-      "spectatorId": "8082694e-e496-411c-bb5e-b0ab9c874bd7",
-      "playhqApiId": "0dae0caf-6dbf-4316-b7bd-12457d4296e4",
-      "weResolveTo": "a69f7ee8-7b95-449d-a113-308171c0e795",
-      "aliasEntry": "a69f7ee8-7b95-449d-a113-308171c0e795",
-      "reading": "OUR TARGET IS A SPECTATOR ID — player file keyed on the wrong namespace",
-      "facts": {
-        "spectatorId": {
-          "id": "8082694e-e496-411c-bb5e-b0ab9c874bd7",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "a69f7ee8-7b95-449d-a113-308171c0e795",
-          "truncResolvesTo": "a69f7ee8-7b95-449d-a113-308171c0e795",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "WRONG:10187451:Jack Telford"
-          ]
-        },
-        "playhqApiId": {
-          "id": "0dae0caf-6dbf-4316-b7bd-12457d4296e4",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": null,
-          "truncResolvesTo": null,
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "WRONG:10187451:Jack Telford"
-          ]
-        },
-        "weResolveTo": {
-          "id": "a69f7ee8-7b95-449d-a113-308171c0e795",
-          "hasPlayerFile": true,
-          "name": "Jack Telford",
-          "private": false,
-          "gamesHeld": 194,
-          "spectatorIds": [
-            "8082694e-e496",
-            "a69f7ee8-7b95"
-          ],
-          "seasonCount": 13,
-          "aliasEntryFor": "a69f7ee8-7b95-449d-a113-308171c0e795",
-          "truncResolvesTo": "a69f7ee8-7b95-449d-a113-308171c0e795",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "what-our-alias-points-at"
-          ],
-          "cases": [
-            "WRONG:10187451:Jack Telford"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "WRONG",
-      "gameId": "18009680",
-      "name": "darcy bendeich",
-      "number": "10",
-      "spectatorId": "423776e0-c910-4af1-9146-971bf816a9f6",
-      "playhqApiId": "e358fc8a-593b-44f6-9cde-30ba757d4d83",
-      "weResolveTo": "423776e0-c910-4af1-9146-971bf816a9f6",
-      "aliasEntry": "423776e0-c910-4af1-9146-971bf816a9f6",
-      "reading": "OUR TARGET IS A SPECTATOR ID — player file keyed on the wrong namespace",
-      "facts": {
-        "spectatorId": {
-          "id": "423776e0-c910-4af1-9146-971bf816a9f6",
-          "hasPlayerFile": true,
-          "name": "Darcy Bendeich",
-          "private": false,
-          "gamesHeld": 15,
-          "spectatorIds": [
-            "423776e0-c910"
-          ],
-          "seasonCount": 2,
-          "aliasEntryFor": "423776e0-c910-4af1-9146-971bf816a9f6",
-          "truncResolvesTo": "423776e0-c910-4af1-9146-971bf816a9f6",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster",
-            "what-our-alias-points-at"
-          ],
-          "cases": [
-            "WRONG:18009680:darcy bendeich"
-          ]
-        },
-        "playhqApiId": {
-          "id": "e358fc8a-593b-44f6-9cde-30ba757d4d83",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": null,
-          "truncResolvesTo": null,
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "WRONG:18009680:darcy bendeich"
-          ]
-        },
-        "weResolveTo": {
-          "id": "423776e0-c910-4af1-9146-971bf816a9f6",
-          "hasPlayerFile": true,
-          "name": "Darcy Bendeich",
-          "private": false,
-          "gamesHeld": 15,
-          "spectatorIds": [
-            "423776e0-c910"
-          ],
-          "seasonCount": 2,
-          "aliasEntryFor": "423776e0-c910-4af1-9146-971bf816a9f6",
-          "truncResolvesTo": "423776e0-c910-4af1-9146-971bf816a9f6",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster",
-            "what-our-alias-points-at"
-          ],
-          "cases": [
-            "WRONG:18009680:darcy bendeich"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "DUPLICATE",
-      "gameId": "19175314",
-      "name": "Edward Bowen",
-      "number": "15",
-      "spectatorId": "f6a5f85c-3e39-4089-a520-a44a8eb85f32",
-      "playhqApiId": "4d7a6843-81f7-467c-937c-920bee71b6e9",
-      "reading": "COSMETIC — both ids fold to one player, so games[] is unaffected; p[] consumers still see an extra player",
-      "facts": {
-        "spectatorId": {
-          "id": "f6a5f85c-3e39-4089-a520-a44a8eb85f32",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "4d7a6843-81f7-467c-937c-920bee71b6e9",
-          "truncResolvesTo": "4d7a6843-81f7-467c-937c-920bee71b6e9",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "DUPLICATE:19175314:Edward Bowen"
-          ]
-        },
-        "playhqApiId": {
-          "id": "4d7a6843-81f7-467c-937c-920bee71b6e9",
-          "hasPlayerFile": true,
-          "name": "Edward Bowen",
-          "private": false,
-          "gamesHeld": 165,
-          "spectatorIds": [
-            "265ca015-d27e",
-            "4d7a6843-81f7",
-            "4f79dbc3-22c1",
-            "56680af9-3921",
-            "f74a6218-7a8a"
-          ],
-          "seasonCount": 22,
-          "aliasEntryFor": null,
-          "truncResolvesTo": "4d7a6843-81f7-467c-937c-920bee71b6e9",
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "DUPLICATE:19175314:Edward Bowen"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "DUPLICATE",
-      "gameId": "11060340",
-      "name": "Jackson Palmer",
-      "number": "40",
-      "spectatorId": "5eb74f8e-7497-4804-8e38-0a2280fd74e5",
-      "playhqApiId": "a09c8aa4-4282-4b58-a03d-f530d8a97752",
-      "reading": "COSMETIC — both ids fold to one player, so games[] is unaffected; p[] consumers still see an extra player",
-      "facts": {
-        "spectatorId": {
-          "id": "5eb74f8e-7497-4804-8e38-0a2280fd74e5",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "a09c8aa4-4282-4b58-a03d-f530d8a97752",
-          "truncResolvesTo": "a09c8aa4-4282-4b58-a03d-f530d8a97752",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "DUPLICATE:11060340:Jackson Palmer"
-          ]
-        },
-        "playhqApiId": {
-          "id": "a09c8aa4-4282-4b58-a03d-f530d8a97752",
-          "hasPlayerFile": true,
-          "name": "Jackson Palmer",
-          "private": false,
-          "gamesHeld": 126,
-          "spectatorIds": [
-            "a09c8aa4-4282"
-          ],
-          "seasonCount": 12,
-          "aliasEntryFor": "a09c8aa4-4282-4b58-a03d-f530d8a97752",
-          "truncResolvesTo": "a09c8aa4-4282-4b58-a03d-f530d8a97752",
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "DUPLICATE:11060340:Jackson Palmer"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "DUPLICATE",
-      "gameId": "74065322",
-      "name": "Jemma Symington",
-      "number": "",
-      "spectatorId": "44e132c1-9134-4a64-b95c-c0942f9f8efb",
-      "playhqApiId": "791c8b01-4473-40a1-af6b-f98c20b61dc6",
-      "reading": "COSMETIC — both ids fold to one player, so games[] is unaffected; p[] consumers still see an extra player",
-      "facts": {
-        "spectatorId": {
-          "id": "44e132c1-9134-4a64-b95c-c0942f9f8efb",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "791c8b01-4473-40a1-af6b-f98c20b61dc6",
-          "truncResolvesTo": "791c8b01-4473-40a1-af6b-f98c20b61dc6",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "DUPLICATE:74065322:Jemma Symington"
-          ]
-        },
-        "playhqApiId": {
-          "id": "791c8b01-4473-40a1-af6b-f98c20b61dc6",
-          "hasPlayerFile": true,
-          "name": "Jemma Symington",
-          "private": false,
-          "gamesHeld": 240,
-          "spectatorIds": [
-            "791c8b01-4473"
-          ],
-          "seasonCount": 22,
-          "aliasEntryFor": "791c8b01-4473-40a1-af6b-f98c20b61dc6",
-          "truncResolvesTo": "791c8b01-4473-40a1-af6b-f98c20b61dc6",
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "DUPLICATE:74065322:Jemma Symington"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "DUPLICATE",
-      "gameId": "93cd1492",
-      "name": "Issac Holland",
-      "number": "3",
-      "spectatorId": "244d7c71-91b6-4103-a471-dd73fce384ea",
-      "playhqApiId": "fb84123c-bfd1-49f1-929d-b8dd5a5e3547",
-      "reading": "COSMETIC — both ids fold to one player, so games[] is unaffected; p[] consumers still see an extra player",
-      "facts": {
-        "spectatorId": {
-          "id": "244d7c71-91b6-4103-a471-dd73fce384ea",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "fb84123c-bfd1-49f1-929d-b8dd5a5e3547",
-          "truncResolvesTo": "fb84123c-bfd1-49f1-929d-b8dd5a5e3547",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "DUPLICATE:93cd1492:Issac Holland"
-          ]
-        },
-        "playhqApiId": {
-          "id": "fb84123c-bfd1-49f1-929d-b8dd5a5e3547",
-          "hasPlayerFile": true,
-          "name": "Issac Holland",
-          "private": false,
-          "gamesHeld": 65,
-          "spectatorIds": [
-            "fb84123c-bfd1"
-          ],
-          "seasonCount": 8,
-          "aliasEntryFor": "fb84123c-bfd1-49f1-929d-b8dd5a5e3547",
-          "truncResolvesTo": "fb84123c-bfd1-49f1-929d-b8dd5a5e3547",
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "DUPLICATE:93cd1492:Issac Holland"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "DUPLICATE",
-      "gameId": "41583696",
-      "name": "Indi Gieschen",
-      "number": "36",
-      "spectatorId": "984d8a04-e590-4f1b-8c12-0421b1708835",
-      "playhqApiId": "89cd8818-9575-401f-b4f5-d5b45190c497",
-      "reading": "COSMETIC — both ids fold to one player, so games[] is unaffected; p[] consumers still see an extra player",
-      "facts": {
-        "spectatorId": {
-          "id": "984d8a04-e590-4f1b-8c12-0421b1708835",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "89cd8818-9575-401f-b4f5-d5b45190c497",
-          "truncResolvesTo": "89cd8818-9575-401f-b4f5-d5b45190c497",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "DUPLICATE:41583696:Indi Gieschen"
-          ]
-        },
-        "playhqApiId": {
-          "id": "89cd8818-9575-401f-b4f5-d5b45190c497",
-          "hasPlayerFile": true,
-          "name": "Indi Gieschen",
-          "private": false,
-          "gamesHeld": 324,
-          "spectatorIds": [
-            "89cd8818-9575"
-          ],
-          "seasonCount": 46,
-          "aliasEntryFor": "89cd8818-9575-401f-b4f5-d5b45190c497",
-          "truncResolvesTo": "89cd8818-9575-401f-b4f5-d5b45190c497",
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "DUPLICATE:41583696:Indi Gieschen"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "DUPLICATE",
-      "gameId": "18009680",
-      "name": "Vinh Do",
-      "number": "89",
-      "spectatorId": "45fcf4cf-7ca3-4cbb-bee5-a7e4838df976",
-      "playhqApiId": "55efb56d-67fc-453e-aa5b-5d2528ee468b",
-      "reading": "COSMETIC — both ids fold to one player, so games[] is unaffected; p[] consumers still see an extra player",
-      "facts": {
-        "spectatorId": {
-          "id": "45fcf4cf-7ca3-4cbb-bee5-a7e4838df976",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "55efb56d-67fc-453e-aa5b-5d2528ee468b",
-          "truncResolvesTo": "55efb56d-67fc-453e-aa5b-5d2528ee468b",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "DUPLICATE:18009680:Vinh Do"
-          ]
-        },
-        "playhqApiId": {
-          "id": "55efb56d-67fc-453e-aa5b-5d2528ee468b",
-          "hasPlayerFile": true,
-          "name": "Vinh Do",
-          "private": false,
-          "gamesHeld": 128,
-          "spectatorIds": [
-            "45fcf4cf-7ca3",
-            "55efb56d-67fc",
-            "adc555de-2143"
-          ],
-          "seasonCount": 11,
-          "aliasEntryFor": "55efb56d-67fc-453e-aa5b-5d2528ee468b",
-          "truncResolvesTo": "55efb56d-67fc-453e-aa5b-5d2528ee468b",
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "DUPLICATE:18009680:Vinh Do"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "DUPLICATE",
-      "gameId": "19427733",
-      "name": "Dakota Bradfield",
-      "number": "7",
-      "spectatorId": "7622c41c-427e-4158-b6e8-7aac614c2508",
-      "playhqApiId": "a817bc6d-6399-42a3-891a-000089db6c03",
-      "reading": "COSMETIC — both ids fold to one player, so games[] is unaffected; p[] consumers still see an extra player",
-      "facts": {
-        "spectatorId": {
-          "id": "7622c41c-427e-4158-b6e8-7aac614c2508",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "a817bc6d-6399-42a3-891a-000089db6c03",
-          "truncResolvesTo": "a817bc6d-6399-42a3-891a-000089db6c03",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "DUPLICATE:19427733:Dakota Bradfield"
-          ]
-        },
-        "playhqApiId": {
-          "id": "a817bc6d-6399-42a3-891a-000089db6c03",
-          "hasPlayerFile": true,
-          "name": "Dakota Bradfield",
-          "private": false,
-          "gamesHeld": 148,
-          "spectatorIds": [
-            "a817bc6d-6399"
-          ],
-          "seasonCount": 10,
-          "aliasEntryFor": "a817bc6d-6399-42a3-891a-000089db6c03",
-          "truncResolvesTo": "a817bc6d-6399-42a3-891a-000089db6c03",
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "DUPLICATE:19427733:Dakota Bradfield"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "DUPLICATE",
-      "gameId": "10277688",
-      "name": "Ben Carroll",
-      "number": "5",
-      "spectatorId": "aeac2514-a2a5-4fca-9b07-16e8f3f800f3",
-      "playhqApiId": "7750ae6f-8538-4694-84e2-8115b30819d2",
-      "reading": "COSMETIC — both ids fold to one player, so games[] is unaffected; p[] consumers still see an extra player",
-      "facts": {
-        "spectatorId": {
-          "id": "aeac2514-a2a5-4fca-9b07-16e8f3f800f3",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "7750ae6f-8538-4694-84e2-8115b30819d2",
-          "truncResolvesTo": "7750ae6f-8538-4694-84e2-8115b30819d2",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "DUPLICATE:10277688:Ben Carroll"
-          ]
-        },
-        "playhqApiId": {
-          "id": "7750ae6f-8538-4694-84e2-8115b30819d2",
-          "hasPlayerFile": true,
-          "name": "Ben Carroll",
-          "private": false,
-          "gamesHeld": 122,
-          "spectatorIds": [
-            "66954078-0164",
-            "7750ae6f-8538"
-          ],
-          "seasonCount": 15,
-          "aliasEntryFor": "7750ae6f-8538-4694-84e2-8115b30819d2",
-          "truncResolvesTo": "7750ae6f-8538-4694-84e2-8115b30819d2",
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "DUPLICATE:10277688:Ben Carroll"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "DUPLICATE",
-      "gameId": "10122842",
-      "name": "Jayden Ferris",
-      "number": "50",
-      "spectatorId": "6076afa7-b623-4b2e-87b8-d882cafbab39",
-      "playhqApiId": "ba504d0b-af90-4e3c-8b8a-eca600000150",
-      "reading": "COSMETIC — both ids fold to one player, so games[] is unaffected; p[] consumers still see an extra player",
-      "facts": {
-        "spectatorId": {
-          "id": "6076afa7-b623-4b2e-87b8-d882cafbab39",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "ba504d0b-af90-4e3c-8b8a-eca600000150",
-          "truncResolvesTo": "ba504d0b-af90-4e3c-8b8a-eca600000150",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "DUPLICATE:10122842:Jayden Ferris"
-          ]
-        },
-        "playhqApiId": {
-          "id": "ba504d0b-af90-4e3c-8b8a-eca600000150",
-          "hasPlayerFile": true,
-          "name": "Jayden Ferris",
-          "private": false,
-          "gamesHeld": 145,
-          "spectatorIds": [
-            "11cf8de0-998d",
-            "ba504d0b-af90"
-          ],
-          "seasonCount": 15,
-          "aliasEntryFor": "ba504d0b-af90-4e3c-8b8a-eca600000150",
-          "truncResolvesTo": "ba504d0b-af90-4e3c-8b8a-eca600000150",
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "DUPLICATE:10122842:Jayden Ferris"
-          ]
-        }
-      }
-    },
-    {
-      "kind": "DUPLICATE",
-      "gameId": "10273651",
-      "name": "Daniel Armanyous",
-      "number": "4",
-      "spectatorId": "939df56e-ef41-4b44-b92a-66510ca4f73f",
-      "playhqApiId": "16d7d60c-c5c7-4713-bdf4-f887facae5f3",
-      "reading": "COSMETIC — both ids fold to one player, so games[] is unaffected; p[] consumers still see an extra player",
-      "facts": {
-        "spectatorId": {
-          "id": "939df56e-ef41-4b44-b92a-66510ca4f73f",
-          "hasPlayerFile": false,
-          "name": null,
-          "private": null,
-          "gamesHeld": null,
-          "spectatorIds": null,
-          "seasonCount": null,
-          "aliasEntryFor": "16d7d60c-c5c7-4713-bdf4-f887facae5f3",
-          "truncResolvesTo": "16d7d60c-c5c7-4713-bdf4-f887facae5f3",
-          "resolveError": null,
-          "namespace": "not-api",
-          "roles": [
-            "spectator-id-in-our-roster"
-          ],
-          "cases": [
-            "DUPLICATE:10273651:Daniel Armanyous"
-          ]
-        },
-        "playhqApiId": {
-          "id": "16d7d60c-c5c7-4713-bdf4-f887facae5f3",
-          "hasPlayerFile": true,
-          "name": "Daniel Armanyous",
-          "private": false,
-          "gamesHeld": 153,
-          "spectatorIds": [
-            "16d7d60c-c5c7"
-          ],
-          "seasonCount": 11,
-          "aliasEntryFor": "16d7d60c-c5c7-4713-bdf4-f887facae5f3",
-          "truncResolvesTo": "16d7d60c-c5c7-4713-bdf4-f887facae5f3",
-          "resolveError": null,
-          "namespace": "api",
-          "roles": [
-            "playhq-says-this-is-the-api-id"
-          ],
-          "cases": [
-            "DUPLICATE:10273651:Daniel Armanyous"
-          ]
-        }
-      }
-    }
-  ],
+  "readings": {},
+  "cases": [],
   "ids": [
     {
-      "id": "9912ea56-d349-43c9-b52c-a9ec6d2251a8",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": "15634b09-d96f-4192-8b46-477cde6b8fd5",
-      "truncResolvesTo": "15634b09-d96f-4192-8b46-477cde6b8fd5",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "WRONG:11771083:aston dyt"
-      ]
-    },
-    {
-      "id": "ca86562a-04a9-4b7b-a48a-10105296ee05",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": null,
-      "truncResolvesTo": null,
-      "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "playhq-says-this-is-the-api-id"
-      ],
-      "cases": [
-        "WRONG:11771083:aston dyt"
-      ]
-    },
-    {
-      "id": "15634b09-d96f-4192-8b46-477cde6b8fd5",
+      "id": "5ec52065-1da6-4446-aa30-17f935682752",
       "hasPlayerFile": true,
-      "name": "Aston Dyt",
+      "name": "Daniel Hargrave",
       "private": false,
-      "gamesHeld": 63,
+      "gamesHeld": 12,
       "spectatorIds": [
-        "106d732e-c243",
-        "15634b09-d96f",
-        "9912ea56-d349",
-        "a88838ca-9276"
-      ],
-      "seasonCount": 12,
-      "aliasEntryFor": "15634b09-d96f-4192-8b46-477cde6b8fd5",
-      "truncResolvesTo": "15634b09-d96f-4192-8b46-477cde6b8fd5",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "what-our-alias-points-at"
-      ],
-      "cases": [
-        "WRONG:11771083:aston dyt"
-      ]
-    },
-    {
-      "id": "14245e60-6551-4e2c-8ccc-9ab9b209af67",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
-      "truncResolvesTo": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "WRONG:23476767:Umer Qureshi"
-      ]
-    },
-    {
-      "id": "447d6559-91ed-4442-82c2-76d2171d4c91",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": null,
-      "truncResolvesTo": null,
-      "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "playhq-says-this-is-the-api-id"
-      ],
-      "cases": [
-        "WRONG:23476767:Umer Qureshi"
-      ]
-    },
-    {
-      "id": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
-      "hasPlayerFile": true,
-      "name": "Umer Qureshi",
-      "private": false,
-      "gamesHeld": 131,
-      "spectatorIds": [
-        "14245e60-6551",
-        "fddc7452-f48a"
-      ],
-      "seasonCount": 14,
-      "aliasEntryFor": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
-      "truncResolvesTo": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "what-our-alias-points-at"
-      ],
-      "cases": [
-        "WRONG:23476767:Umer Qureshi"
-      ]
-    },
-    {
-      "id": "44d33283-9693-4af4-a02b-7f2adde547c4",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": "64666499-c2f3-4001-b439-063d80617392",
-      "truncResolvesTo": "64666499-c2f3-4001-b439-063d80617392",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "WRONG:14178947:Victoria Hu"
-      ]
-    },
-    {
-      "id": "b4f12da1-0f05-4a3d-8cd1-8c662852cec5",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": null,
-      "truncResolvesTo": null,
-      "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "playhq-says-this-is-the-api-id"
-      ],
-      "cases": [
-        "WRONG:14178947:Victoria Hu"
-      ]
-    },
-    {
-      "id": "64666499-c2f3-4001-b439-063d80617392",
-      "hasPlayerFile": true,
-      "name": "Victoria Hu",
-      "private": false,
-      "gamesHeld": 260,
-      "spectatorIds": [
-        "265d370e-ed10",
-        "44d33283-9693",
-        "62c6b435-9fb4",
-        "64666499-c2f3",
-        "a838faa1-89e5",
-        "bea06270-8a75",
-        "d8928449-2f53"
-      ],
-      "seasonCount": 22,
-      "aliasEntryFor": "64666499-c2f3-4001-b439-063d80617392",
-      "truncResolvesTo": "64666499-c2f3-4001-b439-063d80617392",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "what-our-alias-points-at"
-      ],
-      "cases": [
-        "WRONG:14178947:Victoria Hu"
-      ]
-    },
-    {
-      "id": "8082694e-e496-411c-bb5e-b0ab9c874bd7",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": "a69f7ee8-7b95-449d-a113-308171c0e795",
-      "truncResolvesTo": "a69f7ee8-7b95-449d-a113-308171c0e795",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "WRONG:10187451:Jack Telford"
-      ]
-    },
-    {
-      "id": "0dae0caf-6dbf-4316-b7bd-12457d4296e4",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": null,
-      "truncResolvesTo": null,
-      "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "playhq-says-this-is-the-api-id"
-      ],
-      "cases": [
-        "WRONG:10187451:Jack Telford"
-      ]
-    },
-    {
-      "id": "a69f7ee8-7b95-449d-a113-308171c0e795",
-      "hasPlayerFile": true,
-      "name": "Jack Telford",
-      "private": false,
-      "gamesHeld": 194,
-      "spectatorIds": [
-        "8082694e-e496",
-        "a69f7ee8-7b95"
-      ],
-      "seasonCount": 13,
-      "aliasEntryFor": "a69f7ee8-7b95-449d-a113-308171c0e795",
-      "truncResolvesTo": "a69f7ee8-7b95-449d-a113-308171c0e795",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "what-our-alias-points-at"
-      ],
-      "cases": [
-        "WRONG:10187451:Jack Telford"
-      ]
-    },
-    {
-      "id": "423776e0-c910-4af1-9146-971bf816a9f6",
-      "hasPlayerFile": true,
-      "name": "Darcy Bendeich",
-      "private": false,
-      "gamesHeld": 15,
-      "spectatorIds": [
-        "423776e0-c910"
+        "5ec52065-1da6"
       ],
       "seasonCount": 2,
-      "aliasEntryFor": "423776e0-c910-4af1-9146-971bf816a9f6",
-      "truncResolvesTo": "423776e0-c910-4af1-9146-971bf816a9f6",
+      "aliasEntryFor": "5ec52065-1da6-4446-aa30-17f935682752",
+      "truncResolvesTo": "5ec52065-1da6-4446-aa30-17f935682752",
       "resolveError": null,
       "namespace": "not-api",
       "roles": [
-        "spectator-id-in-our-roster",
-        "what-our-alias-points-at"
+        "explicit"
       ],
       "cases": [
-        "WRONG:18009680:darcy bendeich"
+        "explicit"
       ]
     },
     {
-      "id": "e358fc8a-593b-44f6-9cde-30ba757d4d83",
+      "id": "61484830-7379-4d13-bec3-76a4c3d9c38c",
       "hasPlayerFile": false,
       "name": null,
       "private": null,
@@ -1191,418 +55,134 @@
       "resolveError": null,
       "namespace": "api",
       "roles": [
-        "playhq-says-this-is-the-api-id"
+        "explicit"
       ],
       "cases": [
-        "WRONG:18009680:darcy bendeich"
+        "explicit"
       ]
     },
     {
-      "id": "f6a5f85c-3e39-4089-a520-a44a8eb85f32",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": "4d7a6843-81f7-467c-937c-920bee71b6e9",
-      "truncResolvesTo": "4d7a6843-81f7-467c-937c-920bee71b6e9",
+      "id": "df504d60-b68a-4d1a-8a70-368c4e5f3871",
+      "hasPlayerFile": true,
+      "name": "Jacob Hyland",
+      "private": false,
+      "gamesHeld": 14,
+      "spectatorIds": [
+        "df504d60-b68a"
+      ],
+      "seasonCount": 1,
+      "aliasEntryFor": "df504d60-b68a-4d1a-8a70-368c4e5f3871",
+      "truncResolvesTo": "df504d60-b68a-4d1a-8a70-368c4e5f3871",
       "resolveError": null,
       "namespace": "not-api",
       "roles": [
-        "spectator-id-in-our-roster"
+        "explicit"
       ],
       "cases": [
-        "DUPLICATE:19175314:Edward Bowen"
+        "explicit"
       ]
     },
     {
-      "id": "4d7a6843-81f7-467c-937c-920bee71b6e9",
+      "id": "9457208a-d682-4f75-9c75-dfe6303f925c",
       "hasPlayerFile": true,
-      "name": "Edward Bowen",
+      "name": "Jacob Hyland",
       "private": false,
-      "gamesHeld": 165,
+      "gamesHeld": 190,
       "spectatorIds": [
-        "265ca015-d27e",
-        "4d7a6843-81f7",
-        "4f79dbc3-22c1",
-        "56680af9-3921",
-        "f74a6218-7a8a"
+        "85fa7db0-0e41",
+        "9457208a-d682",
+        "dc0e84aa-9f7c"
       ],
       "seasonCount": 22,
-      "aliasEntryFor": null,
-      "truncResolvesTo": "4d7a6843-81f7-467c-937c-920bee71b6e9",
+      "aliasEntryFor": "9457208a-d682-4f75-9c75-dfe6303f925c",
+      "truncResolvesTo": "9457208a-d682-4f75-9c75-dfe6303f925c",
       "resolveError": null,
       "namespace": "api",
       "roles": [
-        "playhq-says-this-is-the-api-id"
+        "explicit"
       ],
       "cases": [
-        "DUPLICATE:19175314:Edward Bowen"
+        "explicit"
       ]
     },
     {
-      "id": "5eb74f8e-7497-4804-8e38-0a2280fd74e5",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": "a09c8aa4-4282-4b58-a03d-f530d8a97752",
-      "truncResolvesTo": "a09c8aa4-4282-4b58-a03d-f530d8a97752",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "DUPLICATE:11060340:Jackson Palmer"
-      ]
-    },
-    {
-      "id": "a09c8aa4-4282-4b58-a03d-f530d8a97752",
+      "id": "f4fab057-bf65-43dc-9ca8-bc8f4f21d768",
       "hasPlayerFile": true,
-      "name": "Jackson Palmer",
+      "name": "Raphael D’Aloisio",
       "private": false,
-      "gamesHeld": 126,
+      "gamesHeld": 92,
       "spectatorIds": [
-        "a09c8aa4-4282"
-      ],
-      "seasonCount": 12,
-      "aliasEntryFor": "a09c8aa4-4282-4b58-a03d-f530d8a97752",
-      "truncResolvesTo": "a09c8aa4-4282-4b58-a03d-f530d8a97752",
-      "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "playhq-says-this-is-the-api-id"
-      ],
-      "cases": [
-        "DUPLICATE:11060340:Jackson Palmer"
-      ]
-    },
-    {
-      "id": "44e132c1-9134-4a64-b95c-c0942f9f8efb",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": "791c8b01-4473-40a1-af6b-f98c20b61dc6",
-      "truncResolvesTo": "791c8b01-4473-40a1-af6b-f98c20b61dc6",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "DUPLICATE:74065322:Jemma Symington"
-      ]
-    },
-    {
-      "id": "791c8b01-4473-40a1-af6b-f98c20b61dc6",
-      "hasPlayerFile": true,
-      "name": "Jemma Symington",
-      "private": false,
-      "gamesHeld": 240,
-      "spectatorIds": [
-        "791c8b01-4473"
-      ],
-      "seasonCount": 22,
-      "aliasEntryFor": "791c8b01-4473-40a1-af6b-f98c20b61dc6",
-      "truncResolvesTo": "791c8b01-4473-40a1-af6b-f98c20b61dc6",
-      "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "playhq-says-this-is-the-api-id"
-      ],
-      "cases": [
-        "DUPLICATE:74065322:Jemma Symington"
-      ]
-    },
-    {
-      "id": "244d7c71-91b6-4103-a471-dd73fce384ea",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": "fb84123c-bfd1-49f1-929d-b8dd5a5e3547",
-      "truncResolvesTo": "fb84123c-bfd1-49f1-929d-b8dd5a5e3547",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "DUPLICATE:93cd1492:Issac Holland"
-      ]
-    },
-    {
-      "id": "fb84123c-bfd1-49f1-929d-b8dd5a5e3547",
-      "hasPlayerFile": true,
-      "name": "Issac Holland",
-      "private": false,
-      "gamesHeld": 65,
-      "spectatorIds": [
-        "fb84123c-bfd1"
+        "f4fab057-bf65"
       ],
       "seasonCount": 8,
-      "aliasEntryFor": "fb84123c-bfd1-49f1-929d-b8dd5a5e3547",
-      "truncResolvesTo": "fb84123c-bfd1-49f1-929d-b8dd5a5e3547",
+      "aliasEntryFor": "f4fab057-bf65-43dc-9ca8-bc8f4f21d768",
+      "truncResolvesTo": "f4fab057-bf65-43dc-9ca8-bc8f4f21d768",
       "resolveError": null,
-      "namespace": "api",
+      "namespace": "not-api",
       "roles": [
-        "playhq-says-this-is-the-api-id"
+        "explicit"
       ],
       "cases": [
-        "DUPLICATE:93cd1492:Issac Holland"
+        "explicit"
       ]
     },
     {
-      "id": "984d8a04-e590-4f1b-8c12-0421b1708835",
+      "id": "66291923-6376-4586-b60d-d7bf07e3cc26",
       "hasPlayerFile": false,
       "name": null,
       "private": null,
       "gamesHeld": null,
       "spectatorIds": null,
       "seasonCount": null,
-      "aliasEntryFor": "89cd8818-9575-401f-b4f5-d5b45190c497",
-      "truncResolvesTo": "89cd8818-9575-401f-b4f5-d5b45190c497",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "DUPLICATE:41583696:Indi Gieschen"
-      ]
-    },
-    {
-      "id": "89cd8818-9575-401f-b4f5-d5b45190c497",
-      "hasPlayerFile": true,
-      "name": "Indi Gieschen",
-      "private": false,
-      "gamesHeld": 324,
-      "spectatorIds": [
-        "89cd8818-9575"
-      ],
-      "seasonCount": 46,
-      "aliasEntryFor": "89cd8818-9575-401f-b4f5-d5b45190c497",
-      "truncResolvesTo": "89cd8818-9575-401f-b4f5-d5b45190c497",
+      "aliasEntryFor": null,
+      "truncResolvesTo": null,
       "resolveError": null,
       "namespace": "api",
       "roles": [
-        "playhq-says-this-is-the-api-id"
+        "explicit"
       ],
       "cases": [
-        "DUPLICATE:41583696:Indi Gieschen"
+        "explicit"
       ]
     },
     {
-      "id": "45fcf4cf-7ca3-4cbb-bee5-a7e4838df976",
+      "id": "91cc564e-c564-4eb2-bc15-c5c2a2fa9f89",
+      "hasPlayerFile": true,
+      "name": "Zara Williamson",
+      "private": false,
+      "gamesHeld": 112,
+      "spectatorIds": [
+        "91cc564e-c564"
+      ],
+      "seasonCount": 9,
+      "aliasEntryFor": "91cc564e-c564-4eb2-bc15-c5c2a2fa9f89",
+      "truncResolvesTo": "91cc564e-c564-4eb2-bc15-c5c2a2fa9f89",
+      "resolveError": null,
+      "namespace": "not-api",
+      "roles": [
+        "explicit"
+      ],
+      "cases": [
+        "explicit"
+      ]
+    },
+    {
+      "id": "2ae56dca-1496-4d0d-9e96-c17471eaecd5",
       "hasPlayerFile": false,
       "name": null,
       "private": null,
       "gamesHeld": null,
       "spectatorIds": null,
       "seasonCount": null,
-      "aliasEntryFor": "55efb56d-67fc-453e-aa5b-5d2528ee468b",
-      "truncResolvesTo": "55efb56d-67fc-453e-aa5b-5d2528ee468b",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "DUPLICATE:18009680:Vinh Do"
-      ]
-    },
-    {
-      "id": "55efb56d-67fc-453e-aa5b-5d2528ee468b",
-      "hasPlayerFile": true,
-      "name": "Vinh Do",
-      "private": false,
-      "gamesHeld": 128,
-      "spectatorIds": [
-        "45fcf4cf-7ca3",
-        "55efb56d-67fc",
-        "adc555de-2143"
-      ],
-      "seasonCount": 11,
-      "aliasEntryFor": "55efb56d-67fc-453e-aa5b-5d2528ee468b",
-      "truncResolvesTo": "55efb56d-67fc-453e-aa5b-5d2528ee468b",
+      "aliasEntryFor": null,
+      "truncResolvesTo": null,
       "resolveError": null,
       "namespace": "api",
       "roles": [
-        "playhq-says-this-is-the-api-id"
+        "explicit"
       ],
       "cases": [
-        "DUPLICATE:18009680:Vinh Do"
-      ]
-    },
-    {
-      "id": "7622c41c-427e-4158-b6e8-7aac614c2508",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": "a817bc6d-6399-42a3-891a-000089db6c03",
-      "truncResolvesTo": "a817bc6d-6399-42a3-891a-000089db6c03",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "DUPLICATE:19427733:Dakota Bradfield"
-      ]
-    },
-    {
-      "id": "a817bc6d-6399-42a3-891a-000089db6c03",
-      "hasPlayerFile": true,
-      "name": "Dakota Bradfield",
-      "private": false,
-      "gamesHeld": 148,
-      "spectatorIds": [
-        "a817bc6d-6399"
-      ],
-      "seasonCount": 10,
-      "aliasEntryFor": "a817bc6d-6399-42a3-891a-000089db6c03",
-      "truncResolvesTo": "a817bc6d-6399-42a3-891a-000089db6c03",
-      "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "playhq-says-this-is-the-api-id"
-      ],
-      "cases": [
-        "DUPLICATE:19427733:Dakota Bradfield"
-      ]
-    },
-    {
-      "id": "aeac2514-a2a5-4fca-9b07-16e8f3f800f3",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": "7750ae6f-8538-4694-84e2-8115b30819d2",
-      "truncResolvesTo": "7750ae6f-8538-4694-84e2-8115b30819d2",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "DUPLICATE:10277688:Ben Carroll"
-      ]
-    },
-    {
-      "id": "7750ae6f-8538-4694-84e2-8115b30819d2",
-      "hasPlayerFile": true,
-      "name": "Ben Carroll",
-      "private": false,
-      "gamesHeld": 122,
-      "spectatorIds": [
-        "66954078-0164",
-        "7750ae6f-8538"
-      ],
-      "seasonCount": 15,
-      "aliasEntryFor": "7750ae6f-8538-4694-84e2-8115b30819d2",
-      "truncResolvesTo": "7750ae6f-8538-4694-84e2-8115b30819d2",
-      "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "playhq-says-this-is-the-api-id"
-      ],
-      "cases": [
-        "DUPLICATE:10277688:Ben Carroll"
-      ]
-    },
-    {
-      "id": "6076afa7-b623-4b2e-87b8-d882cafbab39",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": "ba504d0b-af90-4e3c-8b8a-eca600000150",
-      "truncResolvesTo": "ba504d0b-af90-4e3c-8b8a-eca600000150",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "DUPLICATE:10122842:Jayden Ferris"
-      ]
-    },
-    {
-      "id": "ba504d0b-af90-4e3c-8b8a-eca600000150",
-      "hasPlayerFile": true,
-      "name": "Jayden Ferris",
-      "private": false,
-      "gamesHeld": 145,
-      "spectatorIds": [
-        "11cf8de0-998d",
-        "ba504d0b-af90"
-      ],
-      "seasonCount": 15,
-      "aliasEntryFor": "ba504d0b-af90-4e3c-8b8a-eca600000150",
-      "truncResolvesTo": "ba504d0b-af90-4e3c-8b8a-eca600000150",
-      "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "playhq-says-this-is-the-api-id"
-      ],
-      "cases": [
-        "DUPLICATE:10122842:Jayden Ferris"
-      ]
-    },
-    {
-      "id": "939df56e-ef41-4b44-b92a-66510ca4f73f",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": "16d7d60c-c5c7-4713-bdf4-f887facae5f3",
-      "truncResolvesTo": "16d7d60c-c5c7-4713-bdf4-f887facae5f3",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "spectator-id-in-our-roster"
-      ],
-      "cases": [
-        "DUPLICATE:10273651:Daniel Armanyous"
-      ]
-    },
-    {
-      "id": "16d7d60c-c5c7-4713-bdf4-f887facae5f3",
-      "hasPlayerFile": true,
-      "name": "Daniel Armanyous",
-      "private": false,
-      "gamesHeld": 153,
-      "spectatorIds": [
-        "16d7d60c-c5c7"
-      ],
-      "seasonCount": 11,
-      "aliasEntryFor": "16d7d60c-c5c7-4713-bdf4-f887facae5f3",
-      "truncResolvesTo": "16d7d60c-c5c7-4713-bdf4-f887facae5f3",
-      "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "playhq-says-this-is-the-api-id"
-      ],
-      "cases": [
-        "DUPLICATE:10273651:Daniel Armanyous"
+        "explicit"
       ]
     }
   ]
