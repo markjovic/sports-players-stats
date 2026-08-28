@@ -362,6 +362,14 @@ async function creditedGameIds(uuid) {
   if (res.status === 403 || res.status === 404) return null;
   const j = res.body;
   if (!j || j.errors) return null;
+  // A WITHHELD profile answers 200 with publicProfileStatistics === null. The loop
+  // below then runs over nothing and yields an empty Set, which is indistinguishable
+  // from "answered, credits zero games" — so on 2026-08-27 Aarna Gupta (private,
+  // confirmed on her PlayHQ page) was reported as the single worst gap in the store:
+  // 64 games held, 0 credited. Every private player would rank that way, on every
+  // run, for ever. A privacy setting is not a data fault and must not head the list.
+  const stats = j.data && j.data.publicProfileStatistics;
+  if (stats === null || stats === undefined) return { withheld: true };
   const out = new Set();
   for (const s of (j.data?.publicProfileStatistics?.seasonStatistics || [])) {
     for (const st of (s.statistics || [])) {
@@ -483,7 +491,8 @@ async function main() {
       catch (e) { rows.push({ ...t, error: 'no player file' }); return; }
       const ours = new Set((p.games || []).map(g => String(g)));
       const credits = await creditedGameIds(t.uuid);
-      if (!credits) { rows.push({ ...t, name: p.name, ourGames: ours.size, error: 'PlayHQ gave no answer (private or throttled)' }); return; }
+      if (!credits) { rows.push({ ...t, name: p.name, ourGames: ours.size, error: 'PlayHQ gave no answer (throttled, or the id is not an api profile)' }); return; }
+      if (credits.withheld) { rows.push({ ...t, name: p.name, ourGames: ours.size, withheld: true, error: 'profile is PRIVATE — PlayHQ withholds statistics, so it can never credit a game' }); return; }
       // PlayHQ ids may be full or 8-char in either set; compare on the short form.
       const short = (x) => String(x).slice(0, 8);
       const theirs = new Set([...credits].map(short));
@@ -535,8 +544,23 @@ async function main() {
     }
     console.log('');
   }
-  const errs = rows.filter(r => r.error);
-  if (errs.length) console.log('  no answer for ' + n(errs.length) + ' player(s) (private, throttled, or no file)');
+  // Three outcomes, not one. Collapsing them into "no answer" is how a privacy
+  // setting came to be reported as the worst data fault in the store.
+  const withheld = rows.filter(r => r.withheld);
+  const noFile   = rows.filter(r => r.error === 'no player file');
+  const errs     = rows.filter(r => r.error && !r.withheld && r.error !== 'no player file');
+  console.log('  ── players that could not be compared ────────────────────────────');
+  console.log('    PRIVATE (PlayHQ withholds statistics) : ' + n(withheld.length) +
+              '   ← not a fault; these can never credit a game');
+  console.log('    no player file on our side            : ' + n(noFile.length));
+  console.log('    no answer (throttled, or not an api profile) : ' + n(errs.length));
+  if (withheld.length) {
+    console.log('');
+    console.log('    private players holding the most games (nothing wrong with these):');
+    for (const r of withheld.sort((a, b) => b.ourGames - a.ourGames).slice(0, 10)) {
+      console.log('      ' + r.uuid + '  ' + JSON.stringify(r.name || '?') + '  we hold ' + n(r.ourGames) + '  [' + r.why + ']');
+    }
+  }
 
   fs.mkdirSync(path.join(ROOT, 'reports'), { recursive: true });
   fs.writeFileSync(path.join(ROOT, REPORT), JSON.stringify({ generated: new Date().toISOString(),
