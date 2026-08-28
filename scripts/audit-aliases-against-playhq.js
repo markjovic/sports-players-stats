@@ -86,6 +86,12 @@ const COMMIT_EVERY = ARGS['commit-every'] ? Math.max(1, parseInt(ARGS['commit-ev
 const REPOINT_ONLY = !!ARGS['repoint-games'];
 const GAMES_ARG    = typeof ARGS.games === 'string' ? ARGS.games.split(',').map(s => s.trim()).filter(Boolean) : null;
 const RESET        = !!ARGS.reset;
+// OFFLINE. Compares the WRONG rows of two committed audit reports, keyed by
+// game + spectator id. Added 2026-08-27: after the fold, WRONG moved 85 -> 93 and
+// the totals could not distinguish "new cases in newly-answered games" from
+// "cases that regressed because the alias rewrite broke them". Those need
+// opposite responses, so the difference has to be read rather than assumed.
+const DIFF_ARG = typeof ARGS.diff === 'string' ? ARGS.diff.split(',').map(x => x.trim()).filter(Boolean) : null;
 
 const API_URL       = 'https://api.playhq.com/graphql';
 const SPECTATOR_URL = 'https://spectator.playhq.com/graphql';
@@ -589,9 +595,74 @@ function writeProgress(state) {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
+function loadWrong(rel) {
+  const p = path.join(ROOT, rel);
+  if (!fs.existsSync(p)) throw new Error(`report not found: ${rel}`);
+  const rep = JSON.parse(fs.readFileSync(p, 'utf8'));
+  const wrong = Array.isArray(rep.wrong) ? rep.wrong : [];
+  const rows = Array.isArray(rep.rows) ? rep.rows : [];
+  const key = r => `${r.gameId}|${t13(r.spectatorId)}`;
+  return {
+    rel,
+    wrong: new Map(wrong.map(r => [key(r), r])),
+    // every judged pair, so a pair present in one run and absent in the other is
+    // distinguishable from one that changed verdict
+    all: new Map(rows.map(r => [key(r), r])),
+    totals: rep.totals || {},
+  };
+}
+
+function diffReports([relA, relB]) {
+  const A = loadWrong(relA), B = loadWrong(relB);
+  console.log(`A = ${relA}   WRONG ${A.wrong.size}, pairs ${A.all.size}`);
+  console.log(`B = ${relB}   WRONG ${B.wrong.size}, pairs ${B.all.size}\n`);
+
+  const fixed = [], regressed = [], appeared = [], vanished = [], persisted = [];
+  for (const [k, r] of A.wrong) {
+    if (B.wrong.has(k)) { persisted.push(r); continue; }
+    if (B.all.has(k))   { fixed.push({ ...r, nowVerdict: B.all.get(k).verdict }); }
+    else                { vanished.push(r); }
+  }
+  for (const [k, r] of B.wrong) {
+    if (A.wrong.has(k)) continue;
+    if (A.all.has(k))   { regressed.push({ ...r, wasVerdict: A.all.get(k).verdict }); }
+    else                { appeared.push(r); }
+  }
+
+  console.log('──── SUMMARY ────');
+  console.log(`  persisted (wrong in both)          : ${persisted.length}`);
+  console.log(`  FIXED (wrong in A, judged OK in B) : ${fixed.length}`);
+  console.log(`  REGRESSED (OK in A, wrong in B)    : ${regressed.length}   <- the number that matters`);
+  console.log(`  appeared (pair only judged in B)   : ${appeared.length}`);
+  console.log(`  vanished (pair only judged in A)   : ${vanished.length}`);
+
+  const show = (title, list) => {
+    console.log(`\n──── ${title} ────`);
+    if (!list.length) { console.log('  none'); return; }
+    for (const r of list.slice(0, 40)) {
+      console.log(`  ${r.gameId} · ${r.name || r.ourName || '?'} · spectator ${r.spectatorId}`);
+      console.log(`      PlayHQ api ${r.apiId} · we resolve to ${r.resolvesTo} · alias ${r.rawAliasEntry || 'none'}` +
+        (r.wasVerdict ? ` · WAS ${r.wasVerdict}` : '') + (r.nowVerdict ? ` · NOW ${r.nowVerdict}` : ''));
+    }
+    if (list.length > 40) console.log(`  … and ${list.length - 40} more`);
+  };
+  show('REGRESSED — these were fine before and are wrong now', regressed);
+  show('FIXED', fixed);
+  show('APPEARED — pair was not judged in A at all', appeared);
+
+  console.log('\nA regression means the alias rewrite moved a pair that was previously');
+  console.log('correct. An appearance means the pair simply was not judged before, usually');
+  console.log('because a source did not answer that game on the earlier run.');
+}
+
 async function main() {
   const t0 = Date.now();
   console.log('audit-aliases-against-playhq — PlayHQ-sourced spectator/api pairs vs our resolver\n');
+  if (DIFF_ARG) {
+    if (DIFF_ARG.length !== 2) throw new Error('--diff needs exactly two report paths, comma separated');
+    diffReports(DIFF_ARG);
+    return;
+  }
   if (!fs.existsSync(GAMES_DIR)) throw new Error(`games dir not found: ${GAMES_DIR}`);
   fs.mkdirSync(REPORTS_DIR, { recursive: true });
 
