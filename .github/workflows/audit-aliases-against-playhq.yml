@@ -71,6 +71,11 @@ on:
         required: false
         default: ''
         type: string
+      diff:
+        description: 'Compare two reports, offline (a.json,b.json)'
+        required: false
+        default: ''
+        type: string
       reset:
         description: 'Start again, ignore progress'
         required: false
@@ -108,6 +113,7 @@ jobs:
       - name: Audit aliases against PlayHQ
         run: |
           ARGS="--max-games=${{ inputs.max_games }} --per-season=${{ inputs.per_season }} --min-roster=${{ inputs.min_roster }} --concurrency=${{ inputs.concurrency }} --commit-every=${{ inputs.commit_every }}"
+          if [ -n "${{ inputs.diff }}" ]; then ARGS="$ARGS --diff=${{ inputs.diff }}"; fi
           if [ -n "${{ inputs.tag }}" ]; then ARGS="$ARGS --tag=${{ inputs.tag }}"; fi
           if [ -n "${{ inputs.games }}" ]; then ARGS="$ARGS --games=${{ inputs.games }}"; fi
           if [ "${{ inputs.repoint_games }}" = "true" ] || [ "${{ inputs.repoint_games }}" = "True" ]; then ARGS="$ARGS --repoint-games"; fi
