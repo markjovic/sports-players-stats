@@ -388,43 +388,6 @@ async function creditedGameIds(uuid) {
 
 
 
-// ── Games PlayHQ can NEVER credit ────────────────────────────────────────────
-// Established 2026-08-27 by reading, not inferring. Max Matthews: we hold 17,
-// PlayHQ credits 2, and the handover recorded the alias as "confirmed wrong" on
-// exactly that discrepancy. All 17 turned out to be hidden-grade games across two
-// seasons — spectator serves their box scores, gameView returns no-game, and
-// publicProfileStatistics credits nothing. The 17 never contradicted the 2.
-//
-// So "games we hold that PlayHQ does not credit" has always mixed two things: a
-// genuine attribution fault, and a game PlayHQ structurally does not publish.
-// Reporting them as one number is how a hidden grade came to look like the worst
-// data fault in the store, twice.
-//
-// This separates the part that is knowable offline. NOT knowable offline: games
-// in competitions outside the basketball-victoria tenant — Will Crawford's five
-// are a Wangaratta tournament run by an independent organisation, real basketball,
-// correctly captured, and uncreditable by this tenant's statistics. Detecting
-// those needs one gameView call per game, so they stay in the unexplained column
-// and the column is named honestly rather than called an error.
-function hiddenGameIds() {
-  const hidden = new Set();
-  hidden.gameCount = 0;      // distinct GAMES, not Set entries: a full id adds two
-                             // entries and an 8-char id adds one, so size/2 is wrong
-  const dir = path.join(ROOT, 'games', 'bv');
-  let files = [];
-  try { files = fs.readdirSync(dir).filter(f => f.endsWith('.json')); } catch (e) { return hidden; }
-  let scanned = 0;
-  for (const f of files) {
-    scanned++;
-    if (scanned % 500 === 0) console.log('  … scanned ' + n(scanned) + '/' + n(files.length) + ' season files, ' + n(hidden.size) + ' hidden game(s)');
-    let gf; try { gf = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (e) { continue; }
-    for (const [gid, g] of Object.entries(gf.games || {})) {
-      if (g && g.hidden) { hidden.add(gid); hidden.add(String(gid).slice(0, 8)); hidden.gameCount++; }
-    }
-  }
-  return hidden;
-}
-
 const _GIT = { cwd: ROOT, stdio: 'pipe', timeout: 10 * 60 * 1000, maxBuffer: 512 * 1024 * 1024 };
 const REPORT = 'reports/playhq-verification.json';
 
@@ -455,10 +418,6 @@ function main2() {}
 
 async function main() {
   console.log('verify-players-against-playhq — do OUR games match the games PlayHQ credits?');
-  console.log('  scanning games/bv for hidden-grade games (they have no public page and can');
-  console.log('  never be credited — counting them as gaps is counting PlayHQ rules as our fault)');
-  const HIDDEN = hiddenGameIds();
-  console.log('  hidden-grade games found              : ' + n(HIDDEN.gameCount));
 
   // ── 1. Everyone touched by a recent change, BOTH SIDES ────────────────────
   const changed = new Map();                     // uuid -> reason
@@ -540,16 +499,15 @@ async function main() {
       const oursShort = new Set([...ours].map(short));
       const weHoldTheyDont = [...oursShort].filter(g => !theirs.has(g));
       const theyHoldWeDont = [...theirs].filter(g => !oursShort.has(g));
-      // A hidden-grade game has no public page and can never be credited. Counting
-      // it as a gap is counting PlayHQ's own publishing rules as our error.
-      const hiddenPart = weHoldTheyDont.filter(g => HIDDEN.has(g));
-      const unexplained = weHoldTheyDont.filter(g => !HIDDEN.has(g));
+      // REVERTED 2026-08-27. A previous version split this into "hidden grade,
+      // never creditable" and "unexplained", on the strength of one player whose
+      // 17 games were all hidden. The scan then found 425,954 of roughly 490,000
+      // games carry that flag — so it is close to universal and cannot mean "no
+      // public page". The split separated 38 of 269 games and told nobody anything.
+      // One number, honestly named, until the flag's meaning is established.
       rows.push({ ...t, name: p.name, ourGames: ours.size, playhqGames: theirs.size,
-                  extra: weHoldTheyDont.length,
-                  hiddenGrade: hiddenPart.length,
-                  unexplained: unexplained.length,
-                  missing: theyHoldWeDont.length,
-                  extraSample: unexplained.slice(0, 5) });
+                  extra: weHoldTheyDont.length, missing: theyHoldWeDont.length,
+                  extraSample: weHoldTheyDont.slice(0, 5) });
     }));
     done += Math.min(CONCURRENCY, targets.length - i);
     if (done % 60 < CONCURRENCY) console.log('  … ' + n(done) + '/' + n(targets.length));
@@ -561,18 +519,14 @@ async function main() {
   const grp = (why) => ok.filter(r => (r.why === 'random sample') === (why === 'sample'));
   const summarise = (label, set) => {
     if (!set.length) return;
-    const clean = set.filter(r => r.unexplained === 0).length;
+    const clean = set.filter(r => r.extra === 0).length;
     const totOurs = set.reduce((a, r) => a + r.ourGames, 0);
     const totExtra = set.reduce((a, r) => a + r.extra, 0);
-    const totHidden = set.reduce((a, r) => a + r.hiddenGrade, 0);
-    const totUnexp = set.reduce((a, r) => a + r.unexplained, 0);
     const totMissing = set.reduce((a, r) => a + r.missing, 0);
     console.log('  ── ' + label + ' (' + n(set.length) + ' player(s)) ' + '─'.repeat(Math.max(0, 40 - label.length)));
-    console.log('    no UNEXPLAINED gap                       : ' + n(clean) + '  (' + pct(clean, set.length) + '%)');
+    console.log('    every game we hold is credited by PlayHQ : ' + n(clean) + '  (' + pct(clean, set.length) + '%)');
     console.log('    games we hold, total                     : ' + n(totOurs));
-    console.log('      not credited by PlayHQ, total          : ' + n(totExtra) + '  (' + pct(totExtra, totOurs) + '%)');
-    console.log('        of those, HIDDEN GRADE (never creditable) : ' + n(totHidden));
-    console.log('        of those, UNEXPLAINED                     : ' + n(totUnexp) + '  (' + pct(totUnexp, totOurs) + '%)   ← the only figure that can be a fault');
+    console.log('      of those NOT credited by PlayHQ        : ' + n(totExtra) + '  (' + pct(totExtra, totOurs) + '%)');
     console.log('    games PlayHQ credits that we do NOT hold : ' + n(totMissing));
     console.log('');
   };
@@ -585,17 +539,13 @@ async function main() {
   console.log('  the players WE CHANGED look worse than the ones we did not.');
   console.log('');
 
-  // Ranked on UNEXPLAINED. Ranking on the raw gap put hidden grades and
-  // out-of-tenant tournaments at the top of the list on every run.
-  const worst = ok.filter(r => r.unexplained > 0).sort((a, b) => b.unexplained - a.unexplained).slice(0, SHOW);
+  const worst = ok.filter(r => r.extra > 0).sort((a, b) => b.extra - a.extra).slice(0, SHOW);
   if (worst.length) {
     console.log('  ── worst gaps ────────────────────────────────────────────────────');
     for (const r of worst) {
       console.log('    ' + r.uuid + '  ' + JSON.stringify(r.name || '?') + '   [' + r.why + ']');
       console.log('        we hold ' + n(r.ourGames) + ', PlayHQ credits ' + n(r.playhqGames) +
-                  '  ·  ' + n(r.unexplained) + ' unexplained' +
-                  (r.hiddenGrade ? ' (+' + n(r.hiddenGrade) + ' hidden grade, not a fault)' : '') +
-                  ', ' + n(r.missing) + ' of theirs missing');
+                  '  ·  ' + n(r.extra) + ' of ours not credited, ' + n(r.missing) + ' of theirs missing');
       console.log('        https://www.playhq.com/public/profile/' + r.uuid + '/statistics');
     }
     console.log('');
