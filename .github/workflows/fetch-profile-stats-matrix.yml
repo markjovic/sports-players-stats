@@ -489,6 +489,7 @@ jobs:
 
           files = glob.glob('summaries/*.json')
           total = already_done = written = inaccessible = unchanged = errors = blocked = 0
+          rejected = 0
 
           for f in files:
             try:
@@ -499,6 +500,7 @@ jobs:
               inaccessible += d.get('inaccessible', 0)
               unchanged    += d.get('unchanged', 0)
               errors       += d.get('errors', 0)
+              rejected     += d.get('recovery_rejected', 0)
               if d.get('blocked'): blocked += 1
             except Exception as e:
               print(f'  Warning: could not parse {f}: {e}')
@@ -517,6 +519,7 @@ jobs:
           print(f'  Still withheld (no write): {unchanged:,}')
           print(f'  Errors:                    {errors:,}')
           print(f'  Shards blocked mid-run:    {blocked}')
+          print(f'  Recovery rejected:         {rejected:,}   (candidate shared no grade with the player)')
           print('══════════════════════════════════════════════════')
           print('  NOTE: "shard writes reported" is what the shards WROTE TO DISK.')
           print('  It is progress only if apply-and-commit succeeded — the commit')
