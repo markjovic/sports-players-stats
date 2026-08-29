@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-29T05:01:17.104Z",
+  "generatedAt": "2026-08-29T05:08:12.885Z",
   "since": "2026-08-10",
   "until": null,
   "complete": false,
-  "commitsExamined": 150,
+  "commitsExamined": 175,
   "commitsFound": 504,
   "perCommit": [
     {
@@ -1354,6 +1354,231 @@
       "shardsChanged": 2,
       "repointed": 0,
       "added": 2,
+      "removed": 0
+    },
+    {
+      "sha": "ecbd2e0e26552f9c0798678e7324cc4258980504",
+      "date": "2026-08-11T07:22:10Z",
+      "subject": "spectator-backfill: progress 32000/71666 (29965 hits, 389 stubbed)",
+      "shardsChanged": 2,
+      "repointed": 0,
+      "added": 2,
+      "removed": 0
+    },
+    {
+      "sha": "1f8128856912865fa87c5ca2957a8860784ec1da",
+      "date": "2026-08-11T07:19:48Z",
+      "subject": "spectator-backfill: progress 30000/71666 (27985 hits, 387 stubbed)",
+      "shardsChanged": 14,
+      "repointed": 0,
+      "added": 14,
+      "removed": 0
+    },
+    {
+      "sha": "858e505340d79cbbade93eba988482f0e24f2f35",
+      "date": "2026-08-11T07:17:16Z",
+      "subject": "spectator-backfill: progress 28000/71666 (26009 hits, 373 stubbed)",
+      "shardsChanged": 76,
+      "repointed": 0,
+      "added": 88,
+      "removed": 0
+    },
+    {
+      "sha": "a391e3e48d53f6e34f0ed3d280f09f260f70b94c",
+      "date": "2026-08-11T07:14:56Z",
+      "subject": "spectator-backfill: progress 26000/71666 (24026 hits, 285 stubbed)",
+      "shardsChanged": 4,
+      "repointed": 0,
+      "added": 4,
+      "removed": 0
+    },
+    {
+      "sha": "802a5f39a6bf114708335804e9af602d06b965b5",
+      "date": "2026-08-11T07:12:39Z",
+      "subject": "spectator-backfill: progress 24000/71666 (22083 hits, 281 stubbed)",
+      "shardsChanged": 3,
+      "repointed": 0,
+      "added": 3,
+      "removed": 0
+    },
+    {
+      "sha": "93df953eeaed1ad51b591de616f886353c332f6c",
+      "date": "2026-08-11T07:10:25Z",
+      "subject": "spectator-backfill: progress 22000/71666 (20295 hits, 278 stubbed)",
+      "shardsChanged": 4,
+      "repointed": 0,
+      "added": 4,
+      "removed": 0
+    },
+    {
+      "sha": "3e772e97cdd2331beb3b2ab1cf7c5047e72c6b7d",
+      "date": "2026-08-11T07:08:04Z",
+      "subject": "spectator-backfill: progress 20000/71666 (18306 hits, 274 stubbed)",
+      "shardsChanged": 7,
+      "repointed": 0,
+      "added": 7,
+      "removed": 0
+    },
+    {
+      "sha": "0d83cefcfbfbb61a166dc64a50859c18e54e44e4",
+      "date": "2026-08-11T07:05:45Z",
+      "subject": "spectator-backfill: progress 18000/71666 (16314 hits, 267 stubbed)",
+      "shardsChanged": 7,
+      "repointed": 0,
+      "added": 8,
+      "removed": 0
+    },
+    {
+      "sha": "4860aa7373c34d2ece1e24527d29095e0944c421",
+      "date": "2026-08-11T07:03:22Z",
+      "subject": "spectator-backfill: progress 16000/71666 (14321 hits, 259 stubbed)",
+      "shardsChanged": 15,
+      "repointed": 0,
+      "added": 15,
+      "removed": 0
+    },
+    {
+      "sha": "17aa85881a6f48ed128e9ca6c29735d367975b8c",
+      "date": "2026-08-11T07:00:59Z",
+      "subject": "spectator-backfill: progress 14000/71666 (12331 hits, 244 stubbed)",
+      "shardsChanged": 26,
+      "repointed": 0,
+      "added": 27,
+      "removed": 0
+    },
+    {
+      "sha": "34e2873e5de7b43ef8e65e65c2785c894982d290",
+      "date": "2026-08-11T06:58:22Z",
+      "subject": "spectator-backfill: progress 12000/71666 (10336 hits, 217 stubbed)",
+      "shardsChanged": 88,
+      "repointed": 0,
+      "added": 112,
+      "removed": 0
+    },
+    {
+      "sha": "0c2468279cbf4588b0ad216d4d3a992a8b319697",
+      "date": "2026-08-11T06:55:43Z",
+      "subject": "spectator-backfill: progress 10000/71666 (8340 hits, 105 stubbed)",
+      "shardsChanged": 72,
+      "repointed": 0,
+      "added": 87,
+      "removed": 0
+    },
+    {
+      "sha": "fba7c74a625e528a6bc9281bd5b00116801b26ef",
+      "date": "2026-08-11T06:53:22Z",
+      "subject": "spectator-backfill: progress 8000/71666 (6426 hits, 18 stubbed)",
+      "shardsChanged": 3,
+      "repointed": 0,
+      "added": 3,
+      "removed": 0
+    },
+    {
+      "sha": "382b5f072158991f4d6fea022106ebc551e05bd2",
+      "date": "2026-08-11T06:48:47Z",
+      "subject": "spectator-backfill: progress 4000/71666 (3944 hits, 15 stubbed)",
+      "shardsChanged": 14,
+      "repointed": 0,
+      "added": 14,
+      "removed": 0
+    },
+    {
+      "sha": "2a08743d08a75060623815c4cd4997aaa99ab615",
+      "date": "2026-08-11T06:46:28Z",
+      "subject": "spectator-backfill: progress 2000/71666 (1969 hits, 1 stubbed)",
+      "shardsChanged": 1,
+      "repointed": 0,
+      "added": 1,
+      "removed": 0
+    },
+    {
+      "sha": "320a42837e698f400db432bad715c3e74c9fb3ae",
+      "date": "2026-08-11T06:27:46Z",
+      "subject": "spectator-backfill: progress 100000/100000 (93643 hits, 1201 stubbed)",
+      "shardsChanged": 11,
+      "repointed": 0,
+      "added": 12,
+      "removed": 0
+    },
+    {
+      "sha": "4cac100b690b5d42979c3b2c3fa5f90b011440af",
+      "date": "2026-08-11T06:25:00Z",
+      "subject": "spectator-backfill: progress 98000/100000 (91705 hits, 1189 stubbed)",
+      "shardsChanged": 3,
+      "repointed": 0,
+      "added": 3,
+      "removed": 0
+    },
+    {
+      "sha": "521413ece97402b0ada2e24f430af2a989c638d3",
+      "date": "2026-08-11T06:22:08Z",
+      "subject": "spectator-backfill: progress 96000/100000 (89743 hits, 1186 stubbed)",
+      "shardsChanged": 33,
+      "repointed": 0,
+      "added": 37,
+      "removed": 0
+    },
+    {
+      "sha": "162f595ccfa71150d251c41f0ae1931838cefea6",
+      "date": "2026-08-11T06:19:14Z",
+      "subject": "spectator-backfill: progress 94000/100000 (87778 hits, 1149 stubbed)",
+      "shardsChanged": 26,
+      "repointed": 0,
+      "added": 26,
+      "removed": 0
+    },
+    {
+      "sha": "cde9b5f889f88cbd8b71bc57e898ac58e84f7667",
+      "date": "2026-08-11T06:16:26Z",
+      "subject": "spectator-backfill: progress 92000/100000 (85858 hits, 1123 stubbed)",
+      "shardsChanged": 5,
+      "repointed": 0,
+      "added": 5,
+      "removed": 0
+    },
+    {
+      "sha": "475415a6abb8f051b7c0251c5a59773d8d05ed98",
+      "date": "2026-08-11T06:13:34Z",
+      "subject": "spectator-backfill: progress 90000/100000 (83944 hits, 1118 stubbed)",
+      "shardsChanged": 6,
+      "repointed": 0,
+      "added": 6,
+      "removed": 0
+    },
+    {
+      "sha": "2ce0fb4bad89fc8a73b1fd4818703bcd297fccd3",
+      "date": "2026-08-11T06:10:46Z",
+      "subject": "spectator-backfill: progress 88000/100000 (82229 hits, 1112 stubbed)",
+      "shardsChanged": 9,
+      "repointed": 0,
+      "added": 9,
+      "removed": 0
+    },
+    {
+      "sha": "aca8318fbedac8c6b65ed6d280e9b8184efffdbc",
+      "date": "2026-08-11T06:07:58Z",
+      "subject": "spectator-backfill: progress 86000/100000 (80297 hits, 1103 stubbed)",
+      "shardsChanged": 14,
+      "repointed": 0,
+      "added": 14,
+      "removed": 0
+    },
+    {
+      "sha": "6ec989a203dda0278f7a6a3bf01b24a8fd23f428",
+      "date": "2026-08-11T06:05:11Z",
+      "subject": "spectator-backfill: progress 84000/100000 (78426 hits, 1089 stubbed)",
+      "shardsChanged": 8,
+      "repointed": 0,
+      "added": 8,
+      "removed": 0
+    },
+    {
+      "sha": "a27245e7287dc1a0ed0b3a11db002400e9d8af97",
+      "date": "2026-08-11T06:02:23Z",
+      "subject": "spectator-backfill: progress 82000/100000 (76439 hits, 1081 stubbed)",
+      "shardsChanged": 10,
+      "repointed": 0,
+      "added": 10,
       "removed": 0
     }
   ],
