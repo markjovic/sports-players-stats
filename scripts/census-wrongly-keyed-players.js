@@ -68,6 +68,36 @@ const MAX_GAMES    = ARGS['max-games'] ? Math.max(0, parseInt(ARGS['max-games'],
 const GAMES_PER    = ARGS['games-per-player'] ? Math.max(1, parseInt(ARGS['games-per-player'], 10)) : 3;
 const COMMIT_EVERY = ARGS['commit-every'] ? Math.max(1, parseInt(ARGS['commit-every'], 10)) : 250;
 const RESET        = !!ARGS.reset;
+// Drops the private:true gate and tests EVERY player file key.
+//
+// The gate was the census's original filter, on the reasoning that
+// markNotObtainable stamps private:true on every player whose namespace recovery
+// failed. That is true, and it is not the only way a wrongly-keyed file is
+// created. Proof, from this repo: the five players the 2026-08-26 session
+// diagnosed by walking games — Aston Dyt, Umer Qureshi, Victoria Hu, Jack
+// Telford, Darcy Bendeich — all carry private:false and were therefore never
+// candidates. correct-wrong-aliases then routed 15 more of the same shape out of
+// only 73 audit rows. So 3,033 was a floor, not a total.
+//
+// The cost is one API call per player file instead of per private file: about
+// 419,000 rather than 7,600. At one call at a time that is roughly 29 hours, so
+// it must be run across several dispatches — which is why progress is committed
+// and the run resumes.
+const ALL_PLAYERS  = !!ARGS['all-players'];
+// Measures how often gameView's profile.id is actually an api-namespace id.
+//
+// EVERYTHING built on 2026-08-26/27 assumes it always is. That assumption came
+// from a probe which tested 18 gameView ids and got 18 'api' — but those 18 were
+// all taken from the DIFFERING side of a spectator/gameView pair, which is a
+// biased slice, not a sample. On 2026-08-29 a counter-example turned up:
+// gameView paired Jasmine Davies-Nguyen's spectator id with c4ec7b2a-01b3, which
+// tests NOT-API, and a day later returned 27daeb95-526a, which tests api. So the
+// id gameView returns is not reliably api-side, and the rate is unknown.
+//
+// This takes every profile id gameView returns across a spread of games and tests
+// them. The result is the reliability of the input to the census, the audit, the
+// seeder and the corrector — all of which pair against a gameView id.
+const GV_NAMESPACE = ARGS['gv-namespace'] ? Math.max(1, parseInt(ARGS['gv-namespace'], 10)) : 0;
 // Offline. Reads the committed report and tallies WHY recovery failed. Added
 // 2026-08-26 after a run reported "recoveryFailed: 2928" with no breakdown — a
 // counter without examples is a number that cannot be checked, and the reasons
@@ -490,7 +520,12 @@ function pairRosters(gvList, spList) {
 
 function scanCandidates() {
   const candidates = [];
-  let files = 0, privateTrue = 0, noGames = 0;
+  let files = 0, privateTrue = 0, noGames = 0, skippedNotPrivate = 0;
+  if (ALL_PLAYERS) {
+    console.log('  --all-players: testing EVERY player file key, not only private:true.');
+    console.log('  This is the complete population. It is ~55x more API calls than the');
+    console.log('  gated scan and must be run across several dispatches.');
+  }
   for (const bucket of ALL_BUCKETS) {
     const dir = path.join(PLAYERS_DIR, bucket);
     if (!fs.existsSync(dir)) continue;
@@ -502,19 +537,20 @@ function scanCandidates() {
       if (files % 100000 === 0) console.log(`  scanned ${files} player files — ${privateTrue} private:true so far`);
       let p;
       try { p = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
-      if (p.private !== true) continue;
-      privateTrue++;
+      if (p.private === true) privateTrue++;
+      else if (!ALL_PLAYERS) { skippedNotPrivate++; continue; }
       // Already carries apiId -> the fold will act on it; not our business.
       if (typeof p.apiId === 'string' && p.apiId) continue;
       const games = Array.isArray(p.games) ? p.games.map(g => (typeof g === 'string' ? g : (g && (g.id || g.gid)))).filter(Boolean) : [];
       if (!games.length) { noGames++; continue; }   // nothing to recover an api id FROM
       candidates.push({ uuid: key, name: p.name || null, games: games.slice(0, GAMES_PER),
-                        gamesHeld: games.length,
+                        gamesHeld: games.length, private: p.private === true,
                         spectatorIds: Array.isArray(p.spectatorIds) ? p.spectatorIds : [] });
     }
   }
-  console.log(`  scan complete: ${files} player files · ${privateTrue} private:true · ${candidates.length} candidates · ${noGames} private:true but hold no games (cannot be recovered from a game)`);
-  return { candidates, files, privateTrue, noGames };
+  console.log(`  scan complete: ${files} player files · ${privateTrue} private:true · ${candidates.length} candidates · ${noGames} hold no games (cannot be recovered from a game)`);
+  if (!ALL_PLAYERS) console.log(`  ${skippedNotPrivate} file(s) skipped because private is not true — run with --all-players to include them`);
+  return { candidates, files, privateTrue, noGames, skippedNotPrivate };
 }
 
 // ─── Progress ─────────────────────────────────────────────────────────────────
@@ -618,6 +654,81 @@ function buildOurGames(wanted) {
   return idx;
 }
 function ourGameRecord(gameId) { return (ourGamesCache && ourGamesCache.get(gameId)) || null; }
+
+async function gvNamespaceRate(nGames) {
+  console.log(`Sampling ${nGames} game(s) and testing EVERY profile id gameView returns\n`);
+
+  // Spread across seasons: one game per season file until the quota is met, so a
+  // single competition cannot dominate the answer.
+  const picked = [];
+  const files = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).sort();
+  const stride = Math.max(1, Math.floor(files.length / nGames));
+  for (let i = 0; i < files.length && picked.length < nGames; i += stride) {
+    let gf; try { gf = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, files[i]), 'utf8')); } catch { continue; }
+    for (const [gid, g] of Object.entries(gf.games || {})) {
+      if (!g || g.forfeit || g.bye || g.cancelled || g.abandoned) continue;
+      if (((g.p) || []).length < 6) continue;
+      picked.push({ gameId: gid, seasonId: files[i].replace('.json', '') });
+      break;
+    }
+  }
+  console.log(`  selected ${picked.length} game(s) across ${files.length} season files\n`);
+
+  await refreshSession();
+
+  const ids = new Map();          // profile id -> { name, games:Set }
+  let gvOk = 0, gvFail = 0, noProfileRows = 0;
+  for (const sel of picked) {
+    const gv = await gqlGameView(sel.gameId);
+    if (!gv.ok) { gvFail++; continue; }
+    gvOk++;
+    const st = gv.game.statistics || {};
+    for (const r of [...gvRows(st.home, 'home'), ...gvRows(st.away, 'away')]) {
+      if (!r.profileId) { noProfileRows++; continue; }
+      if (!ids.has(r.profileId)) ids.set(r.profileId, { name: r.name, games: new Set() });
+      ids.get(r.profileId).games.add(sel.gameId);
+    }
+  }
+  console.log(`  gameView answered ${gvOk}/${picked.length} · ${ids.size} distinct profile id(s) · ${noProfileRows} row(s) with no profile id\n`);
+
+  const list = [...ids.keys()].slice(0, MAX_KEYS);
+  if (ids.size > list.length) console.log(`  ⚠ testing ${list.length} of ${ids.size} — capped by --max-keys, so this is a partial rate`);
+  console.log(`Testing ${list.length} id(s), one call each\n`);
+
+  const verdicts = { api: 0, 'not-api': 0, unknown: 0 };
+  const notApi = [];
+  let n = 0;
+  for (const id of list) {
+    const v = await namespaceVerdict(id);
+    verdicts[v] = (verdicts[v] || 0) + 1;
+    if (v === 'not-api') notApi.push({ id, name: ids.get(id).name, games: [...ids.get(id).games] });
+    if (++n % 100 === 0) console.log(`  ${n}/${list.length} · api ${verdicts.api} · not-api ${verdicts['not-api']} · unknown ${verdicts.unknown}`);
+  }
+
+  const tested = verdicts.api + verdicts['not-api'];
+  const pct = tested ? ((verdicts['not-api'] / tested) * 100).toFixed(2) : '0.00';
+  console.log('\n──── HOW OFTEN IS A gameView PROFILE ID NOT AN api ID? ────');
+  console.log(`  api      : ${verdicts.api}`);
+  console.log(`  not-api  : ${verdicts['not-api']}   ← ${pct}% of the ids that answered`);
+  console.log(`  unknown  : ${verdicts.unknown}   (transport, decides nothing)`);
+  if (notApi.length) {
+    console.log('\n  examples of gameView ids that are NOT api profiles:');
+    for (const x of notApi.slice(0, 25)) console.log(`    ${x.id}  ${JSON.stringify(x.name)}  seen in ${x.games.length} sampled game(s)`);
+    if (notApi.length > 25) console.log(`    … and ${notApi.length - 25} more, all in the report`);
+  }
+  console.log('\nWHY THIS MATTERS. The census, the audit, the seeder and the corrector all');
+  console.log('pair a spectator id against a gameView id and treat that id as api-side. If');
+  console.log('this rate is near zero the assumption holds. If it is not, every tool needs a');
+  console.log('namespace test on the gameView id BEFORE the pair is used, not only before a');
+  console.log('write — the seeder and corrector already have one, the census does not.');
+
+  const f = path.join(REPORTS_DIR, 'gameview-namespace-rate.json');
+  fs.writeFileSync(f, JSON.stringify({ generatedAt: new Date().toISOString(),
+    gamesSampled: picked.length, gameviewAnswered: gvOk, distinctIds: ids.size,
+    tested: list.length, verdicts, notApi }, null, 2));
+  console.log(`\nWrote ${path.relative(ROOT, f)}`);
+  await gitCommit(`gameView namespace rate: ${verdicts['not-api']} of ${tested} ids are not api`, [path.relative(ROOT, f)]);
+}
 
 async function whoseGames(uuids) {
   console.log(`Listing the competition of every game we hold for ${uuids.length} player(s)\n`);
@@ -846,6 +957,7 @@ async function main() {
   if (DIAGNOSE)  { await diagnoseRecovery(DIAGNOSE); return; }
   if (WHYNOPAIR) { whyNoPair(); return; }
   if (WHOSE_GAMES) { await whoseGames(WHOSE_GAMES); return; }
+  if (GV_NAMESPACE) { await gvNamespaceRate(GV_NAMESPACE); return; }
 
   let st = loadProgress();
   if (!st) {
@@ -887,11 +999,18 @@ async function main() {
   saveProgress(st);
 
   const confirmed = st.candidates.filter(c => st.keyVerdicts[c.uuid] === 'not-api');
+  // Split by the flag the gated scan used to rely on. If wrongly-keyed players
+  // turn up with private:false, the gate was hiding them and the number says how
+  // many.
+  const confirmedPrivate = confirmed.filter(c => c.private === true).length;
+  const confirmedPublic  = confirmed.length - confirmedPrivate;
   const reallyPrivate = st.candidates.filter(c => st.keyVerdicts[c.uuid] === 'api').length;
   const unknownKeys = st.candidates.filter(c => st.keyVerdicts[c.uuid] === 'unknown').length;
   console.log(`\n  WRONGLY KEYED (not-api) : ${confirmed.length}`);
   console.log(`  genuinely private (api) : ${reallyPrivate}`);
   console.log(`  unknown (transport)     : ${unknownKeys}  — decided nothing, will be retried on the next run`);
+  console.log(`    of the wrongly keyed, private:true  : ${confirmedPrivate}`);
+  console.log(`    of the wrongly keyed, private:false : ${confirmedPublic}   ← invisible to the gated scan`);
 
   // ── Phase 3: recover each confirmed player's api id from one of its games ───
   if (REDO_FAILED) {
