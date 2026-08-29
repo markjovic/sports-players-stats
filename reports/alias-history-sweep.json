@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-29T04:25:40.119Z",
+  "generatedAt": "2026-08-29T04:35:50.103Z",
   "since": "2026-08-10",
   "until": null,
   "complete": false,
-  "commitsExamined": 75,
+  "commitsExamined": 100,
   "commitsFound": 504,
   "perCommit": [
     {
@@ -679,6 +679,231 @@
       "shardsChanged": 1,
       "repointed": 0,
       "added": 1,
+      "removed": 0
+    },
+    {
+      "sha": "9445b2d5baff15555a64b9e4d08183d1588a2506",
+      "date": "2026-08-12T10:21:36Z",
+      "subject": "discover-game-backfill: progress 50000/50000 (49948 hits, 1196 stubbed)",
+      "shardsChanged": 5,
+      "repointed": 0,
+      "added": 5,
+      "removed": 0
+    },
+    {
+      "sha": "dce577efa72ff80ab9c30d8d4f995e1fd12e53d5",
+      "date": "2026-08-12T09:59:15Z",
+      "subject": "discover-game-backfill: progress 44000/50000 (43950 hits, 1191 stubbed)",
+      "shardsChanged": 142,
+      "repointed": 0,
+      "added": 205,
+      "removed": 0
+    },
+    {
+      "sha": "f1e68c009dfb063e16f02d65cfe10ed76a877c9d",
+      "date": "2026-08-12T09:51:37Z",
+      "subject": "discover-game-backfill: progress 42000/50000 (41950 hits, 986 stubbed)",
+      "shardsChanged": 29,
+      "repointed": 0,
+      "added": 30,
+      "removed": 0
+    },
+    {
+      "sha": "bfffbd63ff1588bd11d11251c6f211667d9483eb",
+      "date": "2026-08-12T09:43:39Z",
+      "subject": "discover-game-backfill: progress 40000/50000 (39950 hits, 956 stubbed)",
+      "shardsChanged": 191,
+      "repointed": 0,
+      "added": 365,
+      "removed": 0
+    },
+    {
+      "sha": "9b186900082f13e3656f6b13e829b9ee38a8c5f7",
+      "date": "2026-08-12T09:36:13Z",
+      "subject": "discover-game-backfill: progress 38000/50000 (37964 hits, 591 stubbed)",
+      "shardsChanged": 3,
+      "repointed": 0,
+      "added": 3,
+      "removed": 0
+    },
+    {
+      "sha": "8840a613c02934e036cd9f973a41bc6e1c06b1ad",
+      "date": "2026-08-12T09:28:47Z",
+      "subject": "discover-game-backfill: progress 36000/50000 (35972 hits, 588 stubbed)",
+      "shardsChanged": 1,
+      "repointed": 0,
+      "added": 1,
+      "removed": 0
+    },
+    {
+      "sha": "b9ed750209b42017cfe1830674f56f87b34aabf9",
+      "date": "2026-08-12T09:21:15Z",
+      "subject": "discover-game-backfill: progress 34000/50000 (33972 hits, 587 stubbed)",
+      "shardsChanged": 5,
+      "repointed": 0,
+      "added": 5,
+      "removed": 0
+    },
+    {
+      "sha": "c6aad2448d0b1d8adcd41774bac2be5aa4f9dec0",
+      "date": "2026-08-12T09:13:57Z",
+      "subject": "discover-game-backfill: progress 32000/50000 (31996 hits, 582 stubbed)",
+      "shardsChanged": 5,
+      "repointed": 0,
+      "added": 5,
+      "removed": 0
+    },
+    {
+      "sha": "18814a67e3c4bcb0c11c60b23d08e31da3ef03e3",
+      "date": "2026-08-12T09:06:33Z",
+      "subject": "discover-game-backfill: progress 30000/50000 (29996 hits, 577 stubbed)",
+      "shardsChanged": 11,
+      "repointed": 0,
+      "added": 11,
+      "removed": 0
+    },
+    {
+      "sha": "cc1e85a06d254aa448eb1ee0aa46113de70b4d23",
+      "date": "2026-08-12T08:59:20Z",
+      "subject": "discover-game-backfill: progress 28000/50000 (27996 hits, 566 stubbed)",
+      "shardsChanged": 83,
+      "repointed": 0,
+      "added": 98,
+      "removed": 0
+    },
+    {
+      "sha": "1fbf82107405cc33b4bc7e9101d7a4e7e7de4e28",
+      "date": "2026-08-12T08:52:27Z",
+      "subject": "discover-game-backfill: progress 26000/50000 (25996 hits, 468 stubbed)",
+      "shardsChanged": 2,
+      "repointed": 0,
+      "added": 2,
+      "removed": 0
+    },
+    {
+      "sha": "824f79b8edc93a363dad0bd7c06715913059a26a",
+      "date": "2026-08-12T08:45:17Z",
+      "subject": "discover-game-backfill: progress 24000/50000 (23999 hits, 466 stubbed)",
+      "shardsChanged": 2,
+      "repointed": 0,
+      "added": 2,
+      "removed": 0
+    },
+    {
+      "sha": "5f5c2c921d930f2969dfd8a1cc4a6641df61fb71",
+      "date": "2026-08-12T08:38:14Z",
+      "subject": "discover-game-backfill: progress 22000/50000 (21999 hits, 464 stubbed)",
+      "shardsChanged": 46,
+      "repointed": 0,
+      "added": 48,
+      "removed": 0
+    },
+    {
+      "sha": "88d32d8aad11cb11c5f9673ed3810aeb77806e1c",
+      "date": "2026-08-12T08:30:49Z",
+      "subject": "discover-game-backfill: progress 20000/50000 (19999 hits, 416 stubbed)",
+      "shardsChanged": 150,
+      "repointed": 0,
+      "added": 233,
+      "removed": 0
+    },
+    {
+      "sha": "188477d44802d2fff5a56282bc4bc63bd9ce2e55",
+      "date": "2026-08-12T08:23:59Z",
+      "subject": "discover-game-backfill: progress 18000/50000 (17999 hits, 183 stubbed)",
+      "shardsChanged": 2,
+      "repointed": 0,
+      "added": 2,
+      "removed": 0
+    },
+    {
+      "sha": "763776f7c67c2088b3eff54b8f7d06343866d874",
+      "date": "2026-08-12T08:16:07Z",
+      "subject": "discover-game-backfill: progress 16000/50000 (15999 hits, 181 stubbed)",
+      "shardsChanged": 2,
+      "repointed": 0,
+      "added": 2,
+      "removed": 0
+    },
+    {
+      "sha": "40147fa0281d22bdec47ab7f67c8e13bf9e93883",
+      "date": "2026-08-12T08:09:07Z",
+      "subject": "discover-game-backfill: progress 14000/50000 (14000 hits, 179 stubbed)",
+      "shardsChanged": 2,
+      "repointed": 0,
+      "added": 2,
+      "removed": 0
+    },
+    {
+      "sha": "229612468f3d1c422e75b7b8d91b803741f3033a",
+      "date": "2026-08-12T07:40:52Z",
+      "subject": "discover-game-backfill: progress 6000/50000 (6000 hits, 177 stubbed)",
+      "shardsChanged": 17,
+      "repointed": 0,
+      "added": 17,
+      "removed": 0
+    },
+    {
+      "sha": "41495d10185a13f831d25cbbdefc2f9a44ed3b51",
+      "date": "2026-08-12T07:33:50Z",
+      "subject": "discover-game-backfill: progress 4000/50000 (4000 hits, 160 stubbed)",
+      "shardsChanged": 112,
+      "repointed": 0,
+      "added": 142,
+      "removed": 0
+    },
+    {
+      "sha": "1e9c20ce0a0eb9b35d1b1c743f132462369b8b9d",
+      "date": "2026-08-12T07:26:44Z",
+      "subject": "discover-game-backfill: progress 2000/50000 (2000 hits, 18 stubbed)",
+      "shardsChanged": 18,
+      "repointed": 0,
+      "added": 18,
+      "removed": 0
+    },
+    {
+      "sha": "291b6a82deb2177eaf9de07e918d8a87f0f0b3cd",
+      "date": "2026-08-11T23:39:45Z",
+      "subject": "discover-game-backfill: progress 50000/50000 (49947 hits, 1076 stubbed)",
+      "shardsChanged": 8,
+      "repointed": 0,
+      "added": 8,
+      "removed": 0
+    },
+    {
+      "sha": "5ed3e96dbd28eab11656399625a9e9c0523ac70c",
+      "date": "2026-08-11T23:35:25Z",
+      "subject": "discover-game-backfill: progress 48000/50000 (47973 hits, 1068 stubbed)",
+      "shardsChanged": 37,
+      "repointed": 0,
+      "added": 39,
+      "removed": 0
+    },
+    {
+      "sha": "a02343c367c4563bdf68aaadffc5f182a9d9d758",
+      "date": "2026-08-11T23:31:04Z",
+      "subject": "discover-game-backfill: progress 46000/50000 (45973 hits, 1029 stubbed)",
+      "shardsChanged": 5,
+      "repointed": 0,
+      "added": 5,
+      "removed": 0
+    },
+    {
+      "sha": "e5da06816736f16b5fe96d610c2e7db53fa17195",
+      "date": "2026-08-11T23:26:40Z",
+      "subject": "discover-game-backfill: progress 44000/50000 (43973 hits, 1024 stubbed)",
+      "shardsChanged": 2,
+      "repointed": 0,
+      "added": 2,
+      "removed": 0
+    },
+    {
+      "sha": "d33d6836a84219b33da28feab5d8e6c2915455cf",
+      "date": "2026-08-11T23:22:31Z",
+      "subject": "discover-game-backfill: progress 42000/50000 (41990 hits, 1022 stubbed)",
+      "shardsChanged": 10,
+      "repointed": 0,
+      "added": 10,
       "removed": 0
     }
   ],
