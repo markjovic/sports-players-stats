@@ -35,6 +35,16 @@ on:
         required: false
         default: false
         type: boolean
+      save_every:
+        description: 'Commit sweep progress every N commits'
+        required: false
+        default: '25'
+        type: string
+      reset:
+        description: 'Start the sweep again, ignore progress'
+        required: false
+        default: false
+        type: boolean
       max_commits:
         description: 'Most commits to parse in a sweep'
         required: false
@@ -71,7 +81,10 @@ permissions:
 jobs:
   reconstruct:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # 350, matching every other long-running workflow in this repo. It was 60,
+    # guessed rather than copied from the reference, and a sweep died at exactly
+    # 60 minutes with 207 of 530 commits parsed and nothing written.
+    timeout-minutes: 350
     steps:
       - name: Checkout (blobless FULL history, sparse to aliases + scripts + reports)
         uses: actions/checkout@v4
@@ -95,7 +108,8 @@ jobs:
         run: |
           ARGS="--max-list=${{ inputs.max_list }}"
           if [ "${{ inputs.list }}" = "true" ] || [ "${{ inputs.list }}" = "True" ]; then ARGS="$ARGS --list"; fi
-          if [ "${{ inputs.all }}" = "true" ] || [ "${{ inputs.all }}" = "True" ]; then ARGS="$ARGS --all --max-commits=${{ inputs.max_commits }}"; fi
+          if [ "${{ inputs.all }}" = "true" ] || [ "${{ inputs.all }}" = "True" ]; then ARGS="$ARGS --all --max-commits=${{ inputs.max_commits }} --save-every=${{ inputs.save_every }}"; fi
+          if [ "${{ inputs.reset }}" = "true" ] || [ "${{ inputs.reset }}" = "True" ]; then ARGS="$ARGS --reset"; fi
           if [ -n "${{ inputs.commit }}" ]; then ARGS="$ARGS --commit=${{ inputs.commit }}"; fi
           if [ -n "${{ inputs.since }}" ]; then ARGS="$ARGS --since=${{ inputs.since }}"; fi
           if [ -n "${{ inputs.until }}" ]; then ARGS="$ARGS --until=${{ inputs.until }}"; fi
