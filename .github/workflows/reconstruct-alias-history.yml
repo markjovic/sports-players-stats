@@ -1,0 +1,103 @@
+# .github/workflows/reconstruct-alias-history.yml
+name: Reconstruct Alias History
+
+# Rebuilds the change record for alias repoints that were applied WITHOUT a log.
+#
+# WHY. The handover describes 124 repoints across three rounds — 88, 23 and 13.
+# reports/alias-repoint-log.json holds 13 entries, and
+# reports/boxscore-repoint-log.json has never existed. So 111 changes to
+# players/aliases/ have no reversal record and cannot be listed, reviewed or
+# reversed by reading any file in the repo.
+#
+# They are not lost. Every alias shard is committed, so the commits that applied
+# those rounds are in history and their diffs ARE the record.
+#
+# Alias shards are stored MINIFIED, so a line diff says "one line changed" and
+# nothing more. This parses the map on both sides of each commit and compares it
+# key by key, producing the exact {key, from, to} the log would have held.
+#
+# READ-ONLY. Writes only reports/. Reverses nothing and decides nothing.
+#
+# FULL HISTORY IS REQUIRED — a depth-1 checkout has no past commits to read, so
+# this uses the blobless sparse checkout pattern cleanup-repo.yml already uses.
+# No network beyond git. No setup-node.
+
+on:
+  workflow_dispatch:
+    inputs:
+      list:
+        description: 'List commits that touched players/aliases'
+        required: false
+        default: true
+        type: boolean
+      commit:
+        description: 'Commit ids to open (comma separated)'
+        required: false
+        default: ''
+        type: string
+      since:
+        description: 'Only commits after this date (e.g. 2026-08-01)'
+        required: false
+        default: ''
+        type: string
+      until:
+        description: 'Only commits before this date'
+        required: false
+        default: ''
+        type: string
+      max_list:
+        description: 'Most commits to list'
+        required: false
+        default: '200'
+        type: string
+
+concurrency:
+  group: alias-history
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  reconstruct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout (blobless FULL history, sparse to aliases + scripts + reports)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          filter: blob:none
+          token: ${{ secrets.GITHUB_TOKEN }}
+          sparse-checkout: |
+            players/aliases
+            scripts
+            reports
+          sparse-checkout-cone-mode: false
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Reconstruct alias history
+        run: |
+          ARGS="--max-list=${{ inputs.max_list }}"
+          if [ "${{ inputs.list }}" = "true" ] || [ "${{ inputs.list }}" = "True" ]; then ARGS="$ARGS --list"; fi
+          if [ -n "${{ inputs.commit }}" ]; then ARGS="$ARGS --commit=${{ inputs.commit }}"; fi
+          if [ -n "${{ inputs.since }}" ]; then ARGS="$ARGS --since=${{ inputs.since }}"; fi
+          if [ -n "${{ inputs.until }}" ]; then ARGS="$ARGS --until=${{ inputs.until }}"; fi
+          node scripts/reconstruct-alias-history.js $ARGS
+
+      - name: Commit the reconstructed record
+        run: |
+          git add -- reports/alias-history-commits.json reports/alias-history-reconstructed.json 2>/dev/null || true
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git diff --staged --shortstat
+          git commit -q -m "alias history: reconstructed record from git history"
+          for i in $(seq 1 20); do
+            git fetch origin main && git merge -q -X ours FETCH_HEAD --no-edit --no-stat && git push origin HEAD:main && exit 0
+            sleep $((RANDOM % 60 + 1))
+          done
+          echo "push failed after 20 attempts"; exit 1
