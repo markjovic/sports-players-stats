@@ -1,38 +1,33 @@
 {
-  "generatedAt": "2026-08-28T03:31:08.734Z",
+  "generatedAt": "2026-08-29T12:15:34.700Z",
   "sourceReport": null,
   "args": {
     "ids": [
-      "5ec52065-1da6-4446-aa30-17f935682752",
-      "61484830-7379-4d13-bec3-76a4c3d9c38c",
-      "df504d60-b68a-4d1a-8a70-368c4e5f3871",
-      "9457208a-d682-4f75-9c75-dfe6303f925c",
-      "f4fab057-bf65-43dc-9ca8-bc8f4f21d768",
-      "66291923-6376-4586-b60d-d7bf07e3cc26",
-      "91cc564e-c564-4eb2-bc15-c5c2a2fa9f89",
-      "2ae56dca-1496-4d0d-9e96-c17471eaecd5"
+      "2ffc25f7-bd52-4683-a3f9-a728d4f63d23",
+      "c4ec7b2a-01b3-4a16-b2b4-b15a2542b4b8",
+      "27daeb95-526a-48be-9074-0f94059fea8b"
     ],
     "maxIds": 400
   },
   "namespaceTally": {
-    "not-api": 4,
-    "api": 4
+    "not-api": 2,
+    "api": 1
   },
   "readings": {},
   "cases": [],
   "ids": [
     {
-      "id": "5ec52065-1da6-4446-aa30-17f935682752",
+      "id": "2ffc25f7-bd52-4683-a3f9-a728d4f63d23",
       "hasPlayerFile": true,
-      "name": "Daniel Hargrave",
+      "name": "Jasmine Davies-Nguyen",
       "private": false,
-      "gamesHeld": 12,
+      "gamesHeld": 151,
       "spectatorIds": [
-        "5ec52065-1da6"
+        "2ffc25f7-bd52"
       ],
-      "seasonCount": 2,
-      "aliasEntryFor": "5ec52065-1da6-4446-aa30-17f935682752",
-      "truncResolvesTo": "5ec52065-1da6-4446-aa30-17f935682752",
+      "seasonCount": 11,
+      "aliasEntryFor": "2ffc25f7-bd52-4683-a3f9-a728d4f63d23",
+      "truncResolvesTo": "2ffc25f7-bd52-4683-a3f9-a728d4f63d23",
       "resolveError": null,
       "namespace": "not-api",
       "roles": [
@@ -43,7 +38,7 @@
       ]
     },
     {
-      "id": "61484830-7379-4d13-bec3-76a4c3d9c38c",
+      "id": "c4ec7b2a-01b3-4a16-b2b4-b15a2542b4b8",
       "hasPlayerFile": false,
       "name": null,
       "private": null,
@@ -53,27 +48,6 @@
       "aliasEntryFor": null,
       "truncResolvesTo": null,
       "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "explicit"
-      ],
-      "cases": [
-        "explicit"
-      ]
-    },
-    {
-      "id": "df504d60-b68a-4d1a-8a70-368c4e5f3871",
-      "hasPlayerFile": true,
-      "name": "Jacob Hyland",
-      "private": false,
-      "gamesHeld": 14,
-      "spectatorIds": [
-        "df504d60-b68a"
-      ],
-      "seasonCount": 1,
-      "aliasEntryFor": "df504d60-b68a-4d1a-8a70-368c4e5f3871",
-      "truncResolvesTo": "df504d60-b68a-4d1a-8a70-368c4e5f3871",
-      "resolveError": null,
       "namespace": "not-api",
       "roles": [
         "explicit"
@@ -83,91 +57,7 @@
       ]
     },
     {
-      "id": "9457208a-d682-4f75-9c75-dfe6303f925c",
-      "hasPlayerFile": true,
-      "name": "Jacob Hyland",
-      "private": false,
-      "gamesHeld": 190,
-      "spectatorIds": [
-        "85fa7db0-0e41",
-        "9457208a-d682",
-        "dc0e84aa-9f7c"
-      ],
-      "seasonCount": 22,
-      "aliasEntryFor": "9457208a-d682-4f75-9c75-dfe6303f925c",
-      "truncResolvesTo": "9457208a-d682-4f75-9c75-dfe6303f925c",
-      "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "explicit"
-      ],
-      "cases": [
-        "explicit"
-      ]
-    },
-    {
-      "id": "f4fab057-bf65-43dc-9ca8-bc8f4f21d768",
-      "hasPlayerFile": true,
-      "name": "Raphael D’Aloisio",
-      "private": false,
-      "gamesHeld": 92,
-      "spectatorIds": [
-        "f4fab057-bf65"
-      ],
-      "seasonCount": 8,
-      "aliasEntryFor": "f4fab057-bf65-43dc-9ca8-bc8f4f21d768",
-      "truncResolvesTo": "f4fab057-bf65-43dc-9ca8-bc8f4f21d768",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "explicit"
-      ],
-      "cases": [
-        "explicit"
-      ]
-    },
-    {
-      "id": "66291923-6376-4586-b60d-d7bf07e3cc26",
-      "hasPlayerFile": false,
-      "name": null,
-      "private": null,
-      "gamesHeld": null,
-      "spectatorIds": null,
-      "seasonCount": null,
-      "aliasEntryFor": null,
-      "truncResolvesTo": null,
-      "resolveError": null,
-      "namespace": "api",
-      "roles": [
-        "explicit"
-      ],
-      "cases": [
-        "explicit"
-      ]
-    },
-    {
-      "id": "91cc564e-c564-4eb2-bc15-c5c2a2fa9f89",
-      "hasPlayerFile": true,
-      "name": "Zara Williamson",
-      "private": false,
-      "gamesHeld": 112,
-      "spectatorIds": [
-        "91cc564e-c564"
-      ],
-      "seasonCount": 9,
-      "aliasEntryFor": "91cc564e-c564-4eb2-bc15-c5c2a2fa9f89",
-      "truncResolvesTo": "91cc564e-c564-4eb2-bc15-c5c2a2fa9f89",
-      "resolveError": null,
-      "namespace": "not-api",
-      "roles": [
-        "explicit"
-      ],
-      "cases": [
-        "explicit"
-      ]
-    },
-    {
-      "id": "2ae56dca-1496-4d0d-9e96-c17471eaecd5",
+      "id": "27daeb95-526a-48be-9074-0f94059fea8b",
       "hasPlayerFile": false,
       "name": null,
       "private": null,
