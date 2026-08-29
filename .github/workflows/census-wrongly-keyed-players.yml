@@ -33,6 +33,16 @@ on:
         required: false
         default: true
         type: boolean
+      gv_namespace:
+        description: 'Test gameView ids from N games (try 300)'
+        required: false
+        default: '0'
+        type: string
+      all_players:
+        description: 'Test EVERY player, not just private ones'
+        required: false
+        default: false
+        type: boolean
       max_keys:
         description: 'Max key tests this run'
         required: false
@@ -117,4 +127,6 @@ jobs:
           if [ "${{ inputs.explain_failures }}" = "true" ] || [ "${{ inputs.explain_failures }}" = "True" ]; then ARGS="$ARGS --explain-failures"; fi
           if [ "${{ inputs.scan_only }}" = "true" ] || [ "${{ inputs.scan_only }}" = "True" ]; then ARGS="$ARGS --scan-only"; fi
           if [ "${{ inputs.reset }}" = "true" ] || [ "${{ inputs.reset }}" = "True" ]; then ARGS="$ARGS --reset"; fi
+          if [ "${{ inputs.gv_namespace }}" != "0" ] && [ -n "${{ inputs.gv_namespace }}" ]; then ARGS="$ARGS --gv-namespace=${{ inputs.gv_namespace }}"; fi
+          if [ "${{ inputs.all_players }}" = "true" ] || [ "${{ inputs.all_players }}" = "True" ]; then ARGS="$ARGS --all-players"; fi
           node scripts/census-wrongly-keyed-players.js $ARGS
