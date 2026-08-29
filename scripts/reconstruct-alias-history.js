@@ -57,6 +57,11 @@ const MAX_LIST = ARGS['max-list'] ? Math.max(1, parseInt(ARGS['max-list'], 10)) 
 // overwrite an existing key — a repoint that names itself nothing and was never
 // logged. A commit subject is a claim about intent; the diff is the fact.
 const ALL      = !!ARGS.all;
+const RESET    = !!ARGS.reset;
+// Commit progress every N commits. A 2026-08-27 sweep died at a 60-minute timeout
+// with 207 of 530 commits parsed and lost all of it, because nothing was written
+// until the end. Progress is now committed as it goes and the next run resumes.
+const SAVE_EVERY = ARGS['save-every'] ? Math.max(1, parseInt(ARGS['save-every'], 10)) : 25;
 const MAX_COMMITS = ARGS['max-commits'] ? Math.max(1, parseInt(ARGS['max-commits'], 10)) : 400;
 
 const ALIAS_DIR   = 'players/aliases';
@@ -166,6 +171,47 @@ function diffCommit(sha) {
 
 // ─── Sweep ────────────────────────────────────────────────────────────────────
 
+const SWEEP_FILE = path.join(REPORTS_DIR, 'alias-history-sweep.json');
+
+function loadSweep() {
+  if (RESET) { console.log('--reset: starting the sweep again'); return null; }
+  try {
+    const prev = JSON.parse(fs.readFileSync(SWEEP_FILE, 'utf8'));
+    if (!Array.isArray(prev.perCommit)) return null;
+    console.log(`Resuming: ${prev.perCommit.length} commit(s) already parsed, ${(prev.repoints || []).length} repoint(s) recorded`);
+    return prev;
+  } catch (e) { return null; }
+}
+
+function saveSweep(state) {
+  fs.writeFileSync(SWEEP_FILE, JSON.stringify(state, null, 2));
+}
+
+function commitProgress(msg) {
+  try {
+    execFileSync('git', ['add', '--', path.relative(ROOT, SWEEP_FILE)], GIT);
+    const staged = execFileSync('git', ['diff', '--staged', '--shortstat'], GIT).toString().trim();
+    if (!staged) return;
+    execFileSync('git', ['-c', 'user.name=github-actions[bot]',
+                         '-c', 'user.email=github-actions[bot]@users.noreply.github.com',
+                         'commit', '-q', '-m', msg], GIT);
+    for (let i = 1; i <= 20; i++) {
+      try {
+        execFileSync('git', ['fetch', 'origin', 'main'], GIT);
+        execFileSync('git', ['-c', 'user.name=github-actions[bot]',
+                             '-c', 'user.email=github-actions[bot]@users.noreply.github.com',
+                             'merge', '-q', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat'], GIT);
+        execFileSync('git', ['push', 'origin', 'HEAD:main'], GIT);
+        console.log(`      progress committed (${msg})`);
+        return;
+      } catch (e) {
+        if (i === 20) { console.log('      ⚠ could not push progress after 20 attempts'); return; }
+        execFileSync('sleep', [String(1 + Math.floor(Math.random() * 30))], { stdio: 'pipe' });
+      }
+    }
+  } catch (e) { console.log('      ⚠ progress commit failed: ' + (e.message || '').split('\n')[0]); }
+}
+
 function sweepAll() {
   const args = ['log', '--format=%H\x1f%cI\x1f%s'];
   if (SINCE) args.push('--since=' + SINCE);
@@ -187,9 +233,28 @@ function sweepAll() {
   }
   const todo = commits.slice(0, MAX_COMMITS);
 
-  const perCommit = [], allRepoints = [];
+  const prev = loadSweep();
+  const perCommit = (prev && prev.perCommit) || [];
+  const allRepoints = (prev && prev.repoints) || [];
+  const alreadyDone = new Set(perCommit.map(x => x.sha));
+  const remaining = todo.filter(c => !alreadyDone.has(c.sha));
+  console.log(`${remaining.length} commit(s) still to parse.\n`);
+
+  // Each shard's parsed map is reused as the "after" of one commit becomes the
+  // "before" of the next in the same shard. Halves the blob fetches, which is the
+  // whole cost on a blobless clone.
+  const mapCache = new Map();
+  const cached = (rev, shard) => {
+    const k = rev + ':' + shard;
+    if (mapCache.has(k)) return mapCache.get(k);
+    const v = parseMap(fileAt(rev, shard), shard);
+    if (mapCache.size > 400) mapCache.clear();
+    mapCache.set(k, v);
+    return v;
+  };
+
   let done = 0;
-  for (const c of todo) {
+  for (const c of remaining) {
     done++;
     let shards = [];
     try { shards = git(['show', '--name-only', '--format=', c.sha, '--', ALIAS_DIR]).split('\n').filter(Boolean); }
@@ -198,8 +263,8 @@ function sweepAll() {
     let repointed = 0, added = 0, removed = 0;
     const reps = [];
     for (const shard of shards) {
-      const before = parseMap(fileAt(c.sha + '^', shard), shard);
-      const after  = parseMap(fileAt(c.sha, shard), shard);
+      const before = cached(c.sha + '^', shard);
+      const after  = cached(c.sha, shard);
       if (before === undefined || after === undefined) continue;
       const b = before || {}, a = after || {};
       for (const [k, v] of Object.entries(a)) {
@@ -217,6 +282,13 @@ function sweepAll() {
     console.log(`  [${String(done).padStart(3)}/${todo.length}] ${c.sha.slice(0, 10)} ${c.date}  ` +
                 `repointed ${String(repointed).padStart(4)}  added ${String(added).padStart(5)}  removed ${String(removed).padStart(4)}${flag}`);
     if (repointed) console.log(`        ${c.subject}`);
+
+    if (done % SAVE_EVERY === 0) {
+      saveSweep({ generatedAt: new Date().toISOString(), since: SINCE, until: UNTIL,
+                  complete: false, commitsExamined: perCommit.length, commitsFound: commits.length,
+                  perCommit, repoints: allRepoints });
+      commitProgress(`alias history sweep: ${perCommit.length}/${commits.length} commits parsed`);
+    }
   }
 
   // ── Who actually repointed ─────────────────────────────────────────────────
@@ -238,11 +310,15 @@ function sweepAll() {
   console.log('If tools other than repoint-aliases appear above, they repointed aliases');
   console.log('without saying so and without writing a log.');
 
-  const f = path.join(REPORTS_DIR, 'alias-history-sweep.json');
-  fs.writeFileSync(f, JSON.stringify({ generatedAt: new Date().toISOString(),
-    since: SINCE, until: UNTIL, commitsExamined: todo.length, commitsFound: commits.length,
-    totalRepointed: total, byTool, perCommit, repoints: allRepoints }, null, 2));
-  console.log(`\nWrote ${path.relative(ROOT, f)} — every repoint with its shard, key, from and to.`);
+  const complete = perCommit.length >= commits.length;
+  saveSweep({ generatedAt: new Date().toISOString(), since: SINCE, until: UNTIL,
+    complete, commitsExamined: perCommit.length, commitsFound: commits.length,
+    totalRepointed: total, byTool, perCommit, repoints: allRepoints });
+  console.log(`\nWrote ${path.relative(ROOT, SWEEP_FILE)} — every repoint with its shard, key, from and to.`);
+  if (!complete) {
+    console.log(`\n⚠ NOT COMPLETE — ${perCommit.length} of ${commits.length} commit(s) parsed.`);
+    console.log('   Re-dispatch with the same settings and it resumes where it stopped.');
+  }
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
