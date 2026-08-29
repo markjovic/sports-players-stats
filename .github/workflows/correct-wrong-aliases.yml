@@ -1,0 +1,87 @@
+# .github/workflows/correct-wrong-aliases.yml
+name: Correct Wrong Aliases
+
+# Repairs aliases the audit proved wrong, using the audit's own evidence.
+#
+# audit-aliases-against-playhq.js pairs a spectator id with an api id from
+# PlayHQ's OWN two records of a single game — the spectator box score and
+# gameView — joined on name, or name plus jersey number where a name repeats. It
+# never uses elimination. So a WRONG row means PlayHQ says this spectator id
+# belongs to that api id and our resolver disagrees.
+#
+# The fix is one map entry: players/aliases/<shard>.json[key] = apiId. No player
+# file is written, moved or merged.
+#
+# GUARDS, each earned:
+#   the api id must test 'api'          — never point an alias at a second
+#                                         spectator id
+#   the CURRENT target must test 'api'  — if it is not-api the fault is a player
+#                                         file keyed on the wrong namespace and
+#                                         the repair is seed-apiid + fold. Those
+#                                         are routed out, counted, and not touched.
+#   agreement across >= min_games       — one game is one observation
+#   no conflicting api id in the input  — a stop, not something to pick between
+#   'unknown' skips                     — transport, never an answer
+#
+# Every write is logged in reports/alias-correction-log.json with the value
+# before and after. 16,610 alias repoints were measured across a fortnight on
+# 2026-08-29 and only 136 had any log at all. This one does.
+#
+# DRY RUN BY DEFAULT.
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Dry run first, then apply'
+        required: true
+        type: choice
+        options:
+          - dry-run
+          - apply
+        default: dry-run
+      reports:
+        description: 'Audit reports to read WRONG rows from'
+        required: false
+        default: 'reports/alias-vs-playhq-audit-wide.json,reports/alias-vs-playhq-audit-after-fold.json'
+        type: string
+      min_games:
+        description: 'Games that must agree before a fix'
+        required: false
+        default: '2'
+        type: string
+      max:
+        description: 'Most aliases to correct this run'
+        required: false
+        default: '5000'
+        type: string
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  correct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Correct wrong aliases
+        run: |
+          ARGS="--reports=${{ inputs.reports }} --min-games=${{ inputs.min_games }} --max=${{ inputs.max }}"
+          if [ "${{ inputs.mode }}" = "apply" ]; then ARGS="$ARGS --apply"; fi
+          node scripts/correct-wrong-aliases.js $ARGS
