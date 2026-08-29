@@ -685,6 +685,10 @@ async function profileSearchLookup(fullName) {
 //   2. grade + NAME-ONLY roster match — for any reg that has gid but no tid
 //      (a much tighter search space than tenant-wide profileSearch).
 //   3. profileSearch (+ orgId disambiguation) — final fallback.
+// Counted per run and printed in the shard summary, so the effect of the grade
+// corroboration check is visible without a separate log.
+let recoveryRejected = 0;
+
 async function attemptNamespaceRecovery(uuid, player) {
   if (isPlaceholderName(player.name)) return null; // no real name on file -- can't match
 
@@ -710,6 +714,7 @@ async function attemptNamespaceRecovery(uuid, player) {
     }
   }
   let candidate = tidHits.size === 1 ? [...tidHits][0] : null;
+  let candidateTier = candidate ? 1 : 0;
 
   // Tier 2: grade-roster name-only match, for any grade we haven't already
   // resolved. gradePlayers() is cached, so a grade already fetched in Tier 1
@@ -723,6 +728,7 @@ async function attemptNamespaceRecovery(uuid, player) {
       if (m) rosterHits.add(m);
     }
     candidate = rosterHits.size === 1 ? [...rosterHits][0] : null;
+    if (candidate) candidateTier = 2;
   }
 
   // Tier 3: profileSearch (+ orgId) fallback.
@@ -731,12 +737,64 @@ async function attemptNamespaceRecovery(uuid, player) {
     if (sr.status === 'blocked') return { blocked: true };
     candidate = matchFromSearch(sr.result, { name: player.name, orgId: null })
              || (orgId ? matchFromSearch(sr.result, { name: player.name, orgId }) : null);
+    if (candidate) candidateTier = 3;
   }
   if (!candidate || candidate === uuid) return null;
 
   const check = await fetchProfile(candidate);
   if (check.status === 'cloudfront-block') return { blocked: true };
   if (check.status !== 'ok') return null; // recovered id itself doesn't resolve -- don't overclaim
+
+  // ── The candidate must actually appear in a grade this player is registered in.
+  //
+  // Tier 2 (matchFromGradeRosterByName) matches on NAME ALONE across a whole
+  // grade roster. Its only guard is that two distinct profiles sharing the name
+  // in that grade return null. It does NOT check that the match is this player.
+  // When our own id is spectator-keyed the player has no api profile in that
+  // grade at all, so the single name hit can be a DIFFERENT person who is in the
+  // grade — and it is written as an alias with nothing recorded. Tier 3
+  // (matchFromSearch) is looser still, matching tenant-wide and disambiguating
+  // only by lastInteractedOrganisation.
+  //
+  // The check is free: fetchProfile above already returns
+  // seasonStatistics[].statistics[].teamStatistics[].gradeStatistics[].grade.id
+  // (the query asks for it at line ~305). If the recovered profile's own
+  // statistics name none of the grades this player is registered in, the match
+  // is not corroborated by anything except a name, and a name is what got us
+  // here. Reject rather than write.
+  //
+  // Deliberately NOT applied to Tier 1: matchFromGrade already required
+  // team.id, which is a stronger link than grade membership.
+  //
+  // 2026-08-29: measured 16,610 alias repoints in a fortnight, 12,164 of them
+  // from this script — a rate nothing logs and nobody sized until that sweep.
+  if (candidateTier !== 1) {
+    const candidateGids = new Set();
+    for (const season of (check.data?.publicProfileStatistics?.seasonStatistics || [])) {
+      for (const reg of (season.statistics || [])) {
+        for (const teamStat of (reg.teamStatistics || [])) {
+          for (const gradeStat of (teamStat.gradeStatistics || [])) {
+            const gid = gradeStat.grade && gradeStat.grade.id;
+            if (gid) candidateGids.add(gid);
+          }
+        }
+      }
+    }
+    // No grade statistics at all means nothing to corroborate against — a profile
+    // that has never played cannot confirm it is this player. Reject: silence is
+    // not agreement.
+    const shares = [...candidateGids].some(g => allGids.has(g));
+    if (!shares) {
+      recoveryRejected++;
+      if (recoveryRejected <= 20) {
+        console.log(`    recovery REJECTED for ${uuid.slice(0, 8)} "${player.name}": candidate ` +
+          `${String(candidate).slice(0, 8)} appears in ${candidateGids.size} grade(s), none of the ` +
+          `${allGids.size} this player is registered in (matched by tier ${candidateTier})`);
+      }
+      return null;
+    }
+  }
+
   return { apiId: candidate, result: check };
 }
 
@@ -1379,6 +1437,9 @@ async function main() {
   if (stats.nameHealed || stats.nameHealFailed || stats.nameHealGaveUp) {
     console.log(`  Name repairs:  ${stats.nameHealed} fixed, ${stats.nameHealFailed} retryable (attempt persisted), ${stats.nameHealGaveUp} gave up after ${NAME_HEAL_MAX_ATTEMPTS}`);
   }
+  if (recoveryRejected) {
+    console.log(`  Recovery rejected: ${recoveryRejected} candidate(s) shared no grade with the player — not aliased`);
+  }
   if (stats.blocked) {
     console.log(`  Remaining:     ~${remainingCount(stats)} (re-run shard to continue)`);
   }
@@ -1397,6 +1458,10 @@ async function main() {
     name_healed:        stats.nameHealed,
     name_heal_failed:   stats.nameHealFailed,
     name_heal_gave_up:  stats.nameHealGaveUp,
+    // Candidates rejected because the recovered profile plays in none of the
+    // grades this player is registered in. Before 2026-08-29 these were written
+    // as aliases on a name match alone.
+    recovery_rejected:  recoveryRejected,
     remaining:    remaining,
     blocked:      stats.blocked || false,
   }));
