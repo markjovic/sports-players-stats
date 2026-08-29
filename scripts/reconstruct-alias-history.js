@@ -49,6 +49,15 @@ const COMMITS  = typeof ARGS.commit === 'string' ? ARGS.commit.split(',').map(x 
 const SINCE    = typeof ARGS.since === 'string' ? ARGS.since : null;
 const UNTIL    = typeof ARGS.until === 'string' ? ARGS.until : null;
 const MAX_LIST = ARGS['max-list'] ? Math.max(1, parseInt(ARGS['max-list'], 10)) : 200;
+// Parses EVERY commit that touched players/aliases in the range, not only the ones
+// whose subject says "repoint-aliases". Added 2026-08-27 after exactly that
+// assumption was made: three commits were picked by their message and called the
+// full set. But recordAliasDiscovery in fetch-profile-stats.js writes into the same
+// map with map[key] = value, so any nightly, matrix, backfill or fold run can
+// overwrite an existing key — a repoint that names itself nothing and was never
+// logged. A commit subject is a claim about intent; the diff is the fact.
+const ALL      = !!ARGS.all;
+const MAX_COMMITS = ARGS['max-commits'] ? Math.max(1, parseInt(ARGS['max-commits'], 10)) : 400;
 
 const ALIAS_DIR   = 'players/aliases';
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -155,11 +164,94 @@ function diffCommit(sha) {
   return { sha, header, shardsChanged: shards.length, counts: { repointed, added, removed }, changes };
 }
 
+// ─── Sweep ────────────────────────────────────────────────────────────────────
+
+function sweepAll() {
+  const args = ['log', '--format=%H\x1f%cI\x1f%s'];
+  if (SINCE) args.push('--since=' + SINCE);
+  if (UNTIL) args.push('--until=' + UNTIL);
+  args.push('--', ALIAS_DIR);
+  let out = '';
+  try { out = git(args); }
+  catch (e) {
+    throw new Error('git log failed — this needs FULL history (' +
+      ((e.stderr && e.stderr.toString()) || e.message).trim().split('\n')[0] + ')');
+  }
+  const commits = out.split('\n').filter(Boolean).map(l => {
+    const [sha, date, subject] = l.split('\x1f');
+    return { sha, date, subject };
+  });
+  console.log(`${commits.length} commit(s) touched ${ALIAS_DIR}` + (SINCE ? ` since ${SINCE}` : '') + '.');
+  if (commits.length > MAX_COMMITS) {
+    console.log(`⚠ capped at ${MAX_COMMITS}; the rest are NOT examined and this is a partial answer.`);
+  }
+  const todo = commits.slice(0, MAX_COMMITS);
+
+  const perCommit = [], allRepoints = [];
+  let done = 0;
+  for (const c of todo) {
+    done++;
+    let shards = [];
+    try { shards = git(['show', '--name-only', '--format=', c.sha, '--', ALIAS_DIR]).split('\n').filter(Boolean); }
+    catch (e) { perCommit.push({ ...c, error: 'cannot list files' }); continue; }
+
+    let repointed = 0, added = 0, removed = 0;
+    const reps = [];
+    for (const shard of shards) {
+      const before = parseMap(fileAt(c.sha + '^', shard), shard);
+      const after  = parseMap(fileAt(c.sha, shard), shard);
+      if (before === undefined || after === undefined) continue;
+      const b = before || {}, a = after || {};
+      for (const [k, v] of Object.entries(a)) {
+        if (!(k in b)) added++;
+        else if (b[k] !== v) {
+          repointed++;
+          reps.push({ shard, key: k, from: b[k], to: v });
+          allRepoints.push({ sha: c.sha, date: c.date, subject: c.subject, shard, key: k, from: b[k], to: v });
+        }
+      }
+      for (const k of Object.keys(b)) if (!(k in a)) removed++;
+    }
+    perCommit.push({ ...c, shardsChanged: shards.length, repointed, added, removed });
+    const flag = repointed ? '  ← REPOINTS' : '';
+    console.log(`  [${String(done).padStart(3)}/${todo.length}] ${c.sha.slice(0, 10)} ${c.date}  ` +
+                `repointed ${String(repointed).padStart(4)}  added ${String(added).padStart(5)}  removed ${String(removed).padStart(4)}${flag}`);
+    if (repointed) console.log(`        ${c.subject}`);
+  }
+
+  // ── Who actually repointed ─────────────────────────────────────────────────
+  const byTool = {};
+  for (const c of perCommit) {
+    if (!c.repointed) continue;
+    const tool = String(c.subject || '').split(':')[0].trim() || '(no subject)';
+    byTool[tool] = (byTool[tool] || 0) + c.repointed;
+  }
+  const total = perCommit.reduce((n, c) => n + (c.repointed || 0), 0);
+
+  console.log('\n──── ENTRIES REPOINTED, BY THE TOOL THAT DID IT ────');
+  for (const [tool, n] of Object.entries(byTool).sort((a, b) => b[1] - a[1])) {
+    console.log(`  ${String(n).padStart(6)}  ${tool}`);
+  }
+  console.log(`  ${String(total).padStart(6)}  TOTAL`);
+  console.log('\nA repoint means the key already existed and its value CHANGED. New aliases');
+  console.log('for new players are counted as "added" and are not in this total.');
+  console.log('If tools other than repoint-aliases appear above, they repointed aliases');
+  console.log('without saying so and without writing a log.');
+
+  const f = path.join(REPORTS_DIR, 'alias-history-sweep.json');
+  fs.writeFileSync(f, JSON.stringify({ generatedAt: new Date().toISOString(),
+    since: SINCE, until: UNTIL, commitsExamined: todo.length, commitsFound: commits.length,
+    totalRepointed: total, byTool, perCommit, repoints: allRepoints }, null, 2));
+  console.log(`\nWrote ${path.relative(ROOT, f)} — every repoint with its shard, key, from and to.`);
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 function main() {
   console.log('reconstruct-alias-history — the record for repoints that were applied without one\n');
   fs.mkdirSync(REPORTS_DIR, { recursive: true });
+
+  if (ALL) { sweepAll(); return; }
 
   if (!LIST && !COMMITS) {
     console.log('Nothing asked for. Use the list mode first to see which commits touched');
