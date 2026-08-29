@@ -1,0 +1,915 @@
+{
+  "generatedAt": "2026-08-29T11:55:45.642Z",
+  "mode": "dry-run",
+  "reports": [
+    "reports/alias-vs-playhq-audit-wide.json",
+    "reports/alias-vs-playhq-audit-after-fold.json"
+  ],
+  "minGames": 2,
+  "reversal": "for each entry in corrected[], write players/aliases/<shard>.json[key] = from",
+  "corrected": [],
+  "routedToSeeder": [
+    {
+      "key": "14245e60-6551",
+      "spectatorId": "14245e60-6551-4e2c-8ccc-9ab9b209af67",
+      "apiId": "447d6559-91ed-4442-82c2-76d2171d4c91",
+      "name": "Umer Qureshi",
+      "games": [
+        "23476767",
+        "17269771"
+      ],
+      "currentTarget": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
+      "aliasEntry": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "44d33283-9693",
+      "spectatorId": "44d33283-9693-4af4-a02b-7f2adde547c4",
+      "apiId": "b4f12da1-0f05-4a3d-8cd1-8c662852cec5",
+      "name": "Victoria Hu",
+      "games": [
+        "14178947",
+        "24773951"
+      ],
+      "currentTarget": "64666499-c2f3-4001-b439-063d80617392",
+      "aliasEntry": "64666499-c2f3-4001-b439-063d80617392",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "0a61039d-e74b",
+      "spectatorId": "0a61039d-e74b-4d8e-b2fa-47faa223e024",
+      "apiId": "ea7c303b-79b7-4fad-89eb-175b6b441faf",
+      "name": "Bonnie Van Den Berghe",
+      "games": [
+        "26870099",
+        "23557785"
+      ],
+      "currentTarget": "0a61039d-e74b-4d8e-b2fa-47faa223e024",
+      "aliasEntry": "0a61039d-e74b-4d8e-b2fa-47faa223e024",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "5de5c672-4d2a",
+      "spectatorId": "5de5c672-4d2a-42d4-92d2-8c0d31d98d7d",
+      "apiId": "d4aa1d50-07c3-48b1-ad97-78c943485e0c",
+      "name": "Avreet Chandi",
+      "games": [
+        "14495491",
+        "71065736"
+      ],
+      "currentTarget": "5de5c672-4d2a-42d4-92d2-8c0d31d98d7d",
+      "aliasEntry": "5de5c672-4d2a-42d4-92d2-8c0d31d98d7d",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "b8bf6039-760d",
+      "spectatorId": "b8bf6039-760d-4fc8-be0f-52010722f2b1",
+      "apiId": "8d07266c-7e9a-4d33-bc01-0e26431b4a73",
+      "name": "Nixon Nunn",
+      "games": [
+        "14289414",
+        "61328662"
+      ],
+      "currentTarget": "6cc88749-cadf-4c82-9ac3-fdf1b5c203aa",
+      "aliasEntry": "6cc88749-cadf-4c82-9ac3-fdf1b5c203aa",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "6f347857-2801",
+      "spectatorId": "6f347857-2801-41f4-b051-5be8c04c5c2e",
+      "apiId": "76d6bae3-08de-46e5-8728-ed86e73f7f8a",
+      "name": "Monroe collins",
+      "games": [
+        "2d3c1075",
+        "2d46514b",
+        "b8b52ee9",
+        "3e172eef"
+      ],
+      "currentTarget": "6f347857-2801-41f4-b051-5be8c04c5c2e",
+      "aliasEntry": "6f347857-2801-41f4-b051-5be8c04c5c2e",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "bd94a7fb-f764",
+      "spectatorId": "bd94a7fb-f764-40f4-80cd-6ac492a59e3b",
+      "apiId": "e41648f9-ee17-4e12-a998-148be2b4e998",
+      "name": "Eddie McAlpine",
+      "games": [
+        "2d3c1075",
+        "d5b2b5b7",
+        "2d46514b",
+        "b8b52ee9",
+        "3e172eef"
+      ],
+      "currentTarget": "db4b6c70-fc79-4529-805c-00853c60d129",
+      "aliasEntry": "db4b6c70-fc79-4529-805c-00853c60d129",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "71677581-1d27",
+      "spectatorId": "71677581-1d27-4045-8b2e-df2309f035d3",
+      "apiId": "53de720e-4f84-4eb5-aee2-eea6ec3c151c",
+      "name": "Milla Bland",
+      "games": [
+        "4952989f",
+        "44113789"
+      ],
+      "currentTarget": "71677581-1d27-4045-8b2e-df2309f035d3",
+      "aliasEntry": "71677581-1d27-4045-8b2e-df2309f035d3",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "948284e5-ae85",
+      "spectatorId": "948284e5-ae85-419a-89a8-e991f4ee1d3d",
+      "apiId": "465a8bf2-eae4-4491-8768-a2249b69cd44",
+      "name": "Robin Arnold",
+      "games": [
+        "54133820",
+        "35542980"
+      ],
+      "currentTarget": "948284e5-ae85-419a-89a8-e991f4ee1d3d",
+      "aliasEntry": "948284e5-ae85-419a-89a8-e991f4ee1d3d",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "c2bcbe0f-aba1",
+      "spectatorId": "c2bcbe0f-aba1-4636-9cae-952d4e899f0f",
+      "apiId": "cf999966-a3ea-4f84-9af4-6d74fc05d5ad",
+      "name": "Miles McKee",
+      "games": [
+        "75594364",
+        "78993593"
+      ],
+      "currentTarget": "c2bcbe0f-aba1-4636-9cae-952d4e899f0f",
+      "aliasEntry": "c2bcbe0f-aba1-4636-9cae-952d4e899f0f",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "7e4a9bf0-1acd",
+      "spectatorId": "7e4a9bf0-1acd-4ad0-9a66-107809926490",
+      "apiId": "c009bd2a-de6c-4289-9792-0eaf463f4532",
+      "name": "Nicolette Filbey",
+      "games": [
+        "f984ad25",
+        "9493ab12"
+      ],
+      "currentTarget": "7e4a9bf0-1acd-4ad0-9a66-107809926490",
+      "aliasEntry": "7e4a9bf0-1acd-4ad0-9a66-107809926490",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "c4b742c0-5599",
+      "spectatorId": "c4b742c0-5599-423d-b174-8ba4f96de0ae",
+      "apiId": "2251e86a-0ddc-4146-8911-3d5ea63a6a1b",
+      "name": "Xavier McCready",
+      "games": [
+        "76304143",
+        "2a08e3af"
+      ],
+      "currentTarget": "c4b742c0-5599-423d-b174-8ba4f96de0ae",
+      "aliasEntry": "c4b742c0-5599-423d-b174-8ba4f96de0ae",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "020f32ba-be4a",
+      "spectatorId": "020f32ba-be4a-4d02-9e70-727d710e71e3",
+      "apiId": "5288ad23-adf4-43be-bb45-d523cb148cbc",
+      "name": "tyler Purcell",
+      "games": [
+        "18868649",
+        "61561141"
+      ],
+      "currentTarget": "c7ac1f91-1bf8-4e8c-9d88-c258d66947f1",
+      "aliasEntry": "c7ac1f91-1bf8-4e8c-9d88-c258d66947f1",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "df504d60-b68a",
+      "spectatorId": "df504d60-b68a-4d1a-8a70-368c4e5f3871",
+      "apiId": "9457208a-d682-4f75-9c75-dfe6303f925c",
+      "name": "Jacob Hyland",
+      "games": [
+        "64abed65",
+        "a4e38557"
+      ],
+      "currentTarget": "df504d60-b68a-4d1a-8a70-368c4e5f3871",
+      "aliasEntry": "df504d60-b68a-4d1a-8a70-368c4e5f3871",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    },
+    {
+      "key": "f4fab057-bf65",
+      "spectatorId": "f4fab057-bf65-43dc-9ca8-bc8f4f21d768",
+      "apiId": "66291923-6376-4586-b60d-d7bf07e3cc26",
+      "name": "Raphael D’Aloisio",
+      "games": [
+        "22115884",
+        "10318740"
+      ],
+      "currentTarget": "f4fab057-bf65-43dc-9ca8-bc8f4f21d768",
+      "aliasEntry": "f4fab057-bf65-43dc-9ca8-bc8f4f21d768",
+      "why": "we resolve to a file keyed on a NON-api id — repair is seed-apiid + fold, not an alias repoint"
+    }
+  ],
+  "skipped": [
+    {
+      "key": "9912ea56-d349",
+      "spectatorId": "9912ea56-d349-43c9-b52c-a9ec6d2251a8",
+      "apiId": "ca86562a-04a9-4b7b-a48a-10105296ee05",
+      "name": "aston dyt",
+      "games": [
+        "11771083"
+      ],
+      "currentTarget": "15634b09-d96f-4192-8b46-477cde6b8fd5",
+      "aliasEntry": "15634b09-d96f-4192-8b46-477cde6b8fd5",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "8082694e-e496",
+      "spectatorId": "8082694e-e496-411c-bb5e-b0ab9c874bd7",
+      "apiId": "0dae0caf-6dbf-4316-b7bd-12457d4296e4",
+      "name": "Jack Telford",
+      "games": [
+        "10187451"
+      ],
+      "currentTarget": "a69f7ee8-7b95-449d-a113-308171c0e795",
+      "aliasEntry": "a69f7ee8-7b95-449d-a113-308171c0e795",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "423776e0-c910",
+      "spectatorId": "423776e0-c910-4af1-9146-971bf816a9f6",
+      "apiId": "e358fc8a-593b-44f6-9cde-30ba757d4d83",
+      "name": "darcy bendeich",
+      "games": [
+        "18009680"
+      ],
+      "currentTarget": "423776e0-c910-4af1-9146-971bf816a9f6",
+      "aliasEntry": "423776e0-c910-4af1-9146-971bf816a9f6",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "64c6069f-0d23",
+      "spectatorId": "64c6069f-0d23-4d0e-b7ad-315c5286027d",
+      "apiId": "e9b1072d-4458-4b07-a8bf-ebdc6306e9da",
+      "name": "Keira Penhall",
+      "games": [
+        "39032941"
+      ],
+      "currentTarget": "119eef91-4d3d-4bf1-804a-d691ebaef84e",
+      "aliasEntry": "119eef91-4d3d-4bf1-804a-d691ebaef84e",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "0654b853-4033",
+      "spectatorId": "0654b853-4033-4722-8257-b692b622d02e",
+      "apiId": "7cc91628-7335-4b5e-ad77-d300e0135ffc",
+      "name": "Liam Myint",
+      "games": [
+        "17297110"
+      ],
+      "currentTarget": "0654b853-4033-4722-8257-b692b622d02e",
+      "aliasEntry": "0654b853-4033-4722-8257-b692b622d02e",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "717291fe-132e",
+      "spectatorId": "717291fe-132e-4ae2-87d5-6d02199bf9f9",
+      "apiId": "e9d6f52a-bc3a-4c22-8ab9-b84dac83133c",
+      "name": "Meika Bravington",
+      "games": [
+        "22517093"
+      ],
+      "currentTarget": "717291fe-132e-4ae2-87d5-6d02199bf9f9",
+      "aliasEntry": "717291fe-132e-4ae2-87d5-6d02199bf9f9",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "4c678a99-8ab4",
+      "spectatorId": "4c678a99-8ab4-4d98-a18e-c3d9204f7d4d",
+      "apiId": "acc7014e-8d57-4f4c-8119-045818a798b7",
+      "name": "Alfie Mitchell",
+      "games": [
+        "10054422"
+      ],
+      "currentTarget": "c1af9c53-e9ef-4b0d-a956-be3eb8c9a11d",
+      "aliasEntry": "c1af9c53-e9ef-4b0d-a956-be3eb8c9a11d",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "9923f7e6-6aae",
+      "spectatorId": "9923f7e6-6aae-417e-b133-12c3d3222c2a",
+      "apiId": "7ddd89c5-57e8-4693-8217-7c5c3f78801d",
+      "name": "Miles Wilks",
+      "games": [
+        "11692695"
+      ],
+      "currentTarget": "e84a6f8e-3733-4958-a7bd-b3d4b02194f1",
+      "aliasEntry": "e84a6f8e-3733-4958-a7bd-b3d4b02194f1",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "0f5477f5-08c1",
+      "spectatorId": "0f5477f5-08c1-46c3-b698-07df2335990d",
+      "apiId": "4e8c6c6c-25ce-4a34-866f-426a21d7b7ce",
+      "name": "Xavier Kramer",
+      "games": [
+        "24059044"
+      ],
+      "currentTarget": "0f5477f5-08c1-46c3-b698-07df2335990d",
+      "aliasEntry": "0f5477f5-08c1-46c3-b698-07df2335990d",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "781e2fff-d6fc",
+      "spectatorId": "781e2fff-d6fc-428e-9e39-08dbad16dc3e",
+      "apiId": "62b57165-0250-408b-af27-61a3ff4ee32e",
+      "name": "Nate Adams",
+      "games": [
+        "34473213"
+      ],
+      "currentTarget": "781e2fff-d6fc-428e-9e39-08dbad16dc3e",
+      "aliasEntry": "781e2fff-d6fc-428e-9e39-08dbad16dc3e",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "0c583767-707e",
+      "spectatorId": "0c583767-707e-4cd9-b09b-b60cb2b5ae00",
+      "apiId": "59700df8-62d2-458c-9d8d-f8d63c378a11",
+      "name": "Zara Wilson",
+      "games": [
+        "64001976"
+      ],
+      "currentTarget": "0c583767-707e-4cd9-b09b-b60cb2b5ae00",
+      "aliasEntry": "0c583767-707e-4cd9-b09b-b60cb2b5ae00",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "1e0c2baf-7dfe",
+      "spectatorId": "1e0c2baf-7dfe-4b38-8fb3-cb948fdf89f5",
+      "apiId": "406161f2-e08f-4c5e-bb96-8af1eaea536d",
+      "name": "Spencer Dow",
+      "games": [
+        "10721245"
+      ],
+      "currentTarget": "69527717-20cf-480e-a4da-1c110a21f146",
+      "aliasEntry": "69527717-20cf-480e-a4da-1c110a21f146",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "2ffc25f7-bd52",
+      "spectatorId": "2ffc25f7-bd52-4683-a3f9-a728d4f63d23",
+      "apiId": "c4ec7b2a-01b3-4a16-b2b4-b15a2542b4b8",
+      "name": "Jasmine Davies-Nguyen",
+      "games": [
+        "10428233"
+      ],
+      "currentTarget": "2ffc25f7-bd52-4683-a3f9-a728d4f63d23",
+      "aliasEntry": "2ffc25f7-bd52-4683-a3f9-a728d4f63d23",
+      "why": "report pairs this id with more than one api id: c4ec7b2a-01b3-4a16-b2b4-b15a2542b4b8, 27daeb95-526a-48be-9074-0f94059fea8b"
+    },
+    {
+      "key": "a7dc01e6-dff0",
+      "spectatorId": "a7dc01e6-dff0-4930-9993-1c45f00fa486",
+      "apiId": "7f5558ef-3d20-4a74-835d-5f0fa1fdcf82",
+      "name": "Harry Mules",
+      "games": [
+        "43262762"
+      ],
+      "currentTarget": "a7dc01e6-dff0-4930-9993-1c45f00fa486",
+      "aliasEntry": "a7dc01e6-dff0-4930-9993-1c45f00fa486",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "b3b45756-7a85",
+      "spectatorId": "b3b45756-7a85-410d-92b5-02821bb1c342",
+      "apiId": "87eb62a5-8597-4142-9ed2-e4183c4a5848",
+      "name": "Quinn Patena McCarthy",
+      "games": [
+        "10517173"
+      ],
+      "currentTarget": "e5408617-23f5-4239-8c42-56dd8e163d64",
+      "aliasEntry": "e5408617-23f5-4239-8c42-56dd8e163d64",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "ca344f64-c062",
+      "spectatorId": "ca344f64-c062-4c20-9bd5-fbef6ec0500d",
+      "apiId": "80f29d2f-c311-4e3c-9b06-4250229728f3",
+      "name": "Roy Tongs",
+      "games": [
+        "5bb4ee22"
+      ],
+      "currentTarget": "ca344f64-c062-4c20-9bd5-fbef6ec0500d",
+      "aliasEntry": "ca344f64-c062-4c20-9bd5-fbef6ec0500d",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "95f6f2a7-36f2",
+      "spectatorId": "95f6f2a7-36f2-47a1-9d08-f87b2e445f22",
+      "apiId": "2b00edc4-8e68-4a5f-96b5-fde2052543a5",
+      "name": "Cohen Stannard",
+      "games": [
+        "11737416"
+      ],
+      "currentTarget": "230ebed9-0c4c-492e-8b99-b440a62e3b04",
+      "aliasEntry": "230ebed9-0c4c-492e-8b99-b440a62e3b04",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "0256edd5-4f3c",
+      "spectatorId": "0256edd5-4f3c-4b6e-93ee-d7c5b6e92657",
+      "apiId": "04baa46c-42c8-4eb9-9180-460421153676",
+      "name": "Aubree Eldred",
+      "games": [
+        "51993221"
+      ],
+      "currentTarget": "0256edd5-4f3c-4b6e-93ee-d7c5b6e92657",
+      "aliasEntry": "0256edd5-4f3c-4b6e-93ee-d7c5b6e92657",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "1633f731-1dfc",
+      "spectatorId": "1633f731-1dfc-4db7-bec8-da4ce3870c8e",
+      "apiId": "cc60bfa0-d14c-4042-92e5-f3da3c1dae19",
+      "name": "Levi Cooper",
+      "games": [
+        "83707678"
+      ],
+      "currentTarget": "1633f731-1dfc-4db7-bec8-da4ce3870c8e",
+      "aliasEntry": "1633f731-1dfc-4db7-bec8-da4ce3870c8e",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "057a2dd9-0f7a",
+      "spectatorId": "057a2dd9-0f7a-4114-9c91-cc7e39795bf0",
+      "apiId": "5709fbf1-059c-4a8d-8528-7c0d441f4873",
+      "name": "Chance Lindrea",
+      "games": [
+        "21879478"
+      ],
+      "currentTarget": "057a2dd9-0f7a-4114-9c91-cc7e39795bf0",
+      "aliasEntry": "057a2dd9-0f7a-4114-9c91-cc7e39795bf0",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "8dba8fb9-8ccb",
+      "spectatorId": "8dba8fb9-8ccb-49bb-9920-f505ca9eb132",
+      "apiId": "a31424a5-181e-4a18-a232-c520485bf8e9",
+      "name": "charlie collyer",
+      "games": [
+        "11796420"
+      ],
+      "currentTarget": "8dba8fb9-8ccb-49bb-9920-f505ca9eb132",
+      "aliasEntry": "8dba8fb9-8ccb-49bb-9920-f505ca9eb132",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "0edff337-ce21",
+      "spectatorId": "0edff337-ce21-43a3-bce6-8f5a55afb989",
+      "apiId": "eade92b7-2632-4e8d-a5d0-062571cd581d",
+      "name": "Emma Clancy",
+      "games": [
+        "17646535"
+      ],
+      "currentTarget": "0edff337-ce21-43a3-bce6-8f5a55afb989",
+      "aliasEntry": "0edff337-ce21-43a3-bce6-8f5a55afb989",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "919856ce-ec27",
+      "spectatorId": "919856ce-ec27-4b2e-87f0-35f32c278e40",
+      "apiId": "12d358fb-6456-4b4c-b3cc-f485a561cd25",
+      "name": "Jack Walsh",
+      "games": [
+        "48026651"
+      ],
+      "currentTarget": "377f1fcc-dbb8-48ea-8017-72008b1dacdd",
+      "aliasEntry": "377f1fcc-dbb8-48ea-8017-72008b1dacdd",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "a1d03d69-8b07",
+      "spectatorId": "a1d03d69-8b07-4fe4-bdd5-501dbefa5287",
+      "apiId": "0ad0b461-1205-4c36-b485-add5571e1ea0",
+      "name": "Isaac Rambocus",
+      "games": [
+        "12712932"
+      ],
+      "currentTarget": "4297be25-c6cf-4f3f-8313-ade17d07b7d7",
+      "aliasEntry": "4297be25-c6cf-4f3f-8313-ade17d07b7d7",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "27f64631-522a",
+      "spectatorId": "27f64631-522a-4e00-b842-ac460f0ce4b6",
+      "apiId": "e2cb94eb-1d0a-4868-9cd2-8051f20914a6",
+      "name": "Samuel Couper",
+      "games": [
+        "12290567"
+      ],
+      "currentTarget": "27f64631-522a-4e00-b842-ac460f0ce4b6",
+      "aliasEntry": "27f64631-522a-4e00-b842-ac460f0ce4b6",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "b6c443ff-f8e2",
+      "spectatorId": "b6c443ff-f8e2-455e-b285-7f6b278f2f90",
+      "apiId": "965219fe-ec3a-4c92-8a3f-d4b0dc8ceead",
+      "name": "Lila Terlich",
+      "games": [
+        "25092898"
+      ],
+      "currentTarget": "b6c443ff-f8e2-455e-b285-7f6b278f2f90",
+      "aliasEntry": "b6c443ff-f8e2-455e-b285-7f6b278f2f90",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "94503c69-2853",
+      "spectatorId": "94503c69-2853-4628-a935-5104f5a0c8f2",
+      "apiId": "078faf3e-a642-4e8c-85fa-1c664a1eea20",
+      "name": "Harvey Roberts",
+      "games": [
+        "81142708"
+      ],
+      "currentTarget": "7475241e-1129-4a71-8af7-fc29ef2a5ff5",
+      "aliasEntry": "7475241e-1129-4a71-8af7-fc29ef2a5ff5",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "331e109b-4a21",
+      "spectatorId": "331e109b-4a21-4681-b46a-0f28b0207eb5",
+      "apiId": "d27e1839-a464-4c17-b054-be68f8e84eb8",
+      "name": "Aston Adams",
+      "games": [
+        "88002639"
+      ],
+      "currentTarget": "331e109b-4a21-4681-b46a-0f28b0207eb5",
+      "aliasEntry": "331e109b-4a21-4681-b46a-0f28b0207eb5",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "b18359c7-5d72",
+      "spectatorId": "b18359c7-5d72-4f94-ba92-43909bb77a00",
+      "apiId": "b7a44641-f7de-436b-83d5-0df106957081",
+      "name": "Hazel Clarke",
+      "games": [
+        "10752227"
+      ],
+      "currentTarget": "b18359c7-5d72-4f94-ba92-43909bb77a00",
+      "aliasEntry": "b18359c7-5d72-4f94-ba92-43909bb77a00",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "4a16e4b4-b65c",
+      "spectatorId": "4a16e4b4-b65c-4a9f-a2df-efa7dcd968c0",
+      "apiId": "48f1b667-d363-47fc-96ab-581fa9cec092",
+      "name": "Michael Boyd",
+      "games": [
+        "10313975"
+      ],
+      "currentTarget": "3f2b9d0d-56d9-4b65-b072-47a3e71b0c22",
+      "aliasEntry": "3f2b9d0d-56d9-4b65-b072-47a3e71b0c22",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "555f48de-2a4c",
+      "spectatorId": "555f48de-2a4c-4919-a3e2-f83511ebb278",
+      "apiId": "9f1bc976-5e82-457a-85d2-a87ee9fb1b36",
+      "name": "Edward Conlan",
+      "games": [
+        "a45e05c2"
+      ],
+      "currentTarget": "f5e1c24c-5f4b-4902-9013-99ec252e3cb0",
+      "aliasEntry": "f5e1c24c-5f4b-4902-9013-99ec252e3cb0",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "ee353a91-be79",
+      "spectatorId": "ee353a91-be79-482d-9cb8-b905c9bca21f",
+      "apiId": "cb13affb-1bf6-4d1e-b859-b8c1c2cec69f",
+      "name": "Alfie Eddy",
+      "games": [
+        "10430757"
+      ],
+      "currentTarget": "ee353a91-be79-482d-9cb8-b905c9bca21f",
+      "aliasEntry": "ee353a91-be79-482d-9cb8-b905c9bca21f",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "d602ff28-08e7",
+      "spectatorId": "d602ff28-08e7-4823-859a-f8190b21e119",
+      "apiId": "508f8fca-8457-46a7-a568-f6218c786a66",
+      "name": "Nathaniel Tran",
+      "games": [
+        "10514125"
+      ],
+      "currentTarget": "d602ff28-08e7-4823-859a-f8190b21e119",
+      "aliasEntry": "d602ff28-08e7-4823-859a-f8190b21e119",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "361492dd-c166",
+      "spectatorId": "361492dd-c166-46c5-9c07-5b042ecf44a6",
+      "apiId": "a10973ba-7a28-441f-b6eb-5980b34010b6",
+      "name": "Kai Watkins",
+      "games": [
+        "18006792"
+      ],
+      "currentTarget": "361492dd-c166-46c5-9c07-5b042ecf44a6",
+      "aliasEntry": "361492dd-c166-46c5-9c07-5b042ecf44a6",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "1f61b211-7f02",
+      "spectatorId": "1f61b211-7f02-411d-8be0-09e5278a2175",
+      "apiId": "7c30d3ee-d9e0-4db2-afa9-f3486b8a1c0f",
+      "name": "Joshua Pisani",
+      "games": [
+        "10163790"
+      ],
+      "currentTarget": "3f413dbc-b7df-4480-9d06-069fd217ec27",
+      "aliasEntry": "3f413dbc-b7df-4480-9d06-069fd217ec27",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "af5f9a21-f830",
+      "spectatorId": "af5f9a21-f830-4e70-a91d-5dc8fb707bdb",
+      "apiId": "3cc54e4a-01aa-43a2-a8d7-006d529df450",
+      "name": "Xavier Grainger",
+      "games": [
+        "14369933"
+      ],
+      "currentTarget": "af5f9a21-f830-4e70-a91d-5dc8fb707bdb",
+      "aliasEntry": "af5f9a21-f830-4e70-a91d-5dc8fb707bdb",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "7e2e4a1b-13a9",
+      "spectatorId": "7e2e4a1b-13a9-4206-8104-3a44429bcbcb",
+      "apiId": "909d7a9e-1206-451c-9145-37b21dd312fe",
+      "name": "Jayson De Leon",
+      "games": [
+        "28061260"
+      ],
+      "currentTarget": "7e2e4a1b-13a9-4206-8104-3a44429bcbcb",
+      "aliasEntry": "7e2e4a1b-13a9-4206-8104-3a44429bcbcb",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "8a8d7fd4-78f5",
+      "spectatorId": "8a8d7fd4-78f5-4d91-8c08-27959d07ea86",
+      "apiId": "68006499-6ae0-4e85-92e9-5a6e68c97d75",
+      "name": "Noah De Lima",
+      "games": [
+        "23922164"
+      ],
+      "currentTarget": "b218e4a9-c146-4ed7-9ea3-9527e775a1dd",
+      "aliasEntry": "b218e4a9-c146-4ed7-9ea3-9527e775a1dd",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "edb2450b-79ff",
+      "spectatorId": "edb2450b-79ff-4f8c-9a18-d8fc29b46ebb",
+      "apiId": "6c7859aa-fba2-4ff4-acd0-942daeb4a5e3",
+      "name": "Sebastian Veith",
+      "games": [
+        "10754776"
+      ],
+      "currentTarget": "97a95fdc-7e45-4172-8282-e19dbf84af05",
+      "aliasEntry": "97a95fdc-7e45-4172-8282-e19dbf84af05",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "5e38c397-56df",
+      "spectatorId": "5e38c397-56df-4934-b339-6a156eb584c7",
+      "apiId": "6520d1f8-1d52-419a-bd4f-eb4ede9fed50",
+      "name": "bailey moore",
+      "games": [
+        "10739556"
+      ],
+      "currentTarget": "5e38c397-56df-4934-b339-6a156eb584c7",
+      "aliasEntry": "5e38c397-56df-4934-b339-6a156eb584c7",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "590d88cb-c93f",
+      "spectatorId": "590d88cb-c93f-454f-af79-20d8aaebcd28",
+      "apiId": "15821481-9199-4c36-a4c8-ce2926aa6fb0",
+      "name": "Xavier Buxton",
+      "games": [
+        "10112319"
+      ],
+      "currentTarget": "d7f0b2d1-8aac-42a5-89cf-da87e0de225a",
+      "aliasEntry": "d7f0b2d1-8aac-42a5-89cf-da87e0de225a",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "4a6c42d3-49d3",
+      "spectatorId": "4a6c42d3-49d3-4ff5-bff5-dd9e62ade970",
+      "apiId": "099cb134-db65-4458-8619-561403fa94f9",
+      "name": "Riley Davies- Cleven",
+      "games": [
+        "11382408"
+      ],
+      "currentTarget": "4a6c42d3-49d3-4ff5-bff5-dd9e62ade970",
+      "aliasEntry": "4a6c42d3-49d3-4ff5-bff5-dd9e62ade970",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "72feaaae-22b2",
+      "spectatorId": "72feaaae-22b2-4253-aca6-7e5e1b9af923",
+      "apiId": "a0d630cb-6848-487e-85e4-d45c84b32777",
+      "name": "Lincoln Thomas",
+      "games": [
+        "cb20a60d"
+      ],
+      "currentTarget": "15e6fc3b-f982-41c1-8449-999e73667ff9",
+      "aliasEntry": "15e6fc3b-f982-41c1-8449-999e73667ff9",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "4c983b24-5200",
+      "spectatorId": "4c983b24-5200-4638-ad75-a61b1f730b99",
+      "apiId": "d482b9f0-fe37-4383-85f2-7ef7c8d83442",
+      "name": "Billy Jarvis",
+      "games": [
+        "25704615"
+      ],
+      "currentTarget": "4c983b24-5200-4638-ad75-a61b1f730b99",
+      "aliasEntry": "4c983b24-5200-4638-ad75-a61b1f730b99",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "7c88c4f5-c2b1",
+      "spectatorId": "7c88c4f5-c2b1-46d1-b895-6d9ddd40ece2",
+      "apiId": "45432e89-3579-4ec6-8431-d2eb1181fb88",
+      "name": "Royce Sheehan",
+      "games": [
+        "14086989"
+      ],
+      "currentTarget": "f2bc8066-326e-41e1-ab13-4d043227aad3",
+      "aliasEntry": "f2bc8066-326e-41e1-ab13-4d043227aad3",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "ae8346fa-9426",
+      "spectatorId": "ae8346fa-9426-408e-be8c-f5dc97302613",
+      "apiId": "bd63248f-646b-47c0-86b2-97237a16d8d0",
+      "name": "Hamish McAlpine",
+      "games": [
+        "10300506"
+      ],
+      "currentTarget": "ae8346fa-9426-408e-be8c-f5dc97302613",
+      "aliasEntry": "ae8346fa-9426-408e-be8c-f5dc97302613",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "822ab59b-8191",
+      "spectatorId": "822ab59b-8191-46a1-8219-9d6e9540b463",
+      "apiId": "f3171744-28f5-423b-b4d5-06d552a63c6a",
+      "name": "Molly Johnston",
+      "games": [
+        "23807556"
+      ],
+      "currentTarget": "441d0709-371b-40dc-8e97-3d935cd7a290",
+      "aliasEntry": "441d0709-371b-40dc-8e97-3d935cd7a290",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "a0cb0e0e-846d",
+      "spectatorId": "a0cb0e0e-846d-41f2-8ba0-6a7d3a215dc4",
+      "apiId": "831b06b7-4d1e-4b60-ba64-672dd18b8ee9",
+      "name": "lily jakins",
+      "games": [
+        "c29e819c"
+      ],
+      "currentTarget": "a0cb0e0e-846d-41f2-8ba0-6a7d3a215dc4",
+      "aliasEntry": "a0cb0e0e-846d-41f2-8ba0-6a7d3a215dc4",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "502621c0-917a",
+      "spectatorId": "502621c0-917a-46aa-806b-09169fcc58ea",
+      "apiId": "8c7931d6-1b29-4560-a1f6-7a5127471309",
+      "name": "Baxter Clerkin",
+      "games": [
+        "10121294"
+      ],
+      "currentTarget": "502621c0-917a-46aa-806b-09169fcc58ea",
+      "aliasEntry": "502621c0-917a-46aa-806b-09169fcc58ea",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "0ae050f5-2a98",
+      "spectatorId": "0ae050f5-2a98-4413-a3e1-38c5b66573f6",
+      "apiId": "2f898d53-4dd8-44bf-ab84-13264d1efd84",
+      "name": "Blake Marshall",
+      "games": [
+        "5c28fc0b"
+      ],
+      "currentTarget": "ccbaee0c-7bea-411b-80f3-63c45435139f",
+      "aliasEntry": "ccbaee0c-7bea-411b-80f3-63c45435139f",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "ec29d292-dde4",
+      "spectatorId": "ec29d292-dde4-42ad-9501-cf8bf6955959",
+      "apiId": "d8482bb9-2e57-4457-9455-a055f7f08cdc",
+      "name": "lachlan smith",
+      "games": [
+        "11819510"
+      ],
+      "currentTarget": "ec29d292-dde4-42ad-9501-cf8bf6955959",
+      "aliasEntry": "ec29d292-dde4-42ad-9501-cf8bf6955959",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "4834543c-9bf6",
+      "spectatorId": "4834543c-9bf6-4063-80bf-640d85a4181e",
+      "apiId": "2a2cd27e-a5eb-411f-a936-a106a3bdcf53",
+      "name": "Ryan Matta",
+      "games": [
+        "11507329"
+      ],
+      "currentTarget": "4834543c-9bf6-4063-80bf-640d85a4181e",
+      "aliasEntry": "4834543c-9bf6-4063-80bf-640d85a4181e",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "c806eb72-9379",
+      "spectatorId": "c806eb72-9379-4c81-b55f-18928b08608b",
+      "apiId": "b6512b8b-141d-48e0-9a8a-533585d6e2eb",
+      "name": "Brody Carland",
+      "games": [
+        "10064100"
+      ],
+      "currentTarget": "c806eb72-9379-4c81-b55f-18928b08608b",
+      "aliasEntry": "c806eb72-9379-4c81-b55f-18928b08608b",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "b3bffbc1-c183",
+      "spectatorId": "b3bffbc1-c183-4c5f-b4ab-9b44a4bd9bb2",
+      "apiId": "af290577-334a-4a4c-ba80-5c124e24c3b7",
+      "name": "Cooper Rowler",
+      "games": [
+        "12399890"
+      ],
+      "currentTarget": "b3bffbc1-c183-4c5f-b4ab-9b44a4bd9bb2",
+      "aliasEntry": "b3bffbc1-c183-4c5f-b4ab-9b44a4bd9bb2",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "5ec52065-1da6",
+      "spectatorId": "5ec52065-1da6-4446-aa30-17f935682752",
+      "apiId": "61484830-7379-4d13-bec3-76a4c3d9c38c",
+      "name": "Daniel Hargrave",
+      "games": [
+        "26267848"
+      ],
+      "currentTarget": "5ec52065-1da6-4446-aa30-17f935682752",
+      "aliasEntry": "5ec52065-1da6-4446-aa30-17f935682752",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "c9d56128-927b",
+      "spectatorId": "c9d56128-927b-4b72-a410-5a9b25fbeda8",
+      "apiId": "2499b155-f8bb-4185-87ba-fa004b5b6279",
+      "name": "Cooper Terry",
+      "games": [
+        "10864571"
+      ],
+      "currentTarget": "28400f55-8322-484e-b281-a88046d1ddc9",
+      "aliasEntry": "28400f55-8322-484e-b281-a88046d1ddc9",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "762bf88b-e9b3",
+      "spectatorId": "762bf88b-e9b3-4c29-9d3f-be35ed7ee620",
+      "apiId": "9559359a-91a6-4cff-b9b6-5a3976dc0e66",
+      "name": "Mahlia Veith",
+      "games": [
+        "11233781"
+      ],
+      "currentTarget": "15fbc5e5-9429-4def-9918-c8e47a75dcec",
+      "aliasEntry": "15fbc5e5-9429-4def-9918-c8e47a75dcec",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    },
+    {
+      "key": "91cc564e-c564",
+      "spectatorId": "91cc564e-c564-4eb2-bc15-c5c2a2fa9f89",
+      "apiId": "2ae56dca-1496-4d0d-9e96-c17471eaecd5",
+      "name": "Zara Williamson",
+      "games": [
+        "32580571"
+      ],
+      "currentTarget": "91cc564e-c564-4eb2-bc15-c5c2a2fa9f89",
+      "aliasEntry": "91cc564e-c564-4eb2-bc15-c5c2a2fa9f89",
+      "why": "seen in 1 game(s), needs 2 — one observation is not corroboration"
+    }
+  ],
+  "namespaceTally": {
+    "api": 15,
+    "not-api": 15
+  }
+}
