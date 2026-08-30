@@ -107,6 +107,13 @@ const GV_NAMESPACE = ARGS['gv-namespace'] ? Math.max(1, parseInt(ARGS['gv-namesp
 // Why: the full population is 418,250 candidates and a single-threaded pass
 // measured 0.9 seconds per key — about 105 hours. Across 256 shards at 20 in
 // parallel that is a few hours.
+// Re-asks PlayHQ about the keys that came back 'unknown'. 'unknown' is a
+// TRANSPORT outcome — it decided nothing, so those players are neither cleared
+// nor confirmed. The 2026-08-30 full sweep left 135 of 415,133 undecided.
+// Leaving undecided keys out of the picture is exactly how the private:true gate
+// came to hide 1,608 players: a population nobody looked at is not a population
+// that is fine. One job, one call per id, minutes not hours.
+const RETEST_UNKNOWN = !!ARGS['retest-unknown'];
 const SHARD = typeof ARGS.shard === 'string' ? ARGS.shard.trim().toLowerCase() : null;
 if (SHARD !== null && !/^[0-9a-f]{2}$/.test(SHARD)) {
   console.error(`FATAL: --shard must be two hex characters, got ${JSON.stringify(ARGS.shard)}`);
@@ -211,27 +218,68 @@ const HEADERS_SPECTATOR = {
 };
 
 let sessionCookie = null;
+let sessionPromise = null;
+
+// Two shapes, not one. Ported from fetch-profile-stats.js, which is the session
+// handling that survives 20-way sharding against this endpoint every night. The
+// version this file previously used came from discover-game-backfill.js, which
+// runs as ONE job — it tries a single TenantConfig query with a 3s-per-attempt
+// backoff, and on 2026-08-29 twenty shards starting at once all exhausted their
+// ten attempts inside thirty seconds and every one died with "Failed to obtain
+// session after 10 attempts".
+//
+// The transport differs between the two files (this one uses https.request and
+// returns rawCookies; that one uses fetch and reads res.headers), so the request
+// call itself is this file's, and what is ported is the four things that make it
+// survive contention:
+//   1. TWO cookie query shapes — if TenantConfig is refused, ProfileSearch is
+//      tried before the attempt is counted as failed
+//   2. attempt * 5000 backoff, not 3000 — ten attempts span ~4 minutes rather
+//      than ~2.5, which is what lets a queue of shards drain
+//   3. network errors caught PER REQUEST — a socket error used to escape both
+//      loops and kill the shard on attempt 1 instead of using all ten
+//   4. an in-flight lock, cleared in finally() — concurrent callers wait for the
+//      one refresh rather than firing more at an endpoint already refusing, and
+//      a rejected promise is never left cached in the lock
+const COOKIE_QUERIES = [
+  { operationName: 'TenantConfig', variables: {},
+    query: 'query TenantConfig { tenantConfiguration { label } }' },
+  { operationName: 'ProfileSearch', variables: { fullName: 'a' },
+    query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
+];
 
 async function refreshSession() {
-  const body = { operationName: 'TenantConfig', variables: {},
-    query: 'query TenantConfig { tenantConfiguration { label } }' };
-  for (let attempt = 1; attempt <= 10; attempt++) {
-    if (attempt > 1) await sleep(attempt * 3000);
-    try {
-      const { rawCookies } = await doFetch(API_URL, body, HEADERS_MAIN);
-      if (!rawCookies) continue;
-      const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies])
-        .map(c => c.split(';')[0].trim());
-      const get = n => arr.find(p => p.startsWith(n + '=')) || null;
-      const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
-      if (tier && session && sub) {
-        sessionCookie = `${tier}; ${session}; ${sub}`;
-        console.log(`  Session refreshed (attempt ${attempt})`);
-        return;
+  if (sessionPromise) return sessionPromise;
+
+  sessionPromise = (async () => {
+    let lastErr = null;
+    for (let attempt = 1; attempt <= 10; attempt++) {
+      if (attempt > 1) await sleep(attempt * 5000);
+      for (const body of COOKIE_QUERIES) {
+        let res;
+        try {
+          res = await doFetch(API_URL, body, HEADERS_MAIN);
+        } catch (err) {
+          lastErr = err;
+          console.log(`  … session refresh attempt ${attempt} network error: ${err.code || err.message} — retrying`);
+          continue;
+        }
+        const rawCookies = res.rawCookies;
+        if (!rawCookies) continue;
+        const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies]).map(c => c.split(';')[0].trim());
+        const get = n => arr.find(p => p.startsWith(n + '=')) || null;
+        const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
+        if (tier && session && sub) {
+          sessionCookie = `${tier}; ${session}; ${sub}`;
+          console.log(`  Session refreshed (attempt ${attempt})`);
+          return;
+        }
       }
-    } catch (_) {}
-  }
-  throw new Error('Failed to obtain session after 10 attempts');
+    }
+    throw new Error('Failed to obtain session after 10 attempts' + (lastErr ? ` (last error: ${lastErr.code || lastErr.message})` : ''));
+  })().finally(() => { sessionPromise = null; });
+
+  return sessionPromise;
 }
 
 // ─── gameView — discover-game-backfill.js, VERBATIM, UNTRIMMED ────────────────
@@ -670,6 +718,89 @@ function buildOurGames(wanted) {
 }
 function ourGameRecord(gameId) { return (ourGamesCache && ourGamesCache.get(gameId)) || null; }
 
+// Recovers one player's api id from their own games. Shared by the shard pass and
+// the retest so the two cannot drift apart.
+async function recoverApiId(c) {
+  const claimed = new Set([t13(c.uuid), ...(c.spectatorIds || []).map(t13)]);
+  const tried = [];
+  for (const gameId of (c.games || [])) {
+    const gv = await gqlGameView(gameId);
+    const sp = await gqlSpectator(gameId);
+    if (!gv.ok || !sp.ok) { tried.push({ gameId, gameview: gv.ok ? 'ok' : gv.why, spectator: sp.ok ? 'ok' : sp.why }); continue; }
+    const gvs = gv.game.statistics || {}, sps = sp.game.statistics || {};
+    const pairs = pairRosters([...gvRows(gvs.home, 'home'), ...gvRows(gvs.away, 'away')],
+                              [...specRows(sps.home, 'home'), ...specRows(sps.away, 'away')]);
+    const hit = pairs.find(p => claimed.has(t13(p.spectatorId)));
+    if (!hit) { tried.push({ gameId, why: 'no pair carried an id this player claims' }); continue; }
+    if (hit.apiId === c.uuid) { tried.push({ gameId, why: 'PlayHQ api id equals our key' }); continue; }
+    return { found: { gameId, ...hit }, tried };
+  }
+  return { found: null, tried };
+}
+
+async function retestUnknown() {
+  if (!fs.existsSync(OUT_FILE)) throw new Error(`no report at ${OUT_REL} — run the census first`);
+  const rep = JSON.parse(fs.readFileSync(OUT_FILE, 'utf8'));
+  const unknown = Array.isArray(rep.unknownKeys) ? [...new Set(rep.unknownKeys)] : [];
+  if (!unknown.length) { console.log('No unknown keys in the report — nothing to retest.'); return; }
+  console.log(`Re-testing ${unknown.length} key(s) that came back 'unknown'\n`);
+
+  await refreshSession();
+
+  const stillUnknown = [], nowApi = [], nowNotApi = [];
+  let n = 0;
+  for (const uuid of unknown) {
+    const v = await namespaceVerdict(uuid);
+    if (v === 'unknown') stillUnknown.push(uuid);
+    else if (v === 'api') nowApi.push(uuid);
+    else nowNotApi.push(uuid);
+    if (++n % 25 === 0) console.log(`  ${n}/${unknown.length} · api ${nowApi.length} · not-api ${nowNotApi.length} · still unknown ${stillUnknown.length}`);
+  }
+  console.log(`\n  genuinely private (api) : ${nowApi.length}`);
+  console.log(`  WRONGLY KEYED (not-api) : ${nowNotApi.length}`);
+  console.log(`  still unknown           : ${stillUnknown.length}   — transport again; re-run to try once more`);
+
+  // Recover an api id for any that turned out wrongly keyed, exactly as a shard would.
+  const added = [], failed = [];
+  for (const uuid of nowNotApi) {
+    let p = null;
+    try { p = JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, uuid.slice(0, 2).toLowerCase(), `${uuid}.json`), 'utf8')); }
+    catch (e) { failed.push({ uuid, name: null, tried: [], why: 'no player file' }); continue; }
+    const games = Array.isArray(p.games) ? p.games.map(g => (typeof g === 'string' ? g : (g && (g.id || g.gid)))).filter(Boolean) : [];
+    const c = { uuid, name: p.name || null, games: games.slice(0, GAMES_PER),
+                gamesHeld: games.length, private: p.private === true,
+                spectatorIds: Array.isArray(p.spectatorIds) ? p.spectatorIds : [] };
+    const { found, tried } = await recoverApiId(c);
+    if (found) {
+      added.push({ resolvesTo: uuid, apiId: found.apiId, name: found.name, spectatorId: found.spectatorId,
+                   gameId: found.gameId, number: found.number, gamesHeld: c.gamesHeld, ourName: c.name,
+                   pairedBy: found.by || 'name', gameviewName: found.gameviewName || null,
+                   spectatorName: found.spectatorName || null, private: c.private });
+      console.log(`  ✓ ${uuid.slice(0, 8)} ${c.name || '(no name)'} -> ${found.apiId.slice(0, 8)} by ${found.by || 'name'}`);
+    } else {
+      failed.push({ uuid, name: c.name, gamesHeld: c.gamesHeld, private: c.private, tried });
+    }
+  }
+
+  // Fold back into the SAME report the seeder reads, so nothing needs re-merging.
+  rep.wrong = [...(rep.wrong || []), ...added];
+  rep.recoveryFailed = [...(rep.recoveryFailed || []), ...failed];
+  rep.unknownKeys = stillUnknown;
+  rep.totals = rep.totals || {};
+  rep.totals.wronglyKeyed = (rep.totals.wronglyKeyed || 0) + nowNotApi.length;
+  rep.totals.apiIdsRecovered = (rep.totals.apiIdsRecovered || 0) + added.length;
+  rep.totals.recoveryFailed = (rep.totals.recoveryFailed || 0) + failed.length;
+  rep.totals.keysUnknown = stillUnknown.length;
+  rep.retestedAt = new Date().toISOString();
+  fs.writeFileSync(OUT_FILE, JSON.stringify(rep, null, 2));
+
+  console.log(`\n  ${added.length} api id(s) recovered and added to the report`);
+  console.log(`  ${failed.length} wrongly keyed but no api id found`);
+  console.log(`  report now holds ${rep.wrong.length} row(s) for the seeder`);
+  await gitCommit(`census: retested ${unknown.length} unknown key(s), ${nowNotApi.length} wrongly keyed, ${added.length} recovered`,
+                  [path.relative(ROOT, OUT_FILE)]);
+}
+
 async function gvNamespaceRate(nGames) {
   console.log(`Sampling ${nGames} game(s) and testing EVERY profile id gameView returns\n`);
 
@@ -1053,6 +1184,7 @@ async function main() {
   if (WHYNOPAIR) { whyNoPair(); return; }
   if (WHOSE_GAMES) { await whoseGames(WHOSE_GAMES); return; }
   if (GV_NAMESPACE) { await gvNamespaceRate(GV_NAMESPACE); return; }
+  if (RETEST_UNKNOWN) { await retestUnknown(); return; }
 
   let st = loadProgress();
   if (!st) {
