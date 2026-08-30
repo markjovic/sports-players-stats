@@ -90,6 +90,16 @@ target.totals.recoveryFailed  = target.recoveryFailed.length;
 target.totals.wronglyKeyed    = (target.totals.wronglyKeyed || 0) + ((partial.totals && partial.totals.wronglyKeyed) || 0);
 target.totals.wronglyKeyedPrivate = (target.totals.wronglyKeyedPrivate || 0) + ((partial.totals && partial.totals.wronglyKeyedPrivate) || 0);
 target.totals.wronglyKeyedPublic  = (target.totals.wronglyKeyedPublic  || 0) + ((partial.totals && partial.totals.wronglyKeyedPublic)  || 0);
+// The scan counts too. Leaving these at the target's figures would leave the
+// report internally inconsistent — reporting rows from shards whose player files
+// it claims never to have scanned.
+target.totals.playerFilesScanned = (target.totals.playerFilesScanned || 0) + ((partial.totals && partial.totals.playerFilesScanned) || 0);
+target.totals.privateTrue        = (target.totals.privateTrue        || 0) + ((partial.totals && partial.totals.privateTrue)        || 0);
+target.totals.candidates         = (target.totals.candidates         || 0) + ((partial.totals && partial.totals.candidates)         || 0);
+target.totals.keysUnknown        = Array.isArray(target.unknownKeys) ? target.unknownKeys.length : (target.totals.keysUnknown || 0);
+// shardsReported is a count of shards, and the partial covered the ones it did
+// not list as missing.
+target.totals.shardsReported     = (target.totals.shardsReported || 0) + (Array.isArray(partial.shardsMissing) ? 256 - partial.shardsMissing.length : 0);
 
 // The shards the partial covered are no longer missing. Its shardsMissing lists
 // what it did NOT have, so the shards it DID have are the complement — derived,
@@ -107,6 +117,16 @@ if (Array.isArray(target.shardsMissing) && partialHad.length) {
   console.log(`\nshards no longer missing: ${partialHad.join(', ')}  (${before} -> ${target.shardsMissing.length})`);
 }
 
+if (Array.isArray(partial.unknownKeys) && partial.unknownKeys.length) {
+  const have = new Set(target.unknownKeys || []);
+  const add = partial.unknownKeys.filter(k => !have.has(k));
+  target.unknownKeys = [...(target.unknownKeys || []), ...add];
+  target.totals.keysUnknown = target.unknownKeys.length;
+  console.log(`unknown keys carried over: ${add.length}`);
+}
+
 target.mergedAt = new Date().toISOString();
 fs.writeFileSync(TARGET, JSON.stringify(target, null, 2));
+console.log('\n──── TOTALS AFTER MERGE ────');
+for (const [k, v] of Object.entries(target.totals)) console.log(`  ${k}: ${typeof v === 'number' ? v.toLocaleString() : v}`);
 console.log(`\nwrote ${path.relative(ROOT, TARGET)} — ${target.wrong.length} row(s) for the seeder`);
