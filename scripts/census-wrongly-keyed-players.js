@@ -98,6 +98,20 @@ const ALL_PLAYERS  = !!ARGS['all-players'];
 // them. The result is the reliability of the input to the census, the audit, the
 // seeder and the corrector — all of which pair against a gameView id.
 const GV_NAMESPACE = ARGS['gv-namespace'] ? Math.max(1, parseInt(ARGS['gv-namespace'], 10)) : 0;
+// One two-hex-character player bucket. In shard mode the script scans ONLY
+// players/<shard>, does NO git operation of any kind, and writes its result to
+// census-shard-<shard>.json for the aggregator to collect — the house pattern
+// from fetch-profile-stats-matrix.yml, where sharded writers never touch git and
+// one aggregator job makes a single commit.
+//
+// Why: the full population is 418,250 candidates and a single-threaded pass
+// measured 0.9 seconds per key — about 105 hours. Across 256 shards at 20 in
+// parallel that is a few hours.
+const SHARD = typeof ARGS.shard === 'string' ? ARGS.shard.trim().toLowerCase() : null;
+if (SHARD !== null && !/^[0-9a-f]{2}$/.test(SHARD)) {
+  console.error(`FATAL: --shard must be two hex characters, got ${JSON.stringify(ARGS.shard)}`);
+  process.exit(1);
+}
 // Offline. Reads the committed report and tallies WHY recovery failed. Added
 // 2026-08-26 after a run reported "recoveryFailed: 2928" with no breakdown — a
 // counter without examples is a number that cannot be checked, and the reasons
@@ -526,7 +540,8 @@ function scanCandidates() {
     console.log('  This is the complete population. It is ~55x more API calls than the');
     console.log('  gated scan and must be run across several dispatches.');
   }
-  for (const bucket of ALL_BUCKETS) {
+  const buckets = SHARD ? [SHARD] : ALL_BUCKETS;
+  for (const bucket of buckets) {
     const dir = path.join(PLAYERS_DIR, bucket);
     if (!fs.existsSync(dir)) continue;
     for (const f of fs.readdirSync(dir)) {
@@ -948,10 +963,90 @@ async function diagnoseRecovery(n) {
   await gitCommit(`census: recovery diagnosis on ${out.length} players`, [DIAG_REL]);
 }
 
+async function shardMain() {
+  const t0 = Date.now();
+  console.log(`census shard ${SHARD} — testing every player key in players/${SHARD}\n`);
+  fs.mkdirSync(REPORTS_DIR, { recursive: true });
+
+  const s = scanCandidates();
+  console.log(`  ${s.candidates.length} candidate(s) in this shard\n`);
+
+  const keyVerdicts = {};
+  if (s.candidates.length) {
+    await refreshSession();
+    let n = 0;
+    for (const c of s.candidates) {
+      keyVerdicts[c.uuid] = await namespaceVerdict(c.uuid);
+      if (++n % 200 === 0) {
+        const na = Object.values(keyVerdicts).filter(v => v === 'not-api').length;
+        console.log(`  ${n}/${s.candidates.length} tested · not-api so far ${na}`);
+      }
+    }
+  }
+
+  const confirmed = s.candidates.filter(c => keyVerdicts[c.uuid] === 'not-api');
+  const unknown   = s.candidates.filter(c => keyVerdicts[c.uuid] === 'unknown');
+  console.log(`\n  wrongly keyed (not-api) : ${confirmed.length}`);
+  console.log(`  genuinely private (api) : ${s.candidates.filter(c => keyVerdicts[c.uuid] === 'api').length}`);
+  console.log(`  unknown (transport)     : ${unknown.length}   — decided nothing`);
+  console.log(`    of the wrongly keyed, private:true  : ${confirmed.filter(c => c.private).length}`);
+  console.log(`    of the wrongly keyed, private:false : ${confirmed.filter(c => !c.private).length}   ← invisible to the gated scan`);
+
+  // Phase 3 here too: recovering the api id needs the same session and the same
+  // games, so splitting it into another pass would double the work.
+  const wrong = [], failed = [];
+  let gamesRead = 0;
+  for (const c of confirmed) {
+    if (gamesRead >= MAX_GAMES) { console.log(`  --max-games reached; ${confirmed.length - wrong.length - failed.length} left`); break; }
+    const claimed = new Set([t13(c.uuid), ...c.spectatorIds.map(t13)]);
+    let found = null; const tried = [];
+    for (const gameId of c.games) {
+      if (found || gamesRead >= MAX_GAMES) break;
+      gamesRead++;
+      const gv = await gqlGameView(gameId);
+      const sp = await gqlSpectator(gameId);
+      if (!gv.ok || !sp.ok) { tried.push({ gameId, gameview: gv.ok ? 'ok' : gv.why, spectator: sp.ok ? 'ok' : sp.why }); continue; }
+      const gvs = gv.game.statistics || {}, sps = sp.game.statistics || {};
+      const pairs = pairRosters([...gvRows(gvs.home, 'home'), ...gvRows(gvs.away, 'away')],
+                                [...specRows(sps.home, 'home'), ...specRows(sps.away, 'away')]);
+      const hit = pairs.find(p => claimed.has(t13(p.spectatorId)));
+      if (!hit) { tried.push({ gameId, why: 'no pair carried an id this player claims' }); continue; }
+      if (hit.apiId === c.uuid) { tried.push({ gameId, why: 'PlayHQ api id equals our key' }); continue; }
+      found = { gameId, ...hit };
+    }
+    if (found) {
+      wrong.push({ resolvesTo: c.uuid, apiId: found.apiId, name: found.name, spectatorId: found.spectatorId,
+                   gameId: found.gameId, number: found.number, gamesHeld: c.gamesHeld, ourName: c.name,
+                   pairedBy: found.by || 'name', gameviewName: found.gameviewName || null,
+                   spectatorName: found.spectatorName || null, private: c.private });
+      console.log(`  ✓ ${c.uuid.slice(0, 8)} ${c.name || '(no name)'} -> ${found.apiId.slice(0, 8)} by ${found.by || 'name'}`);
+    } else {
+      failed.push({ uuid: c.uuid, name: c.name, gamesHeld: c.gamesHeld, private: c.private, tried });
+    }
+  }
+
+  const out = {
+    shard: SHARD, generatedAt: new Date().toISOString(),
+    scan: { files: s.files, privateTrue: s.privateTrue, noGames: s.noGames, candidates: s.candidates.length },
+    counts: { wronglyKeyed: confirmed.length, unknown: unknown.length,
+              wronglyKeyedPrivate: confirmed.filter(c => c.private).length,
+              wronglyKeyedPublic:  confirmed.filter(c => !c.private).length,
+              apiIdsRecovered: wrong.length, recoveryFailed: failed.length },
+    wrong, recoveryFailed: failed,
+    unknownKeys: unknown.map(c => c.uuid),
+  };
+  const f = path.join(REPORTS_DIR, `census-shard-${SHARD}.json`);
+  fs.writeFileSync(f, JSON.stringify(out));
+  console.log(`\n  recovered ${wrong.length} api id(s), ${failed.length} not recovered`);
+  console.log(`  wrote ${path.relative(ROOT, f)} — NO git operation in a shard job`);
+  console.log(`\nDone in ${((Date.now() - t0) / 1000).toFixed(0)}s`);
+}
+
 async function main() {
   const t0 = Date.now();
   console.log('census-wrongly-keyed-players — every player file keyed on a non-api id\n');
   fs.mkdirSync(REPORTS_DIR, { recursive: true });
+  if (SHARD) { await shardMain(); return; }
 
   if (EXPLAIN) { explainFailures(); return; }
   if (DIAGNOSE)  { await diagnoseRecovery(DIAGNOSE); return; }
