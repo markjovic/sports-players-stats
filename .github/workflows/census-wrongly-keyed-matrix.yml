@@ -46,11 +46,6 @@ on:
         required: false
         default: '100000'
         type: string
-      max_parallel:
-        description: 'Shards in flight (20 is the measured safe figure)'
-        required: false
-        default: '20'
-        type: string
 
 concurrency:
   group: census-matrix
@@ -90,6 +85,10 @@ jobs:
     timeout-minutes: 350
     strategy:
       fail-fast: false
+      # Hardcoded, as it is in fetch-profile-stats-matrix.yml: GitHub does not
+      # accept an expression here. A max_parallel INPUT was offered on this
+      # workflow at first and did nothing at all — a control that silently is not
+      # wired up is worse than no control.
       max-parallel: 20
       matrix:
         shard: ${{ fromJson(needs.generate-shards.outputs.shards) }}
@@ -154,56 +153,109 @@ jobs:
       # Merged into the SAME shape the gated census wrote, so the seeder reads it
       # unchanged. A shard that produced no artifact is counted and named — a
       # missing shard must never look like a shard with nothing to report.
+      # MERGES with what is already committed — it does not replace it.
+      #
+      # 2026-08-30: a two-shard re-run of the stragglers OVERWROTE a completed
+      # 254-shard sweep, because download-artifact only ever sees THIS run's
+      # artifacts and the merge wrote whatever it found. 3,420 wrongly-keyed
+      # players became 24. The report was recoverable from git, but a report that
+      # can be silently replaced by a partial run is a report nobody can trust.
+      #
+      # Rows are now filed per shard under byShard, so a run replaces ONLY the
+      # shards it actually produced and every other shard is carried forward
+      # untouched. A report written before this change has no byShard, so its rows
+      # are carried as "legacy" and de-duplicated by player id — that keeps the
+      # existing sweep intact on the first merged run.
       - name: Merge into reports/wrongly-keyed-census.json
         run: |
           python3 - << 'PYEOF'
           import json, os, glob, datetime
-          files = sorted(glob.glob('/tmp/shards/census-shard-*.json'))
-          seen = {os.path.basename(f)[13:15] for f in files}
-          expected = {format(i, '02x') for i in range(256)}
-          missing = sorted(expected - seen)
+          OUT = 'reports/wrongly-keyed-census.json'
 
-          wrong, failed, unknown = [], [], []
-          files_scanned = private_true = candidates = 0
-          wk = wk_priv = wk_pub = 0
+          prev = {}
+          if os.path.exists(OUT):
+              try:
+                  prev = json.load(open(OUT))
+                  print(f'  existing report found: {len(prev.get("wrong", []))} wrong row(s)')
+              except Exception as e:
+                  print(f'  existing report unreadable ({e}) — treating as absent')
+                  prev = {}
+
+          by_shard = dict(prev.get('byShard') or {})
+          legacy_wrong  = [] if prev.get('byShard') else list(prev.get('wrong') or [])
+          legacy_failed = [] if prev.get('byShard') else list(prev.get('recoveryFailed') or [])
+          legacy_unknown= [] if prev.get('byShard') else list(prev.get('unknownKeys') or [])
+          if legacy_wrong or legacy_failed:
+              print(f'  carrying {len(legacy_wrong)} wrong and {len(legacy_failed)} failed row(s) '
+                    f'forward from a report written before per-shard filing')
+
+          files = sorted(glob.glob('/tmp/shards/census-shard-*.json'))
+          print(f'  {len(files)} shard result(s) in THIS run')
           for f in files:
+              sh = os.path.basename(f)[13:15]
               try:
                   d = json.load(open(f))
               except Exception as e:
                   print(f'  UNREADABLE {f}: {e}')
                   continue
-              s, c = d.get('scan', {}), d.get('counts', {})
-              files_scanned += s.get('files', 0)
-              private_true  += s.get('privateTrue', 0)
-              candidates    += s.get('candidates', 0)
-              wk      += c.get('wronglyKeyed', 0)
-              wk_priv += c.get('wronglyKeyedPrivate', 0)
-              wk_pub  += c.get('wronglyKeyedPublic', 0)
-              wrong   += d.get('wrong', [])
-              failed  += d.get('recoveryFailed', [])
-              unknown += d.get('unknownKeys', [])
+              by_shard[sh] = {
+                'scan': d.get('scan', {}),
+                'counts': d.get('counts', {}),
+                'wrong': d.get('wrong', []),
+                'recoveryFailed': d.get('recoveryFailed', []),
+                'unknownKeys': d.get('unknownKeys', []),
+              }
 
+          # Flatten. Legacy rows first so a shard that has since re-run wins on
+          # de-duplication rather than the older copy.
+          wrong, failed, unknown = list(legacy_wrong), list(legacy_failed), list(legacy_unknown)
+          for sh in sorted(by_shard):
+              wrong  += by_shard[sh]['wrong']
+              failed += by_shard[sh]['recoveryFailed']
+              unknown+= by_shard[sh]['unknownKeys']
+
+          def dedupe(rows, key):
+              seen, out = set(), []
+              for r in rows:
+                  k = r.get(key)
+                  if k in seen: continue
+                  seen.add(k); out.append(r)
+              return out
+          before_w, before_f = len(wrong), len(failed)
+          wrong  = dedupe(wrong, 'resolvesTo')
+          failed = dedupe(failed, 'uuid')
+          unknown = sorted(set(unknown))
+          if before_w != len(wrong) or before_f != len(failed):
+              print(f'  de-duplicated: {before_w - len(wrong)} wrong, {before_f - len(failed)} failed')
+
+          expected = {format(i, '02x') for i in range(256)}
+          missing = sorted(expected - set(by_shard) - ({'legacy'} if legacy_wrong else set()))
+          # A shard is only "missing" if no run has ever reported it. Legacy rows
+          # cannot be attributed to a shard, so when they are present the missing
+          # list is advisory rather than exact and says so.
           totals = {
-            'shardsReported': len(files),
+            'shardsReported': len(by_shard),
             'shardsMissing': len(missing),
-            'playerFilesScanned': files_scanned,
-            'privateTrue': private_true,
-            'candidates': candidates,
-            'wronglyKeyed': wk,
-            'wronglyKeyedPrivate': wk_priv,
-            'wronglyKeyedPublic': wk_pub,
+            'playerFilesScanned': sum(v['scan'].get('files', 0) for v in by_shard.values()),
+            'privateTrue': sum(v['scan'].get('privateTrue', 0) for v in by_shard.values()),
+            'candidates': sum(v['scan'].get('candidates', 0) for v in by_shard.values()),
+            'wronglyKeyed': sum(v['counts'].get('wronglyKeyed', 0) for v in by_shard.values()),
+            'wronglyKeyedPrivate': sum(v['counts'].get('wronglyKeyedPrivate', 0) for v in by_shard.values()),
+            'wronglyKeyedPublic': sum(v['counts'].get('wronglyKeyedPublic', 0) for v in by_shard.values()),
             'apiIdsRecovered': len(wrong),
             'recoveryFailed': len(failed),
             'keysUnknown': len(unknown),
+            'legacyRowsCarried': len(legacy_wrong),
           }
-          print('──── TOTALS ────')
+          print('──── TOTALS (this run merged with everything already committed) ────')
           for k, v in totals.items():
               print(f'  {k}: {v:,}' if isinstance(v, int) else f'  {k}: {v}')
+          if legacy_wrong:
+              print('\n  NOTE: rows carried from a pre-per-shard report cannot be attributed to a')
+              print('  shard, so shardsMissing counts only shards never reported since. It is')
+              print('  advisory this run and exact from the next one.')
           if missing:
-              print(f'\n  ⚠ {len(missing)} shard(s) produced NO result and are NOT in these numbers:')
-              print('    ' + ', '.join(missing[:40]) + (' …' if len(missing) > 40 else ''))
-              print('    Re-dispatch with shards set to just those.')
-          print(f'\n  of the wrongly keyed, private:false : {wk_pub:,}   <- invisible to the gated scan')
+              print(f'\n  {len(missing)} shard(s) never reported: ' + ', '.join(missing[:40]) + (' …' if len(missing) > 40 else ''))
 
           out = {
             'generatedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),
@@ -214,10 +266,11 @@ jobs:
             'wrong': wrong,
             'recoveryFailed': failed,
             'unknownKeys': unknown,
+            'byShard': by_shard,
           }
           os.makedirs('reports', exist_ok=True)
-          json.dump(out, open('reports/wrongly-keyed-census.json', 'w'), indent=2)
-          print('\n  wrote reports/wrongly-keyed-census.json')
+          json.dump(out, open(OUT, 'w'), indent=2)
+          print(f'\n  wrote {OUT} — {len(wrong):,} row(s) for the seeder')
           PYEOF
 
       - name: Commit

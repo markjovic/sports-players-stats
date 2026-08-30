@@ -1,0 +1,86 @@
+# .github/workflows/merge-census-partial.yml
+name: Merge Census Partial
+
+# ONE-OFF. Folds a saved partial census report into the committed full report.
+#
+# On 2026-08-30 a two-shard re-run overwrote a completed 254-shard sweep, because
+# the aggregator wrote whatever artifacts THIS run had produced. The sweep was
+# restored from git; the two-shard result was saved by hand first. This puts those
+# rows back without re-running the shards.
+#
+# The aggregator now files results per shard and merges with what is committed, so
+# the situation cannot recur. Delete this workflow and its script once the rows
+# are in.
+#
+# Dry run by default: it prints every row it would add and writes nothing.
+# No network. No setup-node.
+
+on:
+  workflow_dispatch:
+    inputs:
+      partial:
+        description: 'Saved partial report to fold in'
+        required: false
+        default: 'reports/census-12-fa.json'
+        type: string
+      target:
+        description: 'Report to fold it into'
+        required: false
+        default: 'reports/wrongly-keyed-census.json'
+        type: string
+      mode:
+        description: 'Dry run first, then apply'
+        required: true
+        type: choice
+        options:
+          - dry-run
+          - apply
+        default: dry-run
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/merge-census-partial.js
+            reports
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge
+        run: |
+          ARGS="--partial=${{ inputs.partial }} --target=${{ inputs.target }}"
+          if [ "${{ inputs.mode }}" = "apply" ]; then ARGS="$ARGS --apply"; fi
+          node scripts/merge-census-partial.js $ARGS
+
+      - name: Commit
+        if: ${{ inputs.mode == 'apply' }}
+        run: |
+          git add -- ${{ inputs.target }}
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git diff --staged --shortstat
+          git commit -q -m "census: folded saved partial back into the full sweep"
+          for i in $(seq 1 20); do
+            git fetch origin main \
+              && git merge -q -X ours FETCH_HEAD --no-edit --no-stat \
+              && git push origin HEAD:main && exit 0
+            sleep $((RANDOM % 60 + 1))
+          done
+          echo "push failed after 20 attempts"; exit 1
