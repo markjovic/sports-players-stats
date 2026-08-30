@@ -1,10 +1,669 @@
 {
-  "generatedAt": "2026-08-30T07:04:10.567Z",
-  "scanOnly": true,
-  "scan": {
-    "files": 418536,
+  "generatedAt": "2026-08-30T08:26:51.518Z",
+  "totals": {
+    "playerFilesScanned": 418536,
     "privateTrue": 6419,
-    "noGames": 286
+    "privateTrueButHoldNoGames": 286,
+    "candidates": 418250,
+    "keysTested": 5000,
+    "wronglyKeyed": 36,
+    "genuinelyPrivate": 4964,
+    "keysUnknown": 0,
+    "apiIdsRecovered": 18,
+    "recoveryFailed": 18,
+    "playersStillToProcess": 0
   },
-  "candidateCount": 418250
+  "wrong": [
+    {
+      "resolvesTo": "00330a1d-fd65-4808-ae13-2d03df3c9225",
+      "apiId": "19a1d315-f524-49c8-8548-6fbea7a3168f",
+      "name": "Patrick Monagle",
+      "spectatorId": "00330a1d-fd65-4808-ae13-2d03df3c9225",
+      "gameId": "00cd7051",
+      "number": "10",
+      "gamesHeld": 56,
+      "ourName": "Patrick Monagle",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "0060b2ef-1f51-443e-b52c-dcf6a9ba4201",
+      "apiId": "affde95d-74ae-4480-a928-c20e16f7e766",
+      "name": "Zarah Duscher",
+      "spectatorId": "0060b2ef-1f51-443e-b52c-dcf6a9ba4201",
+      "gameId": "01af871e",
+      "number": "4",
+      "gamesHeld": 142,
+      "ourName": "Zarah Duscher",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "00761fff-2224-4224-9e66-173601c00b27",
+      "apiId": "c06060d1-f14a-4561-b200-ad146d923734",
+      "name": "Alfie Kavanagh",
+      "spectatorId": "00761fff-2224-4224-9e66-173601c00b27",
+      "gameId": "01a1921e",
+      "number": "25",
+      "gamesHeld": 75,
+      "ourName": "Alfie Kavanagh",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "00894313-ec38-4dd0-8bb4-4b70bea27b4f",
+      "apiId": "bd3bd482-8246-49c7-9f3d-061ee66ef2d9",
+      "name": "Sashi Shearn",
+      "spectatorId": "00894313-ec38-4dd0-8bb4-4b70bea27b4f",
+      "gameId": "0c1ea4b8",
+      "number": "62",
+      "gamesHeld": 6,
+      "ourName": null,
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "009085de-d85e-4f7f-ba06-91cf5ada46bd",
+      "apiId": "843cb12f-d076-4cd2-901e-471445d860fc",
+      "name": "VICTORIA BONSON",
+      "spectatorId": "8f8c415e-f110-43bf-acb9-37fbf26feda4",
+      "gameId": "085b544c",
+      "number": "40",
+      "gamesHeld": 33,
+      "ourName": "Victoria Bonson",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "00c87f10-94f1-4d0b-89ea-6c9cd7006e90",
+      "apiId": "ecfd68ac-da90-43c9-99ee-280df7906e56",
+      "name": "Lucas Maguire",
+      "spectatorId": "00c87f10-94f1-4d0b-89ea-6c9cd7006e90",
+      "gameId": "00b058b1",
+      "number": "24",
+      "gamesHeld": 279,
+      "ourName": "Lucas Maguire",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "00d3be40-b52a-4915-9af3-bd56854d9021",
+      "apiId": "2a04e645-1b42-48bb-8927-5b968e0df092",
+      "name": "Isaac Griffith",
+      "spectatorId": "00d3be40-b52a-4915-9af3-bd56854d9021",
+      "gameId": "015861ff",
+      "number": "48",
+      "gamesHeld": 172,
+      "ourName": "Isaac Griffith",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "014c9bf5-2526-492b-a1f5-23177296c25f",
+      "apiId": "9140fae9-ef9e-4f29-90fe-f60a06e6fbac",
+      "name": "Alexandra Miles",
+      "spectatorId": "4f5aa342-4d86-4350-90bc-0b70bd82cd8a",
+      "gameId": "00a86bdf",
+      "number": "16",
+      "gamesHeld": 86,
+      "ourName": "Alexandra Miles",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "014d0446-f395-4982-bbae-de60c76dad27",
+      "apiId": "ac487f23-7fee-48a0-931a-8d8c7f238527",
+      "name": "Jacob Goodwin",
+      "spectatorId": "1b5a1938-0176-4964-a4dd-4d9be2c72d37",
+      "gameId": "00d5a751",
+      "number": "6",
+      "gamesHeld": 17,
+      "ourName": "Jacob Goodwin",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "01bce8f8-4dc9-4790-92f0-74301b7031db",
+      "apiId": "3ab68d82-89a2-48eb-b08c-1d913e233c7a",
+      "name": "Tomas Muniz",
+      "spectatorId": "01bce8f8-4dc9-4790-92f0-74301b7031db",
+      "gameId": "00dbf841",
+      "number": "13",
+      "gamesHeld": 147,
+      "ourName": "Tomas Muniz",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "023de77d-7c7d-426f-9ba7-f609581c8df8",
+      "apiId": "85e767fb-2d91-4dc4-ad1a-02726f732961",
+      "name": "Thomas Plummer",
+      "spectatorId": "023de77d-7c7d-426f-9ba7-f609581c8df8",
+      "gameId": "118754df",
+      "number": "7",
+      "gamesHeld": 5,
+      "ourName": "Thomas Plummer",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "0240359e-71f3-4909-9224-8d7e636a3095",
+      "apiId": "3368a9b1-e1b8-48bc-829e-a75f27396427",
+      "name": "Zac Andjelkovic",
+      "spectatorId": "0240359e-71f3-4909-9224-8d7e636a3095",
+      "gameId": "02156519",
+      "number": "53",
+      "gamesHeld": 12,
+      "ourName": "Zac Andjelkovic",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "024d0c41-5420-4318-a691-156f7d24bb8a",
+      "apiId": "14be1967-dab8-4d24-99a1-d397fb046140",
+      "name": "Yulani gunawardana",
+      "spectatorId": "024d0c41-5420-4318-a691-156f7d24bb8a",
+      "gameId": "1a217d4f",
+      "number": "78",
+      "gamesHeld": 9,
+      "ourName": "Yulani Gunawardana",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "0256edd5-4f3c-4b6e-93ee-d7c5b6e92657",
+      "apiId": "04baa46c-42c8-4eb9-9180-460421153676",
+      "name": "Aubree Eldred",
+      "spectatorId": "0256edd5-4f3c-4b6e-93ee-d7c5b6e92657",
+      "gameId": "025c44f5",
+      "number": "7",
+      "gamesHeld": 28,
+      "ourName": "Aubree Eldred",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "02582d72-df81-4fec-95a6-e10a76e70b1d",
+      "apiId": "bd4191d1-8193-47ed-86e5-8c88036a987c",
+      "name": "William Linke",
+      "spectatorId": "eb334f3b-c5eb-42dc-90a8-9a492ecce2c2",
+      "gameId": "0ca32e79",
+      "number": "15",
+      "gamesHeld": 11,
+      "ourName": "William Linke",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "029ab3f7-fa21-41ed-bc0a-ea03aa23edfd",
+      "apiId": "f26b8a95-0540-4bc8-a294-5c03275f71a2",
+      "name": "Breeanna Williams",
+      "spectatorId": "029ab3f7-fa21-41ed-bc0a-ea03aa23edfd",
+      "gameId": "2e833798",
+      "number": "21",
+      "gamesHeld": 10,
+      "ourName": "Breeanna Williams",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "02df691a-311d-4ea8-a75a-a46b6825a47d",
+      "apiId": "b8aa658d-a4f2-4820-a4af-c01034b58d63",
+      "name": "Michael Mccomb",
+      "spectatorId": "02df691a-311d-4ea8-a75a-a46b6825a47d",
+      "gameId": "0039b493",
+      "number": "98",
+      "gamesHeld": 109,
+      "ourName": "Michael Mccomb",
+      "pairedBy": "name",
+      "gameviewName": null,
+      "spectatorName": null
+    },
+    {
+      "resolvesTo": "02fed171-13c4-4b49-b9a4-21336bbea1c2",
+      "apiId": "a632d532-b46e-4a9e-9e6b-7a226cec3f53",
+      "name": "Michelle Sheridan",
+      "spectatorId": "02fed171-13c4-4b49-b9a4-21336bbea1c2",
+      "gameId": "65f3203c",
+      "number": "9",
+      "gamesHeld": 6,
+      "ourName": "Michelle Sheridan",
+      "pairedBy": "elimination",
+      "gameviewName": "Michelle Sambell",
+      "spectatorName": "Michelle Sheridan"
+    }
+  ],
+  "recoveryFailed": [
+    {
+      "uuid": "0038fe99-5f6f-4ed7-8abb-42e0c297d290",
+      "name": "Conor Ryan",
+      "gamesHeld": 42,
+      "tried": [
+        {
+          "gameId": "0100c5df",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "02b22d50",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "0c9f363e",
+          "gameview": "no-game",
+          "spectator": "ok"
+        }
+      ]
+    },
+    {
+      "uuid": "003e57d6-3cc9-4db8-a2ba-c6aeca56a8d4",
+      "name": "Charlie Chisholm",
+      "gamesHeld": 47,
+      "tried": [
+        {
+          "gameId": "040d422b",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "061379b1",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "1339ea76",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        }
+      ]
+    },
+    {
+      "uuid": "0046445e-936f-41e0-a0a7-7a15df890b43",
+      "name": "Arsham Mokhtari",
+      "gamesHeld": 15,
+      "tried": [
+        {
+          "gameId": "07481eec",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "3a95e2b5",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "3d3290de",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        }
+      ]
+    },
+    {
+      "uuid": "0096751c-0bb4-46e0-a8ba-e36e35aae1d2",
+      "name": "Nathan Hargrave",
+      "gamesHeld": 1,
+      "tried": [
+        {
+          "gameId": "cdd01f3b",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        }
+      ]
+    },
+    {
+      "uuid": "009f5591-e57d-4046-8be1-e509977e3074",
+      "name": "Samual Walsh Bannam",
+      "gamesHeld": 17,
+      "tried": [
+        {
+          "gameId": "032bbf2f",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "0d9d2050",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "1377b143",
+          "gameview": "no-game",
+          "spectator": "ok"
+        }
+      ]
+    },
+    {
+      "uuid": "00d535b8-67a0-4fa1-bd17-f781eb608fae",
+      "name": "Chris Bulmer",
+      "gamesHeld": 4,
+      "tried": [
+        {
+          "gameId": "0a034917",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "552b93eb",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "57535cd1",
+          "gameview": "no-game",
+          "spectator": "ok"
+        }
+      ]
+    },
+    {
+      "uuid": "013c4b74-102b-4c37-bfd3-4fcf42c204f1",
+      "name": "Molly McPhee",
+      "gamesHeld": 8,
+      "tried": [
+        {
+          "gameId": "02671e0b",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "09bcccfd",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "0e92c7cb",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        }
+      ]
+    },
+    {
+      "uuid": "0173b15e-6e1b-4881-8e25-9659df6afb68",
+      "name": "Jayven Yeoh",
+      "gamesHeld": 64,
+      "tried": [
+        {
+          "gameId": "00b534de",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "00de502d",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "0b1a9301",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        }
+      ]
+    },
+    {
+      "uuid": "01841c82-b4f3-4ade-a70c-4fc1d496f75a",
+      "name": "Matt Bourke",
+      "gamesHeld": 40,
+      "tried": [
+        {
+          "gameId": "0558c54c",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "11b42b9a",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "15d6df0b",
+          "gameview": "no-game",
+          "spectator": "ok"
+        }
+      ]
+    },
+    {
+      "uuid": "01a1dd6d-8759-4981-a07f-48cff70f00cb",
+      "name": "Shane Jayawardena",
+      "gamesHeld": 12,
+      "tried": [
+        {
+          "gameId": "0b033b5a",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "1e736426",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "33c7d68e",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        }
+      ]
+    },
+    {
+      "uuid": "01a9ae0c-51ef-49e5-a192-2b7e5ba47c12",
+      "name": "Thomas Mott",
+      "gamesHeld": 81,
+      "tried": [
+        {
+          "gameId": "00af7271",
+          "gameview": "no-game",
+          "spectator": "graphql:nocode:game could not be found or was not electronically scored"
+        },
+        {
+          "gameId": "01176d68",
+          "gameview": "no-game",
+          "spectator": "graphql:nocode:game could not be found or was not electronically scored"
+        },
+        {
+          "gameId": "060c0113",
+          "gameview": "no-game",
+          "spectator": "ok"
+        }
+      ]
+    },
+    {
+      "uuid": "01abb7b6-d458-4762-a0f4-97e461f89a9d",
+      "name": "Nhykira Mansfield",
+      "gamesHeld": 6,
+      "tried": [
+        {
+          "gameId": "49a479cd",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "81e7bb14",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "92767f9d",
+          "gameview": "no-game",
+          "spectator": "ok"
+        }
+      ]
+    },
+    {
+      "uuid": "01c68307-2d37-44a8-8f30-d179c27dda96",
+      "name": "Max Sheedy",
+      "gamesHeld": 102,
+      "tried": [
+        {
+          "gameId": "020d8a74",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "035b6ede",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "0712ba83",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        }
+      ]
+    },
+    {
+      "uuid": "01c8220e-4754-496d-96a1-2ecb9f619c28",
+      "name": "Emilia Dumovic",
+      "gamesHeld": 42,
+      "tried": [
+        {
+          "gameId": "0cfd10a3",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "0e598a0f",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "149c6920",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        }
+      ]
+    },
+    {
+      "uuid": "02260b7e-836a-4b74-ada8-5d20669c2607",
+      "name": "Darius Harrison",
+      "gamesHeld": 9,
+      "tried": [
+        {
+          "gameId": "31b15efc",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "3b7935df",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "49eee9e8",
+          "gameview": "no-game",
+          "spectator": "ok"
+        }
+      ]
+    },
+    {
+      "uuid": "023a4c89-e891-426d-ae10-0a74287b48dd",
+      "name": "Ella Niyonsenga",
+      "gamesHeld": 14,
+      "tried": [
+        {
+          "gameId": "02bd3f11",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "08b21e6e",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "23a86210",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        }
+      ]
+    },
+    {
+      "uuid": "028ee577-b1ac-4b6d-ae94-2ed5c988527e",
+      "name": "Connor Gostencnik",
+      "gamesHeld": 23,
+      "tried": [
+        {
+          "gameId": "061a5636",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "1115742f",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        },
+        {
+          "gameId": "291e07a5",
+          "gameview": "ok",
+          "spectator": "ok",
+          "why": "no pair carried an id this player claims"
+        }
+      ]
+    },
+    {
+      "uuid": "02b29be8-404f-4c5d-a4f5-b88c01d0be9f",
+      "name": "Alex Homicki",
+      "gamesHeld": 5,
+      "tried": [
+        {
+          "gameId": "6defe305",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "9c1246e4",
+          "gameview": "no-game",
+          "spectator": "ok"
+        },
+        {
+          "gameId": "b9499b51",
+          "gameview": "no-game",
+          "spectator": "ok"
+        }
+      ]
+    }
+  ],
+  "complete": true
 }
