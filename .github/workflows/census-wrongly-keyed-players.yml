@@ -38,6 +38,11 @@ on:
         required: false
         default: '0'
         type: string
+      retest_unknown:
+        description: 'Re-test the keys that came back unknown'
+        required: false
+        default: false
+        type: boolean
       all_players:
         description: 'Test EVERY player, not just private ones'
         required: false
@@ -128,5 +133,6 @@ jobs:
           if [ "${{ inputs.scan_only }}" = "true" ] || [ "${{ inputs.scan_only }}" = "True" ]; then ARGS="$ARGS --scan-only"; fi
           if [ "${{ inputs.reset }}" = "true" ] || [ "${{ inputs.reset }}" = "True" ]; then ARGS="$ARGS --reset"; fi
           if [ "${{ inputs.gv_namespace }}" != "0" ] && [ -n "${{ inputs.gv_namespace }}" ]; then ARGS="$ARGS --gv-namespace=${{ inputs.gv_namespace }}"; fi
+          if [ "${{ inputs.retest_unknown }}" = "true" ] || [ "${{ inputs.retest_unknown }}" = "True" ]; then ARGS="$ARGS --retest-unknown"; fi
           if [ "${{ inputs.all_players }}" = "true" ] || [ "${{ inputs.all_players }}" = "True" ]; then ARGS="$ARGS --all-players"; fi
           node scripts/census-wrongly-keyed-players.js $ARGS
