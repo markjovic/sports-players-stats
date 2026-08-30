@@ -1,0 +1,235 @@
+# .github/workflows/census-wrongly-keyed-matrix.yml
+name: Census Wrongly Keyed (Matrix)
+
+# Tests EVERY player file key across the whole store, sharded 256 ways.
+#
+# WHY A MATRIX. The full candidate population is 418,250 and a single-threaded
+# pass measured 0.9 seconds per key — about 105 hours. At 256 shards with 20 in
+# parallel that is a few hours.
+#
+# STRUCTURE COPIED FROM fetch-profile-stats-matrix.yml, which is the proven
+# pattern in this repo:
+#   * one job per two-hex-character player bucket
+#   * max-parallel 20 — api.playhq.com is shared with the nightly, and gameView
+#     was MEASURED clean at 5 concurrent and hitting a sustained 403 wall at 25
+#   * sparse checkout of only that shard's players, aliases and index
+#   * NO git operation in a shard job at all — each writes one artifact
+#   * ONE aggregator job that collects every shard and makes a SINGLE commit
+#   * NO actions/setup-node anywhere (these jobs fetch api.playhq.com)
+#
+# OUTPUT. reports/wrongly-keyed-census.json, in the same shape the gated census
+# produced, so seed-apiid-from-playhq-pairs reads it with no change.
+#
+# It writes nothing to players/, games/ or players/aliases/. It measures and
+# recovers api ids; the repair is still seed-apiid + fold, run separately.
+
+on:
+  workflow_dispatch:
+    inputs:
+      shards:
+        description: 'Shards to run, e.g. ["00","01"]. Blank = all 256.'
+        required: false
+        default: ''
+        type: string
+      all_players:
+        description: 'Test EVERY player, not just private ones'
+        required: false
+        default: true
+        type: boolean
+      games_per_player:
+        description: 'Games to try per player when recovering an api id'
+        required: false
+        default: '3'
+        type: string
+      max_games:
+        description: 'Cap on game reads per shard'
+        required: false
+        default: '100000'
+        type: string
+      max_parallel:
+        description: 'Shards in flight (20 is the measured safe figure)'
+        required: false
+        default: '20'
+        type: string
+
+concurrency:
+  group: census-matrix
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  generate-shards:
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.gen.outputs.shards }}
+    steps:
+      - id: gen
+        env:
+          INPUT_SHARDS: ${{ inputs.shards }}
+        run: |
+          shards=$(python3 - << 'PYEOF'
+          import json, os, re
+          raw = (os.environ.get('INPUT_SHARDS') or '').strip()
+          inner = raw[1:-1] if raw.startswith('[') and raw.endswith(']') else raw
+          toks = [t.strip().strip('"').strip("'") for t in inner.split(',')]
+          toks = [t.lower() for t in toks if re.fullmatch(r'[0-9a-fA-F]{2}', t or '')]
+          if not toks:
+              toks = [format(i, '02x') for i in range(256)]
+          print(json.dumps(toks))
+          PYEOF
+          )
+          n=$(printf '%s' "$shards" | python3 -c 'import sys,json; print(len(json.load(sys.stdin)))')
+          echo "Shards selected: $n"
+          echo "shards=$shards" >> $GITHUB_OUTPUT
+
+  census:
+    needs: generate-shards
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: ${{ fromJson(needs.generate-shards.outputs.shards) }}
+    steps:
+      # Only this shard's players. No game files: recovery reads games from the
+      # player's own games[] and asks PlayHQ, so games/bv is not needed here.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/census-wrongly-keyed-players.js
+            scripts/lib
+            players/${{ matrix.shard }}
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Census shard ${{ matrix.shard }}
+        env:
+          ALL_PLAYERS: ${{ (inputs.all_players == true || inputs.all_players == 'true') && 'true' || '' }}
+        run: |
+          ARGS=(--shard=${{ matrix.shard }} --games-per-player=${{ inputs.games_per_player }} --max-games=${{ inputs.max_games }})
+          [ -n "$ALL_PLAYERS" ] && ARGS+=(--all-players)
+          node scripts/census-wrongly-keyed-players.js "${ARGS[@]}"
+
+      - name: Upload shard result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: census-shard-${{ matrix.shard }}
+          path: reports/census-shard-${{ matrix.shard }}.json
+          if-no-files-found: warn
+          retention-days: 3
+
+  aggregate:
+    needs: census
+    if: always() && !cancelled()
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            reports
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Download every shard result
+        uses: actions/download-artifact@v4
+        with:
+          pattern: census-shard-*
+          path: /tmp/shards
+          merge-multiple: true
+
+      # Merged into the SAME shape the gated census wrote, so the seeder reads it
+      # unchanged. A shard that produced no artifact is counted and named — a
+      # missing shard must never look like a shard with nothing to report.
+      - name: Merge into reports/wrongly-keyed-census.json
+        run: |
+          python3 - << 'PYEOF'
+          import json, os, glob, datetime
+          files = sorted(glob.glob('/tmp/shards/census-shard-*.json'))
+          seen = {os.path.basename(f)[13:15] for f in files}
+          expected = {format(i, '02x') for i in range(256)}
+          missing = sorted(expected - seen)
+
+          wrong, failed, unknown = [], [], []
+          files_scanned = private_true = candidates = 0
+          wk = wk_priv = wk_pub = 0
+          for f in files:
+              try:
+                  d = json.load(open(f))
+              except Exception as e:
+                  print(f'  UNREADABLE {f}: {e}')
+                  continue
+              s, c = d.get('scan', {}), d.get('counts', {})
+              files_scanned += s.get('files', 0)
+              private_true  += s.get('privateTrue', 0)
+              candidates    += s.get('candidates', 0)
+              wk      += c.get('wronglyKeyed', 0)
+              wk_priv += c.get('wronglyKeyedPrivate', 0)
+              wk_pub  += c.get('wronglyKeyedPublic', 0)
+              wrong   += d.get('wrong', [])
+              failed  += d.get('recoveryFailed', [])
+              unknown += d.get('unknownKeys', [])
+
+          totals = {
+            'shardsReported': len(files),
+            'shardsMissing': len(missing),
+            'playerFilesScanned': files_scanned,
+            'privateTrue': private_true,
+            'candidates': candidates,
+            'wronglyKeyed': wk,
+            'wronglyKeyedPrivate': wk_priv,
+            'wronglyKeyedPublic': wk_pub,
+            'apiIdsRecovered': len(wrong),
+            'recoveryFailed': len(failed),
+            'keysUnknown': len(unknown),
+          }
+          print('──── TOTALS ────')
+          for k, v in totals.items():
+              print(f'  {k}: {v:,}' if isinstance(v, int) else f'  {k}: {v}')
+          if missing:
+              print(f'\n  ⚠ {len(missing)} shard(s) produced NO result and are NOT in these numbers:')
+              print('    ' + ', '.join(missing[:40]) + (' …' if len(missing) > 40 else ''))
+              print('    Re-dispatch with shards set to just those.')
+          print(f'\n  of the wrongly keyed, private:false : {wk_pub:,}   <- invisible to the gated scan')
+
+          out = {
+            'generatedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'source': 'census-wrongly-keyed-matrix',
+            'complete': not missing,
+            'shardsMissing': missing,
+            'totals': totals,
+            'wrong': wrong,
+            'recoveryFailed': failed,
+            'unknownKeys': unknown,
+          }
+          os.makedirs('reports', exist_ok=True)
+          json.dump(out, open('reports/wrongly-keyed-census.json', 'w'), indent=2)
+          print('\n  wrote reports/wrongly-keyed-census.json')
+          PYEOF
+
+      - name: Commit
+        run: |
+          git add -- reports/wrongly-keyed-census.json
+          if git diff --staged --quiet; then echo "nothing to commit"; exit 0; fi
+          git diff --staged --shortstat
+          git commit -q -m "census matrix: full-store sweep, every player key tested"
+          for i in $(seq 1 40); do
+            git fetch origin main \
+              && git merge -q -X ours FETCH_HEAD --no-edit --no-stat \
+              && git push origin HEAD:main && exit 0
+            sleep $((RANDOM % 60 + 1))
+          done
+          echo "push failed after 40 attempts"; exit 1
