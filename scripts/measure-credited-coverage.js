@@ -105,8 +105,16 @@ if (!['all', 'withu', 'nou'].includes(STRATUM)) {
   process.exit(1);
 }
 
-const REPORT_FILE = path.join(ROOT, 'reports', 'measure-credited-coverage.json');
-const REPORT_REL  = 'reports/measure-credited-coverage.json';
+// ONE FILE PER STRATUM. The first version used a single fixed path, so a second
+// stratum could only run by discarding the first stratum's result — 1,200 API
+// calls thrown away to answer a different question. The parameter guard below
+// still refuses to blend two different sample/seed values WITHIN a stratum.
+const REPORT_REL  = `reports/measure-credited-coverage-${STRATUM}.json`;
+const REPORT_FILE = path.join(ROOT, REPORT_REL);
+// Written by the first version, before the path was keyed on stratum.
+const LEGACY_REL  = 'reports/measure-credited-coverage.json';
+const LEGACY_FILE = path.join(ROOT, LEGACY_REL);
+let legacyAdopted = false;
 
 // ─── Config, copied from fetch-profile-stats.js ──────────────────────────────
 
@@ -513,8 +521,32 @@ function classifyPlayer(player, credited, gameSid, forfeitSet) {
   let overlap = 0;
   const cnc = { forfeit: 0, inU: 0, notInGamesBv: 0, noRegSeason: 0, residue: 0 };
   const cnp = { gameAbsent: 0, gameHeld: 0 };
-  const examples = { forfeit: [], inU: [], notInGamesBv: [], noRegSeason: [], residue: [], gameAbsent: [], gameHeld: [] };
+  const examples = { forfeit: [], inU: [], notInGamesBv: [], noRegSeason: [], residue: [], gameAbsent: [], gameHeld: [], uCredited: [] };
   const addEx = (k, gid) => { if (examples[k].length < 3) examples[k].push(gid); };
+
+  // ── THE `u` PARTITION ─────────────────────────────────────────────────────
+  // Computed INDEPENDENTLY of the exclusive buckets above, and it has to be.
+  // A `u` game that PlayHQ credits lands in `overlap` and a `u` game that is
+  // also a forfeit lands in `forfeit`, so neither is visible in the inU bucket.
+  // inU therefore has no denominator and cannot answer the question.
+  //
+  // The question is: `u` is presented in StatTrack as an appearance for a team
+  // the player never registered with. If PlayHQ credits those games anyway,
+  // then PlayHQ holds a registration we do not, and the field is measuring a
+  // gap in OUR capture rather than unregistered play.
+  //
+  // Forfeits are separated first because the credited side excludes them by
+  // construction (fetch-profile-stats.js L393) — leaving them in would push the
+  // rate toward "not credited" for a reason that has nothing to do with
+  // registrations. The rate that matters is uCredited / (uCredited + uNotCredited).
+  const u = { total: 0, credited: 0, notCredited: 0, forfeit: 0, notCaptured: 0 };
+  for (const gid of uGids) {
+    u.total++;
+    if (!captured.has(gid)) u.notCaptured++;   // u is built FROM games[], so this should be 0
+    if (forfeitSet.has(gid)) { u.forfeit++; continue; }
+    if (credited.has(gid))   { u.credited++; addEx('uCredited', gid); }
+    else                     { u.notCredited++; }
+  }
 
   for (const gid of captured) {
     if (credited.has(gid)) { overlap++; continue; }
@@ -545,6 +577,7 @@ function classifyPlayer(player, credited, gameSid, forfeitSet) {
       overlap,
       capturedNotCredited: cnc,
       creditedNotCaptured: cnp,
+      u,
       examples,
     },
   };
@@ -559,12 +592,36 @@ function classifyPlayer(player, credited, gameSid, forfeitSet) {
 function loadReport() {
   if (FRESH) return null;
   try { return JSON.parse(fs.readFileSync(REPORT_FILE, 'utf8')); }
-  catch { return null; }
+  catch { /* fall through to the legacy path */ }
+  // One-time migration: adopt the unsuffixed file if it belongs to this stratum.
+  try {
+    const legacy = JSON.parse(fs.readFileSync(LEGACY_FILE, 'utf8'));
+    if (legacy && legacy.stratum === STRATUM) {
+      console.log(`  Adopting ${LEGACY_REL} (stratum=${STRATUM}) into ${REPORT_REL}`);
+      legacyAdopted = true;
+      return legacy;
+    }
+  } catch { /* no legacy file, or it belongs to another stratum — leave it alone */ }
+  return null;
 }
 
 function saveReport(report) {
   fs.mkdirSync(path.dirname(REPORT_FILE), { recursive: true });
   fs.writeFileSync(REPORT_FILE, JSON.stringify(report), 'utf8');
+}
+
+// Paths for gitCommit. On the run that adopts the legacy file, its deletion is
+// staged in the SAME commit as the new file, so the two can never both exist
+// and disagree about what the measurement says.
+function commitPaths() {
+  // NOT during a dry run. Deleting the legacy file without committing the
+  // deletion would remove a real measurement from the worktree on a run that
+  // promised to change nothing.
+  if (!DRY_RUN && legacyAdopted && fs.existsSync(LEGACY_FILE)) {
+    try { fs.unlinkSync(LEGACY_FILE); } catch { /* already gone */ }
+    return [REPORT_REL, LEGACY_REL];
+  }
+  return [REPORT_REL];
 }
 
 // ─── Rollup ───────────────────────────────────────────────────────────────────
@@ -584,8 +641,13 @@ function rollup(report) {
     overlapTotal:      0,
     capturedNotCredited: { total: 0, forfeit: 0, inU: 0, notInGamesBv: 0, noRegSeason: 0, residue: 0 },
     creditedNotCaptured: { total: 0, gameAbsent: 0, gameHeld: 0 },
-    examples: { forfeit: [], inU: [], notInGamesBv: [], noRegSeason: [], residue: [], gameAbsent: [], gameHeld: [] },
+    examples: { forfeit: [], inU: [], notInGamesBv: [], noRegSeason: [], residue: [], gameAbsent: [], gameHeld: [], uCredited: [] },
     playersWithResidue: 0,
+    // uRecorded is denominated on records that actually CARRY the u partition.
+    // Reports written before it existed have none, and reporting a rate over a
+    // population that was never measured is how a blank becomes a zero.
+    uRecorded: 0, playersWithU: 0,
+    u: { total: 0, credited: 0, notCredited: 0, forfeit: 0, notCaptured: 0 },
   };
 
   for (const [uuid, p] of Object.entries(report.players || {})) {
@@ -610,6 +672,16 @@ function rollup(report) {
     r.creditedNotCaptured.gameHeld   += cnp.gameHeld   || 0;
 
     if ((cnc.residue || 0) > 0) r.playersWithResidue++;
+
+    if (p.u && typeof p.u === 'object') {
+      r.uRecorded++;
+      if ((p.u.total || 0) > 0) r.playersWithU++;
+      r.u.total       += p.u.total       || 0;
+      r.u.credited    += p.u.credited    || 0;
+      r.u.notCredited += p.u.notCredited || 0;
+      r.u.forfeit     += p.u.forfeit     || 0;
+      r.u.notCaptured += p.u.notCaptured || 0;
+    }
 
     for (const key of Object.keys(r.examples)) {
       const ex = (p.examples && p.examples[key]) || [];
@@ -654,6 +726,22 @@ function printRollup(r) {
   console.log(`\n  CREDITED BUT NOT CAPTURED : ${n.total.toLocaleString()}   (nothing offline can answer this today)`);
   console.log(`    game absent from games/bv : ${n.gameAbsent.toLocaleString()}  ${pct(n.gameAbsent, n.total)}`);
   console.log(`    game held, not attributed : ${n.gameHeld.toLocaleString()}  ${pct(n.gameHeld, n.total)}`);
+
+  const U = r.u;
+  const uTestable = U.credited + U.notCredited;
+  console.log(`\n  \u0060u\u0060 SEMANTICS CHECK`);
+  if (r.uRecorded === 0) {
+    console.log('    no records carry the u partition — this report predates it, re-run with --fresh');
+  } else {
+    console.log(`    players carrying a u array : ${r.playersWithU.toLocaleString()} of ${r.uRecorded.toLocaleString()} measured`);
+    console.log(`    u appearances              : ${U.total.toLocaleString()}`);
+    console.log(`      forfeit (untestable)     : ${U.forfeit.toLocaleString()}`);
+    console.log(`      CREDITED by PlayHQ       : ${U.credited.toLocaleString()}  ${pct(U.credited, uTestable)}   \u25c4 PlayHQ holds a registration we do not`);
+    console.log(`      not credited             : ${U.notCredited.toLocaleString()}  ${pct(U.notCredited, uTestable)}   \u25c4 genuinely unregistered play`);
+    if (U.notCaptured > 0) {
+      console.log(`      \u26a0 in u but NOT in games[] : ${U.notCaptured.toLocaleString()} — u is built FROM games[], so this should be zero`);
+    }
+  }
 
   console.log('\n  Examples (uuid8:gid), capped:');
   for (const [k, v] of Object.entries(r.examples)) {
@@ -759,7 +847,14 @@ async function main() {
 
   if (toFetch.length === 0) {
     console.log('\n  Nothing left to fetch — printing the rollup from the stored report.');
-    printRollup(rollup(report));
+    // Persist even here. Without this, a migration adopted above is discarded
+    // and the legacy file is left as the only copy — the run would announce a
+    // move it never made.
+    report.updatedAt = new Date().toISOString();
+    report.rollup    = rollup(report);
+    saveReport(report);
+    gitCommit(`measure-credited-coverage[${STRATUM}]: ${Object.keys(report.players).length} players recorded (no new fetches)`, commitPaths());
+    printRollup(report.rollup);
     return;
   }
 
@@ -837,7 +932,7 @@ async function main() {
         console.error(`     example credited id : ${sampleCreditedId} (length ${sampleCreditedId ? sampleCreditedId.length : 0})`);
         console.error('     Settle the id form before running this again.');
         saveReport(report);
-        gitCommit('measure-credited-coverage: aborted on id-form mismatch', [REPORT_REL]);
+        gitCommit(`measure-credited-coverage[${STRATUM}]: aborted on id-form mismatch`, commitPaths());
         process.exit(1);
       }
       console.log(`  ✔ id-form check passed — ${r0.overlapTotal.toLocaleString()} games in common across the first batch`);
@@ -847,7 +942,7 @@ async function main() {
       report.updatedAt = new Date().toISOString();
       report.rollup = rollup(report);
       saveReport(report);
-      gitCommit(`measure-credited-coverage: ${Object.keys(report.players).length} players recorded`, [REPORT_REL]);
+      gitCommit(`measure-credited-coverage[${STRATUM}]: ${Object.keys(report.players).length} players recorded`, commitPaths());
       sinceCommit = 0;
     }
 
@@ -858,7 +953,7 @@ async function main() {
   report.finishedAt = blocked ? null : new Date().toISOString();
   report.rollup     = rollup(report);
   saveReport(report);
-  gitCommit(`measure-credited-coverage: ${Object.keys(report.players).length} players recorded${blocked ? ' (blocked)' : ' (complete)'}`, [REPORT_REL]);
+  gitCommit(`measure-credited-coverage[${STRATUM}]: ${Object.keys(report.players).length} players recorded${blocked ? ' (blocked)' : ' (complete)'}`, commitPaths());
 
   console.log('\n─'.repeat(70));
   console.log(`  Fetched this run : ${fetched.toLocaleString()}`);
