@@ -16,10 +16,29 @@
 //   target absent  -> PROMOTE: rewrite at players/{apiPrefix}/{apiId}.json
 //                     with uuid=apiId, apiId field dropped, spectatorIds
 //                     unioned; delete the old file.
-//   target exists  -> MERGE: keeper = more games[] entries (tie -> the
-//                     api-keyed record, then larger file — the rekey-plan
-//                     comparator); scaffolds/games/teams/gameTids unioned;
-//                     stats NEVER summed; old file deleted.
+//   target exists  -> MERGE: scaffolds/games/teams/gameTids unioned either way;
+//                     the STATS BLOCK goes to whichever record actually holds
+//                     stats (see statsRank), tie -> the fresher statsChecked,
+//                     then the api-keyed record; stats NEVER summed; old file
+//                     deleted.
+//                     CHANGED 2026-08-31. The keeper used to be whichever record
+//                     had more games[] entries. That is a captured-side count
+//                     being used to decide ownership of credited-side data, and
+//                     in the population it actually meets it is inverted: across
+//                     the 528 cases seed-apiid-from-playhq-pairs.js had to refuse,
+//                     the spectator-keyed stub held a median of 68 games and the
+//                     real api-keyed profile held 1. games[] is assigned by
+//                     build-player-games resolving rosters through the alias
+//                     index, so before an alias exists the stub collects
+//                     everything — the count measures which key the resolver
+//                     favoured, not which record is richer. The stub therefore
+//                     won, and because only seasons/games/teams/gameTids/name are
+//                     unioned, the real profile's stats, records and private flag
+//                     were dropped and its statsChecked replaced. Marked checked
+//                     and api-keyed, fetch-profile-stats then never re-fetched it
+//                     (its skip test is !p?.sports?.Basketball?.statsChecked),
+//                     so the loss was silent and permanent while games[] looked
+//                     correct.
 //   index          -> entry moved old key -> api id, enriched fields carried,
 //                     entry-internal uuid re-pointed, histories unioned.
 // Aliases DO need work here. 2026-07-30: the comment that used to sit here said
@@ -106,6 +125,33 @@ function writePlayer(uuid, player) {
 }
 function clone(obj) { return JSON.parse(JSON.stringify(obj)); }
 function gamesCount(p) { return Array.isArray(p.games) ? p.games.length : 0; }
+
+// ─── Which record actually holds stats ────────────────────────────────────────
+// The merge keeper decides every field unionScaffold does NOT touch: the whole
+// sports.Basketball block, records, private, u. None of that is reconstructible
+// from games[], so games[] must not be what decides it.
+//
+// Ranks, lowest to highest:
+//   0  private — PlayHQ withholds this profile, there is nothing to keep
+//   1  never fetched — no statsChecked, so fetch-profile-stats still owes it a run
+//   2  fetched, PlayHQ credits nothing — a real answer, but an empty one
+//   3  fetched, real stats
+// A record can only lose the stats block to one that ranks at least as high.
+function statsRank(p) {
+  if (!p) return 1;
+  if (p.private === true) return 0;
+  const bk = p.sports && p.sports.Basketball;
+  if (!bk || !bk.statsChecked) return 1;
+  return (Number(bk.gp) > 0) ? 3 : 2;
+}
+
+// statsChecked as a sortable number. 0 when absent, so a record that was never
+// fetched never wins a recency tie-break.
+function checkedAt(p) {
+  const t = p && p.sports && p.sports.Basketball && p.sports.Basketball.statsChecked;
+  const n = t ? Date.parse(t) : NaN;
+  return Number.isFinite(n) ? n : 0;
+}
 
 // ─── Scaffold union — copied VERBATIM from rekey-apply.js (proven at 2,300) ───
 function unionScaffold(target, source) {
@@ -522,12 +568,13 @@ function main() {
   }
 
   const written = [], deleted = [], entries = [];
-  let promotes = 0, merges = 0;
+  let promotes = 0, merges = 0, statsRefetch = 0, stubWouldHaveWon = 0;
 
   for (const { key, apiId } of diverged) {
     const source = readPlayer(key);
     const targetExists = fs.existsSync(playerPath(apiId));
     let final;
+    let keeperIsTarget = null;   // hoisted: the spectatorIds step below needs it
 
     if (!targetExists) {
       final = clone(source);
@@ -535,21 +582,66 @@ function main() {
       entries.push({ apiId, action: 'promote', oldKey: key });
     } else {
       const target = readPlayer(apiId);
-      // keeper: rekey-plan comparator — games desc, api-keyed record, size
+
+      // Keeper for the STATS BLOCK ONLY. games/seasons/teams/gameTids/name are
+      // unioned below whichever way this goes, so this decides nothing about
+      // capture — only about which record's PlayHQ-sourced data survives.
+      const sRank = statsRank(source), tRank = statsRank(target);
+      if (sRank !== tRank) {
+        keeperIsTarget = tRank > sRank;
+      } else if (checkedAt(target) !== checkedAt(source)) {
+        keeperIsTarget = checkedAt(target) > checkedAt(source);   // fresher answer
+      } else {
+        keeperIsTarget = true;                                    // api-keyed wins ties
+      }
+
+      // Recorded so the dry run can be compared against the old behaviour before
+      // anything is applied. The old comparator was `tGames >= sGames`.
       const sGames = gamesCount(source), tGames = gamesCount(target);
-      const keeperIsTarget =
-        tGames > sGames ||
-        (tGames === sGames && true /* api-keyed wins ties */);
+      const oldKeeperWasTarget = tGames >= sGames;
+      if (!oldKeeperWasTarget && keeperIsTarget) stubWouldHaveWon++;
+
       final = clone(keeperIsTarget ? target : source);
-      unionScaffold(final, keeperIsTarget ? source : target);
+      const loser = keeperIsTarget ? source : target;
+      unionScaffold(final, loser);
+
+      // Both sides are the SAME class of answer and the decision came down to a
+      // tie-break, so neither is known to be right for the merged identity.
+      // Dropping statsChecked puts the player back in fetch-profile-stats' queue
+      // (its skip test is !p?.sports?.Basketball?.statsChecked) and the next
+      // matrix run settles it against PlayHQ under the api id. One extra fetch,
+      // and the alternative is a number nobody can check.
+      //
+      // NOT done when the ranks differ. Then the keeper outranks the loser
+      // decisively — a real stats block over an empty answer, or over a record
+      // that was never fetched or is private — and there is nothing to settle,
+      // so the call would be wasted.
+      const tieBroken = (sRank === tRank && sRank >= 2);
+      if (tieBroken && final.sports && final.sports.Basketball &&
+          final.sports.Basketball.statsChecked) {
+        delete final.sports.Basketball.statsChecked;
+        statsRefetch++;
+      }
+
       merges++;
-      entries.push({ apiId, action: 'merge', oldKey: key, keeper: keeperIsTarget ? apiId : key });
+      entries.push({
+        apiId, action: 'merge', oldKey: key,
+        keeper: keeperIsTarget ? apiId : key,
+        sourceRank: sRank, targetRank: tRank,
+        sourceGames: sGames, targetGames: tGames,
+        oldComparatorKeeper: oldKeeperWasTarget ? apiId : key,
+        statsRefetchQueued: tieBroken,
+      });
     }
 
     // spectatorIds: union both records' lists + truncs of both ids
     const spec = new Set(Array.isArray(final.spectatorIds) ? final.spectatorIds : []);
     if (targetExists) {
-      const other = readPlayer(targetExists && final.uuid === apiId ? key : apiId);
+      // The LOSER's ids. This used to test `final.uuid === apiId`, but final.uuid
+      // is not assigned until further down, so on a target-keeper merge it read
+      // the target back into itself. Harmless only because the line below unions
+      // the source's ids unconditionally. keeperIsTarget says it directly.
+      const other = readPlayer(keeperIsTarget ? key : apiId);
       if (Array.isArray(other.spectatorIds)) for (const s of other.spectatorIds) spec.add(s);
     }
     if (Array.isArray(source.spectatorIds)) for (const s of source.spectatorIds) spec.add(s);
@@ -604,6 +696,8 @@ function main() {
     filesScanned: files,
     folded: diverged.length,
     promotes, merges,
+    statsRefetchQueued: statsRefetch,
+    stubWouldHaveWonUnderOldComparator: stubWouldHaveWon,
     indexShardsTouched: indexPaths.length,
     aliasEntriesScanned: alias.entries,
     aliasValuesRepointed: alias.repointed,
@@ -623,6 +717,8 @@ function main() {
     `| diverged folded | ${diverged.length} |`,
     `| promotes | ${promotes} |`,
     `| merges | ${merges} |`,
+    `| merges where the OLD comparator would have kept the stub | ${stubWouldHaveWon} |`,
+    `| statsChecked dropped (re-fetch queued) | ${statsRefetch} |`,
     `| index shards touched | ${indexPaths.length} |`,
     `| alias values repointed | ${alias.repointed} |`,
     `| alias shards touched | ${alias.shardsTouched} |`,

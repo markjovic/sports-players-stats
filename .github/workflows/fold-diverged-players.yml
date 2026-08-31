@@ -1,6 +1,18 @@
 # .github/workflows/fold-diverged-players.yml
 name: Fold diverged players (api-canonical maintenance)
 
+# 2026-08-31: the MERGE keeper changed. It used to be whichever record held more
+# games[] entries; it is now whichever record actually holds stats. Nothing about
+# this workflow's shape changed — same single job, same data-write group, same
+# inputs — but the first run after the script lands should be mode=dry-run, and
+# two new rows in the job summary are the ones to read:
+#   "merges where the OLD comparator would have kept the stub"  — how many merges
+#     this change rescues. Expect a large number the first time; the seeder's
+#     2026-08-31 dry run found 528 pairs of exactly that shape.
+#   "statsChecked dropped (re-fetch queued)" — how many extra profile fetches the
+#     next fetch-profile-stats cycle will pick up. Only fires when both records
+#     held the same class of answer and the decision came down to a tie-break.
+
 on:
   # No schedule: the fetch-profile-stats matrix triggers this with mode=apply
   # every time a cycle completes, which sweeps ALL pending diverged files
@@ -9,7 +21,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "dry-run = scan and report diverged files only (nothing written). apply = fold them to their api-id paths, move index entries, repoint orphaned aliases, single commit. repoint-only = do NOT fold; repair just the alias values orphaned by a PREVIOUS fold, reconstructing the mapping from the player files themselves (each file's spectatorIds[]) — it needs no report and no extra input. Normally triggered automatically by matrix completion with mode=apply."
+        description: "dry-run = scan and report diverged files only (nothing written). apply = fold them to their api-id paths, move index entries, repoint orphaned aliases, single commit. repoint-only = do NOT fold; repair just the alias values orphaned by a PREVIOUS fold, reconstructing the mapping from the player files themselves (each file's spectatorIds[]) — it needs no report and no extra input. Normally triggered automatically by matrix completion with mode=apply. 2026-08-31: the merge keeper changed — run dry-run once and read the two new summary rows before letting apply run again."
         type: choice
         options:
           - dry-run
