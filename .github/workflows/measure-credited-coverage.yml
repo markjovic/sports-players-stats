@@ -2,9 +2,17 @@
 #
 # READ-ONLY MEASUREMENT. Dispatch only, no cron.
 #
-# Answers: how much of "captured but not credited" is already explained by
-# player.u, the forfeit index and the no-registration-season rule, and how much
-# is left over. The leftover is the only thing a stored gamesAPI array would add.
+# Two questions:
+#   1. How much of "captured but not credited" is already explained by player.u,
+#      the forfeit index and the no-registration-season rule, and how much is
+#      left over. The leftover is the only thing a stored gamesAPI array adds.
+#   2. Of the games IN player.u, how many does PlayHQ credit anyway. `u` is
+#      presented in StatTrack as an appearance for a team the player never
+#      registered with; if PlayHQ credits them, it holds a registration we do
+#      not, and the field means something different from what it says.
+#
+# One report file per stratum: reports/measure-credited-coverage-<stratum>.json.
+# Running a second stratum never disturbs the first.
 #
 # NO actions/setup-node ANYWHERE IN THIS FILE. This job fetches api.playhq.com,
 # and setup-node changes the runner's outbound fingerprint, which produces a
@@ -113,9 +121,12 @@ jobs:
 
       - name: Report location
         if: always()
+        env:
+          IN_STRATUM: ${{ inputs.stratum }}
         run: |
-          echo "Report: reports/measure-credited-coverage.json"
-          echo "The rollup is stored inside that file under .rollup and is"
-          echo "recomputed from .players at every commit, so a blocked run keeps"
-          echo "its measurement. Re-dispatch with the SAME sample, stratum and"
-          echo "seed to continue it."
+          echo "Report: reports/measure-credited-coverage-$IN_STRATUM.json"
+          echo "One file per stratum, so running a second stratum never disturbs"
+          echo "the first. The rollup is stored inside that file under .rollup and"
+          echo "is recomputed from .players at every commit, so a blocked run keeps"
+          echo "its measurement. Re-dispatch with the SAME sample, stratum and seed"
+          echo "to continue it."
