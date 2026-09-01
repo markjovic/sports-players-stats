@@ -31,6 +31,10 @@ on:
 
 permissions:
   contents: write
+  # actions: write is required for the targeted re-fetch dispatch below. The
+  # dispatch itself uses WORKFLOW_PAT, matching every other dispatch site in this
+  # repo — GITHUB_TOKEN cannot trigger another workflow.
+  actions: write
 
 concurrency:
   group: data-write
@@ -76,3 +80,89 @@ jobs:
             repoint-only) node scripts/fold-diverged-players.js --repoint-only ;;
             *)            node scripts/fold-diverged-players.js --dry-run ;;
           esac
+
+      # ── Hand the un-checked players back to the matrix ──────────────────────
+      # The fold can now delete statsChecked from a merged player (see the script's
+      # keeper notes). fetch-profile-stats is dispatched by nightly-crawl.yml behind
+      # a gate that counts NEW players and needs-matrix-shards.json rechecks, and
+      # NEITHER counts players missing statsChecked — and when it does fire it is
+      # TARGETED at the shards on that list. So without this step those players hold
+      # no stats and no statsChecked, and nothing ever revisits them. That is worse
+      # than the bug the keeper change fixes.
+      #
+      # The script writes refetch-shards.json (always, and always [] on a dry run,
+      # so a dry run can never cause a dispatch). This step reads it and dispatches
+      # the matrix at exactly those shards.
+      #
+      # Cannot loop: the fold acts only on files carrying an apiId field and deletes
+      # it as it goes, and its post-check throws unless zero remain — so the fold
+      # that follows the matrix un-checks nobody and writes [].
+      #
+      # Timing is safe: this workflow holds data-write and only reaches here after
+      # post-drain-chain has released it, so nightly-crawl and its win-loss job are
+      # finished. That is the race nightly-crawl.yml's `needs: [crawl, team-stats,
+      # win-loss]` ordering exists to prevent, and it is not in play here.
+      - name: Install dispatch retry helper
+        if: ${{ github.event.inputs.mode == 'apply' }}
+        # Copied VERBATIM from fetch-profile-stats-matrix.yml, the proven site —
+        # not retyped. A chain-critical `gh workflow run` is never one-shot
+        # (directive 14): one HTTP 500 on 2026-07-27 stopped the matrix chain
+        # outright and the run still showed green.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
+      - name: Dispatch targeted re-fetch for un-checked players
+        if: ${{ github.event.inputs.mode == 'apply' }}
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+        run: |
+          if [ ! -f refetch-shards.json ]; then
+            echo "refetch-shards.json not present — the fold wrote no re-fetch list. Nothing to dispatch."
+            exit 0
+          fi
+          shards="$(tr -d '[:space:]' < refetch-shards.json)"
+          echo "Re-fetch shards: ${shards}"
+          # An EMPTY list must not be forwarded. The matrix reads shards='[]' as
+          # "all 256" — the same trap documented in its own T9 note — so passing it
+          # would turn "nobody needs re-fetching" into a full 256-shard sweep.
+          if [ -z "$shards" ] || [ "$shards" = "[]" ]; then
+            echo "No players had statsChecked removed. Not dispatching."
+            exit 0
+          fi
+          /tmp/gh-dispatch.sh fetch-profile-stats-matrix.yml \
+            --field "run_number=1" \
+            --field "consecutive_zeros=0" \
+            --field "shards=${shards}"
