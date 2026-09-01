@@ -1,35 +1,4990 @@
 {
   "advisory": "ADVISORY ONLY. This file is a single path overwritten by EVERY fold run, including a 1-player one, so it is not a durable record. Do not build any repair, check or audit on it — reconstruct from the player data instead (spectatorIds[] is the source of truth). See claude_context.md trap T6.",
-  "generatedAt": "2026-08-30T21:10:35.489Z",
+  "generatedAt": "2026-09-01T03:06:20.360Z",
   "dryRun": false,
-  "filesScanned": 418562,
-  "folded": 4,
-  "promotes": 4,
-  "merges": 0,
-  "indexShardsTouched": 8,
-  "aliasEntriesScanned": 498941,
-  "aliasValuesRepointed": 0,
-  "aliasShardsTouched": 0,
+  "filesScanned": 418600,
+  "folded": 859,
+  "promotes": 772,
+  "merges": 87,
+  "statsRefetchQueued": 79,
+  "refetchShards": [
+    "00",
+    "01",
+    "02",
+    "03",
+    "04",
+    "06",
+    "0b",
+    "14",
+    "16",
+    "18",
+    "19",
+    "1d",
+    "21",
+    "2c",
+    "37",
+    "3a",
+    "3c",
+    "3f",
+    "43",
+    "45",
+    "46",
+    "49",
+    "4b",
+    "4d",
+    "51",
+    "53",
+    "56",
+    "57",
+    "5d",
+    "61",
+    "63",
+    "64",
+    "68",
+    "71",
+    "76",
+    "77",
+    "82",
+    "83",
+    "84",
+    "85",
+    "86",
+    "8b",
+    "94",
+    "9e",
+    "a1",
+    "a5",
+    "b2",
+    "b4",
+    "b6",
+    "ba",
+    "c0",
+    "c1",
+    "c6",
+    "cc",
+    "ce",
+    "d1",
+    "d3",
+    "d5",
+    "d6",
+    "d9",
+    "dd",
+    "e0",
+    "e1",
+    "e5",
+    "ea",
+    "eb",
+    "f1"
+  ],
+  "stubWouldHaveWonUnderOldComparator": 5,
+  "indexShardsTouched": 256,
+  "aliasEntriesScanned": 498979,
+  "aliasValuesRepointed": 1398,
+  "aliasShardsTouched": 256,
   "entries": [
     {
-      "apiId": "09cdddd9-2acb-4520-8eac-38ae15b0a2a1",
+      "apiId": "19a1d315-f524-49c8-8548-6fbea7a3168f",
       "action": "promote",
-      "oldKey": "58f1902b-9b01-45a2-bac5-72727262205d"
+      "oldKey": "00330a1d-fd65-4808-ae13-2d03df3c9225"
     },
     {
-      "apiId": "6ec73f0f-ea26-419b-bd63-95d761dc3bd5",
+      "apiId": "affde95d-74ae-4480-a928-c20e16f7e766",
       "action": "promote",
-      "oldKey": "5f2168d8-430d-4292-9580-71a7c34b8bdc"
+      "oldKey": "0060b2ef-1f51-443e-b52c-dcf6a9ba4201"
     },
     {
-      "apiId": "3fa5e6d4-3aa2-4f9c-a2b6-574b863e352a",
+      "apiId": "843cb12f-d076-4cd2-901e-471445d860fc",
       "action": "promote",
-      "oldKey": "79d1d98e-b1d3-4db9-8e7a-c33654e81892"
+      "oldKey": "009085de-d85e-4f7f-ba06-91cf5ada46bd"
     },
     {
-      "apiId": "968c014b-7786-491b-b21f-8ecce27b3dfb",
+      "apiId": "2a04e645-1b42-48bb-8927-5b968e0df092",
       "action": "promote",
-      "oldKey": "9d8c6705-7bd0-4cd8-b651-ab0a30a8340d"
+      "oldKey": "00d3be40-b52a-4915-9af3-bd56854d9021"
+    },
+    {
+      "apiId": "9140fae9-ef9e-4f29-90fe-f60a06e6fbac",
+      "action": "promote",
+      "oldKey": "014c9bf5-2526-492b-a1f5-23177296c25f"
+    },
+    {
+      "apiId": "ac487f23-7fee-48a0-931a-8d8c7f238527",
+      "action": "promote",
+      "oldKey": "014d0446-f395-4982-bbae-de60c76dad27"
+    },
+    {
+      "apiId": "3ab68d82-89a2-48eb-b08c-1d913e233c7a",
+      "action": "promote",
+      "oldKey": "01bce8f8-4dc9-4790-92f0-74301b7031db"
+    },
+    {
+      "apiId": "85e767fb-2d91-4dc4-ad1a-02726f732961",
+      "action": "merge",
+      "oldKey": "023de77d-7c7d-426f-9ba7-f609581c8df8",
+      "keeper": "85e767fb-2d91-4dc4-ad1a-02726f732961",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 5,
+      "targetGames": 209,
+      "oldComparatorKeeper": "85e767fb-2d91-4dc4-ad1a-02726f732961",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "04baa46c-42c8-4eb9-9180-460421153676",
+      "action": "promote",
+      "oldKey": "0256edd5-4f3c-4b6e-93ee-d7c5b6e92657"
+    },
+    {
+      "apiId": "bd4191d1-8193-47ed-86e5-8c88036a987c",
+      "action": "promote",
+      "oldKey": "02582d72-df81-4fec-95a6-e10a76e70b1d"
+    },
+    {
+      "apiId": "f26b8a95-0540-4bc8-a294-5c03275f71a2",
+      "action": "promote",
+      "oldKey": "029ab3f7-fa21-41ed-bc0a-ea03aa23edfd"
+    },
+    {
+      "apiId": "b8aa658d-a4f2-4820-a4af-c01034b58d63",
+      "action": "promote",
+      "oldKey": "02df691a-311d-4ea8-a75a-a46b6825a47d"
+    },
+    {
+      "apiId": "ff35b92a-ed56-4433-9cc3-76ee5f59b7fa",
+      "action": "promote",
+      "oldKey": "03167d9f-304e-42ee-bde8-630c4b8c1a10"
+    },
+    {
+      "apiId": "898e2223-758c-404e-aa25-8f2cbbb3949c",
+      "action": "promote",
+      "oldKey": "036213a1-4938-4b90-aeb4-e832c6337292"
+    },
+    {
+      "apiId": "40bbf5fd-5ae1-4e4d-b386-b676bf14b987",
+      "action": "promote",
+      "oldKey": "036dc056-565a-421f-a5b7-532fa3fa3ed2"
+    },
+    {
+      "apiId": "33c61f76-c535-45d7-bc57-6d566b6f310d",
+      "action": "promote",
+      "oldKey": "0410b6d5-017f-406b-b9c6-889b35d13c02"
+    },
+    {
+      "apiId": "5e4ec20c-eeac-4b25-8c98-bb911d196838",
+      "action": "promote",
+      "oldKey": "0414dc3a-bb48-4346-9cae-0aac44fb0f55"
+    },
+    {
+      "apiId": "541fffa3-4483-4d03-966f-d2bba8e5d37b",
+      "action": "promote",
+      "oldKey": "0467cdaa-d787-4b90-afc5-c6f06b1aca9d"
+    },
+    {
+      "apiId": "523eadaa-2fc8-4c6e-bbf6-58f52d02596d",
+      "action": "promote",
+      "oldKey": "0480f841-3050-4238-b4d1-9fd3fa818da4"
+    },
+    {
+      "apiId": "9ae4d617-bb32-44cd-b6ea-6db28c8dda3a",
+      "action": "promote",
+      "oldKey": "0496f885-84f4-41f1-810a-bba909bc7104"
+    },
+    {
+      "apiId": "e0a9a33d-34a1-48a2-b015-d4f16375cc7a",
+      "action": "promote",
+      "oldKey": "052aa1a5-7054-49fb-8145-84451baf78a7"
+    },
+    {
+      "apiId": "5709fbf1-059c-4a8d-8528-7c0d441f4873",
+      "action": "promote",
+      "oldKey": "057a2dd9-0f7a-4114-9c91-cc7e39795bf0"
+    },
+    {
+      "apiId": "9934fd2e-d7ae-4f43-bb79-339b78d01536",
+      "action": "promote",
+      "oldKey": "05ab566e-87ed-4918-825f-066717df7d5e"
+    },
+    {
+      "apiId": "f5fb150b-bb1b-4b4a-ac99-850b88ba4c7b",
+      "action": "promote",
+      "oldKey": "05b10578-5d79-4dff-b7c4-db3fa3243768"
+    },
+    {
+      "apiId": "d39a5daa-6548-469e-adb9-25678b500e65",
+      "action": "promote",
+      "oldKey": "05bdbd0b-c65a-4617-b0ee-d429df4373a2"
+    },
+    {
+      "apiId": "ceb7652c-b8ba-47ac-9e17-0fd4b596492c",
+      "action": "merge",
+      "oldKey": "05ee8e7a-bf16-4950-9533-07929af73c3a",
+      "keeper": "ceb7652c-b8ba-47ac-9e17-0fd4b596492c",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 28,
+      "targetGames": 39,
+      "oldComparatorKeeper": "ceb7652c-b8ba-47ac-9e17-0fd4b596492c",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "8ec7b79f-9914-4a6e-b1f1-c321177f8ecd",
+      "action": "promote",
+      "oldKey": "05f87202-b6d1-40c9-a644-e4bc026d7586"
+    },
+    {
+      "apiId": "098481b6-4bf4-436e-bad6-8d45ef71fe17",
+      "action": "promote",
+      "oldKey": "0695a88c-e92c-4aa8-8dd7-e2bdb144f566"
+    },
+    {
+      "apiId": "baee8607-bdc3-46ce-bc70-94b55b879dde",
+      "action": "merge",
+      "oldKey": "06d25f73-ddf8-402b-a0d2-a633e5039cda",
+      "keeper": "baee8607-bdc3-46ce-bc70-94b55b879dde",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 13,
+      "targetGames": 102,
+      "oldComparatorKeeper": "baee8607-bdc3-46ce-bc70-94b55b879dde",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "c7638c61-e911-4a9a-9846-c1bd3343db2d",
+      "action": "promote",
+      "oldKey": "06eaa7e1-29bf-44fe-a66b-c846d3c73732"
+    },
+    {
+      "apiId": "90bb7d05-94a6-46ad-9724-0187c5bcc4a6",
+      "action": "promote",
+      "oldKey": "071172e3-d2cb-4b0d-8488-216b30173b2d"
+    },
+    {
+      "apiId": "453f4911-d847-4368-94dc-7a350eaaecb7",
+      "action": "merge",
+      "oldKey": "07dfbe89-3790-4a30-ac56-059e683da7df",
+      "keeper": "453f4911-d847-4368-94dc-7a350eaaecb7",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 125,
+      "targetGames": 135,
+      "oldComparatorKeeper": "453f4911-d847-4368-94dc-7a350eaaecb7",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "16770bca-498d-49b3-897a-473a333df671",
+      "action": "promote",
+      "oldKey": "08a20899-85b9-4736-af6f-cdf76321241f"
+    },
+    {
+      "apiId": "2df4c9d6-10d7-463d-b42c-3f9ac403586b",
+      "action": "promote",
+      "oldKey": "08bd7708-e170-48b0-8848-44242c20ba57"
+    },
+    {
+      "apiId": "f968bc5c-cf06-403f-af7d-fda855b00062",
+      "action": "promote",
+      "oldKey": "08f476f8-545c-48a1-a720-dc65a23d3585"
+    },
+    {
+      "apiId": "b04829f1-b600-415e-9fb6-c509db30d0c1",
+      "action": "promote",
+      "oldKey": "0a0d1162-b280-41d1-bd14-7c1d97916ed4"
+    },
+    {
+      "apiId": "75312d14-718b-457b-99c0-735a7f881a0d",
+      "action": "promote",
+      "oldKey": "0a22941f-2bf2-48c0-b3db-60a10711f5d5"
+    },
+    {
+      "apiId": "ea7c303b-79b7-4fad-89eb-175b6b441faf",
+      "action": "promote",
+      "oldKey": "0a61039d-e74b-4d8e-b2fa-47faa223e024"
+    },
+    {
+      "apiId": "798cde49-3cb2-4a60-91b0-8af1113817b5",
+      "action": "promote",
+      "oldKey": "0afa7148-1511-409a-bd1c-dd44e5f83f85"
+    },
+    {
+      "apiId": "27d83049-419a-47bb-92f4-8b68eae02a79",
+      "action": "promote",
+      "oldKey": "0b75cb31-237d-4587-bea7-92c606c05031"
+    },
+    {
+      "apiId": "040cd388-f5da-4b80-a2c0-02e6546c3613",
+      "action": "promote",
+      "oldKey": "0bac667c-1ae3-4eba-b488-8445acc9b292"
+    },
+    {
+      "apiId": "55022802-926e-4124-96b0-8e859d2d4eea",
+      "action": "merge",
+      "oldKey": "0bc92eaa-86ca-4491-a076-5448e9448ecb",
+      "keeper": "0bc92eaa-86ca-4491-a076-5448e9448ecb",
+      "sourceRank": 3,
+      "targetRank": 0,
+      "sourceGames": 158,
+      "targetGames": 12,
+      "oldComparatorKeeper": "0bc92eaa-86ca-4491-a076-5448e9448ecb",
+      "statsRefetchQueued": false
+    },
+    {
+      "apiId": "40dc8b27-1e05-4a1c-9b9a-b0d4fc9dcf5f",
+      "action": "promote",
+      "oldKey": "0bd3181f-15b0-4903-80b2-0f789f6ddc36"
+    },
+    {
+      "apiId": "77cc9881-ff2a-4ee4-9942-b01c83fbd022",
+      "action": "promote",
+      "oldKey": "0c0f821a-d5d6-405a-9ac5-cf4d836b9dfb"
+    },
+    {
+      "apiId": "97c14f6b-0f8d-423a-9b2a-98271d443445",
+      "action": "promote",
+      "oldKey": "0c3d770a-cf9d-4440-a894-e083c80d08c7"
+    },
+    {
+      "apiId": "59700df8-62d2-458c-9d8d-f8d63c378a11",
+      "action": "promote",
+      "oldKey": "0c583767-707e-4cd9-b09b-b60cb2b5ae00"
+    },
+    {
+      "apiId": "2824cda7-3bcd-47b3-8b30-2810a21422e6",
+      "action": "promote",
+      "oldKey": "0ca11f60-f767-4f56-ab73-db6e5e8e6df1"
+    },
+    {
+      "apiId": "f230d3a4-a19b-4f6a-9f3f-ede934e4166f",
+      "action": "promote",
+      "oldKey": "0d3e6d0c-333c-4343-a7f9-989ef9780394"
+    },
+    {
+      "apiId": "d56fc1b9-17de-4363-865d-7a4cf513f6c0",
+      "action": "promote",
+      "oldKey": "0d644dba-8211-4f03-95f7-490368c623c8"
+    },
+    {
+      "apiId": "cc05a725-b5c4-4baa-a94f-8c924621c139",
+      "action": "merge",
+      "oldKey": "0d6ea39a-0f50-439e-95f6-a61c49628201",
+      "keeper": "cc05a725-b5c4-4baa-a94f-8c924621c139",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 138,
+      "targetGames": 160,
+      "oldComparatorKeeper": "cc05a725-b5c4-4baa-a94f-8c924621c139",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "15e7302a-49ff-4ed8-8d08-0ccbcfa8925f",
+      "action": "promote",
+      "oldKey": "0e845b58-e0f4-4ea5-8cfa-73fc773a3c9c"
+    },
+    {
+      "apiId": "e88ebbeb-1bd9-4e65-8d0a-08515cbbf459",
+      "action": "promote",
+      "oldKey": "0ebb6833-46b2-43be-be2d-9af3f44698d4"
+    },
+    {
+      "apiId": "55371b1f-df18-4104-8aed-e9f4cb591c42",
+      "action": "promote",
+      "oldKey": "0ebfea3d-4dad-449a-85ff-aea1bd3611e2"
+    },
+    {
+      "apiId": "79ee06f5-8492-40f8-8a6c-e9e1ba22da18",
+      "action": "promote",
+      "oldKey": "0f48a768-99c3-40a8-a023-6dab80d14e95"
+    },
+    {
+      "apiId": "4e8c6c6c-25ce-4a34-866f-426a21d7b7ce",
+      "action": "promote",
+      "oldKey": "0f5477f5-08c1-46c3-b698-07df2335990d"
+    },
+    {
+      "apiId": "d9ae2191-0784-41a9-b87a-de607f1c4355",
+      "action": "promote",
+      "oldKey": "0f6428cf-fe89-4031-a4bb-86dfe1149d98"
+    },
+    {
+      "apiId": "7093ddd5-9584-4e26-ac89-a4c69dc69f1a",
+      "action": "merge",
+      "oldKey": "0fc5b23e-f46a-4173-b979-03d223ddf413",
+      "keeper": "7093ddd5-9584-4e26-ac89-a4c69dc69f1a",
+      "sourceRank": 0,
+      "targetRank": 0,
+      "sourceGames": 10,
+      "targetGames": 76,
+      "oldComparatorKeeper": "7093ddd5-9584-4e26-ac89-a4c69dc69f1a",
+      "statsRefetchQueued": false
+    },
+    {
+      "apiId": "53da1b2f-ba24-4b37-af2f-f8ffaaf6c26f",
+      "action": "promote",
+      "oldKey": "0fd0fd67-6839-4cfb-98c9-6259383181cc"
+    },
+    {
+      "apiId": "6ff699d9-1a46-465d-a4ea-f1f4b1487c78",
+      "action": "promote",
+      "oldKey": "0fd1b531-a1af-4722-addb-b3b7e9453fc8"
+    },
+    {
+      "apiId": "b390f0fd-7d5c-452b-942d-952045b373cb",
+      "action": "promote",
+      "oldKey": "103de0ba-c070-4026-b458-88bb6e954308"
+    },
+    {
+      "apiId": "5790f0d7-a124-4020-b423-1f1184580225",
+      "action": "promote",
+      "oldKey": "104f39be-2d45-403c-b675-9e32616bfde0"
+    },
+    {
+      "apiId": "0988650d-00b4-4c25-85ca-1e773bf80022",
+      "action": "promote",
+      "oldKey": "10725a0b-f764-4912-a9bb-da20b35d6189"
+    },
+    {
+      "apiId": "e9b1072d-4458-4b07-a8bf-ebdc6306e9da",
+      "action": "promote",
+      "oldKey": "119eef91-4d3d-4bf1-804a-d691ebaef84e"
+    },
+    {
+      "apiId": "057f2c3f-01f7-4a8d-ae84-88b7c8b940ce",
+      "action": "promote",
+      "oldKey": "129481f6-3e5a-407f-87c6-4897e94c7597"
+    },
+    {
+      "apiId": "ec8d2628-d370-43a6-a40f-89daf415cbcb",
+      "action": "promote",
+      "oldKey": "12defe6f-d787-4138-867d-8b6ab0c90a0a"
+    },
+    {
+      "apiId": "3eb20c43-07e6-4eea-bd8e-d5209956d486",
+      "action": "promote",
+      "oldKey": "12f73462-6bd7-43ab-8061-a35cf889efec"
+    },
+    {
+      "apiId": "4a52f465-85f3-4e0c-80da-132fb031714a",
+      "action": "promote",
+      "oldKey": "1365716b-4192-4966-952c-c2ea9d689b96"
+    },
+    {
+      "apiId": "85c52884-ab22-465f-8050-ce20dad6f5f4",
+      "action": "merge",
+      "oldKey": "13954be0-57e6-408f-bece-7590ca7bbbad",
+      "keeper": "85c52884-ab22-465f-8050-ce20dad6f5f4",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 26,
+      "targetGames": 202,
+      "oldComparatorKeeper": "85c52884-ab22-465f-8050-ce20dad6f5f4",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "d7205e99-5030-4d05-b981-beee090f6db3",
+      "action": "promote",
+      "oldKey": "144d65ac-911f-4917-8952-3f870b4c180b"
+    },
+    {
+      "apiId": "176fe281-1df4-4501-806f-c15a38bd749c",
+      "action": "promote",
+      "oldKey": "14b15ddd-07d4-4b58-9c5a-a2da03c9a14d"
+    },
+    {
+      "apiId": "a743587e-e48a-437a-8e50-6295ce3e8bb5",
+      "action": "promote",
+      "oldKey": "14d7dfbf-788e-4f4a-8c9a-81ab6e822e00"
+    },
+    {
+      "apiId": "e2a553a2-4592-43b7-bf49-414a6aab18c9",
+      "action": "promote",
+      "oldKey": "15027977-b372-4417-8443-34e4c9abf970"
+    },
+    {
+      "apiId": "49de52f5-c0e1-4452-957c-f3e34815954b",
+      "action": "promote",
+      "oldKey": "151086b3-1336-4477-adf9-69ca95124a48"
+    },
+    {
+      "apiId": "a131d577-411a-44ad-93bd-fb642f0e6e83",
+      "action": "merge",
+      "oldKey": "153805c8-7924-4905-ad7d-998d30f1ee62",
+      "keeper": "153805c8-7924-4905-ad7d-998d30f1ee62",
+      "sourceRank": 3,
+      "targetRank": 0,
+      "sourceGames": 7,
+      "targetGames": 3,
+      "oldComparatorKeeper": "153805c8-7924-4905-ad7d-998d30f1ee62",
+      "statsRefetchQueued": false
+    },
+    {
+      "apiId": "ca86562a-04a9-4b7b-a48a-10105296ee05",
+      "action": "promote",
+      "oldKey": "15634b09-d96f-4192-8b46-477cde6b8fd5"
+    },
+    {
+      "apiId": "f80ccbd1-50f4-43a3-accd-a961232ae23b",
+      "action": "promote",
+      "oldKey": "15747da5-09b5-44e6-b1c3-d8a6fbed372b"
+    },
+    {
+      "apiId": "00b75138-ae60-49ec-977d-0055fac79c18",
+      "action": "promote",
+      "oldKey": "15c29a4c-f88a-4c5c-93b0-2b580ddd46ef"
+    },
+    {
+      "apiId": "a0d630cb-6848-487e-85e4-d45c84b32777",
+      "action": "promote",
+      "oldKey": "15e6fc3b-f982-41c1-8449-999e73667ff9"
+    },
+    {
+      "apiId": "cc60bfa0-d14c-4042-92e5-f3da3c1dae19",
+      "action": "promote",
+      "oldKey": "1633f731-1dfc-4db7-bec8-da4ce3870c8e"
+    },
+    {
+      "apiId": "b2482b25-8a85-41d1-bb30-44a4942cbcd6",
+      "action": "promote",
+      "oldKey": "166c4725-26fb-48bc-8231-595cd006347f"
+    },
+    {
+      "apiId": "7c8bc4d1-bef4-4ede-9dc7-819c69f6a0a4",
+      "action": "promote",
+      "oldKey": "16886ceb-af9f-4f8c-8b40-dbfd5021de0f"
+    },
+    {
+      "apiId": "1a27bae8-6150-40b6-a998-b40664027ad1",
+      "action": "promote",
+      "oldKey": "16a14538-251c-45ef-a384-07800bbf2010"
+    },
+    {
+      "apiId": "aa26a1b9-1233-411c-82c0-5f4f4099c1d5",
+      "action": "promote",
+      "oldKey": "16a9a248-78d2-4609-bd8e-c23903aa09af"
+    },
+    {
+      "apiId": "c62dc666-8a53-4bd7-bfc8-e8e185cd5018",
+      "action": "promote",
+      "oldKey": "170acce4-2169-4155-af5e-500e4faec4b3"
+    },
+    {
+      "apiId": "22f1fa58-0c3f-4f79-ada0-23f52bf9c696",
+      "action": "promote",
+      "oldKey": "17d8c6a2-c78c-45d2-b531-598d51867b66"
+    },
+    {
+      "apiId": "ab7fd8b5-f72a-4947-ae32-9ee591afd81a",
+      "action": "promote",
+      "oldKey": "1959b860-3edc-4fdb-b5d2-76ec12eb5018"
+    },
+    {
+      "apiId": "1fbda900-ca28-498a-8e9a-4e555506e8b1",
+      "action": "promote",
+      "oldKey": "195d1334-1338-4357-ae87-097f05d09769"
+    },
+    {
+      "apiId": "b7a69885-43cf-44b4-8427-a923eb7acdd9",
+      "action": "promote",
+      "oldKey": "198cb43e-f0ae-41d5-9e5c-2cd4644a80f9"
+    },
+    {
+      "apiId": "192aae3f-0e7b-4c5f-98a5-4593d176f240",
+      "action": "merge",
+      "oldKey": "19f69d1f-553b-477c-93f7-48a274885d18",
+      "keeper": "192aae3f-0e7b-4c5f-98a5-4593d176f240",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 6,
+      "targetGames": 360,
+      "oldComparatorKeeper": "192aae3f-0e7b-4c5f-98a5-4593d176f240",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "8765e379-e259-4e79-98b2-d6a2024872d3",
+      "action": "promote",
+      "oldKey": "1a356641-53b0-43cf-bf30-f68eacecd4e0"
+    },
+    {
+      "apiId": "d336350a-026e-4ea9-8280-898fa9cc97ee",
+      "action": "promote",
+      "oldKey": "1a7783db-0788-4e39-902c-2052b4779aa3"
+    },
+    {
+      "apiId": "3592ca30-80e7-4ac7-8d06-04ec429d1c22",
+      "action": "promote",
+      "oldKey": "1aa3f8a7-a3fc-45f8-a2c0-80cd54bd3f9d"
+    },
+    {
+      "apiId": "9b7a2e13-3d89-4bd8-975c-8e67dea47560",
+      "action": "promote",
+      "oldKey": "1ae30ae8-059d-4077-85b9-e38f40e009a0"
+    },
+    {
+      "apiId": "91d106ea-b9d6-479f-9120-3a0fc66deae1",
+      "action": "promote",
+      "oldKey": "1b195e8e-c50b-44d8-b4b9-c8ae41fb04eb"
+    },
+    {
+      "apiId": "387c47e9-5ca0-4f04-982e-dd143899cf29",
+      "action": "promote",
+      "oldKey": "1b762704-82fe-4c4e-a91a-03cc6e28e990"
+    },
+    {
+      "apiId": "aebdf83d-dc52-40ac-9097-d71a6a95bc99",
+      "action": "promote",
+      "oldKey": "1b9fe751-bad5-4e7c-8add-b5ef530a060a"
+    },
+    {
+      "apiId": "066aba43-a9e7-403c-89a1-195a165ca764",
+      "action": "promote",
+      "oldKey": "1bd98e31-4d6b-45f7-83de-c0aeb85f57a3"
+    },
+    {
+      "apiId": "46bdde61-0788-445e-9912-a8cb7a825f12",
+      "action": "promote",
+      "oldKey": "1be8cc04-b627-4460-8a48-04f9c5684d90"
+    },
+    {
+      "apiId": "9641f0cb-f78f-4b97-b869-25d2f3bd4058",
+      "action": "promote",
+      "oldKey": "1c9bfb68-f92e-47e1-babe-608c56aca34c"
+    },
+    {
+      "apiId": "f9a44771-63b3-4bed-8f26-57d5d8020f40",
+      "action": "promote",
+      "oldKey": "1cbef5ff-5602-496e-918e-8f953515bcc5"
+    },
+    {
+      "apiId": "b797a27d-c049-4ab7-9eef-38c14a00db6e",
+      "action": "promote",
+      "oldKey": "1cef9cf7-bddc-41f0-8bf0-d92887a3e16b"
+    },
+    {
+      "apiId": "c0e2e5af-0dc3-417c-aeab-c7d541916aab",
+      "action": "promote",
+      "oldKey": "1d07e716-6a87-4ea7-b596-e6faed7537a4"
+    },
+    {
+      "apiId": "78b3e491-e801-443b-b25c-8938e48f8729",
+      "action": "promote",
+      "oldKey": "1d51953f-a772-4dbb-bcee-536f4c59d040"
+    },
+    {
+      "apiId": "7374d428-d7bc-4a5a-8558-db43f3be80ca",
+      "action": "promote",
+      "oldKey": "1d850139-6ebd-405c-b4be-31ae4349c1f2"
+    },
+    {
+      "apiId": "5774892f-6b60-4160-8536-fc2fc230a050",
+      "action": "merge",
+      "oldKey": "1e87fc65-f7c3-4415-828a-b9986eb8631f",
+      "keeper": "1e87fc65-f7c3-4415-828a-b9986eb8631f",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 6,
+      "targetGames": 9,
+      "oldComparatorKeeper": "5774892f-6b60-4160-8536-fc2fc230a050",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "e6efcf0d-d66b-4964-8151-fd41e5e61e39",
+      "action": "promote",
+      "oldKey": "1e97ac65-12b9-4806-b6e6-fd739ad8c8d7"
+    },
+    {
+      "apiId": "e9702c64-9b4a-4305-bb35-70fff0710fc7",
+      "action": "promote",
+      "oldKey": "1ec6d2b5-d65f-43f1-a140-e2fa555f3fdf"
+    },
+    {
+      "apiId": "7157aed7-13cb-4b24-b8c3-e6d3c7901658",
+      "action": "promote",
+      "oldKey": "1f5692cd-66c9-40b2-9dbb-26f91d6610ed"
+    },
+    {
+      "apiId": "93105e25-0902-45cb-afa6-8846f925b0fd",
+      "action": "promote",
+      "oldKey": "1f8854ea-da4c-4749-abd8-6e92695c2ae2"
+    },
+    {
+      "apiId": "46118e4a-ef17-4bab-ae59-47b3a43ff44c",
+      "action": "promote",
+      "oldKey": "1f98dfcc-53f7-4e69-82c6-34bf36cf3f34"
+    },
+    {
+      "apiId": "ce814e1a-de6e-44b9-90b6-1b6cd9f5335a",
+      "action": "promote",
+      "oldKey": "1fad074a-04f3-42b9-82e7-7820c9ae9f15"
+    },
+    {
+      "apiId": "991d105e-b7e2-4d55-8766-1f82ef2471a3",
+      "action": "promote",
+      "oldKey": "1ff72805-c3b0-455b-826d-17eade1d20a0"
+    },
+    {
+      "apiId": "010e19a8-ceb7-4e4a-8c55-5411dba48ed0",
+      "action": "merge",
+      "oldKey": "206de28e-6d3e-4883-b08a-813084b73391",
+      "keeper": "010e19a8-ceb7-4e4a-8c55-5411dba48ed0",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 95,
+      "targetGames": 116,
+      "oldComparatorKeeper": "010e19a8-ceb7-4e4a-8c55-5411dba48ed0",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "dc58e70e-93d0-47e6-a41c-6af10840c84e",
+      "action": "promote",
+      "oldKey": "20d46b66-de65-438d-947d-32d95031050f"
+    },
+    {
+      "apiId": "7e548558-cb3a-4873-ad56-e3ebfe241b3a",
+      "action": "promote",
+      "oldKey": "20f2f8f6-06e2-41fa-9bf3-2dfee96fd53c"
+    },
+    {
+      "apiId": "9bfe0927-7057-4c18-a2f1-23e9650b860f",
+      "action": "promote",
+      "oldKey": "21dd3026-9e10-4d23-a9a8-409bce3b2a43"
+    },
+    {
+      "apiId": "b0b6a8b6-bab0-4a39-8aeb-7866888d3945",
+      "action": "promote",
+      "oldKey": "21f61376-c407-40fb-aedc-05fae9ff331e"
+    },
+    {
+      "apiId": "0cd04583-e00a-4121-b731-4c0bb341354f",
+      "action": "promote",
+      "oldKey": "2308f482-503e-4b8b-a28c-45bc9dddefb1"
+    },
+    {
+      "apiId": "2b00edc4-8e68-4a5f-96b5-fde2052543a5",
+      "action": "promote",
+      "oldKey": "230ebed9-0c4c-492e-8b99-b440a62e3b04"
+    },
+    {
+      "apiId": "69abce7d-d8ca-4929-9c0f-fae6bd8d7b76",
+      "action": "promote",
+      "oldKey": "234772f4-0cc1-4e30-84ae-fb2d8bf57338"
+    },
+    {
+      "apiId": "93da2743-b588-46c4-9b4a-731fa8ad314e",
+      "action": "promote",
+      "oldKey": "245b54c3-efed-4333-bb9b-d37acf6396f3"
+    },
+    {
+      "apiId": "62fe93d8-9c4c-4f13-8b93-b6dc6c45bcb1",
+      "action": "promote",
+      "oldKey": "2539e35e-4b0c-4c70-8741-595b74da1863"
+    },
+    {
+      "apiId": "e57fac94-3b34-4ba8-b385-ca172f8f7083",
+      "action": "promote",
+      "oldKey": "2634a1f1-2ea9-4698-902d-6dbfa303c6d5"
+    },
+    {
+      "apiId": "55a21eeb-2f90-4f21-b859-5b7a79bd37e9",
+      "action": "promote",
+      "oldKey": "26508cbf-822b-48bf-91b9-45ec3c69690b"
+    },
+    {
+      "apiId": "51a13309-0503-4a83-84b2-fa2653a10627",
+      "action": "promote",
+      "oldKey": "2671b8ca-e4f3-46aa-bacb-aee3f748ea25"
+    },
+    {
+      "apiId": "5b0c9be2-844b-42c9-bee1-d87def669148",
+      "action": "promote",
+      "oldKey": "26897339-1168-43dc-a820-2dc646ae9d3d"
+    },
+    {
+      "apiId": "d367c109-e386-4525-bcbd-437c7fcdd2be",
+      "action": "promote",
+      "oldKey": "268e864a-3ae4-4ea2-9d74-d5cb335cdd1c"
+    },
+    {
+      "apiId": "04af0cb6-0a36-40f1-93a7-100140813c49",
+      "action": "merge",
+      "oldKey": "26e6dc6e-df6b-4bcf-9867-6735057c9e98",
+      "keeper": "04af0cb6-0a36-40f1-93a7-100140813c49",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 17,
+      "targetGames": 240,
+      "oldComparatorKeeper": "04af0cb6-0a36-40f1-93a7-100140813c49",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "4d9db813-2989-4a37-b15c-5aefc3ccce33",
+      "action": "promote",
+      "oldKey": "26e89836-d33e-41b2-bd12-d0d129493ae4"
+    },
+    {
+      "apiId": "d22bd689-3cbf-4dcb-be73-de0143a5f74d",
+      "action": "promote",
+      "oldKey": "271e0f02-a152-4e4b-aa37-f84c6c4549bc"
+    },
+    {
+      "apiId": "584dbe2c-5dcc-4dd6-86a3-4cb7f1daf65f",
+      "action": "promote",
+      "oldKey": "27789ee9-f81b-4346-955d-db889b81c8a1"
+    },
+    {
+      "apiId": "b06afdc9-9e1e-43e7-b496-95dafe952bf7",
+      "action": "promote",
+      "oldKey": "27899df3-aa45-46d0-bd57-837b2ca81984"
+    },
+    {
+      "apiId": "d044902b-39a7-44df-8e14-e31c8c51d986",
+      "action": "promote",
+      "oldKey": "278eef97-a888-4fb7-bc94-f8d91c651ed2"
+    },
+    {
+      "apiId": "210c336a-3f55-424d-aa20-f9a20efb7c9f",
+      "action": "promote",
+      "oldKey": "279b1d65-b0d9-4a7b-bf77-ee3cd3d49b48"
+    },
+    {
+      "apiId": "46220b16-ea3c-47e2-b15c-8c7c96058b77",
+      "action": "merge",
+      "oldKey": "2801c05d-4420-4e95-aa5d-7e3bb5798b67",
+      "keeper": "46220b16-ea3c-47e2-b15c-8c7c96058b77",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 13,
+      "targetGames": 203,
+      "oldComparatorKeeper": "46220b16-ea3c-47e2-b15c-8c7c96058b77",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "3ad2bfba-e242-42d8-b176-5b32e07e4eff",
+      "action": "merge",
+      "oldKey": "280ccd11-1f15-4dfc-89d5-14800ad7ba38",
+      "keeper": "3ad2bfba-e242-42d8-b176-5b32e07e4eff",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 6,
+      "targetGames": 70,
+      "oldComparatorKeeper": "3ad2bfba-e242-42d8-b176-5b32e07e4eff",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "ac9193da-6757-4069-a6d0-e2412c995162",
+      "action": "promote",
+      "oldKey": "28d5b444-3ce0-42ed-98d8-a5bea2a3e717"
+    },
+    {
+      "apiId": "59028cb9-2dc8-40be-a782-85f2b1a91bba",
+      "action": "promote",
+      "oldKey": "28fb09b3-7e12-42eb-b817-a498449d3aa3"
+    },
+    {
+      "apiId": "8ea4ac14-d7fe-4738-94c9-ef3305798b18",
+      "action": "promote",
+      "oldKey": "292f3e2f-95db-4cf7-8b31-684f3c834922"
+    },
+    {
+      "apiId": "8e7d8717-dd1b-4eb1-a9f0-b1190e9e59fb",
+      "action": "promote",
+      "oldKey": "293ef9d6-2532-4539-b77d-1c64f94d879e"
+    },
+    {
+      "apiId": "3dc55346-b9d6-493f-b0f7-2ac5d7f0df3e",
+      "action": "promote",
+      "oldKey": "29b441d7-bd4a-443a-962d-d75bfabc527c"
+    },
+    {
+      "apiId": "ebae73bf-a328-469d-a07e-e89bde4959d3",
+      "action": "promote",
+      "oldKey": "29c086eb-01c2-46d5-bfc5-6578aff5744b"
+    },
+    {
+      "apiId": "030f4ac0-99c8-4f3c-bb8e-9272affb0286",
+      "action": "promote",
+      "oldKey": "2a036f87-7b84-49bc-8326-3da203aa4e2c"
+    },
+    {
+      "apiId": "b90244b0-6f85-45dd-8550-8303c3f9dbe8",
+      "action": "promote",
+      "oldKey": "2a15457d-bc5e-4682-bd87-693efb3ce502"
+    },
+    {
+      "apiId": "acba4239-c90f-45b9-a110-8637e770cd2a",
+      "action": "promote",
+      "oldKey": "2a55c83f-ffbb-4c95-96f1-e892444dcbef"
+    },
+    {
+      "apiId": "05963df7-c3a4-4de9-9d1c-e702eeae8199",
+      "action": "promote",
+      "oldKey": "2b26f1ec-4b0f-4681-a3ad-ded629aa26b8"
+    },
+    {
+      "apiId": "e9b4971c-83eb-49af-bb7b-8097df158114",
+      "action": "promote",
+      "oldKey": "2b81e8ed-4c09-4fba-9f2a-6e89556f77d0"
+    },
+    {
+      "apiId": "ecdd8dc2-86a1-483b-9478-9ca643068537",
+      "action": "promote",
+      "oldKey": "2b996e9d-e77b-4c6e-86fd-627c89de4b2c"
+    },
+    {
+      "apiId": "87ca0172-0e18-4bd9-a7d4-629b2aa40e48",
+      "action": "promote",
+      "oldKey": "2be88297-bf14-4bdb-8a20-194b0ad4107d"
+    },
+    {
+      "apiId": "e64bf1c2-b60b-4c95-a8f4-d4ade669f1e1",
+      "action": "promote",
+      "oldKey": "2c9190f3-91ae-426d-9c32-0c846ea4db9f"
+    },
+    {
+      "apiId": "37ad9c2f-3ad8-43c2-8583-f577312c934a",
+      "action": "merge",
+      "oldKey": "2cae45b8-8eb2-4d73-83fa-e23589ee7a95",
+      "keeper": "37ad9c2f-3ad8-43c2-8583-f577312c934a",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 5,
+      "targetGames": 189,
+      "oldComparatorKeeper": "37ad9c2f-3ad8-43c2-8583-f577312c934a",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "18505273-922b-49b8-82bc-d4db59d8ddc9",
+      "action": "promote",
+      "oldKey": "2d3debe5-6885-4fad-aa1e-a9029828d1c8"
+    },
+    {
+      "apiId": "aa8d1a11-bf7a-4a45-8eca-fdaa0e5ea3ba",
+      "action": "promote",
+      "oldKey": "2e396331-71e1-422c-93d4-20a7e1ea4a2c"
+    },
+    {
+      "apiId": "085016b8-4417-46f6-b6a7-9d42f624c625",
+      "action": "promote",
+      "oldKey": "2e4cc4f9-89e0-41db-a266-821f1cb89ff7"
+    },
+    {
+      "apiId": "576bbb94-6586-4338-9357-2dc7ce56ead0",
+      "action": "promote",
+      "oldKey": "2e69985f-14e9-4ef4-9216-1b2460236ce5"
+    },
+    {
+      "apiId": "a9296933-77e7-49c2-a563-3b86fef2fac2",
+      "action": "promote",
+      "oldKey": "2e6ce3e8-2239-45df-862c-85aa53a1fb64"
+    },
+    {
+      "apiId": "c25241bb-8e9e-43b7-a6a1-45739fa997e8",
+      "action": "promote",
+      "oldKey": "2f181081-30f9-421b-8c6b-85c31afdcba1"
+    },
+    {
+      "apiId": "f3ed649b-89fd-456f-93e8-ed955a4e0b32",
+      "action": "promote",
+      "oldKey": "2fb32b1e-51d3-4c48-8cfb-dc71d24385aa"
+    },
+    {
+      "apiId": "96d28434-6cff-476c-8efa-a9a99e39332c",
+      "action": "promote",
+      "oldKey": "2fdbe557-e252-4820-a1b4-b4db54961646"
+    },
+    {
+      "apiId": "45ce52fb-faaf-4fab-b969-df35e926d0c6",
+      "action": "promote",
+      "oldKey": "308c8c4d-6cc3-4d6e-bf94-e41b7cb963e8"
+    },
+    {
+      "apiId": "76990efa-ef44-4cf8-a8fb-985b34d81b0c",
+      "action": "promote",
+      "oldKey": "30c05e2c-dbe6-4929-92f8-36742dcc1c0a"
+    },
+    {
+      "apiId": "93e11a49-a0a7-4413-bd4f-46ab93bcdeee",
+      "action": "promote",
+      "oldKey": "310c9c37-efea-4c00-b2d1-c4b79efb4d21"
+    },
+    {
+      "apiId": "a256aabd-1cc5-44f7-9694-fb2a05d54f7a",
+      "action": "promote",
+      "oldKey": "31268cb1-2fcb-4617-abda-5414fa719806"
+    },
+    {
+      "apiId": "a1567bb1-b47e-4d94-92cd-a276c6064938",
+      "action": "merge",
+      "oldKey": "31596e9a-a3d7-4656-b37b-6f0b35de4557",
+      "keeper": "a1567bb1-b47e-4d94-92cd-a276c6064938",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 16,
+      "targetGames": 64,
+      "oldComparatorKeeper": "a1567bb1-b47e-4d94-92cd-a276c6064938",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "c1edd96f-16ea-43e2-8c37-d241a941e975",
+      "action": "merge",
+      "oldKey": "3171dc3a-d70c-4a61-b15d-e8dbba06bbf8",
+      "keeper": "c1edd96f-16ea-43e2-8c37-d241a941e975",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 30,
+      "targetGames": 71,
+      "oldComparatorKeeper": "c1edd96f-16ea-43e2-8c37-d241a941e975",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "d0b87001-4349-4f30-b0a0-8f63b8d36ede",
+      "action": "promote",
+      "oldKey": "31840e57-aab1-4c4e-88fb-b3dcb313d5dc"
+    },
+    {
+      "apiId": "41e6542c-1096-4e1d-83ff-18ce8ce4631f",
+      "action": "promote",
+      "oldKey": "319c4ffa-c0ac-4cb3-8c1e-ffe7aaea7904"
+    },
+    {
+      "apiId": "1d3be031-5440-445b-9d42-34d7a371fd14",
+      "action": "promote",
+      "oldKey": "31a6346b-8d92-46ee-b2d4-05bf44a10850"
+    },
+    {
+      "apiId": "043d5087-a764-45a0-b844-4e208bbbb221",
+      "action": "promote",
+      "oldKey": "31f91ce1-7ec3-47ea-a39a-cdcd8ac20a20"
+    },
+    {
+      "apiId": "aafc7d74-cf50-4d6b-81be-42a2ca72cc02",
+      "action": "promote",
+      "oldKey": "32068d0f-490b-40f8-a614-0f4b06d40490"
+    },
+    {
+      "apiId": "1609738c-f3c9-4333-9f36-16d079e20c6b",
+      "action": "promote",
+      "oldKey": "3206e77e-dca1-4e21-ad8f-69f4d82ce5f6"
+    },
+    {
+      "apiId": "640bf4ce-dc9c-4a11-8258-9191bf220428",
+      "action": "promote",
+      "oldKey": "326b184e-131e-447f-a4d1-c37a89cb91bd"
+    },
+    {
+      "apiId": "62fc1522-9b39-4ef7-ae85-b0e9e09e3d9a",
+      "action": "promote",
+      "oldKey": "333700af-d30e-4b16-9ed3-94836067e73d"
+    },
+    {
+      "apiId": "d250ea32-3cce-462b-a5e5-d4a40955777a",
+      "action": "promote",
+      "oldKey": "333faa1a-02be-437b-92f0-08bfa1fe13ed"
+    },
+    {
+      "apiId": "139f982d-2fbf-4c73-bc58-4d05b41b3c09",
+      "action": "promote",
+      "oldKey": "33e2ed5a-4ef3-4dd5-b46e-542e0450b74b"
+    },
+    {
+      "apiId": "eb1a6e4e-1c90-4b98-bff3-8bab5e43158e",
+      "action": "promote",
+      "oldKey": "3404db09-e2d4-4482-a15d-bd01695ebd46"
+    },
+    {
+      "apiId": "b2976f71-2159-4d0a-8883-6b08bd7baa74",
+      "action": "promote",
+      "oldKey": "343aadc5-d6cb-482e-8042-48de651f95fd"
+    },
+    {
+      "apiId": "58f65165-358e-4d7d-b51c-9c5084adab8c",
+      "action": "promote",
+      "oldKey": "34a959ef-b567-45db-9235-3d6a6d36e491"
+    },
+    {
+      "apiId": "01b1c81e-8f23-4ff3-8864-03d9d64a412f",
+      "action": "promote",
+      "oldKey": "35366392-9d54-45a0-8505-f7e0ab37d02b"
+    },
+    {
+      "apiId": "2a10a26b-6b03-44dc-ad7e-c170e9406cd2",
+      "action": "promote",
+      "oldKey": "35fbc89e-e542-4c9f-b34f-91ccedc2efad"
+    },
+    {
+      "apiId": "a10973ba-7a28-441f-b6eb-5980b34010b6",
+      "action": "merge",
+      "oldKey": "361492dd-c166-46c5-9c07-5b042ecf44a6",
+      "keeper": "a10973ba-7a28-441f-b6eb-5980b34010b6",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 29,
+      "targetGames": 100,
+      "oldComparatorKeeper": "a10973ba-7a28-441f-b6eb-5980b34010b6",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "3737de80-70a1-4365-ac62-20da43ba307f",
+      "action": "promote",
+      "oldKey": "3616894f-1e07-460b-a448-7f0336cec5a7"
+    },
+    {
+      "apiId": "64bc6fb3-cc66-4f73-863e-c00da7acee9e",
+      "action": "merge",
+      "oldKey": "36794b46-fd27-4e9f-9bf7-7c23214ac10c",
+      "keeper": "64bc6fb3-cc66-4f73-863e-c00da7acee9e",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 1,
+      "targetGames": 1,
+      "oldComparatorKeeper": "64bc6fb3-cc66-4f73-863e-c00da7acee9e",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "12d358fb-6456-4b4c-b3cc-f485a561cd25",
+      "action": "promote",
+      "oldKey": "377f1fcc-dbb8-48ea-8017-72008b1dacdd"
+    },
+    {
+      "apiId": "7ef2ca76-ae02-4c73-9088-4213edf1e373",
+      "action": "promote",
+      "oldKey": "377f3eb8-1fa4-47b2-8260-d30ac9c55fec"
+    },
+    {
+      "apiId": "33755711-8737-40a2-8a26-9bfdb729329e",
+      "action": "promote",
+      "oldKey": "37ac1456-4967-498e-b10c-fec8a124f9ab"
+    },
+    {
+      "apiId": "4edbce00-9719-4c1f-8449-a666a455d041",
+      "action": "promote",
+      "oldKey": "386ccf6e-c5cc-4fa3-ad78-e0a27af76182"
+    },
+    {
+      "apiId": "b10edf0a-e339-455a-b455-31a7a1639f73",
+      "action": "promote",
+      "oldKey": "38b30294-559e-413b-b505-dc2c93dd11c8"
+    },
+    {
+      "apiId": "d43ae14e-be43-4551-a0e0-f97050bf305a",
+      "action": "promote",
+      "oldKey": "38b64e9a-9bd5-4ca0-80cd-04bc4991d6b4"
+    },
+    {
+      "apiId": "5f01fd5d-a9e2-4d57-abd7-c0a10b0d9ce4",
+      "action": "promote",
+      "oldKey": "3908cc31-b9cf-4913-b68f-a209c990d166"
+    },
+    {
+      "apiId": "ce483d0c-4e5e-4fab-bcb3-9b3c7c60af8e",
+      "action": "promote",
+      "oldKey": "3991a09c-4b9a-497b-b250-0318e4615ef9"
+    },
+    {
+      "apiId": "8a6b4920-2cef-49e2-bc6b-e93bd605952e",
+      "action": "promote",
+      "oldKey": "39ac874f-3fff-4967-85c5-8a9dca1ccc3e"
+    },
+    {
+      "apiId": "9e6e4e74-f82f-4236-ad0b-9d208173dadc",
+      "action": "promote",
+      "oldKey": "3a35a499-ef6c-4ba1-a2b0-adc9dcd9ba10"
+    },
+    {
+      "apiId": "78d2b884-3557-499e-a110-033a0cda9565",
+      "action": "promote",
+      "oldKey": "3a39c6fe-298d-4b76-8e08-51f7c07b0dd9"
+    },
+    {
+      "apiId": "648b27a6-2894-4c29-a74d-4e9db79af3b5",
+      "action": "promote",
+      "oldKey": "3a89588b-f07c-4cda-a1c3-90df2f3e3af4"
+    },
+    {
+      "apiId": "54ace479-4a5c-4443-82ec-ac704b7d8fce",
+      "action": "promote",
+      "oldKey": "3b0c99ae-6237-4fa5-a978-e169a16bf2b1"
+    },
+    {
+      "apiId": "1dff745f-9d84-4107-8233-0d2c2c944e83",
+      "action": "promote",
+      "oldKey": "3b56d45e-dcfd-4389-8a6d-696d964c1f17"
+    },
+    {
+      "apiId": "6f302b28-d19a-4ce7-aa1c-aae7fe5e422a",
+      "action": "promote",
+      "oldKey": "3bb3c72a-7968-4a8d-af16-7f671f79484a"
+    },
+    {
+      "apiId": "81529515-fd9d-4ffa-a703-80edacc3eee9",
+      "action": "promote",
+      "oldKey": "3bda4a9b-96c3-4b75-b230-f69067b295c6"
+    },
+    {
+      "apiId": "1409d488-1c74-4451-99dd-4925951d773d",
+      "action": "promote",
+      "oldKey": "3c09d374-e81c-436f-82b0-ebbaf01edd38"
+    },
+    {
+      "apiId": "134d79b1-d501-47d7-a73b-ccdb509ccf23",
+      "action": "promote",
+      "oldKey": "3cebfc4f-cad0-48b6-bd4a-c3d14215ab61"
+    },
+    {
+      "apiId": "470b4e6d-ef9e-4382-b232-0f681a87e694",
+      "action": "promote",
+      "oldKey": "3d64b3f6-8fec-4c27-9ed0-a3f3a09fd1a4"
+    },
+    {
+      "apiId": "d8df868a-8280-454e-831d-fe2b1275919e",
+      "action": "promote",
+      "oldKey": "3e9130c1-2aff-4fd1-a259-61be17144105"
+    },
+    {
+      "apiId": "80a065f9-2040-452d-8311-1e4567f9b56f",
+      "action": "promote",
+      "oldKey": "3eadcbad-57f3-4676-ab78-47cd056c3d3e"
+    },
+    {
+      "apiId": "e32da064-af49-428f-b4c9-6b3850ca575e",
+      "action": "promote",
+      "oldKey": "3efd6a6e-b9ba-477e-ab26-799aa67b4150"
+    },
+    {
+      "apiId": "213cf779-85ce-47ba-b65b-5188ce15becf",
+      "action": "promote",
+      "oldKey": "3f99173e-7e9d-4566-8232-28b092f4b110"
+    },
+    {
+      "apiId": "3a1d75cc-e495-4d26-a4b3-f59bc626fe76",
+      "action": "promote",
+      "oldKey": "3fb97d58-b852-42f9-a86e-20cf3f38cbca"
+    },
+    {
+      "apiId": "293c1053-21c4-4692-84d8-2e3b4b4ca280",
+      "action": "promote",
+      "oldKey": "4021806a-b2d5-4538-9fcd-bd1448ad6a6d"
+    },
+    {
+      "apiId": "6b9747d0-de83-4ec4-b28f-91d98d523a91",
+      "action": "promote",
+      "oldKey": "405dabfa-4671-4570-9831-62ef5f6e461e"
+    },
+    {
+      "apiId": "f974c4f3-7477-410f-a35e-8313f008b5f4",
+      "action": "promote",
+      "oldKey": "4062ba87-5af1-4f5a-b872-a34d96d79c77"
+    },
+    {
+      "apiId": "db7cf13d-c1b8-4362-ba0d-f83def98aeaf",
+      "action": "promote",
+      "oldKey": "40dbd21f-f817-4f52-a5db-a4b495c64172"
+    },
+    {
+      "apiId": "bb6ed2e2-25d8-402c-9ef4-d1481cdf6dbe",
+      "action": "promote",
+      "oldKey": "40ddea82-789a-48a2-8094-de4d73cb1afa"
+    },
+    {
+      "apiId": "f10ddaa5-9c3a-4979-8a51-6e215162f9c3",
+      "action": "promote",
+      "oldKey": "410f261a-c036-4a67-8d40-096cfbc6b4cf"
+    },
+    {
+      "apiId": "949d122e-1e98-40e3-bcc8-138dde65d791",
+      "action": "promote",
+      "oldKey": "41f25b4c-2e79-4945-a83d-f64d5bbab0cb"
+    },
+    {
+      "apiId": "9d65219c-953d-4882-885f-e65d918427ef",
+      "action": "promote",
+      "oldKey": "420bd8ae-061f-4b46-8e1f-ded0c97835c4"
+    },
+    {
+      "apiId": "e358fc8a-593b-44f6-9cde-30ba757d4d83",
+      "action": "promote",
+      "oldKey": "423776e0-c910-4af1-9146-971bf816a9f6"
+    },
+    {
+      "apiId": "ebcfcaa3-b564-4b37-83df-c8f47e30eff0",
+      "action": "promote",
+      "oldKey": "42b9a7d9-73c6-409d-b1fe-989a98e48cc0"
+    },
+    {
+      "apiId": "2c8de1ca-9add-4f23-8214-60a967c00ae1",
+      "action": "promote",
+      "oldKey": "43761554-7828-49a6-b070-59dfdc89b82e"
+    },
+    {
+      "apiId": "f3171744-28f5-423b-b4d5-06d552a63c6a",
+      "action": "promote",
+      "oldKey": "441d0709-371b-40dc-8e97-3d935cd7a290"
+    },
+    {
+      "apiId": "06a33afd-ce7e-4025-816a-1e39d12cddff",
+      "action": "merge",
+      "oldKey": "445b46aa-be6f-48b6-85a0-46decd118bcb",
+      "keeper": "06a33afd-ce7e-4025-816a-1e39d12cddff",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 33,
+      "targetGames": 57,
+      "oldComparatorKeeper": "06a33afd-ce7e-4025-816a-1e39d12cddff",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "d9b07e39-2b46-4584-8805-17b6c973c5e6",
+      "action": "promote",
+      "oldKey": "4571bb79-1ea7-40a8-845a-99ecc18978e6"
+    },
+    {
+      "apiId": "805465e9-6a02-4072-94d0-3179806aa862",
+      "action": "promote",
+      "oldKey": "458f6404-2261-4fac-bbce-5f52e6bb8d39"
+    },
+    {
+      "apiId": "8c6fa65a-2dd9-4267-9174-a9286b8dfee7",
+      "action": "promote",
+      "oldKey": "45994317-e136-4d5d-8ebf-9b5cfab58789"
+    },
+    {
+      "apiId": "fbf91c35-b53d-4dbb-bb03-f584be54032d",
+      "action": "promote",
+      "oldKey": "45b0e90e-56ac-4baa-b0a0-f0509cf8dd82"
+    },
+    {
+      "apiId": "22ea4ae1-5dd0-48cd-86d7-967d010d645d",
+      "action": "promote",
+      "oldKey": "45f4a47a-13b5-42c3-8176-65906cb83cf4"
+    },
+    {
+      "apiId": "f37b997f-154b-4581-bc58-8c24243cd662",
+      "action": "promote",
+      "oldKey": "45fd22eb-1802-4dec-808e-0ab130fc06b6"
+    },
+    {
+      "apiId": "1f0a706d-c33e-4c01-9271-6615538ae29a",
+      "action": "promote",
+      "oldKey": "46888473-ee06-48c8-a47d-e3ee0aa224bc"
+    },
+    {
+      "apiId": "ca0deaa8-b2e8-4af9-a458-e3e93ab6eb13",
+      "action": "promote",
+      "oldKey": "46cdc01d-501b-405a-8b6a-e11538979e1c"
+    },
+    {
+      "apiId": "24bac374-bded-4b95-aebe-b40c55efcb47",
+      "action": "promote",
+      "oldKey": "47320daa-9747-4c65-a47e-ca5691429cfd"
+    },
+    {
+      "apiId": "d3c1a9bc-37d4-4c64-8e97-2d7e2655ccf0",
+      "action": "promote",
+      "oldKey": "4779a0be-590f-4e88-b75b-ba415d83cd31"
+    },
+    {
+      "apiId": "2a2cd27e-a5eb-411f-a936-a106a3bdcf53",
+      "action": "promote",
+      "oldKey": "4834543c-9bf6-4063-80bf-640d85a4181e"
+    },
+    {
+      "apiId": "0a15079c-575a-4132-9fa4-3a0769f12767",
+      "action": "promote",
+      "oldKey": "486cdec0-90cf-4adf-b513-ca60525e4bde"
+    },
+    {
+      "apiId": "b924db9d-374e-4a8c-bc54-16db9353f9d2",
+      "action": "promote",
+      "oldKey": "486cf2ff-3ea2-4f8f-829b-fcce9178d999"
+    },
+    {
+      "apiId": "0071b0cc-8bd7-469f-b970-58f18799bb4d",
+      "action": "promote",
+      "oldKey": "48896691-d924-472b-ab17-3c4aba8726d2"
+    },
+    {
+      "apiId": "c02c4168-2649-4cbb-a84f-6c9f0548fc14",
+      "action": "promote",
+      "oldKey": "48a4d921-e9a2-4a0b-8952-cc82282c51ad"
+    },
+    {
+      "apiId": "0c888d9b-cc2b-462a-bfd0-f5f57f99b58e",
+      "action": "promote",
+      "oldKey": "48c282a7-e6bd-4edd-97b3-88ea1a44dc4b"
+    },
+    {
+      "apiId": "5e5094aa-921a-4cc1-92c3-71d6f7ae47a3",
+      "action": "promote",
+      "oldKey": "48d71050-dcd7-4ea2-9648-c8b88627ab03"
+    },
+    {
+      "apiId": "d668ea87-42f9-483e-ba5b-81b0d5c8f9fa",
+      "action": "promote",
+      "oldKey": "49060e0a-34ab-4a5a-9353-fdaa20de0edd"
+    },
+    {
+      "apiId": "519f0cae-2a88-4558-9bac-194adc665c6b",
+      "action": "promote",
+      "oldKey": "4938a384-1a81-49a7-8e10-cfd3c8c23588"
+    },
+    {
+      "apiId": "2017d2d9-4b58-4887-bf4e-f543b0a27a6c",
+      "action": "promote",
+      "oldKey": "4950835e-01b3-4efd-b878-9928a56b5049"
+    },
+    {
+      "apiId": "0198bbf1-2673-424d-a102-6beede7ce319",
+      "action": "promote",
+      "oldKey": "49f460f6-1291-4dd4-9306-c246ca6a214f"
+    },
+    {
+      "apiId": "e4a4f368-5b2b-4bee-aea6-2d52625db206",
+      "action": "promote",
+      "oldKey": "49fc9e93-cbc3-41aa-b4cf-8f83addc26ed"
+    },
+    {
+      "apiId": "1347c03c-15e2-4762-84af-9871dc79d03e",
+      "action": "promote",
+      "oldKey": "4a7b9abd-58a8-43b5-80c1-68cb651266de"
+    },
+    {
+      "apiId": "3ccb133e-77ba-4a0f-a397-ea36a6103e64",
+      "action": "promote",
+      "oldKey": "4a987fe1-22e5-447b-b5e7-2582b764b623"
+    },
+    {
+      "apiId": "d6b09dc6-b575-4903-9cea-b4d694616c40",
+      "action": "merge",
+      "oldKey": "4b06a01e-0cd7-411b-b52f-c4c77f8799e7",
+      "keeper": "d6b09dc6-b575-4903-9cea-b4d694616c40",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 8,
+      "targetGames": 103,
+      "oldComparatorKeeper": "d6b09dc6-b575-4903-9cea-b4d694616c40",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "5362d57b-f3e4-4f17-b78c-c43f427d3eb3",
+      "action": "merge",
+      "oldKey": "4baf9839-5477-4eef-a860-669c1bdbf560",
+      "keeper": "4baf9839-5477-4eef-a860-669c1bdbf560",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 13,
+      "targetGames": 126,
+      "oldComparatorKeeper": "5362d57b-f3e4-4f17-b78c-c43f427d3eb3",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "e57fac94-3b34-4ba8-b385-ca172f8f7083",
+      "action": "merge",
+      "oldKey": "4bc52671-98dc-4c40-be7e-7d708d65cd38",
+      "keeper": "e57fac94-3b34-4ba8-b385-ca172f8f7083",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 331,
+      "targetGames": 2,
+      "oldComparatorKeeper": "4bc52671-98dc-4c40-be7e-7d708d65cd38",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "13639759-fbc9-481c-9097-ff68ebf81b3f",
+      "action": "promote",
+      "oldKey": "4be0e8fd-3872-4bfc-b8dc-92736a1b050b"
+    },
+    {
+      "apiId": "511c6439-dd13-43e3-8aad-b1beece027a0",
+      "action": "promote",
+      "oldKey": "4c10e52b-e56d-47ba-99ac-b6a8b78961af"
+    },
+    {
+      "apiId": "f8d4f5b3-1d2f-42ca-89e3-d5d97c134ac8",
+      "action": "promote",
+      "oldKey": "4c45ce93-2025-4e5d-8775-988e417de02e"
+    },
+    {
+      "apiId": "8572841f-65de-4e05-a737-8b4bcc88591c",
+      "action": "promote",
+      "oldKey": "4c80f1c1-a84e-43bc-9591-a38cc9f7bc4e"
+    },
+    {
+      "apiId": "1453bdc6-05fb-425c-85b0-420f59133097",
+      "action": "merge",
+      "oldKey": "4cc2dda4-23fe-4aaa-9ecf-72d9b3c41523",
+      "keeper": "4cc2dda4-23fe-4aaa-9ecf-72d9b3c41523",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 81,
+      "targetGames": 158,
+      "oldComparatorKeeper": "1453bdc6-05fb-425c-85b0-420f59133097",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "919a05a8-fa52-4752-84bc-c06c9f726318",
+      "action": "promote",
+      "oldKey": "4cf0c7fd-a098-43e4-ac42-8208ed36681f"
+    },
+    {
+      "apiId": "3efe9040-3ed2-4430-ba0d-4e196a9acdb5",
+      "action": "promote",
+      "oldKey": "4d41a901-f45c-4160-8b2f-3b443715aa76"
+    },
+    {
+      "apiId": "88f32bc2-9362-419b-b1ac-3600551c8303",
+      "action": "promote",
+      "oldKey": "4d5b9f82-63f7-4260-aa06-619802d2ea0e"
+    },
+    {
+      "apiId": "2c807dd0-2f18-4549-9fff-6c1c2fe074cd",
+      "action": "promote",
+      "oldKey": "4db33ec7-f060-45d7-8f1b-c780ccefb6ef"
+    },
+    {
+      "apiId": "250a8f19-f2e2-49ac-b946-5f5fe359adc2",
+      "action": "promote",
+      "oldKey": "4e45145d-8122-41ca-bb61-eee0b48e95c8"
+    },
+    {
+      "apiId": "69e4c87a-e9ab-4493-8140-5b2bec3507c1",
+      "action": "promote",
+      "oldKey": "4eb94596-fb7e-47e8-89a5-b348f939c781"
+    },
+    {
+      "apiId": "ae8588d9-e766-4b09-979f-c05675226226",
+      "action": "promote",
+      "oldKey": "4edddfd1-f2f7-4c1e-8045-5ba451414810"
+    },
+    {
+      "apiId": "a0c326ab-fb2a-4deb-ab0d-38b0c2883d8a",
+      "action": "promote",
+      "oldKey": "4f05fc77-e2e6-4ba9-a699-fa32c0129fca"
+    },
+    {
+      "apiId": "a1e70f17-d4a0-48cb-9dbe-a943ad47f3e9",
+      "action": "merge",
+      "oldKey": "4f4e0dde-cf2b-4878-bfa1-f6d5273bee60",
+      "keeper": "a1e70f17-d4a0-48cb-9dbe-a943ad47f3e9",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 95,
+      "targetGames": 98,
+      "oldComparatorKeeper": "a1e70f17-d4a0-48cb-9dbe-a943ad47f3e9",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "de222953-59b6-4287-8d5f-cea1ca9b9f2f",
+      "action": "promote",
+      "oldKey": "4fa9d867-3c80-4319-b058-902099897775"
+    },
+    {
+      "apiId": "24d52816-f60a-4a4f-bd82-2debca3348dd",
+      "action": "promote",
+      "oldKey": "4fae2586-4900-4a56-bc3a-0f9af2fbb40d"
+    },
+    {
+      "apiId": "f52b7774-d34e-4955-924c-4a0959883469",
+      "action": "promote",
+      "oldKey": "50aa0c9e-6dfc-4be2-a3e6-c21163e952c2"
+    },
+    {
+      "apiId": "7ad2edf9-69ea-4d28-8061-c73d0ed0e5dc",
+      "action": "promote",
+      "oldKey": "50b2aa39-30ff-4a74-bedf-7215199bae59"
+    },
+    {
+      "apiId": "38604144-375d-4196-adab-c1179f7a4e92",
+      "action": "promote",
+      "oldKey": "50b38c7d-ea41-46a8-be61-483b66a0aed4"
+    },
+    {
+      "apiId": "5a061065-fd66-4f88-9692-c3986e87514e",
+      "action": "promote",
+      "oldKey": "5111b537-ce87-436a-8cfb-34fd07f96873"
+    },
+    {
+      "apiId": "fb4033f3-623b-4d3b-9100-7cedb21fbf83",
+      "action": "promote",
+      "oldKey": "517d554f-1b74-416f-81cb-7539e5b703ef"
+    },
+    {
+      "apiId": "13a53669-ff47-466d-bf48-516870dc81c1",
+      "action": "promote",
+      "oldKey": "51bfca13-56a7-4d5f-996e-a69fd4c547bd"
+    },
+    {
+      "apiId": "508f3195-8362-4573-851e-873a5eaf6073",
+      "action": "promote",
+      "oldKey": "5252d454-0aec-4d12-8e2b-5b55d6122380"
+    },
+    {
+      "apiId": "7a9b6d83-325e-4b03-a33c-d347d8b7d4c9",
+      "action": "promote",
+      "oldKey": "52538550-6961-4cd8-a83c-55cd9da0250a"
+    },
+    {
+      "apiId": "d83294f1-1a56-4a41-8c49-44eb835ac41a",
+      "action": "promote",
+      "oldKey": "53068051-5f8b-4171-9b74-a105dfaf82c5"
+    },
+    {
+      "apiId": "aed831e3-cda6-41ea-b4cb-10a408bd237a",
+      "action": "promote",
+      "oldKey": "530ad315-a60b-4069-a986-ff2aaa64045d"
+    },
+    {
+      "apiId": "ed0be72b-ffbf-4279-bcaf-86bdcb890fe6",
+      "action": "promote",
+      "oldKey": "53976a6d-00b6-4db7-b3f6-90fae6646946"
+    },
+    {
+      "apiId": "0ac25a57-5d4c-4b1c-ba1d-e3dc04c9df5e",
+      "action": "promote",
+      "oldKey": "53c5b0d1-8524-4e90-bf16-cf87e5c6836b"
+    },
+    {
+      "apiId": "3d9d3208-6797-4298-b7a6-bedbdec5602e",
+      "action": "promote",
+      "oldKey": "54040bbd-686e-4b18-a128-cc2c76257897"
+    },
+    {
+      "apiId": "98856608-a57a-459e-a900-1a6539530fb4",
+      "action": "promote",
+      "oldKey": "54465a16-4a88-44ea-b54c-d994969f0eac"
+    },
+    {
+      "apiId": "d8cfb33b-4ab5-4213-8f48-cb7e53b7932e",
+      "action": "promote",
+      "oldKey": "54c338e3-245e-46cf-9e8f-3058941c5ccb"
+    },
+    {
+      "apiId": "b4065d25-c97a-4bef-82b4-817794255bf2",
+      "action": "promote",
+      "oldKey": "54d2a9da-7d18-4fd2-b6a7-f25f156d46cf"
+    },
+    {
+      "apiId": "7273db13-2630-48bd-9c87-66cd00998e06",
+      "action": "promote",
+      "oldKey": "54d89816-941e-4285-9ea4-53ef316504b4"
+    },
+    {
+      "apiId": "7b6d415d-15bf-439d-be71-dba34c1387e5",
+      "action": "promote",
+      "oldKey": "54ef080d-b918-44ba-a7d8-aab391bbe736"
+    },
+    {
+      "apiId": "3d05f556-8328-4a3a-b5ac-454b5df0bbd1",
+      "action": "promote",
+      "oldKey": "553608ab-908d-4a84-aa76-23b77b3dfa6b"
+    },
+    {
+      "apiId": "efe5b226-c837-4950-bec3-d829082835d8",
+      "action": "promote",
+      "oldKey": "55373ff2-23e3-4c62-a3ca-56160bfa480d"
+    },
+    {
+      "apiId": "216943b5-87a7-4e96-9037-93e69c1ab31a",
+      "action": "promote",
+      "oldKey": "556c8541-af9a-441b-8f3d-006587f18dd4"
+    },
+    {
+      "apiId": "2cd63993-66f1-4aa5-9e49-24bacabef3e1",
+      "action": "merge",
+      "oldKey": "56798b19-243c-44a6-9d23-b870299535a9",
+      "keeper": "2cd63993-66f1-4aa5-9e49-24bacabef3e1",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 43,
+      "targetGames": 92,
+      "oldComparatorKeeper": "2cd63993-66f1-4aa5-9e49-24bacabef3e1",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "56ee55f6-3fbc-4acc-b4ee-d4d4a0b7e13c",
+      "action": "merge",
+      "oldKey": "5689de31-f0dd-46c0-be98-a64e1d167ec9",
+      "keeper": "56ee55f6-3fbc-4acc-b4ee-d4d4a0b7e13c",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 9,
+      "targetGames": 15,
+      "oldComparatorKeeper": "56ee55f6-3fbc-4acc-b4ee-d4d4a0b7e13c",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "efb9d32d-2c9c-40bc-9b45-8e0ee800b713",
+      "action": "promote",
+      "oldKey": "569f3dab-70d7-4427-ab36-8d3e02d0e743"
+    },
+    {
+      "apiId": "a4c5fafc-8941-4d18-97a4-46636df03ed2",
+      "action": "promote",
+      "oldKey": "57902251-9f8a-429d-8a84-bcc67036aaec"
+    },
+    {
+      "apiId": "b9c518b9-98f2-4442-b1cf-82aabf57083a",
+      "action": "promote",
+      "oldKey": "587609e0-f18a-46e6-a6d2-3d2cc30709c2"
+    },
+    {
+      "apiId": "45d11a21-aaed-4876-9816-650bff4289ac",
+      "action": "promote",
+      "oldKey": "588aebc6-b2b0-476c-ade9-de54428ae029"
+    },
+    {
+      "apiId": "e341bee8-aa15-48dc-a084-c1f7664abec3",
+      "action": "promote",
+      "oldKey": "58f2916a-9a24-4e15-b04a-264bf6d3a377"
+    },
+    {
+      "apiId": "ed2d4e34-4a4f-4320-8831-055bf8f9551f",
+      "action": "promote",
+      "oldKey": "59442105-8691-4678-a4d5-6f7850932072"
+    },
+    {
+      "apiId": "dd2cb4dd-6c33-41d9-abc7-43f16a0e85a9",
+      "action": "promote",
+      "oldKey": "59472832-6f28-4880-b82e-38515bd50832"
+    },
+    {
+      "apiId": "4b7486d5-2caf-462f-b214-c87783209cda",
+      "action": "promote",
+      "oldKey": "5a81a432-5cd2-4a93-b3c7-ce126b7002de"
+    },
+    {
+      "apiId": "5d2ec6ab-6ab8-43dd-bdda-93b27bf36994",
+      "action": "promote",
+      "oldKey": "5b2d4fd8-52d6-492f-ade0-a1a590187c18"
+    },
+    {
+      "apiId": "7fe36b78-950e-4132-8113-2f2f56dda2b5",
+      "action": "promote",
+      "oldKey": "5b3342ee-95e5-41eb-9f5c-101def75f236"
+    },
+    {
+      "apiId": "ead8bf67-7e20-4705-b93e-fc8c30f16a88",
+      "action": "promote",
+      "oldKey": "5b54565d-2d11-4d1f-98e5-f0fae2c12750"
+    },
+    {
+      "apiId": "3457243f-5c7e-4a49-a22a-5ba9e5afc218",
+      "action": "promote",
+      "oldKey": "5b979689-20a6-4808-b023-4bf9cc7064b2"
+    },
+    {
+      "apiId": "58e0dc32-eca3-492e-90e6-17d21c70bd35",
+      "action": "promote",
+      "oldKey": "5bf0b2a9-dbe8-4e9a-94b3-f08fd444f131"
+    },
+    {
+      "apiId": "c15caf5c-8430-4207-b2f0-41afcdf09cfb",
+      "action": "promote",
+      "oldKey": "5c23aa7e-c726-4e32-a05e-d8b8c997c0d4"
+    },
+    {
+      "apiId": "3dfe40fa-27cf-463e-a0a8-923e8cc8f147",
+      "action": "promote",
+      "oldKey": "5c5f2751-93c7-4d3e-810c-cf0e60c5d594"
+    },
+    {
+      "apiId": "05105c20-adc5-4400-ad5b-d29f1e22597d",
+      "action": "promote",
+      "oldKey": "5cb3e35b-3083-4e88-8902-f2ffd765d9c4"
+    },
+    {
+      "apiId": "0eccbacc-e15f-45a2-a949-005f008cb54a",
+      "action": "promote",
+      "oldKey": "5cb8de6d-988e-4225-bc06-56556d10e7c8"
+    },
+    {
+      "apiId": "f3056ff6-f5e4-472c-92f9-4fac1cd62b41",
+      "action": "promote",
+      "oldKey": "5d521dac-bdf5-47cc-98d7-033ee3f24d39"
+    },
+    {
+      "apiId": "1966e930-2ab3-45ef-a963-73ea3ec0032b",
+      "action": "promote",
+      "oldKey": "5d9cef88-55c3-46c2-9352-889feac154f4"
+    },
+    {
+      "apiId": "df7b06d0-bb9c-494c-9e9c-15ff9e7792de",
+      "action": "promote",
+      "oldKey": "5ddf2b06-60e7-4007-b342-664da8800dd1"
+    },
+    {
+      "apiId": "1247ab99-7bc9-49ca-94b8-9a27fc3d748e",
+      "action": "promote",
+      "oldKey": "5debc010-9fca-455d-8269-648f7b107d7e"
+    },
+    {
+      "apiId": "ec3072a4-cd58-4e41-bd1f-add0f1623bd9",
+      "action": "promote",
+      "oldKey": "5e61466c-fbf4-4179-8de1-f5843c2086c6"
+    },
+    {
+      "apiId": "6092d2ed-2efc-4034-8802-4ea802af320b",
+      "action": "promote",
+      "oldKey": "5e7dd46e-7e63-4398-b469-76d184c21ccc"
+    },
+    {
+      "apiId": "61484830-7379-4d13-bec3-76a4c3d9c38c",
+      "action": "promote",
+      "oldKey": "5ec52065-1da6-4446-aa30-17f935682752"
+    },
+    {
+      "apiId": "f1b098cd-0190-4eef-b325-6736e69c7a9a",
+      "action": "merge",
+      "oldKey": "5efa6c1e-a276-40c3-9b34-fd2ad98f95fa",
+      "keeper": "f1b098cd-0190-4eef-b325-6736e69c7a9a",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 15,
+      "targetGames": 87,
+      "oldComparatorKeeper": "f1b098cd-0190-4eef-b325-6736e69c7a9a",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "de3ec7c6-6925-4321-9b2a-fc8817ec80db",
+      "action": "promote",
+      "oldKey": "5f240cff-9776-4347-87f1-4b3730b6ab60"
+    },
+    {
+      "apiId": "3b500472-77c4-41a0-ad62-bf2648f3b32d",
+      "action": "promote",
+      "oldKey": "5f64c2b6-6293-4e3d-a9af-091efa3f1adc"
+    },
+    {
+      "apiId": "c3679781-1a6f-4bd2-aca3-c99da376e52f",
+      "action": "promote",
+      "oldKey": "60ba547c-a610-47e8-b5c0-8f60f7d9a4c0"
+    },
+    {
+      "apiId": "46ebeda7-ddb1-4985-b96f-fb8b0f52652f",
+      "action": "promote",
+      "oldKey": "60bf0d05-8dca-4a87-9035-8e6136941b1c"
+    },
+    {
+      "apiId": "d3263f54-32a7-44c3-b4af-8a71d925bc1f",
+      "action": "promote",
+      "oldKey": "60c4e5b5-722a-46f2-84d2-f196dfb1fe07"
+    },
+    {
+      "apiId": "343ce0ab-064f-49b5-8b36-14b24298a5bf",
+      "action": "promote",
+      "oldKey": "60de493f-2e07-4c52-8a99-27c2c5d8b771"
+    },
+    {
+      "apiId": "02b0d527-2231-4e89-a124-9900c5b4f96f",
+      "action": "merge",
+      "oldKey": "629c3da2-c308-436b-a505-f6f8eb6a2db7",
+      "keeper": "629c3da2-c308-436b-a505-f6f8eb6a2db7",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 63,
+      "targetGames": 108,
+      "oldComparatorKeeper": "02b0d527-2231-4e89-a124-9900c5b4f96f",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "03d35c49-169c-4709-a46d-bc8f41365192",
+      "action": "merge",
+      "oldKey": "62a70452-54f5-4971-81d7-dbed6d7d7e5f",
+      "keeper": "03d35c49-169c-4709-a46d-bc8f41365192",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 59,
+      "targetGames": 61,
+      "oldComparatorKeeper": "03d35c49-169c-4709-a46d-bc8f41365192",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "2c9fda71-c430-4624-a821-9d78ec1058f6",
+      "action": "promote",
+      "oldKey": "62aadc5e-98c1-450f-85c9-1c37c7e6ac9d"
+    },
+    {
+      "apiId": "50d1960f-8b68-48c8-a49e-95acf7fc7200",
+      "action": "promote",
+      "oldKey": "63043a17-a89b-4193-8967-2fce0b38e666"
+    },
+    {
+      "apiId": "ad3639a6-d0ea-424f-86ca-0ea3b387df4e",
+      "action": "promote",
+      "oldKey": "636298e6-96b9-45d4-9b9c-46822cd21d86"
+    },
+    {
+      "apiId": "088134ba-3033-4d5e-8c32-e22e5e40681e",
+      "action": "promote",
+      "oldKey": "63690afd-11ee-45b5-bc5c-12db129a0ff7"
+    },
+    {
+      "apiId": "52a3f16f-3aff-46cd-9a9f-71aec8ec3a09",
+      "action": "promote",
+      "oldKey": "6434f8e3-f994-4a05-ad67-3bfac5e5f6ea"
+    },
+    {
+      "apiId": "61ad82cb-0371-484c-baf2-d0ffdfc175d3",
+      "action": "merge",
+      "oldKey": "644d5dba-e8e1-4804-b95a-bb096f672b66",
+      "keeper": "61ad82cb-0371-484c-baf2-d0ffdfc175d3",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 4,
+      "targetGames": 49,
+      "oldComparatorKeeper": "61ad82cb-0371-484c-baf2-d0ffdfc175d3",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "b4f12da1-0f05-4a3d-8cd1-8c662852cec5",
+      "action": "promote",
+      "oldKey": "64666499-c2f3-4001-b439-063d80617392"
+    },
+    {
+      "apiId": "c3b2d999-288b-407f-a021-27e247f80974",
+      "action": "promote",
+      "oldKey": "64af835f-1b5d-4e09-9650-c489f0e11e1b"
+    },
+    {
+      "apiId": "de94f934-31a7-43df-bd04-5f192ee73b41",
+      "action": "promote",
+      "oldKey": "652db568-1249-4f45-bbae-983d3a7a1d07"
+    },
+    {
+      "apiId": "c10ab107-b712-4701-80ef-b555d713fb3e",
+      "action": "promote",
+      "oldKey": "655f844d-8043-43e4-a53d-4f5ec473bf07"
+    },
+    {
+      "apiId": "4b19a364-c415-4275-98b6-91efc449fad3",
+      "action": "merge",
+      "oldKey": "657378ea-6cc8-4a4a-92f2-ca8c4fc84c6e",
+      "keeper": "657378ea-6cc8-4a4a-92f2-ca8c4fc84c6e",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 22,
+      "targetGames": 95,
+      "oldComparatorKeeper": "4b19a364-c415-4275-98b6-91efc449fad3",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "68130eea-1184-4480-95de-4c06fea008f4",
+      "action": "merge",
+      "oldKey": "66235dd3-3d54-4bf2-99db-83e7dc372f5c",
+      "keeper": "68130eea-1184-4480-95de-4c06fea008f4",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 1,
+      "targetGames": 1,
+      "oldComparatorKeeper": "68130eea-1184-4480-95de-4c06fea008f4",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "2ee95bc8-8b6c-43dd-b291-78a747dcc3ee",
+      "action": "promote",
+      "oldKey": "66e5be99-086f-457c-8353-0ba7d5de4c21"
+    },
+    {
+      "apiId": "161b31b0-ee58-43fd-bcb7-dc106f28ac1d",
+      "action": "promote",
+      "oldKey": "672f69a7-db07-4aa8-97da-8e15f424e1ce"
+    },
+    {
+      "apiId": "6d8392b1-c145-486c-b291-79c90f3c0c8f",
+      "action": "promote",
+      "oldKey": "677765eb-30f7-47ec-8d50-62fdbd2dc08a"
+    },
+    {
+      "apiId": "43317fdc-92b5-4e34-88cf-6b03102ee93a",
+      "action": "promote",
+      "oldKey": "67998673-0c4f-4654-a7b8-d1a880647881"
+    },
+    {
+      "apiId": "12a338ac-e25b-463e-926f-af0eacc3dc62",
+      "action": "promote",
+      "oldKey": "680da69f-3579-4691-9ea7-7f66930a19a6"
+    },
+    {
+      "apiId": "02791daa-69e9-47bc-8ef8-f881657d2f2f",
+      "action": "promote",
+      "oldKey": "6840445d-9c46-420e-a24d-39d170a87fe0"
+    },
+    {
+      "apiId": "05fe67ab-bb72-44b8-921e-e35e07f3a98f",
+      "action": "promote",
+      "oldKey": "686bf3ae-2610-4de2-8293-f9bc34901925"
+    },
+    {
+      "apiId": "ccb7c6b4-4ed2-489a-8cd0-fd44399a93c0",
+      "action": "promote",
+      "oldKey": "68db296a-dcba-4ad5-a9e9-a9b3dd2857d5"
+    },
+    {
+      "apiId": "ff377782-4af6-4b04-be4f-8c4a2e5ac1fc",
+      "action": "promote",
+      "oldKey": "6901482c-c646-4b5d-9260-ce2ffa43082b"
+    },
+    {
+      "apiId": "502a0895-6fc9-4445-95ab-d281ac04601f",
+      "action": "promote",
+      "oldKey": "69143f0b-81fb-483b-b3d3-b9c0faa16005"
+    },
+    {
+      "apiId": "98a1f13c-2378-4dfc-b48a-b615a263ebae",
+      "action": "promote",
+      "oldKey": "6916a75b-5496-4fc9-9420-d8458eba9cd1"
+    },
+    {
+      "apiId": "4ac525be-910e-4634-a87d-f231afbcd97d",
+      "action": "promote",
+      "oldKey": "6921db8b-90c3-4df9-be2b-bb79634b5b13"
+    },
+    {
+      "apiId": "406161f2-e08f-4c5e-bb96-8af1eaea536d",
+      "action": "promote",
+      "oldKey": "69527717-20cf-480e-a4da-1c110a21f146"
+    },
+    {
+      "apiId": "eac6ef05-e172-4613-9cbb-797e4f24431d",
+      "action": "promote",
+      "oldKey": "6967f773-9fc3-429f-90b7-bd16f4f24410"
+    },
+    {
+      "apiId": "af094d11-0114-499a-96d1-b2f3b433fe81",
+      "action": "promote",
+      "oldKey": "69badecc-e6b4-4bf6-b52f-f30339ab903e"
+    },
+    {
+      "apiId": "8129dabd-f966-47e2-aba2-dc50f226d667",
+      "action": "promote",
+      "oldKey": "6a83907d-4f5a-448b-a7a7-235ae7965f36"
+    },
+    {
+      "apiId": "3f4d6f23-a495-4f34-91d2-53a5986ab115",
+      "action": "promote",
+      "oldKey": "6ad999d7-3ec5-454b-8cc0-3967778ac843"
+    },
+    {
+      "apiId": "e91f873a-ed93-4623-a184-8fb0f55856f8",
+      "action": "promote",
+      "oldKey": "6b18dcb7-1193-4928-88de-09706ac4d5ad"
+    },
+    {
+      "apiId": "f95e6fff-44fe-4acb-b91b-1c3a1f8ae13c",
+      "action": "promote",
+      "oldKey": "6b2c1da3-7b4c-4db7-b143-838f59a884c9"
+    },
+    {
+      "apiId": "273436c1-153b-44dd-911d-fc1f0dbfb0fc",
+      "action": "promote",
+      "oldKey": "6b81ee72-24ae-45f7-b421-3513849161ae"
+    },
+    {
+      "apiId": "588491a2-6257-4298-bacd-0f08184fcbd2",
+      "action": "promote",
+      "oldKey": "6bbf58a2-e495-4d6f-88bf-b3b967ea0208"
+    },
+    {
+      "apiId": "b0c24dee-fa54-4816-b410-83dc2a5a2433",
+      "action": "promote",
+      "oldKey": "6bfb501d-402e-417e-bb33-ed666fb2ee8f"
+    },
+    {
+      "apiId": "ccbef4ba-477e-49b9-8a63-19675e9e132c",
+      "action": "promote",
+      "oldKey": "6cbd9616-ca30-4eae-8b43-ff0308428457"
+    },
+    {
+      "apiId": "61c5a43d-7021-4a7f-9e27-6dee43bc9123",
+      "action": "promote",
+      "oldKey": "6cc0af28-5906-4890-8831-4db896d0ee89"
+    },
+    {
+      "apiId": "8d07266c-7e9a-4d33-bc01-0e26431b4a73",
+      "action": "promote",
+      "oldKey": "6cc88749-cadf-4c82-9ac3-fdf1b5c203aa"
+    },
+    {
+      "apiId": "6d304a53-cc4c-4c1b-9bb4-7c955c3c0231",
+      "action": "promote",
+      "oldKey": "6ce6956b-4996-46c9-b19a-eb32ca754f63"
+    },
+    {
+      "apiId": "02d9c9bf-f58e-4b3b-88b5-26e107acc83b",
+      "action": "promote",
+      "oldKey": "6cefe560-9e00-44ff-95b2-2446abc14833"
+    },
+    {
+      "apiId": "8e935b09-c8e8-469e-a93f-6027713415e8",
+      "action": "promote",
+      "oldKey": "6d29c821-15bc-4b45-ace2-06ac6ae8f1f8"
+    },
+    {
+      "apiId": "5725f278-3413-4ca5-b533-4b2facc2962e",
+      "action": "promote",
+      "oldKey": "6d5cb818-7c45-4332-9e67-56967d3f2001"
+    },
+    {
+      "apiId": "fa10013a-4f12-4ebe-9fa3-3aab901ed14d",
+      "action": "promote",
+      "oldKey": "6e3ee351-8adb-476f-bfce-5241e7cf4ec8"
+    },
+    {
+      "apiId": "1c93ca92-2d1e-43e2-9f36-378a800799d1",
+      "action": "promote",
+      "oldKey": "6e63be0b-7dfc-4c1d-b504-9f8483d5b9a4"
+    },
+    {
+      "apiId": "b005754b-84c8-4ae4-bfae-b95acd4c24e3",
+      "action": "promote",
+      "oldKey": "6e920382-89aa-4240-954c-b9bd81ec8cd2"
+    },
+    {
+      "apiId": "373cc460-fa7d-4fd2-b966-d6bcf66a407e",
+      "action": "promote",
+      "oldKey": "6f2770a2-e16f-4234-b2b7-b087b42bc99b"
+    },
+    {
+      "apiId": "76d6bae3-08de-46e5-8728-ed86e73f7f8a",
+      "action": "promote",
+      "oldKey": "6f347857-2801-41f4-b051-5be8c04c5c2e"
+    },
+    {
+      "apiId": "06b9fbb9-cf06-4f1a-a638-138caa7ee11b",
+      "action": "merge",
+      "oldKey": "6febcb04-8deb-402f-8716-4e403bcf94b5",
+      "keeper": "6febcb04-8deb-402f-8716-4e403bcf94b5",
+      "sourceRank": 3,
+      "targetRank": 0,
+      "sourceGames": 131,
+      "targetGames": 2,
+      "oldComparatorKeeper": "6febcb04-8deb-402f-8716-4e403bcf94b5",
+      "statsRefetchQueued": false
+    },
+    {
+      "apiId": "f4e2c87e-a5cd-474d-b1ba-5b28753d1348",
+      "action": "promote",
+      "oldKey": "702effd5-cb7f-4921-b34c-13243ef08bc9"
+    },
+    {
+      "apiId": "53de720e-4f84-4eb5-aee2-eea6ec3c151c",
+      "action": "promote",
+      "oldKey": "71677581-1d27-4045-8b2e-df2309f035d3"
+    },
+    {
+      "apiId": "b17384f1-9bcd-4dc7-bc27-cd5bf13f4ed0",
+      "action": "promote",
+      "oldKey": "71b7ec0c-e6ca-4e3e-bf2c-c87d6800aa2b"
+    },
+    {
+      "apiId": "ee04cc86-4fa1-4d33-ba51-abfb9a8bf8e4",
+      "action": "promote",
+      "oldKey": "725b6b76-0a01-43e8-94c1-be1288c784ba"
+    },
+    {
+      "apiId": "980e63f8-ea39-4ff8-834a-230efeae4d25",
+      "action": "promote",
+      "oldKey": "7281a7d9-b536-4278-9fc3-8342b8ebe1b0"
+    },
+    {
+      "apiId": "d3c1a9bc-37d4-4c64-8e97-2d7e2655ccf0",
+      "action": "merge",
+      "oldKey": "7306841f-ec20-4284-afd2-8af73bac2021",
+      "keeper": "d3c1a9bc-37d4-4c64-8e97-2d7e2655ccf0",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 17,
+      "targetGames": 2,
+      "oldComparatorKeeper": "7306841f-ec20-4284-afd2-8af73bac2021",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "7b0af1f8-d386-4db0-9a68-30804b382ab9",
+      "action": "promote",
+      "oldKey": "7342d9e0-afdb-4ead-97b1-25fb1e6fff37"
+    },
+    {
+      "apiId": "9eff9d4c-724b-4524-9252-1a6842380351",
+      "action": "promote",
+      "oldKey": "734af9f1-14ef-4d16-a2f0-ced21930e692"
+    },
+    {
+      "apiId": "bfc7283d-eaca-42c7-88b4-a033b8e5520d",
+      "action": "promote",
+      "oldKey": "737e4312-0f9f-4762-9214-9163ee7d4a0a"
+    },
+    {
+      "apiId": "ca9b051d-5b3a-4669-bd92-5d336d2d614a",
+      "action": "promote",
+      "oldKey": "7389ae73-d6e2-4cc6-9d03-b33c6f89be41"
+    },
+    {
+      "apiId": "86a0e096-9797-49f4-b0ba-66a82c2011d1",
+      "action": "merge",
+      "oldKey": "73e56d73-6310-4698-a317-5ea33666ccc5",
+      "keeper": "86a0e096-9797-49f4-b0ba-66a82c2011d1",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 16,
+      "targetGames": 158,
+      "oldComparatorKeeper": "86a0e096-9797-49f4-b0ba-66a82c2011d1",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "d2b76acb-57ad-46ae-bed4-ca9f6b5b5dae",
+      "action": "promote",
+      "oldKey": "74195a2d-1419-45e9-800d-863cfef080f3"
+    },
+    {
+      "apiId": "56a04c38-f78c-4507-a584-9e92179249b9",
+      "action": "promote",
+      "oldKey": "741a5265-b463-4c17-9765-e848c800212b"
+    },
+    {
+      "apiId": "078faf3e-a642-4e8c-85fa-1c664a1eea20",
+      "action": "promote",
+      "oldKey": "7475241e-1129-4a71-8af7-fc29ef2a5ff5"
+    },
+    {
+      "apiId": "c49ee9f1-3b67-4e14-8bb9-6757611bb634",
+      "action": "promote",
+      "oldKey": "747db05c-3675-4b57-8380-d845144bb465"
+    },
+    {
+      "apiId": "492f92cb-771b-4284-a7b9-3e6a1efcc0ab",
+      "action": "promote",
+      "oldKey": "74a049d7-01e0-45d2-9a5a-354bc6cbc2e6"
+    },
+    {
+      "apiId": "36dfdc0c-98dc-4952-98e9-df158585eda8",
+      "action": "promote",
+      "oldKey": "74facbfc-9cf2-454b-b354-b37c7fc80275"
+    },
+    {
+      "apiId": "f5615f63-275d-4ddb-8fbc-50de41a06c40",
+      "action": "promote",
+      "oldKey": "751043a8-ada2-4083-8baf-1f4e85e3e1be"
+    },
+    {
+      "apiId": "2a528707-db7d-4a60-ade3-c2c3a0dc8613",
+      "action": "promote",
+      "oldKey": "751d4c16-ba07-4123-a4cd-4b5f57ac6b2a"
+    },
+    {
+      "apiId": "f3388d31-ba23-48bc-8311-5d4a4ef21abc",
+      "action": "promote",
+      "oldKey": "75961abc-3aa4-4fc2-8232-40a471d531f5"
+    },
+    {
+      "apiId": "efbc4d7d-ca43-42bc-a29b-ba57e760d6fc",
+      "action": "promote",
+      "oldKey": "762cdc1f-9fa6-479e-96e6-4df3a97c2c1b"
+    },
+    {
+      "apiId": "80f8ac48-8d1b-44d4-b062-2523bbbc6544",
+      "action": "promote",
+      "oldKey": "7659afd6-0153-4f68-a4e5-fd776cff87aa"
+    },
+    {
+      "apiId": "561e9303-bdc3-45f4-87b4-22862ef63a1a",
+      "action": "promote",
+      "oldKey": "766a871a-8d9c-416b-8e29-fcff1af84e6f"
+    },
+    {
+      "apiId": "3bf4fb7d-055a-4253-8631-443462259ca9",
+      "action": "promote",
+      "oldKey": "76bb499e-7bfd-42f5-a2e6-7e2d6d716b2b"
+    },
+    {
+      "apiId": "d64fd276-c68c-45d7-aa23-6ef1c1a90bca",
+      "action": "promote",
+      "oldKey": "7716e25e-5d56-44d4-b74d-ef8ad2b50f93"
+    },
+    {
+      "apiId": "decd0eb8-af00-4a93-a0f4-6801e56e986a",
+      "action": "promote",
+      "oldKey": "77d36c86-f735-4457-9773-225d39f42293"
+    },
+    {
+      "apiId": "cf336d61-a93f-431d-a9c8-0ce425fd04f0",
+      "action": "promote",
+      "oldKey": "77dd0865-bfc1-484f-b19f-c15583a888ba"
+    },
+    {
+      "apiId": "16f3ab07-2b18-4c15-ab62-a0909792ff25",
+      "action": "promote",
+      "oldKey": "77e9890d-5776-4c6c-b5b0-b82dc1729e1d"
+    },
+    {
+      "apiId": "9eda41eb-7f14-4c6d-9d89-ef71764dd54d",
+      "action": "promote",
+      "oldKey": "7808633d-ffb5-46d2-9007-a5d7f6f321e3"
+    },
+    {
+      "apiId": "cb9f3ce8-361e-4074-9a1e-599dbf900bee",
+      "action": "promote",
+      "oldKey": "7859809a-5525-4d8f-bf81-18044fa29911"
+    },
+    {
+      "apiId": "9be0aeac-df0d-4691-939d-08289b5adce1",
+      "action": "promote",
+      "oldKey": "786403bf-e3a7-49fd-a36e-03ad84862d92"
+    },
+    {
+      "apiId": "2f80f705-a7b5-437d-ac12-a6ce63a5f684",
+      "action": "promote",
+      "oldKey": "78b71aa7-8a94-4fcf-a355-4e348d0616a2"
+    },
+    {
+      "apiId": "c665bd93-0bbf-44b6-a8ff-70e69e6947d6",
+      "action": "promote",
+      "oldKey": "78d830cf-d4d9-475a-be2f-8206288e441e"
+    },
+    {
+      "apiId": "ac7e1cf8-893b-4533-b6ff-463e0e3ce68d",
+      "action": "promote",
+      "oldKey": "796fa464-8de7-4441-87a9-e641aaf084d5"
+    },
+    {
+      "apiId": "a5997379-d653-44a5-9f44-5ba19464561c",
+      "action": "merge",
+      "oldKey": "79abf205-09bf-4b47-aa96-92379820d019",
+      "keeper": "a5997379-d653-44a5-9f44-5ba19464561c",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 34,
+      "targetGames": 51,
+      "oldComparatorKeeper": "a5997379-d653-44a5-9f44-5ba19464561c",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "15c6720b-a0fb-468a-ad0d-26570dd86d9f",
+      "action": "promote",
+      "oldKey": "79b5e56a-a0bd-4198-800f-d34ed74b1289"
+    },
+    {
+      "apiId": "e59999d4-86ce-4b0e-97d0-904001d01fda",
+      "action": "promote",
+      "oldKey": "79ee3275-e05f-4e69-933f-b231be44ed5d"
+    },
+    {
+      "apiId": "2e12563e-eb66-416c-b649-ce50882c8ccc",
+      "action": "promote",
+      "oldKey": "7a48c484-bbce-4834-be7e-b47865190ddf"
+    },
+    {
+      "apiId": "b1dfd597-8e49-408c-86cb-25227261dfc8",
+      "action": "promote",
+      "oldKey": "7ad37f90-8d76-42d0-aa7e-78d8acc74aaa"
+    },
+    {
+      "apiId": "ac82ad5c-f4cf-4174-8882-c48f3b4e1f63",
+      "action": "promote",
+      "oldKey": "7aef106e-c007-4603-8d5f-ae1e859ad1b7"
+    },
+    {
+      "apiId": "680d389c-371e-4ec0-9a2f-e3d1f0d1ae70",
+      "action": "promote",
+      "oldKey": "7b6ccb22-dd0b-45bc-8699-17c39c995994"
+    },
+    {
+      "apiId": "9c111ffe-a3e8-4eb7-a4ed-15a771275e9d",
+      "action": "promote",
+      "oldKey": "7bc5f571-b8a8-4cd3-92c1-074f01c1cc57"
+    },
+    {
+      "apiId": "f685b63c-7c31-45f7-a8d7-b13049350cb9",
+      "action": "promote",
+      "oldKey": "7c20d128-28fe-4e5e-896a-81a8ee2bd9cf"
+    },
+    {
+      "apiId": "92f5037e-3411-4832-88b7-400c2113434d",
+      "action": "promote",
+      "oldKey": "7c2abf3f-c183-4b68-9b5a-5f7121299ea3"
+    },
+    {
+      "apiId": "4c899f00-8dd8-4d51-98ab-b5a7219532ca",
+      "action": "promote",
+      "oldKey": "7c2eff0d-0247-49d5-9ebe-ee9ff2aafa58"
+    },
+    {
+      "apiId": "afdcc8fa-5113-4abe-ae3a-0089ef2c9571",
+      "action": "promote",
+      "oldKey": "7c749aea-b908-4c2d-a223-92339bd98ceb"
+    },
+    {
+      "apiId": "a79d7902-c0f2-4c7f-b602-00416030d016",
+      "action": "promote",
+      "oldKey": "7c7a0e06-359a-4b4c-a2ba-1bfce693356e"
+    },
+    {
+      "apiId": "5d2ec6ab-6ab8-43dd-bdda-93b27bf36994",
+      "action": "merge",
+      "oldKey": "7ca50ffe-1739-4682-b90f-4e8289c263f6",
+      "keeper": "7ca50ffe-1739-4682-b90f-4e8289c263f6",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 2,
+      "targetGames": 85,
+      "oldComparatorKeeper": "5d2ec6ab-6ab8-43dd-bdda-93b27bf36994",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "d1a6ce8e-ae85-4dc7-848c-122cf848297c",
+      "action": "merge",
+      "oldKey": "7cdc30b5-9621-4345-a83f-a6dc68dd33ee",
+      "keeper": "d1a6ce8e-ae85-4dc7-848c-122cf848297c",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 36,
+      "targetGames": 55,
+      "oldComparatorKeeper": "d1a6ce8e-ae85-4dc7-848c-122cf848297c",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "dd987c07-c3cc-4bab-b2ef-a0d679df142d",
+      "action": "promote",
+      "oldKey": "7d587390-798d-4422-a88b-1b70962db0a5"
+    },
+    {
+      "apiId": "e1a94cf0-4d89-4035-8962-d330fb5b8f1b",
+      "action": "promote",
+      "oldKey": "7d744e30-63bc-4582-85d8-e2e17852746f"
+    },
+    {
+      "apiId": "c1a0e161-e490-4370-a37c-fd98129fa78e",
+      "action": "promote",
+      "oldKey": "7d80a30a-acef-45c1-a8a5-b6218af623b9"
+    },
+    {
+      "apiId": "c009bd2a-de6c-4289-9792-0eaf463f4532",
+      "action": "merge",
+      "oldKey": "7e4a9bf0-1acd-4ad0-9a66-107809926490",
+      "keeper": "c009bd2a-de6c-4289-9792-0eaf463f4532",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 12,
+      "targetGames": 85,
+      "oldComparatorKeeper": "c009bd2a-de6c-4289-9792-0eaf463f4532",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "000e7b82-8f25-470e-b889-e22f45bb04ba",
+      "action": "promote",
+      "oldKey": "7e53bc2b-d668-498d-ad8e-b5f395a87609"
+    },
+    {
+      "apiId": "3ccef7b0-b4b8-428c-979b-687413006934",
+      "action": "promote",
+      "oldKey": "7e985f1a-3b12-4e39-84f2-8c975763f7a5"
+    },
+    {
+      "apiId": "e7ea0e90-e8f5-4c15-9370-1ea1a90661fe",
+      "action": "promote",
+      "oldKey": "7f15c23b-88e7-4907-bc6c-7a0b03cacfbc"
+    },
+    {
+      "apiId": "1fc27f2c-e931-4236-a521-203450a30f67",
+      "action": "promote",
+      "oldKey": "7f2dc066-4d4c-4e2e-aa96-914b6d93cfeb"
+    },
+    {
+      "apiId": "e9ed1adf-2b40-465c-a265-81b653810fdf",
+      "action": "promote",
+      "oldKey": "7f3e3bb2-de0d-4215-b62a-7d2ac0a53da2"
+    },
+    {
+      "apiId": "aac8fe65-5af8-478d-a495-382ad6fc17e4",
+      "action": "promote",
+      "oldKey": "7f73c262-5a96-4b8e-afbb-b18f1e67a751"
+    },
+    {
+      "apiId": "c5aaefbe-35bf-43f0-9cab-8b3b6fde9dbc",
+      "action": "promote",
+      "oldKey": "804d42db-4113-4134-bbd9-211f4ebd7317"
+    },
+    {
+      "apiId": "bc5362bb-066f-4f67-8c08-0c212a19a41b",
+      "action": "promote",
+      "oldKey": "812c008b-8b86-406f-b6dc-ee34af50d8a0"
+    },
+    {
+      "apiId": "391e15e0-db09-4b9e-b8a0-548b2b5763bf",
+      "action": "promote",
+      "oldKey": "8134ee8f-9e87-4dfe-87fe-e894b45b119c"
+    },
+    {
+      "apiId": "d1ef4d0b-6d42-4355-a210-f342bb57a4f4",
+      "action": "merge",
+      "oldKey": "81dad571-fca1-4acd-bc61-1940e29401cf",
+      "keeper": "d1ef4d0b-6d42-4355-a210-f342bb57a4f4",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 46,
+      "targetGames": 47,
+      "oldComparatorKeeper": "d1ef4d0b-6d42-4355-a210-f342bb57a4f4",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "24b7b34c-7055-4ad4-bd2d-b94e33bbabe0",
+      "action": "promote",
+      "oldKey": "81de6ad7-9f18-40d8-8096-9b6f0a1af2ec"
+    },
+    {
+      "apiId": "a40749f9-20f4-4248-8064-ec7f66f380a1",
+      "action": "promote",
+      "oldKey": "81f0c721-101b-492d-a1d4-b2634d63eb32"
+    },
+    {
+      "apiId": "e7b972ea-1802-48ac-bacf-8fc86fac4bbd",
+      "action": "promote",
+      "oldKey": "81f682d8-9633-4b43-a107-579bedf808c5"
+    },
+    {
+      "apiId": "d3f18706-3f63-42f3-a4e3-9904c02d97a4",
+      "action": "promote",
+      "oldKey": "822486ee-051e-453e-a3d2-e04420177844"
+    },
+    {
+      "apiId": "e73e828c-f1b9-4d3c-a33c-73bfdf248f21",
+      "action": "promote",
+      "oldKey": "823aa5f3-ccdb-4c61-8003-14894e79aa88"
+    },
+    {
+      "apiId": "9577b999-ae41-4003-80b6-521b51177b4c",
+      "action": "promote",
+      "oldKey": "837b5884-af0a-491e-8008-f177a96d85c0"
+    },
+    {
+      "apiId": "e6ebea9e-7e81-4712-9dff-dff308a04d01",
+      "action": "promote",
+      "oldKey": "83998bd4-fbd7-4ebe-96e7-fdcb5e2eab72"
+    },
+    {
+      "apiId": "e010783f-bf37-437d-bfd4-a76011b2d05d",
+      "action": "merge",
+      "oldKey": "839a42ab-c06a-4bca-9f52-82ae00df680f",
+      "keeper": "839a42ab-c06a-4bca-9f52-82ae00df680f",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 4,
+      "targetGames": 197,
+      "oldComparatorKeeper": "e010783f-bf37-437d-bfd4-a76011b2d05d",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "3b0665b7-7555-466d-bf2e-5d4648c41ffb",
+      "action": "promote",
+      "oldKey": "83f25343-72a2-4e29-bba6-7e4694407e54"
+    },
+    {
+      "apiId": "ebf7a14e-c0d2-480f-992c-6cfed74ca255",
+      "action": "promote",
+      "oldKey": "84328290-84f4-4c69-a80c-588c8f0a70d3"
+    },
+    {
+      "apiId": "ea1f8cb7-04bc-4c98-9d3d-935377294bcb",
+      "action": "promote",
+      "oldKey": "8470ac98-99e2-4eb5-83d3-741049e9ff96"
+    },
+    {
+      "apiId": "dec029e0-d41f-4505-bc58-86d1d3f25f1d",
+      "action": "promote",
+      "oldKey": "84addd92-96a9-41b6-8d98-42f46100ade1"
+    },
+    {
+      "apiId": "49e848ff-ff39-4356-aee9-ac1a664380fd",
+      "action": "merge",
+      "oldKey": "84dd85dd-ea59-4995-85c5-bddd4e8833d0",
+      "keeper": "49e848ff-ff39-4356-aee9-ac1a664380fd",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 131,
+      "targetGames": 144,
+      "oldComparatorKeeper": "49e848ff-ff39-4356-aee9-ac1a664380fd",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "398fba19-ee31-496a-827a-087dbf057b1d",
+      "action": "promote",
+      "oldKey": "85998f0f-7b1b-4f75-8fca-00bd1e4d280d"
+    },
+    {
+      "apiId": "8b17e6f2-6e14-4927-a895-fe91e2dc5765",
+      "action": "promote",
+      "oldKey": "8654afc1-e9f0-4b6a-b5db-bf0d8ea7e229"
+    },
+    {
+      "apiId": "f2167d35-7caa-4dec-9efc-bd3042e2759d",
+      "action": "promote",
+      "oldKey": "86a8f71d-0143-4901-8f87-41460009012e"
+    },
+    {
+      "apiId": "27e551d7-36e7-4bc0-afcd-23c9e2ea3863",
+      "action": "promote",
+      "oldKey": "86c7c206-330c-4aee-ae7b-64769346d86a"
+    },
+    {
+      "apiId": "948d3347-7520-4027-9dd7-b4e0baf62f6c",
+      "action": "promote",
+      "oldKey": "87362df3-270d-4b66-b017-d3910bc7a3f7"
+    },
+    {
+      "apiId": "d9b05d2b-fdb7-45b6-baeb-dcb313dd7348",
+      "action": "promote",
+      "oldKey": "876bacc9-7640-45ba-894d-ab333d9e9d83"
+    },
+    {
+      "apiId": "4f0b6f70-8231-4b74-a9ec-66df8e762aa5",
+      "action": "promote",
+      "oldKey": "87915d20-fc94-40c9-8e47-17681b97f540"
+    },
+    {
+      "apiId": "306f2bc8-4d33-445f-843f-8222aa78d3a8",
+      "action": "promote",
+      "oldKey": "87a38dfe-019d-4a86-ac75-b1aef3551fec"
+    },
+    {
+      "apiId": "e7d29dc7-58fd-4b51-9ca6-b74b3a9c1552",
+      "action": "promote",
+      "oldKey": "881c0251-3b68-43b7-a70a-1682cf10c57f"
+    },
+    {
+      "apiId": "003e6e40-40d5-43b5-9b77-4accf4e267fc",
+      "action": "merge",
+      "oldKey": "885163e0-a01d-4406-a048-866147a8303e",
+      "keeper": "003e6e40-40d5-43b5-9b77-4accf4e267fc",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 12,
+      "targetGames": 18,
+      "oldComparatorKeeper": "003e6e40-40d5-43b5-9b77-4accf4e267fc",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "12ed0119-8698-4560-8289-a94262accc8c",
+      "action": "promote",
+      "oldKey": "888d75a8-a8fe-4ecc-a79b-a827c95f6572"
+    },
+    {
+      "apiId": "dd60d96f-d0ed-432f-9c5e-4fe9b0b5ba58",
+      "action": "promote",
+      "oldKey": "888ee750-d68e-40fc-99f1-cf1121d3a307"
+    },
+    {
+      "apiId": "6edec7db-98ed-4c71-a864-5ac4e351b919",
+      "action": "promote",
+      "oldKey": "88991044-a926-45df-9a4f-21d67aba6f82"
+    },
+    {
+      "apiId": "2fd9922f-3feb-444d-8d10-30048ca74b16",
+      "action": "promote",
+      "oldKey": "88a7b118-708b-4d8a-aac3-75c3297ea2ec"
+    },
+    {
+      "apiId": "1415f6a0-2fe7-41b2-9e39-60be94ebd84e",
+      "action": "promote",
+      "oldKey": "88cbf1d9-9674-4fa9-9f73-787201d112eb"
+    },
+    {
+      "apiId": "89502fc7-9370-4148-8d02-aa6f2bb43d61",
+      "action": "promote",
+      "oldKey": "89afbf9b-1b0e-41a2-95f0-d68f122016c9"
+    },
+    {
+      "apiId": "c606be46-996b-485d-a6a9-8c96d3abc437",
+      "action": "merge",
+      "oldKey": "89d56a50-002b-4ad9-954f-245b48cba119",
+      "keeper": "89d56a50-002b-4ad9-954f-245b48cba119",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 23,
+      "targetGames": 82,
+      "oldComparatorKeeper": "c606be46-996b-485d-a6a9-8c96d3abc437",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "4eda84be-407f-4e23-bdf6-7ca3f464b1c2",
+      "action": "promote",
+      "oldKey": "8a0e1f5b-eae3-433f-96f3-af43f8b0ca04"
+    },
+    {
+      "apiId": "a9c18b57-1434-4efe-a597-11914af037b2",
+      "action": "promote",
+      "oldKey": "8a1e723a-3a49-4b01-bd0a-d9f53f064f24"
+    },
+    {
+      "apiId": "0307290b-5ca2-49a1-b7a5-f0858467ece9",
+      "action": "promote",
+      "oldKey": "8a3e73c9-78ab-4ce7-a0bc-5b2e7db809b7"
+    },
+    {
+      "apiId": "05b0a405-ae63-4a97-b175-2166a39dac58",
+      "action": "promote",
+      "oldKey": "8a598f99-628a-44b1-a79a-52034850114e"
+    },
+    {
+      "apiId": "519f0cae-2a88-4558-9bac-194adc665c6b",
+      "action": "merge",
+      "oldKey": "8c2224fd-5376-486b-b416-61d4b6e8eba5",
+      "keeper": "519f0cae-2a88-4558-9bac-194adc665c6b",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 29,
+      "targetGames": 71,
+      "oldComparatorKeeper": "519f0cae-2a88-4558-9bac-194adc665c6b",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "1b848ee6-695d-4c8c-ae08-1151e272d03d",
+      "action": "promote",
+      "oldKey": "8c38aeab-8d45-4f4e-85e8-4293eed1ccd5"
+    },
+    {
+      "apiId": "3438ed2f-1b3f-442c-a371-8b6badd9469c",
+      "action": "promote",
+      "oldKey": "8c4e62d7-fdfa-447e-9a74-b1c4cc7ce14b"
+    },
+    {
+      "apiId": "011463a7-5595-40df-8d29-7fb70e4b02c7",
+      "action": "promote",
+      "oldKey": "8c773535-c2ac-47f6-bef9-e0d36e824d9c"
+    },
+    {
+      "apiId": "6e713398-dc01-4a49-a129-6fb2c01844ce",
+      "action": "promote",
+      "oldKey": "8d42a7c5-529b-4ba1-8d25-f9ba508c64ec"
+    },
+    {
+      "apiId": "4d0a1262-2455-4419-a6ec-4130c2bac27c",
+      "action": "promote",
+      "oldKey": "8d6d45a3-f76a-46fe-8a31-68a2a9bdde16"
+    },
+    {
+      "apiId": "334cfc41-57a0-4e1b-bd63-78e84e1617bb",
+      "action": "promote",
+      "oldKey": "8db315b2-2c42-4136-b431-7c362fdcf1eb"
+    },
+    {
+      "apiId": "805265fe-23ea-49ce-a829-ee200d04cf5f",
+      "action": "promote",
+      "oldKey": "8dbced57-9d14-4ba3-895b-16b73d3f421c"
+    },
+    {
+      "apiId": "bc7395f0-fc57-495f-a205-fd39b6614207",
+      "action": "promote",
+      "oldKey": "8dd73d54-c008-45cd-ab0a-7a46f13365e3"
+    },
+    {
+      "apiId": "bdb40aef-4744-4e62-8526-18cd1238735c",
+      "action": "promote",
+      "oldKey": "8e473be0-91e5-4b2e-a224-11fef585620a"
+    },
+    {
+      "apiId": "46aabd7c-7279-4d07-9a9f-c35ef6719674",
+      "action": "promote",
+      "oldKey": "8e7bbcc7-b541-4383-8b0b-7f5715033467"
+    },
+    {
+      "apiId": "bdabdcde-aa8c-4170-a444-797fd89561ee",
+      "action": "promote",
+      "oldKey": "8f88e7da-6972-47c8-af4b-df3b34fdbb63"
+    },
+    {
+      "apiId": "8e22767c-6682-4b4d-8386-cba14009c04c",
+      "action": "promote",
+      "oldKey": "90439ae7-5fb1-4b0a-b107-f6323e146fab"
+    },
+    {
+      "apiId": "5b7a82c5-5c1f-492e-af4e-5b0857703134",
+      "action": "promote",
+      "oldKey": "9056633e-b14b-4cd9-9635-f95fe0b446ea"
+    },
+    {
+      "apiId": "63b6707a-b78b-448b-929d-80e577a07270",
+      "action": "promote",
+      "oldKey": "908902d4-1063-4513-8f0f-56d3bc35806c"
+    },
+    {
+      "apiId": "98195169-3642-453e-be58-80bfd6c832ee",
+      "action": "promote",
+      "oldKey": "90ee1475-06a8-4130-9eb9-78b9ff2acc83"
+    },
+    {
+      "apiId": "f5b48fba-da36-4a2c-8518-55153008e727",
+      "action": "promote",
+      "oldKey": "91001dfb-322c-48b9-b47e-1d1f40a6d3bf"
+    },
+    {
+      "apiId": "c7f226f1-59db-4aa4-8a27-97f99dfaa45d",
+      "action": "promote",
+      "oldKey": "9111e8c1-1b82-435b-965f-d6fde49ba43d"
+    },
+    {
+      "apiId": "af511688-d11f-4c82-ba60-7fce1cd96c9c",
+      "action": "promote",
+      "oldKey": "911610bc-36af-4d15-a6e7-d3b30a147bd3"
+    },
+    {
+      "apiId": "79a6d9c0-bcd5-4d3f-ad9a-71965fa2a420",
+      "action": "promote",
+      "oldKey": "912d81f4-0d91-492c-b4e5-051a85ba3157"
+    },
+    {
+      "apiId": "3668b2cf-7203-4d86-88a6-6ec482c48876",
+      "action": "promote",
+      "oldKey": "913b3856-5a9a-4f97-b0e7-0a588b8a84d8"
+    },
+    {
+      "apiId": "9f584e97-e957-4d9e-900a-ea32bf44c184",
+      "action": "promote",
+      "oldKey": "91a451cc-b1ec-4311-9f27-90fb8a7c8d6a"
+    },
+    {
+      "apiId": "2ae56dca-1496-4d0d-9e96-c17471eaecd5",
+      "action": "promote",
+      "oldKey": "91cc564e-c564-4eb2-bc15-c5c2a2fa9f89"
+    },
+    {
+      "apiId": "327fb930-344c-4198-a4c9-843a9db5deb4",
+      "action": "promote",
+      "oldKey": "921878de-477d-4634-b442-233c1563322a"
+    },
+    {
+      "apiId": "576f1231-4133-41df-b6d7-e1e3a1ee315b",
+      "action": "promote",
+      "oldKey": "923c614b-eb6c-4519-add2-ca41d61e2a74"
+    },
+    {
+      "apiId": "d7fcd836-7a0f-402b-a651-70b9e52e6353",
+      "action": "promote",
+      "oldKey": "926770c8-b7c8-453f-a117-da4e8fee84dd"
+    },
+    {
+      "apiId": "83947e6a-8497-4854-b71e-96474d0dbea1",
+      "action": "merge",
+      "oldKey": "9280c9eb-933c-4b17-8dc0-8366a69f6ade",
+      "keeper": "83947e6a-8497-4854-b71e-96474d0dbea1",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 10,
+      "targetGames": 64,
+      "oldComparatorKeeper": "83947e6a-8497-4854-b71e-96474d0dbea1",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "2c9587cf-1bca-49fc-bb82-dbd820f53e25",
+      "action": "promote",
+      "oldKey": "92da242a-273a-4dcb-9d60-74014971f5bd"
+    },
+    {
+      "apiId": "eefa6c27-a6fc-4166-91b3-c9f119962c45",
+      "action": "promote",
+      "oldKey": "9326b8eb-97d3-4f13-9d79-bc72ab52ba2b"
+    },
+    {
+      "apiId": "30b46047-44e9-4cf5-b6ff-249edd04b7b7",
+      "action": "promote",
+      "oldKey": "937513a1-abb2-4cbb-9c2c-6e122298a7a1"
+    },
+    {
+      "apiId": "9aafd18f-e185-434a-8e93-edc119feacad",
+      "action": "promote",
+      "oldKey": "939d4f73-d0cb-4b2a-891b-b59daf7b18fa"
+    },
+    {
+      "apiId": "dcab200a-b931-4193-aef6-c4cc9a9dbc0e",
+      "action": "promote",
+      "oldKey": "93a917e8-5801-4cab-920a-16c47952d685"
+    },
+    {
+      "apiId": "d6d61ac9-6409-440b-83f3-3ad7a39d0b3c",
+      "action": "promote",
+      "oldKey": "93d7cd21-1f9b-43be-ad21-94a73f328421"
+    },
+    {
+      "apiId": "68a354df-e438-4c23-ac4f-8d1678ca05ae",
+      "action": "promote",
+      "oldKey": "945e305e-b0a4-451f-aef7-1315772d5bb1"
+    },
+    {
+      "apiId": "465a8bf2-eae4-4491-8768-a2249b69cd44",
+      "action": "promote",
+      "oldKey": "948284e5-ae85-419a-89a8-e991f4ee1d3d"
+    },
+    {
+      "apiId": "480d3cd1-0378-4c2b-89f3-cc9ba5fb3b7f",
+      "action": "promote",
+      "oldKey": "94d6ec05-aad1-41e1-a42c-a22cf1b5b1e1"
+    },
+    {
+      "apiId": "c600a0ac-0150-418a-b241-f0253705a465",
+      "action": "promote",
+      "oldKey": "9558a2b4-fda0-4cac-b1ca-bb32c0064f2c"
+    },
+    {
+      "apiId": "73e11145-cc73-4a81-bfee-4dc4e4374b57",
+      "action": "promote",
+      "oldKey": "958ebd08-928c-4130-a8cf-9214f89268cf"
+    },
+    {
+      "apiId": "514d92d7-f6e2-44be-a999-4b837808d19f",
+      "action": "promote",
+      "oldKey": "96af919f-d3d8-4ea9-8eb7-0d5355870e88"
+    },
+    {
+      "apiId": "462c3427-5c3b-4eaa-9577-3f573944a003",
+      "action": "promote",
+      "oldKey": "96d9b2b6-bdb5-45d8-b3ee-a668d3abe864"
+    },
+    {
+      "apiId": "55cf52e1-a86a-48bc-85aa-372af559c2c0",
+      "action": "promote",
+      "oldKey": "96f02d4d-536d-4eff-8358-9896ad166c4d"
+    },
+    {
+      "apiId": "d955ee4d-3cdb-4e19-b615-b13f705baf61",
+      "action": "promote",
+      "oldKey": "970968f7-6cd0-47ac-bbea-4c3093439609"
+    },
+    {
+      "apiId": "5b9e72d5-3c8b-4e4a-a148-4fcf2aee02e6",
+      "action": "promote",
+      "oldKey": "97177c93-c747-45a1-9dbd-95594197af47"
+    },
+    {
+      "apiId": "5e7fe8d5-3e6f-4843-884f-aaf483ec2523",
+      "action": "promote",
+      "oldKey": "97573fda-9689-4b6c-94d8-beed5c7515e6"
+    },
+    {
+      "apiId": "f16d1d80-d2ec-4194-90c6-f9f6be2bf1b5",
+      "action": "promote",
+      "oldKey": "979066a2-74e1-463e-9da0-44d958339811"
+    },
+    {
+      "apiId": "b9746a30-2396-4a9c-a3c1-f8c19dce02ab",
+      "action": "promote",
+      "oldKey": "97950dcb-112f-463b-b085-3f8c3c4cca44"
+    },
+    {
+      "apiId": "3cedb438-e93c-49fa-9cb6-7e82e2c05837",
+      "action": "merge",
+      "oldKey": "97c0e4fc-537d-4e69-98d8-ec8b91a98217",
+      "keeper": "97c0e4fc-537d-4e69-98d8-ec8b91a98217",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 7,
+      "targetGames": 10,
+      "oldComparatorKeeper": "3cedb438-e93c-49fa-9cb6-7e82e2c05837",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "33a0ee02-a635-4afd-a27c-e5d7faf5a2ed",
+      "action": "promote",
+      "oldKey": "9806f16e-52c5-47ce-b462-0cca3163fd1b"
+    },
+    {
+      "apiId": "214b830f-6948-446c-a2d5-8be5b1c6ff17",
+      "action": "promote",
+      "oldKey": "98071ce7-9338-4375-a012-f3835ff84468"
+    },
+    {
+      "apiId": "4d18cef2-2636-401c-91c4-e61909517cc9",
+      "action": "promote",
+      "oldKey": "98d5efc2-d281-4656-b00d-0285cbd81dad"
+    },
+    {
+      "apiId": "83d2b270-8f8e-4ebf-b41c-163fa5759025",
+      "action": "merge",
+      "oldKey": "990aff5e-d9c0-47e9-b1ce-bd39fb85c91a",
+      "keeper": "83d2b270-8f8e-4ebf-b41c-163fa5759025",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 15,
+      "targetGames": 75,
+      "oldComparatorKeeper": "83d2b270-8f8e-4ebf-b41c-163fa5759025",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "44ede602-18bd-442c-8c0f-c1867d26c9a1",
+      "action": "promote",
+      "oldKey": "99e2935b-50bd-4a99-b131-0dcdf7716206"
+    },
+    {
+      "apiId": "c17c3c23-16ff-41d4-8cd8-2e019d42a621",
+      "action": "promote",
+      "oldKey": "9b26bf83-78f6-4fbd-bb4e-50f1c72a7095"
+    },
+    {
+      "apiId": "3dc97c8b-d8f9-4490-a9a6-0372524c296e",
+      "action": "promote",
+      "oldKey": "9b476f0e-a427-4d35-a41a-6a10f367302a"
+    },
+    {
+      "apiId": "a9cec69e-e84d-4410-a06c-2ce512e203b6",
+      "action": "promote",
+      "oldKey": "9b67c306-ee61-4084-abf6-021106a37be7"
+    },
+    {
+      "apiId": "f47d9952-66c7-4d71-8853-f6d4bc8a2649",
+      "action": "promote",
+      "oldKey": "9ba2cac2-c796-4585-b198-5e6b04ff772b"
+    },
+    {
+      "apiId": "ac59d1a1-30dd-4eb4-9e4f-f9205e6f5d0a",
+      "action": "promote",
+      "oldKey": "9bab0888-1f93-41cc-aad8-761a2f3dc911"
+    },
+    {
+      "apiId": "63e8cd65-4ca5-437a-88dc-6efd8270c6c0",
+      "action": "promote",
+      "oldKey": "9bd1faab-c657-43e9-9aaf-8aec62411ef9"
+    },
+    {
+      "apiId": "683df1ed-a99a-48c1-80fe-90ca800044e4",
+      "action": "promote",
+      "oldKey": "9c4f2e5b-a0b8-450a-a1e9-40718086ceea"
+    },
+    {
+      "apiId": "7ceb6f8b-21ab-4e7c-a11c-6096b6266204",
+      "action": "promote",
+      "oldKey": "9c795502-64df-4687-856a-bd144ff53041"
+    },
+    {
+      "apiId": "a7be16bc-81e1-4a1f-a042-02d272ef7a7d",
+      "action": "promote",
+      "oldKey": "9ca54afe-f0fc-4a15-bf57-5a9432bf7f8d"
+    },
+    {
+      "apiId": "0a6b9628-1209-47bd-a3d8-d081499e2526",
+      "action": "promote",
+      "oldKey": "9d0a1c26-43dd-461f-819f-d6120616eb57"
+    },
+    {
+      "apiId": "561cfda5-2ad4-4e80-b21c-fcf3622f4979",
+      "action": "promote",
+      "oldKey": "9d2cb61d-4c5c-4781-84fb-02879d0b2f69"
+    },
+    {
+      "apiId": "8044d296-6b06-4789-b94c-8709fc0c1360",
+      "action": "promote",
+      "oldKey": "9d655e7f-0e03-43c2-9674-916553a65fab"
+    },
+    {
+      "apiId": "318aa879-aaac-4db2-81e0-0aae4a3a62f8",
+      "action": "promote",
+      "oldKey": "9da815f7-73c1-4ffe-9882-8d82df422fc6"
+    },
+    {
+      "apiId": "96c0766c-e3f2-4b3b-a7ba-2f7afe6b36a1",
+      "action": "promote",
+      "oldKey": "9de7d068-388d-46b5-a599-839d336c4c5c"
+    },
+    {
+      "apiId": "2e90a976-2ffd-48bf-9282-6f7d8e8ddb11",
+      "action": "promote",
+      "oldKey": "9e1f2cd7-e433-4cd7-92bc-f1f25df0cc8e"
+    },
+    {
+      "apiId": "a49c8422-6958-4586-9d7c-9ce33f91d8cf",
+      "action": "promote",
+      "oldKey": "9ec8235d-975d-45a3-9feb-4fa422e4e684"
+    },
+    {
+      "apiId": "e897e0f3-fd53-4c8f-83d8-70490e532128",
+      "action": "promote",
+      "oldKey": "9ef96cfa-71e0-4f60-820a-6de7b45a4328"
+    },
+    {
+      "apiId": "831b06b7-4d1e-4b60-ba64-672dd18b8ee9",
+      "action": "promote",
+      "oldKey": "a0cb0e0e-846d-41f2-8ba0-6a7d3a215dc4"
+    },
+    {
+      "apiId": "abace48d-7649-46e7-9011-ddfcbb4c54cf",
+      "action": "promote",
+      "oldKey": "a111ab52-87bf-4dd0-98b9-c7a5db3708bd"
+    },
+    {
+      "apiId": "cc284be5-eef9-418f-b6c0-07a6f0701724",
+      "action": "promote",
+      "oldKey": "a14871e1-79f4-434a-ad26-75cc56b872b3"
+    },
+    {
+      "apiId": "8b8c7f8f-2e10-4407-abb6-503f006d91d5",
+      "action": "promote",
+      "oldKey": "a17b359e-a919-406d-affc-e1b022db4c12"
+    },
+    {
+      "apiId": "0d390cfe-fdc1-42be-b959-17d4d9d97927",
+      "action": "promote",
+      "oldKey": "a226915b-25d4-4d38-9572-7dd6d505b6eb"
+    },
+    {
+      "apiId": "65fbe471-9f90-425f-8078-ef01a45b7af7",
+      "action": "promote",
+      "oldKey": "a22ffa63-5033-4a49-9c90-e274adec5b4f"
+    },
+    {
+      "apiId": "3d6fd1db-fa00-4bab-9a65-a2cb87740c8e",
+      "action": "promote",
+      "oldKey": "a26bf4ee-05d8-4e13-a506-c1ded52568e4"
+    },
+    {
+      "apiId": "76488212-cd40-4f87-8e06-f698ae4f3a2b",
+      "action": "promote",
+      "oldKey": "a2990bb2-9ce9-493e-81ae-077b03683956"
+    },
+    {
+      "apiId": "5e053f85-ca6e-497f-9c4b-0d7874a2a1da",
+      "action": "promote",
+      "oldKey": "a32349b1-868f-443b-8459-3865918404d3"
+    },
+    {
+      "apiId": "b4130dea-efdd-49ed-8216-007ba8619e5f",
+      "action": "promote",
+      "oldKey": "a3dd1d01-1411-46f0-8d49-aeb9075bf29b"
+    },
+    {
+      "apiId": "5584788e-bb57-4e55-a562-73400ea335fe",
+      "action": "promote",
+      "oldKey": "a40b8a00-9a55-452b-8854-8fb0001615a5"
+    },
+    {
+      "apiId": "b687fc7e-eafc-498d-8114-c06816105fb9",
+      "action": "merge",
+      "oldKey": "a4abd188-8299-4c0b-964f-d03c5073b421",
+      "keeper": "b687fc7e-eafc-498d-8114-c06816105fb9",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 2,
+      "targetGames": 12,
+      "oldComparatorKeeper": "b687fc7e-eafc-498d-8114-c06816105fb9",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "c7d64643-e891-4de5-af11-cdc940da75c0",
+      "action": "promote",
+      "oldKey": "a51143a9-027e-425c-8441-25101027bcd3"
+    },
+    {
+      "apiId": "ff77697d-4b5e-4bf6-8f7e-5a629b39e5d0",
+      "action": "promote",
+      "oldKey": "a54e64cf-913b-48ce-978b-72c9a2987d0c"
+    },
+    {
+      "apiId": "126d3883-6c19-40fb-b703-85e40d5896fa",
+      "action": "promote",
+      "oldKey": "a5ef416d-faec-44bd-8021-5c8771a8ac7e"
+    },
+    {
+      "apiId": "189b3747-7dba-4568-96e7-fc11d7e068eb",
+      "action": "merge",
+      "oldKey": "a624e0fc-3a39-4ed9-862a-ee4da93ea7e1",
+      "keeper": "189b3747-7dba-4568-96e7-fc11d7e068eb",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 32,
+      "targetGames": 289,
+      "oldComparatorKeeper": "189b3747-7dba-4568-96e7-fc11d7e068eb",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "7b6d5308-a998-4408-8132-850b359d1b92",
+      "action": "promote",
+      "oldKey": "a70b374a-68ea-4485-89f0-e25ea906f024"
+    },
+    {
+      "apiId": "e120fda6-f822-45e8-a5fb-ba639ff12a93",
+      "action": "promote",
+      "oldKey": "a710772a-be7c-4797-a4fd-d3c732ac2d63"
+    },
+    {
+      "apiId": "b5698c5c-dabe-4289-8b27-0225a5177e29",
+      "action": "promote",
+      "oldKey": "a73ca16f-0ab5-4fee-847e-2db1fd6795e2"
+    },
+    {
+      "apiId": "f9dd2857-f377-45dc-93f0-68c684d485e9",
+      "action": "promote",
+      "oldKey": "a77270a7-52d8-4ae4-b02a-73db84d814a8"
+    },
+    {
+      "apiId": "903f7701-9f6a-4f99-b637-6e968c81f8a7",
+      "action": "promote",
+      "oldKey": "a7d0e4ed-594f-4fb0-927d-675a34dc766b"
+    },
+    {
+      "apiId": "82f8b0d1-1935-447f-90ec-5643898249e9",
+      "action": "merge",
+      "oldKey": "a80e7aba-685c-497c-a19f-f48d8c2d5185",
+      "keeper": "82f8b0d1-1935-447f-90ec-5643898249e9",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 5,
+      "targetGames": 165,
+      "oldComparatorKeeper": "82f8b0d1-1935-447f-90ec-5643898249e9",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "dc4ccc4d-0655-40dc-8ca3-fdbb51b15b1d",
+      "action": "promote",
+      "oldKey": "a8802892-0b91-4394-a929-77f8132e4525"
+    },
+    {
+      "apiId": "ed898e59-07a8-414f-9a58-9a22d0b043e9",
+      "action": "promote",
+      "oldKey": "a913dc98-33fb-4336-b62c-560bc50c662f"
+    },
+    {
+      "apiId": "9c7fca11-2643-4fe2-a9f3-ce016ecda1e0",
+      "action": "promote",
+      "oldKey": "a918b567-9c50-4606-938a-6e21dae3cfdc"
+    },
+    {
+      "apiId": "bc4895ae-4ca8-482b-bc59-4f970723b6b6",
+      "action": "promote",
+      "oldKey": "a94d359f-addc-4d32-b985-a9ff3a3fa34c"
+    },
+    {
+      "apiId": "20f66005-0806-4452-95db-ab2d3383ab54",
+      "action": "promote",
+      "oldKey": "aa042301-a7b8-4c5c-b7fa-216552f0ca18"
+    },
+    {
+      "apiId": "c0da6d6f-0b3d-4ac6-ba65-fcbb928a9338",
+      "action": "merge",
+      "oldKey": "aa105ff3-9488-4c2c-b8fd-b6908ba5fc06",
+      "keeper": "c0da6d6f-0b3d-4ac6-ba65-fcbb928a9338",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 38,
+      "targetGames": 40,
+      "oldComparatorKeeper": "c0da6d6f-0b3d-4ac6-ba65-fcbb928a9338",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "55077550-3160-4d1e-b47a-d9b3bba24766",
+      "action": "promote",
+      "oldKey": "aa190f25-f046-4854-ae39-d880dc864630"
+    },
+    {
+      "apiId": "c753a0a4-a11d-48d5-8f2c-cfed1aed5582",
+      "action": "promote",
+      "oldKey": "aa402eba-5085-4166-b9e3-981aa3eb2ee3"
+    },
+    {
+      "apiId": "f77f1016-8012-4aff-9482-9f2ac676d92d",
+      "action": "promote",
+      "oldKey": "aa9280a7-7f8d-4466-a4c9-c0ecbc8223b3"
+    },
+    {
+      "apiId": "3c0d6b23-b9e4-4f38-a02a-a929d707bbd1",
+      "action": "merge",
+      "oldKey": "ab106606-2d1a-435f-97e3-82dd05cd2678",
+      "keeper": "ab106606-2d1a-435f-97e3-82dd05cd2678",
+      "sourceRank": 3,
+      "targetRank": 0,
+      "sourceGames": 24,
+      "targetGames": 17,
+      "oldComparatorKeeper": "ab106606-2d1a-435f-97e3-82dd05cd2678",
+      "statsRefetchQueued": false
+    },
+    {
+      "apiId": "e1aface0-0b42-4918-9d74-fb1d269204ef",
+      "action": "merge",
+      "oldKey": "ab4f493a-fd90-4749-b487-1c48490dfc83",
+      "keeper": "e1aface0-0b42-4918-9d74-fb1d269204ef",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 114,
+      "targetGames": 116,
+      "oldComparatorKeeper": "e1aface0-0b42-4918-9d74-fb1d269204ef",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "d504533d-8da3-48cf-8d32-a96c693108a4",
+      "action": "promote",
+      "oldKey": "ab75ddb5-695c-4777-907a-1723ad52e49c"
+    },
+    {
+      "apiId": "35e06b8b-0079-45a5-a965-7291d65c7981",
+      "action": "promote",
+      "oldKey": "abe4c75f-a854-43cf-ab7c-9c44cc2e37cd"
+    },
+    {
+      "apiId": "6964e551-7e53-42d4-a323-ec03989a1e58",
+      "action": "promote",
+      "oldKey": "abec182e-a2d8-4224-81ce-659fe3935bfd"
+    },
+    {
+      "apiId": "ab92f8ea-f15b-4734-bf62-da3812622b78",
+      "action": "promote",
+      "oldKey": "abf8b7af-7db3-4455-9b6a-5309002885e7"
+    },
+    {
+      "apiId": "8aab435d-082f-4843-8ff2-f158e6a264e0",
+      "action": "promote",
+      "oldKey": "ac1ba408-a956-4b8d-aa87-f71c6cc1aeed"
+    },
+    {
+      "apiId": "989923e3-0a5e-4299-a1c2-2deb7ef9b6ff",
+      "action": "promote",
+      "oldKey": "ac625bef-53c8-4f88-960a-89c1d6c0e5f0"
+    },
+    {
+      "apiId": "59bae1f1-6051-4543-a2ea-596d2ac9d9e9",
+      "action": "promote",
+      "oldKey": "acc7d98f-6cb1-426d-b27e-038cb22b35c2"
+    },
+    {
+      "apiId": "2d3bb166-239b-48a3-abb3-3d00f935c5b9",
+      "action": "promote",
+      "oldKey": "acd9e609-a2c0-4624-b46e-46ae8b5d62ee"
+    },
+    {
+      "apiId": "5a7f11bb-9322-41d6-bc74-8209c1b61c1c",
+      "action": "promote",
+      "oldKey": "acdde5e0-64ad-433f-af8f-584e9143ec6b"
+    },
+    {
+      "apiId": "3c2860b5-e748-41ad-86a7-ce172289c600",
+      "action": "promote",
+      "oldKey": "acf861f6-bf61-4680-8190-90a90dc38372"
+    },
+    {
+      "apiId": "5086960e-30a2-468b-a265-5b6fa5908175",
+      "action": "promote",
+      "oldKey": "ad723631-f9d6-43db-b9fd-a0438a38f9d3"
+    },
+    {
+      "apiId": "06e2a98f-4c14-4199-98c1-c07db72f7390",
+      "action": "promote",
+      "oldKey": "ada4873a-3732-4e50-9389-14927aae45cc"
+    },
+    {
+      "apiId": "d4bac510-fde5-4be3-8119-bed1affb1d24",
+      "action": "promote",
+      "oldKey": "ade45f7b-2832-4912-a3e5-b3032c4c35c2"
+    },
+    {
+      "apiId": "ee352f8c-c944-4428-9e7a-0aed2d414398",
+      "action": "promote",
+      "oldKey": "adf39555-b5e7-4c25-84e2-25668543bc7c"
+    },
+    {
+      "apiId": "5c6e6161-409d-4ad0-b8f3-9ca218554413",
+      "action": "promote",
+      "oldKey": "adf701d2-439a-4b7a-b3b7-185283b3b485"
+    },
+    {
+      "apiId": "7d675bac-7f01-4423-be71-44cbfd53ea4c",
+      "action": "promote",
+      "oldKey": "ae6f3b3f-a30b-44a7-89f2-e09f638109d6"
+    },
+    {
+      "apiId": "b87796b9-4e35-4127-b9d1-4c05b2d46f62",
+      "action": "promote",
+      "oldKey": "af3dcea9-7019-41d0-8a11-f3ca93686652"
+    },
+    {
+      "apiId": "fbd5b10b-fec2-4bc5-b13b-b69ca89c52d9",
+      "action": "promote",
+      "oldKey": "af4c5ffb-2f4d-4b99-baf7-22f9ef7f4943"
+    },
+    {
+      "apiId": "3cc54e4a-01aa-43a2-a8d7-006d529df450",
+      "action": "promote",
+      "oldKey": "af5f9a21-f830-4e70-a91d-5dc8fb707bdb"
+    },
+    {
+      "apiId": "0d27b306-7881-4b73-ba08-37abe7f05ad5",
+      "action": "promote",
+      "oldKey": "af6b0e58-446a-4606-8c5b-080588ebc805"
+    },
+    {
+      "apiId": "a26e534a-6d07-420a-9722-a6ffbf8fc667",
+      "action": "promote",
+      "oldKey": "af6c3cf9-7f73-4d69-b133-0631bdba6f12"
+    },
+    {
+      "apiId": "19c26fda-7707-448b-a576-ab22acf272c5",
+      "action": "promote",
+      "oldKey": "af7d60dd-442e-4bbb-8fa8-717e287c2aeb"
+    },
+    {
+      "apiId": "9c6919c0-4de4-407f-bb92-5581d73a1d43",
+      "action": "promote",
+      "oldKey": "af918318-a44b-47f1-b333-9afcb336bc22"
+    },
+    {
+      "apiId": "154e9253-0421-426d-a2e0-2af82a7fd5af",
+      "action": "promote",
+      "oldKey": "af9f8459-cf1f-43e0-ac0d-3d5803653de4"
+    },
+    {
+      "apiId": "a790fbb5-4978-467d-b96e-0da2b1002e6d",
+      "action": "promote",
+      "oldKey": "b0a808bb-b192-498d-bf7a-ea575cd04f57"
+    },
+    {
+      "apiId": "b5c6648d-870b-40ed-822a-2023b0ba688d",
+      "action": "promote",
+      "oldKey": "b0e4aa24-45fe-48cc-bf88-3f02c9691cd6"
+    },
+    {
+      "apiId": "bc0d7eb2-43db-4203-abf2-1f3524052b35",
+      "action": "promote",
+      "oldKey": "b0fef22f-b8b9-44ff-82be-5ae04e24a8dd"
+    },
+    {
+      "apiId": "b0571675-1893-4c8e-9ee1-6555c0a4d749",
+      "action": "promote",
+      "oldKey": "b14550f0-a6e9-4ca4-8ada-3b031c5589f2"
+    },
+    {
+      "apiId": "67d1cf26-ee12-47ad-8767-35d4301c64e5",
+      "action": "promote",
+      "oldKey": "b17421ad-7ff7-4067-862c-2ecc8cbaf56a"
+    },
+    {
+      "apiId": "b7a44641-f7de-436b-83d5-0df106957081",
+      "action": "promote",
+      "oldKey": "b18359c7-5d72-4f94-ba92-43909bb77a00"
+    },
+    {
+      "apiId": "d8a8329c-0851-48a3-8acf-951c666e7aa3",
+      "action": "promote",
+      "oldKey": "b24b492e-e521-4f5e-85b8-9ac77c0a14cd"
+    },
+    {
+      "apiId": "5c4747ef-6376-4eb6-a148-148549ab8fcb",
+      "action": "promote",
+      "oldKey": "b2a44919-c72d-4248-9186-df1bcbeb3610"
+    },
+    {
+      "apiId": "0af3a0eb-1ab8-4963-b068-121288cc2155",
+      "action": "promote",
+      "oldKey": "b2ab73a4-78fa-4900-b270-126345068ada"
+    },
+    {
+      "apiId": "1cb4ecfe-7552-494e-a6f0-71c9a861c8cd",
+      "action": "promote",
+      "oldKey": "b2ba158d-7c7c-4aca-8563-4761577dbdf9"
+    },
+    {
+      "apiId": "eab681e8-01f6-4acf-a04c-42dbd5d6812c",
+      "action": "promote",
+      "oldKey": "b308a6e4-6778-4d65-a765-d96fc7ea8ba4"
+    },
+    {
+      "apiId": "263b4edf-87fa-453d-baa6-d158f73bad09",
+      "action": "promote",
+      "oldKey": "b333f8ac-5971-4db0-a4dc-217d4a250600"
+    },
+    {
+      "apiId": "125d2a92-e76d-4dcb-95ca-2fc6cab4ba24",
+      "action": "promote",
+      "oldKey": "b3488004-8791-4ee1-a65f-3c6e5b906571"
+    },
+    {
+      "apiId": "6c338558-803b-438c-b360-6b70ad393b70",
+      "action": "promote",
+      "oldKey": "b369bf61-0912-467a-a846-ec3016e6ed25"
+    },
+    {
+      "apiId": "418e45d5-e4da-4d36-aca7-447b42f1db2b",
+      "action": "promote",
+      "oldKey": "b384b980-7039-4d6d-96da-ad6403fa8674"
+    },
+    {
+      "apiId": "cbb39bb2-37c9-442c-98db-322da4756ec3",
+      "action": "promote",
+      "oldKey": "b3a7c7b4-0bd5-4163-a15d-f44ece432c71"
+    },
+    {
+      "apiId": "16840de3-fa7d-4e82-9c11-9eb189984ae3",
+      "action": "promote",
+      "oldKey": "b3eca740-d11a-4355-aea9-f5e6b4abf1fa"
+    },
+    {
+      "apiId": "6c1d2e8f-e22e-4ca3-91c8-f7b49369f3bf",
+      "action": "promote",
+      "oldKey": "b4645414-a0a8-4979-8995-282405d8dce7"
+    },
+    {
+      "apiId": "d80cc9ee-1cc5-438d-8472-4022b5e08022",
+      "action": "promote",
+      "oldKey": "b48c1f2d-c588-408e-b325-01097a51272e"
+    },
+    {
+      "apiId": "4f26b26a-2e40-4835-bcc7-bc5ab3e0c2ce",
+      "action": "promote",
+      "oldKey": "b4a0c28c-1760-493c-bf7c-33b05d5e8007"
+    },
+    {
+      "apiId": "7836378e-5130-40c9-931d-9b522862f693",
+      "action": "promote",
+      "oldKey": "b4c8c56e-b3f4-4531-87ce-ccbe52ef0f53"
+    },
+    {
+      "apiId": "375dd9da-f140-4aff-ad66-010ff7b0982f",
+      "action": "promote",
+      "oldKey": "b51e4515-1ea0-411a-99be-4d9e19d82163"
+    },
+    {
+      "apiId": "bc6b2ede-a889-43ef-bad3-6e48e4d13dbb",
+      "action": "promote",
+      "oldKey": "b598cd5d-9152-4c2c-8e30-91045d675e7b"
+    },
+    {
+      "apiId": "7702e292-0733-4f37-8ce4-ae94c8803a6c",
+      "action": "merge",
+      "oldKey": "b5f5df68-e18b-4843-8db9-76cb179e8af6",
+      "keeper": "7702e292-0733-4f37-8ce4-ae94c8803a6c",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 1,
+      "targetGames": 1,
+      "oldComparatorKeeper": "7702e292-0733-4f37-8ce4-ae94c8803a6c",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "60d23a9f-c916-45d3-b117-9052538c80da",
+      "action": "promote",
+      "oldKey": "b61fc9ca-d3ea-4398-b969-f67d3e8bb74d"
+    },
+    {
+      "apiId": "12a297a5-64de-4202-b3b8-90f7697dbca6",
+      "action": "promote",
+      "oldKey": "b6b3e13c-a81d-4be1-987d-97940dce5c74"
+    },
+    {
+      "apiId": "965219fe-ec3a-4c92-8a3f-d4b0dc8ceead",
+      "action": "promote",
+      "oldKey": "b6c443ff-f8e2-455e-b285-7f6b278f2f90"
+    },
+    {
+      "apiId": "8c4bbc50-2477-4081-8529-2c807207e2ed",
+      "action": "promote",
+      "oldKey": "b70b5a2c-5706-4d46-adab-19ec03374686"
+    },
+    {
+      "apiId": "2329b645-b0b5-497e-a06e-68e80837246d",
+      "action": "promote",
+      "oldKey": "b74c7f3d-20c1-4f05-80c0-d1ccec5560a4"
+    },
+    {
+      "apiId": "2268a0ee-02c0-4539-a903-7399e3d24abe",
+      "action": "promote",
+      "oldKey": "b784e20b-6c13-498e-9d1b-c505263f6dc3"
+    },
+    {
+      "apiId": "c5577288-a140-4091-811c-4f68305eb64e",
+      "action": "promote",
+      "oldKey": "b789c09e-7cad-4d73-ae46-72fbe6f11d54"
+    },
+    {
+      "apiId": "4209c268-485a-4ee2-8deb-4e6ff2bfb29a",
+      "action": "promote",
+      "oldKey": "b7c32408-e64e-4c75-8ce5-c2c29d166ea3"
+    },
+    {
+      "apiId": "bd4610f0-2483-45da-8b9f-d1fa4010aaf6",
+      "action": "promote",
+      "oldKey": "b8422fa3-0b69-43ae-9449-dc6301fd63b0"
+    },
+    {
+      "apiId": "9b64028c-2be9-4fe7-bb1b-2f99502ac33b",
+      "action": "promote",
+      "oldKey": "b89f59ba-a6af-45de-ac48-e8ea64fb7095"
+    },
+    {
+      "apiId": "dbbabba2-365b-42db-92f8-379ec22af45f",
+      "action": "promote",
+      "oldKey": "b8b747d4-43a0-4849-9069-0209a371ca43"
+    },
+    {
+      "apiId": "f95ec02f-c539-47dc-b3ba-b79bc28b70a7",
+      "action": "promote",
+      "oldKey": "b8c842e6-9090-45f8-b16a-41f7176e9fe8"
+    },
+    {
+      "apiId": "a6290281-5ee2-46ea-aaaf-32fa392c85e6",
+      "action": "promote",
+      "oldKey": "b92847a8-c2d6-4850-9b56-3eb6f45a57c4"
+    },
+    {
+      "apiId": "539e3ff2-2236-4351-815f-7f2ee17b8c0d",
+      "action": "merge",
+      "oldKey": "b9cb23f3-a726-41e9-94a6-eb5cbe2c2bb9",
+      "keeper": "b9cb23f3-a726-41e9-94a6-eb5cbe2c2bb9",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 11,
+      "targetGames": 193,
+      "oldComparatorKeeper": "539e3ff2-2236-4351-815f-7f2ee17b8c0d",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "7af47d8e-09ed-48d4-9985-740c2132f22c",
+      "action": "promote",
+      "oldKey": "baab904f-f24b-4c32-99dd-1796669f9934"
+    },
+    {
+      "apiId": "0107e4f3-0271-4242-a444-3f4515e97a00",
+      "action": "promote",
+      "oldKey": "bacfaf60-0f7b-4f23-8f19-c2957c90ee38"
+    },
+    {
+      "apiId": "02d9c9bf-f58e-4b3b-88b5-26e107acc83b",
+      "action": "merge",
+      "oldKey": "bb1d5fec-f1f2-47d1-9f11-66595d9f2dc5",
+      "keeper": "02d9c9bf-f58e-4b3b-88b5-26e107acc83b",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 10,
+      "targetGames": 2,
+      "oldComparatorKeeper": "bb1d5fec-f1f2-47d1-9f11-66595d9f2dc5",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "7dd1f05a-fc67-4a30-9f17-74d6357de44e",
+      "action": "promote",
+      "oldKey": "bc23ca48-ba36-49e5-883c-00492e824f59"
+    },
+    {
+      "apiId": "f5113c05-7d72-4d93-922e-8f8ff09b9966",
+      "action": "promote",
+      "oldKey": "bc92e85e-0ede-490a-8ed4-93be33c9e34d"
+    },
+    {
+      "apiId": "893995d1-a2bc-4c89-aa7f-614950444573",
+      "action": "promote",
+      "oldKey": "bcafa8d6-bf03-492d-8947-080469a79288"
+    },
+    {
+      "apiId": "5f4da651-dfd2-4d3d-a6b7-84093a3ab93b",
+      "action": "promote",
+      "oldKey": "bcba86f6-5c2f-496a-8ee8-92511f457c2f"
+    },
+    {
+      "apiId": "62d05461-3c17-470b-8ce8-f403288fd2f1",
+      "action": "promote",
+      "oldKey": "bcd11d01-0bdb-4ff3-a4b9-427409d7819e"
+    },
+    {
+      "apiId": "5ce08c55-333b-4543-bba9-8fab57909c11",
+      "action": "promote",
+      "oldKey": "bce54272-fa35-4a34-91d8-4f8234e19a0c"
+    },
+    {
+      "apiId": "0dc22a4d-63b7-4739-9bc3-0a71f03641a6",
+      "action": "promote",
+      "oldKey": "bd94aded-f364-4136-a7d2-53944108edb1"
+    },
+    {
+      "apiId": "1dff745f-9d84-4107-8233-0d2c2c944e83",
+      "action": "merge",
+      "oldKey": "bdb5bfc2-ae7f-42b4-a0e9-893a546a935b",
+      "keeper": "bdb5bfc2-ae7f-42b4-a0e9-893a546a935b",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 1,
+      "targetGames": 95,
+      "oldComparatorKeeper": "1dff745f-9d84-4107-8233-0d2c2c944e83",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "5fee36d0-ae39-4c72-bc7d-288cc9da8fab",
+      "action": "promote",
+      "oldKey": "bdc61b1f-442f-4be8-a2e5-266140dde8b8"
+    },
+    {
+      "apiId": "23f53ec8-8301-4061-9117-21ed37cc9817",
+      "action": "promote",
+      "oldKey": "bdc976ad-b667-4bec-9494-e5f238697e75"
+    },
+    {
+      "apiId": "0d2f50d5-31d2-49d9-ab19-0dc30d56ba76",
+      "action": "promote",
+      "oldKey": "be37b0d6-f92f-4439-8cfa-71547442ffef"
+    },
+    {
+      "apiId": "4f36a9c0-07d2-42be-b949-8289b2bd1dfb",
+      "action": "promote",
+      "oldKey": "bed20a82-e4f2-48d7-aa81-b68d85fcc532"
+    },
+    {
+      "apiId": "ecc8634d-4e46-4606-ac90-cc7790b57c38",
+      "action": "promote",
+      "oldKey": "bee14b6c-21f7-429c-b601-088679291cce"
+    },
+    {
+      "apiId": "0b0451b6-b295-4edf-9b42-2a586381df07",
+      "action": "merge",
+      "oldKey": "bf315829-7dad-43f7-a2cd-c710615440d2",
+      "keeper": "bf315829-7dad-43f7-a2cd-c710615440d2",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 29,
+      "targetGames": 30,
+      "oldComparatorKeeper": "0b0451b6-b295-4edf-9b42-2a586381df07",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "694fb008-b055-4719-9d62-2e006c3f0d60",
+      "action": "promote",
+      "oldKey": "bf617b80-d810-454d-ac55-41288a784f23"
+    },
+    {
+      "apiId": "746b87fb-7ea4-4b8c-bbb6-3e3795214971",
+      "action": "promote",
+      "oldKey": "bf705b05-0deb-4dd3-b215-355d82373ea2"
+    },
+    {
+      "apiId": "8b228992-63b1-41d4-9830-9a828529f604",
+      "action": "merge",
+      "oldKey": "bf7fa81b-9150-40f2-aab5-e38c1ceebcc1",
+      "keeper": "8b228992-63b1-41d4-9830-9a828529f604",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 8,
+      "targetGames": 284,
+      "oldComparatorKeeper": "8b228992-63b1-41d4-9830-9a828529f604",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "b58f7773-25af-4660-8132-f55a96231593",
+      "action": "promote",
+      "oldKey": "bf901812-59ef-4566-be81-f5fc76d0f8ef"
+    },
+    {
+      "apiId": "ee8580e1-f45d-4b11-8ae2-2e196dcfe3fb",
+      "action": "promote",
+      "oldKey": "bf9e0b3f-949d-467d-a3b4-2f40df0e66b0"
+    },
+    {
+      "apiId": "36db87ee-0f8c-4d37-b521-b257c3294d26",
+      "action": "promote",
+      "oldKey": "bfac3b51-499d-4792-858b-5493568cd7f1"
+    },
+    {
+      "apiId": "107087bb-3c18-431c-a36e-b408f4b8fb0a",
+      "action": "promote",
+      "oldKey": "bfc2d0b3-7985-467f-bd26-fa8b8cfb1c93"
+    },
+    {
+      "apiId": "762d015e-47ee-4e80-9669-40f15dbd870f",
+      "action": "promote",
+      "oldKey": "bfd5f812-9d11-48a7-b50e-cf727bf9cb13"
+    },
+    {
+      "apiId": "3d29bfca-f99a-4c51-b2a7-8b2665403ccb",
+      "action": "promote",
+      "oldKey": "bff739e0-55a5-4e18-8816-4969598f5ce3"
+    },
+    {
+      "apiId": "6af53ad8-86fd-40ba-9547-66baa413493b",
+      "action": "promote",
+      "oldKey": "c117d172-97d2-45fc-8eac-b99b2159fe2e"
+    },
+    {
+      "apiId": "2b4b6c73-df6d-45d8-a4cf-50760b13d0dd",
+      "action": "promote",
+      "oldKey": "c1360ec9-7e93-4fe8-b3ac-646706e47e36"
+    },
+    {
+      "apiId": "69a92240-e75a-4db6-b914-816b19e21330",
+      "action": "promote",
+      "oldKey": "c1e4bacd-5934-42e6-8ce8-56bd99b51bd8"
+    },
+    {
+      "apiId": "b9cbe075-daeb-40dc-b006-05e79801c0f0",
+      "action": "promote",
+      "oldKey": "c1fc1cc1-70f6-47db-ad46-3ed44b5b5637"
+    },
+    {
+      "apiId": "601602e1-528e-4993-80e4-400143454ed7",
+      "action": "promote",
+      "oldKey": "c220cdbc-b232-4c59-ab49-640dd4398cc7"
+    },
+    {
+      "apiId": "446f9d15-77c1-4d21-9d1c-c963b068764f",
+      "action": "promote",
+      "oldKey": "c248c632-fbf6-49cd-bd93-d1398be37924"
+    },
+    {
+      "apiId": "809a41a9-b8bd-4651-a1f0-28766a943fa4",
+      "action": "promote",
+      "oldKey": "c269f0c0-dc2b-4c79-a7ea-496120f3045a"
+    },
+    {
+      "apiId": "c5c9b342-c47b-4291-bfdd-4c89a2af1924",
+      "action": "promote",
+      "oldKey": "c3b0202a-a6e2-4793-bce5-534ac458cafa"
+    },
+    {
+      "apiId": "2251e86a-0ddc-4146-8911-3d5ea63a6a1b",
+      "action": "promote",
+      "oldKey": "c4b742c0-5599-423d-b174-8ba4f96de0ae"
+    },
+    {
+      "apiId": "7842f830-cd79-48ba-bc72-0dd32ca8d904",
+      "action": "promote",
+      "oldKey": "c4bee934-86e3-43c3-9fe5-6519c5a93add"
+    },
+    {
+      "apiId": "721e000a-a3ee-4971-b519-bb52617fa4a9",
+      "action": "promote",
+      "oldKey": "c5709c83-61ef-4bb4-8938-6b378927ac30"
+    },
+    {
+      "apiId": "65c604cd-0f7c-4da5-8f9a-34b7e8ed6605",
+      "action": "promote",
+      "oldKey": "c57316f3-3031-46e6-a194-dc557bc78d38"
+    },
+    {
+      "apiId": "2ab255e9-192d-4eac-b120-8276905a23e3",
+      "action": "promote",
+      "oldKey": "c5945fa6-a565-41f4-a026-94bddd4bce59"
+    },
+    {
+      "apiId": "0a20414b-8608-46ec-9171-ccf18ef7dc15",
+      "action": "promote",
+      "oldKey": "c59df302-e237-42a9-8363-578c8c5fa9de"
+    },
+    {
+      "apiId": "35b5e469-0cba-4bd8-9d87-e9693a87a6b5",
+      "action": "promote",
+      "oldKey": "c5ce1f43-7292-4a98-9f6c-147e013f88c3"
+    },
+    {
+      "apiId": "d3315922-9683-4d78-9619-19e2c77314d7",
+      "action": "promote",
+      "oldKey": "c61d8444-33e0-4a53-8cd5-ac5acd51720b"
+    },
+    {
+      "apiId": "c79c7135-8c10-4a2f-a8b1-0739cacf5a34",
+      "action": "promote",
+      "oldKey": "c67a56ff-ce54-4591-a849-71d2de8100be"
+    },
+    {
+      "apiId": "881ae76f-52d2-4d79-b3dc-8cba4d274ba3",
+      "action": "promote",
+      "oldKey": "c719a57a-dd5e-4f67-b67f-c3d6674b342e"
+    },
+    {
+      "apiId": "5288ad23-adf4-43be-bb45-d523cb148cbc",
+      "action": "promote",
+      "oldKey": "c7ac1f91-1bf8-4e8c-9d88-c258d66947f1"
+    },
+    {
+      "apiId": "b6512b8b-141d-48e0-9a8a-533585d6e2eb",
+      "action": "promote",
+      "oldKey": "c806eb72-9379-4c81-b55f-18928b08608b"
+    },
+    {
+      "apiId": "f3ae1801-fba0-4147-a565-59524df3ab89",
+      "action": "promote",
+      "oldKey": "c937a93f-fa0e-4483-b7f3-4d636f1b4489"
+    },
+    {
+      "apiId": "f12b842e-84df-4313-ba30-3c87a38b1ada",
+      "action": "promote",
+      "oldKey": "c93da7f4-00fe-4ebd-82df-24e3bdd416e2"
+    },
+    {
+      "apiId": "bb69fc87-1e0f-4cee-93cd-c0f9567752a1",
+      "action": "promote",
+      "oldKey": "cada91bb-14b3-4c62-bf17-b99c4a3fc72e"
+    },
+    {
+      "apiId": "7de4251b-df57-4d51-864f-a8ad58786686",
+      "action": "promote",
+      "oldKey": "caf95b68-2f30-4982-a340-85614d658922"
+    },
+    {
+      "apiId": "f54e88e4-3034-4b80-9475-769d38d6e243",
+      "action": "promote",
+      "oldKey": "cb00f8c1-4c68-4dd5-b8a2-5070bb86a25c"
+    },
+    {
+      "apiId": "b5b53ba1-0f1a-4b99-bd48-5e2281c536d6",
+      "action": "promote",
+      "oldKey": "cb15a54f-bd1e-4c8b-9e86-b3d7d63f42f6"
+    },
+    {
+      "apiId": "946802b1-6f06-423c-a453-3e4536561d5e",
+      "action": "promote",
+      "oldKey": "cb5f8880-41f4-4665-8d35-2e097877205e"
+    },
+    {
+      "apiId": "23d0a313-36a5-4ab3-b308-962f5e64a8fd",
+      "action": "promote",
+      "oldKey": "cca31ff9-6045-4800-8246-6522ebd7f804"
+    },
+    {
+      "apiId": "5bb23e88-3dd8-448b-b59d-e430065a3326",
+      "action": "promote",
+      "oldKey": "cda47c30-35b3-4b19-9d8d-2496f9d4ea9c"
+    },
+    {
+      "apiId": "ffbd7110-2dec-4e15-a9ef-88dd11d85f72",
+      "action": "promote",
+      "oldKey": "ce54582f-0501-4fe3-9d5f-06e92f3ab2b3"
+    },
+    {
+      "apiId": "9d1a826a-f5c9-4826-974e-6a84897000bd",
+      "action": "promote",
+      "oldKey": "ceb5e969-0bb0-49cb-9722-88ef515d86ff"
+    },
+    {
+      "apiId": "1e8c352c-b79d-413d-a1fd-7ef62f318091",
+      "action": "promote",
+      "oldKey": "ced26a02-5c25-4744-9d13-6120ee61ec5c"
+    },
+    {
+      "apiId": "57d4c984-f477-4e4f-a02a-c1b23301fd56",
+      "action": "promote",
+      "oldKey": "cffecab2-93f7-45a5-929c-960e98754987"
+    },
+    {
+      "apiId": "2fcb818d-1fc9-4fbb-8d0c-b387baa5f343",
+      "action": "promote",
+      "oldKey": "d04b86ef-f3ed-45d8-be83-8adb0f8825ee"
+    },
+    {
+      "apiId": "442f1031-5e3e-4c70-b178-716d1a7c98cb",
+      "action": "promote",
+      "oldKey": "d0ca4a4e-a33f-42d2-ac68-a6eefdc3dd88"
+    },
+    {
+      "apiId": "4ecdb9e4-66fc-4d90-97fa-bf923c472ca3",
+      "action": "promote",
+      "oldKey": "d0e0a7f9-5f27-491d-8a0d-655d72a8235e"
+    },
+    {
+      "apiId": "05890782-0a8f-4e8b-8409-da1f814cfe82",
+      "action": "promote",
+      "oldKey": "d0f863fc-7b3b-44af-94fd-a9fd045b312c"
+    },
+    {
+      "apiId": "3aeaf3b5-7dcb-4cb0-8ff5-2287f89d09ef",
+      "action": "promote",
+      "oldKey": "d11d5f78-3864-4ee8-8488-7f1344816c7c"
+    },
+    {
+      "apiId": "c3e85eb1-6950-400c-b704-6f292f1331be",
+      "action": "promote",
+      "oldKey": "d141f859-0462-4cc2-946e-240cc6cd4497"
+    },
+    {
+      "apiId": "9f16b22a-41c8-4ea5-8377-00c16b9bb138",
+      "action": "promote",
+      "oldKey": "d19254c1-d525-4eab-b96a-812622a41c1b"
+    },
+    {
+      "apiId": "16e0cae6-ee65-4587-9541-aca16107435c",
+      "action": "promote",
+      "oldKey": "d2032302-b316-4588-a760-5e66fd9d398f"
+    },
+    {
+      "apiId": "f0fb6ff3-dc67-455d-b061-e03a74c587df",
+      "action": "promote",
+      "oldKey": "d20d2bb7-38a4-428b-b8b7-d0c607acc8c2"
+    },
+    {
+      "apiId": "78764e84-62c5-4b4b-b2a2-898560f382fc",
+      "action": "promote",
+      "oldKey": "d2d424b4-3a2a-49a6-96c9-c028ef85dfc9"
+    },
+    {
+      "apiId": "5da08a00-fee4-46cd-965b-4fd81a5393fd",
+      "action": "merge",
+      "oldKey": "d2e77eff-fb71-481d-8e77-9b01565e5264",
+      "keeper": "5da08a00-fee4-46cd-965b-4fd81a5393fd",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 51,
+      "targetGames": 149,
+      "oldComparatorKeeper": "5da08a00-fee4-46cd-965b-4fd81a5393fd",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "81446961-b745-4727-8025-39c94330f9eb",
+      "action": "promote",
+      "oldKey": "d30b8d07-8bba-4581-abb2-aefe442213b5"
+    },
+    {
+      "apiId": "210b64ae-71ac-4764-b53a-45a90e9721ba",
+      "action": "merge",
+      "oldKey": "d33abb8c-27ed-44ea-b611-edfcd44d3e0e",
+      "keeper": "d33abb8c-27ed-44ea-b611-edfcd44d3e0e",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 25,
+      "targetGames": 33,
+      "oldComparatorKeeper": "210b64ae-71ac-4764-b53a-45a90e9721ba",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "5246045d-f26e-471e-9772-7912a0ce0278",
+      "action": "promote",
+      "oldKey": "d39a80aa-fa19-432f-9814-93fd17a4b416"
+    },
+    {
+      "apiId": "ec204db0-ea43-46c3-be20-a30d862dbf20",
+      "action": "promote",
+      "oldKey": "d451b975-be47-49b9-b84d-0e9bd0368b9f"
+    },
+    {
+      "apiId": "6a501a9f-36d5-4e81-8fa0-074c9ecc37e0",
+      "action": "promote",
+      "oldKey": "d4b41d63-10d4-45ae-830e-370773fa8cde"
+    },
+    {
+      "apiId": "fe675d8b-3f93-4cd5-8a72-4bae86e7963a",
+      "action": "promote",
+      "oldKey": "d4c7e2ca-1620-49d2-8bf2-d1d2fb4138cb"
+    },
+    {
+      "apiId": "7e8332c0-bba6-4e0f-bff7-ae1fcea9058a",
+      "action": "promote",
+      "oldKey": "d5a99ec4-eb28-45bf-b5a4-e6d971f3585d"
+    },
+    {
+      "apiId": "508f8fca-8457-46a7-a568-f6218c786a66",
+      "action": "promote",
+      "oldKey": "d602ff28-08e7-4823-859a-f8190b21e119"
+    },
+    {
+      "apiId": "6b66b5d4-f15c-44d3-b6a2-988506b54be1",
+      "action": "promote",
+      "oldKey": "d650b752-d144-4865-b051-c34dcf1ee685"
+    },
+    {
+      "apiId": "2fc284a7-c217-4c2b-b0a0-86d8789122b5",
+      "action": "promote",
+      "oldKey": "d6a3effb-fbe1-4867-8597-164bc653c31f"
+    },
+    {
+      "apiId": "75cc5a5c-e1f1-401d-b806-82a38db8debb",
+      "action": "promote",
+      "oldKey": "d6ac2f5d-2f2c-488d-a707-50544c3b9886"
+    },
+    {
+      "apiId": "7383f089-2a87-4d23-ae87-3cb14a620ff0",
+      "action": "promote",
+      "oldKey": "d78f8193-f616-4c57-853b-2a32b0fcaea9"
+    },
+    {
+      "apiId": "7f61b646-46ed-4ee4-b8b0-7756e8df8075",
+      "action": "promote",
+      "oldKey": "d7975b5e-1a1a-443e-9f4e-3ce66ad278b7"
+    },
+    {
+      "apiId": "43e20d28-c937-426e-afbc-03c5034dca61",
+      "action": "merge",
+      "oldKey": "d7cdf70a-b256-441c-8b8b-0e036d3d8a8f",
+      "keeper": "43e20d28-c937-426e-afbc-03c5034dca61",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 18,
+      "targetGames": 22,
+      "oldComparatorKeeper": "43e20d28-c937-426e-afbc-03c5034dca61",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "15821481-9199-4c36-a4c8-ce2926aa6fb0",
+      "action": "promote",
+      "oldKey": "d7f0b2d1-8aac-42a5-89cf-da87e0de225a"
+    },
+    {
+      "apiId": "bf73e03c-9d11-4ec9-9f87-1ebb5f6ee75f",
+      "action": "promote",
+      "oldKey": "d7f5b91a-859d-40da-a1cc-84c8b02cc2ae"
+    },
+    {
+      "apiId": "d9cb7469-9805-4230-80ac-08844be7d5ff",
+      "action": "merge",
+      "oldKey": "d8388e01-c02e-435d-80d0-c8943ba74662",
+      "keeper": "d9cb7469-9805-4230-80ac-08844be7d5ff",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 22,
+      "targetGames": 91,
+      "oldComparatorKeeper": "d9cb7469-9805-4230-80ac-08844be7d5ff",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "9ec5b27d-e802-442f-9d36-4c14afb9e287",
+      "action": "promote",
+      "oldKey": "d876523f-46a0-406f-b0c2-220752047618"
+    },
+    {
+      "apiId": "37311d58-4df0-473e-9c70-31ae7e3122d8",
+      "action": "promote",
+      "oldKey": "d8d812af-c688-4fac-bd3f-852872c41b02"
+    },
+    {
+      "apiId": "fe9584ec-da26-4f34-8809-acdbc9794c50",
+      "action": "promote",
+      "oldKey": "d8dd8639-d272-416a-8c73-a9443449bd5b"
+    },
+    {
+      "apiId": "69fcaf7f-95cc-4d07-92c1-3bf1b411bb4b",
+      "action": "promote",
+      "oldKey": "d952b0c3-7169-41df-9a04-1e7eeb9ccd9d"
+    },
+    {
+      "apiId": "8516a020-6e91-495a-ad69-6863e3559a89",
+      "action": "merge",
+      "oldKey": "d98e8460-0e69-4335-98fc-2d74c06ac4c8",
+      "keeper": "8516a020-6e91-495a-ad69-6863e3559a89",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 109,
+      "targetGames": 143,
+      "oldComparatorKeeper": "8516a020-6e91-495a-ad69-6863e3559a89",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "025a0151-a413-484c-8088-47e62b386529",
+      "action": "promote",
+      "oldKey": "d9a4334f-7451-4d94-a42c-5b59a725c06b"
+    },
+    {
+      "apiId": "a4870f46-38ff-423d-b3c2-c389aeb89bc7",
+      "action": "promote",
+      "oldKey": "d9c8ce00-fc74-4eed-bcd7-a46d4ee9c7d2"
+    },
+    {
+      "apiId": "8492bb67-7dad-43a8-80fc-6323d969fc64",
+      "action": "merge",
+      "oldKey": "d9cebfd7-feac-45b8-9dae-ef80d18e1cfa",
+      "keeper": "8492bb67-7dad-43a8-80fc-6323d969fc64",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 14,
+      "targetGames": 30,
+      "oldComparatorKeeper": "8492bb67-7dad-43a8-80fc-6323d969fc64",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "023c5857-361e-42b4-a2bb-36940c77b675",
+      "action": "promote",
+      "oldKey": "d9e05694-80e7-44b2-afdf-908afae97090"
+    },
+    {
+      "apiId": "69a3cb8a-243b-44ac-a188-8d265b7cf572",
+      "action": "promote",
+      "oldKey": "d9fea743-fae4-4715-b533-109a419e9635"
+    },
+    {
+      "apiId": "7c17aef3-c58d-4e04-8639-a1b6e5dec33f",
+      "action": "promote",
+      "oldKey": "da46d3ed-3a1a-4eda-9c99-085151946033"
+    },
+    {
+      "apiId": "c0e85aeb-6adc-4236-ae67-2464ab23f032",
+      "action": "promote",
+      "oldKey": "dac30ce0-0926-4b46-8af2-306726318c23"
+    },
+    {
+      "apiId": "e41648f9-ee17-4e12-a998-148be2b4e998",
+      "action": "promote",
+      "oldKey": "db4b6c70-fc79-4529-805c-00853c60d129"
+    },
+    {
+      "apiId": "9c242957-36bc-4582-a06e-c0dc4e505cf5",
+      "action": "promote",
+      "oldKey": "db66e6c8-23e1-47d6-80f5-34f90646ca39"
+    },
+    {
+      "apiId": "9e7edc05-7de1-4992-8d94-5b61c99cec19",
+      "action": "promote",
+      "oldKey": "dc05f4d8-8969-4813-9141-548839c8e293"
+    },
+    {
+      "apiId": "e83fe566-d4e3-4a03-bd5e-a13bf58ce9f1",
+      "action": "promote",
+      "oldKey": "dcaf52ba-d0e0-40a5-8002-60d1de8fbafd"
+    },
+    {
+      "apiId": "76dd3ffe-69f0-402a-bd40-14187e8e03b6",
+      "action": "merge",
+      "oldKey": "dcce3e84-3a1e-4ebb-945a-a1372672efb9",
+      "keeper": "76dd3ffe-69f0-402a-bd40-14187e8e03b6",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 104,
+      "targetGames": 165,
+      "oldComparatorKeeper": "76dd3ffe-69f0-402a-bd40-14187e8e03b6",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "2eb7cc44-33f7-4f3b-8d19-57558a05081a",
+      "action": "promote",
+      "oldKey": "dcf1d12a-6580-412a-ba45-5a5b59c51ced"
+    },
+    {
+      "apiId": "fc87e803-71cc-4f39-a7d0-57bca7f15985",
+      "action": "promote",
+      "oldKey": "dd09e317-fe77-4140-bb17-bccb1f8592e3"
+    },
+    {
+      "apiId": "555492d3-098d-4920-8969-a482777597d2",
+      "action": "promote",
+      "oldKey": "dd1653cc-f015-4229-af2a-7ca68d5da454"
+    },
+    {
+      "apiId": "798da99f-e649-4d3b-b053-b4bd1cf72ff9",
+      "action": "promote",
+      "oldKey": "dd18ea51-7a6a-4151-bbf8-ae0e8776fc06"
+    },
+    {
+      "apiId": "b3e29647-f37c-4df7-b221-82396c334a4b",
+      "action": "promote",
+      "oldKey": "dd1dbdbc-bc86-4496-83fb-b0ca87a505b0"
+    },
+    {
+      "apiId": "22ac3831-046e-4efc-9b5f-0e5945efef43",
+      "action": "promote",
+      "oldKey": "dd52c43c-808f-4bce-901c-1706b994384d"
+    },
+    {
+      "apiId": "3cecdafd-9604-4522-b5e5-c1e691b15718",
+      "action": "promote",
+      "oldKey": "dd6f5180-ae8b-4c1e-ba2b-4054561d56d5"
+    },
+    {
+      "apiId": "54b225c3-72af-419e-a13f-41256ab11763",
+      "action": "promote",
+      "oldKey": "dd8917e5-3bca-4a51-97c6-0aa13205dc98"
+    },
+    {
+      "apiId": "8d95fc79-7688-4175-9912-f440606cacce",
+      "action": "promote",
+      "oldKey": "ddc70690-6955-4028-a7d4-ca29d2205e32"
+    },
+    {
+      "apiId": "ebcd5a11-2f20-4f30-a0f1-773c04e75cc9",
+      "action": "merge",
+      "oldKey": "de05d99c-3ebd-4b3a-9c25-7c29d4312782",
+      "keeper": "ebcd5a11-2f20-4f30-a0f1-773c04e75cc9",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 26,
+      "targetGames": 29,
+      "oldComparatorKeeper": "ebcd5a11-2f20-4f30-a0f1-773c04e75cc9",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "a2089a66-2125-4c20-a04b-82bce521f55e",
+      "action": "promote",
+      "oldKey": "de1fbcb6-35f1-4cc3-ad71-4261d05ec3dc"
+    },
+    {
+      "apiId": "374d56fd-90f2-4f4c-8a43-3c2a760b2aa5",
+      "action": "promote",
+      "oldKey": "defb05f4-883b-4478-ba20-7bd1d75bd718"
+    },
+    {
+      "apiId": "cbc8055b-f015-4e0f-b8a9-0a2f678b655f",
+      "action": "promote",
+      "oldKey": "df28bf31-ca26-4959-8457-b0bac1513b1e"
+    },
+    {
+      "apiId": "9457208a-d682-4f75-9c75-dfe6303f925c",
+      "action": "merge",
+      "oldKey": "df504d60-b68a-4d1a-8a70-368c4e5f3871",
+      "keeper": "df504d60-b68a-4d1a-8a70-368c4e5f3871",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 15,
+      "targetGames": 190,
+      "oldComparatorKeeper": "9457208a-d682-4f75-9c75-dfe6303f925c",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "6ed5d345-a6ad-4f33-8b94-6aaac9ba0469",
+      "action": "promote",
+      "oldKey": "dfae6b36-a947-49d4-9960-a125c4df23b6"
+    },
+    {
+      "apiId": "bdcd91ca-7c97-4ef2-bae0-ede137497cac",
+      "action": "promote",
+      "oldKey": "dfea8d9e-8cd4-41df-8528-5dff86b25325"
+    },
+    {
+      "apiId": "7bd04785-f09b-458b-8906-275c68ab4652",
+      "action": "promote",
+      "oldKey": "e01c2537-c175-49ff-8e8c-08a209b6e6ba"
+    },
+    {
+      "apiId": "3c0d6b23-b9e4-4f38-a02a-a929d707bbd1",
+      "action": "merge",
+      "oldKey": "e03dd99c-7428-4482-ab1b-d807e843d4eb",
+      "keeper": "e03dd99c-7428-4482-ab1b-d807e843d4eb",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 49,
+      "targetGames": 24,
+      "oldComparatorKeeper": "e03dd99c-7428-4482-ab1b-d807e843d4eb",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "1a6ca0a0-567c-403e-ab51-d48af4c68000",
+      "action": "promote",
+      "oldKey": "e0737778-e4e7-4636-b15f-3c2f0a5fd529"
+    },
+    {
+      "apiId": "81506913-8561-482b-9893-684d10273123",
+      "action": "promote",
+      "oldKey": "e084b49d-cdd1-4b28-a5d2-b529a76e3f13"
+    },
+    {
+      "apiId": "9eb75eb3-f68d-47cb-84a6-053059780f13",
+      "action": "merge",
+      "oldKey": "e09bd44b-a0e5-4313-b2b6-92894e61fee8",
+      "keeper": "9eb75eb3-f68d-47cb-84a6-053059780f13",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 150,
+      "targetGames": 165,
+      "oldComparatorKeeper": "9eb75eb3-f68d-47cb-84a6-053059780f13",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "aa603503-a4a7-40eb-bd11-e13b9d5e76ae",
+      "action": "promote",
+      "oldKey": "e09e14da-2bff-4b8f-a8ee-62418a47de3e"
+    },
+    {
+      "apiId": "63b45b62-15e6-4299-a4e8-cf21a3d726fe",
+      "action": "promote",
+      "oldKey": "e0c8be05-100e-40ea-a029-3b6148bd78ea"
+    },
+    {
+      "apiId": "ac79a4ee-19fe-4326-bd2b-6a90ea063f71",
+      "action": "promote",
+      "oldKey": "e0d8eb33-6187-4973-9d96-a84ca1fc7419"
+    },
+    {
+      "apiId": "a616415b-b26a-444e-8635-d2622c5c4c31",
+      "action": "promote",
+      "oldKey": "e108fd7d-e555-4ad2-8622-34afa4ba62da"
+    },
+    {
+      "apiId": "9ba23083-c618-4261-889f-3abfe23c68b0",
+      "action": "promote",
+      "oldKey": "e118c877-9f2d-40d4-8a12-1efe1697ab1e"
+    },
+    {
+      "apiId": "f52ac824-ab1a-4b9d-9543-390f990ade93",
+      "action": "promote",
+      "oldKey": "e1c049d6-f2be-4ac7-9647-c278d3ae7f32"
+    },
+    {
+      "apiId": "35e7b0f8-98c9-4393-874d-f4aa82159c11",
+      "action": "promote",
+      "oldKey": "e1f753ab-3610-4041-8462-08805cc8c8ba"
+    },
+    {
+      "apiId": "2150cdb9-ccb0-4c5a-bf5e-da323f6d4fbd",
+      "action": "promote",
+      "oldKey": "e229b2c1-6f08-4a30-a9f8-6c44100bfd1e"
+    },
+    {
+      "apiId": "c775a032-359d-463e-935d-95cf9b9587f5",
+      "action": "promote",
+      "oldKey": "e24e0f1d-5b3d-4f26-8c9c-deae98f5b076"
+    },
+    {
+      "apiId": "e69a05a9-cc9c-4dd1-9571-652943a194cd",
+      "action": "promote",
+      "oldKey": "e2c7e85a-fb66-4653-bc5c-00bf0bc3ddc2"
+    },
+    {
+      "apiId": "976b0795-b71a-4e0e-9183-6f6d9514465e",
+      "action": "promote",
+      "oldKey": "e3084636-564d-47bb-aa3b-e804bf07c437"
+    },
+    {
+      "apiId": "d6dbb5e4-d684-4135-9e5e-9d00b56862d6",
+      "action": "promote",
+      "oldKey": "e471c940-ab1b-41b2-84a0-d7572e03bd7f"
+    },
+    {
+      "apiId": "8ba82b18-9dce-454c-b482-b776d31a03e8",
+      "action": "promote",
+      "oldKey": "e4a4f93e-8273-4078-9f9a-671f1d114ef7"
+    },
+    {
+      "apiId": "71f3042c-b18c-4c00-ab13-de12ddde09b9",
+      "action": "merge",
+      "oldKey": "e4a5a8fc-9e22-4da2-b99e-3227775a6f84",
+      "keeper": "71f3042c-b18c-4c00-ab13-de12ddde09b9",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 4,
+      "targetGames": 68,
+      "oldComparatorKeeper": "71f3042c-b18c-4c00-ab13-de12ddde09b9",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "c3d6632e-eae3-47be-8943-bd733b43363e",
+      "action": "promote",
+      "oldKey": "e4add313-38b3-436c-afc2-9d5be8ff16df"
+    },
+    {
+      "apiId": "dcd6c7fd-794d-4e2a-aae6-f71d55de011c",
+      "action": "merge",
+      "oldKey": "e4de2ef9-9b25-496d-a54b-76f4ed0cf065",
+      "keeper": "dcd6c7fd-794d-4e2a-aae6-f71d55de011c",
+      "sourceRank": 0,
+      "targetRank": 3,
+      "sourceGames": 2,
+      "targetGames": 163,
+      "oldComparatorKeeper": "dcd6c7fd-794d-4e2a-aae6-f71d55de011c",
+      "statsRefetchQueued": false
+    },
+    {
+      "apiId": "ef172e1b-05ea-4fa4-b20e-660d851ed22a",
+      "action": "promote",
+      "oldKey": "e5408617-23f5-4239-8c42-56dd8e163d64"
+    },
+    {
+      "apiId": "b5c56dc9-f0a6-4f46-b2ca-80e00e9d753b",
+      "action": "promote",
+      "oldKey": "e6325920-3b22-4148-ab1a-d6a2b66f0a6f"
+    },
+    {
+      "apiId": "0bd4325f-5d5c-47fb-ad7c-eefb1c07c80a",
+      "action": "promote",
+      "oldKey": "e661b828-1cda-4fe0-85b5-54093f94c4bf"
+    },
+    {
+      "apiId": "99aacab6-67b9-4ea8-b4e9-077743a4239f",
+      "action": "promote",
+      "oldKey": "e6ab7915-e5ed-43e2-a114-1fd01206b47a"
+    },
+    {
+      "apiId": "f2e394c2-bcda-42bd-ad9a-cad58038cae7",
+      "action": "promote",
+      "oldKey": "e744cc71-0742-43e9-9c8b-e9625be48a2d"
+    },
+    {
+      "apiId": "a21b7e71-7f5f-4aaa-955d-991d6b7d5c57",
+      "action": "promote",
+      "oldKey": "e7727c0b-d1c6-4943-8991-8bbed54c5ded"
+    },
+    {
+      "apiId": "4d7784d1-0fcb-4bb1-b6da-c07c56eb8d26",
+      "action": "merge",
+      "oldKey": "e778248d-c614-4265-9ba9-6505ff958932",
+      "keeper": "4d7784d1-0fcb-4bb1-b6da-c07c56eb8d26",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 22,
+      "targetGames": 26,
+      "oldComparatorKeeper": "4d7784d1-0fcb-4bb1-b6da-c07c56eb8d26",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "24672bcf-60fc-4104-af61-ff39dbd8d214",
+      "action": "promote",
+      "oldKey": "e7b5c5c3-0744-4f04-a9dc-6846a605cf64"
+    },
+    {
+      "apiId": "95d663ae-9183-434c-967c-4ad444304d93",
+      "action": "promote",
+      "oldKey": "e7b5f70e-c182-44be-b065-d361b6e374ef"
+    },
+    {
+      "apiId": "8714f56e-ef7d-4d23-9c78-7824df0fc97b",
+      "action": "promote",
+      "oldKey": "e7dbd8a3-f40b-48b0-9652-b1eccf0e505c"
+    },
+    {
+      "apiId": "7ddd89c5-57e8-4693-8217-7c5c3f78801d",
+      "action": "promote",
+      "oldKey": "e84a6f8e-3733-4958-a7bd-b3d4b02194f1"
+    },
+    {
+      "apiId": "20a53a40-922f-4ba6-b605-ab8bf73e89be",
+      "action": "promote",
+      "oldKey": "e8752968-9921-4918-8a95-37f36871bacf"
+    },
+    {
+      "apiId": "a1b36f88-301e-45aa-a694-b2d02314eb67",
+      "action": "promote",
+      "oldKey": "e8757001-77a0-41ab-9e4f-18c20e7a093e"
+    },
+    {
+      "apiId": "b8769962-0dc2-4c3b-9d03-bee7b4ef7846",
+      "action": "promote",
+      "oldKey": "e8bc6ad7-fb5b-4336-8696-81f4a65bea34"
+    },
+    {
+      "apiId": "b8c2ca05-1f04-4ac0-8ef9-52881056e2fc",
+      "action": "promote",
+      "oldKey": "e9030eb8-44a1-4607-837a-b193d9e4aa40"
+    },
+    {
+      "apiId": "005f566d-8bba-4fb7-81c7-0f40ac14a38a",
+      "action": "promote",
+      "oldKey": "e97e7459-2700-4b0c-9d6f-23de72aa66c2"
+    },
+    {
+      "apiId": "bde6d031-79d5-4449-9756-11e5e74c0ce1",
+      "action": "promote",
+      "oldKey": "e9902b2b-4976-4379-ba02-daad40e9e7e7"
+    },
+    {
+      "apiId": "faf5d1d2-b6bb-4d39-8ca9-78f7335bc51a",
+      "action": "promote",
+      "oldKey": "e9d46084-b446-4251-a49d-d2d6ad0874a8"
+    },
+    {
+      "apiId": "3dcb1715-c1ff-4b97-96c8-3bfd065c3c39",
+      "action": "promote",
+      "oldKey": "ea18a3c3-3bbc-45ce-88cf-44c6dd489a2c"
+    },
+    {
+      "apiId": "8f3ede2d-558b-47d3-bbc3-5af5e9abe55c",
+      "action": "promote",
+      "oldKey": "ea471322-68d0-4e80-832f-4c4901baeda2"
+    },
+    {
+      "apiId": "5e3b0870-6845-498c-a920-0b333cc5a6e6",
+      "action": "promote",
+      "oldKey": "ea4b982e-97b8-4709-8564-ea2fcf82ab58"
+    },
+    {
+      "apiId": "e7ea1b8c-dfd6-4412-b928-82f1cc2e069e",
+      "action": "promote",
+      "oldKey": "ea7de1cc-5b22-43b1-8280-731070d40165"
+    },
+    {
+      "apiId": "631875af-da7b-474d-8a77-fb187cb2a857",
+      "action": "merge",
+      "oldKey": "ea9c01be-5b3b-4d83-afb8-b0eb49a95971",
+      "keeper": "631875af-da7b-474d-8a77-fb187cb2a857",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 9,
+      "targetGames": 60,
+      "oldComparatorKeeper": "631875af-da7b-474d-8a77-fb187cb2a857",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "4e638e46-1efc-4108-865f-70feee672b97",
+      "action": "promote",
+      "oldKey": "eb3587ca-fd9d-431d-b881-0a30e163846e"
+    },
+    {
+      "apiId": "c7a69721-620a-46f5-9eb9-7e0579161724",
+      "action": "promote",
+      "oldKey": "ebd4d775-41da-42b8-accb-ec832fe26603"
+    },
+    {
+      "apiId": "a97caeb4-b3cc-40f7-9651-feb3f033a1c8",
+      "action": "promote",
+      "oldKey": "ebe4f5cd-fd52-4cab-a298-4b12f9b1b9da"
+    },
+    {
+      "apiId": "0333c4f1-12eb-4cad-a8db-951d6ca362ac",
+      "action": "promote",
+      "oldKey": "ec96edbe-1ff3-41c9-84e1-106d3afc498c"
+    },
+    {
+      "apiId": "8b3c4e7e-a264-43c0-b1b1-75b390b6d025",
+      "action": "promote",
+      "oldKey": "ed40a090-1fd6-4d03-b9d3-7cf15c51bdee"
+    },
+    {
+      "apiId": "8d03a9b9-5970-409c-83ca-0832702698e7",
+      "action": "promote",
+      "oldKey": "ed57da83-4191-48d7-ac9c-8ea938bc6db3"
+    },
+    {
+      "apiId": "bcab1900-465b-496e-be52-1bfeef80e754",
+      "action": "promote",
+      "oldKey": "eda2baba-8a6a-45f4-9e10-ccfa13815da0"
+    },
+    {
+      "apiId": "7ab541ea-a12a-4684-8868-4de3073853bd",
+      "action": "promote",
+      "oldKey": "ede1b0ea-a687-4f3b-8ee7-2319ac26393d"
+    },
+    {
+      "apiId": "cb13affb-1bf6-4d1e-b859-b8c1c2cec69f",
+      "action": "promote",
+      "oldKey": "ee353a91-be79-482d-9cb8-b905c9bca21f"
+    },
+    {
+      "apiId": "09afee68-d3f8-4ed1-b115-853e02ab405e",
+      "action": "promote",
+      "oldKey": "eeb10669-a4a5-45e8-8d65-dc1aa5e4b079"
+    },
+    {
+      "apiId": "b991a251-12e3-4aca-a71f-854c4c9de199",
+      "action": "promote",
+      "oldKey": "eebf7e69-89ba-4816-ab3c-f9dcedcec97d"
+    },
+    {
+      "apiId": "3fd0db0d-17a4-43d0-96af-ebc4a589ee55",
+      "action": "merge",
+      "oldKey": "eeca7524-bb14-4543-b95b-c2316550fafc",
+      "keeper": "eeca7524-bb14-4543-b95b-c2316550fafc",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 29,
+      "targetGames": 308,
+      "oldComparatorKeeper": "3fd0db0d-17a4-43d0-96af-ebc4a589ee55",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "255dc792-d017-44c7-b1ab-0ba70e4c5f48",
+      "action": "promote",
+      "oldKey": "eeec4473-66c6-4458-b390-c7b82fa33cec"
+    },
+    {
+      "apiId": "288c57e4-d9a6-49a4-847e-4cadf5f9be64",
+      "action": "promote",
+      "oldKey": "ef0a8697-f707-4dfb-af60-e94965d7cc50"
+    },
+    {
+      "apiId": "ea41f171-fcfe-47e9-af3e-45cd786b1093",
+      "action": "merge",
+      "oldKey": "ef847046-d3fa-4190-a949-9712cf12dcfb",
+      "keeper": "ef847046-d3fa-4190-a949-9712cf12dcfb",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 10,
+      "targetGames": 18,
+      "oldComparatorKeeper": "ea41f171-fcfe-47e9-af3e-45cd786b1093",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "7fc0ab8a-dc3a-41a3-86b4-7ea71d9fb962",
+      "action": "promote",
+      "oldKey": "efeb94a2-6df1-486c-962a-2afffa09886d"
+    },
+    {
+      "apiId": "b4286694-3348-42a1-8838-fdb272e98d3b",
+      "action": "merge",
+      "oldKey": "f01a1828-46ea-4de5-9cfa-a17f596d72d2",
+      "keeper": "f01a1828-46ea-4de5-9cfa-a17f596d72d2",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 29,
+      "targetGames": 249,
+      "oldComparatorKeeper": "b4286694-3348-42a1-8838-fdb272e98d3b",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "9b4fb2c8-764c-4933-a78e-99bc66d17bcc",
+      "action": "promote",
+      "oldKey": "f06de2db-7296-4bdf-a3ed-7b87f1cbca05"
+    },
+    {
+      "apiId": "c2bd3691-198a-4b99-a5a7-dcd099f89924",
+      "action": "promote",
+      "oldKey": "f0b09a50-ba72-4fe5-bae1-a6bee465bb94"
+    },
+    {
+      "apiId": "7ac2343f-fca4-463a-9907-39caa1b3fa84",
+      "action": "promote",
+      "oldKey": "f0bd19e7-7c1f-4862-956e-bdfa409a5c78"
+    },
+    {
+      "apiId": "41957c32-f1ce-4704-b75e-c7e4a592d099",
+      "action": "promote",
+      "oldKey": "f0d2e0b5-b1c2-4424-838d-0eb7b3020ba5"
+    },
+    {
+      "apiId": "065f166b-0a09-4357-bb56-0d82294b3a84",
+      "action": "promote",
+      "oldKey": "f161b7c5-c7a3-4839-952e-c55c0d5d0282"
+    },
+    {
+      "apiId": "d7fcf729-5a68-4b0c-ae2f-440890778e7c",
+      "action": "promote",
+      "oldKey": "f16f9cf1-ea9a-4507-a5a2-cf9eef28e077"
+    },
+    {
+      "apiId": "56aaa3e2-0fa3-4dce-98b4-ccf4e35ff0e8",
+      "action": "promote",
+      "oldKey": "f23b3f3b-61d6-496f-a7f4-b3379cd49cda"
+    },
+    {
+      "apiId": "2237e4f5-8cb2-4113-95b0-598c45725512",
+      "action": "promote",
+      "oldKey": "f256dedd-2a90-4594-a0ae-12ff19323115"
+    },
+    {
+      "apiId": "45432e89-3579-4ec6-8431-d2eb1181fb88",
+      "action": "promote",
+      "oldKey": "f2bc8066-326e-41e1-ab13-4d043227aad3"
+    },
+    {
+      "apiId": "9a5f4ce4-0069-4c9f-86ec-f19be9899261",
+      "action": "promote",
+      "oldKey": "f33a246f-e217-48ea-84bc-2c70ec3a6776"
+    },
+    {
+      "apiId": "8ed9ff6e-4350-40ba-a635-d1c045e1e254",
+      "action": "promote",
+      "oldKey": "f3c8e298-abbb-4386-ac00-d9e53230b025"
+    },
+    {
+      "apiId": "dddaec90-f0c9-4e7a-8e66-d7622b9619d9",
+      "action": "merge",
+      "oldKey": "f3d1cfd8-617f-4e5a-bbf7-6e54bdc25588",
+      "keeper": "f3d1cfd8-617f-4e5a-bbf7-6e54bdc25588",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 26,
+      "targetGames": 29,
+      "oldComparatorKeeper": "dddaec90-f0c9-4e7a-8e66-d7622b9619d9",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "919745a1-7a30-4c22-af3c-f97469e662ca",
+      "action": "promote",
+      "oldKey": "f3ff2cf2-a7a6-41b9-a803-cca133484fb8"
+    },
+    {
+      "apiId": "bf9a2bf5-66e5-41c4-9a16-c3795c2ceb28",
+      "action": "promote",
+      "oldKey": "f40adf10-f744-40f4-91dd-2dcab5e21138"
+    },
+    {
+      "apiId": "7273db13-2630-48bd-9c87-66cd00998e06",
+      "action": "merge",
+      "oldKey": "f42de7a4-2918-40f9-b41c-5e97648091f6",
+      "keeper": "7273db13-2630-48bd-9c87-66cd00998e06",
+      "sourceRank": 0,
+      "targetRank": 0,
+      "sourceGames": 10,
+      "targetGames": 29,
+      "oldComparatorKeeper": "7273db13-2630-48bd-9c87-66cd00998e06",
+      "statsRefetchQueued": false
+    },
+    {
+      "apiId": "c10e6ae6-4d73-4cf8-ae76-b652079dacc5",
+      "action": "promote",
+      "oldKey": "f44717b7-d47a-45ec-a945-ac49d65dc7d3"
+    },
+    {
+      "apiId": "9718f96b-98b3-47f0-b9f3-5f003ef4d8f7",
+      "action": "promote",
+      "oldKey": "f4cbd368-4d13-4a31-91e9-f59027e993b7"
+    },
+    {
+      "apiId": "f06f08f8-fbfd-4361-ad62-ea1d236183ee",
+      "action": "promote",
+      "oldKey": "f4eba3fd-6f70-41b4-a8d2-eb2327d39438"
+    },
+    {
+      "apiId": "66291923-6376-4586-b60d-d7bf07e3cc26",
+      "action": "promote",
+      "oldKey": "f4fab057-bf65-43dc-9ca8-bc8f4f21d768"
+    },
+    {
+      "apiId": "75e17071-855d-4d7f-b513-ca398a2022ed",
+      "action": "promote",
+      "oldKey": "f5209818-35f3-460f-a252-58262a902ff5"
+    },
+    {
+      "apiId": "bb0362ac-f8ba-494c-9b6f-e47c6f238bb6",
+      "action": "promote",
+      "oldKey": "f5897355-2062-4b3b-ae0d-bf83ebb91613"
+    },
+    {
+      "apiId": "896b1697-ea20-4083-95d7-9873eedc9368",
+      "action": "promote",
+      "oldKey": "f5b6a2fc-26eb-41aa-b9b5-fee23c4d76e1"
+    },
+    {
+      "apiId": "d515dcb4-7ca1-4a3d-ae1b-9057b2eb60de",
+      "action": "merge",
+      "oldKey": "f62e9a31-5a22-4322-82bb-132c81d4e5a1",
+      "keeper": "d515dcb4-7ca1-4a3d-ae1b-9057b2eb60de",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 124,
+      "targetGames": 126,
+      "oldComparatorKeeper": "d515dcb4-7ca1-4a3d-ae1b-9057b2eb60de",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "97c85d46-0b48-4019-a305-ab5d485e794f",
+      "action": "promote",
+      "oldKey": "f65744ee-f674-4a38-bc0e-576581f5f10f"
+    },
+    {
+      "apiId": "b202cff4-6800-4f10-975e-996069c4f6b2",
+      "action": "merge",
+      "oldKey": "f6b6d49a-cc56-4d3a-b70e-438aeaf85410",
+      "keeper": "b202cff4-6800-4f10-975e-996069c4f6b2",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 267,
+      "targetGames": 269,
+      "oldComparatorKeeper": "b202cff4-6800-4f10-975e-996069c4f6b2",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "d0166042-edee-4625-b786-9e1f408e2cab",
+      "action": "merge",
+      "oldKey": "f737c936-05f0-4745-aff4-fe38a83ce246",
+      "keeper": "d0166042-edee-4625-b786-9e1f408e2cab",
+      "sourceRank": 0,
+      "targetRank": 3,
+      "sourceGames": 7,
+      "targetGames": 23,
+      "oldComparatorKeeper": "d0166042-edee-4625-b786-9e1f408e2cab",
+      "statsRefetchQueued": false
+    },
+    {
+      "apiId": "74ed568c-bcd3-4329-ae76-d9553392ebf9",
+      "action": "promote",
+      "oldKey": "f7391294-3719-405f-9b7b-a41e754547df"
+    },
+    {
+      "apiId": "87719b3c-65cf-4be4-a96c-6367c2cffcf4",
+      "action": "promote",
+      "oldKey": "f76d8553-06b3-41de-8370-6016f22c5a5c"
+    },
+    {
+      "apiId": "4d18cef2-2636-401c-91c4-e61909517cc9",
+      "action": "merge",
+      "oldKey": "f80ca613-0101-4acd-8e11-7cf55a36451d",
+      "keeper": "4d18cef2-2636-401c-91c4-e61909517cc9",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 44,
+      "targetGames": 1,
+      "oldComparatorKeeper": "f80ca613-0101-4acd-8e11-7cf55a36451d",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "7e7800ee-110f-4270-997e-b74d5514f0ac",
+      "action": "promote",
+      "oldKey": "f875ecea-fb9f-4b5a-803c-f86ee192f2c8"
+    },
+    {
+      "apiId": "0070d373-e344-4442-94dc-e892dcac974d",
+      "action": "promote",
+      "oldKey": "f8987dae-880a-4c88-90c3-184f7cdf823a"
+    },
+    {
+      "apiId": "d5c19b9f-ea7b-448b-9c80-e409a352333a",
+      "action": "promote",
+      "oldKey": "f93dfe59-b321-44d0-aa83-78303dc14734"
+    },
+    {
+      "apiId": "16840de3-fa7d-4e82-9c11-9eb189984ae3",
+      "action": "merge",
+      "oldKey": "f95ea82f-26e9-4e92-bc02-19cfae731377",
+      "keeper": "16840de3-fa7d-4e82-9c11-9eb189984ae3",
+      "sourceRank": 3,
+      "targetRank": 3,
+      "sourceGames": 76,
+      "targetGames": 1,
+      "oldComparatorKeeper": "f95ea82f-26e9-4e92-bc02-19cfae731377",
+      "statsRefetchQueued": true
+    },
+    {
+      "apiId": "bff916e2-f641-42a0-948c-f597cf376533",
+      "action": "promote",
+      "oldKey": "f9616b9f-dbf9-4eab-825c-8b60fc0e6729"
+    },
+    {
+      "apiId": "65725482-e37e-469f-818a-f6ab0f85e1d8",
+      "action": "promote",
+      "oldKey": "f9b1c963-7e79-4a71-bc39-8cb8588c32a6"
+    },
+    {
+      "apiId": "9d0abba5-ad81-4017-8ba2-74afd397f79b",
+      "action": "promote",
+      "oldKey": "f9d25caf-7b9a-429c-b5e4-7c14411804e8"
+    },
+    {
+      "apiId": "de67a69b-9180-43dd-b91f-96b9be360e69",
+      "action": "promote",
+      "oldKey": "fa0b29e4-3a1f-4a01-a710-43d480f38854"
+    },
+    {
+      "apiId": "5bb1b558-f1c6-4f01-813a-b434628a85bf",
+      "action": "promote",
+      "oldKey": "fa0ce0f0-2f35-4101-9736-5445d51c767e"
+    },
+    {
+      "apiId": "031aa927-27c9-4fc4-b158-b8708df5618e",
+      "action": "promote",
+      "oldKey": "fa6ebc11-5556-46f4-8076-50dce43b2323"
+    },
+    {
+      "apiId": "859cf306-0490-4681-8f19-2240971afcda",
+      "action": "promote",
+      "oldKey": "fa9a34f3-2143-4126-b6b6-84751053a827"
+    },
+    {
+      "apiId": "b55143b2-b21a-4fb6-a854-cbd33d376cdf",
+      "action": "promote",
+      "oldKey": "fbba2c00-c13f-455a-88da-69097d826f65"
+    },
+    {
+      "apiId": "3a74f11d-4d8f-4f4b-a8ad-5081bd735113",
+      "action": "promote",
+      "oldKey": "fbf6da42-e037-4fad-ac1d-43cf30fd908e"
+    },
+    {
+      "apiId": "2b80f97d-d97e-44c9-b25e-702a43a70ea7",
+      "action": "promote",
+      "oldKey": "fcb70fcd-9561-4ad8-8193-615f963f9bb1"
+    },
+    {
+      "apiId": "2975c123-7dce-4ab8-9bb8-8ce8183e593c",
+      "action": "promote",
+      "oldKey": "fd1dd360-bd0f-4d82-926d-9df96c5d601f"
+    },
+    {
+      "apiId": "c4648540-b833-44e2-b2a5-9a2062983e5f",
+      "action": "promote",
+      "oldKey": "fd60cf2a-a6d7-4752-a10b-384c644fd311"
+    },
+    {
+      "apiId": "447d6559-91ed-4442-82c2-76d2171d4c91",
+      "action": "promote",
+      "oldKey": "fddc7452-f48a-4b23-abfc-d2a7ce8d2a16"
+    },
+    {
+      "apiId": "bab35ab7-03df-4003-aa34-45ed6c6ba06d",
+      "action": "promote",
+      "oldKey": "fe7daf9a-f4cc-40ad-aeee-8a5359120d43"
+    },
+    {
+      "apiId": "6860af7a-ae3f-4f20-900f-da6bb19e0fe1",
+      "action": "promote",
+      "oldKey": "fea8e3d5-79a3-4931-af25-891bf99a653b"
+    },
+    {
+      "apiId": "bf3bc4e3-fac3-4e36-a4d5-2ce9884ae768",
+      "action": "promote",
+      "oldKey": "fedf62cd-a896-4d8f-95f8-590a7eba0a57"
+    },
+    {
+      "apiId": "c70a2017-43e0-45a5-bec0-5550de392add",
+      "action": "promote",
+      "oldKey": "ff4c83c7-2d12-4e59-85b0-4db431b78fa2"
+    },
+    {
+      "apiId": "b9fa6f3a-e701-4c5c-ba2d-cc3fb31792f4",
+      "action": "promote",
+      "oldKey": "ffdf182d-46aa-4bea-abab-5c54a3edab77"
     }
   ]
 }
