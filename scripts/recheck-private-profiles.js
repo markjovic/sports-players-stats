@@ -191,27 +191,49 @@ function parseProfileStats(data) {
 
 // ─── Git commit ───────────────────────────────────────────────────────────────
 
+// ─── git ──────────────────────────────────────────────────────────────────────
+// REWRITTEN 2026-09-01 to the house pattern. Four things were wrong:
+//
+//   --stat, not --shortstat. On a large recheck this can exceed execSync's
+//     default 1 MB buffer and throw ENOBUFS, which the catch swallowed into
+//     staged='' — a run that had written files would then decide it had nothing
+//     to commit and exit clean.
+//   No timeout or maxBuffer on any git call. execSync blocks the event loop, so
+//     nothing outside can time it out; a hung git hangs the job to its limit.
+//   Push exhaustion printed to stderr and RETURNED. The run then completed
+//     normally and the job showed green with the work sitting uncommitted on a
+//     destroyed runner. A lost commit must show red.
+//   Commit failure was swallowed the same way.
+//
+// 10 attempts also raised to 60 with pure random jitter, matching the other
+// writers that share this branch.
+const GIT_OPTS      = { stdio: 'pipe', cwd: ROOT, timeout: 10 * 60 * 1000, maxBuffer: 512 * 1024 * 1024 };
+const PUSH_ATTEMPTS = 60;
+
 async function gitCommit(message) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
-  try { execSync('git add players/', { stdio: 'pipe', cwd: ROOT }); } catch (_) {}
-  const staged = (() => {
-    try { return execSync('git diff --staged --stat', { stdio: 'pipe', cwd: ROOT }).toString().trim(); }
-    catch (_) { return ''; }
-  })();
-  if (!staged) { return; }
-  try { execSync(`git commit -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT }); }
-  catch (_) { return; }
-  const MAX = 10;
-  for (let attempt = 1; attempt <= MAX; attempt++) {
+
+  execSync('git add -- players/', GIT_OPTS);
+
+  const staged = execSync('git diff --staged --shortstat', GIT_OPTS).toString().trim();
+  if (!staged) { console.log('  Nothing to commit — the run changed no files.'); return; }
+  console.log(`  staging: ${staged}`);
+
+  execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, GIT_OPTS);
+
+  for (let attempt = 1; attempt <= PUSH_ATTEMPTS; attempt++) {
+    try { execSync('git merge --abort', GIT_OPTS); } catch (_) {}
     try {
-      execSync('git fetch origin main',                    { stdio: 'pipe', cwd: ROOT });
-      execSync('git merge -X ours FETCH_HEAD --no-edit',  { stdio: 'pipe', cwd: ROOT });
-      execSync('git push origin main',                    { stdio: 'pipe', cwd: ROOT });
-      console.log(`  ✓ ${message}`);
+      execSync('git fetch origin main', GIT_OPTS);
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', GIT_OPTS);
+      execSync('git push origin main', GIT_OPTS);
+      console.log(`  ✓ ${message}${attempt > 1 ? ` (push attempt ${attempt})` : ''}`);
       return;
-    } catch (_) {
-      if (attempt === MAX) { console.error(`  Push failed after ${MAX} attempts`); return; }
-      await sleep(Math.floor(Math.random() * 15000) + attempt * 3000);
+    } catch (e) {
+      if (attempt === PUSH_ATTEMPTS) {
+        throw new Error(`push failed after ${PUSH_ATTEMPTS} attempts: ${e.message.split('\n')[0]}`);
+      }
+      await sleep((1 + Math.floor(Math.random() * 91)) * 1000);
     }
   }
 }
@@ -248,7 +270,7 @@ async function main() {
   console.log(`  Private-marked threshold: ${PRIVATE_DAYS} days`);
   console.log(`  Active-season threshold:  ${ACTIVE_DAYS} days`);
   const toRecheck = [];
-  let countA = 0, countB = 0;
+  let countA = 0, countB = 0, skippedPendingFold = 0, skippedNoUuid = 0;
 
   const shardDirs = fs.readdirSync(PLAYERS_DIR)
     .filter(d => /^[0-9a-f]{2}$/.test(d))
@@ -265,10 +287,34 @@ async function main() {
       const bk = player.sports?.Basketball;
       if (!bk?.statsChecked) continue;
 
+      // ── PENDING FOLD ────────────────────────────────────────────────────────
+      // A file carrying apiId is wrongly keyed and waiting for
+      // fold-diverged-players.js. Its own uuid is a SPECTATOR id, and the query
+      // below sends the file's uuid — so PlayHQ returns NOT_FOUND, and the
+      // handler below writes private:true with a fresh statsChecked. That is not
+      // a finding about the player, it is the wrong question producing an answer
+      // that then gets stored as fact. It is the same mechanism that manufactured
+      // the private stubs this campaign has spent the day undoing.
+      //
+      // On 2026-09-01 there were 541 such files sitting between the seeder and the
+      // fold. Skipping them costs nothing: the fold rekeys them within the day and
+      // the next pass sees them correctly keyed.
+      if (player.apiId) { skippedPendingFold++; continue; }
+
+      // profileID: undefined is a GraphQL error, and the handler below records an
+      // error as "still inaccessible". A file with no uuid must not be able to
+      // write private:true about itself.
+      if (!player.uuid) { skippedNoUuid++; continue; }
+
       const checkedAge = (now - new Date(bk.statsChecked).getTime()) / (1000 * 60 * 60 * 24);
 
-      // Category A: private-marked, monthly recheck
-      if ((player.private === true || bk.maxGamePTS === null) && checkedAge >= PRIVATE_DAYS) {
+      // Category A: private-marked, monthly recheck.
+      // The legacy maxGamePTS === null signal now applies ONLY where the explicit
+      // flag is absent. It was written for files predating the flag, but as an OR
+      // it also swept in every public player who has simply never appeared in a
+      // box score — private:false and still rechecked monthly as private.
+      const legacyPrivate = player.private === undefined && bk.maxGamePTS === null;
+      if ((player.private === true || legacyPrivate) && checkedAge >= PRIVATE_DAYS) {
         toRecheck.push({ uuid: player.uuid, shard, fname, category: 'A' });
         countA++;
         continue;
@@ -285,6 +331,8 @@ async function main() {
     }
   }
 
+  console.log(`  Skipped, pending fold (carry apiId): ${skippedPendingFold}`);
+  console.log(`  Skipped, no uuid field:              ${skippedNoUuid}`);
   console.log(`  Category A (private-marked, >${PRIVATE_DAYS}d old): ${countA}`);
   console.log(`  Category B (active-season,  >${ACTIVE_DAYS}d old):  ${countB}`);
   console.log(`  Total to recheck: ${toRecheck.length}`);
@@ -294,11 +342,16 @@ async function main() {
   await refreshSession();
 
   let requestCount = 0;
-  let recovered = 0, stillPrivate = 0, errors = 0;
+  let recovered = 0, stillPrivate = 0, errors = 0, notFound = 0;
 
   for (let i = 0; i < toRecheck.length; i++) {
     const { uuid, shard, fname } = toRecheck[i];
     const short = uuid.slice(0, 8);
+    let queryId = uuid;
+    try {
+      const pre = JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, shard, fname), 'utf8'));
+      if (pre.apiId) queryId = pre.apiId;
+    } catch (_) { /* re-read failure is not fatal; uuid is the correct default */ }
 
     if (requestCount > 0 && requestCount % REFRESH_EVERY === 0) {
       console.log(`  ↺ Session refresh at request ${requestCount}`);
@@ -308,9 +361,13 @@ async function main() {
 
     let res;
     try {
+      // Same id fetch-profile-stats.js queries with (L972). The scan above already
+      // skips apiId-bearing files, so this is the second line of defence rather
+      // than the first — but a wrong-namespace query here does not fail loudly, it
+      // writes private:true, so one guard is not enough.
       res = await doFetch(
         { operationName: 'ProfileSeasonStatistics',
-          variables: { profileID: uuid }, query: PROFILE_QUERY },
+          variables: { profileID: queryId }, query: PROFILE_QUERY },
         { 'Cookie': sessionCookie }
       );
     } catch (e) {
@@ -347,6 +404,7 @@ async function main() {
     // Check for NOT_FOUND or other GraphQL errors
     if (res.body.errors && res.body.errors.length > 0) {
       const msg = res.body.errors[0]?.message || '';
+      if (msg.includes('NOT_FOUND') || msg.includes('failed to find profile')) notFound++;
       stillPrivate++;
       if (!DRY_RUN) {
         const playerFile = path.join(PLAYERS_DIR, shard, fname);
@@ -427,7 +485,17 @@ async function main() {
   console.log(`  Rechecked:     ${toRecheck.length}`);
   console.log(`  Recovered:     ${recovered}`);
   console.log(`  Still private: ${stillPrivate}`);
+  console.log(`    of which NOT_FOUND: ${notFound}`);
   console.log(`  Errors:        ${errors}`);
+  // NOT_FOUND means PlayHQ has no profile at that id. For a correctly keyed file
+  // that is real (the profile was deleted). For a wrongly keyed one it means we
+  // asked with a spectator id. A high rate is the signature of the second, and it
+  // is being written to disk as private:true either way.
+  if (stillPrivate > 0 && notFound / stillPrivate > 0.5 && stillPrivate >= 20) {
+    console.log(`\n  ⚠ ${Math.round((notFound / stillPrivate) * 100)}% of "still private" were NOT_FOUND.`);
+    console.log('    That is the shape of querying with the wrong id, not of profiles going private.');
+    console.log('    Check for wrongly-keyed files before trusting this run.');
+  }
   console.log(`  Elapsed:       ${elapsed}s`);
   if (DRY_RUN) console.log('  ⚠  DRY RUN — nothing written');
 }

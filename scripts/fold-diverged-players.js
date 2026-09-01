@@ -570,7 +570,14 @@ function main() {
   }
 
   const written = [], deleted = [], entries = [];
-  let promotes = 0, merges = 0, statsRefetch = 0, stubWouldHaveWon = 0;
+  let promotes = 0, merges = 0, statsRefetch = 0;
+  // TWO counters, not one. The first version counted only the direction where the
+  // old rule kept the stub and the new one keeps the api file. On fold #76 that
+  // reported 5 when 23 merges had actually changed hands — the other 18 went the
+  // other way, where the api file held more games but the stub held the fresher
+  // answer. A "5" that means "23 decisions moved" is a number that misleads the
+  // person reading it, so both directions are reported.
+  let stubWouldHaveWon = 0, apiWouldHaveWon = 0;
   // Shard prefixes of every player whose statsChecked this run removes. The
   // workflow turns this into a TARGETED matrix dispatch — see the note at
   // writeRefetchShards() for why nothing else will pick them up.
@@ -605,7 +612,10 @@ function main() {
       // anything is applied. The old comparator was `tGames >= sGames`.
       const sGames = gamesCount(source), tGames = gamesCount(target);
       const oldKeeperWasTarget = tGames >= sGames;
-      if (!oldKeeperWasTarget && keeperIsTarget) stubWouldHaveWon++;
+      if (oldKeeperWasTarget !== keeperIsTarget) {
+        if (keeperIsTarget) stubWouldHaveWon++;   // old kept the stub, new keeps the real profile
+        else                apiWouldHaveWon++;    // old kept the api file, new keeps the fresher stub
+      }
 
       final = clone(keeperIsTarget ? target : source);
       const loser = keeperIsTarget ? source : target;
@@ -706,6 +716,8 @@ function main() {
     statsRefetchQueued: statsRefetch,
     refetchShards: [...refetchShards].sort(),
     stubWouldHaveWonUnderOldComparator: stubWouldHaveWon,
+    apiWouldHaveWonUnderOldComparator: apiWouldHaveWon,
+    keeperChangedTotal: stubWouldHaveWon + apiWouldHaveWon,
     indexShardsTouched: indexPaths.length,
     aliasEntriesScanned: alias.entries,
     aliasValuesRepointed: alias.repointed,
@@ -725,7 +737,9 @@ function main() {
     `| diverged folded | ${diverged.length} |`,
     `| promotes | ${promotes} |`,
     `| merges | ${merges} |`,
-    `| merges where the OLD comparator would have kept the stub | ${stubWouldHaveWon} |`,
+    `| merges where the keeper CHANGED | ${stubWouldHaveWon + apiWouldHaveWon} |`,
+    `|  …old kept the stub, now keeps the real profile | ${stubWouldHaveWon} |`,
+    `|  …old kept the api file, now keeps the fresher stub | ${apiWouldHaveWon} |`,
     `| statsChecked dropped (re-fetch queued) | ${statsRefetch} |`,
     `| index shards touched | ${indexPaths.length} |`,
     `| alias values repointed | ${alias.repointed} |`,
