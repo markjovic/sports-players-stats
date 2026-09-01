@@ -538,6 +538,8 @@ function repointOnlyMode() {
   for (const smp of unresolvedSamples.slice(0, 10)) log(`  UNRESOLVED: ${smp}`);
   if (DRY) { log('DRY RUN — nothing written.'); return; }
   if (!repointed) { log('nothing to repoint.'); return; }
+  writeRefetchShards(DRY ? [] : [...refetchShards].sort(), statsRefetch);
+
   gitCommitPush(written, `fold-diverged: repoint ${repointed} alias values orphaned by an earlier fold`);
   log('repoint-only complete.');
 }
@@ -569,6 +571,10 @@ function main() {
 
   const written = [], deleted = [], entries = [];
   let promotes = 0, merges = 0, statsRefetch = 0, stubWouldHaveWon = 0;
+  // Shard prefixes of every player whose statsChecked this run removes. The
+  // workflow turns this into a TARGETED matrix dispatch — see the note at
+  // writeRefetchShards() for why nothing else will pick them up.
+  const refetchShards = new Set();
 
   for (const { key, apiId } of diverged) {
     const source = readPlayer(key);
@@ -621,6 +627,7 @@ function main() {
           final.sports.Basketball.statsChecked) {
         delete final.sports.Basketball.statsChecked;
         statsRefetch++;
+        refetchShards.add(apiId.slice(0, 2).toLowerCase());   // the file's NEW home
       }
 
       merges++;
@@ -697,6 +704,7 @@ function main() {
     folded: diverged.length,
     promotes, merges,
     statsRefetchQueued: statsRefetch,
+    refetchShards: [...refetchShards].sort(),
     stubWouldHaveWonUnderOldComparator: stubWouldHaveWon,
     indexShardsTouched: indexPaths.length,
     aliasEntriesScanned: alias.entries,
@@ -729,11 +737,61 @@ function main() {
     try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md); } catch (_) {}
   }
 
+  writeRefetchShards(DRY ? [] : [...refetchShards].sort(), statsRefetch);
+
   gitCommitPush(
     [...written, ...deleted, ...indexPaths, ...alias.written, OUT_REPORT],
     `fold-diverged: ${promotes} promoted, ${merges} merged to api ids`
   );
   log('fold complete.');
+}
+
+// ─── Hand the un-checked players back to the matrix ───────────────────────────
+// Deleting statsChecked is only half a fix. fetch-profile-stats is dispatched by
+// nightly-crawl.yml behind this gate:
+//
+//   if: always() && (needs.crawl.outputs.new_players != '0' ||
+//                    needs.crawl.outputs.stats_rechecks != '0')
+//
+// new_players is that night's newly stubbed players; stats_rechecks is the length
+// of needs-matrix-shards.json. NEITHER counts players missing statsChecked. So a
+// quiet night dispatches no matrix at all — and on a night that does dispatch, the
+// run is TARGETED at the shards in needs-matrix-shards.json and the matrix's own
+// retrigger narrows further to shards reporting work. A player this fold un-checks
+// in shard 4a is therefore never revisited unless something independent puts 4a on
+// that list.
+//
+// Left alone, those players would hold no stats AND no statsChecked — strictly
+// worse than the wrong-keeper bug this change exists to fix, which at least left a
+// number behind.
+//
+// Appending to needs-matrix-shards.json is the obvious repair and is NOT safe:
+// nightly-crawl.js rewrites that file every night and whether it merges or
+// overwrites is unknown here. So the fold names the shards itself and the workflow
+// dispatches the matrix at exactly them.
+//
+// This cannot loop. The fold acts only on files carrying an apiId field and
+// deletes that field as it goes; the post-check above throws unless zero remain.
+// The next fold therefore un-checks nobody and writes an empty list.
+//
+// DRY runs always write an empty list: a dry run must not be able to cause a
+// dispatch.
+const REFETCH_SHARDS_FILE = path.join(ROOT, 'refetch-shards.json');
+function writeRefetchShards(shards, count) {
+  try {
+    fs.writeFileSync(REFETCH_SHARDS_FILE, JSON.stringify(shards), 'utf8');
+  } catch (e) {
+    // Not fatal to the fold — the merge work is already done and committed. But it
+    // IS a silent stranding, so say so loudly rather than swallowing it.
+    log(`WARNING: could not write ${REFETCH_SHARDS_FILE}: ${e.message}`);
+    log(`WARNING: ${count} player(s) had statsChecked removed and will NOT be re-fetched automatically.`);
+    return;
+  }
+  if (shards.length) {
+    log(`re-fetch queued: ${count} player(s) across ${shards.length} shard(s) -> ${JSON.stringify(shards)}`);
+  } else {
+    log('re-fetch queued: none');
+  }
 }
 
 main();
