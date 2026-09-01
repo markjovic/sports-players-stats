@@ -526,18 +526,60 @@ function keeperOutlook(c) {
   const source = readPlayer(c.uuid);
   const sGames = source && Array.isArray(source.games) ? source.games.length : 0;
   const tGames = Array.isArray(target.games) ? target.games.length : 0;
-  const keeperIsTarget = tGames >= sGames;   // fold: tGames > sGames, ties to api-keyed
+  // ── The fold's keeper rule, mirrored ────────────────────────────────────────
+  // CHANGED 2026-09-01, tracking fold-diverged-players.js. The fold used to keep
+  // whichever record had more games[] entries. It now keeps whichever record
+  // actually holds stats, because games[] is assigned by build-player-games
+  // resolving rosters through the alias index — so before an alias exists the
+  // stub collects everything and the count measures which key the resolver
+  // favoured, not which record is richer. Measured on this tool's own 2026-08-31
+  // output: across the 552 flagged pairs the stub held a median of 69 games and
+  // the real api-keyed profile held 1.
+  //
+  // This function has to stay in step with the fold. If it drifts, the log below
+  // reports a plan the fold will not follow, which is worse than reporting
+  // nothing. The tripwire in the totals block exists to catch exactly that.
+  const sRank = statsRank(source), tRank = statsRank(target);
+  let keeperIsTarget;
+  if (sRank !== tRank)                              keeperIsTarget = tRank > sRank;
+  else if (checkedAt(target) !== checkedAt(source)) keeperIsTarget = checkedAt(target) > checkedAt(source);
+  else                                              keeperIsTarget = true;   // api-keyed wins ties
+  const tieBroken = (sRank === tRank && sRank >= 2);
   return {
     foldAction: 'merge',
     keeperWouldBe: keeperIsTarget ? 'api-file (correct)' : 'OUR STUB',
     sourceGames: sGames, targetGames: tGames,
+    sourceRank: sRank, targetRank: tRank,
     targetName: target.name || null,
     targetIsPrivate: target.private === true,
     sourceIsPrivate: source ? source.private === true : null,
-    // Only dangerous when the stub wins AND the target is not already private:
-    // a real, credited profile would become a private one with no stats.
-    stubWouldOverwriteRealProfile: !keeperIsTarget && target.private !== true,
+    // The fold drops statsChecked when both records were the same class of
+    // answer, so the next matrix run settles it under the api id.
+    statsRefetchQueued: tieBroken,
+    // TRIPWIRE, not a filter. Under the new rule the keeper always ranks at
+    // least as high as the loser, so a stub can never take a better-ranked
+    // profile's stats and this is unreachable. If it ever reports non-zero,
+    // this function and the fold have drifted apart — investigate before
+    // applying, do not just re-run.
+    stubWouldOverwriteRealProfile: !keeperIsTarget && tRank > sRank,
   };
+}
+
+// ─── statsRank / checkedAt ────────────────────────────────────────────────────
+// Copied from fold-diverged-players.js so the prediction above matches the
+// behaviour exactly. Ranks, lowest to highest: 0 private (PlayHQ withholds it),
+// 1 never fetched, 2 fetched but nothing credited, 3 real stats.
+function statsRank(p) {
+  if (!p) return 1;
+  if (p.private === true) return 0;
+  const bk = p.sports && p.sports.Basketball;
+  if (!bk || !bk.statsChecked) return 1;
+  return (Number(bk.gp) > 0) ? 3 : 2;
+}
+function checkedAt(p) {
+  const t = p && p.sports && p.sports.Basketball && p.sports.Basketball.statsChecked;
+  const n = t ? Date.parse(t) : NaN;
+  return Number.isFinite(n) ? n : 0;
 }
 
 // The name we compare against: the target file's name when one exists, otherwise
@@ -734,18 +776,27 @@ async function main() {
       continue;
     }
 
-    // The stub would win the fold's keeper contest and replace a real profile.
-    // fold-diverged-players.js clones the keeper and unions only seasons, games,
-    // teams, gameTids and name — so the merged file inherits the stub's
-    // private:true AND statsChecked. Being api-keyed but marked checked, it is
-    // then never re-fetched by fetch-profile-stats: the stats loss is permanent
-    // and silent, while games[] looks correct. Not worth it for 11 players when
-    // the alternative is leaving them exactly as they are today.
-    if (rec.stubWouldOverwriteRealProfile) {
-      skipped.push({ ...rec, why: `stub holds more games (${rec.sourceGames}) than the real profile (${rec.targetGames}), so the fold would keep the stub and drop that profile's stats permanently` });
-      console.log(`  SKIP ${c.uuid.slice(0, 8)} ${rec.ourFileName} — stub would outweigh and overwrite the real profile`);
-      continue;
-    }
+    // REMOVED 2026-09-01: the stub-outweighs-real-profile refusal.
+    //
+    // It existed because the fold kept whichever record had more games[] entries,
+    // so a spectator-keyed stub replaced the real api-keyed profile's stats,
+    // private flag and statsChecked — and being api-keyed and marked checked, it
+    // was then never re-fetched. The loss was permanent and silent while games[]
+    // looked correct. Refusing was right at the time.
+    //
+    // fold-diverged-players.js now keeps whichever record actually holds stats,
+    // and drops statsChecked when it had to break a tie so the next matrix run
+    // settles it. Verified end to end on 2026-09-01: fold #76 folded 859 files,
+    // un-checked 79, dispatched a targeted matrix at their 67 shards, and the
+    // chain ran to completion. The cases this guard was refusing are now safe.
+    //
+    // The refusal was blocking 547 players indefinitely — not deferring them.
+    // The fold only ever sees files carrying an apiId field, so a case refused
+    // here never reaches it at all.
+    //
+    // The comment that used to sit here also said "not worth it for 11 players".
+    // That figure was three runs out of date by the time it was read, and the
+    // judgement was not the code's to make.
 
     // Check 1 — the file key must NOT be an api id. If it is, this file is
     // already correctly keyed and seeding it would send the fold to move a
@@ -789,12 +840,16 @@ async function main() {
   console.log(`  of those, fold would MERGE into an existing file : ${merges}`);
   console.log(`  of those, fold would promote into empty space    : ${written.length - merges}`);
   console.log(`  merges where OUR STUB would be the keeper        : ${stubWins.length}`);
-  console.log(`  ...of those, target is NOT already private       : ${dangerous.length}   <- these lose a real profile's stats`);
+  console.log(`  ...of those, target is private or lower-ranked   : ${stubWins.length - dangerous.length}   <- safe: nothing to lose`);
+  console.log(`  fold will drop statsChecked (re-fetch queued)    : ${written.filter(w => w.statsRefetchQueued).length}`);
+  console.log(`  TRIPWIRE, must be 0                             : ${dangerous.length}`);
   if (dangerous.length) {
-    console.log('\n──── ⚠ STILL IN THE SEED SET AND WOULD OVERWRITE A REAL PROFILE ────');
-    console.log('  These should have been excluded. If any appear, STOP and do not apply.');
-    console.log('  The stub holds more games, so the fold keeps the stub and the real');
-    console.log('  profile\'s stats and private flag are replaced. Games survive; stats do not.');
+    console.log('\n──── \u26a0 TRIPWIRE: keeperOutlook AND THE FOLD HAVE DRIFTED APART ────');
+    console.log('  This should be UNREACHABLE. Under the fold\'s current keeper rule the');
+    console.log('  winner always ranks at least as high as the loser, so a stub cannot take');
+    console.log('  a better-ranked profile\'s stats. A non-zero count here means statsRank/');
+    console.log('  checkedAt in this file no longer match fold-diverged-players.js.');
+    console.log('  STOP. Do not apply, and do not re-run hoping it clears.');
     for (const w of dangerous.slice(0, 30)) {
       console.log(`  ${w.uuid} (${w.ourName || w.name}) ${w.sourceGames} games  ->  ${w.apiId} (${w.targetName}) ${w.targetGames} games`);
     }
