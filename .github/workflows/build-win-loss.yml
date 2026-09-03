@@ -1,6 +1,26 @@
 # .github/workflows/build-win-loss.yml
 name: Build Win-Loss Records
 
+# 2026-09-01: scripts/build-win-loss.js read only g.h/g.a. A game carries h/a OR
+# t1/t2 and never both — README.md L266, hidden games use t1/t2 — so for every
+# hidden game resultForTeam matched neither branch and returned null, the hp/ap
+# path received tid=undefined and skipped, and the p[] path evaluated
+# tids.has(undefined) as false and skipped. EVERY HIDDEN GAME CONTRIBUTED ZERO
+# WINS AND LOSSES to every player in it.
+#
+# It was silent because a skipped game is indistinguishable from a game with no
+# resolvable players, and because build-finals-stats.js has always resolved both
+# pairs — so finals results were counted for the same games regular-season
+# results were not.
+#
+# NOTHING ABOUT THIS WORKFLOW CHANGED. Records are rebuilt from games each run,
+# so the missing results appear on their own; no migration, no repair pass.
+#
+# RUN IT WITH active_only=false THE FIRST TIME. The undercount is in every season
+# ever built, not just active ones, and an active-only run would leave every
+# locked season carrying the old figures while the active ones jumped — which
+# looks like a regression in the locked data rather than a fix in the new.
+
 on:
   workflow_dispatch:
     inputs:
