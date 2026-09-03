@@ -1,0 +1,77 @@
+# .github/workflows/audit-diff-fields.yml
+name: Audit diff fields (c / x)
+
+# READ-ONLY. No PlayHQ calls, no writes, no commit. Prints to the job log.
+#
+# Checks whether fetch-profile-stats.js is actually writing the exception diff —
+# sports.Basketball.c (PlayHQ credits it, games[] does not hold it) and .x
+# (games[] holds it, PlayHQ does not credit it, not a forfeit).
+#
+# Both fields are DELETED rather than written empty when capture and credit agree,
+# and most players agree, so opening one file at random proves nothing. There is
+# also no way to pick a disagreeing player out of a directory listing. This finds
+# them.
+#
+# The number that matters is the CROSS-CHECK: gp - games[] must equal c - x for
+# every player, because both sides derive from the same two sets. A failure means
+# the diff was computed against something other than what is on the file.
+#
+# `since` exists so a file last fetched before the diff code shipped is counted as
+# out of scope rather than as a miss — otherwise the audit would report the
+# deployment date as a fault.
+#
+# Sparse checkout is used here and ONLY here: this reads one shard of ~1,600 files,
+# not the 418k the other tools walk, so the blobless-clone cost that makes sparse
+# unusable at scale does not apply. A full checkout would spend 7 minutes to read
+# 1,600 files.
+
+on:
+  workflow_dispatch:
+    inputs:
+      shard:
+        description: 'Shard to audit (two hex characters, e.g. 00)'
+        required: true
+        default: '00'
+        type: string
+      since:
+        description: 'Ignore players last fetched before this date (YYYY-MM-DD). Blank = count them all.'
+        required: false
+        default: ''
+        type: string
+
+concurrency:
+  group: audit-diff-fields
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout one shard
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/audit-diff-fields.js
+            players/${{ inputs.shard }}
+          sparse-checkout-cone-mode: false
+
+      - name: Syntax check
+        run: node --check scripts/audit-diff-fields.js
+
+      # Inputs go through env, never straight into the command line. An input
+      # interpolated into a run: block is substituted by GitHub BEFORE bash sees
+      # it, so anything in it becomes shell source text.
+      - name: Audit
+        env:
+          IN_SHARD: ${{ inputs.shard }}
+          IN_SINCE: ${{ inputs.since }}
+        run: |
+          set -euo pipefail
+          ARGS=("--shard=$IN_SHARD")
+          if [ -n "$IN_SINCE" ]; then ARGS+=("--since=$IN_SINCE"); fi
+          node scripts/audit-diff-fields.js "${ARGS[@]}"
