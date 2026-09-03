@@ -9,7 +9,8 @@
 // Strategy:
 //   Pre-pass — scan all player files to build uuid → { sid → Set<tid> } map.
 //              Required to classify g.p[] entries (no side info) by matching
-//              the player's known tid for that season against g.h / g.a.
+//              the player's known tid for that season against the game's two
+//              team ids (h/a on normal games, t1/t2 on hidden ones).
 //   Pass 1   — iterate season game files one at a time; accumulate W/L/D per
 //              player using hp/ap when present, g.p[] + pre-pass map otherwise.
 //   Pass 2   — write accumulated records back to player files.
@@ -57,10 +58,31 @@ const targetSids  = new Set(ACTIVE_ONLY ? [...activeSids] : allSids);
 
 // ─── W/L/D from game ─────────────────────────────────────────────────────────
 
+// ─── Which team is which side ─────────────────────────────────────────────────
+// A game carries h/a OR t1/t2, never both: README.md L266 — "Hidden game (uses
+// t1/t1n/t2/t2n instead of h/a)".
+//
+// Every site below read h/a only until 2026-09-01. For a hidden game both were
+// undefined, so resultForTeam matched neither branch and returned null, the
+// hp/ap path received tid=undefined and skipped, and the p[] path evaluated
+// tids.has(undefined) as false and skipped. EVERY HIDDEN GAME CONTRIBUTED ZERO
+// WINS AND LOSSES to every player in it — silently, because a skipped game is
+// indistinguishable from a game with no resolvable players.
+//
+// build-finals-stats.js L248/L254 has always resolved both pairs, so finals
+// results were counted for the same games that regular-season results were not.
+//
+// Two functions rather than an inline `g.h ?? g.t1` at each site, because there
+// were five sites and adding a sixth without the fallback is exactly how this
+// happened.
+function homeTid(g) { return g.h ?? g.t1 ?? null; }
+function awayTid(g) { return g.a ?? g.t2 ?? null; }
+
 function resultForTeam(g, tid) {
   let myS, oppS;
-  if      (g.h === tid) { myS = g.hs; oppS = g.as; }
-  else if (g.a === tid) { myS = g.as; oppS = g.hs; }
+  const h = homeTid(g), a = awayTid(g);
+  if      (h !== null && h === tid) { myS = g.hs; oppS = g.as; }
+  else if (a !== null && a === tid) { myS = g.as; oppS = g.hs; }
   else return null;
   if (myS == null || oppS == null) return null;
   if (g.forfeit) return null;
@@ -189,7 +211,7 @@ function main() {
         // prefix (existing games data rewritten by the one-off migration) or
         // a full uuid — resolve before accumulating.
         hpApGames++;
-        for (const { players, tid } of [{ players: g.hp || [], tid: g.h }, { players: g.ap || [], tid: g.a }]) {
+        for (const { players, tid } of [{ players: g.hp || [], tid: homeTid(g) }, { players: g.ap || [], tid: awayTid(g) }]) {
           if (!tid || !players.length) continue;
           const res = resultForTeam(g, tid);
           if (!res) continue;
@@ -202,7 +224,7 @@ function main() {
         }
       } else if (g.p && g.p.length > 0) {
         // Only g.p[] available — determine each player's side from pre-pass map.
-        // A player's tid must match either g.h or g.a for this game.
+        // A player's tid must match either side of this game.
         let usedFallback = false;
         for (const p of g.p) {
           const rawId = p.id;
@@ -214,8 +236,9 @@ function main() {
           const tids = sidMap.get(sid);
           if (!tids) continue;
           // Find which of this player's tids for this season is in this game.
-          const inHome = tids.has(g.h);
-          const inAway = tids.has(g.a);
+          const gh = homeTid(g), ga = awayTid(g);
+          const inHome = gh !== null && tids.has(gh);
+          const inAway = ga !== null && tids.has(ga);
           if (!inHome && !inAway) continue;
           let matchedTid;
           if (inHome && inAway) {
@@ -228,7 +251,7 @@ function main() {
             if (!resolved) continue; // truly unresolvable
             matchedTid = resolved;
           } else {
-            matchedTid = inHome ? g.h : g.a;
+            matchedTid = inHome ? gh : ga;
           }
           const res = resultForTeam(g, matchedTid);
           if (!res) continue;

@@ -172,7 +172,29 @@ for (const fname of sids) {
   for (const [gameId, g] of Object.entries(gf.games ?? {})) {
     if (!g.p?.length) continue;
     totalGames++;
-    gameMeta.set(gameId, [sid, g.h ?? null, g.a ?? null]);
+    // ⚠ h/a AND t1/t2. A game carries ONE pair or the other, never both:
+    // README.md L266 — "Hidden game (uses t1/t1n/t2/t2n instead of h/a)".
+    // This line read only h/a until 2026-09-01, so for every hidden game both
+    // came back null, the registration test at the `u` block below could not
+    // pass, and EVERY appearance in a season we hold a registration for was
+    // emitted as an appearance for a team the player never registered with.
+    //
+    // Proven on real data: season eeaf6409 holds 2,758 games, 2,684 of them
+    // hidden and carrying t1/t2, 74 profileOnly carrying h/a, none with both.
+    // Player d303b9c7 is registered to team 0eb8ec62 in that season; that tid
+    // appears as t1 or t2 fourteen times and as h or a zero times. Their games
+    // 0069bcdf and 0e4d35aa both carry 0eb8ec62 — their own team — and both were
+    // written into u as unregistered.
+    //
+    // Measured consequence before the fix: 1,115,172 u entries repo-wide, of
+    // which 99.81% were credited by PlayHQ (1,200-player sample, 2026-09-01).
+    // PlayHQ credits only through a registration, so they were never
+    // unregistered appearances at all.
+    //
+    // t1 is the home side and t2 the away side. That is not an assumption made
+    // here: build-finals-stats.js L248 and L254 already resolve them that way
+    // against hs/as and have been in production doing so.
+    gameMeta.set(gameId, [sid, g.h ?? g.t1 ?? null, g.a ?? g.t2 ?? null]);
     for (const entry of g.p) {
       const rawId = entry.id;
       if (!rawId) continue;
