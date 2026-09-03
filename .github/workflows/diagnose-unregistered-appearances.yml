@@ -1,0 +1,113 @@
+# .github/workflows/diagnose-unregistered-appearances.yml
+name: Diagnose unregistered appearances (u)
+
+# READ-ONLY DIAGNOSTIC. No PlayHQ calls, no session, no rate limit, no API budget.
+# Reads players/ and games/bv and writes one report.
+#
+# WHAT IT IS FOR. player.u lists appearances the player supposedly holds no
+# registration for, and StatTrack shows each one as an appearance for a team they
+# never registered with. Measured against the live API on 2026-09-01 across 1,195
+# u-holders and 26,894 entries, 99.81% of them ARE credited by PlayHQ — and PlayHQ
+# can only credit through a registration. So roughly 1.13 million rows repo-wide
+# say something untrue about a real person's record. This finds out why, without
+# spending a call.
+#
+# It decides between two causes that need completely different fixes:
+#   MIXED  — some of the player's games in that season DO match a registered team
+#            id, so team ids are read correctly and the u games genuinely involve
+#            teams the player is not registered to. Fix is on the registration side.
+#   ALL-U  — not one game in that season matches, despite holding a registration
+#            for it. The registration team id and the game team ids are not the
+#            same string space: the two-namespace split, in team ids.
+#
+# Full checkout, never sparse — it walks every player shard. Sparse checkout makes
+# a blobless clone that fetches about one file per second and is unusable at 418k
+# files.
+#
+# No actions/setup-node. This job makes no PlayHQ requests so the rule does not
+# bite here, but the runner's preinstalled Node is used anyway rather than
+# introducing the one step that must never appear beside an api.playhq.com call.
+#
+# Concurrency: its own group, NOT data-write. It writes one report and uses the
+# 60-attempt push retry, so holding the data-write lock would block the nightly
+# for no reason.
+
+on:
+  workflow_dispatch:
+    inputs:
+      players:
+        description: 'How many u-holding players to sample (600 is a few minutes)'
+        required: false
+        default: '600'
+        type: string
+      per_player:
+        description: 'How many u entries to examine per player'
+        required: false
+        default: '6'
+        type: string
+      seed:
+        description: 'Sampling seed — the same seed draws the same players'
+        required: false
+        default: '20260901'
+        type: string
+      commit:
+        description: 'Commit the report, or run and print only'
+        required: false
+        default: 'commit'
+        type: choice
+        options:
+          - commit
+          - print-only
+
+concurrency:
+  group: diagnose-unregistered-appearances
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout (full, never sparse)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Syntax check
+        run: node --check scripts/diagnose-unregistered-appearances.js
+
+      # Inputs go through env, never straight into the command line. An input
+      # interpolated into a run: block is substituted by GitHub BEFORE bash sees
+      # it, so anything in it becomes shell source text.
+      - name: Diagnose
+        env:
+          IN_PLAYERS: ${{ inputs.players }}
+          IN_PER:     ${{ inputs.per_player }}
+          IN_SEED:    ${{ inputs.seed }}
+          IN_COMMIT:  ${{ inputs.commit }}
+        run: |
+          set -euo pipefail
+          DRY=""
+          if [ "$IN_COMMIT" = "print-only" ]; then DRY="--dry-run"; fi
+          node scripts/diagnose-unregistered-appearances.js \
+            "--players=$IN_PLAYERS" \
+            "--per-player=$IN_PER" \
+            "--seed=$IN_SEED" \
+            $DRY
+
+      - name: Report location
+        if: always()
+        run: |
+          echo "Report: reports/unregistered-appearances-diagnosis.json"
+          echo "The MIXED share in the summary is the answer. Above 80% points at"
+          echo "the registration side; below 20% points at team-id namespaces."
+          echo "The raw examples beside it are there so the counts can be checked"
+          echo "against the files they came from."
