@@ -434,7 +434,10 @@ function parseProfileStats(data) {
 
   // Only include gameTids if any season has multiple tids — otherwise unnecessary
   const hasAmbiguousSeason = Object.values(sidTids).some(s => s.size > 1);
-  return { playerName, foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey, regStats, gameTids: hasAmbiguousSeason ? gameTids : null, sidTids };
+  // seenGameKeys is the set of games PlayHQ credits this player with — forfeits
+  // already excluded above. It has always been built here and thrown away at this
+  // line. It is returned now so finishOk can diff it against what we captured.
+  return { playerName, foulOuts, maxGamePTS, maxGamePTSKey, maxGameThreePt, maxGameThreePtKey, regStats, gameTids: hasAmbiguousSeason ? gameTids : null, sidTids, seenGameKeys };
 }
 
 // ─── API fetch ────────────────────────────────────────────────────────────────
@@ -1158,6 +1161,68 @@ async function finishOk(uuid, player, result, stats, prefix, short) {
     player.gameTids = parsed.gameTids;
   } else if (player.gameTids) {
     delete player.gameTids; // clean up if no longer ambiguous
+  }
+
+  // ─── The capture/credit exception diff ──────────────────────────────────────
+  // MEASURED 2026-09-01 against the live API: a 1,200-player uniform sample and a
+  // 1,200-player sample of u-holders.
+  //
+  // The proposal in proposal-store-playhq-credited-games.md wanted the whole
+  // credited list stored as sports.Basketball.gamesAPI. Measured, that is 73.1
+  // games per player, about 30.1M entries repo-wide, roughly 315 MB against the
+  // 314 MB games[] already costs — and 99.4% the same ids. It is the same list
+  // twice, on players/, which is one of only three directories that never
+  // graduate to the archive.
+  //
+  // Only the DISAGREEMENTS carry information, and they are about 265,000 entries,
+  // roughly 3 MB:
+  //
+  //   c  PlayHQ credits it, games[] does not hold it. ~224k repo-wide. Nothing
+  //      offline could answer this before; it is the appearance-gap recovery
+  //      queue, and 96% of it is games we already hold but have not attributed
+  //      to this player.
+  //   x  games[] holds it, PlayHQ does not credit it, and it is not a forfeit.
+  //      ~45k repo-wide. Forfeits are excluded on BOTH sides — seenGameKeys skips
+  //      them at the parse, so leaving them in x would make three quarters of it
+  //      an artefact of our own filter rather than a finding.
+  //
+  // NOT the same thing as player.u. u was written by build-player-games.js from
+  // gameMeta, whose team ids came from g.h/g.a only — null on every hidden game
+  // (README.md L266: hidden games carry t1/t2 instead), so the registration test
+  // could not pass and ordinary appearances for the player's OWN team were
+  // emitted as unregistered. That is why 99.81% of u entries turned out to be
+  // credited by PlayHQ. Fixed in build-player-games.js on 2026-09-01.
+  //
+  // These two fields cannot inherit that fault. games[] is built from g.p[] at
+  // build-player-games.js L181, not from gameMeta, so it was never affected — and
+  // the credited side comes from PlayHQ, not from our registration record.
+  //
+  // STALENESS, stated plainly. games[] is rebuilt weekly by build-player-games;
+  // this runs continuously. So the diff compares a fresh credited list against a
+  // captured list that may be up to a week old, and a player who played last
+  // weekend can show entries in c that capture simply has not caught up with yet.
+  // The direction is benign — c can be stale-full, never stale-empty — and it is
+  // recomputed from scratch on every fetch of that player. A consumer must treat
+  // c as "worth checking", not as "definitely missing".
+  //
+  // bk.statsChecked, written a few lines below in this same block, IS the time the
+  // comparison was made — the diff and the timestamp come from one fetch. A
+  // separate diffAt field was written first and then removed: it cost 3.4 MB of a
+  // 6.4 MB change, more than half the total, to repeat a value already on the file.
+  if (parsed.seenGameKeys) {
+    const captured = new Set(Array.isArray(player.games) ? player.games : []);
+    const credited = parsed.seenGameKeys;
+    const c = [], x = [];
+    for (const gid of credited) if (!captured.has(gid)) c.push(gid);
+    for (const gid of captured) {
+      if (credited.has(gid)) continue;
+      if (forfeitGameIds.has(gid)) continue;   // excluded on the credited side too
+      x.push(gid);
+    }
+    // Absent, not empty. An empty array on 418k files is bytes spent to say
+    // nothing, and `c` being absent already means "no known gap".
+    if (c.length) { c.sort(); bk.c = c; } else delete bk.c;
+    if (x.length) { x.sort(); bk.x = x; } else delete bk.x;
   }
 
   // Write missing seasons and regs from API response.
