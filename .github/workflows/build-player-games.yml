@@ -2,6 +2,21 @@
 
 name: Build Player Games
 
+# 2026-09-01: scripts/build-player-games.js line 175 read only g.h/g.a when
+# building gameMeta. A game carries h/a OR t1/t2 and never both (README.md L266,
+# hidden games use t1/t2), so for every hidden game both came back null, the
+# registration test in the `u` block could not pass, and every appearance in a
+# season the player holds a registration for was written into player.u as an
+# appearance for a team they never registered with.
+#
+# Measured before the fix: 1,115,172 u entries repo-wide, 99.81% of them credited
+# by PlayHQ — and PlayHQ credits only through a registration.
+#
+# NOTHING ABOUT THIS WORKFLOW CHANGED. u is rebuilt wholesale on every run, so
+# the false entries clear themselves; there is no migration and no repair pass.
+# The first run after the script lands should report a large drop in the
+# unregistered totals. If it does not, the fix did not take.
+
 on:
   workflow_dispatch:
     inputs:
