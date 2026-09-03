@@ -1,0 +1,163 @@
+# .github/workflows/find-lost-stats-from-folds.yml
+name: Find lost stats from folds
+
+# Finds player files whose PlayHQ stats were destroyed by a fold that ran BEFORE
+# the keeper rule was corrected on 2026-09-01, and hands them back to the matrix.
+#
+# The old rule kept whichever record held more games[] entries. games[] is assigned
+# by build-player-games resolving rosters through the alias index, so before an
+# alias exists the spectator-keyed stub collects nearly everything — a median of 69
+# games against the real profile's 1, across the 552 pairs the seeder had to
+# refuse. The stub won, and since only seasons/games/teams/gameTids/name are
+# unioned, the real profile's stats and private flag were replaced.
+#
+# Only ONE of the three possible stub states is actual damage. A stub that was
+# never fetched left no statsChecked, so the merged file was re-offered and healed
+# on its own. A stub that PlayHQ served holds real stats. But a stub whose fetch
+# returned NOT_FOUND had markNotObtainable write private = true AND statsChecked —
+# and the merged file, api-keyed and marked checked, is skipped by
+# fetch-profile-stats forever. Those are the ones this finds.
+#
+# The repair is to delete statsChecked and nothing else. fetch-profile-stats then
+# re-offers the player, queries with the api id the file is now keyed on, and
+# writes whatever PlayHQ actually holds — correcting private too, if the profile
+# turns out to be public. private is deliberately NOT touched here: this script
+# does not know, and guessing is the same mistake in the other direction.
+#
+# NO actions/setup-node. This job makes no PlayHQ requests so the rule does not
+# bite, but the runner's preinstalled Node is used rather than introducing the one
+# step that must never appear beside an api.playhq.com call.
+#
+# Full checkout, never sparse — it reads every player shard.
+#
+# data-write: apply mode writes player files, so it must not race the nightly, the
+# matrix or the fold.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'report-only = scan and report, nothing written. apply = delete statsChecked on the damaged files and dispatch a targeted re-fetch.'
+        required: true
+        type: choice
+        options:
+          - report-only
+          - apply
+        default: report-only
+      min_games:
+        description: 'Skip damaged files holding fewer than this many games (0 = repair all)'
+        required: false
+        default: '5'
+        type: string
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  # Required for the targeted re-fetch dispatch. The dispatch itself uses
+  # WORKFLOW_PAT — GITHUB_TOKEN cannot trigger another workflow.
+  actions: write
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout (full, never sparse)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Syntax check
+        run: node --check scripts/find-lost-stats-from-folds.js
+
+      # Inputs go through env, never straight into the command line. An input
+      # interpolated into a run: block is substituted by GitHub BEFORE bash sees it,
+      # so anything in it becomes shell source text.
+      - name: Find
+        env:
+          IN_MODE: ${{ inputs.mode }}
+          IN_MIN:  ${{ inputs.min_games }}
+        run: |
+          set -euo pipefail
+          FLAG=""
+          if [ "$IN_MODE" = "apply" ]; then FLAG="--apply"; fi
+          node scripts/find-lost-stats-from-folds.js "--min-games=$IN_MIN" $FLAG
+
+      - name: Install dispatch retry helper
+        if: ${{ inputs.mode == 'apply' }}
+        # Copied VERBATIM from fetch-profile-stats-matrix.yml, the proven site.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
+      - name: Dispatch targeted re-fetch
+        if: ${{ inputs.mode == 'apply' }}
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+        run: |
+          if [ ! -f refetch-shards.json ]; then
+            echo "refetch-shards.json not present. Nothing to dispatch."
+            exit 0
+          fi
+          shards="$(tr -d '[:space:]' < refetch-shards.json)"
+          echo "Re-fetch shards: ${shards}"
+          # An EMPTY list must not be forwarded. The matrix reads shards='[]' as
+          # "all 256" — its own T9 trap — so passing it would turn "nothing to
+          # repair" into a full 256-shard sweep. The script writes [] on every
+          # report-only run for exactly this reason.
+          if [ -z "$shards" ] || [ "$shards" = "[]" ]; then
+            echo "Nothing was un-checked. Not dispatching."
+            exit 0
+          fi
+          /tmp/gh-dispatch.sh fetch-profile-stats-matrix.yml \
+            --field "run_number=1" \
+            --field "consecutive_zeros=0" \
+            --field "shards=${shards}"
+
+      - name: Report location
+        if: always()
+        run: |
+          echo "Report: reports/lost-stats-from-folds.json"
+          echo "The DAMAGED line is the count. Every entry lists uuid, name, games,"
+          echo "gp and the statsChecked that was blocking the re-fetch, so the"
+          echo "number can be checked against the files it came from."
