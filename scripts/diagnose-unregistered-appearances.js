@@ -10,12 +10,21 @@
 // StatTrack renders each one as an appearance for a team the player never
 // registered with.
 //
-// Measured against the live API on 2026-09-01, over 1,195 u-holding players and
-// 26,894 u entries: 26,842 of them — 99.81% — ARE credited by PlayHQ. Zero
-// forfeits, so nothing is distorting the rate. PlayHQ can only credit a game
-// through a registration, so it holds registrations we do not, and `u` is
-// measuring a gap in OUR capture rather than unregistered play. Roughly 1.13
-// million rows repo-wide say something untrue about a real person's record.
+// FIRST CAUSE, FOUND AND FIXED 2026-09-01. build-player-games.js L175 read only
+// g.h/g.a when building gameMeta. Hidden games carry t1/t2 instead (README.md
+// L266), so both came back null, the registration test could not pass, and every
+// appearance in a season the player holds a registration for was emitted as
+// unregistered. u fell from 1,115,172 to 39,178 — 96.5% of the field was that bug.
+//
+// A SECOND CAUSE REMAINS, and it is what this script now exists to find. Measured
+// against the live API on 2026-09-02 over 1,194 u-holders and 6,332 residual
+// entries: 6,055 — 95.63% — are STILL credited by PlayHQ. Zero forfeits. PlayHQ
+// credits only through a registration, so it holds registrations we do not. About
+// 37,500 of the remaining 39,178 rows are still wrong, and about 1,700 are real.
+//
+// The 95/5 shape matters: the first cause was a field null on ~97% of games, an
+// all-or-nothing failure. This one leaves a minority matching, which is what an id
+// namespace split looks like when the two spaces happen to agree sometimes.
 //
 // This script finds out WHY, without spending a single API call.
 //
@@ -139,13 +148,26 @@ function main() {
   const neededBySid = new Map();  // sid -> Set(gid)   the games we must resolve
   let scanned = 0, withU = 0;
 
+  // A CAP PER SHARD, not first-come. The first version shuffled the prefix order
+  // and then filled from whichever directories it reached first, so the whole
+  // sample came from a handful of shards — every example uuid in the 2026-09-01
+  // run started d30. Adjacent player ids are not independent draws.
+  const perShard = Math.max(1, Math.ceil(MAX_PLAYERS / prefixes.length) * 2);
+
   for (const prefix of prefixes) {
     if (sampled.length >= MAX_PLAYERS) break;
     const dir = path.join(PLAYERS_DIR, prefix);
     let files;
     try { files = fs.readdirSync(dir).filter(f => f.endsWith('.json')); } catch { continue; }
+    // shuffle within the shard too, so it is not the first N filenames either
+    for (let i = files.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [files[i], files[j]] = [files[j], files[i]];
+    }
+    let fromThisShard = 0;
     for (const fname of files) {
       if (sampled.length >= MAX_PLAYERS) break;
+      if (fromThisShard >= perShard) break;
       scanned++;
       let p;
       try { p = JSON.parse(fs.readFileSync(path.join(dir, fname), 'utf8')); } catch { continue; }
@@ -175,6 +197,7 @@ function main() {
         }
       }
 
+      fromThisShard++;
       sampled.push({
         uuid: fname.replace(/\.json$/, ''),
         u: entries,
@@ -206,7 +229,14 @@ function main() {
     for (const gid of gids) {
       const g = games[gid];
       if (!g) continue;
-      gameInfo.set(`${sid}:${gid}`, { h: g.h ?? null, a: g.a ?? null });
+      // t1/t2 FIRST. A game carries h/a OR t1/t2 and never both — README.md L266,
+      // hidden games use t1/t2. The first version of this script read h/a only,
+      // copied from build-player-games.js L175, which had the same bug. Every
+      // example came back h=null a=null, every comparison was null against a real
+      // tid, and it reported a confident 35.5% split built on nothing.
+      const h = g.t1 ?? g.h ?? null;
+      const a = g.t2 ?? g.a ?? null;
+      gameInfo.set(`${sid}:${gid}`, { h, a, pair: (g.t1 || g.t2) ? 't1/t2' : ((g.h || g.a) ? 'h/a' : 'none') });
       if (!gidToSids.has(gid)) gidToSids.set(gid, new Set());
       gidToSids.get(gid).add(sid);
       resolved++;
@@ -214,6 +244,26 @@ function main() {
     if (opened % 250 === 0) console.log(`  opened ${opened} season files…`);
   }
   console.log(`  opened ${opened.toLocaleString()} season files | resolved ${resolved.toLocaleString()} game lookups`);
+
+  // ── ABORT IF THE TEAM IDS ARE NOT THERE ──────────────────────────────────
+  // This is the check the first version did not have. If team ids come back null
+  // then every comparison below is null-against-a-real-tid, every game "does not
+  // match", and the MIXED/ALL-U split is an artefact of the read rather than a
+  // finding about the data. A confident percentage built on that is worse than no
+  // answer, because it gets acted on.
+  let nullPair = 0;
+  const pairTally = new Map();
+  for (const info of gameInfo.values()) {
+    if (info.h === null && info.a === null) nullPair++;
+    pairTally.set(info.pair, (pairTally.get(info.pair) || 0) + 1);
+  }
+  console.log(`  field pair used: ${[...pairTally].map(([k, v]) => `${k}=${v.toLocaleString()}`).join('  ')}`);
+  if (resolved > 0 && nullPair / resolved > 0.05) {
+    console.error(`\n  \u26d4 ABORTING — ${nullPair.toLocaleString()} of ${resolved.toLocaleString()} resolved games (${((nullPair / resolved) * 100).toFixed(1)}%) carry NO team id on either field pair.`);
+    console.error('     Every comparison below would be null against a real tid, so the split');
+    console.error('     would measure the read, not the data. Fix the field access first.');
+    process.exit(1);
+  }
 
   // ── Pass 3: classify ────────────────────────────────────────────────────────
   console.log('\n── Pass 3: classifying ───────────────────────────────────────────────');
