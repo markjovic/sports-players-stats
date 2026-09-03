@@ -1,0 +1,481 @@
+{
+  "playersSampled": 600,
+  "uEntriesExamined": 3232,
+  "entry": {
+    "gameNotInThatSeason": 0,
+    "tidIsHomeSide": 32,
+    "tidNotHomeSide": 3200,
+    "opponentRegisteredElsewhere": 0,
+    "teamAppearsInPlayerTeams": 0,
+    "gameTidsAgrees": 0,
+    "gameTidsDisagrees": 1024
+  },
+  "seasons": {
+    "mixed": 379,
+    "allU": 690,
+    "noGamesResolved": 0
+  },
+  "mixedShare": 0.3545369504209542,
+  "examples": {
+    "mixed": [
+      {
+        "uuid": "d301d793-83dc-4af3-b643-015d5c495ab4",
+        "uEntry": "8128d16d|a48d8524|",
+        "sid": "a48d8524",
+        "game": {
+          "gid": "8128d16d",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "5e355c88"
+        ],
+        "registeredTidsAllSeasons": [
+          "ecb12bc9",
+          "4fd9d2f0",
+          "234a6ddb",
+          "5e355c88"
+        ],
+        "gamesThisSeasonMatchingAReg": 2,
+        "gamesThisSeasonNotMatching": 3,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d301d793-83dc-4af3-b643-015d5c495ab4",
+        "uEntry": "c97c883a|a48d8524|",
+        "sid": "a48d8524",
+        "game": {
+          "gid": "c97c883a",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "5e355c88"
+        ],
+        "registeredTidsAllSeasons": [
+          "ecb12bc9",
+          "4fd9d2f0",
+          "234a6ddb",
+          "5e355c88"
+        ],
+        "gamesThisSeasonMatchingAReg": 2,
+        "gamesThisSeasonNotMatching": 3,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d301d793-83dc-4af3-b643-015d5c495ab4",
+        "uEntry": "f3351a27|a48d8524|",
+        "sid": "a48d8524",
+        "game": {
+          "gid": "f3351a27",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "5e355c88"
+        ],
+        "registeredTidsAllSeasons": [
+          "ecb12bc9",
+          "4fd9d2f0",
+          "234a6ddb",
+          "5e355c88"
+        ],
+        "gamesThisSeasonMatchingAReg": 2,
+        "gamesThisSeasonNotMatching": 3,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d3053ad9-7b3b-4070-acc8-a35889108a13",
+        "uEntry": "003907af|5d9e1a5b|",
+        "sid": "5d9e1a5b",
+        "game": {
+          "gid": "003907af",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "bd857c43"
+        ],
+        "registeredTidsAllSeasons": [
+          "dcc12d2c",
+          "bb5ca971",
+          "a98a47aa",
+          "617e8626",
+          "d98ce387",
+          "c0961945",
+          "62c46271",
+          "2d31be82",
+          "26d68389",
+          "abb67624",
+          "af69d68f",
+          "ab341257"
+        ],
+        "gamesThisSeasonMatchingAReg": 1,
+        "gamesThisSeasonNotMatching": 16,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d3053ad9-7b3b-4070-acc8-a35889108a13",
+        "uEntry": "06b3ce6e|5d9e1a5b|",
+        "sid": "5d9e1a5b",
+        "game": {
+          "gid": "06b3ce6e",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "bd857c43"
+        ],
+        "registeredTidsAllSeasons": [
+          "dcc12d2c",
+          "bb5ca971",
+          "a98a47aa",
+          "617e8626",
+          "d98ce387",
+          "c0961945",
+          "62c46271",
+          "2d31be82",
+          "26d68389",
+          "abb67624",
+          "af69d68f",
+          "ab341257"
+        ],
+        "gamesThisSeasonMatchingAReg": 1,
+        "gamesThisSeasonNotMatching": 16,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d3053ad9-7b3b-4070-acc8-a35889108a13",
+        "uEntry": "146dfe9f|5d9e1a5b|",
+        "sid": "5d9e1a5b",
+        "game": {
+          "gid": "146dfe9f",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "bd857c43"
+        ],
+        "registeredTidsAllSeasons": [
+          "dcc12d2c",
+          "bb5ca971",
+          "a98a47aa",
+          "617e8626",
+          "d98ce387",
+          "c0961945",
+          "62c46271",
+          "2d31be82",
+          "26d68389",
+          "abb67624",
+          "af69d68f",
+          "ab341257"
+        ],
+        "gamesThisSeasonMatchingAReg": 1,
+        "gamesThisSeasonNotMatching": 16,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d3053ad9-7b3b-4070-acc8-a35889108a13",
+        "uEntry": "327cbf21|5d9e1a5b|",
+        "sid": "5d9e1a5b",
+        "game": {
+          "gid": "327cbf21",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "bd857c43"
+        ],
+        "registeredTidsAllSeasons": [
+          "dcc12d2c",
+          "bb5ca971",
+          "a98a47aa",
+          "617e8626",
+          "d98ce387",
+          "c0961945",
+          "62c46271",
+          "2d31be82",
+          "26d68389",
+          "abb67624",
+          "af69d68f",
+          "ab341257"
+        ],
+        "gamesThisSeasonMatchingAReg": 1,
+        "gamesThisSeasonNotMatching": 16,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d3075a6b-ef33-4781-b147-5fb5c2ebcff9",
+        "uEntry": "0635d982|0415fbdb|",
+        "sid": "0415fbdb",
+        "game": {
+          "gid": "0635d982",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "385663e2"
+        ],
+        "registeredTidsAllSeasons": [
+          "fc4feba5",
+          "72aa3da1",
+          "10e6e0cf",
+          "7fb49b9a",
+          "cde8601e",
+          "ffb08100",
+          "8003c43b",
+          "7003cb54",
+          "9659f616",
+          "c8008031",
+          "385663e2",
+          "d3e94473"
+        ],
+        "gamesThisSeasonMatchingAReg": 4,
+        "gamesThisSeasonNotMatching": 9,
+        "gameTidForThisGame": null
+      }
+    ],
+    "allU": [
+      {
+        "uuid": "d303b9c7-4c4e-436d-8d00-8144ced1dab2",
+        "uEntry": "0069bcdf|eeaf6409|",
+        "sid": "eeaf6409",
+        "game": {
+          "gid": "0069bcdf",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "0eb8ec62"
+        ],
+        "registeredTidsAllSeasons": [
+          "409a3164",
+          "101d0748",
+          "edeac66e",
+          "5bab1183",
+          "de77df4c",
+          "dcead54c",
+          "0eb8ec62",
+          "481ad164",
+          "d161144e",
+          "8e3e1beb",
+          "41da5e6d",
+          "01bbb39e"
+        ],
+        "gamesThisSeasonMatchingAReg": 0,
+        "gamesThisSeasonNotMatching": 14,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d303b9c7-4c4e-436d-8d00-8144ced1dab2",
+        "uEntry": "0e4d35aa|eeaf6409|",
+        "sid": "eeaf6409",
+        "game": {
+          "gid": "0e4d35aa",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "0eb8ec62"
+        ],
+        "registeredTidsAllSeasons": [
+          "409a3164",
+          "101d0748",
+          "edeac66e",
+          "5bab1183",
+          "de77df4c",
+          "dcead54c",
+          "0eb8ec62",
+          "481ad164",
+          "d161144e",
+          "8e3e1beb",
+          "41da5e6d",
+          "01bbb39e"
+        ],
+        "gamesThisSeasonMatchingAReg": 0,
+        "gamesThisSeasonNotMatching": 14,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d303b9c7-4c4e-436d-8d00-8144ced1dab2",
+        "uEntry": "03c368bf|f4ef6102|",
+        "sid": "f4ef6102",
+        "game": {
+          "gid": "03c368bf",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "d161144e"
+        ],
+        "registeredTidsAllSeasons": [
+          "409a3164",
+          "101d0748",
+          "edeac66e",
+          "5bab1183",
+          "de77df4c",
+          "dcead54c",
+          "0eb8ec62",
+          "481ad164",
+          "d161144e",
+          "8e3e1beb",
+          "41da5e6d",
+          "01bbb39e"
+        ],
+        "gamesThisSeasonMatchingAReg": 0,
+        "gamesThisSeasonNotMatching": 17,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d303b9c7-4c4e-436d-8d00-8144ced1dab2",
+        "uEntry": "27218e7a|f4ef6102|",
+        "sid": "f4ef6102",
+        "game": {
+          "gid": "27218e7a",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "d161144e"
+        ],
+        "registeredTidsAllSeasons": [
+          "409a3164",
+          "101d0748",
+          "edeac66e",
+          "5bab1183",
+          "de77df4c",
+          "dcead54c",
+          "0eb8ec62",
+          "481ad164",
+          "d161144e",
+          "8e3e1beb",
+          "41da5e6d",
+          "01bbb39e"
+        ],
+        "gamesThisSeasonMatchingAReg": 0,
+        "gamesThisSeasonNotMatching": 17,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d303b9c7-4c4e-436d-8d00-8144ced1dab2",
+        "uEntry": "27dcfbcd|f4ef6102|",
+        "sid": "f4ef6102",
+        "game": {
+          "gid": "27dcfbcd",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "d161144e"
+        ],
+        "registeredTidsAllSeasons": [
+          "409a3164",
+          "101d0748",
+          "edeac66e",
+          "5bab1183",
+          "de77df4c",
+          "dcead54c",
+          "0eb8ec62",
+          "481ad164",
+          "d161144e",
+          "8e3e1beb",
+          "41da5e6d",
+          "01bbb39e"
+        ],
+        "gamesThisSeasonMatchingAReg": 0,
+        "gamesThisSeasonNotMatching": 17,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d303b9c7-4c4e-436d-8d00-8144ced1dab2",
+        "uEntry": "308c8472|f4ef6102|",
+        "sid": "f4ef6102",
+        "game": {
+          "gid": "308c8472",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "d161144e"
+        ],
+        "registeredTidsAllSeasons": [
+          "409a3164",
+          "101d0748",
+          "edeac66e",
+          "5bab1183",
+          "de77df4c",
+          "dcead54c",
+          "0eb8ec62",
+          "481ad164",
+          "d161144e",
+          "8e3e1beb",
+          "41da5e6d",
+          "01bbb39e"
+        ],
+        "gamesThisSeasonMatchingAReg": 0,
+        "gamesThisSeasonNotMatching": 17,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d3041a6b-2eba-4415-b376-dfb7559ac432",
+        "uEntry": "010f9063|d5de34ec|",
+        "sid": "d5de34ec",
+        "game": {
+          "gid": "010f9063",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "bf719bb4"
+        ],
+        "registeredTidsAllSeasons": [
+          "d261db4f",
+          "4bd2fe32",
+          "f7db2fa7",
+          "71807785",
+          "c255a9b8",
+          "23c2f0ad",
+          "618134e7",
+          "91207d5b",
+          "57a495c4",
+          "0c8c4054",
+          "6e785f1c",
+          "55b4f1b9"
+        ],
+        "gamesThisSeasonMatchingAReg": 0,
+        "gamesThisSeasonNotMatching": 19,
+        "gameTidForThisGame": null
+      },
+      {
+        "uuid": "d3041a6b-2eba-4415-b376-dfb7559ac432",
+        "uEntry": "020fadcb|d5de34ec|",
+        "sid": "d5de34ec",
+        "game": {
+          "gid": "020fadcb",
+          "h": null,
+          "a": null
+        },
+        "registeredTidsThisSeason": [
+          "bf719bb4"
+        ],
+        "registeredTidsAllSeasons": [
+          "d261db4f",
+          "4bd2fe32",
+          "f7db2fa7",
+          "71807785",
+          "c255a9b8",
+          "23c2f0ad",
+          "618134e7",
+          "91207d5b",
+          "57a495c4",
+          "0c8c4054",
+          "6e785f1c",
+          "55b4f1b9"
+        ],
+        "gamesThisSeasonMatchingAReg": 0,
+        "gamesThisSeasonNotMatching": 19,
+        "gameTidForThisGame": null
+      }
+    ]
+  }
+}
