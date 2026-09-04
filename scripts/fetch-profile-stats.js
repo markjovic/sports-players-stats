@@ -1441,6 +1441,47 @@ async function main() {
 
   if (stats.toFetch === 0) {
     console.log('  Nothing to do.');
+    // ⚠ WRITE THE SUMMARY BEFORE RETURNING. This branch used to `return` bare,
+    // and it is the ONLY exit that did — even the session-failure path below
+    // writes one and says so.
+    //
+    // The matrix aggregator cannot tell a finished shard from a crashed one
+    // except by whether a summary exists. Its carry logic is:
+    //
+    //     for sh in expected:
+    //         if sh not in seen:      # produced no summary
+    //             carry.append(sh)    # unknown state, must retry
+    //
+    // That reasoning is correct — a shard that died mid-run must not be silently
+    // dropped. But a shard that finished with nothing to do said nothing either,
+    // so it was carried into every subsequent run FOREVER. The shard list could
+    // never narrow, `Next run targets` sat at a constant figure while
+    // `Shards processed` counted only the handful that actually wrote anything,
+    // and each pass launched a job per completed shard to be told "Nothing to do"
+    // again.
+    //
+    // Observed 2026-09-03: shard 00 with 1617/1617 already done, To fetch: 0, was
+    // still being given a job every run alongside ~180 others, while the run
+    // reported "Shards processed: 2/256".
+    //
+    // remaining: 0 and blocked: false are the two fields the aggregator reads.
+    // Both are true here by definition — nothing is left and nothing was stopped.
+    const summaryPath = path.join(ROOT, `shard-summary-${SHARD}.json`);
+    fs.writeFileSync(summaryPath, JSON.stringify({
+      shard:        SHARD,
+      total:        stats.total,
+      already_done: stats.skipped,
+      written:      0,
+      inaccessible: 0,
+      unchanged:    0,
+      errors:       0,
+      name_healed:        0,
+      name_heal_failed:   0,
+      name_heal_gave_up:  0,
+      recovery_rejected:  0,
+      remaining:    0,
+      blocked:      false,
+    }));
     return;
   }
 
