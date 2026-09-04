@@ -101,6 +101,10 @@ function main() {
   // Withheld, but their stats are still on the file. Counted so the population is
   // visible rather than silently dropped by the ratio test.
   let staleButPresent = 0;
+  // Merged, public, PlayHQ answered, and it credited nothing — while we hold real
+  // captured games. Not a loss, so never repaired here, but 46 of them is not
+  // nothing and a bare count cannot be checked against anything.
+  const zeroGpRows = [];
   const shards = new Set();
 
   for (const prefix of prefixes) {
@@ -124,7 +128,12 @@ function main() {
       const games = Array.isArray(p.games) ? p.games.length : 0;
 
       if (p.private !== true) {
-        if (!(Number(bk.gp) > 0) && games >= MIN_GAMES) mergedCheckedZeroGp++;
+        if (!(Number(bk.gp) > 0) && games >= MIN_GAMES) {
+          mergedCheckedZeroGp++;
+          if (zeroGpRows.length < 15) {
+            zeroGpRows.push({ uuid: fname.replace(/\.json$/, ''), shard: prefix, name: p.name || null, games, statsChecked: bk.statsChecked });
+          }
+        }
         continue;
       }
       if (games < MIN_GAMES) continue;
@@ -180,6 +189,12 @@ function main() {
   console.log(`  withheld, stats still present       : ${staleButPresent.toLocaleString()}  (gp >= ${(GP_RATIO * 100).toFixed(0)}% of games — stale, NOT lost)`);
   console.log(`  DAMAGED: withheld with stats missing : ${damaged.length.toLocaleString()}`);
   console.log(`  merged, public, checked, gp 0       : ${mergedCheckedZeroGp.toLocaleString()}  (reported only — PlayHQ answered, not a loss)`);
+  if (zeroGpRows.length) {
+    console.log('    PlayHQ credits them nothing despite real captured games:');
+    for (const r of zeroGpRows) {
+      console.log(`      ${r.uuid.slice(0, 8)}  ${String(r.games).padStart(4)} games  checked ${String(r.statsChecked).slice(0, 10)}  ${(r.name || '(no name)').slice(0, 28)}`);
+    }
+  }
   console.log(`  shards affected                     : ${shards.size}`);
   if (damaged.length) {
     const lost = damaged.reduce((n, d) => n + d.games, 0);
@@ -196,6 +211,7 @@ function main() {
     minGames: MIN_GAMES,
     gpRatio: GP_RATIO,
     staleButPresent,
+    mergedPublicCheckedZeroGpExamples: zeroGpRows,
     scanned, merged,
     damaged: damaged.length,
     mergedPublicCheckedZeroGp: mergedCheckedZeroGp,
@@ -234,6 +250,13 @@ function main() {
   // House git pattern: per-path add, --shortstat, fetch then merge -X ours, 60
   // attempts with jitter, THROW on exhaustion. A repair that never lands must not
   // show green.
+  // 60 attempts with up to 91s of jitter is the pattern for players/, where many
+  // writers collide and a lost commit means lost work. It is wrong here in
+  // report-only mode: the ONLY path staged is a report nothing else writes, and it
+  // regenerates in about 31 seconds. On 2026-09-04 a report-only run finished its
+  // scan in 31s and then sat in this loop for 20 minutes with nothing else running.
+  // Waiting 45 minutes to preserve half a minute of work is a bad trade.
+  const PUSH_ATTEMPTS = APPLY ? 60 : 5;
   const GIT = { cwd: ROOT, stdio: 'pipe', timeout: 10 * 60 * 1000, maxBuffer: 512 * 1024 * 1024 };
   if (APPLY) execSync('git add -- players/', GIT);
   execSync(`git add -- ${REPORT_REL}`, GIT);
@@ -244,7 +267,7 @@ function main() {
     ? `find-lost-stats-from-folds: un-checked ${damaged.length} players for re-fetch`
     : `find-lost-stats-from-folds: report only, ${damaged.length} damaged found`;
   execSync(`git commit -q -m "${msg}"`, GIT);
-  for (let attempt = 1; attempt <= 60; attempt++) {
+  for (let attempt = 1; attempt <= PUSH_ATTEMPTS; attempt++) {
     try { execSync('git merge --abort', GIT); } catch {}
     try {
       execSync('git fetch origin main', GIT);
@@ -253,8 +276,20 @@ function main() {
       log(`pushed${attempt > 1 ? ` (attempt ${attempt})` : ''}`);
       return;
     } catch (e) {
-      if (attempt === 60) throw new Error(`push failed after 60 attempts: ${e.message.split('\n')[0]}`);
-      execSync(`sleep ${1 + Math.floor(Math.random() * 91)}`, { stdio: 'pipe' });
+      const why = e.message.split('\n').slice(0, 3).join(' | ');
+      // The reason, every time, not only at the end. A loop that prints "retrying"
+      // and nothing else forces whoever is watching to expand 60 log groups to find
+      // out what is actually failing.
+      log(`push attempt ${attempt}/${PUSH_ATTEMPTS} failed: ${why}`);
+      if (attempt === PUSH_ATTEMPTS) {
+        if (APPLY) throw new Error(`push failed after ${PUSH_ATTEMPTS} attempts: ${why}`);
+        // Report-only: the player files were never touched, so nothing is at risk.
+        // Say so and exit clean rather than failing a read-only run over a file
+        // that can be regenerated on demand.
+        log(`report-only: giving up on the commit after ${PUSH_ATTEMPTS} attempts. No player file was modified; re-run to regenerate the report.`);
+        return;
+      }
+      execSync(`sleep ${1 + Math.floor(Math.random() * (APPLY ? 91 : 15))}`, { stdio: 'pipe' });
     }
   }
 }
