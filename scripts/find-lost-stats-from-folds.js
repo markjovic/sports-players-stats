@@ -178,18 +178,37 @@ function main() {
     : 're-fetch queued: none');
 
   console.log(`\n  Report: ${REPORT_REL}`);
-  if (!APPLY) { log('report only — no file was modified.'); return; }
+
+  // ⚠ THE REPORT IS COMMITTED IN BOTH MODES.
+  //
+  // This used to `return` here when not applying, with the git block below it —
+  // so a report-only run wrote the report to the runner's disk and then threw it
+  // away when the runner was destroyed. The numbers existed only in the job log,
+  // and the copy in the repo stayed at whatever the last APPLY run left behind.
+  //
+  // Observed 2026-09-03: a report-only pass found 16 damaged and reported it in
+  // the log, but reports/lost-stats-from-folds.json in the repo still held the
+  // 06:27 apply run's 50. Anyone reading the file got a stale answer with no
+  // indication it was stale.
+  //
+  // Producing a report and discarding it is the whole point of the run defeated.
+  // Only the PLAYER-FILE writes are gated on apply — `git add -- players/` below
+  // stages nothing in report-only mode because nothing was written there.
+  if (!APPLY) log('report only — no player file was modified. Committing the report.');
 
   // House git pattern: per-path add, --shortstat, fetch then merge -X ours, 60
   // attempts with jitter, THROW on exhaustion. A repair that never lands must not
   // show green.
   const GIT = { cwd: ROOT, stdio: 'pipe', timeout: 10 * 60 * 1000, maxBuffer: 512 * 1024 * 1024 };
-  execSync('git add -- players/', GIT);
+  if (APPLY) execSync('git add -- players/', GIT);
   execSync(`git add -- ${REPORT_REL}`, GIT);
   const staged = execSync('git diff --staged --shortstat', GIT).toString().trim();
   if (!staged) { log('nothing to commit.'); return; }
   log(`staging: ${staged}`);
-  execSync(`git commit -q -m "find-lost-stats-from-folds: un-checked ${damaged.length} players for re-fetch"`, GIT);
+  const msg = APPLY
+    ? `find-lost-stats-from-folds: un-checked ${damaged.length} players for re-fetch`
+    : `find-lost-stats-from-folds: report only, ${damaged.length} damaged found`;
+  execSync(`git commit -q -m "${msg}"`, GIT);
   for (let attempt = 1; attempt <= 60; attempt++) {
     try { execSync('git merge --abort', GIT); } catch {}
     try {
