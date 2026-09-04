@@ -57,11 +57,12 @@ console.log('─'.repeat(68));
 
 const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
 
-let total = 0, noStats = 0, tooOld = 0, inScope = 0;
+let total = 0, noStats = 0, tooOld = 0, inScope = 0, withheld = 0, withheldWithFields = 0;
 let withC = 0, withX = 0, withBoth = 0, withNeither = 0;
 let cEntries = 0, xEntries = 0;
 let identityOk = 0, identityBad = 0;
 const badRows = [], cRows = [], xRows = [];
+// Declared before the loop because the withheld check above pushes into it.
 const checkedDates = new Map();
 
 for (const fname of files) {
@@ -75,6 +76,33 @@ for (const fname of files) {
   checkedDates.set(day, (checkedDates.get(day) || 0) + 1);
 
   if (Number.isFinite(SINCE_MS) && Date.parse(bk.statsChecked) < SINCE_MS) { tooOld++; continue; }
+
+  // ── WITHHELD PLAYERS ARE OUT OF SCOPE ───────────────────────────────────────
+  // A player PlayHQ will not serve never reaches finishOk. markNotObtainable
+  // writes private and statsChecked and returns, so the c/x block never runs —
+  // correctly, because there is no credited list to diff against.
+  //
+  // It also leaves any PRIOR capture intact, so a player who was public and later
+  // went private keeps their old gp. Comparing that gp against a games[] that has
+  // kept growing produces a difference the diff was never asked to compute, and
+  // the audit reported it as a failure.
+  //
+  // On 2026-09-04 all 21 "failures" in shard 00 were this: freshly swept, no c, no
+  // x, and private. Example 0038fe99 (Conor Ryan) — private, no gp field at all,
+  // 42 captured games, printed as "gp=0 games=42" because Number(undefined) || 0
+  // is 0. The audit was measuring its own missing-field handling.
+  if (p.private === true) {
+    withheld++;
+    // If a withheld player DOES carry c or x, that is a real finding: the diff ran
+    // on a path it should not have, or a stale field survived a transition to
+    // private. Counted separately so it cannot hide inside the withheld total.
+    if (Array.isArray(bk.c) || Array.isArray(bk.x)) {
+      withheldWithFields++;
+      badRows.push({ uuid: fname.slice(0, 8), why: 'private but carries c/x — the diff ran on a withheld player', gp: bk.gp ?? null, games: Array.isArray(p.games) ? p.games.length : 0, c: Array.isArray(bk.c) ? bk.c.length : 0, x: Array.isArray(bk.x) ? bk.x.length : 0 });
+    }
+    continue;
+  }
+
   inScope++;
 
   const c = Array.isArray(bk.c) ? bk.c : null;
@@ -114,6 +142,8 @@ const pct = (n, d) => d > 0 ? `${((n / d) * 100).toFixed(1)}%` : '—';
 console.log(`  files in shard              : ${total.toLocaleString()}`);
 console.log(`  no statsChecked (never fetched) : ${noStats.toLocaleString()}`);
 if (SINCE) console.log(`  fetched before ${SINCE}   : ${tooOld.toLocaleString()}  (out of scope)`);
+console.log(`  withheld (private)          : ${withheld.toLocaleString()}  (out of scope — PlayHQ served no credited list)`);
+if (withheldWithFields) console.log(`    \u26a0 of those, carrying c or x : ${withheldWithFields.toLocaleString()}  — should be zero, listed below`);
 console.log(`  in scope                    : ${inScope.toLocaleString()}`);
 
 console.log(`\n  carrying c : ${withC.toLocaleString()}  ${pct(withC, inScope)}   ${cEntries.toLocaleString()} entries`);
