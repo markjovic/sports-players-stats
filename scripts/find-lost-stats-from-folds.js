@@ -78,11 +78,14 @@ const argVal  = (n, d) => { const a = args.find(x => x.startsWith(`--${n}=`)); r
 // A merged file with a handful of games has little to lose and is not worth a
 // call. Default 5; set to 0 to requeue every match.
 const MIN_GAMES = Math.max(0, parseInt(argVal('min-games', '5'), 10) || 0);
+// A withheld player whose gp is at least this fraction of their captured games
+// still HAS their stats — they are stale, not lost. Default 0.2. Set 0 to disable.
+const GP_RATIO  = Math.max(0, parseFloat(argVal('gp-ratio', '0.2')) || 0);
 
 const log = (m) => console.log(`[lost-stats] ${new Date().toISOString()} ${m}`);
 
 function main() {
-  log(`find-lost-stats-from-folds${APPLY ? '' : ' (REPORT ONLY)'}  min-games=${MIN_GAMES}`);
+  log(`find-lost-stats-from-folds${APPLY ? '' : ' (REPORT ONLY)'}  min-games=${MIN_GAMES}  gp-ratio=${GP_RATIO}`);
   console.log('─'.repeat(64));
 
   const prefixes = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
@@ -95,6 +98,9 @@ function main() {
   // spend a call to be told the same thing. Counted so the number is visible
   // rather than quietly folded into the healthy pile.
   let mergedCheckedZeroGp = 0;
+  // Withheld, but their stats are still on the file. Counted so the population is
+  // visible rather than silently dropped by the ratio test.
+  let staleButPresent = 0;
   const shards = new Set();
 
   for (const prefix of prefixes) {
@@ -123,6 +129,32 @@ function main() {
       }
       if (games < MIN_GAMES) continue;
 
+      // ── STALE-BUT-PRESENT IS NOT DAMAGE ─────────────────────────────────────
+      // NARROWED 2026-09-04. private + merged + checked was the original
+      // signature, and it was right while the fold could still let a NOT_FOUND
+      // stub replace a real profile. That population was repaired on 2026-09-03
+      // and the corrected keeper rule cannot recreate it.
+      //
+      // What the signature catches now is the ordinary public-to-private
+      // transition. markNotObtainable (fetch-profile-stats.js L944) sets
+      // private = true and leaves "any prior capture left intact", so a player who
+      // was public when last fetched and is withheld now keeps their real gp. The
+      // 2026-09-03 force sweep re-asked all 418k players in one pass and turned up
+      // far more of these, so the count ROSE from 16 to 73 — every one of the ten
+      // largest carrying gp at or above its games count. Calling that DAMAGED
+      // tells the reader there is a fault when there is not.
+      //
+      // Lost stats look different: the stub that won had no stats to give, so the
+      // merged file has no gp at all, or a gp far below what we captured. Isabella
+      // Addison at 273 games / gp 275 is fine. Edith Nott at 130 games / gp 5 is
+      // not. The ratio is what separates them.
+      //
+      // 20% is a threshold, so it is a judgement, and it is exposed as --gp-ratio
+      // rather than buried. Raising it widens the net; 0 disables the test and
+      // restores the old behaviour.
+      const gp = Number(bk.gp) || 0;
+      if (games > 0 && GP_RATIO > 0 && gp >= games * GP_RATIO) { staleButPresent++; continue; }
+
       damaged.push({
         uuid: fname.replace(/\.json$/, ''),
         shard: prefix,
@@ -145,7 +177,8 @@ function main() {
 
   console.log(`\n  files scanned                       : ${scanned.toLocaleString()}`);
   console.log(`  merged (spectatorIds > 1)           : ${merged.toLocaleString()}`);
-  console.log(`  DAMAGED: merged + private + checked : ${damaged.length.toLocaleString()}`);
+  console.log(`  withheld, stats still present       : ${staleButPresent.toLocaleString()}  (gp >= ${(GP_RATIO * 100).toFixed(0)}% of games — stale, NOT lost)`);
+  console.log(`  DAMAGED: withheld with stats missing : ${damaged.length.toLocaleString()}`);
   console.log(`  merged, public, checked, gp 0       : ${mergedCheckedZeroGp.toLocaleString()}  (reported only — PlayHQ answered, not a loss)`);
   console.log(`  shards affected                     : ${shards.size}`);
   if (damaged.length) {
@@ -161,6 +194,8 @@ function main() {
     generatedAt: new Date().toISOString(),
     mode: APPLY ? 'apply' : 'report-only',
     minGames: MIN_GAMES,
+    gpRatio: GP_RATIO,
+    staleButPresent,
     scanned, merged,
     damaged: damaged.length,
     mergedPublicCheckedZeroGp: mergedCheckedZeroGp,
