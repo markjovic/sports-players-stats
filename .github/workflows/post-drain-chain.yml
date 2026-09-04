@@ -144,7 +144,29 @@ jobs:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
           GH_REPO:  ${{ github.repository }}
         run: |
-          /tmp/gh-dispatch.sh fold-diverged-players.yml --field "mode=apply"
+          # no_refetch_dispatch=true BREAKS A CYCLE. Added 2026-09-04.
+          #
+          # The fold's re-fetch step (added 2026-08-31) dispatches the matrix for any
+          # player whose statsChecked it removes. This chain is ITSELF downstream of
+          # the matrix, so leaving it on closes the loop:
+          #
+          #   matrix -> post-drain-chain -> fold -> matrix -> ...
+          #
+          # The fold deletes apiId as it goes, which was the original reason it was
+          # thought unable to loop — but fetch-profile-stats.js WRITES player.apiId
+          # during namespace recovery, so each matrix run can create fresh work for
+          # the next fold. Observed 2026-09-03 after the force sweep: fold #86 folded
+          # 677 and un-checked 145, dispatching a matrix that fed the next fold. It
+          # converges because each round is smaller, but it converges rather than
+          # stopping, and any future force sweep restarts it.
+          #
+          # Nothing is lost by suppressing it here. The fold still un-checks those
+          # players and still writes refetch-shards.json; without statsChecked they
+          # are picked up by the next matrix run in the normal course. A MANUAL fold
+          # dispatch leaves this false and keeps the immediate re-fetch.
+          /tmp/gh-dispatch.sh fold-diverged-players.yml \
+            --field "mode=apply" \
+            --field "no_refetch_dispatch=true"
 
   venue-indexes:
     needs: [team-stats]

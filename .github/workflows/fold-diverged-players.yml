@@ -20,6 +20,11 @@ on:
   # would only duplicate that. Manual dispatch remains for intervention.
   workflow_dispatch:
     inputs:
+      no_refetch_dispatch:
+        description: 'Do NOT dispatch a re-fetch for players this run un-checks. Set by anything that is itself downstream of the matrix, to stop the chain looping back on itself.'
+        required: false
+        default: false
+        type: boolean
       mode:
         description: "dry-run = scan and report diverged files only (nothing written). apply = fold them to their api-id paths, move index entries, repoint orphaned aliases, single commit. repoint-only = do NOT fold; repair just the alias values orphaned by a PREVIOUS fold, reconstructing the mapping from the player files themselves (each file's spectatorIds[]) — it needs no report and no extra input. Normally triggered automatically by matrix completion with mode=apply. 2026-08-31: the merge keeper changed — run dry-run once and read the two new summary rows before letting apply run again."
         type: choice
@@ -103,7 +108,7 @@ jobs:
       # finished. That is the race nightly-crawl.yml's `needs: [crawl, team-stats,
       # win-loss]` ordering exists to prevent, and it is not in play here.
       - name: Install dispatch retry helper
-        if: ${{ github.event.inputs.mode == 'apply' }}
+        if: ${{ github.event.inputs.mode == 'apply' && github.event.inputs.no_refetch_dispatch != 'true' }}
         # Copied VERBATIM from fetch-profile-stats-matrix.yml, the proven site —
         # not retyped. A chain-critical `gh workflow run` is never one-shot
         # (directive 14): one HTTP 500 on 2026-07-27 stopped the matrix chain
@@ -143,8 +148,31 @@ jobs:
           chmod +x /tmp/gh-dispatch.sh
           echo "Helper installed."
 
+      # ── WHY THIS CAN BE TURNED OFF ──────────────────────────────────────────
+      # Added 2026-08-31, and it closed a cycle nobody had before:
+      #
+      #   matrix -> post-drain-chain -> fold -> matrix -> ...
+      #
+      # The fold used to be a LEAF. This step made it an edge back to the matrix.
+      # The original reasoning for why it could not loop was that the fold deletes
+      # apiId as it goes — but that only covers apiId fields that already exist.
+      # fetch-profile-stats.js WRITES player.apiId during namespace recovery, so
+      # every matrix run can manufacture new work for the next fold, which un-checks
+      # more players, which dispatches another matrix.
+      #
+      # Observed 2026-09-03 after the force sweep: fold #86 folded 677 and un-checked
+      # 145, dispatching a matrix that fed the next fold. It converged, because each
+      # round's input is smaller than the last — but it converges, it does not stop,
+      # and any future force sweep restarts it.
+      #
+      # So: post-drain-chain.yml should pass no_refetch_dispatch=true when it
+      # dispatches this workflow. The fold still un-checks the players and still
+      # writes refetch-shards.json; they are simply picked up by the NEXT matrix run
+      # rather than triggering one immediately. A MANUAL fold dispatch leaves it
+      # false and keeps the immediate re-fetch, which is what makes the standalone
+      # run useful.
       - name: Dispatch targeted re-fetch for un-checked players
-        if: ${{ github.event.inputs.mode == 'apply' }}
+        if: ${{ github.event.inputs.mode == 'apply' && github.event.inputs.no_refetch_dispatch != 'true' }}
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
           GH_REPO:  ${{ github.repository }}
@@ -166,3 +194,20 @@ jobs:
             --field "run_number=1" \
             --field "consecutive_zeros=0" \
             --field "shards=${shards}"
+
+      # Says so out loud when the dispatch was suppressed. A step that simply does
+      # not appear in the log is indistinguishable from one that failed silently,
+      # and the players ARE un-checked either way — that must not be invisible.
+      - name: Re-fetch dispatch suppressed
+        if: ${{ github.event.inputs.mode == 'apply' && github.event.inputs.no_refetch_dispatch == 'true' }}
+        run: |
+          if [ -f refetch-shards.json ]; then
+            shards="$(tr -d '[:space:]' < refetch-shards.json)"
+          else
+            shards="[]"
+          fi
+          echo "no_refetch_dispatch=true — NOT dispatching a re-fetch."
+          echo "Shards that would have been targeted: ${shards}"
+          echo "Those players have had statsChecked removed and will be picked up by"
+          echo "the next matrix run. This exists to stop the chain"
+          echo "matrix -> post-drain-chain -> fold -> matrix looping back on itself."
