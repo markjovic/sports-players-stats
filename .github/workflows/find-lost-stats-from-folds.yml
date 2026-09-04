@@ -18,6 +18,16 @@ name: Find lost stats from folds
 # and the merged file, api-keyed and marked checked, is skipped by
 # fetch-profile-stats forever. Those are the ones this finds.
 #
+# NARROWED 2026-09-04. The original signature was merged + private + checked, and
+# it was right while the fold could still let a NOT_FOUND stub replace a real
+# profile. That population was repaired on 2026-09-03 and the corrected keeper rule
+# cannot recreate it. What the signature caught afterwards was the ordinary
+# public-to-private transition: markNotObtainable leaves any prior capture intact,
+# so a player who was public when last fetched and is withheld now keeps their real
+# gp. The force sweep re-asked all 418k players and the count ROSE from 16 to 73,
+# every one of the ten largest carrying gp at or above its games count — stale
+# stats, not lost ones. gp_ratio separates them.
+#
 # The repair is to delete statsChecked and nothing else. fetch-profile-stats then
 # re-offers the player, queries with the api id the file is now keyed on, and
 # writes whatever PlayHQ actually holds — correcting private too, if the profile
@@ -48,6 +58,11 @@ on:
         description: 'Skip damaged files holding fewer than this many games (0 = repair all)'
         required: false
         default: '5'
+        type: string
+      gp_ratio:
+        description: 'A withheld player whose gp is at least this fraction of their captured games still HAS their stats — stale, not lost — and is not reported. 0 disables the test.'
+        required: false
+        default: '0.2'
         type: string
 
 concurrency:
@@ -83,13 +98,14 @@ jobs:
       # so anything in it becomes shell source text.
       - name: Find
         env:
-          IN_MODE: ${{ inputs.mode }}
-          IN_MIN:  ${{ inputs.min_games }}
+          IN_MODE:  ${{ inputs.mode }}
+          IN_MIN:   ${{ inputs.min_games }}
+          IN_RATIO: ${{ inputs.gp_ratio }}
         run: |
           set -euo pipefail
           FLAG=""
           if [ "$IN_MODE" = "apply" ]; then FLAG="--apply"; fi
-          node scripts/find-lost-stats-from-folds.js "--min-games=$IN_MIN" $FLAG
+          node scripts/find-lost-stats-from-folds.js "--min-games=$IN_MIN" "--gp-ratio=$IN_RATIO" $FLAG
 
       - name: Install dispatch retry helper
         if: ${{ inputs.mode == 'apply' }}
