@@ -708,13 +708,27 @@ jobs:
       # dispatching Deploy Pages. Roster-lag rationale unchanged: the chain's
       # team-stats runs AFTER the matrix drains, so rosters see tonight's stats.
 
+      # 'max_runs' fires this too, from 2026-09-04. It used to be 'stuck' only, so
+      # a chain that hit the 150-run ceiling exited red with NOTHING rebuilt — no
+      # team-stats, no fold, no leaderboards, no search, no records, no Pages
+      # deploy — despite every one of those 150 runs having committed its work to
+      # main. The derived data was left describing a database that no longer
+      # existed.
+      #
+      # 'apply_stuck' deliberately does NOT fire it and must not be added here:
+      # that status means three consecutive runs failed to persist anything, so
+      # there is nothing new to build from and rebuilding would only republish the
+      # same state while hiding a broken commit path.
+      #
+      # The difference is whether work reached main. max_runs: it did, and the
+      # rebuild is owed. apply_stuck: it did not.
       - name: Trigger post-drain chain
-        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
+        if: ${{ !cancelled() && (steps.next.outputs.status == 'stuck' || steps.next.outputs.status == 'max_runs') }}
         run: |
           /tmp/gh-dispatch.sh post-drain-chain.yml
 
       - name: Checkout repo for cleanup
-        if: ${{ !cancelled() && steps.next.outputs.status == 'stuck' }}
+        if: ${{ !cancelled() && (steps.next.outputs.status == 'stuck' || steps.next.outputs.status == 'max_runs') }}
         uses: actions/checkout@v4
         with:
           ref: main
@@ -799,8 +813,25 @@ jobs:
           echo "   consecutive_zeros, and consecutive_apply_failures = 0."
           exit 1
 
+      # Still exits 1 — hitting the ceiling is not a success and must show red.
+      # But the post-drain chain above has already been dispatched, so the work of
+      # 150 runs is published rather than stranded. Ordering matters: this step
+      # runs after the dispatch, and `exit 1` here cannot prevent it.
       - name: Max runs reached
         if: steps.next.outputs.status == 'max_runs'
         run: |
-          echo "⚠️ Reached 150-run limit. Re-trigger manually if players remain."
+          echo "⚠️ Reached the 150-run limit with players still outstanding."
+          echo ""
+          echo "   The post-drain chain HAS been dispatched, so team-stats, the fold,"
+          echo "   leaderboards, search, records and the Pages deploy will run against"
+          echo "   everything the 150 runs committed. Before 2026-09-04 it was not,"
+          echo "   and the derived data was left describing a stale database."
+          echo ""
+          echo "   Re-dispatch with run_number = 1, consecutive_zeros = 0 and the same"
+          echo "   shards to continue. Do NOT set force — the players already fetched"
+          echo "   carry statsChecked and would be cleared and re-fetched from scratch."
+          echo ""
+          echo "   If a chain keeps reaching this ceiling, the shard list is not"
+          echo "   narrowing. Check that finished shards are writing their summary:"
+          echo "   a shard producing none is treated as crashed and carried forever."
           exit 1
