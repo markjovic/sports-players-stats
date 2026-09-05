@@ -355,7 +355,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.80</span>
+      <span class="rail-ver">Beta 0.81</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -1370,17 +1370,29 @@ async function toggleDiff(hdr){
   const rows=[...found.entries()].sort((a,b)=>(b[1].g.d||'').localeCompare(a[1].g.d||''));
   const unresolved=ids.filter(g=>!found.has(g));
   const badge=kind==='c'?'<span class="bdg bMiss">NOT HELD</span>':'<span class="bdg bNoCr">NOT CREDITED</span>';
+  // Side resolution, most reliable first. getPlayerTeamForGame reads the stored
+  // box-score sides, which is the ONLY thing that works for a `c` game: PlayHQ
+  // credits it but our roster does not have the player on it, so the season
+  // registration is not necessarily the team they turned out for. Falls back to
+  // the registration, then to the home side.
+  const tidFor=(g,sid)=>getPlayerTeamForGame(g,uuid,p)||getTidForSeason(p,sid)||hTid(g);
   let html=rows.map(([gid,{sid,g}])=>{
-    const tid=getTidForSeason(p,sid)||hTid(g);
+    const tid=tidFor(g,sid);
     const ctx=gameCtx(g,tid);
     const stored=storedStats(g,uuid);
+    const mode=renderMode(g);
     const oppN=(ctx.oppN||'\u2014').slice(0,30);
     const fc=finalClass(g.rn);
+    const badgeH=(mode==='hidden-full'||mode==='hidden-partial')?'<span class="bdg bH" style="font-size:0.58rem;padding:0 4px">H</span>':'';
+    // The team they turned out for. Omitted in the first version, which left the
+    // row showing an opponent with no indication of which side the player was on.
+    const[_hN,_aN]=teamNames(g);
+    const forN=(tid===hTid(g)?_hN:tid===aTid(g)?_aN:'')||'';
     return`<div class="grow${fc?' '+fc:''}" data-gid="${esc(gid)}" data-sid="${esc(sid)}">
       <div class="g-row">
         <div class="g-info">
-          <div class="g-opp">${badge}${esc(oppN)}</div>
-          <div class="g-rn">${esc(g.rn||'')}${g.d?' \u00b7 '+esc(fmtD(g.d)):''} \u00b7 ${esc(S.idx?.seasons?.[sid]?.name||sid)}</div>
+          <div class="g-opp">${badge}${badgeH}${ctx.oppId?`<span style="cursor:pointer;text-decoration:underline;text-decoration-color:var(--border)" onclick="event.stopPropagation();openOpp('${esc(ctx.oppId)}','${esc(sid)}','${esc(uuid)}')">${esc(oppN)}</span>`:esc(oppN)}</div>
+          <div class="g-rn">${esc(g.rn||'')}${g.d?' \u00b7 '+esc(fmtD(g.d)):''}${forN?' \u00b7 for '+esc(forN):''} \u00b7 ${esc(S.idx?.seasons?.[sid]?.name||sid)}</div>
         </div>
         <div id="gstats-${esc(gid)}" style="flex:7;min-width:0;display:flex;flex-direction:row">${buildGameStatRow(g,ctx,stored,false)}</div>
       </div>
@@ -1392,7 +1404,24 @@ async function toggleDiff(hdr){
     html+=`<div class="diff-miss">${unresolved.length} game${unresolved.length===1?'':'s'} not found in any season on this profile: ${unresolved.map(g=>esc(g)).join(', ')}</div>`;
   }
   ge.innerHTML=html||'<div class="load-row">No game records found.</div>';
+  // Opens the box score. Copied from toggleGames L1544 - without it these rows
+  // were the only game rows in the app that did nothing when clicked.
+  ge.addEventListener('click',e=>{const r=e.target.closest('.grow');if(r)openSheet(r.dataset.gid,r.dataset.sid);});
   ge.dataset.loaded='1';
+  // Fills the stat cells from the box score, exactly as toggleGames L1547 does.
+  // This is why the first version showed nothing: storedStats only has a line if
+  // the player is already in the game's hp/ap, and for a `c` game they are not -
+  // that is what makes it a `c` game. The box score is the only place the numbers
+  // exist, and nothing was fetching it.
+  rows.filter(([,{g}])=>typeof g.hs==='number'&&!storedStats(g,uuid)).forEach(([gid,{sid,g}])=>{
+    fetchBox(gid).then(bs=>{
+      const el2=document.getElementById('gstats-'+gid);
+      if(!el2||!bs)return;
+      const allP=[...(bs.h||[]),...(bs.a||[])];
+      const mine=allP.find(pp=>matchP(pp.profileID,uuid));
+      if(mine)el2.innerHTML=buildGameStatRow(g,gameCtx(g,tidFor(g,sid)),mine,false);
+    });
+  });
 }
 
 function renderUnreg(p){
