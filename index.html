@@ -98,7 +98,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .unreg-note{font-size:0.66rem;color:var(--text2);line-height:1.45;padding:0 0 8px}
 .unreg-hdr{border-left:3px solid var(--c-po)}
 .diff-hdr{border-left:3px solid var(--text3)}
-.bdg.bNoCr{background:rgba(255,109,0,0.15);color:var(--c-po);font-size:0.55rem;font-weight:700;padding:0 5px;border-radius:4px;margin-right:6px}
+.bdg.bNoCr{background:rgba(255,109,0,0.15);color:var(--c-po);font-size:0.55rem;font-weight:700;padding:0 5px;border-radius:4px;margin-left:6px;white-space:nowrap}
 .bdg.bMiss{background:rgba(120,120,140,0.18);color:var(--text2);font-size:0.55rem;font-weight:700;padding:0 5px;border-radius:4px;margin-right:6px}
 .diff-miss{font-size:0.7rem;color:var(--text2);padding:6px 12px}
 .bdg.bFill{background:rgba(255,109,0,0.15);color:var(--c-po);font-size:0.55rem;font-weight:700;padding:0 5px;border-radius:4px;margin-right:6px}
@@ -355,7 +355,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.83</span>
+      <span class="rail-ver">Beta 0.84</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -1571,17 +1571,24 @@ async function toggleGames(hdr){
     const oppN=(ctx.oppN||'\u2014').slice(0,30);
     const fc=finalClass(g.rn);
     const badgeH=(mode==='hidden-full'||mode==='hidden-partial')?'<span class="bdg bH" style="font-size:0.58rem;padding:0 4px">H</span>':'';
-    // Deliberately says nothing about WHY. p[] is the team sheet - named in the
-    // squad - while hp/ap are the box-score rows, who actually took the court. A
-    // player can be in the first and not the second, so an uncredited game may
-    // simply be one they were named for and did not play. The badge states what is
-    // known (PlayHQ does not count it) and not what is guessed.
-    const badgeX=xSet.has(gid)?'<span class="bdg bNoCr" title="On the team sheet, but PlayHQ does not count this game toward the season totals above">NOT CREDITED</span>':'';
+    // VERIFIED 2026-09-05 against a real case rather than reasoned about. Toby
+    // Jovic (0afc7690), game c7a6db82, 02 Aug 2025 v MLBC B32: PlayHQ's OWN box
+    // score lists him with 2 points and 3 fouls, and PlayHQ's OWN profile page
+    // omits that round and puts the season at 14 games. So the game is real, he
+    // played it, and PlayHQ does not count it - the inconsistency is theirs.
+    //
+    // Two earlier explanations were wrong and are recorded so they are not tried
+    // again: that he was named but did not play (the box score has him), and that
+    // gameStatistics truncates at 50 per grade the way gradePlayerStatistics does
+    // (this season has 14 games, nowhere near a cap).
+    //
+    // The badge therefore states the fact and no cause.
+    const badgeX=xSet.has(gid)?'<span class="bdg bNoCr" title="PlayHQ does not count this game toward the season totals above, even where its own box score shows the player in it">NOT CREDITED</span>':'';
     const gradeTag=regs.length>1&&g.gn?`<span style="font-size:0.62rem;color:var(--accent);font-weight:600;margin-right:6px;flex-shrink:0;white-space:nowrap">${esc(gradeAbbrev(g.gn,allRegGradeNames))}</span>`:'';    
     return`<div class="grow${fc?' '+fc:''}" data-gid="${esc(gid)}" data-sid="${esc(sid)}">
       <div class="g-row">
         <div class="g-info">
-          <div class="g-opp">${gradeTag}${badgeX}${badgeH}${ctx.oppId?`<span style="cursor:pointer;text-decoration:underline;text-decoration-color:var(--border)" onclick="openOpp('${esc(ctx.oppId)}','${esc(sid)}','${esc(uuid)}')">${esc(oppN)}</span>`:esc(oppN)}</div>
+          <div class="g-opp">${gradeTag}${badgeH}${ctx.oppId?`<span style="cursor:pointer;text-decoration:underline;text-decoration-color:var(--border)" onclick="openOpp('${esc(ctx.oppId)}','${esc(sid)}','${esc(uuid)}')">${esc(oppN)}</span>`:esc(oppN)}${badgeX}</div>
           <div class="g-rn">${esc(g.rn||'')}${g.d?' \u00b7 '+esc(fmtD(g.d)):''}</div>
         </div>
         <div id="gstats-${esc(gid)}" style="flex:7;min-width:0;display:flex;flex-direction:row">${buildGameStatRow(g,ctx,stored,padWld)}</div>
