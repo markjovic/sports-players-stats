@@ -1,0 +1,117 @@
+# .github/workflows/find-misrouted-appearances.yml
+name: Find misrouted appearances
+
+# READ-ONLY. No PlayHQ calls. Reads players/, players/aliases/ and games/bv,
+# writes one report. Changes no player file and no alias.
+#
+# WHAT IT LOOKS FOR. Found 2026-09-05 on Jordan Uppal, who exists as two PlayHQ
+# profiles:
+#
+#   8a30488e-5554-4926-8780-10377baa2b7f  "Jordan singh Uppal"  gp 34,  games 150, x 116
+#   296747c1-bd13-464e-94b6-c89ad797ce42  "Jordan Uppal"        gp 184, games 184, x 0
+#
+# All 116 of the first profile's x games are in the second profile's games, and
+# the second credits every one of them. players/aliases/88.json maps the spectator
+# id 88f43f9d-ddb4 to the FIRST profile; PlayHQ credits those games to the SECOND.
+# The alias points at the wrong one of two profiles belonging to the same person,
+# and build-player-games has been routing 116 appearances by that instruction.
+#
+# The 34 games PlayHQ does credit to the first profile are exactly the 34 that are
+# NOT in the second. The split is clean.
+#
+# THIS IS NOT THE FOLD. Both records are real, separate PlayHQ profiles with their
+# own credited stats. Nothing merged them. The fold's keeper rule decides which
+# record's stats survive a merge and has no opinion on whether two records are the
+# same person.
+#
+# NO RATIO FILTER. A player with 116 x entries and a player with 1 are the same
+# bug at different scales, and no threshold separates a misroute from a genuine
+# PlayHQ gap - only the per-game check does. The x-to-games ratio is reported as
+# an observation and never used to decide anything.
+#
+# COST. It opens the player file of every candidate on every x game's team sheet.
+# Cached by uuid, but this is the heaviest local scan in the repo. Entirely local:
+# no API, no session, no rate limit.
+#
+# Full checkout, never sparse. Its own concurrency group, NOT data-write: it
+# writes one report and must not hold the lock against the nightly.
+
+on:
+  workflow_dispatch:
+    inputs:
+      players:
+        description: 'How many players carrying x to examine'
+        required: false
+        default: '400'
+        type: string
+      seed:
+        description: 'Sampling seed - the same seed draws the same players'
+        required: false
+        default: '20260905'
+        type: string
+      commit:
+        description: 'Commit the report, or run and print only'
+        required: false
+        default: 'commit'
+        type: choice
+        options:
+          - commit
+          - print-only
+
+concurrency:
+  group: find-misrouted-appearances
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout (full, never sparse)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Syntax check
+        run: node --check scripts/find-misrouted-appearances.js
+
+      # Inputs go through env, never straight into the command line. An input
+      # interpolated into a run: block is substituted by GitHub BEFORE bash sees
+      # it, so anything in it becomes shell source text.
+      - name: Find
+        env:
+          IN_PLAYERS: ${{ inputs.players }}
+          IN_SEED:    ${{ inputs.seed }}
+          IN_COMMIT:  ${{ inputs.commit }}
+        run: |
+          set -euo pipefail
+          DRY=""
+          if [ "$IN_COMMIT" = "print-only" ]; then DRY="--dry-run"; fi
+          node scripts/find-misrouted-appearances.js \
+            "--players=$IN_PLAYERS" \
+            "--seed=$IN_SEED" \
+            $DRY
+
+      - name: How to read it
+        if: always()
+        run: |
+          echo "Report: reports/misrouted-appearances.json"
+          echo ""
+          echo "MISROUTED     another profile holds the game AND PlayHQ credits it to"
+          echo "              them. The appearance is on the wrong player's record."
+          echo "genuine gap   nobody is credited with the game. PlayHQ has the player"
+          echo "              in its own box score and counts it for no one."
+          echo "ambiguous     more than one candidate is credited. Not acted on."
+          echo ""
+          echo "The 'alias entries to repoint' block names the file, the spectator id,"
+          echo "its current target and the profile PlayHQ actually credits. Nothing is"
+          echo "changed by this run - that list is the input to a repair, and the"
+          echo "repair needs deciding separately."
