@@ -37,6 +37,14 @@
 //   3. For each candidate that is not this player, open that player file: does it
 //      hold this game in games[] AND not list it in x[]? That means PlayHQ
 //      credits the game to THEM.
+//   3b. AND IS IT THE SAME PERSON. This step was missing in the first version and
+//      the omission invalidated the whole run: "another profile holds this game
+//      and is credited for it" is true of EVERY TEAMMATE, so a normal ten-player
+//      roster produced nine claimants. 466 of 840 entries landed in `ambiguous`
+//      and the 40 called misrouted were simply games with rosters small enough to
+//      leave one. The synthetic test passed only because it used two-player
+//      rosters - it confirmed my own construction rather than the logic.
+//      A duplicate profile shares a NAME with the player. A teammate does not.
 //   4. If exactly one such claimant exists, this entry is a misroute and the
 //      report names the claimant and the alias entry that caused it.
 //      If none exists, nobody is credited with the game: a genuine PlayHQ gap.
@@ -60,6 +68,9 @@ const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
 const { resolveToFullUuid } = require('./lib/uuid-prefix.cjs');
+// normName has a ONE-PASS INVARIANT in namespace-resolve.cjs: five verbatim
+// copies already exist and a sixth must not be made. Imported, never rewritten.
+const { normName, isPlaceholderName } = require('./lib/namespace-resolve.cjs');
 
 const ROOT        = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
@@ -83,6 +94,34 @@ function mulberry32(a) {
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
+}
+
+// ─── Is this the same person? ─────────────────────────────────────────────────
+// The Uppal case is "Jordan singh Uppal" against "Jordan Uppal": same surname,
+// same first name, one carries an extra middle name. That is the shape a
+// duplicate profile takes - PlayHQ holding the same child twice under slightly
+// different registration names.
+//
+// Deliberately CONSERVATIVE. A false positive here would name an innocent alias
+// for repointing, which moves a real appearance off a real person's record. So:
+// the surnames must match exactly after normalisation, and the first names must
+// match or one must be a prefix of the other (Jon/Jonathan, Sam/Samuel). Middle
+// names are ignored on both sides. Anything else is not a claimant.
+//
+// normName is imported rather than reimplemented - see the one-pass invariant.
+function sameHuman(a, b) {
+  if (isPlaceholderName(a) || isPlaceholderName(b)) return false;
+  // Apostrophes stripped FOR THE COMPARISON ONLY. normName normalises the curly
+  // forms to ' but does not remove them, so "OBrien" and "O'Brien" - the same
+  // child registered twice - would not match. This is a comparison step layered on
+  // top of normName, NOT a sixth copy of it.
+  const tok = (v) => normName(v).replace(/'/g, '').split(' ').filter(Boolean);
+  const A = tok(a), B = tok(b);
+  if (A.length < 2 || B.length < 2) return false;
+  if (A[A.length - 1] !== B[B.length - 1]) return false;      // surnames must match
+  const fa = A[0], fb = B[0];
+  if (fa === fb) return true;
+  return fa.length >= 3 && fb.length >= 3 && (fa.startsWith(fb) || fb.startsWith(fa));
 }
 
 const _res = new Map();
@@ -226,7 +265,12 @@ function main() {
         if (!obk) continue;
         const holds = Array.isArray(op.games) && op.games.includes(gid);
         const alsoUncredited = Array.isArray(obk.x) && obk.x.includes(gid);
-        if (holds && !alsoUncredited) claimants.push(full);
+        if (!holds || alsoUncredited) continue;
+        // SAME PERSON, or it is just a teammate. Placeholder names carry nothing
+        // to match on, so a `Player #...` on either side is never a claimant -
+        // guessing there would invent duplicates rather than find them.
+        if (!sameHuman(s.name, op.name)) continue;
+        claimants.push(full);
       }
 
       if (claimants.length === 1) {
@@ -278,7 +322,7 @@ function main() {
   console.log(`  x entries examined       : ${R.xEntries.toLocaleString()}`);
   console.log(`\n  MISROUTED (another profile holds and is credited) : ${R.misrouted.toLocaleString()}  ${pct(R.misrouted, R.xEntries)}`);
   console.log(`  genuine gap (nobody credited)                     : ${R.genuineGap.toLocaleString()}  ${pct(R.genuineGap, R.xEntries)}`);
-  console.log(`  ambiguous (more than one claimant)                : ${R.ambiguous.toLocaleString()}`);
+  console.log(`  ambiguous (more than one same-name claimant)      : ${R.ambiguous.toLocaleString()}`);
   console.log(`  game not in any season on the profile             : ${R.gameNotFound.toLocaleString()}`);
   console.log(`\n  players with any misroute        : ${R.playersWithAnyMisroute.toLocaleString()} of ${R.playersSampled.toLocaleString()}`);
   console.log(`  players where ONE claimant takes ALL their x      : ${R.playersFullyMisrouted.toLocaleString()}`);
