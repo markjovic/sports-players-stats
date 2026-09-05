@@ -48,14 +48,39 @@ name: Find misrouted appearances
 # Cached by uuid, but this is the heaviest local scan in the repo. Entirely local:
 # no API, no session, no rate limit.
 #
-# Full checkout, never sparse. Its own concurrency group, NOT data-write: it
-# writes one report and must not hold the lock against the nightly.
+# APPLY MODE WRITES players/aliases/*.json, which moves appearances between real
+# people's records. It only touches an alias where ONE same-name claimant accounts
+# for EVERY x entry on that player, and re-checks each entry against the file on
+# disk before writing.
+#
+# IDENTITY ALIASES ARE NEVER TOUCHED. An alias whose key is a prefix of its target
+# is the player's own id pointing at their own file. The first version listed those
+# alongside foreign ones under a heading saying "to repoint" - for Jordan Uppal it
+# printed "8a30488e-5554 -> 296747c1", his own id aimed at a stranger. Acting on
+# that list unfiltered would have destroyed the record the repair was meant to fix.
+# They are now listed separately, excluded, and the exclusion is re-checked at
+# write time.
+#
+# VERIFIED END TO END 2026-09-05 on the case that prompted it. Repointing
+# 88f43f9d-ddb4 from 8a30488e to 296747c1 and rebuilding took Jordan singh Uppal
+# from 150 games to exactly 34 - matching the gp of 34 PlayHQ reports - with none
+# of the 116 x games left and none of the 34 survivors on the other profile.
+#
+# Full checkout, never sparse.
 
 on:
   workflow_dispatch:
     inputs:
+      mode:
+        description: 'report-only = scan and report, nothing written. apply = repoint the foreign aliases it names.'
+        required: true
+        default: report-only
+        type: choice
+        options:
+          - report-only
+          - apply
       players:
-        description: 'How many players carrying x to examine'
+        description: 'How many players carrying x to examine. 0 = every one of them (required for a repair pass).'
         required: false
         default: '400'
         type: string
@@ -73,8 +98,10 @@ on:
           - commit
           - print-only
 
+# data-write, because apply mode writes players/aliases/*.json and must not race
+# the nightly, the fold or the matrix.
 concurrency:
-  group: find-misrouted-appearances
+  group: data-write
   cancel-in-progress: false
 
 permissions:
@@ -103,17 +130,19 @@ jobs:
       # it, so anything in it becomes shell source text.
       - name: Find
         env:
+          IN_MODE:    ${{ inputs.mode }}
           IN_PLAYERS: ${{ inputs.players }}
           IN_SEED:    ${{ inputs.seed }}
           IN_COMMIT:  ${{ inputs.commit }}
         run: |
           set -euo pipefail
-          DRY=""
-          if [ "$IN_COMMIT" = "print-only" ]; then DRY="--dry-run"; fi
+          FLAGS=""
+          if [ "$IN_COMMIT" = "print-only" ]; then FLAGS="$FLAGS --dry-run"; fi
+          if [ "$IN_MODE" = "apply" ]; then FLAGS="$FLAGS --apply"; fi
           node scripts/find-misrouted-appearances.js \
             "--players=$IN_PLAYERS" \
             "--seed=$IN_SEED" \
-            $DRY
+            $FLAGS
 
       - name: How to read it
         if: always()
