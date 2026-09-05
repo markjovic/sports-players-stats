@@ -355,7 +355,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.81</span>
+      <span class="rail-ver">Beta 0.83</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -1309,8 +1309,14 @@ function renderDiff(p){
   const sport=Object.keys(p.sports||{})[0]||'Basketball';
   const cs=p.sports?.[sport]||{};
   const c=Array.isArray(cs.c)?cs.c:[];
-  const x=Array.isArray(cs.x)?cs.x:[];
-  if(!c.length&&!x.length)return '';
+  // `x` is deliberately NOT listed here. Every x game is one we hold, so it is
+  // already a row in its season card, badged NOT CREDITED in place - which reads
+  // better than the same game appearing twice on one page with nothing linking
+  // them. The only x games without a season card are ones where the player is not
+  // registered to either side, and those are already in the unregistered section.
+  // `c` has no such home: we hold no record of those games at all, so this is the
+  // only place they can appear.
+  if(!c.length)return '';
   const blk=(kind,ids,title,note)=>{
     if(!ids.length)return '';
     const cid=`df-${kind}`;
@@ -1332,14 +1338,13 @@ function renderDiff(p){
   };
   return `<div class="slist" id="diff-sec">
     <div class="sec-lbl" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-      <span>Credit differences</span>
-      <span class="unreg-pill">${c.length+x.length}</span>
+      <span>Games we are missing</span>
+      <span class="unreg-pill">${c.length}</span>
       <label class="unreg-tog"><input type="checkbox" checked onchange="el('diff-body').classList.toggle('hidden',!this.checked)"> Show</label>
     </div>
-    <div class="unreg-note">Where our record of this player's games and PlayHQ's disagree. Compared game by game at the last stats fetch, with forfeits excluded from both sides.</div>
+    <div class="unreg-note">PlayHQ credits these games to this player and we hold no record of them. Compared game by game at the last stats fetch, forfeits excluded from both sides. Games we hold that PlayHQ does not credit are marked NOT CREDITED in the season card instead.</div>
     <div id="diff-body">
-      ${blk('c',c,'Credited by PlayHQ, not in our record',"PlayHQ counts these toward the career totals above. We hold no appearance for them.")}
-      ${blk('x',x,'In our record, not credited by PlayHQ',"We have the player on the team sheet. PlayHQ's career totals above do not include them.")}
+      ${blk('c',c,'Credited by PlayHQ, not in our record',"PlayHQ counts these toward the career totals above. We hold no appearance for them, so they are in no season card.")}
     </div>
   </div>`;
 }
@@ -1546,6 +1551,14 @@ async function toggleGames(hdr){
   // Mirror of the header's W/L-cell condition (regW||regL from regs[0].stats):
   // when the header renders 8 columns, every game row pads to 8.
   const _hs=regs[0]?.stats;const padWld=!!((_hs?.wins)||(_hs?.losses));
+  // Games PlayHQ does NOT credit, marked in place. Without this the same game
+  // appears twice on one card with no connection between them: as an ordinary row
+  // here, and again under "Credit differences" as not credited. The season
+  // header's totals come from the PlayHQ registration and exclude it, so the rows
+  // below already sum to more than the figure above them - the badge is what says
+  // why. Set is built once per expand rather than per row.
+  const _pX=S.players[uuid]?.sports?.[Object.keys(S.players[uuid]?.sports||{})[0]||'Basketball']?.x;
+  const xSet=new Set(Array.isArray(_pX)?_pX:[]);
   // Stamped on the container because applyBox ALSO rewrites #gstats-{gid} rows
   // (box-score refresh) from outside this scope — it reads the stamp back.
   if(padWld)ge.dataset.pad='1';
@@ -1558,11 +1571,17 @@ async function toggleGames(hdr){
     const oppN=(ctx.oppN||'\u2014').slice(0,30);
     const fc=finalClass(g.rn);
     const badgeH=(mode==='hidden-full'||mode==='hidden-partial')?'<span class="bdg bH" style="font-size:0.58rem;padding:0 4px">H</span>':'';
+    // Deliberately says nothing about WHY. p[] is the team sheet - named in the
+    // squad - while hp/ap are the box-score rows, who actually took the court. A
+    // player can be in the first and not the second, so an uncredited game may
+    // simply be one they were named for and did not play. The badge states what is
+    // known (PlayHQ does not count it) and not what is guessed.
+    const badgeX=xSet.has(gid)?'<span class="bdg bNoCr" title="On the team sheet, but PlayHQ does not count this game toward the season totals above">NOT CREDITED</span>':'';
     const gradeTag=regs.length>1&&g.gn?`<span style="font-size:0.62rem;color:var(--accent);font-weight:600;margin-right:6px;flex-shrink:0;white-space:nowrap">${esc(gradeAbbrev(g.gn,allRegGradeNames))}</span>`:'';    
     return`<div class="grow${fc?' '+fc:''}" data-gid="${esc(gid)}" data-sid="${esc(sid)}">
       <div class="g-row">
         <div class="g-info">
-          <div class="g-opp">${gradeTag}${badgeH}${ctx.oppId?`<span style="cursor:pointer;text-decoration:underline;text-decoration-color:var(--border)" onclick="openOpp('${esc(ctx.oppId)}','${esc(sid)}','${esc(uuid)}')">${esc(oppN)}</span>`:esc(oppN)}</div>
+          <div class="g-opp">${gradeTag}${badgeX}${badgeH}${ctx.oppId?`<span style="cursor:pointer;text-decoration:underline;text-decoration-color:var(--border)" onclick="openOpp('${esc(ctx.oppId)}','${esc(sid)}','${esc(uuid)}')">${esc(oppN)}</span>`:esc(oppN)}</div>
           <div class="g-rn">${esc(g.rn||'')}${g.d?' \u00b7 '+esc(fmtD(g.d)):''}</div>
         </div>
         <div id="gstats-${esc(gid)}" style="flex:7;min-width:0;display:flex;flex-direction:row">${buildGameStatRow(g,ctx,stored,padWld)}</div>
