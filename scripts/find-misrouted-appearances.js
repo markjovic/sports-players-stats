@@ -130,6 +130,28 @@ function sameHuman(a, b) {
   return fa.length >= 3 && fb.length >= 3 && (fa.startsWith(fb) || fb.startsWith(fa));
 }
 
+// ─── Is the player in the game's stored box score? ───────────────────────────
+// p[] is the team sheet - named in the squad. hp/ap are the box-score rows - who
+// actually took the court. A genuine gap where the player HAS a box-score row is
+// the Toby Jovic condition: PlayHQ's own box score records the appearance and
+// PlayHQ's own career totals leave it out.
+//
+// Returns 'in', 'out', or null when the game has no stored box score at all -
+// which is undecidable from files and must never be counted as either.
+function boxVerdict(g, uuid) {
+  const hasBox = (Array.isArray(g.hp) && g.hp.length) || (Array.isArray(g.ap) && g.ap.length);
+  if (!hasBox) return null;
+  let resolvedAny = false;
+  for (const e of [...(g.hp || []), ...(g.ap || [])]) {
+    const full = resolve(e && (e.profileID ?? e.id));
+    if (!full) continue;
+    resolvedAny = true;
+    if (full === uuid) return 'in';
+  }
+  // Every id on both sides failed to resolve: a matching failure, not absence.
+  return resolvedAny ? 'out' : null;
+}
+
 const _res = new Map();
 function resolve(id) {
   if (typeof id !== 'string' || !id) return null;
@@ -259,6 +281,13 @@ function main() {
     misrouted: 0, genuineGap: 0, ambiguous: 0, gameNotFound: 0,
     playersWithAnyMisroute: 0, playersFullyMisrouted: 0,
     suspectAliases: [], identityAliases: [], repointed: 0, players: [],
+    // Genuine gaps split by whether PlayHQ's own box score has the player.
+    gapInBox: 0, gapOutBox: 0, gapNoBox: 0,
+    examples: { gapInBox: [], gapOutBox: [] },
+    // Players with a claimant that does NOT account for every x entry. Never
+    // repaired by rule - one alias cannot explain a partial set - so they are
+    // listed in full for a human to read.
+    partials: [],
   };
 
   for (const s of sampled) {
@@ -298,6 +327,11 @@ function main() {
         R.misrouted++;
       } else if (claimants.length === 0) {
         gap++; R.genuineGap++;
+        // THE TOBY JOVIC CHECK, on every genuine gap rather than a sample.
+        const v = boxVerdict(g, s.uuid);
+        if (v === 'in')       { R.gapInBox++;  if (R.examples.gapInBox.length < 12) R.examples.gapInBox.push({ uuid: s.uuid, name: s.name, gid, date: g.d || null }); }
+        else if (v === 'out') { R.gapOutBox++; if (R.examples.gapOutBox.length < 12) R.examples.gapOutBox.push({ uuid: s.uuid, name: s.name, gid, date: g.d || null }); }
+        else                    R.gapNoBox++;
       } else {
         ambiguous++; R.ambiguous++;
       }
@@ -314,6 +348,17 @@ function main() {
     // that a single alias is pointing at the wrong profile.
     const single = claims.length === 1 && claims[0].games === s.x.length;
     if (single) R.playersFullyMisrouted++;
+
+    // A claimant takes some but not all. Recorded with every claimant and the
+    // leftover, because the reason differs case by case: a second duplicate
+    // profile, a genuine gap mixed in, or a name that matched too loosely.
+    if (claims.length && claims[0].games !== s.x.length) {
+      R.partials.push({
+        uuid: s.uuid, name: s.name, gp: s.gp, games: s.games, x: s.x.length,
+        claims, unclaimed: gap, ambiguous,
+        aliases: aliasesPointingAt(s.uuid).filter(a => !a.identity).map(a => ({ shard: a.shard, spec: a.spec })),
+      });
+    }
 
     R.players.push({
       uuid: s.uuid, name: s.name, gp: s.gp, games: s.games, x: s.x.length,
@@ -344,6 +389,10 @@ function main() {
   console.log(`  x entries examined       : ${R.xEntries.toLocaleString()}`);
   console.log(`\n  MISROUTED (another profile holds and is credited) : ${R.misrouted.toLocaleString()}  ${pct(R.misrouted, R.xEntries)}`);
   console.log(`  genuine gap (nobody credited)                     : ${R.genuineGap.toLocaleString()}  ${pct(R.genuineGap, R.xEntries)}`);
+  const decid = R.gapInBox + R.gapOutBox;
+  console.log(`    \u2514 in PlayHQ's own box score  : ${R.gapInBox.toLocaleString()}  ${pct(R.gapInBox, decid)} of decidable   \u2190 the Toby Jovic condition`);
+  console.log(`    \u2514 named, no box-score row    : ${R.gapOutBox.toLocaleString()}  ${pct(R.gapOutBox, decid)} of decidable`);
+  console.log(`    \u2514 no box score stored        : ${R.gapNoBox.toLocaleString()}  (undecidable from files)`);
   console.log(`  ambiguous (more than one same-name claimant)      : ${R.ambiguous.toLocaleString()}`);
   console.log(`  game not in any season on the profile             : ${R.gameNotFound.toLocaleString()}`);
   console.log(`\n  players with any misroute        : ${R.playersWithAnyMisroute.toLocaleString()} of ${R.playersSampled.toLocaleString()}`);
@@ -369,6 +418,21 @@ function main() {
     console.log('    that id to a different person. Listed for transparency only.');
     for (const a of R.identityAliases.slice(0, 8)) {
       console.log(`    players/aliases/${a.aliasShard}.json  "${a.spec}"  \u2192 ${a.currentTarget.slice(0, 8)}`);
+    }
+  }
+
+  // The partial cases, in full. One alias cannot explain a claimant that takes
+  // some but not all of a player's x games, so these are never repaired by rule.
+  if (R.partials.length) {
+    console.log(`\n  \u2500\u2500 PARTIAL claimants \u2014 read individually, NOT repaired (${R.partials.length}) \u2500\u2500`);
+    for (const p2 of R.partials) {
+      console.log(`    ${p2.uuid.slice(0, 8)}  ${String(p2.x).padStart(4)} x of ${String(p2.games).padStart(4)} games, gp ${String(p2.gp).padStart(4)}  ${(p2.name || '').slice(0, 26)}`);
+      for (const c of p2.claims) {
+        console.log(`        \u2192 ${c.claimant.slice(0, 8)} takes ${String(c.games).padStart(3)}  ${(c.name || '').slice(0, 26)}`);
+      }
+      if (p2.unclaimed)  console.log(`        \u00b7 ${p2.unclaimed} with no claimant at all`);
+      if (p2.ambiguous)  console.log(`        \u00b7 ${p2.ambiguous} ambiguous`);
+      for (const a of p2.aliases) console.log(`        alias players/aliases/${a.shard}.json "${a.spec}"`);
     }
   }
 
