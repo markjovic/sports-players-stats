@@ -97,6 +97,10 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .unreg-tog input{accent-color:var(--accent);width:12px;height:12px;cursor:pointer}
 .unreg-note{font-size:0.66rem;color:var(--text2);line-height:1.45;padding:0 0 8px}
 .unreg-hdr{border-left:3px solid var(--c-po)}
+.diff-hdr{border-left:3px solid var(--text3)}
+.bdg.bNoCr{background:rgba(255,109,0,0.15);color:var(--c-po);font-size:0.55rem;font-weight:700;padding:0 5px;border-radius:4px;margin-right:6px}
+.bdg.bMiss{background:rgba(120,120,140,0.18);color:var(--text2);font-size:0.55rem;font-weight:700;padding:0 5px;border-radius:4px;margin-right:6px}
+.diff-miss{font-size:0.7rem;color:var(--text2);padding:6px 12px}
 .bdg.bFill{background:rgba(255,109,0,0.15);color:var(--c-po);font-size:0.55rem;font-weight:700;padding:0 5px;border-radius:4px;margin-right:6px}
 .recbar{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;
   padding:7px 12px 9px;background:var(--surface);border-top:1px dashed var(--border)}
@@ -351,7 +355,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.79</span>
+      <span class="rail-ver">Beta 0.80</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -1248,6 +1252,7 @@ function renderPlayer(p){
   });
   h+='</div>';
   h+=renderUnreg(p);
+  h+=renderDiff(p);
   h+=renderGradeSnapshot(p.seasons||[]);
   h+=`<div class="slist"><div class="sec-lbl" style="display:flex;align-items:center;justify-content:space-between">Opponent stats <button class="rbtn" style="border:0.5px solid var(--border-strong);padding:3px 10px;border-radius:var(--radius);color:var(--text-primary);font-size:0.72rem" onclick="buildOppStats('${esc(uuid)}',this)">Compute ↗</button></div><div id="opp-stats-${esc(uuid)}"><div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Click Compute to analyse head-to-head records.</div></div></div>`;
   ve.innerHTML=h;
@@ -1274,6 +1279,122 @@ function renderPlayer(p){
    registration for at all is NOT emitted — absence of evidence is not evidence of
    absence, and labelling it a fill-in would be a false accusation about a real
    season. 137,384 are withheld on that basis. */
+/* ── CREDIT DIFFERENCES (c / x) ───────────────────────────────────────────────
+   Written by fetch-profile-stats.js from PlayHQ's own credited game list at the
+   moment of the fetch, forfeits excluded on BOTH sides:
+
+     c  PlayHQ credits it, games[] does not hold it. We are missing the game.
+     x  games[] holds it, PlayHQ does not credit it.
+
+   Both are DELETED rather than written empty, so absent means zero. Measured on
+   shard 00 (1,591 players, all freshly fetched): 288 carry c, 144 carry x, 66
+   carry both.
+
+   WHY THIS NEEDS TO RESOLVE THE SEASON ITSELF. `u` entries carry theirs
+   ("gid|sid|tid"), but c and x are BARE GAME IDS - the same problem the note above
+   renderUnreg describes for games[]. This app only ever reaches a game
+   season-first, so nothing here says which games/bv file to open. So on expand it
+   walks the player's own seasons[] and finds which one holds each id, the same
+   approach resolveOppGames already uses. Bounded by the player's season count,
+   fetched only when the card is opened, and cached in S.games afterwards.
+
+   An id that resolves to none of them is listed plainly rather than dropped. For
+   `c` that is expected and is the interesting case: a game we hold no record of at
+   all, in a season we may never have crawled. */
+function renderDiff(p){
+  // `sport` is a LOCAL const in the card renderer, not a global. Derived here the
+  // same way (first key of p.sports) so this function does not depend on the
+  // caller's scope - referencing it directly threw a ReferenceError that
+  // `node --check` cannot see.
+  const sport=Object.keys(p.sports||{})[0]||'Basketball';
+  const cs=p.sports?.[sport]||{};
+  const c=Array.isArray(cs.c)?cs.c:[];
+  const x=Array.isArray(cs.x)?cs.x:[];
+  if(!c.length&&!x.length)return '';
+  const blk=(kind,ids,title,note)=>{
+    if(!ids.length)return '';
+    const cid=`df-${kind}`;
+    return `<div class="sc">
+      <div class="sc-hdr diff-hdr" data-cid="${esc(cid)}" data-kind="${esc(kind)}" onclick="toggleDiff(this)">
+        <div class="sc-info">
+          <div style="display:flex;align-items:flex-start;gap:5px">
+            <span class="chev" style="flex-shrink:0;margin-top:3px">\u25b6</span>
+            <div style="min-width:0">
+              <div class="sc-name">${esc(title)}</div>
+              <div style="font-size:0.72rem;color:var(--text3)">${esc(note)}</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:0 0 auto;padding-right:12px;font-size:0.74rem;color:var(--text2);font-variant-numeric:tabular-nums">${ids.length} game${ids.length===1?'':'s'}</div>
+      </div>
+      <div class="sc-games" id="${esc(cid)}-g"></div>
+    </div>`;
+  };
+  return `<div class="slist" id="diff-sec">
+    <div class="sec-lbl" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span>Credit differences</span>
+      <span class="unreg-pill">${c.length+x.length}</span>
+      <label class="unreg-tog"><input type="checkbox" checked onchange="el('diff-body').classList.toggle('hidden',!this.checked)"> Show</label>
+    </div>
+    <div class="unreg-note">Where our record of this player's games and PlayHQ's disagree. Compared game by game at the last stats fetch, with forfeits excluded from both sides.</div>
+    <div id="diff-body">
+      ${blk('c',c,'Credited by PlayHQ, not in our record',"PlayHQ counts these toward the career totals above. We hold no appearance for them.")}
+      ${blk('x',x,'In our record, not credited by PlayHQ',"We have the player on the team sheet. PlayHQ's career totals above do not include them.")}
+    </div>
+  </div>`;
+}
+
+async function toggleDiff(hdr){
+  const open=hdr.classList.toggle('open');
+  const cid=hdr.dataset.cid, kind=hdr.dataset.kind;
+  const ge=el(cid+'-g');
+  ge.classList.toggle('open',open);
+  if(!open||ge.dataset.loaded)return;
+  const uuid=S.playerUuid;
+  const p=S.players[uuid]||{};
+  const sport=Object.keys(p.sports||{})[0]||'Basketball';
+  const cs=p.sports?.[sport]||{};
+  const ids=Array.isArray(cs[kind])?cs[kind]:[];
+  if(!ids.length){ge.innerHTML='<div class="load-row">Nothing to show.</div>';ge.dataset.loaded='1';return;}
+  ge.innerHTML='<div class="load-row">Loading games\u2026</div>';
+  // Resolve gid -> sid across the player's own seasons. Stops early once every id
+  // is placed, so a player with one stray difference does not fetch every season.
+  const sids=[...new Set((p.seasons||[]).map(s=>s.sid).filter(Boolean))];
+  const found=new Map();
+  for(const sid of sids){
+    if(found.size>=ids.length)break;
+    if(!S.games[sid]){const dd=await sgj('games/bv',sid);S.games[sid]=dd||{games:{}};}
+    const all=S.games[sid]?.games||{};
+    for(const gid of ids){ if(!found.has(gid)&&all[gid]) found.set(gid,{sid,g:all[gid]}); }
+  }
+  const rows=[...found.entries()].sort((a,b)=>(b[1].g.d||'').localeCompare(a[1].g.d||''));
+  const unresolved=ids.filter(g=>!found.has(g));
+  const badge=kind==='c'?'<span class="bdg bMiss">NOT HELD</span>':'<span class="bdg bNoCr">NOT CREDITED</span>';
+  let html=rows.map(([gid,{sid,g}])=>{
+    const tid=getTidForSeason(p,sid)||hTid(g);
+    const ctx=gameCtx(g,tid);
+    const stored=storedStats(g,uuid);
+    const oppN=(ctx.oppN||'\u2014').slice(0,30);
+    const fc=finalClass(g.rn);
+    return`<div class="grow${fc?' '+fc:''}" data-gid="${esc(gid)}" data-sid="${esc(sid)}">
+      <div class="g-row">
+        <div class="g-info">
+          <div class="g-opp">${badge}${esc(oppN)}</div>
+          <div class="g-rn">${esc(g.rn||'')}${g.d?' \u00b7 '+esc(fmtD(g.d)):''} \u00b7 ${esc(S.idx?.seasons?.[sid]?.name||sid)}</div>
+        </div>
+        <div id="gstats-${esc(gid)}" style="flex:7;min-width:0;display:flex;flex-direction:row">${buildGameStatRow(g,ctx,stored,false)}</div>
+      </div>
+    </div>`;
+  }).join('');
+  // Listed, never dropped. For `c` this is the interesting case: a game PlayHQ
+  // credits that we hold no record of in any season we know about.
+  if(unresolved.length){
+    html+=`<div class="diff-miss">${unresolved.length} game${unresolved.length===1?'':'s'} not found in any season on this profile: ${unresolved.map(g=>esc(g)).join(', ')}</div>`;
+  }
+  ge.innerHTML=html||'<div class="load-row">No game records found.</div>';
+  ge.dataset.loaded='1';
+}
+
 function renderUnreg(p){
   const raw=Array.isArray(p.u)?p.u:[];
   if(!raw.length)return '';
