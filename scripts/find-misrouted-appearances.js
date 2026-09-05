@@ -81,9 +81,15 @@ const REPORT_FILE = path.join(ROOT, REPORT_REL);
 
 const args   = process.argv.slice(2);
 const argVal = (n, d) => { const a = args.find(x => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : d; };
-const MAX_PLAYERS = Math.max(1, parseInt(argVal('players', '400'), 10) || 400);
+// 0 means EVERY player carrying x - required for a repair pass, since fixing a
+// sample would leave the rest misrouted with no record of which.
+const _mp = parseInt(argVal('players', '400'), 10);
+const MAX_PLAYERS = (_mp === 0) ? Infinity : Math.max(1, _mp || 400);
 const SEED        = parseInt(argVal('seed', '20260905'), 10) || 20260905;
 const DRY_RUN     = args.includes('--dry-run');
+// Writes players/aliases/*.json. Off by default: this moves appearances between
+// real people's records and must never be the accidental outcome of a run.
+const APPLY       = args.includes('--apply');
 
 const log = (m) => console.log(`[misroute] ${new Date().toISOString()} ${m}`);
 
@@ -150,14 +156,26 @@ function readPlayer(uuid) {
 // Alias shards, loaded on demand, inverted so a target uuid can be asked which
 // spectator ids redirect to it. That is the direction the fix needs.
 const _alias = new Map();
+// An alias whose KEY is a prefix of its TARGET is the player's own id pointing at
+// their own file. Repointing one sends that player's own id to a different person.
+//
+// The first version listed these alongside foreign aliases under a heading saying
+// "to repoint": for Jordan Uppal it printed "8a30488e-5554 -> 296747c1", which is
+// his own id aimed at a stranger. Following that list unfiltered would have
+// destroyed the record the repair was meant to fix.
+function isIdentityAlias(spec, target) {
+  return typeof spec === 'string' && typeof target === 'string' && target.startsWith(spec);
+}
+
 function aliasesPointingAt(uuid) {
-  const shardsSeen = [];
   const out = [];
   for (const shard of _aliasShards()) {
     const m = _aliasShard(shard);
     if (!m) continue;
-    shardsSeen.push(shard);
-    for (const [spec, target] of m) if (target === uuid) out.push({ shard, spec });
+    for (const [spec, target] of m) {
+      if (target !== uuid) continue;
+      out.push({ shard, spec, identity: isIdentityAlias(spec, target) });
+    }
   }
   return out;
 }
@@ -187,7 +205,7 @@ function main() {
   const rng = mulberry32(SEED);
   const prefixes = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
   for (let i = prefixes.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [prefixes[i], prefixes[j]] = [prefixes[j], prefixes[i]]; }
-  const perShard = Math.max(1, Math.ceil(MAX_PLAYERS / prefixes.length) * 3);
+  const perShard = (MAX_PLAYERS === Infinity) ? Infinity : Math.max(1, Math.ceil(MAX_PLAYERS / prefixes.length) * 3);
 
   const sampled = [];
   const neededBySid = new Map();
@@ -240,7 +258,7 @@ function main() {
     playersSampled: sampled.length, xEntries: 0,
     misrouted: 0, genuineGap: 0, ambiguous: 0, gameNotFound: 0,
     playersWithAnyMisroute: 0, playersFullyMisrouted: 0,
-    suspectAliases: [], players: [],
+    suspectAliases: [], identityAliases: [], repointed: 0, players: [],
   };
 
   for (const s of sampled) {
@@ -308,9 +326,13 @@ function main() {
 
     // The alias entries that would have caused it, so the fix is actionable
     // rather than a name to go looking for.
+    // Only where ONE claimant accounts for EVERY x entry. A player whose x games
+    // point at several different people is not a misrouted alias and must not be
+    // repaired by one.
     if (single) {
       for (const a of aliasesPointingAt(s.uuid)) {
-        R.suspectAliases.push({ aliasShard: a.shard, spec: a.spec, currentTarget: s.uuid, likelyCorrectTarget: claims[0].claimant, games: claims[0].games });
+        const row = { aliasShard: a.shard, spec: a.spec, currentTarget: s.uuid, likelyCorrectTarget: claims[0].claimant, games: claims[0].games };
+        if (a.identity) R.identityAliases.push(row); else R.suspectAliases.push(row);
       }
     }
   }
@@ -335,23 +357,67 @@ function main() {
   }
 
   if (R.suspectAliases.length) {
-    console.log('\n  ── alias entries to repoint ──');
-    for (const a of R.suspectAliases.slice(0, 15)) {
+    console.log(`\n  \u2500\u2500 FOREIGN aliases to repoint (${R.suspectAliases.length}) \u2500\u2500`);
+    for (const a of R.suspectAliases.slice(0, 25)) {
       console.log(`    players/aliases/${a.aliasShard}.json  "${a.spec}"  ${a.currentTarget.slice(0, 8)} \u2192 ${a.likelyCorrectTarget.slice(0, 8)}   (${a.games} games)`);
     }
+    if (R.suspectAliases.length > 25) console.log(`    \u2026 and ${R.suspectAliases.length - 25} more, all in the report`);
+  }
+  if (R.identityAliases.length) {
+    console.log(`\n  \u2500\u2500 IDENTITY aliases, NEVER touched (${R.identityAliases.length}) \u2500\u2500`);
+    console.log("    A player's own id pointing at their own file. Repointing one would send");
+    console.log('    that id to a different person. Listed for transparency only.');
+    for (const a of R.identityAliases.slice(0, 8)) {
+      console.log(`    players/aliases/${a.aliasShard}.json  "${a.spec}"  \u2192 ${a.currentTarget.slice(0, 8)}`);
+    }
+  }
+
+  // ── Repair ────────────────────────────────────────────────────────────────
+  const touchedShards = new Set();
+  if (APPLY && R.suspectAliases.length) {
+    log(`applying ${R.suspectAliases.length} repoint(s)…`);
+    const byShard = new Map();
+    for (const a of R.suspectAliases) {
+      if (!byShard.has(a.aliasShard)) byShard.set(a.aliasShard, []);
+      byShard.get(a.aliasShard).push(a);
+    }
+    for (const [shard, rows] of byShard) {
+      const fp = path.join(ALIAS_DIR, `${shard}.json`);
+      let obj;
+      try { obj = JSON.parse(fs.readFileSync(fp, 'utf8')); }
+      catch (e) { log(`  SKIP shard ${shard}: ${e.message.split('\n')[0]}`); continue; }
+      let changed = 0;
+      for (const r of rows) {
+        // Re-checked against the file on disk, not trusted from the scan: another
+        // writer may have moved it since, and an identity alias must never slip
+        // through even if the classification above were wrong.
+        if (obj[r.spec] !== r.currentTarget) { log(`  SKIP ${shard}/${r.spec}: target moved`); continue; }
+        if (isIdentityAlias(r.spec, obj[r.spec])) { log(`  SKIP ${shard}/${r.spec}: identity alias`); continue; }
+        obj[r.spec] = r.likelyCorrectTarget;
+        changed++; R.repointed++;
+      }
+      if (changed) { fs.writeFileSync(fp, JSON.stringify(obj), 'utf8'); touchedShards.add(shard); }
+    }
+    log(`repointed ${R.repointed} alias entr${R.repointed === 1 ? 'y' : 'ies'} across ${touchedShards.size} shard(s)`);
   }
 
   fs.mkdirSync(path.dirname(REPORT_FILE), { recursive: true });
   fs.writeFileSync(REPORT_FILE, JSON.stringify(R, null, 2), 'utf8');
   console.log(`\n  Report: ${REPORT_REL}`);
+  if (APPLY && R.repointed) {
+    console.log('\n  \u26a0 NEXT: Build Player Games, then Fetch Profile Stats (Matrix) for the');
+    console.log('    affected shards with force ticked. games[] rebuilds from the corrected');
+    console.log('    aliases; x only clears when each player is fetched again.');
+  }
   if (DRY_RUN) { log('dry run - not committing.'); return; }
 
   const GIT = { cwd: ROOT, stdio: 'pipe', timeout: 10 * 60 * 1000, maxBuffer: 512 * 1024 * 1024 };
+  for (const shard of touchedShards) execSync(`git add -- players/aliases/${shard}.json`, GIT);
   execSync(`git add -- ${REPORT_REL}`, GIT);
   const staged = execSync('git diff --staged --shortstat', GIT).toString().trim();
   if (!staged) { log('report unchanged.'); return; }
   log(`staging: ${staged}`);
-  execSync(`git commit -q -m "find-misrouted-appearances: ${R.misrouted} misrouted, ${R.genuineGap} genuine, ${R.suspectAliases.length} aliases implicated"`, GIT);
+  execSync(`git commit -q -m "find-misrouted-appearances: ${R.misrouted} misrouted, ${R.genuineGap} genuine, ${R.repointed} alias entries repointed"`, GIT);
   for (let attempt = 1; attempt <= 5; attempt++) {
     try { execSync('git merge --abort', GIT); } catch {}
     try {
