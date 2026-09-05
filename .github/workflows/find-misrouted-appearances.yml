@@ -24,6 +24,21 @@ name: Find misrouted appearances
 # record's stats survive a merge and has no opinion on whether two records are the
 # same person.
 #
+# CORRECTED 2026-09-05, BEFORE THE FIRST RUN'S NUMBERS COULD BE BELIEVED. The
+# first version asked only "does another profile hold this game and get credited
+# for it". That is true of EVERY TEAMMATE, so a ten-player roster produced nine
+# claimants: 466 of 840 entries fell into `ambiguous` and the 40 reported as
+# misrouted were only games with rosters small enough to leave one. Its synthetic
+# test passed because it used two-player rosters - it confirmed the construction,
+# not the logic.
+#
+# The claimant must now also be the SAME PERSON by name, using normName from
+# scripts/lib/namespace-resolve.cjs. A duplicate profile shares a name ("Jordan
+# singh Uppal" / "Jordan Uppal"); a teammate does not. The test is deliberately
+# conservative - surnames must match exactly, first names must match or be a
+# prefix of one another - because a false positive here names an innocent alias
+# for repointing, which would move a real appearance off a real person's record.
+#
 # NO RATIO FILTER. A player with 116 x entries and a player with 1 are the same
 # bug at different scales, and no threshold separates a misroute from a genuine
 # PlayHQ gap - only the per-game check does. The x-to-games ratio is reported as
