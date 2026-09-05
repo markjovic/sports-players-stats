@@ -1139,7 +1139,24 @@ function renderPlayer(p){
   // nothing. This line is then the only figure they have.
   const recApps=Array.isArray(p.games)?p.games.length:0;
   if(recApps||isPrivate(p)){
-    const uncredited=recApps-gp;
+    // CORRECTED 2026-09-04. This was `recApps - gp`: the difference between two
+    // TOTALS, presented as a count of games PlayHQ does not credit. Those are not
+    // the same thing, because the two lists disagree in BOTH directions and a
+    // subtraction cancels them. Measured on shard 00, 1,591 players in scope and
+    // all freshly fetched: 288 carry `c` (PlayHQ credits it, we do not hold it),
+    // 144 carry `x` (we hold it, PlayHQ does not credit it), and 66 carry BOTH.
+    // For those 66 the old figure understated the count by exactly c.length, and
+    // wherever c exceeded x it went negative and the line silently disappeared.
+    //
+    // `x` IS the count, written by fetch-profile-stats.js from PlayHQ's own
+    // credited game list at the moment of the fetch, forfeits excluded on both
+    // sides. Absent means zero - the field is deleted rather than written empty.
+    //
+    // The old arithmetic survives ONLY as a fallback for a file written before
+    // the diff existed: no x AND no statsChecked. A player who HAS been fetched
+    // and carries no x genuinely has none, and must show nothing.
+    const uncredited = Array.isArray(cs.x) ? cs.x.length
+                     : (cs.statsChecked ? 0 : Math.max(0, recApps - gp));
     h+=`<div class="recbar">
       <span class="recbar-l">Recorded appearances</span>
       <span class="recbar-v">${recApps}</span>${(!isPrivate(p)&&uncredited>0)?`
@@ -1287,7 +1304,7 @@ function renderUnreg(p){
       <span class="unreg-pill">${shown}</span>
       <label class="unreg-tog"><input type="checkbox" checked onchange="el('unreg-body').classList.toggle('hidden',!this.checked)"> Show</label>
     </div>
-    <div class="unreg-note">Named in the team sheet but holding no registration with either team \u2014 fill-ins and one-off games. Real appearances; PlayHQ credits them to no career total, so they are not in the figures above.</div>
+    <div class="unreg-note">Named in the team sheet but holding no registration with either team \u2014 fill-ins and one-off games. Real appearances, and PlayHQ does count them: it credits each one against this player's registration with a different team, which is why they sit here rather than under a season card.</div>
     <div id="unreg-body">`;
   order.forEach((sid,ui)=>{
     const list=bySid.get(sid);
