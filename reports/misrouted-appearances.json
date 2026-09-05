@@ -1,870 +1,22 @@
 {
-  "generatedAt": "2026-09-05T12:31:30.360Z",
+  "generatedAt": "2026-09-05T12:52:00.130Z",
   "seed": 20260905,
   "playersSampled": 40221,
   "xEntries": 74635,
-  "misrouted": 3131,
+  "misrouted": 559,
   "genuineGap": 71387,
-  "ambiguous": 117,
+  "ambiguous": 2689,
   "gameNotFound": 0,
-  "playersWithAnyMisroute": 103,
-  "playersFullyMisrouted": 86,
-  "suspectAliases": [
-    {
-      "aliasShard": "3a",
-      "spec": "3ac987b2-6116",
-      "currentTarget": "0e2a221b-b369-4509-a4d5-937b47af0b02",
-      "likelyCorrectTarget": "b47867df-f18b-481c-9fbb-6dd48a1437e1",
-      "games": 79
-    },
-    {
-      "aliasShard": "40",
-      "spec": "4091aa80-a800",
-      "currentTarget": "951392e2-30b2-45b3-b089-0b4b332ac86b",
-      "likelyCorrectTarget": "e57c7ec0-51ca-4d6f-8f9e-085e6da89470",
-      "games": 8
-    },
-    {
-      "aliasShard": "7c",
-      "spec": "7c3192b9-9850",
-      "currentTarget": "26dae995-9fbe-42bc-be3c-cb3be142e5e2",
-      "likelyCorrectTarget": "887b7ee0-0cdf-408e-8ec6-fd5f62424606",
-      "games": 21
-    },
-    {
-      "aliasShard": "7d",
-      "spec": "7dd2cfc1-4662",
-      "currentTarget": "26dae995-9fbe-42bc-be3c-cb3be142e5e2",
-      "likelyCorrectTarget": "887b7ee0-0cdf-408e-8ec6-fd5f62424606",
-      "games": 21
-    },
-    {
-      "aliasShard": "60",
-      "spec": "60f4b88c-5f2b",
-      "currentTarget": "026ea620-51a3-452a-913c-d2ef5342b3fd",
-      "likelyCorrectTarget": "49a70ce7-9f26-4aa8-b6f9-6f44ea3e4bed",
-      "games": 43
-    },
-    {
-      "aliasShard": "e4",
-      "spec": "e477b22e-0323",
-      "currentTarget": "026ea620-51a3-452a-913c-d2ef5342b3fd",
-      "likelyCorrectTarget": "49a70ce7-9f26-4aa8-b6f9-6f44ea3e4bed",
-      "games": 43
-    },
-    {
-      "aliasShard": "e8",
-      "spec": "e865489f-bc96",
-      "currentTarget": "026ea620-51a3-452a-913c-d2ef5342b3fd",
-      "likelyCorrectTarget": "49a70ce7-9f26-4aa8-b6f9-6f44ea3e4bed",
-      "games": 43
-    },
-    {
-      "aliasShard": "79",
-      "spec": "79bf1105-2b60",
-      "currentTarget": "df9dde1c-4b30-4eae-a439-45d6de208e5a",
-      "likelyCorrectTarget": "702d0ce6-fbd9-4122-9783-b92ae7918b5c",
-      "games": 29
-    },
-    {
-      "aliasShard": "ae",
-      "spec": "ae121dcb-12f3",
-      "currentTarget": "0a8d5942-769c-447f-8ffb-ca97cdfcc242",
-      "likelyCorrectTarget": "6d6ba32a-6f82-45f4-9d73-e203140f92f4",
-      "games": 30
-    },
-    {
-      "aliasShard": "22",
-      "spec": "220b577e-eae5",
-      "currentTarget": "76a3d064-71c2-4bec-85e6-d7b854290cd2",
-      "likelyCorrectTarget": "ee243c4c-6d02-49b6-8e02-2f3120979b34",
-      "games": 25
-    },
-    {
-      "aliasShard": "9c",
-      "spec": "9c7c699f-5f7f",
-      "currentTarget": "76a3d064-71c2-4bec-85e6-d7b854290cd2",
-      "likelyCorrectTarget": "ee243c4c-6d02-49b6-8e02-2f3120979b34",
-      "games": 25
-    },
-    {
-      "aliasShard": "a1",
-      "spec": "a1867621-ff4b",
-      "currentTarget": "76a3d064-71c2-4bec-85e6-d7b854290cd2",
-      "likelyCorrectTarget": "ee243c4c-6d02-49b6-8e02-2f3120979b34",
-      "games": 25
-    },
-    {
-      "aliasShard": "5f",
-      "spec": "5f823b13-0a49",
-      "currentTarget": "c12cb989-39a6-465b-ad3e-ce27f1753c82",
-      "likelyCorrectTarget": "56816cc6-577a-400d-84ca-6d938350611c",
-      "games": 40
-    },
-    {
-      "aliasShard": "3c",
-      "spec": "3cae9f09-5a52",
-      "currentTarget": "c1e7e234-5e9b-4884-aead-4baa04abf35f",
-      "likelyCorrectTarget": "e191d9f4-d5c4-4f2e-8f7c-7dbfb114878a",
-      "games": 33
-    },
-    {
-      "aliasShard": "14",
-      "spec": "1478a563-45e6",
-      "currentTarget": "69c3d767-1264-456a-a27f-8835feb357fc",
-      "likelyCorrectTarget": "67ddbc6e-63e1-4c5d-8632-0f541e14ca8c",
-      "games": 12
-    },
-    {
-      "aliasShard": "27",
-      "spec": "27aa52f5-c096",
-      "currentTarget": "e0d5e05f-0645-49e0-a0ab-667aa7690e54",
-      "likelyCorrectTarget": "c9a48a51-5082-43a0-8d74-40b4111695b3",
-      "games": 12
-    },
-    {
-      "aliasShard": "45",
-      "spec": "4523897c-2319",
-      "currentTarget": "4734d05a-cbce-4a7d-82cb-d298c3260879",
-      "likelyCorrectTarget": "e44f1a12-0310-45f4-bd56-81ffebc7a0ae",
-      "games": 17
-    },
-    {
-      "aliasShard": "6a",
-      "spec": "6add5373-6af7",
-      "currentTarget": "4734d05a-cbce-4a7d-82cb-d298c3260879",
-      "likelyCorrectTarget": "e44f1a12-0310-45f4-bd56-81ffebc7a0ae",
-      "games": 17
-    },
-    {
-      "aliasShard": "9d",
-      "spec": "9d3da556-fa09",
-      "currentTarget": "4734d05a-cbce-4a7d-82cb-d298c3260879",
-      "likelyCorrectTarget": "e44f1a12-0310-45f4-bd56-81ffebc7a0ae",
-      "games": 17
-    },
-    {
-      "aliasShard": "ab",
-      "spec": "ab1b63ec-5b15",
-      "currentTarget": "4734d05a-cbce-4a7d-82cb-d298c3260879",
-      "likelyCorrectTarget": "e44f1a12-0310-45f4-bd56-81ffebc7a0ae",
-      "games": 17
-    },
-    {
-      "aliasShard": "d8",
-      "spec": "d8bead3c-c6de",
-      "currentTarget": "4734d05a-cbce-4a7d-82cb-d298c3260879",
-      "likelyCorrectTarget": "e44f1a12-0310-45f4-bd56-81ffebc7a0ae",
-      "games": 17
-    },
-    {
-      "aliasShard": "f5",
-      "spec": "f56a30e7-d774",
-      "currentTarget": "4734d05a-cbce-4a7d-82cb-d298c3260879",
-      "likelyCorrectTarget": "e44f1a12-0310-45f4-bd56-81ffebc7a0ae",
-      "games": 17
-    },
-    {
-      "aliasShard": "19",
-      "spec": "192ea66a-76cb",
-      "currentTarget": "91c7128a-58eb-4b9d-85ad-649bd4ed29ba",
-      "likelyCorrectTarget": "87efc3f9-b89e-421b-ad42-8cc1d86b6093",
-      "games": 45
-    },
-    {
-      "aliasShard": "5d",
-      "spec": "5d2b6fb7-74bf",
-      "currentTarget": "91c7128a-58eb-4b9d-85ad-649bd4ed29ba",
-      "likelyCorrectTarget": "87efc3f9-b89e-421b-ad42-8cc1d86b6093",
-      "games": 45
-    },
-    {
-      "aliasShard": "51",
-      "spec": "51b6242d-28ab",
-      "currentTarget": "2ccb89b6-9a4f-494e-a91b-38f286b2c259",
-      "likelyCorrectTarget": "3dfa6f8e-fe32-4cf1-aed6-4d7b5fa45f5c",
-      "games": 11
-    },
-    {
-      "aliasShard": "cb",
-      "spec": "cb3662fa-3635",
-      "currentTarget": "2ccb89b6-9a4f-494e-a91b-38f286b2c259",
-      "likelyCorrectTarget": "3dfa6f8e-fe32-4cf1-aed6-4d7b5fa45f5c",
-      "games": 11
-    },
-    {
-      "aliasShard": "54",
-      "spec": "54862d36-91da",
-      "currentTarget": "ecc0cab2-9f92-48af-bdad-1751530c3d58",
-      "likelyCorrectTarget": "ff38eca9-9a6d-42cc-aec0-f2f2266db45a",
-      "games": 62
-    },
-    {
-      "aliasShard": "1f",
-      "spec": "1fae12f7-ba9f",
-      "currentTarget": "a7a304c4-0dd5-4c1f-916d-9c837e08eb2e",
-      "likelyCorrectTarget": "3a83d3df-62e1-4d4b-917b-a4e2387ac981",
-      "games": 18
-    },
-    {
-      "aliasShard": "1c",
-      "spec": "1ce12117-b86b",
-      "currentTarget": "1b077fbd-e1b4-417c-8d03-c386550352a5",
-      "likelyCorrectTarget": "75c3707a-5f49-46bf-b56d-e391380b11bf",
-      "games": 50
-    },
-    {
-      "aliasShard": "3b",
-      "spec": "3bd5953d-7f4a",
-      "currentTarget": "1b077fbd-e1b4-417c-8d03-c386550352a5",
-      "likelyCorrectTarget": "75c3707a-5f49-46bf-b56d-e391380b11bf",
-      "games": 50
-    },
-    {
-      "aliasShard": "6b",
-      "spec": "6b8e1b02-03c8",
-      "currentTarget": "1b14d314-e12c-491a-9848-1b5e7ca7af0e",
-      "likelyCorrectTarget": "c328cbda-2b85-45e5-9a82-ed7a4f96edb3",
-      "games": 147
-    },
-    {
-      "aliasShard": "89",
-      "spec": "890ca26a-de30",
-      "currentTarget": "1b14d314-e12c-491a-9848-1b5e7ca7af0e",
-      "likelyCorrectTarget": "c328cbda-2b85-45e5-9a82-ed7a4f96edb3",
-      "games": 147
-    },
-    {
-      "aliasShard": "30",
-      "spec": "30a9e0cc-417a",
-      "currentTarget": "2b0b320f-f61f-4325-9411-0909baabc781",
-      "likelyCorrectTarget": "c921006c-f996-4617-af99-2a5d8049082b",
-      "games": 12
-    },
-    {
-      "aliasShard": "25",
-      "spec": "2549c2a1-18fa",
-      "currentTarget": "783f6c2b-6ec0-4126-8e8e-0da5345deb7f",
-      "likelyCorrectTarget": "49c6c45e-d566-4bf9-a045-4ebc39094557",
-      "games": 16
-    },
-    {
-      "aliasShard": "3f",
-      "spec": "3f4c440f-381c",
-      "currentTarget": "783f6c2b-6ec0-4126-8e8e-0da5345deb7f",
-      "likelyCorrectTarget": "49c6c45e-d566-4bf9-a045-4ebc39094557",
-      "games": 16
-    },
-    {
-      "aliasShard": "62",
-      "spec": "62280ad2-5b89",
-      "currentTarget": "783f6c2b-6ec0-4126-8e8e-0da5345deb7f",
-      "likelyCorrectTarget": "49c6c45e-d566-4bf9-a045-4ebc39094557",
-      "games": 16
-    },
-    {
-      "aliasShard": "e9",
-      "spec": "e98435b2-e8dc",
-      "currentTarget": "6fd8768a-d269-494c-b9f4-7ae28d8fd9bd",
-      "likelyCorrectTarget": "5903796c-a12b-4c10-b1b8-d2b8afab12ba",
-      "games": 24
-    },
-    {
-      "aliasShard": "ef",
-      "spec": "ef427879-dcb1",
-      "currentTarget": "5e1e39df-432f-42bc-9a31-37ce11d1663e",
-      "likelyCorrectTarget": "443aa5ef-5174-49ba-8387-c86abf11cd67",
-      "games": 38
-    },
-    {
-      "aliasShard": "92",
-      "spec": "927ec5c5-8dc0",
-      "currentTarget": "2abd2870-0622-4a81-bea0-2131e96fefc8",
-      "likelyCorrectTarget": "da6676ee-6d73-4fde-ae2c-18d2626b4530",
-      "games": 9
-    },
-    {
-      "aliasShard": "48",
-      "spec": "4846b3b7-c4ef",
-      "currentTarget": "e14f2c3c-aa99-4a20-9afd-14cbd067fff6",
-      "likelyCorrectTarget": "d95fb2ef-1538-471f-b655-e5283af3f522",
-      "games": 39
-    },
-    {
-      "aliasShard": "5d",
-      "spec": "5d5cf165-ef86",
-      "currentTarget": "e14f2c3c-aa99-4a20-9afd-14cbd067fff6",
-      "likelyCorrectTarget": "d95fb2ef-1538-471f-b655-e5283af3f522",
-      "games": 39
-    },
-    {
-      "aliasShard": "e5",
-      "spec": "e56b1898-a88a",
-      "currentTarget": "e14f2c3c-aa99-4a20-9afd-14cbd067fff6",
-      "likelyCorrectTarget": "d95fb2ef-1538-471f-b655-e5283af3f522",
-      "games": 39
-    },
-    {
-      "aliasShard": "74",
-      "spec": "748ecf40-8905",
-      "currentTarget": "6a9399d0-566d-4159-8f1d-d52a580cf999",
-      "likelyCorrectTarget": "153812bf-7fac-422c-b380-241409bf945c",
-      "games": 26
-    },
-    {
-      "aliasShard": "09",
-      "spec": "09efae7c-43c4",
-      "currentTarget": "2ff7e1cb-8edf-43af-b135-6d014cb08b79",
-      "likelyCorrectTarget": "4d033fc0-2106-497f-abef-ebe7bf54a0d0",
-      "games": 54
-    },
-    {
-      "aliasShard": "5b",
-      "spec": "5b886bc5-e589",
-      "currentTarget": "bdaf2c8a-e3c6-4e40-9bc5-f233596fa255",
-      "likelyCorrectTarget": "49131120-d334-4954-bc75-8c04215928e3",
-      "games": 5
-    },
-    {
-      "aliasShard": "60",
-      "spec": "600977dc-949b",
-      "currentTarget": "bdaf2c8a-e3c6-4e40-9bc5-f233596fa255",
-      "likelyCorrectTarget": "49131120-d334-4954-bc75-8c04215928e3",
-      "games": 5
-    },
-    {
-      "aliasShard": "7a",
-      "spec": "7aebf39a-8b77",
-      "currentTarget": "bdf11304-9f1a-4889-abf3-191e82ee53a3",
-      "likelyCorrectTarget": "28b5a06e-754d-4de5-b03c-25f560a59106",
-      "games": 74
-    },
-    {
-      "aliasShard": "13",
-      "spec": "13c6f1ca-4205",
-      "currentTarget": "bd31d91a-2b12-4587-bbfc-acb82edd6f56",
-      "likelyCorrectTarget": "ade64a31-39b8-4320-b0bd-27fa0b9451a4",
-      "games": 44
-    },
-    {
-      "aliasShard": "27",
-      "spec": "27b36366-232c",
-      "currentTarget": "bd31d91a-2b12-4587-bbfc-acb82edd6f56",
-      "likelyCorrectTarget": "ade64a31-39b8-4320-b0bd-27fa0b9451a4",
-      "games": 44
-    },
-    {
-      "aliasShard": "15",
-      "spec": "15fe45da-c96d",
-      "currentTarget": "a1141040-689a-4730-b050-ac8c9f79b636",
-      "likelyCorrectTarget": "9f350899-b196-4491-bed5-8587f54fed4a",
-      "games": 13
-    },
-    {
-      "aliasShard": "25",
-      "spec": "25bbb7e6-db0a",
-      "currentTarget": "a1141040-689a-4730-b050-ac8c9f79b636",
-      "likelyCorrectTarget": "9f350899-b196-4491-bed5-8587f54fed4a",
-      "games": 13
-    },
-    {
-      "aliasShard": "2a",
-      "spec": "2a9a3ea2-b7f1",
-      "currentTarget": "c4d0e152-5394-4011-9cd3-bbf627df7225",
-      "likelyCorrectTarget": "a09b6e59-4090-4701-bb62-b8a5b098970a",
-      "games": 8
-    },
-    {
-      "aliasShard": "e9",
-      "spec": "e9b68787-ee80",
-      "currentTarget": "c4cd34ae-0d64-4bc3-8a3d-39fe6f3d8268",
-      "likelyCorrectTarget": "50bd3e16-a199-44f2-90b3-225aac5b8ed7",
-      "games": 29
-    },
-    {
-      "aliasShard": "54",
-      "spec": "546e1b7f-ad52",
-      "currentTarget": "0967446a-e523-47ba-8a1f-065b80af0542",
-      "likelyCorrectTarget": "5cbc8e05-8772-40d5-a830-3778cace9b78",
-      "games": 49
-    },
-    {
-      "aliasShard": "7f",
-      "spec": "7f3015d8-57e5",
-      "currentTarget": "0967446a-e523-47ba-8a1f-065b80af0542",
-      "likelyCorrectTarget": "5cbc8e05-8772-40d5-a830-3778cace9b78",
-      "games": 49
-    },
-    {
-      "aliasShard": "af",
-      "spec": "af90ed4a-7283",
-      "currentTarget": "0967446a-e523-47ba-8a1f-065b80af0542",
-      "likelyCorrectTarget": "5cbc8e05-8772-40d5-a830-3778cace9b78",
-      "games": 49
-    },
-    {
-      "aliasShard": "a5",
-      "spec": "a5978eea-4ece",
-      "currentTarget": "e80d02ca-d364-42b3-b670-d12de4d2d1f9",
-      "likelyCorrectTarget": "186ee88f-5bc0-43c1-ae44-7bfed7f24ef9",
-      "games": 54
-    },
-    {
-      "aliasShard": "c1",
-      "spec": "c11b34e6-71ae",
-      "currentTarget": "e80d02ca-d364-42b3-b670-d12de4d2d1f9",
-      "likelyCorrectTarget": "186ee88f-5bc0-43c1-ae44-7bfed7f24ef9",
-      "games": 54
-    },
-    {
-      "aliasShard": "5a",
-      "spec": "5a551f46-9547",
-      "currentTarget": "e8979e7f-1919-4129-8928-caf6e2c0a027",
-      "likelyCorrectTarget": "58f9e7e7-6005-4943-ba77-7fdb72655c6d",
-      "games": 14
-    },
-    {
-      "aliasShard": "7d",
-      "spec": "7dc8142b-ba4a",
-      "currentTarget": "1c17cfd4-a6ff-4042-9c67-efdb0f351693",
-      "likelyCorrectTarget": "85598807-42a4-4515-9263-cbffd81b98d3",
-      "games": 27
-    },
-    {
-      "aliasShard": "53",
-      "spec": "53f46c90-c71f",
-      "currentTarget": "be929cf5-2db8-47c5-b3fe-fce840ab6c9e",
-      "likelyCorrectTarget": "abf3fb14-57e0-4ecf-8b90-dedf33030e25",
-      "games": 40
-    },
-    {
-      "aliasShard": "60",
-      "spec": "6082ce53-bfe2",
-      "currentTarget": "be929cf5-2db8-47c5-b3fe-fce840ab6c9e",
-      "likelyCorrectTarget": "abf3fb14-57e0-4ecf-8b90-dedf33030e25",
-      "games": 40
-    },
-    {
-      "aliasShard": "d8",
-      "spec": "d845e1d3-6bd0",
-      "currentTarget": "7544b97b-a909-41c7-8d35-e5a4949b4bd8",
-      "likelyCorrectTarget": "2d9da07d-2cfe-48ec-9000-164ad203c58e",
-      "games": 1
-    },
-    {
-      "aliasShard": "7b",
-      "spec": "7befb365-87e9",
-      "currentTarget": "643a6bff-ced7-4730-b72e-aa448ca77e3e",
-      "likelyCorrectTarget": "e61025b3-6ac6-4d06-8d26-ae6e175e8b03",
-      "games": 83
-    },
-    {
-      "aliasShard": "3c",
-      "spec": "3c80ebf2-197c",
-      "currentTarget": "fc51951e-0cea-42a0-840b-21de01670219",
-      "likelyCorrectTarget": "fbed1fde-ddd2-4060-abf7-6ae583d2ae55",
-      "games": 25
-    },
-    {
-      "aliasShard": "a6",
-      "spec": "a6945ed7-668f",
-      "currentTarget": "fc51951e-0cea-42a0-840b-21de01670219",
-      "likelyCorrectTarget": "fbed1fde-ddd2-4060-abf7-6ae583d2ae55",
-      "games": 25
-    },
-    {
-      "aliasShard": "e5",
-      "spec": "e55a53e0-8dd0",
-      "currentTarget": "fc51951e-0cea-42a0-840b-21de01670219",
-      "likelyCorrectTarget": "fbed1fde-ddd2-4060-abf7-6ae583d2ae55",
-      "games": 25
-    },
-    {
-      "aliasShard": "9d",
-      "spec": "9dc44c75-6d0b",
-      "currentTarget": "9fe6524c-eb53-4e8b-8a4e-65fc0260a637",
-      "likelyCorrectTarget": "bc9b9373-cc08-4e99-81c4-8049ed00da7f",
-      "games": 27
-    },
-    {
-      "aliasShard": "d6",
-      "spec": "d6af52c1-82a8",
-      "currentTarget": "128a9244-2a33-47e7-bc41-a46f44276e34",
-      "likelyCorrectTarget": "8e77dd8f-e3b2-4073-8c65-fd6f364b6362",
-      "games": 10
-    },
-    {
-      "aliasShard": "a0",
-      "spec": "a06f3176-03c0",
-      "currentTarget": "e738cc65-1c22-4a21-8c35-d216b6847312",
-      "likelyCorrectTarget": "3efb25e9-007a-4a36-84da-7c2fb1f632ec",
-      "games": 93
-    },
-    {
-      "aliasShard": "c1",
-      "spec": "c1221778-019b",
-      "currentTarget": "e738cc65-1c22-4a21-8c35-d216b6847312",
-      "likelyCorrectTarget": "3efb25e9-007a-4a36-84da-7c2fb1f632ec",
-      "games": 93
-    },
-    {
-      "aliasShard": "59",
-      "spec": "590129e5-20fc",
-      "currentTarget": "c2457983-bccf-4b4d-9f49-7d3ce60b14c5",
-      "likelyCorrectTarget": "d786b1fb-a82f-4afc-b5d8-fba612d06e3d",
-      "games": 10
-    },
-    {
-      "aliasShard": "77",
-      "spec": "77c0035a-6e3a",
-      "currentTarget": "c2457983-bccf-4b4d-9f49-7d3ce60b14c5",
-      "likelyCorrectTarget": "d786b1fb-a82f-4afc-b5d8-fba612d06e3d",
-      "games": 10
-    },
-    {
-      "aliasShard": "ae",
-      "spec": "ae5ed22f-72cd",
-      "currentTarget": "c2457983-bccf-4b4d-9f49-7d3ce60b14c5",
-      "likelyCorrectTarget": "d786b1fb-a82f-4afc-b5d8-fba612d06e3d",
-      "games": 10
-    },
-    {
-      "aliasShard": "23",
-      "spec": "2379b807-02cd",
-      "currentTarget": "6d01b391-6a0c-418a-b050-d5aec242f58c",
-      "likelyCorrectTarget": "274e1271-d0dd-494c-8bbd-0807b7898c25",
-      "games": 46
-    },
-    {
-      "aliasShard": "5a",
-      "spec": "5a491985-c0a3",
-      "currentTarget": "6d01b391-6a0c-418a-b050-d5aec242f58c",
-      "likelyCorrectTarget": "274e1271-d0dd-494c-8bbd-0807b7898c25",
-      "games": 46
-    },
-    {
-      "aliasShard": "da",
-      "spec": "dae4db6e-6e05",
-      "currentTarget": "6d01b391-6a0c-418a-b050-d5aec242f58c",
-      "likelyCorrectTarget": "274e1271-d0dd-494c-8bbd-0807b7898c25",
-      "games": 46
-    },
-    {
-      "aliasShard": "6a",
-      "spec": "6acbf2f8-170d",
-      "currentTarget": "9024a193-67ee-457f-a2fc-399c5ee2b5cc",
-      "likelyCorrectTarget": "cffe4021-32ec-4692-b791-c39a42dc2275",
-      "games": 25
-    },
-    {
-      "aliasShard": "ff",
-      "spec": "ff253e44-ac8e",
-      "currentTarget": "9030c69c-937c-4bdb-a177-64e6e18da25d",
-      "likelyCorrectTarget": "cdab8d21-8994-42f9-886b-54b392258999",
-      "games": 9
-    },
-    {
-      "aliasShard": "1a",
-      "spec": "1a6a8ce9-168f",
-      "currentTarget": "01f0b939-070e-4191-ae6f-178369bc5c40",
-      "likelyCorrectTarget": "c8b483ec-0fd0-4088-b380-3ae95f3ef4b7",
-      "games": 59
-    },
-    {
-      "aliasShard": "ab",
-      "spec": "ab1a3558-c3e3",
-      "currentTarget": "01f0b939-070e-4191-ae6f-178369bc5c40",
-      "likelyCorrectTarget": "c8b483ec-0fd0-4088-b380-3ae95f3ef4b7",
-      "games": 59
-    },
-    {
-      "aliasShard": "d6",
-      "spec": "d612caa3-ee87",
-      "currentTarget": "73a7fb90-e5ea-4ab0-81d1-5c86c81c1dcd",
-      "likelyCorrectTarget": "fc298d49-2d1a-4460-b622-65b411f0ecb4",
-      "games": 14
-    },
-    {
-      "aliasShard": "4e",
-      "spec": "4edade86-0f06",
-      "currentTarget": "b03a6d8d-a118-4809-9931-f1062754da4f",
-      "likelyCorrectTarget": "ee268bd7-c1a2-4675-a076-0dc28e587793",
-      "games": 43
-    },
-    {
-      "aliasShard": "59",
-      "spec": "59e03d66-d097",
-      "currentTarget": "b03a6d8d-a118-4809-9931-f1062754da4f",
-      "likelyCorrectTarget": "ee268bd7-c1a2-4675-a076-0dc28e587793",
-      "games": 43
-    },
-    {
-      "aliasShard": "e6",
-      "spec": "e6e958be-7495",
-      "currentTarget": "b03a6d8d-a118-4809-9931-f1062754da4f",
-      "likelyCorrectTarget": "ee268bd7-c1a2-4675-a076-0dc28e587793",
-      "games": 43
-    },
-    {
-      "aliasShard": "3e",
-      "spec": "3ef55ab0-60a1",
-      "currentTarget": "b04a5309-91b6-43fc-9ff7-06efd0da16c3",
-      "likelyCorrectTarget": "3935970b-149f-4538-908e-539a9814cf1e",
-      "games": 9
-    },
-    {
-      "aliasShard": "fa",
-      "spec": "fa3157f3-a3c6",
-      "currentTarget": "b066e0a0-e599-42f6-bd8d-d757e476daa2",
-      "likelyCorrectTarget": "2013ab8c-27b2-4709-b2b1-13a6486c4b4e",
-      "games": 23
-    },
-    {
-      "aliasShard": "20",
-      "spec": "20b7995f-d708",
-      "currentTarget": "66e58ba9-b69a-461e-8c90-04d4f062d9c0",
-      "likelyCorrectTarget": "7d0a572f-c843-478a-a1bf-5233b49af48f",
-      "games": 13
-    },
-    {
-      "aliasShard": "52",
-      "spec": "5216bcdd-eb25",
-      "currentTarget": "d4c8048b-4150-44e5-928f-77589eb1ce1c",
-      "likelyCorrectTarget": "d5ee5da0-24df-492e-afb7-16ab6035a63d",
-      "games": 12
-    },
-    {
-      "aliasShard": "19",
-      "spec": "197754dd-f677",
-      "currentTarget": "fde297a4-0d9d-47af-84b5-db338f663541",
-      "likelyCorrectTarget": "0b299a58-f6e8-4d11-a63c-712d92762f34",
-      "games": 10
-    },
-    {
-      "aliasShard": "5f",
-      "spec": "5f7a13a8-f4c3",
-      "currentTarget": "fd77703f-9608-4239-b459-5c6042b09138",
-      "likelyCorrectTarget": "beef9a8e-1a8a-4b2a-8327-96c8ca3e5001",
-      "games": 123
-    },
-    {
-      "aliasShard": "6f",
-      "spec": "6f2d00bb-0419",
-      "currentTarget": "fd77703f-9608-4239-b459-5c6042b09138",
-      "likelyCorrectTarget": "beef9a8e-1a8a-4b2a-8327-96c8ca3e5001",
-      "games": 123
-    },
-    {
-      "aliasShard": "f3",
-      "spec": "f3c43360-211c",
-      "currentTarget": "fd77703f-9608-4239-b459-5c6042b09138",
-      "likelyCorrectTarget": "beef9a8e-1a8a-4b2a-8327-96c8ca3e5001",
-      "games": 123
-    },
-    {
-      "aliasShard": "c1",
-      "spec": "c1a0c949-7936",
-      "currentTarget": "aff7508c-32c6-4282-8d09-6bb7b400a31f",
-      "likelyCorrectTarget": "bb7d356d-20ba-4a57-b1a2-2aa0260dd7a3",
-      "games": 69
-    },
-    {
-      "aliasShard": "c2",
-      "spec": "c273e296-81bd",
-      "currentTarget": "aff7508c-32c6-4282-8d09-6bb7b400a31f",
-      "likelyCorrectTarget": "bb7d356d-20ba-4a57-b1a2-2aa0260dd7a3",
-      "games": 69
-    },
-    {
-      "aliasShard": "9b",
-      "spec": "9b9ffdae-3aa3",
-      "currentTarget": "055c719b-4384-4b56-be59-ab732ec9a141",
-      "likelyCorrectTarget": "7532cc75-0ca8-46c1-8274-3ea54aa1d8a5",
-      "games": 28
-    },
-    {
-      "aliasShard": "16",
-      "spec": "16eb811e-c0f1",
-      "currentTarget": "1833df06-450f-4ec5-8305-e5b910ae5373",
-      "likelyCorrectTarget": "653fdcbc-6038-4959-aa7a-2519b536e3ea",
-      "games": 61
-    },
-    {
-      "aliasShard": "86",
-      "spec": "86d2eeb3-1adb",
-      "currentTarget": "adb1c382-219b-4372-917f-903cc580f8ec",
-      "likelyCorrectTarget": "769270db-9eb5-4e13-921d-6c1f291677aa",
-      "games": 3
-    },
-    {
-      "aliasShard": "64",
-      "spec": "64abbf44-fda8",
-      "currentTarget": "c854420d-cf12-4a0a-96bd-231420b2fbba",
-      "likelyCorrectTarget": "5c6bed8b-9257-4099-a150-cc83bd02cd54",
-      "games": 11
-    },
-    {
-      "aliasShard": "8c",
-      "spec": "8c3a30cd-e333",
-      "currentTarget": "c854420d-cf12-4a0a-96bd-231420b2fbba",
-      "likelyCorrectTarget": "5c6bed8b-9257-4099-a150-cc83bd02cd54",
-      "games": 11
-    },
-    {
-      "aliasShard": "34",
-      "spec": "3411fc77-584f",
-      "currentTarget": "f069a6aa-af19-459e-9908-edfa6bf33a2c",
-      "likelyCorrectTarget": "ade6995b-767d-4a73-910a-60b4f89b669d",
-      "games": 2
-    },
-    {
-      "aliasShard": "1a",
-      "spec": "1ab64dbf-e42e",
-      "currentTarget": "3fa6cb87-be15-4f25-84d3-90e0d16c6d40",
-      "likelyCorrectTarget": "b9ca8d79-1b5b-4848-acbb-b3c8db8e5cd8",
-      "games": 98
-    },
-    {
-      "aliasShard": "ed",
-      "spec": "ed4de79e-80ff",
-      "currentTarget": "3fa6cb87-be15-4f25-84d3-90e0d16c6d40",
-      "likelyCorrectTarget": "b9ca8d79-1b5b-4848-acbb-b3c8db8e5cd8",
-      "games": 98
-    },
-    {
-      "aliasShard": "68",
-      "spec": "685aaa54-d4a5",
-      "currentTarget": "3fe55881-ef53-431f-b80b-d24436240cc1",
-      "likelyCorrectTarget": "10d6ae3c-819a-4cbb-b446-08439995909d",
-      "games": 9
-    },
-    {
-      "aliasShard": "94",
-      "spec": "94112beb-ba21",
-      "currentTarget": "b5fa3c2a-c5b6-486d-a081-3d7202f413d3",
-      "likelyCorrectTarget": "443f46e0-03e5-4a5a-9079-a74020ce8f0c",
-      "games": 5
-    },
-    {
-      "aliasShard": "9a",
-      "spec": "9abd4228-b2c4",
-      "currentTarget": "b5e49c39-c34e-402a-9669-3f0695118b44",
-      "likelyCorrectTarget": "43520da5-eabd-4fc4-98f5-36b0d57a1adb",
-      "games": 12
-    },
-    {
-      "aliasShard": "3b",
-      "spec": "3b9437ac-c85e",
-      "currentTarget": "243d12fc-f974-40a0-8022-9748d06cc69e",
-      "likelyCorrectTarget": "6c281935-97b5-4d7f-b83f-06147f5fe827",
-      "games": 41
-    },
-    {
-      "aliasShard": "d6",
-      "spec": "d64cb77b-230b",
-      "currentTarget": "243d12fc-f974-40a0-8022-9748d06cc69e",
-      "likelyCorrectTarget": "6c281935-97b5-4d7f-b83f-06147f5fe827",
-      "games": 41
-    },
-    {
-      "aliasShard": "d7",
-      "spec": "d7ae8bb2-59fb",
-      "currentTarget": "24730de2-8dfc-44a7-afc2-1c172738864e",
-      "likelyCorrectTarget": "9a023a5c-6488-4664-b2e8-1a0826ea445c",
-      "games": 11
-    },
-    {
-      "aliasShard": "4a",
-      "spec": "4a0921f5-a07d",
-      "currentTarget": "0614b05b-c357-42d4-a407-1f4bda8b80d9",
-      "likelyCorrectTarget": "b81dff05-5bb3-468d-8e7e-9a0b4bda3095",
-      "games": 25
-    },
-    {
-      "aliasShard": "86",
-      "spec": "868ecb7e-98b0",
-      "currentTarget": "442805d7-4682-4628-a92d-8ffd42055e9c",
-      "likelyCorrectTarget": "14dc7e8f-2285-457d-8c08-ca7df38e5a7c",
-      "games": 21
-    },
-    {
-      "aliasShard": "02",
-      "spec": "020fddbd-844b",
-      "currentTarget": "622098f3-be0a-4720-805f-46ddb3bc964f",
-      "likelyCorrectTarget": "23fbdf5b-6f2a-4a64-9930-f0b32379823d",
-      "games": 184
-    },
-    {
-      "aliasShard": "0c",
-      "spec": "0c431f03-a010",
-      "currentTarget": "622098f3-be0a-4720-805f-46ddb3bc964f",
-      "likelyCorrectTarget": "23fbdf5b-6f2a-4a64-9930-f0b32379823d",
-      "games": 184
-    },
-    {
-      "aliasShard": "89",
-      "spec": "89e9b839-9add",
-      "currentTarget": "622098f3-be0a-4720-805f-46ddb3bc964f",
-      "likelyCorrectTarget": "23fbdf5b-6f2a-4a64-9930-f0b32379823d",
-      "games": 184
-    },
-    {
-      "aliasShard": "b6",
-      "spec": "b6274cc1-7a8b",
-      "currentTarget": "fe6c2948-fff6-4997-adc6-b557eb87dbd4",
-      "likelyCorrectTarget": "b2011284-c440-4d76-9174-7354e0dba8b5",
-      "games": 37
-    },
-    {
-      "aliasShard": "4f",
-      "spec": "4f502ffb-1d42",
-      "currentTarget": "9e2470db-2e0a-4b05-833c-ff4fa7325d42",
-      "likelyCorrectTarget": "abee7859-08be-471c-b0c1-d671164c9561",
-      "games": 76
-    },
-    {
-      "aliasShard": "40",
-      "spec": "40c0677d-7c6a",
-      "currentTarget": "4e6fac5c-d273-4f0b-9071-437389167dab",
-      "likelyCorrectTarget": "7d073864-bac0-4a22-9a88-923e34a67f4a",
-      "games": 15
-    }
-  ],
+  "playersWithAnyMisroute": 30,
+  "playersFullyMisrouted": 13,
+  "suspectAliases": [],
   "identityAliases": [
-    {
-      "aliasShard": "0e",
-      "spec": "0e2a221b-b369",
-      "currentTarget": "0e2a221b-b369-4509-a4d5-937b47af0b02",
-      "likelyCorrectTarget": "b47867df-f18b-481c-9fbb-6dd48a1437e1",
-      "games": 79
-    },
     {
       "aliasShard": "0e",
       "spec": "0eddfaaf-42ff",
       "currentTarget": "0eddfaaf-42ff-4fa4-bbf7-be9f7e05c607",
       "likelyCorrectTarget": "cad403a8-61d0-4cb0-8f8d-9adafc8ceade",
       "games": 1
-    },
-    {
-      "aliasShard": "95",
-      "spec": "951392e2-30b2",
-      "currentTarget": "951392e2-30b2-45b3-b089-0b4b332ac86b",
-      "likelyCorrectTarget": "e57c7ec0-51ca-4d6f-8f9e-085e6da89470",
-      "games": 8
-    },
-    {
-      "aliasShard": "26",
-      "spec": "26dae995-9fbe",
-      "currentTarget": "26dae995-9fbe-42bc-be3c-cb3be142e5e2",
-      "likelyCorrectTarget": "887b7ee0-0cdf-408e-8ec6-fd5f62424606",
-      "games": 21
-    },
-    {
-      "aliasShard": "02",
-      "spec": "026ea620-51a3",
-      "currentTarget": "026ea620-51a3-452a-913c-d2ef5342b3fd",
-      "likelyCorrectTarget": "49a70ce7-9f26-4aa8-b6f9-6f44ea3e4bed",
-      "games": 43
     },
     {
       "aliasShard": "02",
@@ -874,123 +26,11 @@
       "games": 3
     },
     {
-      "aliasShard": "df",
-      "spec": "df9dde1c-4b30",
-      "currentTarget": "df9dde1c-4b30-4eae-a439-45d6de208e5a",
-      "likelyCorrectTarget": "702d0ce6-fbd9-4122-9783-b92ae7918b5c",
-      "games": 29
-    },
-    {
-      "aliasShard": "0a",
-      "spec": "0a8d5942-769c",
-      "currentTarget": "0a8d5942-769c-447f-8ffb-ca97cdfcc242",
-      "likelyCorrectTarget": "6d6ba32a-6f82-45f4-9d73-e203140f92f4",
-      "games": 30
-    },
-    {
-      "aliasShard": "76",
-      "spec": "76a3d064-71c2",
-      "currentTarget": "76a3d064-71c2-4bec-85e6-d7b854290cd2",
-      "likelyCorrectTarget": "ee243c4c-6d02-49b6-8e02-2f3120979b34",
-      "games": 25
-    },
-    {
-      "aliasShard": "c1",
-      "spec": "c12cb989-39a6",
-      "currentTarget": "c12cb989-39a6-465b-ad3e-ce27f1753c82",
-      "likelyCorrectTarget": "56816cc6-577a-400d-84ca-6d938350611c",
-      "games": 40
-    },
-    {
-      "aliasShard": "c1",
-      "spec": "c1e7e234-5e9b",
-      "currentTarget": "c1e7e234-5e9b-4884-aead-4baa04abf35f",
-      "likelyCorrectTarget": "e191d9f4-d5c4-4f2e-8f7c-7dbfb114878a",
-      "games": 33
-    },
-    {
-      "aliasShard": "69",
-      "spec": "69c3d767-1264",
-      "currentTarget": "69c3d767-1264-456a-a27f-8835feb357fc",
-      "likelyCorrectTarget": "67ddbc6e-63e1-4c5d-8632-0f541e14ca8c",
-      "games": 12
-    },
-    {
-      "aliasShard": "e0",
-      "spec": "e0d5e05f-0645",
-      "currentTarget": "e0d5e05f-0645-49e0-a0ab-667aa7690e54",
-      "likelyCorrectTarget": "c9a48a51-5082-43a0-8d74-40b4111695b3",
-      "games": 12
-    },
-    {
-      "aliasShard": "47",
-      "spec": "4734d05a-cbce",
-      "currentTarget": "4734d05a-cbce-4a7d-82cb-d298c3260879",
-      "likelyCorrectTarget": "e44f1a12-0310-45f4-bd56-81ffebc7a0ae",
-      "games": 17
-    },
-    {
-      "aliasShard": "91",
-      "spec": "91c7128a-58eb",
-      "currentTarget": "91c7128a-58eb-4b9d-85ad-649bd4ed29ba",
-      "likelyCorrectTarget": "87efc3f9-b89e-421b-ad42-8cc1d86b6093",
-      "games": 45
-    },
-    {
-      "aliasShard": "2c",
-      "spec": "2ccb89b6-9a4f",
-      "currentTarget": "2ccb89b6-9a4f-494e-a91b-38f286b2c259",
-      "likelyCorrectTarget": "3dfa6f8e-fe32-4cf1-aed6-4d7b5fa45f5c",
-      "games": 11
-    },
-    {
-      "aliasShard": "ec",
-      "spec": "ecc0cab2-9f92",
-      "currentTarget": "ecc0cab2-9f92-48af-bdad-1751530c3d58",
-      "likelyCorrectTarget": "ff38eca9-9a6d-42cc-aec0-f2f2266db45a",
-      "games": 62
-    },
-    {
-      "aliasShard": "a7",
-      "spec": "a7a304c4-0dd5",
-      "currentTarget": "a7a304c4-0dd5-4c1f-916d-9c837e08eb2e",
-      "likelyCorrectTarget": "3a83d3df-62e1-4d4b-917b-a4e2387ac981",
-      "games": 18
-    },
-    {
       "aliasShard": "a7",
       "spec": "a7dc0759-6f23",
       "currentTarget": "a7dc0759-6f23-4c10-89c1-936c1c020ba8",
       "likelyCorrectTarget": "7b92da9e-25a4-4115-b5a0-e85ba83dc2be",
       "games": 1
-    },
-    {
-      "aliasShard": "1b",
-      "spec": "1b077fbd-e1b4",
-      "currentTarget": "1b077fbd-e1b4-417c-8d03-c386550352a5",
-      "likelyCorrectTarget": "75c3707a-5f49-46bf-b56d-e391380b11bf",
-      "games": 50
-    },
-    {
-      "aliasShard": "1b",
-      "spec": "1b14d314-e12c",
-      "currentTarget": "1b14d314-e12c-491a-9848-1b5e7ca7af0e",
-      "likelyCorrectTarget": "c328cbda-2b85-45e5-9a82-ed7a4f96edb3",
-      "games": 147
-    },
-    {
-      "aliasShard": "78",
-      "spec": "783f6c2b-6ec0",
-      "currentTarget": "783f6c2b-6ec0-4126-8e8e-0da5345deb7f",
-      "likelyCorrectTarget": "49c6c45e-d566-4bf9-a045-4ebc39094557",
-      "games": 16
-    },
-    {
-      "aliasShard": "6f",
-      "spec": "6fd8768a-d269",
-      "currentTarget": "6fd8768a-d269-494c-b9f4-7ae28d8fd9bd",
-      "likelyCorrectTarget": "5903796c-a12b-4c10-b1b8-d2b8afab12ba",
-      "games": 24
     },
     {
       "aliasShard": "07",
@@ -1007,74 +47,11 @@
       "games": 1
     },
     {
-      "aliasShard": "5e",
-      "spec": "5e1e39df-432f",
-      "currentTarget": "5e1e39df-432f-42bc-9a31-37ce11d1663e",
-      "likelyCorrectTarget": "443aa5ef-5174-49ba-8387-c86abf11cd67",
-      "games": 38
-    },
-    {
-      "aliasShard": "2a",
-      "spec": "2abd2870-0622",
-      "currentTarget": "2abd2870-0622-4a81-bea0-2131e96fefc8",
-      "likelyCorrectTarget": "da6676ee-6d73-4fde-ae2c-18d2626b4530",
-      "games": 9
-    },
-    {
-      "aliasShard": "e1",
-      "spec": "e14f2c3c-aa99",
-      "currentTarget": "e14f2c3c-aa99-4a20-9afd-14cbd067fff6",
-      "likelyCorrectTarget": "d95fb2ef-1538-471f-b655-e5283af3f522",
-      "games": 39
-    },
-    {
-      "aliasShard": "6a",
-      "spec": "6a9399d0-566d",
-      "currentTarget": "6a9399d0-566d-4159-8f1d-d52a580cf999",
-      "likelyCorrectTarget": "153812bf-7fac-422c-b380-241409bf945c",
-      "games": 26
-    },
-    {
-      "aliasShard": "2f",
-      "spec": "2ff7e1cb-8edf",
-      "currentTarget": "2ff7e1cb-8edf-43af-b135-6d014cb08b79",
-      "likelyCorrectTarget": "4d033fc0-2106-497f-abef-ebe7bf54a0d0",
-      "games": 54
-    },
-    {
-      "aliasShard": "bd",
-      "spec": "bdaf2c8a-e3c6",
-      "currentTarget": "bdaf2c8a-e3c6-4e40-9bc5-f233596fa255",
-      "likelyCorrectTarget": "49131120-d334-4954-bc75-8c04215928e3",
-      "games": 5
-    },
-    {
-      "aliasShard": "bd",
-      "spec": "bdf11304-9f1a",
-      "currentTarget": "bdf11304-9f1a-4889-abf3-191e82ee53a3",
-      "likelyCorrectTarget": "28b5a06e-754d-4de5-b03c-25f560a59106",
-      "games": 74
-    },
-    {
-      "aliasShard": "bd",
-      "spec": "bd31d91a-2b12",
-      "currentTarget": "bd31d91a-2b12-4587-bbfc-acb82edd6f56",
-      "likelyCorrectTarget": "ade64a31-39b8-4320-b0bd-27fa0b9451a4",
-      "games": 44
-    },
-    {
       "aliasShard": "3b",
       "spec": "3b1290dc-41e7",
       "currentTarget": "3b1290dc-41e7-4679-ab17-88cb59e2eef1",
       "likelyCorrectTarget": "cc9089e5-5134-4b93-bab6-1183428261bc",
       "games": 1
-    },
-    {
-      "aliasShard": "a1",
-      "spec": "a1141040-689a",
-      "currentTarget": "a1141040-689a-4730-b050-ac8c9f79b636",
-      "likelyCorrectTarget": "9f350899-b196-4491-bed5-8587f54fed4a",
-      "games": 13
     },
     {
       "aliasShard": "1a",
@@ -1084,67 +61,11 @@
       "games": 1
     },
     {
-      "aliasShard": "c4",
-      "spec": "c4d0e152-5394",
-      "currentTarget": "c4d0e152-5394-4011-9cd3-bbf627df7225",
-      "likelyCorrectTarget": "a09b6e59-4090-4701-bb62-b8a5b098970a",
-      "games": 8
-    },
-    {
-      "aliasShard": "c4",
-      "spec": "c4cd34ae-0d64",
-      "currentTarget": "c4cd34ae-0d64-4bc3-8a3d-39fe6f3d8268",
-      "likelyCorrectTarget": "50bd3e16-a199-44f2-90b3-225aac5b8ed7",
-      "games": 29
-    },
-    {
-      "aliasShard": "09",
-      "spec": "0967446a-e523",
-      "currentTarget": "0967446a-e523-47ba-8a1f-065b80af0542",
-      "likelyCorrectTarget": "5cbc8e05-8772-40d5-a830-3778cace9b78",
-      "games": 49
-    },
-    {
-      "aliasShard": "e8",
-      "spec": "e80d02ca-d364",
-      "currentTarget": "e80d02ca-d364-42b3-b670-d12de4d2d1f9",
-      "likelyCorrectTarget": "186ee88f-5bc0-43c1-ae44-7bfed7f24ef9",
-      "games": 54
-    },
-    {
-      "aliasShard": "e8",
-      "spec": "e8979e7f-1919",
-      "currentTarget": "e8979e7f-1919-4129-8928-caf6e2c0a027",
-      "likelyCorrectTarget": "58f9e7e7-6005-4943-ba77-7fdb72655c6d",
-      "games": 14
-    },
-    {
-      "aliasShard": "1c",
-      "spec": "1c17cfd4-a6ff",
-      "currentTarget": "1c17cfd4-a6ff-4042-9c67-efdb0f351693",
-      "likelyCorrectTarget": "85598807-42a4-4515-9263-cbffd81b98d3",
-      "games": 27
-    },
-    {
       "aliasShard": "be",
       "spec": "be41001e-a705",
       "currentTarget": "be41001e-a705-4000-a924-3f4358fcf30e",
       "likelyCorrectTarget": "bd03728b-6ffe-4121-8124-f75bba13c657",
       "games": 2
-    },
-    {
-      "aliasShard": "75",
-      "spec": "7544b97b-a909",
-      "currentTarget": "7544b97b-a909-41c7-8d35-e5a4949b4bd8",
-      "likelyCorrectTarget": "2d9da07d-2cfe-48ec-9000-164ad203c58e",
-      "games": 1
-    },
-    {
-      "aliasShard": "64",
-      "spec": "643a6bff-ced7",
-      "currentTarget": "643a6bff-ced7-4730-b72e-aa448ca77e3e",
-      "likelyCorrectTarget": "e61025b3-6ac6-4d06-8d26-ae6e175e8b03",
-      "games": 83
     },
     {
       "aliasShard": "87",
@@ -1154,130 +75,11 @@
       "games": 1
     },
     {
-      "aliasShard": "fc",
-      "spec": "fc51951e-0cea",
-      "currentTarget": "fc51951e-0cea-42a0-840b-21de01670219",
-      "likelyCorrectTarget": "fbed1fde-ddd2-4060-abf7-6ae583d2ae55",
-      "games": 25
-    },
-    {
-      "aliasShard": "9f",
-      "spec": "9fe6524c-eb53",
-      "currentTarget": "9fe6524c-eb53-4e8b-8a4e-65fc0260a637",
-      "likelyCorrectTarget": "bc9b9373-cc08-4e99-81c4-8049ed00da7f",
-      "games": 27
-    },
-    {
-      "aliasShard": "12",
-      "spec": "128a9244-2a33",
-      "currentTarget": "128a9244-2a33-47e7-bc41-a46f44276e34",
-      "likelyCorrectTarget": "8e77dd8f-e3b2-4073-8c65-fd6f364b6362",
-      "games": 10
-    },
-    {
-      "aliasShard": "e7",
-      "spec": "e738cc65-1c22",
-      "currentTarget": "e738cc65-1c22-4a21-8c35-d216b6847312",
-      "likelyCorrectTarget": "3efb25e9-007a-4a36-84da-7c2fb1f632ec",
-      "games": 93
-    },
-    {
-      "aliasShard": "c2",
-      "spec": "c2457983-bccf",
-      "currentTarget": "c2457983-bccf-4b4d-9f49-7d3ce60b14c5",
-      "likelyCorrectTarget": "d786b1fb-a82f-4afc-b5d8-fba612d06e3d",
-      "games": 10
-    },
-    {
-      "aliasShard": "6d",
-      "spec": "6d01b391-6a0c",
-      "currentTarget": "6d01b391-6a0c-418a-b050-d5aec242f58c",
-      "likelyCorrectTarget": "274e1271-d0dd-494c-8bbd-0807b7898c25",
-      "games": 46
-    },
-    {
-      "aliasShard": "90",
-      "spec": "9024a193-67ee",
-      "currentTarget": "9024a193-67ee-457f-a2fc-399c5ee2b5cc",
-      "likelyCorrectTarget": "cffe4021-32ec-4692-b791-c39a42dc2275",
-      "games": 25
-    },
-    {
-      "aliasShard": "90",
-      "spec": "9030c69c-937c",
-      "currentTarget": "9030c69c-937c-4bdb-a177-64e6e18da25d",
-      "likelyCorrectTarget": "cdab8d21-8994-42f9-886b-54b392258999",
-      "games": 9
-    },
-    {
-      "aliasShard": "01",
-      "spec": "01f0b939-070e",
-      "currentTarget": "01f0b939-070e-4191-ae6f-178369bc5c40",
-      "likelyCorrectTarget": "c8b483ec-0fd0-4088-b380-3ae95f3ef4b7",
-      "games": 59
-    },
-    {
-      "aliasShard": "73",
-      "spec": "73a7fb90-e5ea",
-      "currentTarget": "73a7fb90-e5ea-4ab0-81d1-5c86c81c1dcd",
-      "likelyCorrectTarget": "fc298d49-2d1a-4460-b622-65b411f0ecb4",
-      "games": 14
-    },
-    {
-      "aliasShard": "b0",
-      "spec": "b03a6d8d-a118",
-      "currentTarget": "b03a6d8d-a118-4809-9931-f1062754da4f",
-      "likelyCorrectTarget": "ee268bd7-c1a2-4675-a076-0dc28e587793",
-      "games": 43
-    },
-    {
-      "aliasShard": "b0",
-      "spec": "b04a5309-91b6",
-      "currentTarget": "b04a5309-91b6-43fc-9ff7-06efd0da16c3",
-      "likelyCorrectTarget": "3935970b-149f-4538-908e-539a9814cf1e",
-      "games": 9
-    },
-    {
-      "aliasShard": "b0",
-      "spec": "b066e0a0-e599",
-      "currentTarget": "b066e0a0-e599-42f6-bd8d-d757e476daa2",
-      "likelyCorrectTarget": "2013ab8c-27b2-4709-b2b1-13a6486c4b4e",
-      "games": 23
-    },
-    {
-      "aliasShard": "66",
-      "spec": "66e58ba9-b69a",
-      "currentTarget": "66e58ba9-b69a-461e-8c90-04d4f062d9c0",
-      "likelyCorrectTarget": "7d0a572f-c843-478a-a1bf-5233b49af48f",
-      "games": 13
-    },
-    {
       "aliasShard": "66",
       "spec": "6632df0b-31b2",
       "currentTarget": "6632df0b-31b2-4886-a624-abfaf7ef0a13",
       "likelyCorrectTarget": "5afe2771-f03a-489f-8823-dc1ae9e26fb0",
       "games": 5
-    },
-    {
-      "aliasShard": "d4",
-      "spec": "d4c8048b-4150",
-      "currentTarget": "d4c8048b-4150-44e5-928f-77589eb1ce1c",
-      "likelyCorrectTarget": "d5ee5da0-24df-492e-afb7-16ab6035a63d",
-      "games": 12
-    },
-    {
-      "aliasShard": "fd",
-      "spec": "fde297a4-0d9d",
-      "currentTarget": "fde297a4-0d9d-47af-84b5-db338f663541",
-      "likelyCorrectTarget": "0b299a58-f6e8-4d11-a63c-712d92762f34",
-      "games": 10
-    },
-    {
-      "aliasShard": "fd",
-      "spec": "fd77703f-9608",
-      "currentTarget": "fd77703f-9608-4239-b459-5c6042b09138",
-      "likelyCorrectTarget": "beef9a8e-1a8a-4b2a-8327-96c8ca3e5001",
-      "games": 123
     },
     {
       "aliasShard": "af",
@@ -1287,13 +89,6 @@
       "games": 1
     },
     {
-      "aliasShard": "af",
-      "spec": "aff7508c-32c6",
-      "currentTarget": "aff7508c-32c6-4282-8d09-6bb7b400a31f",
-      "likelyCorrectTarget": "bb7d356d-20ba-4a57-b1a2-2aa0260dd7a3",
-      "games": 69
-    },
-    {
       "aliasShard": "05",
       "spec": "055c719b-4384",
       "currentTarget": "055c719b-4384-4b56-be59-ab732ec9a141",
@@ -1301,298 +96,15 @@
       "games": 28
     },
     {
-      "aliasShard": "ad",
-      "spec": "adb1c382-219b",
-      "currentTarget": "adb1c382-219b-4372-917f-903cc580f8ec",
-      "likelyCorrectTarget": "769270db-9eb5-4e13-921d-6c1f291677aa",
-      "games": 3
-    },
-    {
-      "aliasShard": "c8",
-      "spec": "c854420d-cf12",
-      "currentTarget": "c854420d-cf12-4a0a-96bd-231420b2fbba",
-      "likelyCorrectTarget": "5c6bed8b-9257-4099-a150-cc83bd02cd54",
-      "games": 11
-    },
-    {
-      "aliasShard": "f0",
-      "spec": "f069a6aa-af19",
-      "currentTarget": "f069a6aa-af19-459e-9908-edfa6bf33a2c",
-      "likelyCorrectTarget": "ade6995b-767d-4a73-910a-60b4f89b669d",
-      "games": 2
-    },
-    {
-      "aliasShard": "3f",
-      "spec": "3fe55881-ef53",
-      "currentTarget": "3fe55881-ef53-431f-b80b-d24436240cc1",
-      "likelyCorrectTarget": "10d6ae3c-819a-4cbb-b446-08439995909d",
-      "games": 9
-    },
-    {
-      "aliasShard": "b5",
-      "spec": "b5e49c39-c34e",
-      "currentTarget": "b5e49c39-c34e-402a-9669-3f0695118b44",
-      "likelyCorrectTarget": "43520da5-eabd-4fc4-98f5-36b0d57a1adb",
-      "games": 12
-    },
-    {
-      "aliasShard": "24",
-      "spec": "243d12fc-f974",
-      "currentTarget": "243d12fc-f974-40a0-8022-9748d06cc69e",
-      "likelyCorrectTarget": "6c281935-97b5-4d7f-b83f-06147f5fe827",
-      "games": 41
-    },
-    {
-      "aliasShard": "24",
-      "spec": "24730de2-8dfc",
-      "currentTarget": "24730de2-8dfc-44a7-afc2-1c172738864e",
-      "likelyCorrectTarget": "9a023a5c-6488-4664-b2e8-1a0826ea445c",
-      "games": 11
-    },
-    {
-      "aliasShard": "06",
-      "spec": "0614b05b-c357",
-      "currentTarget": "0614b05b-c357-42d4-a407-1f4bda8b80d9",
-      "likelyCorrectTarget": "b81dff05-5bb3-468d-8e7e-9a0b4bda3095",
-      "games": 25
-    },
-    {
-      "aliasShard": "44",
-      "spec": "442805d7-4682",
-      "currentTarget": "442805d7-4682-4628-a92d-8ffd42055e9c",
-      "likelyCorrectTarget": "14dc7e8f-2285-457d-8c08-ca7df38e5a7c",
-      "games": 21
-    },
-    {
-      "aliasShard": "62",
-      "spec": "622098f3-be0a",
-      "currentTarget": "622098f3-be0a-4720-805f-46ddb3bc964f",
-      "likelyCorrectTarget": "23fbdf5b-6f2a-4a64-9930-f0b32379823d",
-      "games": 184
-    },
-    {
-      "aliasShard": "fe",
-      "spec": "fe6c2948-fff6",
-      "currentTarget": "fe6c2948-fff6-4997-adc6-b557eb87dbd4",
-      "likelyCorrectTarget": "b2011284-c440-4d76-9174-7354e0dba8b5",
-      "games": 37
-    },
-    {
       "aliasShard": "fe",
       "spec": "fe5211c0-f0d7",
       "currentTarget": "fe5211c0-f0d7-4c3b-8ce9-42f89782d91c",
       "likelyCorrectTarget": "ac3d0cca-2fa3-494d-893e-4db097519f67",
       "games": 2
-    },
-    {
-      "aliasShard": "9e",
-      "spec": "9e2470db-2e0a",
-      "currentTarget": "9e2470db-2e0a-4b05-833c-ff4fa7325d42",
-      "likelyCorrectTarget": "abee7859-08be-471c-b0c1-d671164c9561",
-      "games": 76
-    },
-    {
-      "aliasShard": "4e",
-      "spec": "4e6fac5c-d273",
-      "currentTarget": "4e6fac5c-d273-4f0b-9071-437389167dab",
-      "likelyCorrectTarget": "7d073864-bac0-4a22-9a88-923e34a67f4a",
-      "games": 15
     }
   ],
-  "repointed": 117,
+  "repointed": 0,
   "players": [
-    {
-      "uuid": "622098f3-be0a-4720-805f-46ddb3bc964f",
-      "name": "William Warren",
-      "gp": 78,
-      "games": 262,
-      "x": 184,
-      "xShareOfGames": 0.702,
-      "claims": [
-        {
-          "claimant": "23fbdf5b-6f2a-4a64-9930-f0b32379823d",
-          "name": "Will Warren",
-          "games": 184,
-          "sample": [
-            "00568b54",
-            "00dc1288",
-            "0119d1e1"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "1b14d314-e12c-491a-9848-1b5e7ca7af0e",
-      "name": "Alexander Stevens",
-      "gp": 16,
-      "games": 163,
-      "x": 147,
-      "xShareOfGames": 0.902,
-      "claims": [
-        {
-          "claimant": "c328cbda-2b85-45e5-9a82-ed7a4f96edb3",
-          "name": "Alex Stevens",
-          "games": 147,
-          "sample": [
-            "02a5b942",
-            "041ebfe3",
-            "0ea5a18f"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "fd77703f-9608-4239-b459-5c6042b09138",
-      "name": "Bradley Hocking",
-      "gp": 31,
-      "games": 154,
-      "x": 123,
-      "xShareOfGames": 0.799,
-      "claims": [
-        {
-          "claimant": "beef9a8e-1a8a-4b2a-8327-96c8ca3e5001",
-          "name": "Brad Hocking",
-          "games": 123,
-          "sample": [
-            "00230423",
-            "006cbfc6",
-            "042a56f2"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "3fa6cb87-be15-4f25-84d3-90e0d16c6d40",
-      "name": "Ben O’Connor",
-      "gp": 0,
-      "games": 98,
-      "x": 98,
-      "xShareOfGames": 1,
-      "claims": [
-        {
-          "claimant": "b9ca8d79-1b5b-4848-acbb-b3c8db8e5cd8",
-          "name": "Ben OConnor",
-          "games": 98,
-          "sample": [
-            "0004db3b",
-            "001585e0",
-            "002125c5"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "e738cc65-1c22-4a21-8c35-d216b6847312",
-      "name": "Joshua Flannery",
-      "gp": 12,
-      "games": 105,
-      "x": 93,
-      "xShareOfGames": 0.886,
-      "claims": [
-        {
-          "claimant": "3efb25e9-007a-4a36-84da-7c2fb1f632ec",
-          "name": "josh flannery",
-          "games": 93,
-          "sample": [
-            "045f1fcd",
-            "08f45ec9",
-            "09105db4"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "643a6bff-ced7-4730-b72e-aa448ca77e3e",
-      "name": "Mitchell Pascoe",
-      "gp": 40,
-      "games": 117,
-      "x": 83,
-      "xShareOfGames": 0.709,
-      "claims": [
-        {
-          "claimant": "e61025b3-6ac6-4d06-8d26-ae6e175e8b03",
-          "name": "Mitch Pascoe",
-          "games": 83,
-          "sample": [
-            "0265e06d",
-            "036475f2",
-            "053917ba"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "0e2a221b-b369-4509-a4d5-937b47af0b02",
-      "name": "Alexander Morton",
-      "gp": 22,
-      "games": 101,
-      "x": 79,
-      "xShareOfGames": 0.782,
-      "claims": [
-        {
-          "claimant": "b47867df-f18b-481c-9fbb-6dd48a1437e1",
-          "name": "Alex Morton",
-          "games": 79,
-          "sample": [
-            "02c9475c",
-            "068e169a",
-            "06ee6199"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "9e2470db-2e0a-4b05-833c-ff4fa7325d42",
-      "name": "William Haydn-Evans",
-      "gp": 36,
-      "games": 110,
-      "x": 76,
-      "xShareOfGames": 0.691,
-      "claims": [
-        {
-          "claimant": "abee7859-08be-471c-b0c1-d671164c9561",
-          "name": "Will Haydn-evans",
-          "games": 76,
-          "sample": [
-            "01b659f9",
-            "03f332c3",
-            "06bf6a7a"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
     {
       "uuid": "0711f155-550b-4961-ac1d-1aaf5a52c564",
       "name": "Jean Land",
@@ -1609,54 +121,6 @@
             "048025d2",
             "0721eefd",
             "08400d1d"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "bdf11304-9f1a-4889-abf3-191e82ee53a3",
-      "name": "Braden Rudiger",
-      "gp": 102,
-      "games": 176,
-      "x": 74,
-      "xShareOfGames": 0.42,
-      "claims": [
-        {
-          "claimant": "28b5a06e-754d-4de5-b03c-25f560a59106",
-          "name": "Braden Rudiger",
-          "games": 74,
-          "sample": [
-            "02d8d21a",
-            "037b2784",
-            "11ff6d55"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "aff7508c-32c6-4282-8d09-6bb7b400a31f",
-      "name": "William Guy",
-      "gp": 19,
-      "games": 88,
-      "x": 69,
-      "xShareOfGames": 0.784,
-      "claims": [
-        {
-          "claimant": "bb7d356d-20ba-4a57-b1a2-2aa0260dd7a3",
-          "name": "Will Guy",
-          "games": 69,
-          "sample": [
-            "02181a3b",
-            "03676ecf",
-            "0666ae30"
           ]
         }
       ],
@@ -1690,78 +154,6 @@
       "singleClaimant": false
     },
     {
-      "uuid": "ecc0cab2-9f92-48af-bdad-1751530c3d58",
-      "name": "Samuel Jordan",
-      "gp": 14,
-      "games": 76,
-      "x": 62,
-      "xShareOfGames": 0.816,
-      "claims": [
-        {
-          "claimant": "ff38eca9-9a6d-42cc-aec0-f2f2266db45a",
-          "name": "Sam Jordan",
-          "games": 62,
-          "sample": [
-            "04bdea95",
-            "05fe8757",
-            "06a08b7a"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "1833df06-450f-4ec5-8305-e5b910ae5373",
-      "name": "Noah D'Alfonso",
-      "gp": 0,
-      "games": 61,
-      "x": 61,
-      "xShareOfGames": 1,
-      "claims": [
-        {
-          "claimant": "653fdcbc-6038-4959-aa7a-2519b536e3ea",
-          "name": "Noah D’Alfonso",
-          "games": 61,
-          "sample": [
-            "004e0cc3",
-            "0d5183e0",
-            "0ebb8f1e"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "01f0b939-070e-4191-ae6f-178369bc5c40",
-      "name": "William Coleman",
-      "gp": 118,
-      "games": 177,
-      "x": 59,
-      "xShareOfGames": 0.333,
-      "claims": [
-        {
-          "claimant": "c8b483ec-0fd0-4088-b380-3ae95f3ef4b7",
-          "name": "Will Coleman",
-          "games": 59,
-          "sample": [
-            "15b01927",
-            "15ea0055",
-            "1df9f503"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
       "uuid": "28779198-3a5a-4b64-a248-b968d8a5d373",
       "name": "Thomas OConnor",
       "gp": 118,
@@ -1784,150 +176,6 @@
       "gameNotFound": 0,
       "ambiguous": 0,
       "singleClaimant": false
-    },
-    {
-      "uuid": "2ff7e1cb-8edf-43af-b135-6d014cb08b79",
-      "name": "Samuel Diamond",
-      "gp": 147,
-      "games": 198,
-      "x": 54,
-      "xShareOfGames": 0.273,
-      "claims": [
-        {
-          "claimant": "4d033fc0-2106-497f-abef-ebe7bf54a0d0",
-          "name": "Sam Diamond",
-          "games": 54,
-          "sample": [
-            "02b6ef38",
-            "04dd5a2e",
-            "09597b7d"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "e80d02ca-d364-42b3-b670-d12de4d2d1f9",
-      "name": "Matthew Jessup",
-      "gp": 127,
-      "games": 179,
-      "x": 54,
-      "xShareOfGames": 0.302,
-      "claims": [
-        {
-          "claimant": "186ee88f-5bc0-43c1-ae44-7bfed7f24ef9",
-          "name": "Matt Jessup",
-          "games": 54,
-          "sample": [
-            "109c74c5",
-            "13665026",
-            "137895ff"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "1b077fbd-e1b4-417c-8d03-c386550352a5",
-      "name": "Benjamin Westworth",
-      "gp": 46,
-      "games": 96,
-      "x": 50,
-      "xShareOfGames": 0.521,
-      "claims": [
-        {
-          "claimant": "75c3707a-5f49-46bf-b56d-e391380b11bf",
-          "name": "Ben Westworth",
-          "games": 50,
-          "sample": [
-            "063c72e5",
-            "23bb49a3",
-            "24f2ef76"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "0967446a-e523-47ba-8a1f-065b80af0542",
-      "name": "Nicolas Kanatas",
-      "gp": 63,
-      "games": 110,
-      "x": 49,
-      "xShareOfGames": 0.445,
-      "claims": [
-        {
-          "claimant": "5cbc8e05-8772-40d5-a830-3778cace9b78",
-          "name": "Nic Kanatas",
-          "games": 49,
-          "sample": [
-            "03f26853",
-            "0498100b",
-            "11f48ce4"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "6d01b391-6a0c-418a-b050-d5aec242f58c",
-      "name": "Samuel Knights",
-      "gp": 69,
-      "games": 114,
-      "x": 46,
-      "xShareOfGames": 0.404,
-      "claims": [
-        {
-          "claimant": "274e1271-d0dd-494c-8bbd-0807b7898c25",
-          "name": "Sam Knights",
-          "games": 46,
-          "sample": [
-            "07b1c17d",
-            "242fb4c3",
-            "246882e2"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "91c7128a-58eb-4b9d-85ad-649bd4ed29ba",
-      "name": "Samuel Carroll",
-      "gp": 27,
-      "games": 72,
-      "x": 45,
-      "xShareOfGames": 0.625,
-      "claims": [
-        {
-          "claimant": "87efc3f9-b89e-421b-ad42-8cc1d86b6093",
-          "name": "sam carroll",
-          "games": 45,
-          "sample": [
-            "053a6728",
-            "07629e36",
-            "0e8d34e1"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
     },
     {
       "uuid": "4ee05e0d-ab7c-4884-937d-953a259fb0af",
@@ -1954,222 +202,6 @@
       "singleClaimant": false
     },
     {
-      "uuid": "bd31d91a-2b12-4587-bbfc-acb82edd6f56",
-      "name": "Henry O'Bryan",
-      "gp": 30,
-      "games": 71,
-      "x": 44,
-      "xShareOfGames": 0.62,
-      "claims": [
-        {
-          "claimant": "ade64a31-39b8-4320-b0bd-27fa0b9451a4",
-          "name": "Henry O’Bryan",
-          "games": 44,
-          "sample": [
-            "092597dd",
-            "101d01bb",
-            "267babbb"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "026ea620-51a3-452a-913c-d2ef5342b3fd",
-      "name": "Benjamin Melkus",
-      "gp": 34,
-      "games": 77,
-      "x": 43,
-      "xShareOfGames": 0.558,
-      "claims": [
-        {
-          "claimant": "49a70ce7-9f26-4aa8-b6f9-6f44ea3e4bed",
-          "name": "Ben Melkus",
-          "games": 43,
-          "sample": [
-            "05ed14da",
-            "0cc7111a",
-            "14919c75"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "b03a6d8d-a118-4809-9931-f1062754da4f",
-      "name": "Samuel Storey",
-      "gp": 10,
-      "games": 53,
-      "x": 43,
-      "xShareOfGames": 0.811,
-      "claims": [
-        {
-          "claimant": "ee268bd7-c1a2-4675-a076-0dc28e587793",
-          "name": "Sam Storey",
-          "games": 43,
-          "sample": [
-            "00dfc3ee",
-            "03b3a584",
-            "06358e00"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "243d12fc-f974-40a0-8022-9748d06cc69e",
-      "name": "Joshua Raffaele",
-      "gp": 149,
-      "games": 189,
-      "x": 41,
-      "xShareOfGames": 0.217,
-      "claims": [
-        {
-          "claimant": "6c281935-97b5-4d7f-b83f-06147f5fe827",
-          "name": "Josh Raffaele",
-          "games": 41,
-          "sample": [
-            "01304c8c",
-            "02ab1d81",
-            "05abe0b5"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "c12cb989-39a6-465b-ad3e-ce27f1753c82",
-      "name": "Sebastian Grosso",
-      "gp": 107,
-      "games": 146,
-      "x": 40,
-      "xShareOfGames": 0.274,
-      "claims": [
-        {
-          "claimant": "56816cc6-577a-400d-84ca-6d938350611c",
-          "name": "Seb Grosso",
-          "games": 40,
-          "sample": [
-            "0dd2d57c",
-            "26b75273",
-            "27a485aa"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "be929cf5-2db8-47c5-b3fe-fce840ab6c9e",
-      "name": "Alexander Adams",
-      "gp": 61,
-      "games": 85,
-      "x": 40,
-      "xShareOfGames": 0.471,
-      "claims": [
-        {
-          "claimant": "abf3fb14-57e0-4ecf-8b90-dedf33030e25",
-          "name": "Alex Adams",
-          "games": 40,
-          "sample": [
-            "0016e32c",
-            "02cad8f3",
-            "047eee9e"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "e14f2c3c-aa99-4a20-9afd-14cbd067fff6",
-      "name": "Alexander Lawson",
-      "gp": 17,
-      "games": 56,
-      "x": 39,
-      "xShareOfGames": 0.696,
-      "claims": [
-        {
-          "claimant": "d95fb2ef-1538-471f-b655-e5283af3f522",
-          "name": "Alex Lawson",
-          "games": 39,
-          "sample": [
-            "0089a282",
-            "0a1fe62e",
-            "19de1e73"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "5e1e39df-432f-42bc-9a31-37ce11d1663e",
-      "name": "Patrick Bunning",
-      "gp": 3,
-      "games": 41,
-      "x": 38,
-      "xShareOfGames": 0.927,
-      "claims": [
-        {
-          "claimant": "443aa5ef-5174-49ba-8387-c86abf11cd67",
-          "name": "Pat Bunning",
-          "games": 38,
-          "sample": [
-            "032fc258",
-            "0f326c70",
-            "18b68759"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "fe6c2948-fff6-4997-adc6-b557eb87dbd4",
-      "name": "Sam Castles",
-      "gp": 72,
-      "games": 108,
-      "x": 37,
-      "xShareOfGames": 0.343,
-      "claims": [
-        {
-          "claimant": "b2011284-c440-4d76-9174-7354e0dba8b5",
-          "name": "Samuel Castles",
-          "games": 37,
-          "sample": [
-            "07da2412",
-            "15714b1b",
-            "1f28b11a"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
       "uuid": "3aacb8a8-cbb2-4047-b741-12fb3d1fc783",
       "name": "Samuel Cox",
       "gp": 67,
@@ -2192,30 +224,6 @@
       "gameNotFound": 0,
       "ambiguous": 0,
       "singleClaimant": false
-    },
-    {
-      "uuid": "c1e7e234-5e9b-4884-aead-4baa04abf35f",
-      "name": "William Kaye",
-      "gp": 43,
-      "games": 76,
-      "x": 33,
-      "xShareOfGames": 0.434,
-      "claims": [
-        {
-          "claimant": "e191d9f4-d5c4-4f2e-8f7c-7dbfb114878a",
-          "name": "Will Kaye",
-          "games": 33,
-          "sample": [
-            "01e7df90",
-            "02eaa12d",
-            "0465ff87"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
     },
     {
       "uuid": "f995ed20-e8b8-4b2c-b3a9-51bf3a01b856",
@@ -2242,84 +250,12 @@
       "singleClaimant": false
     },
     {
-      "uuid": "0a8d5942-769c-447f-8ffb-ca97cdfcc242",
-      "name": "Samuel Friebe",
-      "gp": 25,
-      "games": 55,
-      "x": 30,
-      "xShareOfGames": 0.545,
-      "claims": [
-        {
-          "claimant": "6d6ba32a-6f82-45f4-9d73-e203140f92f4",
-          "name": "Sam Friebe",
-          "games": 30,
-          "sample": [
-            "1165b113",
-            "12f24b99",
-            "15260d70"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "df9dde1c-4b30-4eae-a439-45d6de208e5a",
-      "name": "Rafaat Elhouli",
-      "gp": 38,
-      "games": 66,
-      "x": 29,
-      "xShareOfGames": 0.439,
-      "claims": [
-        {
-          "claimant": "702d0ce6-fbd9-4122-9783-b92ae7918b5c",
-          "name": "Rafaat Elhouli",
-          "games": 29,
-          "sample": [
-            "02b60235",
-            "22f568ca",
-            "2353ce70"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "c4cd34ae-0d64-4bc3-8a3d-39fe6f3d8268",
-      "name": "Joshua White",
-      "gp": 15,
-      "games": 44,
-      "x": 29,
-      "xShareOfGames": 0.659,
-      "claims": [
-        {
-          "claimant": "50bd3e16-a199-44f2-90b3-225aac5b8ed7",
-          "name": "Josh White",
-          "games": 29,
-          "sample": [
-            "0b976c7c",
-            "0fba5b2c",
-            "1252d1ce"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
       "uuid": "055c719b-4384-4b56-be59-ab732ec9a141",
       "name": "Joseph Nott",
       "gp": 83,
-      "games": 109,
+      "games": 85,
       "x": 28,
-      "xShareOfGames": 0.257,
+      "xShareOfGames": 0.329,
       "claims": [
         {
           "claimant": "7532cc75-0ca8-46c1-8274-3ea54aa1d8a5",
@@ -2329,54 +265,6 @@
             "329977d0",
             "34e3040b",
             "360b4ad7"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "1c17cfd4-a6ff-4042-9c67-efdb0f351693",
-      "name": "William Bryan",
-      "gp": 117,
-      "games": 144,
-      "x": 27,
-      "xShareOfGames": 0.188,
-      "claims": [
-        {
-          "claimant": "85598807-42a4-4515-9263-cbffd81b98d3",
-          "name": "Will Bryan",
-          "games": 27,
-          "sample": [
-            "169d3228",
-            "1bb9f7fa",
-            "2bdfac81"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "9fe6524c-eb53-4e8b-8a4e-65fc0260a637",
-      "name": "Nicholas Lambert",
-      "gp": 95,
-      "games": 122,
-      "x": 27,
-      "xShareOfGames": 0.221,
-      "claims": [
-        {
-          "claimant": "bc9b9373-cc08-4e99-81c4-8049ed00da7f",
-          "name": "Nic lambert",
-          "games": 27,
-          "sample": [
-            "004c6e6f",
-            "02835dbb",
-            "30473fd0"
           ]
         }
       ],
@@ -2434,30 +322,6 @@
       "singleClaimant": false
     },
     {
-      "uuid": "6a9399d0-566d-4159-8f1d-d52a580cf999",
-      "name": "Alrick Weragoda Gamage Don",
-      "gp": 10,
-      "games": 36,
-      "x": 26,
-      "xShareOfGames": 0.722,
-      "claims": [
-        {
-          "claimant": "153812bf-7fac-422c-b380-241409bf945c",
-          "name": "Alrick Don",
-          "games": 26,
-          "sample": [
-            "07677fde",
-            "1d8c86cd",
-            "2000b4a6"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
       "uuid": "4cd51b52-987f-4f01-8cf2-1a6357828e98",
       "name": "Samuel Tralaggan",
       "gp": 66,
@@ -2480,30 +344,6 @@
       "gameNotFound": 0,
       "ambiguous": 0,
       "singleClaimant": false
-    },
-    {
-      "uuid": "76a3d064-71c2-4bec-85e6-d7b854290cd2",
-      "name": "Christopher Johnson",
-      "gp": 139,
-      "games": 164,
-      "x": 25,
-      "xShareOfGames": 0.152,
-      "claims": [
-        {
-          "claimant": "ee243c4c-6d02-49b6-8e02-2f3120979b34",
-          "name": "Chris Johnson",
-          "games": 25,
-          "sample": [
-            "00b03d30",
-            "09de01a3",
-            "138b3b5d"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
     },
     {
       "uuid": "8f20d933-dbdb-4a18-aea1-76fbbb7d747b",
@@ -2530,54 +370,6 @@
       "singleClaimant": false
     },
     {
-      "uuid": "fc51951e-0cea-42a0-840b-21de01670219",
-      "name": "Matthew Botha",
-      "gp": 165,
-      "games": 184,
-      "x": 25,
-      "xShareOfGames": 0.136,
-      "claims": [
-        {
-          "claimant": "fbed1fde-ddd2-4060-abf7-6ae583d2ae55",
-          "name": "Matt Botha",
-          "games": 25,
-          "sample": [
-            "115fc16f",
-            "1dc1bdd2",
-            "1ec0d11e"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "9024a193-67ee-457f-a2fc-399c5ee2b5cc",
-      "name": "Zac Muir",
-      "gp": 92,
-      "games": 116,
-      "x": 25,
-      "xShareOfGames": 0.216,
-      "claims": [
-        {
-          "claimant": "cffe4021-32ec-4692-b791-c39a42dc2275",
-          "name": "Zachary Muir",
-          "games": 25,
-          "sample": [
-            "079ea37b",
-            "14d773e6",
-            "15c88b0b"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
       "uuid": "a2283589-7f9a-415a-9975-9c3783a5d24d",
       "name": "Alexandra Green",
       "gp": 7,
@@ -2600,198 +392,6 @@
       "gameNotFound": 0,
       "ambiguous": 0,
       "singleClaimant": false
-    },
-    {
-      "uuid": "0614b05b-c357-42d4-a407-1f4bda8b80d9",
-      "name": "Zachary Clothier",
-      "gp": 25,
-      "games": 50,
-      "x": 25,
-      "xShareOfGames": 0.5,
-      "claims": [
-        {
-          "claimant": "b81dff05-5bb3-468d-8e7e-9a0b4bda3095",
-          "name": "Zach Clothier",
-          "games": 25,
-          "sample": [
-            "0e4c9542",
-            "0f9c8c64",
-            "0fa4e3da"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "6fd8768a-d269-494c-b9f4-7ae28d8fd9bd",
-      "name": "Violet ODonohue",
-      "gp": 26,
-      "games": 50,
-      "x": 24,
-      "xShareOfGames": 0.48,
-      "claims": [
-        {
-          "claimant": "5903796c-a12b-4c10-b1b8-d2b8afab12ba",
-          "name": "Violet O’Donohue",
-          "games": 24,
-          "sample": [
-            "08afa749",
-            "10b56e4d",
-            "182a2f03"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "b066e0a0-e599-42f6-bd8d-d757e476daa2",
-      "name": "Alexander Nelson",
-      "gp": 161,
-      "games": 184,
-      "x": 23,
-      "xShareOfGames": 0.125,
-      "claims": [
-        {
-          "claimant": "2013ab8c-27b2-4709-b2b1-13a6486c4b4e",
-          "name": "Alex Nelson",
-          "games": 23,
-          "sample": [
-            "05957f70",
-            "0711c6de",
-            "0cc87ded"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "26dae995-9fbe-42bc-be3c-cb3be142e5e2",
-      "name": "Cameron Noonan",
-      "gp": 13,
-      "games": 34,
-      "x": 21,
-      "xShareOfGames": 0.618,
-      "claims": [
-        {
-          "claimant": "887b7ee0-0cdf-408e-8ec6-fd5f62424606",
-          "name": "Cam Noonan",
-          "games": 21,
-          "sample": [
-            "05ba3cf7",
-            "1871b18e",
-            "351eda25"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "442805d7-4682-4628-a92d-8ffd42055e9c",
-      "name": "Levi Alejandro Flores",
-      "gp": 27,
-      "games": 48,
-      "x": 21,
-      "xShareOfGames": 0.438,
-      "claims": [
-        {
-          "claimant": "14dc7e8f-2285-457d-8c08-ca7df38e5a7c",
-          "name": "Levi Flores",
-          "games": 21,
-          "sample": [
-            "01cddc17",
-            "0534ae34",
-            "21a6653e"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "a7a304c4-0dd5-4c1f-916d-9c837e08eb2e",
-      "name": "Cameron Flynn",
-      "gp": 28,
-      "games": 46,
-      "x": 18,
-      "xShareOfGames": 0.391,
-      "claims": [
-        {
-          "claimant": "3a83d3df-62e1-4d4b-917b-a4e2387ac981",
-          "name": "Cam Flynn",
-          "games": 18,
-          "sample": [
-            "030e422e",
-            "3195e29a",
-            "327cfd9d"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "4734d05a-cbce-4a7d-82cb-d298c3260879",
-      "name": "William Watts",
-      "gp": 98,
-      "games": 112,
-      "x": 17,
-      "xShareOfGames": 0.152,
-      "claims": [
-        {
-          "claimant": "e44f1a12-0310-45f4-bd56-81ffebc7a0ae",
-          "name": "Will Watts",
-          "games": 17,
-          "sample": [
-            "1ca45836",
-            "2f6e8dd9",
-            "514b39bc"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "783f6c2b-6ec0-4126-8e8e-0da5345deb7f",
-      "name": "Joshua Pignolet",
-      "gp": 106,
-      "games": 122,
-      "x": 16,
-      "xShareOfGames": 0.131,
-      "claims": [
-        {
-          "claimant": "49c6c45e-d566-4bf9-a045-4ebc39094557",
-          "name": "Josh Pignolet",
-          "games": 16,
-          "sample": [
-            "0130a608",
-            "0df1a8ee",
-            "20b57ed1"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
     },
     {
       "uuid": "f51b38df-cd74-4a65-878a-ea7a263973d5",
@@ -2818,78 +418,6 @@
       "singleClaimant": false
     },
     {
-      "uuid": "4e6fac5c-d273-4f0b-9071-437389167dab",
-      "name": "Nicholas Reid",
-      "gp": 9,
-      "games": 24,
-      "x": 15,
-      "xShareOfGames": 0.625,
-      "claims": [
-        {
-          "claimant": "7d073864-bac0-4a22-9a88-923e34a67f4a",
-          "name": "Nic Reid",
-          "games": 15,
-          "sample": [
-            "0a84f95d",
-            "1be41977",
-            "2d1a0c46"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "e8979e7f-1919-4129-8928-caf6e2c0a027",
-      "name": "Dominic McInness",
-      "gp": 6,
-      "games": 20,
-      "x": 14,
-      "xShareOfGames": 0.7,
-      "claims": [
-        {
-          "claimant": "58f9e7e7-6005-4943-ba77-7fdb72655c6d",
-          "name": "Dom McInness",
-          "games": 14,
-          "sample": [
-            "0287a6ec",
-            "11cae257",
-            "2211e0a5"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "73a7fb90-e5ea-4ab0-81d1-5c86c81c1dcd",
-      "name": "Joshua Diaz",
-      "gp": 22,
-      "games": 34,
-      "x": 14,
-      "xShareOfGames": 0.412,
-      "claims": [
-        {
-          "claimant": "fc298d49-2d1a-4460-b622-65b411f0ecb4",
-          "name": "Josh Diaz",
-          "games": 14,
-          "sample": [
-            "015861ff",
-            "34c12fcc",
-            "5b4f4cc3"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
       "uuid": "59608406-b57e-452b-bcda-b33b0255e239",
       "name": "Matthew Thompson",
       "gp": 47,
@@ -2912,126 +440,6 @@
       "gameNotFound": 0,
       "ambiguous": 0,
       "singleClaimant": false
-    },
-    {
-      "uuid": "a1141040-689a-4730-b050-ac8c9f79b636",
-      "name": "William Mooney",
-      "gp": 152,
-      "games": 163,
-      "x": 13,
-      "xShareOfGames": 0.08,
-      "claims": [
-        {
-          "claimant": "9f350899-b196-4491-bed5-8587f54fed4a",
-          "name": "Will Mooney",
-          "games": 13,
-          "sample": [
-            "08a14d5f",
-            "0a6752fe",
-            "0c81342b"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "66e58ba9-b69a-461e-8c90-04d4f062d9c0",
-      "name": "Zachary Price",
-      "gp": 385,
-      "games": 397,
-      "x": 13,
-      "xShareOfGames": 0.033,
-      "claims": [
-        {
-          "claimant": "7d0a572f-c843-478a-a1bf-5233b49af48f",
-          "name": "Zach Price",
-          "games": 13,
-          "sample": [
-            "07d6443d",
-            "2c74110a",
-            "439e5266"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "69c3d767-1264-456a-a27f-8835feb357fc",
-      "name": "Benjamin Hill",
-      "gp": 106,
-      "games": 118,
-      "x": 12,
-      "xShareOfGames": 0.102,
-      "claims": [
-        {
-          "claimant": "67ddbc6e-63e1-4c5d-8632-0f541e14ca8c",
-          "name": "Ben Hill",
-          "games": 12,
-          "sample": [
-            "0a4a24e4",
-            "3229f054",
-            "4dac2b69"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "e0d5e05f-0645-49e0-a0ab-667aa7690e54",
-      "name": "Mannan Singh Samlok",
-      "gp": 19,
-      "games": 31,
-      "x": 12,
-      "xShareOfGames": 0.387,
-      "claims": [
-        {
-          "claimant": "c9a48a51-5082-43a0-8d74-40b4111695b3",
-          "name": "Mannan Samlok",
-          "games": 12,
-          "sample": [
-            "2a2d7f5f",
-            "407c0ba2",
-            "4a4e8146"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "2b0b320f-f61f-4325-9411-0909baabc781",
-      "name": "Will Mackinnon",
-      "gp": 0,
-      "games": 12,
-      "x": 12,
-      "xShareOfGames": 1,
-      "claims": [
-        {
-          "claimant": "c921006c-f996-4617-af99-2a5d8049082b",
-          "name": "William Mackinnon",
-          "games": 12,
-          "sample": [
-            "064ca22c",
-            "296b1535",
-            "3cd3c19d"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
     },
     {
       "uuid": "7a532c74-42ab-4a5d-97ec-91fbd4d0901e",
@@ -3058,78 +466,6 @@
       "singleClaimant": false
     },
     {
-      "uuid": "d4c8048b-4150-44e5-928f-77589eb1ce1c",
-      "name": "Joshua Goonan",
-      "gp": 31,
-      "games": 43,
-      "x": 12,
-      "xShareOfGames": 0.279,
-      "claims": [
-        {
-          "claimant": "d5ee5da0-24df-492e-afb7-16ab6035a63d",
-          "name": "Josh Goonan",
-          "games": 12,
-          "sample": [
-            "030727ea",
-            "1cdddb97",
-            "3c12139c"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "b5e49c39-c34e-402a-9669-3f0695118b44",
-      "name": "William Merrigan",
-      "gp": 5,
-      "games": 17,
-      "x": 12,
-      "xShareOfGames": 0.706,
-      "claims": [
-        {
-          "claimant": "43520da5-eabd-4fc4-98f5-36b0d57a1adb",
-          "name": "Will Merrigan",
-          "games": 12,
-          "sample": [
-            "0b331303",
-            "0f82945f",
-            "4874edd6"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "2ccb89b6-9a4f-494e-a91b-38f286b2c259",
-      "name": "Milla Odonohue",
-      "gp": 270,
-      "games": 278,
-      "x": 11,
-      "xShareOfGames": 0.04,
-      "claims": [
-        {
-          "claimant": "3dfa6f8e-fe32-4cf1-aed6-4d7b5fa45f5c",
-          "name": "Milla O’Donohue",
-          "games": 11,
-          "sample": [
-            "15c2ebbb",
-            "540e98bb",
-            "552332ec"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
       "uuid": "f8e8f610-f097-440e-bd1c-f722b2257dd2",
       "name": "Harrison Jones",
       "gp": 129,
@@ -3152,174 +488,6 @@
       "gameNotFound": 0,
       "ambiguous": 0,
       "singleClaimant": false
-    },
-    {
-      "uuid": "c854420d-cf12-4a0a-96bd-231420b2fbba",
-      "name": "Jackson Conroy",
-      "gp": 11,
-      "games": 22,
-      "x": 11,
-      "xShareOfGames": 0.5,
-      "claims": [
-        {
-          "claimant": "5c6bed8b-9257-4099-a150-cc83bd02cd54",
-          "name": "Jack Conroy",
-          "games": 11,
-          "sample": [
-            "170ae365",
-            "3184bc43",
-            "447476c0"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "24730de2-8dfc-44a7-afc2-1c172738864e",
-      "name": "Joshua Cardamone",
-      "gp": 31,
-      "games": 42,
-      "x": 11,
-      "xShareOfGames": 0.262,
-      "claims": [
-        {
-          "claimant": "9a023a5c-6488-4664-b2e8-1a0826ea445c",
-          "name": "Josh Cardamone",
-          "games": 11,
-          "sample": [
-            "0f2b19e2",
-            "1e4b4a7e",
-            "376782d8"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "128a9244-2a33-47e7-bc41-a46f44276e34",
-      "name": "William Sheehan",
-      "gp": 112,
-      "games": 120,
-      "x": 10,
-      "xShareOfGames": 0.083,
-      "claims": [
-        {
-          "claimant": "8e77dd8f-e3b2-4073-8c65-fd6f364b6362",
-          "name": "Will Sheehan",
-          "games": 10,
-          "sample": [
-            "12afd117",
-            "4e844ea9",
-            "69aa67cf"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "c2457983-bccf-4b4d-9f49-7d3ce60b14c5",
-      "name": "Maxwell Evans",
-      "gp": 14,
-      "games": 24,
-      "x": 10,
-      "xShareOfGames": 0.417,
-      "claims": [
-        {
-          "claimant": "d786b1fb-a82f-4afc-b5d8-fba612d06e3d",
-          "name": "Max Evans",
-          "games": 10,
-          "sample": [
-            "05372e9e",
-            "182d5344",
-            "2742434e"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "fde297a4-0d9d-47af-84b5-db338f663541",
-      "name": "Benjamin Taylor",
-      "gp": 149,
-      "games": 159,
-      "x": 10,
-      "xShareOfGames": 0.063,
-      "claims": [
-        {
-          "claimant": "0b299a58-f6e8-4d11-a63c-712d92762f34",
-          "name": "Benjamin Taylor",
-          "games": 10,
-          "sample": [
-            "01f7f358",
-            "1b440e4a",
-            "2659aed8"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "2abd2870-0622-4a81-bea0-2131e96fefc8",
-      "name": "Ethan Belcher",
-      "gp": 7,
-      "games": 16,
-      "x": 9,
-      "xShareOfGames": 0.563,
-      "claims": [
-        {
-          "claimant": "da6676ee-6d73-4fde-ae2c-18d2626b4530",
-          "name": "Ethan Belcher",
-          "games": 9,
-          "sample": [
-            "0b4115d5",
-            "1421ca86",
-            "19c1eb1c"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "9030c69c-937c-4bdb-a177-64e6e18da25d",
-      "name": "Harrison Belcher",
-      "gp": 7,
-      "games": 16,
-      "x": 9,
-      "xShareOfGames": 0.563,
-      "claims": [
-        {
-          "claimant": "cdab8d21-8994-42f9-886b-54b392258999",
-          "name": "Harrison Belcher",
-          "games": 9,
-          "sample": [
-            "0b4115d5",
-            "1421ca86",
-            "19c1eb1c"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
     },
     {
       "uuid": "7387ede8-241d-444e-8f91-0598abd5a14d",
@@ -3346,102 +514,6 @@
       "singleClaimant": false
     },
     {
-      "uuid": "b04a5309-91b6-43fc-9ff7-06efd0da16c3",
-      "name": "Samuel Pittwood",
-      "gp": 55,
-      "games": 63,
-      "x": 9,
-      "xShareOfGames": 0.143,
-      "claims": [
-        {
-          "claimant": "3935970b-149f-4538-908e-539a9814cf1e",
-          "name": "Sam Pittwood",
-          "games": 9,
-          "sample": [
-            "07e68199",
-            "15d7f012",
-            "1b2f3496"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "3fe55881-ef53-431f-b80b-d24436240cc1",
-      "name": "Benjamin Peace",
-      "gp": 29,
-      "games": 38,
-      "x": 9,
-      "xShareOfGames": 0.237,
-      "claims": [
-        {
-          "claimant": "10d6ae3c-819a-4cbb-b446-08439995909d",
-          "name": "Ben Peace",
-          "games": 9,
-          "sample": [
-            "086d97a7",
-            "1d5edf4f",
-            "21b61f4c"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "951392e2-30b2-45b3-b089-0b4b332ac86b",
-      "name": "William Lawrence",
-      "gp": 8,
-      "games": 15,
-      "x": 8,
-      "xShareOfGames": 0.533,
-      "claims": [
-        {
-          "claimant": "e57c7ec0-51ca-4d6f-8f9e-085e6da89470",
-          "name": "Will Lawrence",
-          "games": 8,
-          "sample": [
-            "28338a3c",
-            "395202ba",
-            "54ead962"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "c4d0e152-5394-4011-9cd3-bbf627df7225",
-      "name": "Zachary Orr",
-      "gp": 16,
-      "games": 24,
-      "x": 8,
-      "xShareOfGames": 0.333,
-      "claims": [
-        {
-          "claimant": "a09b6e59-4090-4701-bb62-b8a5b098970a",
-          "name": "Zac Orr",
-          "games": 8,
-          "sample": [
-            "424f4200",
-            "6dbeeb7b",
-            "8d67831e"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
       "uuid": "0f937365-f15e-4e44-aa1b-f3b69f4c9cf0",
       "name": "Dan Charles",
       "gp": 105,
@@ -3464,30 +536,6 @@
       "gameNotFound": 0,
       "ambiguous": 0,
       "singleClaimant": false
-    },
-    {
-      "uuid": "bdaf2c8a-e3c6-4e40-9bc5-f233596fa255",
-      "name": "William Tait",
-      "gp": 109,
-      "games": 114,
-      "x": 5,
-      "xShareOfGames": 0.044,
-      "claims": [
-        {
-          "claimant": "49131120-d334-4954-bc75-8c04215928e3",
-          "name": "Will Tait",
-          "games": 5,
-          "sample": [
-            "1d19f957",
-            "300578de",
-            "336752f8"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
     },
     {
       "uuid": "6632df0b-31b2-4886-a624-abfaf7ef0a13",
@@ -3514,30 +562,6 @@
       "singleClaimant": true
     },
     {
-      "uuid": "b5fa3c2a-c5b6-486d-a081-3d7202f413d3",
-      "name": "Matthew Dickinson",
-      "gp": 8,
-      "games": 13,
-      "x": 5,
-      "xShareOfGames": 0.385,
-      "claims": [
-        {
-          "claimant": "443f46e0-03e5-4a5a-9079-a74020ce8f0c",
-          "name": "Matt Dickinson",
-          "games": 5,
-          "sample": [
-            "06313a67",
-            "26ab3986",
-            "2ff04ed2"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
       "uuid": "029c573f-13cf-43a6-bb4e-444366c64d09",
       "name": "Emile Macmillan",
       "gp": 0,
@@ -3553,30 +577,6 @@
             "20c8717a",
             "a17db01a",
             "be9c08da"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "adb1c382-219b-4372-917f-903cc580f8ec",
-      "name": "Benjamin Marshall",
-      "gp": 184,
-      "games": 187,
-      "x": 3,
-      "xShareOfGames": 0.016,
-      "claims": [
-        {
-          "claimant": "769270db-9eb5-4e13-921d-6c1f291677aa",
-          "name": "Ben Marshall",
-          "games": 3,
-          "sample": [
-            "2d3b4cc7",
-            "2f9bea44",
-            "9ce7486a"
           ]
         }
       ],
@@ -3623,29 +623,6 @@
           "sample": [
             "33badcc2",
             "c8862671"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "f069a6aa-af19-459e-9908-edfa6bf33a2c",
-      "name": "Samuel Murray",
-      "gp": 107,
-      "games": 108,
-      "x": 2,
-      "xShareOfGames": 0.019,
-      "claims": [
-        {
-          "claimant": "ade6995b-767d-4a73-910a-60b4f89b669d",
-          "name": "Sam Murray",
-          "games": 2,
-          "sample": [
-            "6088741a",
-            "c458e687"
           ]
         }
       ],
@@ -3779,28 +756,6 @@
           "games": 1,
           "sample": [
             "512a36ba"
-          ]
-        }
-      ],
-      "genuineGap": 0,
-      "gameNotFound": 0,
-      "ambiguous": 0,
-      "singleClaimant": true
-    },
-    {
-      "uuid": "7544b97b-a909-41c7-8d35-e5a4949b4bd8",
-      "name": "Alexander Richards",
-      "gp": 87,
-      "games": 88,
-      "x": 1,
-      "xShareOfGames": 0.011,
-      "claims": [
-        {
-          "claimant": "2d9da07d-2cfe-48ec-9000-164ad203c58e",
-          "name": "Alex Richards",
-          "games": 1,
-          "sample": [
-            "d46517fe"
           ]
         }
       ],
@@ -13825,6 +10780,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "0e2a221b-b369-4509-a4d5-937b47af0b02",
+      "name": "Alexander Morton",
+      "gp": 22,
+      "games": 22,
+      "x": 79,
+      "xShareOfGames": 3.591,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 79,
+      "singleClaimant": false
+    },
+    {
       "uuid": "0e5fc054-216d-4b0a-8db7-57062bae3fdc",
       "name": "Jed Boaler",
       "gp": 236,
@@ -18830,6 +15798,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "951392e2-30b2-45b3-b089-0b4b332ac86b",
+      "name": "William Lawrence",
+      "gp": 8,
+      "games": 7,
+      "x": 8,
+      "xShareOfGames": 1.143,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 8,
+      "singleClaimant": false
+    },
+    {
       "uuid": "95c0e575-570a-4608-aae8-bb43acb1fb04",
       "name": "Willow Chilly",
       "gp": 34,
@@ -21037,6 +18018,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "26dae995-9fbe-42bc-be3c-cb3be142e5e2",
+      "name": "Cameron Noonan",
+      "gp": 13,
+      "games": 13,
+      "x": 21,
+      "xShareOfGames": 1.615,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 21,
       "singleClaimant": false
     },
     {
@@ -28762,6 +25756,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "026ea620-51a3-452a-913c-d2ef5342b3fd",
+      "name": "Benjamin Melkus",
+      "gp": 34,
+      "games": 34,
+      "x": 43,
+      "xShareOfGames": 1.265,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 43,
+      "singleClaimant": false
+    },
+    {
       "uuid": "02606fe8-b346-4cb3-9203-8f6160f291b6",
       "name": "Jeevan Chaggar",
       "gp": 132,
@@ -33010,6 +30017,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "df9dde1c-4b30-4eae-a439-45d6de208e5a",
+      "name": "Rafaat Elhouli",
+      "gp": 38,
+      "games": 37,
+      "x": 29,
+      "xShareOfGames": 0.784,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 29,
       "singleClaimant": false
     },
     {
@@ -39812,6 +36832,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "0a8d5942-769c-447f-8ffb-ca97cdfcc242",
+      "name": "Samuel Friebe",
+      "gp": 25,
+      "games": 25,
+      "x": 30,
+      "xShareOfGames": 1.2,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 30,
+      "singleClaimant": false
+    },
+    {
       "uuid": "0a5c20aa-4de6-4313-a793-27f7e0e07da5",
       "name": "Toby Webb",
       "gp": 72,
@@ -42399,6 +39432,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "76a3d064-71c2-4bec-85e6-d7b854290cd2",
+      "name": "Christopher Johnson",
+      "gp": 139,
+      "games": 110,
+      "x": 25,
+      "xShareOfGames": 0.227,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 25,
+      "singleClaimant": false
+    },
+    {
       "uuid": "76cbc052-73b2-43be-a1c2-8ce6a9a62bff",
       "name": "Elika Baxter",
       "gp": 212,
@@ -44830,6 +41876,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "c12cb989-39a6-465b-ad3e-ce27f1753c82",
+      "name": "Sebastian Grosso",
+      "gp": 107,
+      "games": 106,
+      "x": 40,
+      "xShareOfGames": 0.377,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 40,
+      "singleClaimant": false
+    },
+    {
       "uuid": "c19ec1fa-c60b-4871-9600-dcca2b66a62e",
       "name": "Oliver Mayman",
       "gp": 95,
@@ -45295,6 +42354,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "c1e7e234-5e9b-4884-aead-4baa04abf35f",
+      "name": "William Kaye",
+      "gp": 43,
+      "games": 43,
+      "x": 33,
+      "xShareOfGames": 0.767,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 33,
       "singleClaimant": false
     },
     {
@@ -53706,6 +50778,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "69c3d767-1264-456a-a27f-8835feb357fc",
+      "name": "Benjamin Hill",
+      "gp": 106,
+      "games": 106,
+      "x": 12,
+      "xShareOfGames": 0.113,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 12,
       "singleClaimant": false
     },
     {
@@ -79280,6 +76365,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "e0d5e05f-0645-49e0-a0ab-667aa7690e54",
+      "name": "Mannan Singh Samlok",
+      "gp": 19,
+      "games": 19,
+      "x": 12,
+      "xShareOfGames": 0.632,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 12,
+      "singleClaimant": false
+    },
+    {
       "uuid": "e0440450-be7b-4c70-b178-acd0995d8c71",
       "name": "Connor Mitchell",
       "gp": 86,
@@ -84857,6 +81955,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "4734d05a-cbce-4a7d-82cb-d298c3260879",
+      "name": "William Watts",
+      "gp": 98,
+      "games": 45,
+      "x": 17,
+      "xShareOfGames": 0.378,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 17,
+      "singleClaimant": false
+    },
+    {
       "uuid": "47116cd4-3d24-491a-a604-4ded6989cd12",
       "name": "Ela Carnegie",
       "gp": 53,
@@ -87597,6 +84708,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "91c7128a-58eb-4b9d-85ad-649bd4ed29ba",
+      "name": "Samuel Carroll",
+      "gp": 27,
+      "games": 15,
+      "x": 45,
+      "xShareOfGames": 3,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 45,
       "singleClaimant": false
     },
     {
@@ -90938,6 +88062,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "2ccb89b6-9a4f-494e-a91b-38f286b2c259",
+      "name": "Milla Odonohue",
+      "gp": 270,
+      "games": 85,
+      "x": 11,
+      "xShareOfGames": 0.129,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 11,
       "singleClaimant": false
     },
     {
@@ -101819,6 +98956,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "ecc0cab2-9f92-48af-bdad-1751530c3d58",
+      "name": "Samuel Jordan",
+      "gp": 14,
+      "games": 14,
+      "x": 62,
+      "xShareOfGames": 4.429,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 62,
       "singleClaimant": false
     },
     {
@@ -118683,6 +115833,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "a7a304c4-0dd5-4c1f-916d-9c837e08eb2e",
+      "name": "Cameron Flynn",
+      "gp": 28,
+      "games": 28,
+      "x": 18,
+      "xShareOfGames": 0.643,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 18,
+      "singleClaimant": false
+    },
+    {
       "uuid": "a79e05b7-6102-4376-8861-aa12612895f9",
       "name": "Ivy Thorneycroft",
       "gp": 122,
@@ -122206,6 +119369,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "1b077fbd-e1b4-417c-8d03-c386550352a5",
+      "name": "Benjamin Westworth",
+      "gp": 46,
+      "games": 46,
+      "x": 50,
+      "xShareOfGames": 1.087,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 50,
+      "singleClaimant": false
+    },
+    {
       "uuid": "1b840bab-8bf0-434b-acbe-ecab80836f32",
       "name": "Cleeve Lazaro",
       "gp": 156,
@@ -122580,6 +119756,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "1b14d314-e12c-491a-9848-1b5e7ca7af0e",
+      "name": "Alexander Stevens",
+      "gp": 16,
+      "games": 16,
+      "x": 147,
+      "xShareOfGames": 9.188,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 147,
       "singleClaimant": false
     },
     {
@@ -123204,6 +120393,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "2b0b320f-f61f-4325-9411-0909baabc781",
+      "name": "Will Mackinnon",
+      "gp": 0,
+      "games": 0,
+      "x": 12,
+      "xShareOfGames": null,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 12,
       "singleClaimant": false
     },
     {
@@ -137312,6 +134514,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "783f6c2b-6ec0-4126-8e8e-0da5345deb7f",
+      "name": "Joshua Pignolet",
+      "gp": 106,
+      "games": 46,
+      "x": 16,
+      "xShareOfGames": 0.348,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 16,
+      "singleClaimant": false
+    },
+    {
       "uuid": "78e35989-14d6-47ea-a4f0-13e78f7d3a0b",
       "name": "Tilly Pitt",
       "gp": 7,
@@ -140117,6 +137332,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "6fd8768a-d269-494c-b9f4-7ae28d8fd9bd",
+      "name": "Violet ODonohue",
+      "gp": 26,
+      "games": 26,
+      "x": 24,
+      "xShareOfGames": 0.923,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 24,
       "singleClaimant": false
     },
     {
@@ -160933,6 +158161,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "5e1e39df-432f-42bc-9a31-37ce11d1663e",
+      "name": "Patrick Bunning",
+      "gp": 3,
+      "games": 3,
+      "x": 38,
+      "xShareOfGames": 12.667,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 38,
+      "singleClaimant": false
+    },
+    {
       "uuid": "5e808767-9fde-47fd-8bb6-42ede3e95785",
       "name": "Adau Muonychol",
       "gp": 80,
@@ -166377,6 +163618,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "2abd2870-0622-4a81-bea0-2131e96fefc8",
+      "name": "Ethan Belcher",
+      "gp": 7,
+      "games": 7,
+      "x": 9,
+      "xShareOfGames": 1.286,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 9,
       "singleClaimant": false
     },
     {
@@ -177014,6 +174268,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "e14f2c3c-aa99-4a20-9afd-14cbd067fff6",
+      "name": "Alexander Lawson",
+      "gp": 17,
+      "games": 12,
+      "x": 39,
+      "xShareOfGames": 3.25,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 39,
+      "singleClaimant": false
+    },
+    {
       "uuid": "e1d72164-8e1b-4ead-95fb-20108ec62386",
       "name": "Max O'Donnell",
       "gp": 273,
@@ -178610,6 +175877,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "6a9399d0-566d-4159-8f1d-d52a580cf999",
+      "name": "Alrick Weragoda Gamage Don",
+      "gp": 10,
+      "games": 10,
+      "x": 26,
+      "xShareOfGames": 2.6,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 26,
       "singleClaimant": false
     },
     {
@@ -192887,6 +190167,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "2ff7e1cb-8edf-43af-b135-6d014cb08b79",
+      "name": "Samuel Diamond",
+      "gp": 147,
+      "games": 144,
+      "x": 54,
+      "xShareOfGames": 0.375,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 54,
+      "singleClaimant": false
+    },
+    {
       "uuid": "2f26cf75-8907-4d8c-9043-a992bfc1ccc3",
       "name": "Isabelle Brideson",
       "gp": 108,
@@ -195747,6 +193040,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "bdaf2c8a-e3c6-4e40-9bc5-f233596fa255",
+      "name": "William Tait",
+      "gp": 109,
+      "games": 96,
+      "x": 5,
+      "xShareOfGames": 0.052,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 5,
+      "singleClaimant": false
+    },
+    {
       "uuid": "bd7926c5-b117-4394-aeb8-afc963aee63b",
       "name": "Jed Lucas",
       "gp": 387,
@@ -196160,6 +193466,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "bdf11304-9f1a-4889-abf3-191e82ee53a3",
+      "name": "Braden Rudiger",
+      "gp": 102,
+      "games": 102,
+      "x": 74,
+      "xShareOfGames": 0.725,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 74,
       "singleClaimant": false
     },
     {
@@ -197070,6 +194389,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "bd31d91a-2b12-4587-bbfc-acb82edd6f56",
+      "name": "Henry O'Bryan",
+      "gp": 30,
+      "games": 27,
+      "x": 44,
+      "xShareOfGames": 1.63,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 44,
       "singleClaimant": false
     },
     {
@@ -214831,6 +212163,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "a1141040-689a-4730-b050-ac8c9f79b636",
+      "name": "William Mooney",
+      "gp": 152,
+      "games": 112,
+      "x": 13,
+      "xShareOfGames": 0.116,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 13,
+      "singleClaimant": false
+    },
+    {
       "uuid": "a146eb53-dfd8-42c8-9f4a-65de26f7700a",
       "name": "Joseph Muscatello",
       "gp": 162,
@@ -220733,6 +218078,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "c4d0e152-5394-4011-9cd3-bbf627df7225",
+      "name": "Zachary Orr",
+      "gp": 16,
+      "games": 16,
+      "x": 8,
+      "xShareOfGames": 0.5,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 8,
+      "singleClaimant": false
+    },
+    {
       "uuid": "c41c2a4a-9b7d-4e98-89ee-d6131f7c5af1",
       "name": "Simon Rhook",
       "gp": 68,
@@ -221549,6 +218907,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "c4cd34ae-0d64-4bc3-8a3d-39fe6f3d8268",
+      "name": "Joshua White",
+      "gp": 15,
+      "games": 15,
+      "x": 29,
+      "xShareOfGames": 1.933,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 29,
       "singleClaimant": false
     },
     {
@@ -236385,6 +233756,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "0967446a-e523-47ba-8a1f-065b80af0542",
+      "name": "Nicolas Kanatas",
+      "gp": 63,
+      "games": 61,
+      "x": 49,
+      "xShareOfGames": 0.803,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 49,
+      "singleClaimant": false
+    },
+    {
       "uuid": "090dd2e7-1523-43b9-a400-fb55ba8ae4f1",
       "name": "Chris Staines",
       "gp": 56,
@@ -238257,6 +235641,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "e80d02ca-d364-42b3-b670-d12de4d2d1f9",
+      "name": "Matthew Jessup",
+      "gp": 127,
+      "games": 125,
+      "x": 54,
+      "xShareOfGames": 0.432,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 54,
+      "singleClaimant": false
+    },
+    {
       "uuid": "e8f8f65c-fd66-47a6-b634-7ffe6633a809",
       "name": "Sadie Croaker",
       "gp": 167,
@@ -238410,6 +235807,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "e8979e7f-1919-4129-8928-caf6e2c0a027",
+      "name": "Dominic McInness",
+      "gp": 6,
+      "games": 6,
+      "x": 14,
+      "xShareOfGames": 2.333,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 14,
       "singleClaimant": false
     },
     {
@@ -241611,6 +239021,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "1c17cfd4-a6ff-4042-9c67-efdb0f351693",
+      "name": "William Bryan",
+      "gp": 117,
+      "games": 117,
+      "x": 27,
+      "xShareOfGames": 0.231,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 27,
+      "singleClaimant": false
+    },
+    {
       "uuid": "1c73dfac-bae5-495a-9d84-a1e3744c6529",
       "name": "Archie Chighine",
       "gp": 187,
@@ -243324,6 +240747,19 @@
       "genuineGap": 2,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "be929cf5-2db8-47c5-b3fe-fce840ab6c9e",
+      "name": "Alexander Adams",
+      "gp": 61,
+      "games": 0,
+      "x": 40,
+      "xShareOfGames": null,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 40,
       "singleClaimant": false
     },
     {
@@ -252128,6 +249564,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "7544b97b-a909-41c7-8d35-e5a4949b4bd8",
+      "name": "Alexander Richards",
+      "gp": 87,
+      "games": 87,
+      "x": 1,
+      "xShareOfGames": 0.011,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 1,
+      "singleClaimant": false
+    },
+    {
       "uuid": "750c6ee0-af78-4504-8329-f685a2651259",
       "name": "DYLAN JONES",
       "gp": 188,
@@ -256467,6 +253916,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "643a6bff-ced7-4730-b72e-aa448ca77e3e",
+      "name": "Mitchell Pascoe",
+      "gp": 40,
+      "games": 34,
+      "x": 83,
+      "xShareOfGames": 2.441,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 83,
       "singleClaimant": false
     },
     {
@@ -263386,6 +260848,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "fc51951e-0cea-42a0-840b-21de01670219",
+      "name": "Matthew Botha",
+      "gp": 165,
+      "games": 72,
+      "x": 25,
+      "xShareOfGames": 0.347,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 25,
+      "singleClaimant": false
+    },
+    {
       "uuid": "fc2e78e7-25b4-4ffb-bf08-32e4d0683dfc",
       "name": "Angelo Romero",
       "gp": 159,
@@ -268843,6 +266318,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "9fe6524c-eb53-4e8b-8a4e-65fc0260a637",
+      "name": "Nicholas Lambert",
+      "gp": 95,
+      "games": 95,
+      "x": 27,
+      "xShareOfGames": 0.284,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 27,
       "singleClaimant": false
     },
     {
@@ -287605,6 +285093,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "128a9244-2a33-47e7-bc41-a46f44276e34",
+      "name": "William Sheehan",
+      "gp": 112,
+      "games": 110,
+      "x": 10,
+      "xShareOfGames": 0.091,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 10,
+      "singleClaimant": false
+    },
+    {
       "uuid": "12f02af8-e22c-4a0e-a58c-f53c44cfee5a",
       "name": "Evie Haywood",
       "gp": 232,
@@ -290072,6 +287573,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "e738cc65-1c22-4a21-8c35-d216b6847312",
+      "name": "Joshua Flannery",
+      "gp": 12,
+      "games": 12,
+      "x": 93,
+      "xShareOfGames": 7.75,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 93,
       "singleClaimant": false
     },
     {
@@ -295935,6 +293449,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "c2457983-bccf-4b4d-9f49-7d3ce60b14c5",
+      "name": "Maxwell Evans",
+      "gp": 14,
+      "games": 2,
+      "x": 10,
+      "xShareOfGames": 5,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 10,
       "singleClaimant": false
     },
     {
@@ -302815,6 +300342,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "6d01b391-6a0c-418a-b050-d5aec242f58c",
+      "name": "Samuel Knights",
+      "gp": 69,
+      "games": 66,
+      "x": 46,
+      "xShareOfGames": 0.697,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 46,
+      "singleClaimant": false
+    },
+    {
       "uuid": "6d296a6e-40b1-4190-a200-d3cb370c0d61",
       "name": "Caitlin Huth",
       "gp": 71,
@@ -303345,6 +300885,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "9024a193-67ee-457f-a2fc-399c5ee2b5cc",
+      "name": "Zac Muir",
+      "gp": 92,
+      "games": 91,
+      "x": 25,
+      "xShareOfGames": 0.275,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 25,
       "singleClaimant": false
     },
     {
@@ -305129,6 +302682,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "9030c69c-937c-4bdb-a177-64e6e18da25d",
+      "name": "Harrison Belcher",
+      "gp": 7,
+      "games": 7,
+      "x": 9,
+      "xShareOfGames": 1.286,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 9,
+      "singleClaimant": false
+    },
+    {
       "uuid": "904b991c-bd27-404f-8c8b-5eae433a57e2",
       "name": "Brooklyn Hipolito",
       "gp": 253,
@@ -305750,6 +303316,19 @@
       "genuineGap": 2,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "01f0b939-070e-4191-ae6f-178369bc5c40",
+      "name": "William Coleman",
+      "gp": 118,
+      "games": 118,
+      "x": 59,
+      "xShareOfGames": 0.5,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 59,
       "singleClaimant": false
     },
     {
@@ -307362,6 +304941,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "73a7fb90-e5ea-4ab0-81d1-5c86c81c1dcd",
+      "name": "Joshua Diaz",
+      "gp": 22,
+      "games": 20,
+      "x": 14,
+      "xShareOfGames": 0.7,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 14,
       "singleClaimant": false
     },
     {
@@ -352436,6 +350028,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "b03a6d8d-a118-4809-9931-f1062754da4f",
+      "name": "Samuel Storey",
+      "gp": 10,
+      "games": 10,
+      "x": 43,
+      "xShareOfGames": 4.3,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 43,
+      "singleClaimant": false
+    },
+    {
       "uuid": "b08753cc-4c0d-433b-b14b-4318989648d8",
       "name": "Ethan Ramjahn",
       "gp": 130,
@@ -353411,6 +351016,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "b04a5309-91b6-43fc-9ff7-06efd0da16c3",
+      "name": "Samuel Pittwood",
+      "gp": 55,
+      "games": 54,
+      "x": 9,
+      "xShareOfGames": 0.167,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 9,
+      "singleClaimant": false
+    },
+    {
       "uuid": "b0427373-2872-4253-a013-8826df9e637b",
       "name": "Jim Murray-Davis",
       "gp": 273,
@@ -353421,6 +351039,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "b066e0a0-e599-42f6-bd8d-d757e476daa2",
+      "name": "Alexander Nelson",
+      "gp": 161,
+      "games": 161,
+      "x": 23,
+      "xShareOfGames": 0.143,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 23,
       "singleClaimant": false
     },
     {
@@ -354422,6 +352053,19 @@
       "genuineGap": 3,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "66e58ba9-b69a-461e-8c90-04d4f062d9c0",
+      "name": "Zachary Price",
+      "gp": 385,
+      "games": 384,
+      "x": 13,
+      "xShareOfGames": 0.034,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 13,
       "singleClaimant": false
     },
     {
@@ -357571,6 +355215,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "d4c8048b-4150-44e5-928f-77589eb1ce1c",
+      "name": "Joshua Goonan",
+      "gp": 31,
+      "games": 31,
+      "x": 12,
+      "xShareOfGames": 0.387,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 12,
+      "singleClaimant": false
+    },
+    {
       "uuid": "d4b37004-b245-4339-be5c-fbaacfb697f8",
       "name": "Nicholas Tan",
       "gp": 59,
@@ -359953,9 +357610,9 @@
       "uuid": "49c6c45e-d566-4bf9-a045-4ebc39094557",
       "name": "Josh Pignolet",
       "gp": 27,
-      "games": 28,
+      "games": 88,
       "x": 1,
-      "xShareOfGames": 0.036,
+      "xShareOfGames": 0.011,
       "claims": [],
       "genuineGap": 1,
       "gameNotFound": 0,
@@ -380945,6 +378602,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "fde297a4-0d9d-47af-84b5-db338f663541",
+      "name": "Benjamin Taylor",
+      "gp": 149,
+      "games": 149,
+      "x": 10,
+      "xShareOfGames": 0.067,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 10,
+      "singleClaimant": false
+    },
+    {
       "uuid": "fdc302c0-bbed-472a-a4b5-66a606869643",
       "name": "Alessio Falcone",
       "gp": 59,
@@ -381553,6 +379223,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "fd77703f-9608-4239-b459-5c6042b09138",
+      "name": "Bradley Hocking",
+      "gp": 31,
+      "games": 31,
+      "x": 123,
+      "xShareOfGames": 3.968,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 123,
       "singleClaimant": false
     },
     {
@@ -386428,6 +384111,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "aff7508c-32c6-4282-8d09-6bb7b400a31f",
+      "name": "William Guy",
+      "gp": 19,
+      "games": 19,
+      "x": 69,
+      "xShareOfGames": 3.632,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 69,
       "singleClaimant": false
     },
     {
@@ -398391,6 +396087,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "1833df06-450f-4ec5-8305-e5b910ae5373",
+      "name": "Noah D'Alfonso",
+      "gp": 0,
+      "games": 0,
+      "x": 61,
+      "xShareOfGames": null,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 61,
+      "singleClaimant": false
+    },
+    {
       "uuid": "18383e74-fed9-4a5c-9f6d-1676bc150e80",
       "name": "Luca Scheller",
       "gp": 23,
@@ -401196,6 +398905,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "adb1c382-219b-4372-917f-903cc580f8ec",
+      "name": "Benjamin Marshall",
+      "gp": 184,
+      "games": 184,
+      "x": 3,
+      "xShareOfGames": 0.016,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 3,
       "singleClaimant": false
     },
     {
@@ -406240,6 +403962,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "c854420d-cf12-4a0a-96bd-231420b2fbba",
+      "name": "Jackson Conroy",
+      "gp": 11,
+      "games": 11,
+      "x": 11,
+      "xShareOfGames": 1,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 11,
       "singleClaimant": false
     },
     {
@@ -443891,6 +441626,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "f069a6aa-af19-459e-9908-edfa6bf33a2c",
+      "name": "Samuel Murray",
+      "gp": 107,
+      "games": 106,
+      "x": 2,
+      "xShareOfGames": 0.019,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 2,
+      "singleClaimant": false
+    },
+    {
       "uuid": "f0e13fe6-15b9-46d0-8c97-f1b393325a8a",
       "name": "Alexander Morgan",
       "gp": 67,
@@ -460934,6 +458682,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "3fa6cb87-be15-4f25-84d3-90e0d16c6d40",
+      "name": "Ben O’Connor",
+      "gp": 0,
+      "games": 0,
+      "x": 98,
+      "xShareOfGames": null,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 98,
+      "singleClaimant": false
+    },
+    {
       "uuid": "3fdb2c9c-5d59-4b57-8432-7b3265ff665b",
       "name": "William Thorp",
       "gp": 249,
@@ -462218,6 +459979,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "3fe55881-ef53-431f-b80b-d24436240cc1",
+      "name": "Benjamin Peace",
+      "gp": 29,
+      "games": 29,
+      "x": 9,
+      "xShareOfGames": 0.31,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 9,
       "singleClaimant": false
     },
     {
@@ -473284,6 +471058,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "b5fa3c2a-c5b6-486d-a081-3d7202f413d3",
+      "name": "Matthew Dickinson",
+      "gp": 8,
+      "games": 8,
+      "x": 5,
+      "xShareOfGames": 0.625,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 5,
+      "singleClaimant": false
+    },
+    {
       "uuid": "b5af92e8-e299-40c2-9cb7-6dd47544a212",
       "name": "Ethan Bates",
       "gp": 53,
@@ -473671,6 +471458,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "b5e49c39-c34e-402a-9669-3f0695118b44",
+      "name": "William Merrigan",
+      "gp": 5,
+      "games": 5,
+      "x": 12,
+      "xShareOfGames": 2.4,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 12,
       "singleClaimant": false
     },
     {
@@ -474818,6 +472618,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "243d12fc-f974-40a0-8022-9748d06cc69e",
+      "name": "Joshua Raffaele",
+      "gp": 149,
+      "games": 148,
+      "x": 41,
+      "xShareOfGames": 0.277,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 41,
+      "singleClaimant": false
+    },
+    {
       "uuid": "2472d3c5-1f72-41eb-a09f-01e8c60aeecd",
       "name": "Cara Briedenhann",
       "gp": 336,
@@ -475946,6 +473759,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "24730de2-8dfc-44a7-afc2-1c172738864e",
+      "name": "Joshua Cardamone",
+      "gp": 31,
+      "games": 31,
+      "x": 11,
+      "xShareOfGames": 0.355,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 11,
       "singleClaimant": false
     },
     {
@@ -480743,6 +478569,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "0614b05b-c357-42d4-a407-1f4bda8b80d9",
+      "name": "Zachary Clothier",
+      "gp": 25,
+      "games": 25,
+      "x": 25,
+      "xShareOfGames": 1,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 25,
       "singleClaimant": false
     },
     {
@@ -493681,6 +491520,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "442805d7-4682-4628-a92d-8ffd42055e9c",
+      "name": "Levi Alejandro Flores",
+      "gp": 27,
+      "games": 27,
+      "x": 21,
+      "xShareOfGames": 0.778,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 21,
+      "singleClaimant": false
+    },
+    {
       "uuid": "4458532d-35fd-467c-8593-987ef0125258",
       "name": "Zavier Stewart",
       "gp": 94,
@@ -499866,6 +497718,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "622098f3-be0a-4720-805f-46ddb3bc964f",
+      "name": "William Warren",
+      "gp": 78,
+      "games": 65,
+      "x": 184,
+      "xShareOfGames": 2.831,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 184,
       "singleClaimant": false
     },
     {
@@ -508085,6 +505950,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "fe6c2948-fff6-4997-adc6-b557eb87dbd4",
+      "name": "Sam Castles",
+      "gp": 72,
+      "games": 71,
+      "x": 37,
+      "xShareOfGames": 0.521,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 37,
+      "singleClaimant": false
+    },
+    {
       "uuid": "feba6d74-74bf-4536-a5ff-be37e5dc663a",
       "name": "Darren Kemp",
       "gp": 189,
@@ -513805,6 +511683,19 @@
       "singleClaimant": false
     },
     {
+      "uuid": "9e2470db-2e0a-4b05-833c-ff4fa7325d42",
+      "name": "William Haydn-Evans",
+      "gp": 36,
+      "games": 34,
+      "x": 76,
+      "xShareOfGames": 2.235,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 76,
+      "singleClaimant": false
+    },
+    {
       "uuid": "9e56d31e-20e1-42bd-b310-fbd3c02531fb",
       "name": "Findlay Kendall",
       "gp": 284,
@@ -515245,6 +513136,19 @@
       "genuineGap": 1,
       "gameNotFound": 0,
       "ambiguous": 0,
+      "singleClaimant": false
+    },
+    {
+      "uuid": "4e6fac5c-d273-4f0b-9071-437389167dab",
+      "name": "Nicholas Reid",
+      "gp": 9,
+      "games": 9,
+      "x": 15,
+      "xShareOfGames": 1.667,
+      "claims": [],
+      "genuineGap": 0,
+      "gameNotFound": 0,
+      "ambiguous": 15,
       "singleClaimant": false
     },
     {
@@ -525386,6 +523290,621 @@
       "gameNotFound": 0,
       "ambiguous": 0,
       "singleClaimant": false
+    }
+  ],
+  "gapInBox": 8616,
+  "gapOutBox": 18,
+  "gapNoBox": 62753,
+  "examples": {
+    "gapInBox": [
+      {
+        "uuid": "16b96999-979d-42c4-9b1d-e45fbf345aac",
+        "name": "Riley Quinney",
+        "gid": "1f1379b2",
+        "date": "2023-10-06"
+      },
+      {
+        "uuid": "16b8dbd0-7416-4279-81bb-569425b33194",
+        "name": "blair robinson",
+        "gid": "a7e98813",
+        "date": "2022-05-26"
+      },
+      {
+        "uuid": "16648a17-1ac8-47fb-a5a1-0acddf79a1c0",
+        "name": "Annabel Thong",
+        "gid": "684170ea",
+        "date": "2026-05-31"
+      },
+      {
+        "uuid": "1657ee15-d95c-46d3-858d-262bf43aa74b",
+        "name": "Albie Reid",
+        "gid": "78d3880c",
+        "date": "2023-12-14"
+      },
+      {
+        "uuid": "1657ee15-d95c-46d3-858d-262bf43aa74b",
+        "name": "Albie Reid",
+        "gid": "a48c5088",
+        "date": "2024-02-22"
+      },
+      {
+        "uuid": "166b97ea-afb2-4b39-b37f-73b51021fba9",
+        "name": "Sophie McQuillen",
+        "gid": "6d7aeebc",
+        "date": "2022-07-29"
+      },
+      {
+        "uuid": "166f897f-fa78-4c47-a8cb-fedeefcd38a4",
+        "name": "Lucy Sartitsis",
+        "gid": "85564656",
+        "date": "2024-02-19"
+      },
+      {
+        "uuid": "167e924c-6e60-4cf5-bc42-ca1cc6a63fdc",
+        "name": "Charlie Blackmore",
+        "gid": "f9422079",
+        "date": "2022-08-01"
+      },
+      {
+        "uuid": "162e4592-68c1-48b5-bf5a-6c607336a5e7",
+        "name": "Maddox Isailovic",
+        "gid": "2fbf7dfa",
+        "date": "2024-06-01"
+      },
+      {
+        "uuid": "166475a7-d5c8-4ab2-8ca2-b324c4de68fc",
+        "name": "Valentina Licciardello",
+        "gid": "6ded4940",
+        "date": "2022-11-19"
+      },
+      {
+        "uuid": "16d63b87-14c4-4316-a7af-11772fe37e21",
+        "name": "Sholeh O'Keeffe",
+        "gid": "a67d1177",
+        "date": "2022-06-20"
+      },
+      {
+        "uuid": "16013d01-ad9e-4d22-8a72-c93e9cc8efb4",
+        "name": "Alfie Swindon",
+        "gid": "1a7fe62e",
+        "date": "2023-10-21"
+      }
+    ],
+    "gapOutBox": [
+      {
+        "uuid": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+        "name": "Frankee McGee",
+        "gid": "12161f99",
+        "date": "2025-08-23"
+      },
+      {
+        "uuid": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+        "name": "Frankee McGee",
+        "gid": "13621aec",
+        "date": "2025-07-26"
+      },
+      {
+        "uuid": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+        "name": "Frankee McGee",
+        "gid": "15709375",
+        "date": "2026-02-13"
+      },
+      {
+        "uuid": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+        "name": "Frankee McGee",
+        "gid": "19bc9ee8",
+        "date": "2025-10-11"
+      },
+      {
+        "uuid": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+        "name": "Frankee McGee",
+        "gid": "22a0d206",
+        "date": "2025-10-11"
+      },
+      {
+        "uuid": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+        "name": "Frankee McGee",
+        "gid": "2721e0df",
+        "date": "2026-01-30"
+      },
+      {
+        "uuid": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+        "name": "Frankee McGee",
+        "gid": "3b3ff5fd",
+        "date": "2025-07-05"
+      },
+      {
+        "uuid": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+        "name": "Frankee McGee",
+        "gid": "3ce85c21",
+        "date": "2025-08-02"
+      },
+      {
+        "uuid": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+        "name": "Frankee McGee",
+        "gid": "3f4d41d6",
+        "date": "2025-10-18"
+      },
+      {
+        "uuid": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+        "name": "Frankee McGee",
+        "gid": "610919eb",
+        "date": "2025-09-06"
+      },
+      {
+        "uuid": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+        "name": "Frankee McGee",
+        "gid": "6499cb27",
+        "date": "2025-09-20"
+      },
+      {
+        "uuid": "4a9b070c-6c02-4997-b878-19c0f7431c1f",
+        "name": "Frankee McGee",
+        "gid": "65cccced",
+        "date": "2025-10-18"
+      }
+    ]
+  },
+  "partials": [
+    {
+      "uuid": "69eb00e6-6db3-48e8-97be-a97f5af3830d",
+      "name": "zachary ferguson",
+      "gp": 68,
+      "games": 95,
+      "x": 27,
+      "claims": [
+        {
+          "claimant": "66b9124f-6c62-422d-a047-ffa74432c05e",
+          "name": "Zac Ferguson",
+          "games": 26,
+          "sample": [
+            "039c5ae8",
+            "124f86ba",
+            "1381a0bd"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "46",
+          "spec": "46d8cdf3-ff9b"
+        }
+      ]
+    },
+    {
+      "uuid": "f51b38df-cd74-4a65-878a-ea7a263973d5",
+      "name": "Alexander Orfanidis",
+      "gp": 31,
+      "games": 33,
+      "x": 16,
+      "claims": [
+        {
+          "claimant": "21bcd2c6-503e-4c84-a94b-165d97332458",
+          "name": "Alex Orfanidis",
+          "games": 15,
+          "sample": [
+            "07df53ce",
+            "31bd6dee",
+            "390eb43f"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "cc",
+          "spec": "cc6ec9ab-c4c7"
+        }
+      ]
+    },
+    {
+      "uuid": "8f20d933-dbdb-4a18-aea1-76fbbb7d747b",
+      "name": "Alexander Samuels",
+      "gp": 7,
+      "games": 33,
+      "x": 26,
+      "claims": [
+        {
+          "claimant": "e5831a50-d549-4ca8-a94c-58c176574a23",
+          "name": "Alex Samuels",
+          "games": 25,
+          "sample": [
+            "0accf405",
+            "0b2d44e4",
+            "10722464"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "87",
+          "spec": "87229bdf-ee3d"
+        },
+        {
+          "shard": "ea",
+          "spec": "eadcc0ec-1bdd"
+        }
+      ]
+    },
+    {
+      "uuid": "45464f84-a6f4-4e57-87e0-81fcb784e69e",
+      "name": "Aston Watt",
+      "gp": 0,
+      "games": 3,
+      "x": 3,
+      "claims": [
+        {
+          "claimant": "74bf48a1-b7e2-4b81-aee9-2c7aec4b6c62",
+          "name": "Aston Watt",
+          "games": 2,
+          "sample": [
+            "6b6bee5b",
+            "77cc8e3e"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": []
+    },
+    {
+      "uuid": "7a532c74-42ab-4a5d-97ec-91fbd4d0901e",
+      "name": "Benjamin Thomson",
+      "gp": 0,
+      "games": 13,
+      "x": 13,
+      "claims": [
+        {
+          "claimant": "18085a6f-96f5-4563-af29-39d308994d38",
+          "name": "Ben Thomson",
+          "games": 12,
+          "sample": [
+            "0b8ab287",
+            "1f94a065",
+            "30c959ab"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "65",
+          "spec": "65eda7d0-32e5"
+        }
+      ]
+    },
+    {
+      "uuid": "7387ede8-241d-444e-8f91-0598abd5a14d",
+      "name": "Benjamin Baker",
+      "gp": 26,
+      "games": 36,
+      "x": 32,
+      "claims": [
+        {
+          "claimant": "7b0c781f-eb62-4d30-8bd0-39502619c5e6",
+          "name": "Ben Baker",
+          "games": 9,
+          "sample": [
+            "35101980",
+            "3cf15379",
+            "3f783731"
+          ]
+        }
+      ],
+      "unclaimed": 23,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "1d",
+          "spec": "1dc9b6ce-ccb2"
+        },
+        {
+          "shard": "7d",
+          "spec": "7db224c1-fa8a"
+        }
+      ]
+    },
+    {
+      "uuid": "28779198-3a5a-4b64-a248-b968d8a5d373",
+      "name": "Thomas OConnor",
+      "gp": 118,
+      "games": 178,
+      "x": 60,
+      "claims": [
+        {
+          "claimant": "20ddddc3-6357-4f25-84f1-8cdc7d404eb2",
+          "name": "Thomas O’Connor",
+          "games": 59,
+          "sample": [
+            "01f9e09f",
+            "0ea38718",
+            "10d97ffc"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "30",
+          "spec": "305c0875-0e64"
+        }
+      ]
+    },
+    {
+      "uuid": "4cd51b52-987f-4f01-8cf2-1a6357828e98",
+      "name": "Samuel Tralaggan",
+      "gp": 66,
+      "games": 93,
+      "x": 27,
+      "claims": [
+        {
+          "claimant": "14b56bdb-2bd9-4c44-9a51-a546d42db821",
+          "name": "sam tralaggan",
+          "games": 26,
+          "sample": [
+            "14526ac3",
+            "147615ff",
+            "1fca254b"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "81",
+          "spec": "8121c333-a8cf"
+        }
+      ]
+    },
+    {
+      "uuid": "0f937365-f15e-4e44-aa1b-f3b69f4c9cf0",
+      "name": "Dan Charles",
+      "gp": 105,
+      "games": 111,
+      "x": 9,
+      "claims": [
+        {
+          "claimant": "60c77e38-935a-4392-b215-d9edff41d3b2",
+          "name": "Daniel Charles",
+          "games": 8,
+          "sample": [
+            "1e6f21ec",
+            "1e70a80a",
+            "25020b04"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "9c",
+          "spec": "9ce43db3-5ae4"
+        }
+      ]
+    },
+    {
+      "uuid": "f8e8f610-f097-440e-bd1c-f722b2257dd2",
+      "name": "Harrison Jones",
+      "gp": 129,
+      "games": 141,
+      "x": 12,
+      "claims": [
+        {
+          "claimant": "393a76fd-1eda-4c73-832b-63753ad8a259",
+          "name": "Harrison Jones",
+          "games": 11,
+          "sample": [
+            "004d9443",
+            "103f89b3",
+            "11c7a07f"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": []
+    },
+    {
+      "uuid": "363e9b18-1c11-4ffc-9aa0-17c6f9c42747",
+      "name": "Samuel Hardman",
+      "gp": 9,
+      "games": 78,
+      "x": 69,
+      "claims": [
+        {
+          "claimant": "374f7bfb-ace0-4d58-8546-09f113f5c735",
+          "name": "Sam Hardman",
+          "games": 66,
+          "sample": [
+            "044580d2",
+            "0b63dc1e",
+            "14815c5d"
+          ]
+        }
+      ],
+      "unclaimed": 3,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "40",
+          "spec": "406d2dec-80d6"
+        }
+      ]
+    },
+    {
+      "uuid": "a2283589-7f9a-415a-9975-9c3783a5d24d",
+      "name": "Alexandra Green",
+      "gp": 7,
+      "games": 32,
+      "x": 27,
+      "claims": [
+        {
+          "claimant": "a214d90e-ab0a-4f4e-a733-41d5c6045074",
+          "name": "Alex Green",
+          "games": 25,
+          "sample": [
+            "0ad6bb0c",
+            "1f665534",
+            "31a64212"
+          ]
+        }
+      ],
+      "unclaimed": 2,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "56",
+          "spec": "565d0021-01d2"
+        }
+      ]
+    },
+    {
+      "uuid": "59abfa5d-725d-47c9-8622-0d51b282741a",
+      "name": "Sebastian Forde",
+      "gp": 12,
+      "games": 40,
+      "x": 28,
+      "claims": [
+        {
+          "claimant": "780bfaea-d3cd-4d55-baed-5f8ff9c753de",
+          "name": "Seb Forde",
+          "games": 27,
+          "sample": [
+            "0886434b",
+            "1662b03c",
+            "1ad767f4"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "9b",
+          "spec": "9b0b66c1-82b8"
+        }
+      ]
+    },
+    {
+      "uuid": "59608406-b57e-452b-bcda-b33b0255e239",
+      "name": "Matthew Thompson",
+      "gp": 47,
+      "games": 67,
+      "x": 20,
+      "claims": [
+        {
+          "claimant": "8b56a62b-3201-448d-8392-46f39b02f4e1",
+          "name": "Matt Thompson",
+          "games": 14,
+          "sample": [
+            "058dc708",
+            "0a86acef",
+            "24087604"
+          ]
+        }
+      ],
+      "unclaimed": 6,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "4f",
+          "spec": "4fc6d2f9-fab3"
+        },
+        {
+          "shard": "ac",
+          "spec": "ac67ca2e-bd5b"
+        }
+      ]
+    },
+    {
+      "uuid": "3aacb8a8-cbb2-4047-b741-12fb3d1fc783",
+      "name": "Samuel Cox",
+      "gp": 67,
+      "games": 103,
+      "x": 36,
+      "claims": [
+        {
+          "claimant": "c6e75317-c240-4e82-9f65-d8eb634374b8",
+          "name": "Sam Cox",
+          "games": 35,
+          "sample": [
+            "010b639e",
+            "1afada06",
+            "1dd4a04d"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "a0",
+          "spec": "a0b1f5c6-e17c"
+        }
+      ]
+    },
+    {
+      "uuid": "f995ed20-e8b8-4b2c-b3a9-51bf3a01b856",
+      "name": "William Gould",
+      "gp": 50,
+      "games": 84,
+      "x": 34,
+      "claims": [
+        {
+          "claimant": "8a13383d-9a97-43ee-9c99-ec768505c24a",
+          "name": "Will Gould",
+          "games": 33,
+          "sample": [
+            "008b7585",
+            "039cfea5",
+            "2f1742f2"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "4f",
+          "spec": "4fa15ce3-e6cc"
+        }
+      ]
+    },
+    {
+      "uuid": "4ee05e0d-ab7c-4884-937d-953a259fb0af",
+      "name": "Maxwell Greaves",
+      "gp": 54,
+      "games": 96,
+      "x": 46,
+      "claims": [
+        {
+          "claimant": "62c6f40e-2058-4d21-83de-a2dd5c867a02",
+          "name": "Max Greaves",
+          "games": 45,
+          "sample": [
+            "009774ad",
+            "01515307",
+            "05ad3bd2"
+          ]
+        }
+      ],
+      "unclaimed": 1,
+      "ambiguous": 0,
+      "aliases": [
+        {
+          "shard": "18",
+          "spec": "183d4f10-bbf3"
+        }
+      ]
     }
   ]
 }
