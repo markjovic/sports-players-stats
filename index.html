@@ -351,7 +351,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.78</span>
+      <span class="rail-ver">Beta 0.79</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -1139,22 +1139,18 @@ function renderPlayer(p){
   // nothing. This line is then the only figure they have.
   const recApps=Array.isArray(p.games)?p.games.length:0;
   if(recApps||isPrivate(p)){
-    // CORRECTED 2026-09-04. This was `recApps - gp`: the difference between two
-    // TOTALS, presented as a count of games PlayHQ does not credit. Those are not
-    // the same thing, because the two lists disagree in BOTH directions and a
-    // subtraction cancels them. Measured on shard 00, 1,591 players in scope and
-    // all freshly fetched: 288 carry `c` (PlayHQ credits it, we do not hold it),
-    // 144 carry `x` (we hold it, PlayHQ does not credit it), and 66 carry BOTH.
-    // For those 66 the old figure understated the count by exactly c.length, and
-    // wherever c exceeded x it went negative and the line silently disappeared.
+    // CORRECTED 2026-09-04. Was `recApps - gp`: a difference of two TOTALS shown
+    // as a count of games PlayHQ does not credit. Not the same thing - the two
+    // lists disagree in BOTH directions and a subtraction cancels them. Shard 00,
+    // 1,591 players in scope: 288 carry `c` (credited, we lack it), 144 carry `x`
+    // (we hold it, not credited), 66 carry BOTH. For those 66 the old figure was
+    // short by exactly c.length; wherever c exceeded x it went negative and the
+    // line vanished. For a private player with no gp it read the whole games count
+    // as "not credited", which is nonsense - PlayHQ published nothing at all.
     //
-    // `x` IS the count, written by fetch-profile-stats.js from PlayHQ's own
-    // credited game list at the moment of the fetch, forfeits excluded on both
-    // sides. Absent means zero - the field is deleted rather than written empty.
-    //
-    // The old arithmetic survives ONLY as a fallback for a file written before
-    // the diff existed: no x AND no statsChecked. A player who HAS been fetched
-    // and carries no x genuinely has none, and must show nothing.
+    // `x` IS the count, from PlayHQ's own credited list at fetch time, forfeits
+    // excluded on both sides. Absent means zero; the field is deleted, not empty.
+    // The old arithmetic survives only for files written before the diff existed.
     const uncredited = Array.isArray(cs.x) ? cs.x.length
                      : (cs.statsChecked ? 0 : Math.max(0, recApps - gp));
     h+=`<div class="recbar">
@@ -1355,11 +1351,11 @@ async function toggleUnreg(hdr){
   // are styled and hydrated by exactly the code that already handles game rows.
   // padWld is false here — there is no registration, so no W/L column to align to.
   ge.innerHTML=rows.map(([gid,g,tid])=>{
-    const ctx=gameCtx(g,tid||g.h);
+    const ctx=gameCtx(g,tid||hTid(g));
     const stored=storedStats(g,uuid);
     const oppN=(ctx.oppN||'\u2014').slice(0,30);
     const fc=finalClass(g.rn);
-    const forN=(tid===g.h?g.hn:tid===g.a?g.an:'')||'';
+    const[_hN,_aN]=teamNames(g);const forN=(tid===hTid(g)?_hN:tid===aTid(g)?_aN:'')||'';
     return`<div class="grow${fc?' '+fc:''}" data-gid="${esc(gid)}" data-sid="${esc(sid)}">
       <div class="g-row">
         <div class="g-info">
@@ -1390,7 +1386,10 @@ async function toggleGames(hdr){
   if(!S.games[sid]){const d=await sgj('games/bv',sid);S.games[sid]=d||{games:{}};}
   const all=S.games[sid]?.games||{};
   const pg=Object.entries(all)
-    .filter(([,g])=>(g.h===tid||g.a===tid)&&(g.p||[]).some(p=>matchP(p.id,uuid)))
+    // hTid/aTid, not g.h/g.a: a hidden game matched NEITHER side, so a season of
+    // hidden games rendered "No game records found." for a player who played all
+    // of them.
+    .filter(([,g])=>(hTid(g)===tid||aTid(g)===tid)&&(g.p||[]).some(p=>matchP(p.id,uuid)))
     .sort(([,a],[,b])=>(b.d||'').localeCompare(a.d||''));
   if(!pg.length){ge.innerHTML='<div class="load-row">No game records found.</div>';ge.dataset.loaded='1';return;}
   const allRegGradeNames=regs.map(r=>r.gn||r.tn||'').filter(Boolean);
@@ -1557,7 +1556,7 @@ function renderTeam(td,tid,sid){
     (async()=>{
       if(!S.games[sid2]){const d=await sgj('games/bv',sid2);S.games[sid2]=d||{games:{}};}
       const g2=S.games[sid2]?.games?.[gid2];
-      if(g2&&g2.h&&g2.a){openTeamOpp(g2.h,g2.a,sid2,true);}
+      if(g2&&hTid(g2)&&aTid(g2)){openTeamOpp(hTid(g2),aTid(g2),sid2,true);}
       else if(g2){openSheet(gid2,sid2);}
     })();
   }));
@@ -1781,7 +1780,7 @@ function renderVGrid(day,container){
         // comp/grade if available in data (future data enhancement)
         const compLine=g.comp||g.grade?`<div class="gc">${esc([g.comp,g.grade].filter(Boolean).join(' \u00b7 '))}</div>`:'';
         h+=`<td><div class="ggame${fin?' fin':up?' up':''}" data-gid="${esc(g.id)}" data-sid="${esc(g.sid||'')}">
-          <div class="gt">${esc((g.hn||'?').slice(0,14))} vs ${esc((g.an||'?').slice(0,14))}</div>
+          <div class="gt">${(([hN,aN])=>`${esc((hN||'?').slice(0,14))} vs ${esc((aN||'?').slice(0,14))}`)(teamNames(g))}</div>
           ${compLine}<div class="gs">${esc(g.st||'')}</div></div></td>`;
       }else h+='<td></td>';
     }
@@ -1815,7 +1814,10 @@ async function openSheet(gid,sid){
     fetchBox(gid).then(bs=>{if(bs)applyBox(bs,g,gid,sb);});
   }
   // Add opposition history button if both team IDs are known
-  const[,,,ht,at]=teamNames?teamNames(g):['','','','',''];
+  // CORRECTED: was `[,,,ht,at]` - FIVE slots from a return of FOUR. Index 3 is
+  // the AWAY tid and index 4 does not exist, so on a hidden game htid took the
+  // away team and atid took undefined.
+  const[,,ht,at]=teamNames?teamNames(g):['','','',''];
   const htid=g.h||ht,atid=g.a||at;
   if(htid&&atid){
     const histBtn=document.createElement('button');
@@ -1836,6 +1838,17 @@ async function openSheet(gid,sid){
 }
 function closeSheet(){el('sov').classList.remove('open');}
 
+// A game carries h/a OR t1/t2, never both: README.md L266 - hidden games use
+// t1/t2. teamNames() below has always handled that, but most of this file reads
+// g.h/g.a directly, so on a hidden game those are undefined and the read fails
+// silently. Same defect fixed in build-player-games.js and build-win-loss.js on
+// 2026-09-01; in the one season file measured, 2,684 of 2,758 games were hidden.
+//
+// t1 is home and t2 away - build-finals-stats.js L248/L254 has resolved them that
+// way against hs/as in production since before this.
+function hTid(g){return g?.h ?? g?.t1 ?? null;}
+function aTid(g){return g?.a ?? g?.t2 ?? null;}
+
 function teamNames(g){
   if(g.h)return[g.hn||'',g.an||'',g.h,g.a];
   if(g.t1)return[g.t1n||'',g.t2n||'',g.t1,g.t2];
@@ -1848,7 +1861,9 @@ function renderSheet(g,gid,sid,con){
   const uuid=S.playerUuid;
   // Determine which side the player is on
   let mine=null;
-  if(uuid&&g.h){if((g.hp||[]).some(p=>matchP(p.profileID,uuid))||(S.games[sid]?.games?.[gid]?.h===S.teamId))mine='h';}
+  // The `g.h` guard skipped this entirely on hidden games, so the player's own
+  // side was never highlighted in the box score.
+  if(uuid&&hTid(g)){if((g.hp||[]).some(p=>matchP(p.profileID,uuid))||(hTid(S.games[sid]?.games?.[gid])===S.teamId))mine='h';}
   // Simple side detection: check if player's teamId matches
   const myTeamId=S.playerUuid?getPlayerTeamForGame(g,uuid,S.players[uuid]):null;
   const t1mine=myTeamId&&(myTeamId===t1id||mine==='h');
@@ -2178,10 +2193,13 @@ async function resolveOppGames(r,myGameSet){
     const oppTidInGame=getTidForGame(opp,sid,gid);
     if(!myTid||!oppTidInGame)continue;
     // Also accept if teams are on correct sides (handles cases where gameTids not available)
-    const validExact=(g.h===myTid&&g.a===oppTidInGame)||(g.a===myTid&&g.h===oppTidInGame);
+    // Every one of these tests was false on a hidden game, so it was dropped from
+    // the head-to-head record entirely.
+    const _mh=hTid(g),_ma=aTid(g);
+    const validExact=(_mh===myTid&&_ma===oppTidInGame)||(_ma===myTid&&_mh===oppTidInGame);
     // Fallback: accept if myTid and oppTidInGame are both in this game on opposite sides
-    const myInGame=(g.h===myTid||g.a===myTid);
-    const oppInGame=(g.h===oppTidInGame||g.a===oppTidInGame);
+    const myInGame=(_mh===myTid||_ma===myTid);
+    const oppInGame=(_mh===oppTidInGame||_ma===oppTidInGame);
     const valid=validExact||(myInGame&&oppInGame&&myTid!==oppTidInGame);
     if(valid)verified.push({gid,sid,g});
   }
@@ -2193,7 +2211,7 @@ function toggleOppGames(row,games,oppName){
   if(detail){detail.classList.toggle('hidden');return;}
   let gh='<div class="opp-games">';
   for(const{gid,sid,g}of games){
-    const ctx=gameCtx(g,getTidForSeason(S.players[row.closest('[data-uuid]')?.dataset?.uuid||''],sid)||g.h);
+    const ctx=gameCtx(g,getTidForSeason(S.players[row.closest('[data-uuid]')?.dataset?.uuid||''],sid)||hTid(g));
     const score=ctx.myS!=null?`${ctx.myS}–${ctx.oppS}`:'';
     const res=resLetter(ctx.myS,ctx.oppS);
     const fc=finalClass(g.rn);
@@ -2294,7 +2312,7 @@ function getPlayerGameStats(g, uuid) {
 function wldSummary(games, myUuid, myTidFn) { // myTidFn(sid,gameId)
   let w = 0, l = 0, d = 0;
   for (const { g, sid } of games) {
-    const myTid = myTidFn ? myTidFn(sid,g.id) : g.h;
+    const myTid = myTidFn ? myTidFn(sid,g.id) : hTid(g);
     const ctx = gameCtx(g, myTid);
     // Skip unscored games (0-0 with no stats — typically unscored junior games)
     if (ctx.myS === 0 && ctx.oppS === 0 && !g.hp?.length && !g.ap?.length) continue;
@@ -2337,7 +2355,7 @@ function toggleTeamOppDetail(row, result, myUuid) {
 
     for (const { gid, sid, g } of games) {
       const myTid = getTidForGame(S.players[myUuid],sid,g.id);
-      const ctx = gameCtx(g, myTid || g.h);
+      const ctx = gameCtx(g, myTid || hTid(g));
       const score = ctx.myS != null ? `${ctx.myS}–${ctx.oppS}` : '—';
       const res = resLetter(ctx.myS, ctx.oppS);
       const resColor = res === 'W' ? 'var(--win)' : res === 'L' ? 'var(--loss)' : 'var(--text2)';
@@ -2621,14 +2639,15 @@ boot();
 // Shared game row builder used by both expanded rows and search detail
 function buildGameRow(gid, sid, g, myUuid2, oppUuid2) {
   const myTid2 = getTidForGame(S.players[myUuid2],sid,g?.id);
-  const ctx2 = gameCtx(g, myTid2 || g.h);
+  const ctx2 = gameCtx(g, myTid2 || hTid(g));
   const score2 = ctx2.myS != null ? `${ctx2.myS}\u2013${ctx2.oppS}` : '\u2014';
   const res2 = resLetter(ctx2.myS, ctx2.oppS);
   const resColor2 = res2 === 'W' ? 'var(--win)' : res2 === 'L' ? 'var(--loss)' : 'var(--text2)';
   const fc2 = finalClass(g.rn);
   const statsId2 = 'ogsr-' + gid + '-' + myUuid2.slice(0,4);
-  const myTN = myTid2 === g.h ? (g.hn||'') : (g.an||'');
-  const oppTN = myTid2 === g.h ? (g.an||'') : (g.hn||'');
+  const[_h2n,_a2n]=teamNames(g);
+  const myTN = myTid2 === hTid(g) ? _h2n : _a2n;
+  const oppTN = myTid2 === hTid(g) ? _a2n : _h2n;
   const row2 = document.createElement('div');
   row2.className = 'opp-game-row';
   row2.style.cssText = 'flex-wrap:nowrap;overflow:hidden;gap:8px';
@@ -2690,10 +2709,13 @@ async function buildOppStats(uuid, btn) {
       if (ctx.myS == null) continue; // no score
 
       // Determine which side the player is on — skip game if we can't tell
-      const isHome = g.h === myTid;
-      const isAway = g.a === myTid;
+      // `continue` drops the game from the tally. With g.h/g.a that happened for
+      // EVERY hidden game, so the opponent record was built from the minority.
+      const _h = hTid(g), _a = aTid(g);
+      const isHome = _h === myTid;
+      const isAway = _a === myTid;
       if (!isHome && !isAway) continue;
-      const otherTid = isHome ? g.a : g.h;
+      const otherTid = isHome ? _a : _h;
       const td = S.teamStats[sid] || {};
       const oppRosterKeys = Object.keys(td[otherTid]?.roster || {});
       const myRosterKeys  = Object.keys(td[myTid]?.roster    || {});
