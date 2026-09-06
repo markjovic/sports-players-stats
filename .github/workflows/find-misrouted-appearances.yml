@@ -39,6 +39,19 @@ name: Find misrouted appearances
 # prefix of one another - because a false positive here names an innocent alias
 # for repointing, which would move a real appearance off a real person's record.
 #
+# CORRECTED AGAIN 2026-09-05. The first apply run repointed EVERY foreign alias
+# aimed at a player whose misrouted games all went to one claimant. That does not
+# follow: one claimant holding all the misrouted games says nothing about WHICH
+# alias carried WHICH game. William Warren (622098f3) had three foreign aliases -
+# two carried the misrouted games, one carried 13 games PlayHQ credits to HIM.
+# Repointing all three took 262 games down to 65 against a gp of 78.
+#
+# Games are now attributed to the alias that carried them: every game the player
+# holds is walked, the roster id that resolves to them is found, and games are
+# grouped by it. An alias is repointed ONLY when every game it carried is in the
+# misrouted set. One credited game on it and it is HELD BACK, with the reason
+# printed. Identity aliases remain excluded on top of that.
+#
 # NO RATIO FILTER. A player with 116 x entries and a player with 1 are the same
 # bug at different scales, and no threshold separates a misroute from a genuine
 # PlayHQ gap - only the per-game check does. The x-to-games ratio is reported as
