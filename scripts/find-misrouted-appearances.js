@@ -71,6 +71,7 @@ const { resolveToFullUuid } = require('./lib/uuid-prefix.cjs');
 // normName has a ONE-PASS INVARIANT in namespace-resolve.cjs: five verbatim
 // copies already exist and a sixth must not be made. Imported, never rewritten.
 const { normName, isPlaceholderName } = require('./lib/namespace-resolve.cjs');
+const { TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
 
 const ROOT        = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
@@ -251,11 +252,15 @@ function main() {
       const uuid = fname.replace(/\.json$/, '');
       _pf.set(uuid, p);
       const sids = [...new Set((p.seasons || []).map(s => s.sid).filter(Boolean))];
+      // EVERY game, not only the x ones. Attributing a game to the alias that
+      // carried it needs the games PlayHQ DOES credit as well - an alias carrying
+      // even one of those must not be repointed.
+      const allGames = Array.isArray(p.games) ? p.games : [];
       for (const sid of sids) {
         if (!neededBySid.has(sid)) neededBySid.set(sid, new Set());
-        for (const gid of x) neededBySid.get(sid).add(gid);
+        for (const gid of allGames) neededBySid.get(sid).add(gid);
       }
-      sampled.push({ uuid, name: p.name || null, x, sids, games: (p.games || []).length, gp: Number(bk.gp) || 0 });
+      sampled.push({ uuid, name: p.name || null, x, sids, allGames, games: allGames.length, gp: Number(bk.gp) || 0 });
     }
   }
   log(`scanned ${scanned.toLocaleString()} | ${withX.toLocaleString()} carried x | sampled ${sampled.length.toLocaleString()}`);
@@ -280,7 +285,7 @@ function main() {
     playersSampled: sampled.length, xEntries: 0,
     misrouted: 0, genuineGap: 0, ambiguous: 0, gameNotFound: 0,
     playersWithAnyMisroute: 0, playersFullyMisrouted: 0,
-    suspectAliases: [], identityAliases: [], repointed: 0, players: [],
+    suspectAliases: [], identityAliases: [], heldBack: [], repointed: 0, players: [],
     // Genuine gaps split by whether PlayHQ's own box score has the player.
     gapInBox: 0, gapOutBox: 0, gapNoBox: 0,
     examples: { gapInBox: [], gapOutBox: [] },
@@ -337,6 +342,43 @@ function main() {
       }
     }
 
+    // ── WHICH ALIAS CARRIED WHICH GAME ────────────────────────────────────────
+    // The flaw that cost William Warren 13 appearances on 2026-09-05: the repair
+    // knew ONE claimant held all his misrouted games, and concluded every foreign
+    // alias aimed at him was wrong. It was not. He had three; two carried the
+    // misrouted games and one carried 13 games PlayHQ credits to HIM. Repointing
+    // all three took his own games with them - 262 down to 65 against a gp of 78.
+    //
+    // A game arrives on a player's record through a specific roster id. So walk
+    // every game the player holds, find which raw id on the team sheet resolves to
+    // them, and group by it. An alias may then be repointed only when EVERY game
+    // it carried is in the misrouted set. One credited game on it and it stays.
+    const xSet = new Set(s.x);
+    const byRawId = new Map();      // raw roster id -> { inX:[], notInX:[] }
+    for (const gid of s.allGames) {
+      let g2 = null;
+      for (const sid of s.sids) { const c = gameAt.get(`${sid}:${gid}`); if (c) { g2 = c; break; } }
+      if (!g2) continue;
+      for (const e of (Array.isArray(g2.p) ? g2.p : [])) {
+        const raw = e && (e.id ?? e.profileID);
+        if (!raw || resolve(raw) !== s.uuid) continue;
+        if (!byRawId.has(raw)) byRawId.set(raw, { inX: [], notInX: [] });
+        byRawId.get(raw)[xSet.has(gid) ? 'inX' : 'notInX'].push(gid);
+      }
+    }
+
+    // An id that is a prefix of the player's own uuid is their identity, never an
+    // alias to repoint. Full-length ids resolve through the index, not an alias.
+    const aliasVerdicts = [];
+    for (const [raw, v] of byRawId) {
+      if (s.uuid.startsWith(raw)) continue;
+      if (raw.length !== TRUNC_LEN) continue;
+      aliasVerdicts.push({
+        spec: raw, inX: v.inX.length, notInX: v.notInX.length,
+        safe: v.inX.length > 0 && v.notInX.length === 0,
+      });
+    }
+
     if (!byClaimant.size && !gap && !notFound && !ambiguous) continue;
 
     const claims = [...byClaimant.entries()]
@@ -375,9 +417,20 @@ function main() {
     // point at several different people is not a misrouted alias and must not be
     // repaired by one.
     if (single) {
+      const verdictFor = new Map(aliasVerdicts.map(v => [v.spec, v]));
       for (const a of aliasesPointingAt(s.uuid)) {
-        const row = { aliasShard: a.shard, spec: a.spec, currentTarget: s.uuid, likelyCorrectTarget: claims[0].claimant, games: claims[0].games };
-        if (a.identity) R.identityAliases.push(row); else R.suspectAliases.push(row);
+        const v = verdictFor.get(a.spec);
+        const row = {
+          aliasShard: a.shard, spec: a.spec, currentTarget: s.uuid,
+          likelyCorrectTarget: claims[0].claimant,
+          carriedMisrouted: v ? v.inX : 0,
+          carriedCredited:  v ? v.notInX : 0,
+          games: claims[0].games,
+        };
+        if (a.identity) { R.identityAliases.push(row); continue; }
+        if (!v)          { row.why = 'carried no game we can see'; R.heldBack.push(row); continue; }
+        if (!v.safe)     { row.why = `carries ${v.notInX} game(s) PlayHQ credits to this player`; R.heldBack.push(row); continue; }
+        R.suspectAliases.push(row);
       }
     }
   }
@@ -411,6 +464,15 @@ function main() {
       console.log(`    players/aliases/${a.aliasShard}.json  "${a.spec}"  ${a.currentTarget.slice(0, 8)} \u2192 ${a.likelyCorrectTarget.slice(0, 8)}   (${a.games} games)`);
     }
     if (R.suspectAliases.length > 25) console.log(`    \u2026 and ${R.suspectAliases.length - 25} more, all in the report`);
+  }
+  if (R.heldBack.length) {
+    console.log(`\n  \u2500\u2500 HELD BACK \u2014 aliases NOT repointed (${R.heldBack.length}) \u2500\u2500`);
+    console.log('    Aimed at a player whose misrouted games all go to one claimant, but');
+    console.log('    carrying games PlayHQ credits to the player themselves. Repointing one');
+    console.log('    would take those games with it - the William Warren failure.');
+    for (const a of R.heldBack.slice(0, 20)) {
+      console.log(`    players/aliases/${a.aliasShard}.json  "${a.spec}"  ${a.carriedMisrouted} misrouted, ${a.carriedCredited} credited  \u2014 ${a.why}`);
+    }
   }
   if (R.identityAliases.length) {
     console.log(`\n  \u2500\u2500 IDENTITY aliases, NEVER touched (${R.identityAliases.length}) \u2500\u2500`);
