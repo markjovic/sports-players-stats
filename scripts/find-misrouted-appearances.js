@@ -166,8 +166,14 @@ function resolve(id) {
 // Player files are read once and kept. This is the memory cost of the whole tool
 // and it is bounded by how many DISTINCT claimants the sample touches, not by the
 // player count.
+// Bounded. readPlayer is called for EVERY candidate on EVERY x game's team sheet
+// before the name test can reject them - roughly 1.5 million calls across hundreds
+// of thousands of distinct files. Caching all of them is what put the baseline
+// close enough to the heap limit that anything else tipped it over.
+const _PF_MAX = 20000;
 const _pf = new Map();
 function readPlayer(uuid) {
+  if (_pf.size > _PF_MAX) _pf.clear();
   if (_pf.has(uuid)) return _pf.get(uuid);
   let p = null;
   try { p = JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, uuid.slice(0, 2).toLowerCase(), `${uuid}.json`), 'utf8')); }
@@ -241,7 +247,12 @@ function attributeAliases(s) {
     try { local.set(sid, (JSON.parse(fs.readFileSync(path.join(GAMES_DIR, `${sid}.json`), 'utf8')).games) || {}); }
     catch (_) { /* season file missing: its games simply are not attributable */ }
   }
-  for (const gid of s.allGames) {
+  // Re-read rather than retain: holding every sampled player's games array is
+  // part of what exhausted the heap.
+  let self = null;
+  try { self = JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, s.uuid.slice(0, 2).toLowerCase(), `${s.uuid}.json`), 'utf8')); } catch (_) { return new Map(); }
+  const allGames = Array.isArray(self.games) ? self.games : [];
+  for (const gid of allGames) {
     let g = null;
     for (const sid of s.sids) { const o = local.get(sid); if (o && o[gid]) { g = o[gid]; break; } }
     if (!g) continue;
@@ -274,7 +285,7 @@ function main() {
   const perShard = (MAX_PLAYERS === Infinity) ? Infinity : Math.max(1, Math.ceil(MAX_PLAYERS / prefixes.length) * 3);
 
   const sampled = [];
-  const neededBySid = new Map();
+  const wantedGids = new Set();
   let scanned = 0, withX = 0;
 
   for (const prefix of prefixes) {
@@ -293,36 +304,46 @@ function main() {
       if (!x || !x.length) continue;
       withX++; fromShard++;
       const uuid = fname.replace(/\.json$/, '');
-      _pf.set(uuid, p);
       const sids = [...new Set((p.seasons || []).map(s => s.sid).filter(Boolean))];
       // ONLY the x games here. Loading every game for all 40,216 x-carrying
       // players built a map of roughly four million game objects and the run died
       // with a heap limit at 4 GB. Attribution needs the credited games too, but
       // only for the ~100 players actually being repointed, so it is done per
       // player on demand further down and the season data is released after each.
-      const allGames = Array.isArray(p.games) ? p.games : [];
-      for (const sid of sids) {
-        if (!neededBySid.has(sid)) neededBySid.set(sid, new Set());
-        for (const gid of x) neededBySid.get(sid).add(gid);
-      }
-      sampled.push({ uuid, name: p.name || null, x, sids, allGames, games: allGames.length, gp: Number(bk.gp) || 0 });
+      // ONE FLAT SET, not a set per season. neededBySid used to hold, for every
+      // player, every one of their x game ids against every one of their seasons -
+      // a cross product. William Warren alone is 24 seasons x 184 games = 4,416
+      // entries. Across 40,216 players that is tens of millions of Set entries and
+      // it exhausted a 4 GB heap twice.
+      //
+      // The season a game belongs to does not need to be known in advance: sweep
+      // every season file once and take any game whose id is in this set.
+      for (const gid of x) wantedGids.add(gid);
+      // allGames is NOT retained - re-read from the player file in
+      // attributeAliases, which runs for about a hundred players rather than all
+      // of them.
+      sampled.push({ uuid, name: p.name || null, x, sids, games: (p.games || []).length, gp: Number(bk.gp) || 0 });
     }
   }
   log(`scanned ${scanned.toLocaleString()} | ${withX.toLocaleString()} carried x | sampled ${sampled.length.toLocaleString()}`);
   if (!sampled.length) { console.error('FATAL: no players carrying x.'); process.exit(1); }
 
   // ── Pass 2: resolve the games ──────────────────────────────────────────────
+  // Keyed by gid alone. A game id is unique across games/bv, so the season
+  // prefix bought nothing and forced the cross product above.
   const gameAt = new Map();
   let opened = 0;
-  for (const [sid, gids] of neededBySid) {
+  for (const fname of fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'))) {
     let gf;
-    try { gf = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, `${sid}.json`), 'utf8')); } catch { continue; }
+    try { gf = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, fname), 'utf8')); } catch { continue; }
     opened++;
     const games = gf.games || {};
-    for (const gid of gids) if (games[gid]) gameAt.set(`${sid}:${gid}`, games[gid]);
-    if (opened % 300 === 0) log(`opened ${opened} season files…`);
+    // Iterate the WANTED ids, not the season's games: a season file holds up to
+    // 2,758 games and almost none of them are wanted.
+    for (const gid of wantedGids) if (games[gid] && !gameAt.has(gid)) gameAt.set(gid, games[gid]);
+    if (opened % 300 === 0) log(`opened ${opened} season files… (${gameAt.size.toLocaleString()} of ${wantedGids.size.toLocaleString()} games found)`);
   }
-  log(`opened ${opened.toLocaleString()} season files`);
+  log(`opened ${opened.toLocaleString()} season files | resolved ${gameAt.size.toLocaleString()} of ${wantedGids.size.toLocaleString()} x games`);
 
   // ── Pass 3: who does PlayHQ credit each x game to? ─────────────────────────
   const R = {
@@ -346,8 +367,7 @@ function main() {
 
     for (const gid of s.x) {
       R.xEntries++;
-      let g = null;
-      for (const sid of s.sids) { const c = gameAt.get(`${sid}:${gid}`); if (c) { g = c; break; } }
+      const g = gameAt.get(gid);
       if (!g) { notFound++; R.gameNotFound++; continue; }
 
       // Everyone on the team sheet, resolved. A game the player is credited for by
