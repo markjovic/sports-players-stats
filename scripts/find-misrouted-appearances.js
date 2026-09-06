@@ -220,6 +220,49 @@ function _aliasShard(shard) {
   return m;
 }
 
+// ─── Which alias carried which game ──────────────────────────────────────────
+// The flaw that cost William Warren 13 appearances on 2026-09-05: the repair knew
+// ONE claimant held all his misrouted games and concluded every foreign alias
+// aimed at him was wrong. It was not. He had three - two carried the misrouted
+// games, one carried 13 games PlayHQ credits to HIM. Repointing all three took
+// 262 games down to 65 against a gp of 78.
+//
+// A game arrives on a record through a specific roster id. So walk every game the
+// player holds, find the raw id on the team sheet that resolves to them, and group
+// by it. An alias may be repointed ONLY when every game it carried is misrouted.
+//
+// Reads the player's season files itself and lets them go on return: doing this
+// globally for all 40,216 x-carrying players is what exhausted the heap.
+function attributeAliases(s) {
+  const xSet = new Set(s.x);
+  const byRawId = new Map();
+  const local = new Map();          // sid -> games object, dropped on return
+  for (const sid of s.sids) {
+    try { local.set(sid, (JSON.parse(fs.readFileSync(path.join(GAMES_DIR, `${sid}.json`), 'utf8')).games) || {}); }
+    catch (_) { /* season file missing: its games simply are not attributable */ }
+  }
+  for (const gid of s.allGames) {
+    let g = null;
+    for (const sid of s.sids) { const o = local.get(sid); if (o && o[gid]) { g = o[gid]; break; } }
+    if (!g) continue;
+    for (const e of (Array.isArray(g.p) ? g.p : [])) {
+      const raw = e && (e.id ?? e.profileID);
+      if (!raw || resolve(raw) !== s.uuid) continue;
+      if (!byRawId.has(raw)) byRawId.set(raw, { inX: 0, notInX: 0 });
+      byRawId.get(raw)[xSet.has(gid) ? 'inX' : 'notInX']++;
+    }
+  }
+  const out = new Map();
+  for (const [raw, v] of byRawId) {
+    // A prefix of the player's own uuid is their identity. Full-length ids resolve
+    // through the index rather than an alias, so neither is a repoint candidate.
+    if (s.uuid.startsWith(raw)) continue;
+    if (raw.length !== TRUNC_LEN) continue;
+    out.set(raw, { spec: raw, inX: v.inX, notInX: v.notInX, safe: v.inX > 0 && v.notInX === 0 });
+  }
+  return out;
+}
+
 function main() {
   log(`find-misrouted-appearances  players=${MAX_PLAYERS}  seed=${SEED}${DRY_RUN ? '  DRY RUN' : ''}`);
   console.log('─'.repeat(72));
@@ -252,13 +295,15 @@ function main() {
       const uuid = fname.replace(/\.json$/, '');
       _pf.set(uuid, p);
       const sids = [...new Set((p.seasons || []).map(s => s.sid).filter(Boolean))];
-      // EVERY game, not only the x ones. Attributing a game to the alias that
-      // carried it needs the games PlayHQ DOES credit as well - an alias carrying
-      // even one of those must not be repointed.
+      // ONLY the x games here. Loading every game for all 40,216 x-carrying
+      // players built a map of roughly four million game objects and the run died
+      // with a heap limit at 4 GB. Attribution needs the credited games too, but
+      // only for the ~100 players actually being repointed, so it is done per
+      // player on demand further down and the season data is released after each.
       const allGames = Array.isArray(p.games) ? p.games : [];
       for (const sid of sids) {
         if (!neededBySid.has(sid)) neededBySid.set(sid, new Set());
-        for (const gid of allGames) neededBySid.get(sid).add(gid);
+        for (const gid of x) neededBySid.get(sid).add(gid);
       }
       sampled.push({ uuid, name: p.name || null, x, sids, allGames, games: allGames.length, gp: Number(bk.gp) || 0 });
     }
@@ -353,32 +398,6 @@ function main() {
     // every game the player holds, find which raw id on the team sheet resolves to
     // them, and group by it. An alias may then be repointed only when EVERY game
     // it carried is in the misrouted set. One credited game on it and it stays.
-    const xSet = new Set(s.x);
-    const byRawId = new Map();      // raw roster id -> { inX:[], notInX:[] }
-    for (const gid of s.allGames) {
-      let g2 = null;
-      for (const sid of s.sids) { const c = gameAt.get(`${sid}:${gid}`); if (c) { g2 = c; break; } }
-      if (!g2) continue;
-      for (const e of (Array.isArray(g2.p) ? g2.p : [])) {
-        const raw = e && (e.id ?? e.profileID);
-        if (!raw || resolve(raw) !== s.uuid) continue;
-        if (!byRawId.has(raw)) byRawId.set(raw, { inX: [], notInX: [] });
-        byRawId.get(raw)[xSet.has(gid) ? 'inX' : 'notInX'].push(gid);
-      }
-    }
-
-    // An id that is a prefix of the player's own uuid is their identity, never an
-    // alias to repoint. Full-length ids resolve through the index, not an alias.
-    const aliasVerdicts = [];
-    for (const [raw, v] of byRawId) {
-      if (s.uuid.startsWith(raw)) continue;
-      if (raw.length !== TRUNC_LEN) continue;
-      aliasVerdicts.push({
-        spec: raw, inX: v.inX.length, notInX: v.notInX.length,
-        safe: v.inX.length > 0 && v.notInX.length === 0,
-      });
-    }
-
     if (!byClaimant.size && !gap && !notFound && !ambiguous) continue;
 
     const claims = [...byClaimant.entries()]
@@ -416,8 +435,11 @@ function main() {
     // Only where ONE claimant accounts for EVERY x entry. A player whose x games
     // point at several different people is not a misrouted alias and must not be
     // repaired by one.
+    // Attribution runs ONLY here, for a player we are actually about to repoint.
+    // The season data is read fresh and dropped when this block ends, so peak
+    // memory is one player's seasons rather than the whole database.
+    const verdictFor = single ? attributeAliases(s) : new Map();
     if (single) {
-      const verdictFor = new Map(aliasVerdicts.map(v => [v.spec, v]));
       for (const a of aliasesPointingAt(s.uuid)) {
         const v = verdictFor.get(a.spec);
         const row = {
