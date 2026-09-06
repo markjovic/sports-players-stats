@@ -1,0 +1,111 @@
+# .github/workflows/revert-alias-repoints.yml
+name: Revert alias repoints
+
+# Puts back the alias entries changed by find-misrouted-appearances.js --apply on
+# 2026-09-05 at 12:31, which repointed 117 foreign aliases across 103 players.
+#
+# WHY. The rule was: where ONE same-name claimant is credited with EVERY x entry
+# on a player, repoint every foreign alias aimed at that player. The evidence only
+# ever supported the first half. That one claimant holds all the misrouted games
+# says nothing about WHICH alias carried WHICH games, so for a player with several
+# foreign aliases the repair moved them all - including ones carrying games PlayHQ
+# credits to the player themselves.
+#
+# It shows on William Warren (622098f3): 262 games before, 65 after, against a gp
+# of 78 whose per-season figures sum to exactly 78. Three foreign aliases were
+# repointed for him; two were almost certainly right, one was his, and 13 real
+# appearances went with it.
+#
+# THE SPLIT
+#   46 of the 117 belong to players who had exactly ONE foreign alias. With one
+#      alias there is nothing to attribute wrongly. Those repairs are sound.
+#   71 belong to the 28 players who had MORE THAN ONE. Only these are exposed.
+#
+# The whole repair was not wrong: the run after it showed misrouted appearances
+# down from 3,131 to 559 and affected players from 103 to 30. scope=multi keeps
+# that and undoes only the risky part; scope=all puts everything back to how it
+# was this morning.
+#
+# The old value of every entry is embedded in the script, taken from the report
+# that apply run wrote. Each is re-checked against the file on disk before being
+# restored - an alias changed by something else since is left alone, not
+# overwritten.
+#
+# data-write: writes players/aliases/.
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: 'multi = revert only the 71 entries for players with several foreign aliases (the exposed set). all = revert all 117.'
+        required: true
+        default: multi
+        type: choice
+        options:
+          - multi
+          - all
+      mode:
+        description: 'dry-run = report what would change, write nothing. apply = restore the alias values.'
+        required: true
+        default: dry-run
+        type: choice
+        options:
+          - dry-run
+          - apply
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  revert:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      # Sparse: this reads and writes players/aliases only, about 256 small files,
+      # so the blobless-clone cost that makes sparse unusable at 418k files does
+      # not apply here.
+      - name: Checkout aliases
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/revert-alias-repoints.js
+            players/aliases
+          sparse-checkout-cone-mode: false
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Syntax check
+        run: node --check scripts/revert-alias-repoints.js
+
+      # Inputs go through env, never straight into the command line. An input
+      # interpolated into a run: block is substituted by GitHub BEFORE bash sees
+      # it, so anything in it becomes shell source text.
+      - name: Revert
+        env:
+          IN_SCOPE: ${{ inputs.scope }}
+          IN_MODE:  ${{ inputs.mode }}
+        run: |
+          set -euo pipefail
+          FLAG=""
+          if [ "$IN_MODE" = "apply" ]; then FLAG="--apply"; fi
+          node scripts/revert-alias-repoints.js "--scope=$IN_SCOPE" $FLAG
+
+      - name: What happens next
+        if: always()
+        run: |
+          echo "Aliases alone change nothing that anyone can see."
+          echo "Run Build Player Games afterwards: games[] is rebuilt from the"
+          echo "aliases, so nothing is back in place until it does."
+          echo ""
+          echo "Then check William Warren, players/62/622098f3-be0a-4720-805f-46ddb3bc964f.json"
+          echo "  scope=all   expect 262 games, as it was this morning."
+          echo "  scope=multi expect 78 games, matching his gp of 78 - the two correct"
+          echo "              repoints kept, the one that took his 13 games undone."
