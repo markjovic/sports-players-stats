@@ -1,45 +1,35 @@
 {
   "advisory": "ADVISORY ONLY. This file is a single path overwritten by EVERY fold run, including a 1-player one, so it is not a durable record. Do not build any repair, check or audit on it — reconstruct from the player data instead (spectatorIds[] is the source of truth). See claude_context.md trap T6.",
-  "generatedAt": "2026-09-09T21:10:27.334Z",
+  "generatedAt": "2026-09-11T20:17:15.290Z",
   "dryRun": false,
-  "filesScanned": 418416,
-  "folded": 5,
-  "promotes": 5,
+  "filesScanned": 418512,
+  "folded": 3,
+  "promotes": 3,
   "merges": 0,
   "statsRefetchQueued": 0,
   "refetchShards": [],
   "stubWouldHaveWonUnderOldComparator": 0,
   "apiWouldHaveWonUnderOldComparator": 0,
   "keeperChangedTotal": 0,
-  "indexShardsTouched": 10,
-  "aliasEntriesScanned": 499607,
-  "aliasValuesRepointed": 0,
-  "aliasShardsTouched": 0,
+  "indexShardsTouched": 6,
+  "aliasEntriesScanned": 499701,
+  "aliasValuesRepointed": 5,
+  "aliasShardsTouched": 5,
   "entries": [
     {
-      "apiId": "358d3d7c-4ad3-43db-9070-796b98ab46bd",
+      "apiId": "25fa6729-405e-4c6d-857d-af4b67d583dd",
       "action": "promote",
-      "oldKey": "3a24d345-ee7b-48e2-9c7b-5ccbc47818a2"
+      "oldKey": "23ada338-e8e4-4cb8-b6f6-7d2782175928"
     },
     {
-      "apiId": "a368f413-ddf7-42b2-b801-c76995d162b0",
+      "apiId": "a4e7d19a-415c-43f0-8c17-64fc5c4fb3ec",
       "action": "promote",
-      "oldKey": "3f689a16-78a4-4e82-bddb-87571efca6dd"
+      "oldKey": "4f194c90-72a6-4e25-af03-0383bf4216d8"
     },
     {
-      "apiId": "e1575a62-abeb-4fbe-88d1-f24430eaf991",
+      "apiId": "e80fe26a-87f0-4800-977d-22e4eee468c0",
       "action": "promote",
-      "oldKey": "a05fbb31-d861-4ab6-a086-f28068b1c608"
-    },
-    {
-      "apiId": "fec18bd3-d8b1-4f8e-9c71-475f085a9396",
-      "action": "promote",
-      "oldKey": "b7537958-ce7c-45ac-bee7-a7d2f949795e"
-    },
-    {
-      "apiId": "02aee0e4-66f3-4738-8f03-4f746464557a",
-      "action": "promote",
-      "oldKey": "f2bdfe56-7294-48d8-a1ea-353b010ab5cf"
+      "oldKey": "79fc8b25-a371-4d9d-acac-9e76ab7a40e8"
     }
   ]
 }
