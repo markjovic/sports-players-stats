@@ -1,0 +1,138 @@
+# .github/workflows/find-shell-counterparts.yml
+name: Find shell counterparts
+
+# READ-ONLY. No PlayHQ calls, no player writes, no alias writes, nothing in
+# games/bv. It writes at most one report file.
+#
+# WHAT IT IS FOR. count-stats-checked.js measured 591 player files holding a
+# non-zero career with an EMPTY games[] — 422 of them with EVERY credited game
+# already held in games/bv under a non-empty roster. Those appearances are not
+# missing; they are filed under a different uuid. Neither existing tool can reach
+# them: find-misrouted-appearances.js samples players carrying `x` and a shell has
+# none, and fold-diverged-players.js acts only on files carrying an `apiId` field,
+# of which the census found ZERO among the shells.
+#
+# HOW IT IDENTIFIES THE COUNTERPART — WITHOUT NAMES. PlayHQ credits the shell with
+# a specific list of games; we hold those games with their team sheets. The people
+# on EVERY one of those team sheets are the candidates. A teammate drops out as
+# soon as the team changes, and a shell's credited list is a whole career across
+# clubs, age groups and years. A name test is not used, and must not be: a name
+# cannot settle an identity question, which is what produced the Jida McCrae-Cooper
+# error and every alias written on a name alone.
+#
+# IDENTIFICATION AND CONFIRMATION ARE SEPARATE. A single survivor is only reported
+# as CONFIRMED when it also holds essentially all of the shell's credited games AND
+# its six career fields are identical. Where one survivor is found but the careers
+# DIFFER, the pair is reported apart — that is the Jordan Uppal shape (two real
+# PlayHQ profiles, 34 games against 184) and it needs a different answer.
+#
+# NOT in the data-write concurrency group: it writes only reports/.
+
+on:
+  workflow_dispatch:
+    inputs:
+      min_games:
+        description: "Minimum HELD credited games before the intersection is attempted. Below this the surviving set is most of a team sheet, not one person."
+        required: false
+        default: "5"
+        type: string
+      min_share:
+        description: "Share of the shell's credited games the candidate must hold to be CONFIRMED (0-1). Not 1.0 by default: some credited games have empty rosters and nobody holds them."
+        required: false
+        default: "0.95"
+        type: string
+      limit:
+        description: "Examine only the N shells with the largest credited lists. 0 = all of them."
+        required: false
+        default: "0"
+        type: string
+      write_report:
+        description: "Write reports/shell-counterparts.json, or print only."
+        required: false
+        default: 'write'
+        type: choice
+        options:
+          - write
+          - print-only
+
+permissions:
+  contents: write
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      # Plain full checkout. It reads every player file and every season file in
+      # games/bv, so a sparse set buys nothing and reintroduces the
+      # promisor/blobless failure class. No setup-node — nothing here touches
+      # api.playhq.com.
+      - name: Checkout working tree
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Syntax check
+        run: node --check scripts/find-shell-counterparts.js
+
+      # Inputs go through env, never straight into the command line. An input
+      # interpolated into a run: block is substituted by GitHub BEFORE bash sees
+      # it, so anything in it becomes shell source text.
+      - name: Find counterparts
+        env:
+          IN_MIN_GAMES: ${{ inputs.min_games }}
+          IN_MIN_SHARE: ${{ inputs.min_share }}
+          IN_LIMIT:     ${{ inputs.limit }}
+          IN_WRITE:     ${{ inputs.write_report }}
+        run: |
+          set -uo pipefail
+          FLAGS=""
+          if [ "${IN_WRITE:-write}" = "print-only" ]; then FLAGS="--no-write"; fi
+          node scripts/find-shell-counterparts.js \
+            "--min-games=${IN_MIN_GAMES:-5}" \
+            "--min-share=${IN_MIN_SHARE:-0.95}" \
+            "--limit=${IN_LIMIT:-0}" \
+            $FLAGS | tee /tmp/shells.txt
+
+      - name: Commit the report
+        if: ${{ inputs.write_report != 'print-only' }}
+        run: |
+          set -uo pipefail
+          if [ ! -f reports/shell-counterparts.json ]; then
+            echo "No report file produced — nothing to commit."
+            exit 0
+          fi
+          # Per-path staging only. `git add` is atomic across pathspecs, so one
+          # unmatched path stages NOTHING, silently, and the run reports success
+          # having committed nothing.
+          git add -- reports/shell-counterparts.json
+          if git diff --cached --quiet; then
+            echo "Report unchanged — nothing to commit."
+            exit 0
+          fi
+          git diff --staged --shortstat
+          git commit -m "find-shell-counterparts: report"
+          for i in $(seq 1 60); do
+            if git push; then echo "pushed (attempt $i)"; exit 0; fi
+            git merge --abort 2>/dev/null || true
+            git fetch origin main && git merge -X ours origin/main --no-stat || true
+            sleep $(( (RANDOM % 91) + 1 ))
+          done
+          echo "::error::push failed after 60 attempts"
+          exit 1
+
+      - name: How to read it
+        if: always()
+        run: |
+          {
+            echo '## find-shell-counterparts'
+            echo ''
+            echo '```'
+            tail -60 /tmp/shells.txt 2>/dev/null || echo '(no output captured)'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
