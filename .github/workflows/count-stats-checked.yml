@@ -11,6 +11,15 @@ name: Count Stats Checked
 # tells them apart. The run reports that blind spot explicitly — it is the
 # population a `c`-driven recovery cannot see.
 #
+# It also classifies EMPTY SHELLS — player files holding a non-zero gp with an
+# empty games[]. That shape is produced two ways and they need opposite responses:
+# one person split across two player files (the Jade Chow / Jordan Uppal case,
+# where the game files are already CORRECT and nothing should be appended), or a
+# genuine capture gap. They are told apart by asking whether the games PlayHQ
+# credits the shell are ALREADY HELD with a non-empty roster — a game-id set
+# overlap, no name comparison anywhere. That needs games/bv as well as players/,
+# which the full checkout below already provides.
+#
 # NOT in the data-write concurrency group: this reads and never writes, and joining
 # that group would queue a scan behind multi-hour writers for no reason.
 
@@ -29,12 +38,13 @@ permissions:
 jobs:
   count:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       # Plain full checkout. No sparse checkout: this walks every file under
-      # players/, which is the bulk of the repo, so a sparse set buys nothing and
-      # reintroduces the promisor/blobless failure class. No setup-node — nothing
-      # here touches api.playhq.com, but the house rule is simply not to add it.
+      # players/ AND every season file under games/bv, which together are the bulk
+      # of the repo, so a sparse set buys nothing and reintroduces the
+      # promisor/blobless failure class. No setup-node — nothing here touches
+      # api.playhq.com, but the house rule is simply not to add it.
       - uses: actions/checkout@v4
         with:
           ref: main
