@@ -1197,11 +1197,19 @@ async function finishOk(uuid, player, result, stats, prefix, short) {
   // preserves every captured field, sets private = true, writes statsChecked, and
   // carries the dirty-check so a later --recheck-private sweep re-offers the player,
   // needs no write, and counts as `unchanged` instead of churning a timestamp and
-  // preventing the chain from terminating. private = true is the right flag here:
-  // an earlier version of this guard set it to FALSE, reasoning that the profile had
-  // resolved, which is backwards — resolving with nothing is what a privatised
-  // profile does, and PlayHQ's own page for that player reads "This profile is
-  // private" (confirmed 2026-09-11).
+  // preventing the chain from terminating.
+  //
+  // ⚠ DO NOT READ private = true HERE AS "THE PROFILE WAS MADE PRIVATE". An earlier
+  // version of this comment said exactly that, on the strength of PlayHQ rendering
+  // "This profile is private" for 11fdc0c2-2994. **PlayHQ serves that page for ANY
+  // uuid it does not recognise, not only for genuinely private profiles** — so it is
+  // evidence of nothing. That id turned out not to be an API profile id at all: it is
+  // a SPECTATOR-namespace id, and PlayHQ's canonical record for game f4a62985 names
+  // the away #4 team-sheet profile as 692caea1-e6dd-…, a different uuid entirely.
+  // private = true remains the right FLAG, because the effect is the same — we cannot
+  // obtain statistics for this id and must not delete what we hold — but the CAUSE is
+  // open. It may be a privatised profile, a deleted one, or an id from the wrong
+  // namespace. Nothing in this file can tell those apart.
   //
   // NOTE ON THE POPULATION THIS DOES NOT COVER. A player who goes private and keeps
   // playing is already handled with no help from here: nightly-crawl.js L1145 clears
