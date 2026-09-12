@@ -1,17 +1,63 @@
 # .github/workflows/count-stats-checked.yml
 name: Count Stats Checked
 
+# Read-only census of players/. No writes, no commits, no API.
+#
+# 2026-09-11 — extended beyond a presence count to size the `c` population for the
+# §2.10 recovery design. `c` (PlayHQ credits this game, games[] does not hold it)
+# was added on 2026-09-01, so a player fetched before that date has no `c` NO
+# MATTER HOW LARGE THEIR GAP IS. An absent `c` therefore means two different
+# things depending on when the player was last fetched, and only the date split
+# tells them apart. The run reports that blind spot explicitly — it is the
+# population a `c`-driven recovery cannot see.
+#
+# NOT in the data-write concurrency group: this reads and never writes, and joining
+# that group would queue a scan behind multi-hour writers for no reason.
+
 on:
   workflow_dispatch:
+    inputs:
+      c_since:
+        description: "Date `c` became available (YYYY-MM-DD). Leave at the default unless `c` has been recomputed for older files."
+        required: false
+        default: "2026-09-01"
+        type: string
+
+permissions:
+  contents: read
 
 jobs:
   count:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      # Plain full checkout. No sparse checkout: this walks every file under
+      # players/, which is the bulk of the repo, so a sparse set buys nothing and
+      # reintroduces the promisor/blobless failure class. No setup-node — nothing
+      # here touches api.playhq.com, but the house rule is simply not to add it.
       - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 1
+
       - name: Count statsChecked
-        run: node scripts/count-stats-checked.js
+        env:
+          C_SINCE: ${{ inputs.c_since }}
+        run: |
+          set -uo pipefail
+          # Scheduled/blank dispatches receive no input value; fall back explicitly
+          # rather than passing an empty --c-since= that the script would reject.
+          SINCE="${C_SINCE:-2026-09-01}"
+          echo "Cutoff: $SINCE"
+          node scripts/count-stats-checked.js --c-since="$SINCE" | tee /tmp/count.txt
+
+      - name: Put the result on the run page
+        if: always()
+        run: |
+          {
+            echo '## count-stats-checked'
+            echo ''
+            echo '```'
+            cat /tmp/count.txt 2>/dev/null || echo '(no output captured)'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
