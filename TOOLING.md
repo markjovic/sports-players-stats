@@ -101,6 +101,7 @@ from a report a live script still reads.
 - `scan-complete-rounds.js`
 - `scan-roster-id-forms.js`
 - `seed-missing-profiles.js`
+- `set-shell-apiid.js`
 - `size-opposition-index.js`
 - `size-report.js`
 - `synthesize-missing-games.js`
@@ -221,6 +222,7 @@ kept out of that group are classified in 2.2.
 - `restore-deleted-file.yml`
 - `salvage-spectator-names.yml`
 - `scan-complete-rounds.yml`
+- `set-shell-apiid.yml`
 - `size-gap-players.yml`
 - `size-misses.yml`
 - `size-negative-gap.yml`
