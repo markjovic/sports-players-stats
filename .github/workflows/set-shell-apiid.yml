@@ -1,0 +1,153 @@
+# .github/workflows/set-shell-apiid.yml
+name: Set shell apiId
+
+# Writes ONE field — `apiId` — onto the player file that holds a shell's games, so
+# that fold-diverged-players.js can perform the repair. Nothing else is written.
+# No PlayHQ calls. DRY RUN BY DEFAULT.
+#
+# THE CASE. 591 player files hold a non-zero career with an EMPTY games[].
+# Confirmed against PlayHQ's canonical record for two players in two associations:
+#   Jade Chow        shell 692caea1-e6dd-…  holder 11fdc0c2-2994  game f4a62985
+#   Mackenzie Wurfel shell 0722240b-e5e7-…  holder 2e9151e6-edfa  game f3ba6c75
+# In both, PlayHQ's own team sheet names the SHELL as profile.id, and the shell's
+# profile page serves the live career. The holder is a SPECTATOR-namespace id whose
+# alias points at ITSELF — registered as a player, given a file, and handed every
+# appearance by build-player-games.
+#
+# WHY ONLY ONE FIELD. fold-diverged-players.js already does the entire repair (its
+# header, L15-23): merge into players/{apiPrefix}/{apiId}.json, DELETE the old file,
+# moveIndexEntry for the search index, repointAliases for every alias that pointed
+# at the deleted file. Idempotent. The only thing it has never had for these pairs
+# is the `apiId` field.
+#
+# ⚠ NO ALIAS IS WRITTEN AND games/bv IS NEVER TOUCHED. The rosters are already
+# correct by PlayHQ's team sheets. An append would duplicate a person — the
+# 2026-08-21 campaign appended one player's id to 388 rosters and the later reading
+# was that the shared games it produced were damage, not evidence.
+#
+# ⚠ THE REPORT IS NOT TRUSTED. Every pair is recomputed from the files on disk.
+# Trusting a report is what made the 2026-07-30 repair fix 0 of 284 dangling
+# aliases (fold-diverged-players.js L97).
+#
+# ⚠ NOT THE SAGE HORN CASE. Two genuine PlayHQ profiles = two records, settled
+# 2026-08-26, and that stands. This acts only where the holder's alias points at
+# ITSELF, which marks a spectator id registered as a player, not a second profile.
+#
+# data-write, because it writes players/*.json and must not race the nightly, the
+# fold or the matrix.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry-run = recompute and report, nothing written. apply = write apiId and commit.'
+        required: true
+        default: dry-run
+        type: choice
+        options:
+          - dry-run
+          - apply
+      only:
+        description: 'A single SHELL uuid (the api-side file, 36 chars). Blank = every qualifying shell. Use this first.'
+        required: false
+        default: ''
+        type: string
+      limit:
+        description: 'Act on at most the N shells with the largest credited lists. 0 = no limit.'
+        required: false
+        default: '0'
+        type: string
+      top_share:
+        description: "Share of the shell's held credited team sheets the holder must appear on (0-1)."
+        required: false
+        default: '0.9'
+        type: string
+      margin:
+        description: 'How far clear of the runner-up the holder must be (0-1). The tie guard.'
+        required: false
+        default: '0.2'
+        type: string
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  set:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      # Full checkout: reads every player file, every alias file and games/bv.
+      # No setup-node — nothing here touches api.playhq.com.
+      - name: Checkout working tree
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Syntax check
+        run: node --check scripts/set-shell-apiid.js
+
+      # Inputs go through env, never straight into the command line.
+      - name: Run
+        env:
+          IN_MODE:      ${{ inputs.mode }}
+          IN_ONLY:      ${{ inputs.only }}
+          IN_LIMIT:     ${{ inputs.limit }}
+          IN_TOP_SHARE: ${{ inputs.top_share }}
+          IN_MARGIN:    ${{ inputs.margin }}
+        run: |
+          set -uo pipefail
+          FLAGS=""
+          if [ "$IN_MODE" = "apply" ]; then FLAGS="--apply"; fi
+          if [ -n "${IN_ONLY:-}" ]; then FLAGS="$FLAGS --only=$IN_ONLY"; fi
+          node scripts/set-shell-apiid.js \
+            "--limit=${IN_LIMIT:-0}" \
+            "--top-share=${IN_TOP_SHARE:-0.9}" \
+            "--margin=${IN_MARGIN:-0.2}" \
+            $FLAGS | tee /tmp/setapiid.txt
+
+      # The script stages per-path and stops. Committing is here so a staging
+      # failure is visible before anything is recorded.
+      - name: Commit and push
+        if: ${{ inputs.mode == 'apply' }}
+        run: |
+          set -uo pipefail
+          if git diff --cached --quiet; then
+            echo "Nothing staged — no apiId was written. Not committing."
+            exit 0
+          fi
+          git diff --staged --shortstat
+          git commit -m "set-shell-apiid: mark holder files for the fold"
+          for i in $(seq 1 60); do
+            if git push; then echo "pushed (attempt $i)"; exit 0; fi
+            git merge --abort 2>/dev/null || true
+            git fetch origin main && git merge -X ours origin/main --no-stat || true
+            sleep $(( (RANDOM % 91) + 1 ))
+          done
+          echo "::error::push failed after 60 attempts"
+          exit 1
+
+      - name: What to do next
+        if: always()
+        run: |
+          {
+            echo '## set-shell-apiid'
+            echo ''
+            echo '```'
+            tail -50 /tmp/setapiid.txt 2>/dev/null || echo '(no output captured)'
+            echo '```'
+            echo ''
+            echo '**Next:** dispatch `fold-diverged-players` with `mode=dry-run` and read its'
+            echo 'summary before letting `apply` run. It merges each pair into the api-keyed'
+            echo 'file, DELETES the holder file, moves the index entry and repoints aliases.'
+            echo 'Its merge keeper can drop `statsChecked` on a tie-break, which queues a'
+            echo 're-fetch on the next matrix cycle — expected, not a fault.'
+          } >> "$GITHUB_STEP_SUMMARY"
