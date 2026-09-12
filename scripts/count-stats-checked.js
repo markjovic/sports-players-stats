@@ -98,6 +98,42 @@ if (fs.existsSync(GAMES_DIR)) {
   console.log('  ⚠ games/bv not present — empty-shell classification will be skipped');
 }
 
+// ─── Pass 2: the alias table, as two sets of 13-char ids ─────────────────────
+// Added 2026-09-11 to decide WHICH EXISTING TOOL, if any, owns the empty shells.
+// Neither current tool can see them:
+//   find-misrouted-appearances.js samples players CARRYING x (L306, and L332 exits
+//     fatal when none are found). A shell has games[]=0, so it has no x at all.
+//   fold-diverged-players.js acts on any file carrying an apiId field (L15) and is
+//     idempotent — after a run zero apiId fields remain. It only sees a pair that
+//     something already LINKED by writing that field.
+// So the question for each shell is whether anything links it to its counterpart:
+//   apiId present          -> the fold already owns it; a dispatch merges them.
+//   named as an alias TARGET -> something already points at it.
+//   its own id is an alias KEY -> it points somewhere else.
+//   none of the above      -> genuinely unlinked; new work, needs a decision.
+// Targets are compared at TRUNC_LEN because alias values appear in both the full
+// 36-char and truncated forms; comparing raw strings would miss half of them.
+const { TRUNC_LEN } = require(path.join(__dirname, 'lib', 'uuid-prefix.cjs'));
+const ALIASES_DIR = path.join(ROOT, 'players', 'aliases');
+const aliasKeys = new Set();
+const aliasTargets = new Set();
+let aliasEntries = 0;
+if (fs.existsSync(ALIASES_DIR)) {
+  for (const fname of fs.readdirSync(ALIASES_DIR)) {
+    if (!fname.endsWith('.json')) continue;
+    let a;
+    try { a = JSON.parse(fs.readFileSync(path.join(ALIASES_DIR, fname), 'utf8')); } catch { continue; }
+    for (const [k, v] of Object.entries(a || {})) {
+      aliasEntries++;
+      aliasKeys.add(String(k).slice(0, TRUNC_LEN));
+      if (v) aliasTargets.add(String(v).slice(0, TRUNC_LEN));
+    }
+  }
+  console.log(`  players/aliases: ${aliasEntries.toLocaleString()} entries, ${aliasTargets.size.toLocaleString()} distinct targets`);
+} else {
+  console.log('  ⚠ players/aliases not present — link classification will be skipped');
+}
+
 const prefixes = fs.readdirSync(PLAYERS_DIR)
   .filter(f => /^[0-9a-f]{2}$/.test(f))
   .sort();
@@ -107,6 +143,8 @@ let checkedBefore = 0, checkedAfter = 0, checkedUnparseable = 0;
 let withC = 0, cEntries = 0, withX = 0, xEntries = 0;
 // Empty shells: gp > 0 and games[] empty or absent.
 let shells = 0, shellsNoC = 0, shellsHeld = 0, shellsUnheld = 0, shellsMixed = 0;
+// How each shell is (or is not) linked to its counterpart.
+let shellApiId = 0, shellIsTarget = 0, shellIsKey = 0, shellUnlinked = 0;
 let shellGp = 0;
 const shellList = [];
 // Blind spot: fetched before the cutoff, so `c` could never have been written.
@@ -165,6 +203,14 @@ for (const prefix of prefixes) {
       if (gp > 0 && gamesHeld === 0) {
         shells++;
         shellGp += gp;
+        const selfTrunc = fname.replace(/\.json$/, '').slice(0, TRUNC_LEN);
+        const hasApiId  = !!player.apiId;
+        const isTarget  = aliasTargets.has(selfTrunc);
+        const isKey     = aliasKeys.has(selfTrunc);
+        if (hasApiId) shellApiId++;
+        if (isTarget) shellIsTarget++;
+        if (isKey)    shellIsKey++;
+        if (!hasApiId && !isTarget && !isKey) shellUnlinked++;
         if (!c || !c.length) {
           // No credited list to test against — cannot be classified either way.
           shellsNoC++;
@@ -235,6 +281,12 @@ console.log(`    ├─ every \`c\` game HELD:  ${shellsHeld.toLocaleString()}  
 console.log(`    ├─ some held, some not: ${shellsMixed.toLocaleString()}   ← mixed; needs reading one at a time`);
 console.log(`    ├─ NO \`c\` game held:    ${shellsUnheld.toLocaleString()}   ← genuine capture gap: nothing was ever captured`);
 console.log(`    └─ no \`c\` at all:       ${shellsNoC.toLocaleString()}   ← cannot be classified from files`);
+console.log('');
+console.log(`    HOW EACH SHELL IS LINKED TO ITS COUNTERPART  (not mutually exclusive)`);
+console.log(`      carries apiId:        ${shellApiId.toLocaleString()}   ← fold-diverged-players ALREADY OWNS THESE; a dispatch merges them`);
+console.log(`      named as an alias target: ${shellIsTarget.toLocaleString()}   ← something already points at this file`);
+console.log(`      own id is an alias key:   ${shellIsKey.toLocaleString()}   ← this file points somewhere else`);
+console.log(`      NONE of the above:    ${shellUnlinked.toLocaleString()}   ← genuinely unlinked: no existing tool can reach these`);
 console.log('');
 console.log(`    "every c game HELD" is the Jade Chow / Jordan Uppal shape: one person,`);
 console.log(`    two player files, stats written to both from the same PlayHQ profile,`);
