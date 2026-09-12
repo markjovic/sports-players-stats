@@ -1,0 +1,144 @@
+# .github/workflows/find-shell-aliases.yml
+name: Find shell aliases
+
+# READ-ONLY and OFFLINE. No PlayHQ calls, no player writes, no alias writes,
+# nothing in games/bv. It writes at most reports/shell-aliases.json.
+#
+# THE CASE, confirmed against PlayHQ's canonical record for game f4a62985 on
+# 2026-09-11. PlayHQ's own team sheet names away #4 as participant 8b8af34a with
+# profile 692caea1-e6dd-4f4b-afc2-b33cf15601bc. Our p[] for that game holds
+# 11fdc0c2-2994. 692caea1 is the API-namespace PROFILE id; 11fdc0c2 is a
+# SPECTATOR-namespace id captured from the spectator box score. One person, two
+# namespaces — which is what players/aliases exists to absorb. And the alias reads:
+#
+#   "11fdc0c2-2994": "11fdc0c2-2994-413c-9f5c-f123ef521fd0"
+#
+# It points at itself. The spectator id was registered as a player, a file was
+# created under it, and build-player-games routed every appearance there, leaving
+# the real profile with a career and no games. 591 files are in that state.
+#
+# ⚠ NOT THE SAGE HORN CASE. On 2026-08-26 it was settled that two genuine PlayHQ
+# profiles = two records, and merging them was refused. That rule is untouched:
+# here there is ONE profile plus a spectator id. The evidence separating the two is
+# PlayHQ's canonical record — never a name, never a stats comparison.
+#
+# ⚠ NOTHING IS APPENDED TO A ROSTER, EVER. The 2026-08-21 campaign appended a
+# player's id to 388 rosters and the later reading was that the shared games it
+# produced were damage rather than evidence. The rosters are already correct here.
+# The defect is one value in one alias file, and this workflow only REPORTS it.
+#
+# NOT in the data-write concurrency group: it writes only reports/.
+
+on:
+  workflow_dispatch:
+    inputs:
+      top_share:
+        description: "Share of the shell's held credited team sheets the holder must appear on (0-1)."
+        required: false
+        default: "0.9"
+        type: string
+      margin:
+        description: "How far clear of the runner-up the holder must be (0-1). The sibling guard — a tie is reported, never resolved."
+        required: false
+        default: "0.2"
+        type: string
+      min_games:
+        description: "Minimum held credited games before a shell is testable at all."
+        required: false
+        default: "5"
+        type: string
+      limit:
+        description: "Examine only the N shells with the largest credited lists. 0 = all."
+        required: false
+        default: "0"
+        type: string
+      write_report:
+        description: "Write reports/shell-aliases.json, or print only."
+        required: false
+        default: 'write'
+        type: choice
+        options:
+          - write
+          - print-only
+
+permissions:
+  contents: write
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      # Plain full checkout: reads every player file, every alias file and every
+      # season file in games/bv. Sparse checkout buys nothing here and reintroduces
+      # the promisor/blobless failure class. No setup-node — nothing here touches
+      # api.playhq.com.
+      - name: Checkout working tree
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Syntax check
+        run: node --check scripts/find-shell-aliases.js
+
+      # Inputs go through env, never straight into the command line.
+      - name: Find
+        env:
+          IN_TOP_SHARE: ${{ inputs.top_share }}
+          IN_MARGIN:    ${{ inputs.margin }}
+          IN_MIN_GAMES: ${{ inputs.min_games }}
+          IN_LIMIT:     ${{ inputs.limit }}
+          IN_WRITE:     ${{ inputs.write_report }}
+        run: |
+          set -uo pipefail
+          FLAGS=""
+          if [ "${IN_WRITE:-write}" = "print-only" ]; then FLAGS="--no-write"; fi
+          node scripts/find-shell-aliases.js \
+            "--top-share=${IN_TOP_SHARE:-0.9}" \
+            "--margin=${IN_MARGIN:-0.2}" \
+            "--min-games=${IN_MIN_GAMES:-5}" \
+            "--limit=${IN_LIMIT:-0}" \
+            $FLAGS | tee /tmp/aliases.txt
+
+      - name: Commit the report
+        if: ${{ inputs.write_report != 'print-only' }}
+        run: |
+          set -uo pipefail
+          if [ ! -f reports/shell-aliases.json ]; then
+            echo "No report produced — nothing to commit."
+            exit 0
+          fi
+          # Per-path staging only. `git add` is atomic across pathspecs, so one
+          # unmatched path stages NOTHING, silently, and the run reports success
+          # having committed nothing.
+          git add -- reports/shell-aliases.json
+          if git diff --cached --quiet; then
+            echo "Report unchanged — nothing to commit."
+            exit 0
+          fi
+          git diff --staged --shortstat
+          git commit -m "find-shell-aliases: report"
+          for i in $(seq 1 60); do
+            if git push; then echo "pushed (attempt $i)"; exit 0; fi
+            git merge --abort 2>/dev/null || true
+            git fetch origin main && git merge -X ours origin/main --no-stat || true
+            sleep $(( (RANDOM % 91) + 1 ))
+          done
+          echo "::error::push failed after 60 attempts"
+          exit 1
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '## find-shell-aliases'
+            echo ''
+            echo '```'
+            tail -70 /tmp/aliases.txt 2>/dev/null || echo '(no output captured)'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
