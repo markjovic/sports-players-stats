@@ -13,8 +13,16 @@ name: Find shell counterparts
 # of which the census found ZERO among the shells.
 #
 # HOW IT IDENTIFIES THE COUNTERPART — WITHOUT NAMES. PlayHQ credits the shell with
-# a specific list of games; we hold those games with their team sheets. The people
-# on EVERY one of those team sheets are the candidates. A teammate drops out as
+# a specific list of games; we hold those games with their team sheets. Each roster
+# id is SCORED by the share of those team sheets it appears on.
+#
+# ⚠ IT SCORED, NOT INTERSECTED, FROM THE SECOND VERSION ONWARDS. Requiring the
+# counterpart on EVERY team sheet confirmed ZERO pairs across 582 shells and put 76
+# in "no survivor" — a result about the test, not the data. One roster the
+# counterpart is missing from empties an intersection, and rosters missing a player
+# are the entire subject of §2.10: Tahlia Parker had two frozen partial captures
+# inside a 391-game career. A 371-game pair cannot survive a rule forbidding one
+# gap. A teammate drops out as
 # soon as the team changes, and a shell's credited list is a whole career across
 # clubs, age groups and years. A name test is not used, and must not be: a name
 # cannot settle an identity question, which is what produced the Jida McCrae-Cooper
@@ -31,6 +39,16 @@ name: Find shell counterparts
 on:
   workflow_dispatch:
     inputs:
+      top_share:
+        description: "Share of the shell's held credited team sheets the top-scoring id must appear on (0-1). 0.9 leaves room for frozen partial captures without admitting a teammate."
+        required: false
+        default: "0.9"
+        type: string
+      margin:
+        description: "How far clear of the runner-up the top scorer must be (0-1). This is the sibling guard: two people on the same team sheets both score near 1.0 and no top-share separates them. A tie is reported, never resolved."
+        required: false
+        default: "0.2"
+        type: string
       min_games:
         description: "Minimum HELD credited games before the intersection is attempted. Below this the surviving set is most of a team sheet, not one person."
         required: false
@@ -85,6 +103,8 @@ jobs:
       # it, so anything in it becomes shell source text.
       - name: Find counterparts
         env:
+          IN_TOP_SHARE: ${{ inputs.top_share }}
+          IN_MARGIN:    ${{ inputs.margin }}
           IN_MIN_GAMES: ${{ inputs.min_games }}
           IN_MIN_SHARE: ${{ inputs.min_share }}
           IN_LIMIT:     ${{ inputs.limit }}
@@ -94,6 +114,8 @@ jobs:
           FLAGS=""
           if [ "${IN_WRITE:-write}" = "print-only" ]; then FLAGS="--no-write"; fi
           node scripts/find-shell-counterparts.js \
+            "--top-share=${IN_TOP_SHARE:-0.9}" \
+            "--margin=${IN_MARGIN:-0.2}" \
             "--min-games=${IN_MIN_GAMES:-5}" \
             "--min-share=${IN_MIN_SHARE:-0.95}" \
             "--limit=${IN_LIMIT:-0}" \
