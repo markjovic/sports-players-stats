@@ -162,8 +162,18 @@ for (const s of work) {
   const holderT = top.id;
   const holderFile = byTrunc.get(holderT) || null;
   const al = aliasOf.get(holderT) || null;
+  // Sample game ids, so a proposal can be CHECKED without hunting for one.
+  // Every id here is from the shell's own credited list AND is held by us, so
+  // discoverGame on it names the profile PlayHQ puts on that team sheet: the SHELL
+  // means the repoint is right, the HOLDER means it is not. The first version of
+  // this report omitted them and the check needed a browser hunt through PlayHQ to
+  // find a game at all — and a game found that way may not even be in `c`, which
+  // weakens exactly the thing it was meant to prove.
+  const samples = held.slice(0, 3);
+
   const row = {
     shell: s.uuid, name: s.name, gp: s.gp, credited: s.c.length, held: held.length,
+    sampleGames: samples,
     holder: holderT, holderShare: +top.share.toFixed(3), holderHasFile: !!holderFile,
     aliasFile: al ? al.file : null, aliasValue: al ? al.value : null,
   };
@@ -194,11 +204,13 @@ console.log(`  none of their games held     : ${out.notHeld.length.toLocaleStrin
 console.log(L);
 
 if (out.identityAlias.length) {
-  console.log(`\n  PROPOSED REPOINTS — each is ONE value change in players/aliases/<file>`);
-  console.log(`    ${'alias key'.padEnd(15)}${'file'.padEnd(9)}${'gp'.padStart(5)}${'cred'.padStart(6)}${'sheet%'.padStart(8)}  should point at`);
+  console.log(`\n  PROPOSED REPOINTS — each is ONE value change in players/aliases/<alias key's 2-char file>`);
+  console.log(`  To check one: run discoverGame on the sample game id and read the team sheet's`);
+  console.log(`  profile.id. If it is the SHELL the repoint is right; if it is the ALIAS KEY it is not.`);
+  console.log(`    ${'alias key'.padEnd(15)}${'gp'.padStart(5)}${'cred'.padStart(6)}${'sheet%'.padStart(8)}  ${'check this game'.padEnd(11)}  should point at`);
   for (const r of out.identityAlias.slice(0, 25)) {
-    console.log(`    ${r.holder.padEnd(15)}${String(r.aliasFile).padEnd(9)}${String(r.gp).padStart(5)}${String(r.credited).padStart(6)}` +
-      `${((r.holderShare * 100).toFixed(0) + '%').padStart(8)}  ${r.shell}  ${r.name}`);
+    console.log(`    ${r.holder.padEnd(15)}${String(r.gp).padStart(5)}${String(r.credited).padStart(6)}` +
+      `${((r.holderShare * 100).toFixed(0) + '%').padStart(8)}  ${String(r.sampleGames[0] || '—').padEnd(11)}  ${r.shell}  ${r.name}`);
   }
   if (out.identityAlias.length > 25) console.log(`    … and ${out.identityAlias.length - 25} more in the report`);
 }
