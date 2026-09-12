@@ -50,6 +50,21 @@
 // most of a team sheet. That is fine: shells carry whole careers by construction,
 // and MIN_GAMES below refuses to try.
 //
+// ─── WHY FREQUENCY AND NOT INTERSECTION (2026-09-11, after the first run) ────
+// The first version required the counterpart to be on EVERY credited team sheet.
+// Across 582 shells it confirmed ZERO, put 76 in "no survivor" and 20 in
+// "ambiguous". That is a result about the test, not about the data: one roster the
+// counterpart is missing from empties the whole intersection, and rosters with a
+// missing player are the entire subject of §2.10 — Tahlia Parker had two frozen
+// partial captures inside a 391-game career. A 371-game pair does not survive a
+// rule that forbids a single gap.
+//
+// So each roster id is now SCORED by the share of the shell's held credited games
+// it appears on. The counterpart should sit near 1.0, short only by the frozen
+// captures. A teammate from one season of a ten-season career scores about 0.1. A
+// sibling who played every game alongside them scores near 1.0 too — which is a
+// real ambiguity, and the MARGIN below is what refuses it rather than guessing.
+//
 // ─── CONFIRMATION IS SEPARATE FROM IDENTIFICATION ────────────────────────────
 // The intersection proposes; the numbers dispose. For each single survivor the
 // report compares the six career fields on both files and counts how many of the
@@ -93,6 +108,14 @@ const MIN_GAMES = Math.max(1, parseInt(argOf('min-games', '5'), 10) || 5);
 // called confirmed. Not 100%: the worked example had 3 games with EMPTY rosters,
 // which nobody holds, and a run that demanded perfection would reject it.
 const MIN_SHARE = Math.min(1, Math.max(0, parseFloat(argOf('min-share', '0.95')) || 0.95));
+// Share of the shell's held credited games the top-scoring id must appear on.
+// 0.9 leaves room for frozen partial captures without admitting a teammate: a
+// team-mate would have to have played 90% of a career spanning clubs and years.
+const TOP_SHARE = Math.min(1, Math.max(0, parseFloat(argOf('top-share', '0.9')) || 0.9));
+// How far clear of the runner-up the top scorer must be. This is the sibling
+// guard: two people on the same team sheets both score near 1.0, and no amount of
+// TOP_SHARE separates them. A tie is reported, never resolved.
+const MARGIN    = Math.min(1, Math.max(0, parseFloat(argOf('margin', '0.2')) || 0.2));
 const LIMIT     = parseInt(argOf('limit', '0'), 10) || 0;   // 0 = every shell
 const WRITE     = !has('no-write');
 
@@ -100,7 +123,7 @@ const CAREER_FIELDS = ['gp', 'pts', 'fg', 'ft', 'threePt', 'fouls'];
 const t13 = (s) => String(s == null ? '' : s).slice(0, TRUNC_LEN);
 
 console.log(`find-shell-counterparts — read-only`);
-console.log(`  min-games=${MIN_GAMES}  min-share=${MIN_SHARE}  limit=${LIMIT || 'all'}  write=${WRITE}`);
+console.log(`  min-games=${MIN_GAMES}  top-share=${TOP_SHARE}  margin=${MARGIN}  min-share=${MIN_SHARE}  limit=${LIMIT || 'all'}  write=${WRITE}`);
 console.log('');
 
 // ─── Pass 1: every player file, once ─────────────────────────────────────────
@@ -178,31 +201,47 @@ for (const s of work) {
   if (!held.length)         { results.notHeld.push({ uuid: s.uuid, name: s.name, c: s.c.length }); continue; }
   if (held.length < MIN_GAMES) { results.tooFew.push({ uuid: s.uuid, name: s.name, c: s.c.length, held: held.length }); continue; }
 
-  // Intersection across every held team sheet. The shell's own id is removed
-  // first — it is absent from all of them by definition (that is what makes it a
-  // shell), but removing it explicitly means a future partially-repaired file
-  // cannot make itself its own counterpart.
-  let surviving = null;
+  // Score every roster id by the share of the shell's HELD credited games it
+  // appears on. The shell's own id is excluded — it is absent from all of them by
+  // definition, and excluding it explicitly means a partially-repaired file can
+  // never become its own counterpart.
+  const seen = new Map();
   for (const gid of held) {
-    const ids = new Set(rosterOf.get(gid));
-    ids.delete(selfT);
-    if (surviving === null) { surviving = ids; continue; }
-    for (const id of [...surviving]) if (!ids.has(id)) surviving.delete(id);
-    if (!surviving.size) break;
+    for (const id of rosterOf.get(gid)) {
+      if (id === selfT) continue;
+      seen.set(id, (seen.get(id) || 0) + 1);
+    }
   }
-  surviving = surviving || new Set();
+  const ranked = [...seen.entries()]
+    .map(([id, n]) => ({ id, n, share: n / held.length }))
+    .sort((a, b) => b.n - a.n);
 
-  if (surviving.size === 0) { results.noSurvivor.push({ uuid: s.uuid, name: s.name, c: s.c.length, held: held.length }); continue; }
-  if (surviving.size > 1) {
+  if (!ranked.length) { results.noSurvivor.push({ uuid: s.uuid, name: s.name, c: s.c.length, held: held.length }); continue; }
+
+  const top    = ranked[0];
+  const runner = ranked[1] || { id: null, n: 0, share: 0 };
+  const gap    = top.share - runner.share;
+
+  // Two ways to fail, and they are different questions. Too low a top score means
+  // nobody looks like the counterpart. Too small a gap means two people do, which
+  // is the sibling case and must never be resolved by picking one.
+  if (top.share < TOP_SHARE) {
+    results.noSurvivor.push({
+      uuid: s.uuid, name: s.name, c: s.c.length, held: held.length,
+      best: top.id, bestShare: +top.share.toFixed(3),
+    });
+    continue;
+  }
+  if (gap < MARGIN) {
     results.ambiguous.push({
       uuid: s.uuid, name: s.name, c: s.c.length, held: held.length,
-      survivors: [...surviving].slice(0, 8),
+      survivors: ranked.slice(0, 6).map(r => `${r.id}(${(r.share * 100).toFixed(0)}%)`),
     });
     continue;
   }
 
   // Exactly one. Confirm it independently of how it was found.
-  const candT = [...surviving][0];
+  const candT = top.id;
   const cand  = readPlayer(candT);
   if (!cand) { results.noSurvivor.push({ uuid: s.uuid, name: s.name, c: s.c.length, held: held.length, note: 'survivor has no player file' }); continue; }
 
@@ -220,6 +259,7 @@ for (const s of work) {
     shell: s.uuid, shellName: s.name, shellCareer: s.career, credited: s.c.length,
     candidate: candT, candidateName: cand.name || '?', candidateCareer: candCareer,
     candidateGames: candGames.size, holdsCredited, share: +share.toFixed(3),
+    rosterShare: +top.share.toFixed(3), runnerUpShare: +runner.share.toFixed(3),
     careerDiffs: diffs, candidatePrivate: cand.private === true, shellPrivate: s.private,
   };
   // THREE outcomes, not two. A pair whose careers are IDENTICAL but whose share
@@ -240,8 +280,8 @@ console.log(L);
 console.log(`  CONFIRMED pair          : ${results.confirmed.length.toLocaleString()}   one survivor, holds >=${(MIN_SHARE * 100).toFixed(0)}% of the credited games, careers identical`);
 console.log(`  one survivor, CAREERS DIFFER: ${results.careerMismatch.length.toLocaleString()}   the Jordan Uppal shape — two real profiles, NOT a straight merge`);
 console.log(`  one survivor, careers match but share <${(MIN_SHARE * 100).toFixed(0)}%: ${results.lowShare.length.toLocaleString()}   identity looks right; some credited games are held by nobody`);
-console.log(`  AMBIGUOUS (2+ survivors): ${results.ambiguous.length.toLocaleString()}   a sibling or a long-term teammate survived too — never acted on`);
-console.log(`  no survivor             : ${results.noSurvivor.length.toLocaleString()}   nobody is on every team sheet`);
+console.log(`  AMBIGUOUS (tie)         : ${results.ambiguous.length.toLocaleString()}   runner-up within ${(MARGIN * 100).toFixed(0)} points of the top — a sibling shape, never resolved`);
+console.log(`  no strong candidate     : ${results.noSurvivor.length.toLocaleString()}   top id appears on <${(TOP_SHARE * 100).toFixed(0)}% of the team sheets`);
 console.log(`  too few held games      : ${results.tooFew.length.toLocaleString()}   fewer than ${MIN_GAMES} held; the intersection would be a team sheet`);
 console.log(`  none of their games held: ${results.notHeld.length.toLocaleString()}   genuine capture gap, not a duplicate`);
 console.log(L);
@@ -249,11 +289,12 @@ console.log(L);
 const show = (rows, title, n = 15) => {
   if (!rows.length) return;
   console.log(`\n  ${title}`);
-  console.log(`    ${'shell'.padEnd(15)}${'gp'.padStart(5)}${'cred'.padStart(6)}  ->  ${'counterpart'.padEnd(15)}${'gp'.padStart(5)}${'games'.padStart(7)}${'holds'.padStart(7)}  ${'diffs'.padEnd(22)} name`);
+  console.log(`    ${'shell'.padEnd(15)}${'gp'.padStart(5)}${'cred'.padStart(6)}  ->  ${'counterpart'.padEnd(15)}${'gp'.padStart(5)}${'games'.padStart(7)}${'holds'.padStart(7)}${'sheet%'.padStart(8)}${'2nd%'.padStart(7)}  ${'diffs'.padEnd(20)} name`);
   for (const r of rows.slice(0, n)) {
     console.log(`    ${r.shell.slice(0, 13).padEnd(15)}${String(r.shellCareer.gp).padStart(5)}${String(r.credited).padStart(6)}  ->  ` +
-      `${r.candidate.padEnd(15)}${String(r.candidateCareer.gp).padStart(5)}${String(r.candidateGames).padStart(7)}${String(r.holdsCredited).padStart(7)}  ` +
-      `${(r.careerDiffs.length ? r.careerDiffs.join(',') : '—').padEnd(22)} ${r.shellName}`);
+      `${r.candidate.padEnd(15)}${String(r.candidateCareer.gp).padStart(5)}${String(r.candidateGames).padStart(7)}${String(r.holdsCredited).padStart(7)}` +
+      `${((r.rosterShare * 100).toFixed(0) + '%').padStart(8)}${((r.runnerUpShare * 100).toFixed(0) + '%').padStart(7)}  ` +
+      `${(r.careerDiffs.length ? r.careerDiffs.join(',') : '—').padEnd(20)} ${r.shellName}`);
   }
   if (rows.length > n) console.log(`    … and ${rows.length - n} more in the report`);
 };
@@ -263,14 +304,24 @@ show(results.careerMismatch.sort((a, b) => b.credited - a.credited), 'ONE SURVIV
 show(results.lowShare.sort((a, b) => b.credited - a.credited), `CAREERS IDENTICAL BUT SHARE BELOW ${(MIN_SHARE * 100).toFixed(0)}% — the shortfall is games nobody holds`);
 
 if (results.ambiguous.length) {
-  console.log(`\n  AMBIGUOUS — more than one person on every team sheet`);
+  console.log(`\n  AMBIGUOUS — two or more ids appear on a similar share of the team sheets`);
   for (const r of results.ambiguous.slice(0, 10)) {
     // NOTE: this bucket stores `uuid`, not `shell` — only the pair buckets carry
     // `shell`. Reading r.shell here threw on the first run that produced an
     // ambiguous row, which node --check cannot catch and no earlier fixture hit.
-    console.log(`    ${r.uuid.slice(0, 13)}  ${String(r.held).padStart(4)} held  survivors: ${r.survivors.join(' ')}  ${r.name}`);
+    console.log(`    ${r.uuid.slice(0, 13)}  ${String(r.held).padStart(4)} held  ${r.survivors.join('  ')}  ${r.name}`);
   }
   if (results.ambiguous.length > 10) console.log(`    … and ${results.ambiguous.length - 10} more`);
+}
+
+if (results.noSurvivor.length) {
+  const near = results.noSurvivor.filter(r => r.bestShare != null).sort((a, b) => b.bestShare - a.bestShare).slice(0, 15);
+  if (near.length) {
+    console.log(`\n  NO STRONG CANDIDATE — highest scorers, for reading the threshold against`);
+    for (const r of near) {
+      console.log(`    ${r.uuid.slice(0, 13)}  ${String(r.held).padStart(4)} held  best ${r.best} at ${(r.bestShare * 100).toFixed(0)}%  ${r.name}`);
+    }
+  }
 }
 
 console.log(`\n${L}`);
