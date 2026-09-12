@@ -20,6 +20,13 @@ name: Count Stats Checked
 # overlap, no name comparison anywhere. That needs games/bv as well as players/,
 # which the full checkout below already provides.
 #
+# It then reports how each shell is LINKED to its counterpart, because that decides
+# which existing tool owns it. Neither current tool can reach an unlinked shell:
+# find-misrouted-appearances.js samples players carrying `x` and a shell has none,
+# and fold-diverged-players.js acts only on files carrying an `apiId` field. The
+# run reads players/aliases/ as well, comparing at TRUNC_LEN because alias values
+# appear in both full and truncated form.
+#
 # NOT in the data-write concurrency group: this reads and never writes, and joining
 # that group would queue a scan behind multi-hour writers for no reason.
 
