@@ -645,6 +645,12 @@ async function applyDiscoveries(index, newSeasonMeta, stats = {}, extraCommitPat
     console.log(`  Players probed        : ${probed}`);
     console.log(`  Elapsed / throughput  : ${((Date.now() - t0) / 60000).toFixed(1)}m  @ ${(probed / Math.max(1, (Date.now() - t0) / 1000)).toFixed(1)}/s`);
     console.log(`  Private / error       : ${privateN} / ${errors}`);
+    console.log(`  Retried this run      : ${retryList.length}  (${retryDone.completed} completed)`);
+    console.log(`  Carried to next run   : ${stillErrored.length}  ← probed and FAILED; they will be asked again`);
+    if (abandoned.length + newlyAbandoned.length) {
+      console.log(`  Abandoned (${MAX_ERROR_ATTEMPTS}+ fails) : ${abandoned.length + newlyAbandoned.length}`);
+      for (const e of [...abandoned, ...newlyAbandoned].slice(0, 20)) console.log(`      ${e.u}  (${e.a} attempts)`);
+    }
     console.log(`  Block events (requeued): ${blockedEvents}`);
   }
   console.log(`  New seasons resolved  : ${newSeasonMeta.size}`);
@@ -701,7 +707,14 @@ async function main() {
         merged.set(sid, meta);
       }
       if (a.shard) {
-        progress[a.shard] = { mode: a.mode, cursor: a.cursor, total: a.total, done: a.done, updatedAt: a.at };
+        // `errored` MUST be carried into progress or the retry is lost between
+        // runs — the map role reads it back at the top of the shard branch.
+        progress[a.shard] = {
+          mode: a.mode, cursor: a.cursor, total: a.total, done: a.done,
+          errored: Array.isArray(a.errored) ? a.errored : [],
+          abandoned: Array.isArray(a.abandoned) ? a.abandoned : [],
+          updatedAt: a.at,
+        };
         if (a.done) doneCount++; else undoneShards.push(a.shard);
       }
       // Deltas are collected here but applied AGAINST A FRESH FILE below — never a
@@ -889,6 +902,29 @@ async function main() {
     // through the matrix output made that output grow past the ~8KB size boundary
     // that caused GitHub to resolve the matrix EMPTY and skip the whole map job.
     // Keeping the matrix output to bare shard strings avoids that entirely.
+    // ─── ERRORED PLAYERS ARE RETRIED, NOT SKIPPED (2026-09-13) ───────────────
+    // The cursor is POSITIONAL over a sorted uuid list, so a player whose probe
+    // threw was stepped over and could never be revisited: `errors` was counted,
+    // no delta was recorded, the cursor advanced past them and the shard still
+    // reported done=true. The next run resumed from that done marker.
+    //
+    // Measured on the 2026-09-13 backfill: shard 3a returned 313 errors in 750
+    // probes (42%), shard 5e 150/750, 199/675 and 54/238 — a fifth to two fifths
+    // of every shard silently contributing no registration. Two children on team
+    // fa6b5199 were missing from its roster for exactly this reason while a
+    // team-mate in another shard came through.
+    //
+    // An `error` here is a TRANSPORT or GraphQL failure (L312-323): a thrown
+    // fetch, a non-OK HTTP status, unparseable JSON, or a GraphQL error array.
+    // It is NOT "this player has no teams" — that returns kind 'ok' with an empty
+    // list. So an error means the question was never answered and must be asked
+    // again.
+    //
+    // Retries are BOUNDED. A uuid that fails MAX_ERROR_ATTEMPTS times in a row is
+    // abandoned and NAMED in the summary, so a permanently broken profile cannot
+    // hold a shard open for ever — which would be the opposite failure.
+    const MAX_ERROR_ATTEMPTS = 5;
+    let prevErrored = [];   // [{ u: uuid, a: attempts }]
     let effectiveCursor = CURSOR;
     const cursorWasExplicit = args.some(a => a.startsWith('--cursor='));
     if (!cursorWasExplicit) {
@@ -899,13 +935,36 @@ async function main() {
         // Only resume from a cursor recorded for THIS mode — a cursor from a
         // different mode indexes a different player list and would be meaningless.
         if (p && p.mode === expectedMode && !p.done) effectiveCursor = p.cursor || 0;
+        // Carry forward players that FAILED to be probed on an earlier run for this
+        // mode. Read even when done=true: a shard can only reach done once its
+        // retry list is empty, so a non-empty list here means the shard is not
+        // finished no matter what the flag says.
+        if (p && p.mode === expectedMode && Array.isArray(p.errored)) prevErrored = p.errored;
       } catch { /* no progress file yet → cursor 0 (fresh) */ }
     }
     console.log(`  Scanning shard ${SHARD} for ${ALL_PLAYERS ? 'ALL players' : 'current-season players'}…`);
     const full = currentSeasonPlayers(activeSids, { shard: SHARD, allPlayers: ALL_PLAYERS });
     const total = full.length;
-    const toProbe = full.slice(effectiveCursor);
-    console.log(`  Shard total: ${total}  cursor: ${effectiveCursor}${cursorWasExplicit ? ' (explicit)' : ' (from progress)'}  remaining: ${toProbe.length}  burst concurrency: ${CONCURRENCY}`);
+    const tail = full.slice(effectiveCursor);
+    // Only retry uuids that are still in this shard — a deleted or folded player
+    // must not keep a shard open.
+    const fullSet = new Set(full);
+    const attemptsOf = new Map();
+    const retryList = [];
+    for (const e of prevErrored) {
+      const u = typeof e === 'string' ? e : e.u;
+      const a = typeof e === 'string' ? 1 : (e.a || 1);
+      if (!u || !fullSet.has(u)) continue;
+      if (a >= MAX_ERROR_ATTEMPTS) continue;   // abandoned, reported below
+      attemptsOf.set(u, a);
+      retryList.push(u);
+    }
+    const abandoned = prevErrored
+      .map(e => (typeof e === 'string' ? { u: e, a: 1 } : e))
+      .filter(e => e.u && fullSet.has(e.u) && (e.a || 1) >= MAX_ERROR_ATTEMPTS);
+
+    console.log(`  Shard total: ${total}  cursor: ${effectiveCursor}${cursorWasExplicit ? ' (explicit)' : ' (from progress)'}  remaining: ${tail.length}  retrying: ${retryList.length}  burst concurrency: ${CONCURRENCY}`);
+    if (abandoned.length) console.log(`  ⚠ ${abandoned.length} player(s) abandoned after ${MAX_ERROR_ATTEMPTS} failed attempts — named in the summary`);
 
     const newSeasonMeta = new Map();
     const playerDeltas = {};   // uuid -> [{sid, sn, tid, tn, gid, gn}, ...] — NOT a file snapshot.
@@ -915,10 +974,18 @@ async function main() {
     let probed = 0, privateN = 0, errors = 0;
     const t0 = Date.now();
 
-    const { completed, wallHit } = await burstRun(toProbe, CONCURRENCY, (uuid, r) => {
+    const erroredNow = new Map();   // uuid -> attempts so far (including this run)
+
+    const onResult = (uuid, r) => {
       probed++;
       if (r.kind === 'private') { privateN++; return; }
-      if (r.kind === 'error') { errors++; return; }
+      if (r.kind === 'error') {
+        errors++;
+        // Record WHO failed, with a running attempt count, so the next run can ask
+        // again. Previously this was `errors++; return;` and the uuid was lost.
+        erroredNow.set(uuid, (attemptsOf.get(uuid) || 0) + 1);
+        return;
+      }
       if (r.kind === 'ok') {
         for (const reg of r.teams || []) {
           const se = reg.season;
@@ -945,10 +1012,37 @@ async function main() {
           }
         }
       }
-    });
+    };
+
+    // PHASE 1: previously-failed players. These sit OUTSIDE the cursor window, so
+    // they never advance it — the cursor means "how far through the sorted list we
+    // have got", and a retry is not progress through that list.
+    let retryDone = { completed: 0, wallHit: false };
+    if (retryList.length) {
+      console.log(`  Retrying ${retryList.length} previously-failed player(s)…`);
+      retryDone = await burstRun(retryList, CONCURRENCY, onResult);
+    }
+
+    // PHASE 2: the cursor tail. Skipped entirely if the retries hit the wall —
+    // continuing would burn the budget on requests that are already being refused.
+    let completed = 0, wallHit = retryDone.wallHit;
+    if (!retryDone.wallHit && tail.length) {
+      const res = await burstRun(tail, CONCURRENCY, onResult);
+      completed = res.completed;
+      wallHit   = res.wallHit;
+    }
 
     const newCursor = effectiveCursor + completed;
-    const done = newCursor >= total;
+    const stillErrored = [...erroredNow.entries()]
+      .filter(([, a]) => a < MAX_ERROR_ATTEMPTS)
+      .map(([u, a]) => ({ u, a }));
+    const newlyAbandoned = [...erroredNow.entries()]
+      .filter(([, a]) => a >= MAX_ERROR_ATTEMPTS)
+      .map(([u, a]) => ({ u, a }));
+    // ⚠ A SHARD IS NOT DONE WHILE PLAYERS REMAIN UNASKED. This used to be
+    // `newCursor >= total` alone, which is what let a 42% error rate report as a
+    // completed sweep.
+    const done = newCursor >= total && stillErrored.length === 0;
     if (wallHit) console.log(`  ⛔ wall hit after ${completed} clean this run — stopping dead (cursor ${effectiveCursor} → ${newCursor}/${total}). Fresh runner will resume.`);
     else if (done) console.log(`  ✔ shard exhausted (cursor ${newCursor}/${total}).`);
 
@@ -958,6 +1052,8 @@ async function main() {
       discovered,
       playerDeltas,   // uuid -> [{sid,sn,tid,tn,gid,gn}, ...] — applied against a FRESH file in REDUCE
       cursor: newCursor, total, done, wallHit,
+      errored: stillErrored,                      // retried by the next run for this mode
+      abandoned: [...abandoned, ...newlyAbandoned], // gave up after MAX_ERROR_ATTEMPTS
       probed, private: privateN, errors, at: new Date().toISOString(),
     };
     fs.writeFileSync(OUT_FILE, JSON.stringify(artifact));
@@ -968,6 +1064,12 @@ async function main() {
     console.log(`  Players probed        : ${probed}`);
     console.log(`  Elapsed / throughput  : ${((Date.now() - t0) / 60000).toFixed(1)}m  @ ${(probed / Math.max(1, (Date.now() - t0) / 1000)).toFixed(1)}/s`);
     console.log(`  Private / error       : ${privateN} / ${errors}`);
+    console.log(`  Retried this run      : ${retryList.length}  (${retryDone.completed} completed)`);
+    console.log(`  Carried to next run   : ${stillErrored.length}  ← probed and FAILED; they will be asked again`);
+    if (abandoned.length + newlyAbandoned.length) {
+      console.log(`  Abandoned (${MAX_ERROR_ATTEMPTS}+ fails) : ${abandoned.length + newlyAbandoned.length}`);
+      for (const e of [...abandoned, ...newlyAbandoned].slice(0, 20)) console.log(`      ${e.u}  (${e.a} attempts)`);
+    }
     console.log(`  New seasons discovered: ${newSeasonMeta.size}`);
     console.log(`  Artifact              : ${OUT_FILE}`);
     console.log('─'.repeat(60));
