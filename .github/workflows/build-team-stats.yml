@@ -1,6 +1,20 @@
 # .github/workflows/build-team-stats.yml
 name: Build Team Stats
 
+# 2026-09-13 — NOW BUILDS TEAMS THAT HAVE NO GAMES YET.
+# buildSeasonTeamStats used to return null outright when a season had no game
+# file, and a team only came into existence inside the games loop. So a season
+# between team allocation and the draw being published produced NO team-stats
+# file at all — and StatTrack's team view fetches team-stats/bv/{sid} and renders
+# "Team not found" when the tid is missing (index.html L1652-1654). Measured on
+# season 5e26f10f: discover-fixtures enumerated 492 teams via discoverTeams and
+# added 0 games because the draw was unpublished; team fa6b5199 "U13 MMB08" was
+# in data/team-index.json and in players' regs, and its page still 404'd.
+# Teams and rosters are now also sourced from players' seasons[].regs[], which is
+# what carries the team id, the team NAME and the club before any game exists.
+# A run therefore costs one extra pass over players/ to build that map, once per
+# run rather than per season.
+
 on:
   workflow_dispatch:
     inputs:
