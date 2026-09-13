@@ -470,20 +470,39 @@ jobs:
           # skipping shards already marked done for this mode. A shard can also become
           # undone again between runs, which a snapshot of "undone right now" would miss.
           #
-          # But DO pass the ORIGINAL `shards` input back, unchanged (2026-09-13).
-          # Nothing used to carry it, so a TARGETED dispatch — shards=["54","67"] —
-          # produced 2 map jobs on run 1 and then 256 on every run after it: the
-          # retrigger omitted the field, inputs.shards defaulted to '[]' at the
-          # generate-shards step, and '[]' means "every not-done shard for this mode".
-          # A targeted sweep silently became a full one from run 2 onwards.
+          # A TARGETED dispatch forwards the shards STILL UNDONE; a full sweep still
+          # forwards nothing. Two bugs, one line apart (2026-09-13):
           #
-          # Forwarding the input verbatim is safe for BOTH cases and changes neither
-          # behaviour: a full sweep dispatches with shards empty, so the field carries
-          # '[]' and generate-shards recomputes exactly as before; a targeted sweep
-          # keeps its list until those shards drain. The recompute the comment above
-          # protects still happens — this only bounds WHICH shards it may choose from.
+          # 1. Nothing used to carry `shards` at all, so shards=["54","67"] produced
+          #    2 map jobs on run 1 and 256 on every run after it — the field defaulted
+          #    to '[]' at generate-shards, and '[]' means "every not-done shard".
+          #
+          # 2. Forwarding the ORIGINAL list verbatim fixed that and created a LOOP.
+          #    generate-shards L48 (`and not toks`) bypasses the done check when an
+          #    explicit list is given, so a finished shard is re-selected; and the map
+          #    role reads the stored cursor only `if (... && !p.done)`, so a finished
+          #    shard starts again at cursor 0. Observed on run 175/176: shard 54
+          #    completed at 1574/1574 done=true, and the next run restarted it from 0.
+          #    Re-selected, then reset — it could never stay done.
+          #
+          # Forwarding the UNDONE list is correct for a targeted sweep precisely
+          # because the set is already bounded by what was asked for: a shard that
+          # finished drops out, and the chain ends when the list empties (which is
+          # also this job's own `if:` gate). It would NOT be correct for a full
+          # sweep — a shard can become undone again between runs and a snapshot of
+          # "undone right now" would miss it — so an empty input still forwards '[]'
+          # and generate-shards recomputes from the progress file exactly as before.
+          ORIG_SHARDS='${{ inputs.shards }}'
+          UNDONE_SHARDS='${{ needs.reduce.outputs.undone_shards }}'
+          if [ -n "$ORIG_SHARDS" ] && [ "$ORIG_SHARDS" != "[]" ]; then
+            FWD_SHARDS="$UNDONE_SHARDS"
+            echo "Targeted sweep: forwarding still-undone shards $FWD_SHARDS (asked for $ORIG_SHARDS)"
+          else
+            FWD_SHARDS='[]'
+            echo "Full sweep: forwarding '[]' — generate-shards recomputes from progress."
+          fi
           /tmp/gh-dispatch.sh discover-seasons-matrix.yml \
-            --field "shards=${{ inputs.shards || '[]' }}" \
+            --field "shards=${FWD_SHARDS}" \
             --field "all_players=${{ inputs.all_players || false }}" \
             --field "backfill_teams=${{ (github.event_name == 'schedule' && 'true') || inputs.backfill_teams }}" \
             --field "concurrency=${{ inputs.concurrency || '25' }}" \
