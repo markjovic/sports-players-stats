@@ -127,6 +127,65 @@ function buildSidTidPlayerMap() {
   return map;
 }
 
+// ─── REGISTRATION MAP (2026-09-13) ──────────────────────────────────────────
+// sid|tid -> { tn, club, uuids[] }, built from player files' seasons[].regs[].
+//
+// WHY THIS EXISTS. Until now a team came into existence ONLY inside the games
+// loop, and buildSeasonTeamStats returned null outright when a season had no
+// game file. So a season that has TEAMS BUT NO FIXTURES YET produced no
+// team-stats file at all, and StatTrack's team view — which fetches
+// team-stats/bv/{sid} and bails with "Team not found" when the tid is missing
+// (index.html L1652-1654) — could not show the team even though the players,
+// the registrations and the team-index entry all existed.
+//
+// Measured 2026-09-13 on season 5e26f10f (Junior Domestic, Summer 2026/27):
+// discover-fixtures enumerated 492 teams via discoverTeams and added 0 games,
+// because the draw is not published. Team fa6b5199 "U13 MMB08" was in
+// data/team-index.json and in players' regs, and the team page still 404'd.
+//
+// The index shards (buildSidTidPlayerMap) are NOT sufficient on their own here:
+// they carry history[sid] -> [tid], but nothing guarantees a pre-season
+// registration has reached them, and they carry no team NAME. A reg does:
+// reg.tn is the team name and season.club is the club. So this reads the player
+// files directly, once per run, and is the authority for pre-season teams.
+//
+// Cost: one pass over players/, the same shape buildSidTidPlayerMap already
+// does over the index shards. It is done ONCE for the whole run, not per season.
+function buildRegTeamMap() {
+  const map = new Map();
+  const shards = fs.readdirSync(PLAYERS_DIR).filter(f => /^[0-9a-f]{2}$/.test(f)).sort();
+  let files = 0;
+  for (const shard of shards) {
+    const dir = path.join(PLAYERS_DIR, shard);
+    let names;
+    try { names = fs.readdirSync(dir).filter(f => f.endsWith('.json')); } catch (_) { continue; }
+    for (const fname of names) {
+      files++;
+      let p;
+      try { p = JSON.parse(fs.readFileSync(path.join(dir, fname), 'utf8')); } catch (_) { continue; }
+      const uuid = fname.replace(/\.json$/, '');
+      for (const season of (p.seasons || [])) {
+        const sid = season.sid;
+        if (!sid) continue;
+        for (const reg of (season.regs || [])) {
+          if (!reg.tid) continue;
+          const key = `${sid}|${reg.tid}`;
+          let e = map.get(key);
+          if (!e) { e = { tn: '', club: '', uuids: [] }; map.set(key, e); }
+          // First non-empty name wins. The team name is identical across every
+          // reg of a regrade on the same player (the note in update-team-index.js
+          // records this), so there is nothing to reconcile.
+          if (!e.tn && reg.tn) e.tn = reg.tn;
+          if (!e.club && season.club) e.club = season.club;
+          e.uuids.push(uuid);
+        }
+      }
+    }
+    process.stdout.write(`  reg map: ${files} player files\r`);
+  }
+  return map;
+}
+
 // Player file cache — avoid re-reading the same file multiple times per season
 const playerCache = new Map();
 
@@ -154,15 +213,19 @@ function extractRegStats(player, sid, tid) {
 }
 
 // Build team-stats for a single season
-function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap) {
+function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
+  // ⚠️ NO LONGER RETURNS NULL WHEN THERE IS NO GAME FILE. A season can legitimately
+  // have teams and no games — every season does, between team allocation and the
+  // draw being published. Bailing here is what made the team page 404 for all 492
+  // teams of 5e26f10f. An absent or unreadable game file now means "no fixtures",
+  // and the registration pass below still builds the teams and their rosters.
   const gameFile = path.join(GAMES_DIR, `${sid}.json`);
-  if (!fs.existsSync(gameFile)) return null;
+  let gf = null;
+  if (fs.existsSync(gameFile)) {
+    try { gf = JSON.parse(fs.readFileSync(gameFile, 'utf8')); } catch (_) { gf = null; }
+  }
 
-  let gf;
-  try { gf = JSON.parse(fs.readFileSync(gameFile, 'utf8')); }
-  catch (_) { return null; }
-
-  const games  = gf.games || {};
+  const games  = (gf && gf.games) || {};
   const teams  = {};  // tid → { meta, roster, fixtures }
 
   // Helper — ensure team entry exists
@@ -296,10 +359,30 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap) {
     }
   }
 
+  // ── Teams that exist only as REGISTRATIONS ────────────────────────────────
+  // Created before the roster pass so the loop below fills them like any other.
+  // This is the whole pre-season case: no game has been played, so nothing above
+  // has seen this team, but players hold a reg for it.
+  if (regTeamMap) {
+    const prefix = `${sid}|`;
+    for (const [key, e] of regTeamMap) {
+      if (!key.startsWith(prefix)) continue;
+      const tid = key.slice(prefix.length);
+      if (!teams[tid]) ensureTeam(tid, e.tn, e.club);
+    }
+  }
+
   // Populate rosters from player index — covers all normal and hidden grade players
   for (const [tid, teamData] of Object.entries(teams)) {
     const uuids = sidTidPlayerMap ? (sidTidPlayerMap.get(`${sid}|${tid}`) || []) : [];
     for (const uuid of uuids) {
+      addPlayerToRoster(tid, sid, uuid, null);
+    }
+    // …and from the registrations, which cover players the index shards have not
+    // picked up yet. addPlayerToRoster is idempotent per uuid, so a player in both
+    // sources is added once.
+    const reg = regTeamMap ? regTeamMap.get(`${sid}|${tid}`) : null;
+    for (const uuid of (reg ? reg.uuids : [])) {
       addPlayerToRoster(tid, sid, uuid, null);
     }
   }
@@ -343,13 +426,16 @@ async function main() {
   console.log('  Building player index map from shards...');
   const sidTidPlayerMap = buildSidTidPlayerMap();
   console.log(`  ${sidTidPlayerMap.size} sid|tid combinations indexed`);
+  console.log('  Building registration map from player files...');
+  const regTeamMap = buildRegTeamMap();
+  console.log(`  ${regTeamMap.size} sid|tid combinations from registrations`);
 
   let processed = 0, written = 0, sinceCommit = 0;
 
   for (const season of seasons) {
     playerCache.clear();  // clear cache between seasons to avoid unbounded growth
 
-    const stats = buildSeasonTeamStats(season.id, season, sidTidPlayerMap);
+    const stats = buildSeasonTeamStats(season.id, season, sidTidPlayerMap, regTeamMap);
     processed++;
 
     if (stats && Object.keys(stats).length > 0) {
