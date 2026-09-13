@@ -465,10 +465,25 @@ jobs:
           fi
           next_run=$(( run_number + 1 ))
           echo "Re-triggering run $next_run on fresh runners."
-          # Do NOT pass the undone shard list back — generate-shards recomputes it from
+          # Do NOT pass the UNDONE shard list back — generate-shards recomputes it from
           # the committed progress file itself (identical to how run 1 computes it),
-          # skipping shards already marked done for this mode.
+          # skipping shards already marked done for this mode. A shard can also become
+          # undone again between runs, which a snapshot of "undone right now" would miss.
+          #
+          # But DO pass the ORIGINAL `shards` input back, unchanged (2026-09-13).
+          # Nothing used to carry it, so a TARGETED dispatch — shards=["54","67"] —
+          # produced 2 map jobs on run 1 and then 256 on every run after it: the
+          # retrigger omitted the field, inputs.shards defaulted to '[]' at the
+          # generate-shards step, and '[]' means "every not-done shard for this mode".
+          # A targeted sweep silently became a full one from run 2 onwards.
+          #
+          # Forwarding the input verbatim is safe for BOTH cases and changes neither
+          # behaviour: a full sweep dispatches with shards empty, so the field carries
+          # '[]' and generate-shards recomputes exactly as before; a targeted sweep
+          # keeps its list until those shards drain. The recompute the comment above
+          # protects still happens — this only bounds WHICH shards it may choose from.
           /tmp/gh-dispatch.sh discover-seasons-matrix.yml \
+            --field "shards=${{ inputs.shards || '[]' }}" \
             --field "all_players=${{ inputs.all_players || false }}" \
             --field "backfill_teams=${{ (github.event_name == 'schedule' && 'true') || inputs.backfill_teams }}" \
             --field "concurrency=${{ inputs.concurrency || '25' }}" \
