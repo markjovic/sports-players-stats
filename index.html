@@ -5,8 +5,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#121212">
+<link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="StatTrack">
+<link rel="icon" type="image/webp" sizes="32x32" href="favicon.webp">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
 <title>StatTrack — Basketball Victoria</title>
 <style>
 :root {
@@ -347,6 +353,31 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.shbtn{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--elevated);color:var(--accent);font-size:1.15rem;line-height:1;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+.shbtn.on{display:flex}
+.shwrap{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:18px}
+.shwrap.on{display:flex}
+.shcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;max-width:340px;width:100%;text-align:center}
+.shttl{font-weight:700;font-size:0.95rem;margin-bottom:12px}
+.shqr{background:#fff;padding:10px;border-radius:10px;display:inline-block;line-height:0}
+.shurl{margin:12px 0 10px;font-size:0.7rem;color:var(--text2);word-break:break-all;background:var(--elevated);border-radius:8px;padding:8px}
+.shrow{display:flex;gap:8px}
+.shrow button{flex:1;padding:9px;border-radius:8px;border:1px solid var(--border);background:var(--elevated);color:var(--text1);font-size:0.8rem;cursor:pointer}
+.shrow button.pri{background:var(--accent);color:#05201c;border-color:var(--accent);font-weight:700}
+.help-dot{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;border:1px solid var(--border);background:var(--elevated);color:var(--text2);font-size:0.72rem;font-weight:700;cursor:pointer;flex:none;line-height:1}
+.help-dot:hover{color:var(--accent);border-color:var(--accent)}
+[data-help]{cursor:help;border-bottom:1px dotted #555}
+.hpwrap{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:14px}
+.hpwrap.on{display:flex}
+.hpcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;max-width:520px;width:100%;max-height:86vh;display:flex;flex-direction:column}
+.hphdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+.hphdr b{font-size:0.95rem}
+.hpbody{overflow-y:auto;padding:4px 16px 16px;-webkit-overflow-scrolling:touch}
+.hpsec{font-size:0.66rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);margin:16px 0 6px;font-weight:700}
+.hpitem{padding:8px 10px;border-left:2px solid transparent;border-radius:0 8px 8px 0;margin-bottom:2px}
+.hpitem.help-hit{border-left-color:var(--accent);background:rgba(0,245,212,.07)}
+.hpterm{font-weight:700;font-size:0.82rem;margin-bottom:2px}
+.hptext{font-size:0.75rem;color:var(--text2);line-height:1.5}
 </style>
 </head>
 <body>
@@ -355,7 +386,8 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
   <div id="rail">
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
-      <span class="rail-ver">Beta 0.84</span>
+      <span class="help-dot" onclick="openHelp()" title="What the numbers mean">?</span>
+      <span class="rail-ver">v1.0.1</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -679,7 +711,7 @@ function storedStats(g,uuid){
   return[...(g.hp||[]),...(g.ap||[])].find(p=>matchP(p.profileID,uuid))||null;
 }
 function statCell(v,l,last,color){
-  return`<div style="flex:1;text-align:center;padding:6px 4px;${last?'':'border-right:1px solid #2e2e2e;'}min-width:0;overflow:hidden"><div style="font-size:0.82rem;font-weight:700;font-variant-numeric:tabular-nums;color:${color||'#fff'};display:block;white-space:nowrap;overflow:hidden">${v}</div><div style="font-size:0.58rem;color:#555;text-transform:uppercase;letter-spacing:0.04em;display:block;margin-top:1px">${l}</div></div>`;
+  return`<div style="flex:1;text-align:center;padding:6px 4px;${last?'':'border-right:1px solid #2e2e2e;'}min-width:0;overflow:hidden"><div style="font-size:0.82rem;font-weight:700;font-variant-numeric:tabular-nums;color:${color||'#fff'};display:block;white-space:nowrap;overflow:hidden">${v}</div><div ${HELP_LABEL[l]?helpAttr(HELP_LABEL[l]):''} style="font-size:0.58rem;color:#555;text-transform:uppercase;letter-spacing:0.04em;display:block;margin-top:1px">${l}</div></div>`;
 }
 function expandSeason(el){const sc=el.closest('.sc');if(sc)toggleGames(sc.querySelector('.sc-hdr'));}
 function statRow(items,expandable,spacer){
@@ -783,11 +815,262 @@ function groupRegs(seasons){
   return result;
 }
 
+
+/* ── In-app help ──────────────────────────────────────────────────────────────
+   One array, two surfaces: `tip` is the hover/tap line, `body` is the panel entry.
+   They live in the same object so a term cannot end up explained one way on a tip
+   and another way in the guide. `sec` groups the panel; the array is in reading
+   order and the renderer splits on section change, so there is no second list to
+   keep in step.
+   Entries exist for things people MISREAD, not for features worth showing off. */
+const HELP=[
+ {id:'gp',sec:'Stat columns',term:'GP — games played',
+  tip:'Games PlayHQ credits to this player. It can differ from the games listed underneath.',
+  body:`The number of games PlayHQ credits to this player for that season or career.
+        <b>It is not always the same as the number of games listed underneath it.</b>
+        PlayHQ counts an appearance from its own registration record; the games shown
+        here are the ones whose team sheet we hold. A game can be credited without our
+        holding its team sheet, and occasionally the reverse.`},
+ {id:'ppg',sec:'Stat columns',term:'PPG — points per game',
+  tip:'Total points divided by games played. Shown as a dash when no games have been played.',
+  body:`Total points divided by games played, to one decimal place. A dash means no
+        games have been played yet, not zero points.`},
+ {id:'pts',sec:'Stat columns',term:'PTS — total points',
+  tip:'Total points scored across the games counted in GP.',
+  body:`Total points across the games counted in GP. Where a game was scored on paper
+        rather than electronically, PlayHQ may hold the team total without a per-player
+        breakdown, and those points cannot appear against anyone.`},
+ {id:'fg',sec:'Stat columns',term:'FG — field goals',
+  tip:'Two-point field goals made. One-point and three-point scores are counted separately.',
+  body:`Two-point field goals made. One-pointers (FT) and three-pointers (3PT) are
+        counted in their own columns, so FG plus FT plus 3PT does not add up to PTS —
+        multiply each by its value first.`},
+ {id:'ft',sec:'Stat columns',term:'FT — one-point scores',
+  tip:'One-point scores. In junior grades these are not always free throws.',
+  body:`One-point scores. PlayHQ records these as "1 Point" rather than free throws,
+        and in some junior formats a one-pointer is not a free throw at all.`},
+ {id:'3pt',sec:'Stat columns',term:'3PT — three-point scores',
+  tip:'Three-point scores made. Many junior grades do not record them at all.',
+  body:`Three-point scores. Several junior grades do not use or record three-pointers,
+        so a zero here often means the grade did not count them rather than that none
+        were scored.`},
+ {id:'f',sec:'Stat columns',term:'F — fouls',
+  tip:'Total fouls recorded. Not every grade records fouls.',
+  body:`Total fouls recorded. Grades that do not record fouls will show zero for every
+        player, which is the absence of the statistic rather than a clean record.`},
+ {id:'wld',sec:'Stat columns',term:'W / L / D and win %',
+  tip:'Wins, losses and draws for the team in that season, with the win percentage beneath.',
+  body:`The team's record for that season. A dash appears when no games have been
+        played — a pre-season team has no result yet, and the column is kept in place
+        so the row stays aligned with the ones around it.`},
+ {id:'foulout',sec:'Stat columns',term:'Foul-outs',
+  tip:'Games in which this player reached the grade’s foul limit.',
+  body:`Games in which the player reached the foul limit for that grade. The limit
+        differs by grade, so the count is comparable within a competition rather than
+        across all of them.`},
+ {id:'boxed',sec:'Stat columns',term:'Boxed GP',
+  tip:'Finals games where a full box score exists, as opposed to a result only.',
+  body:`Finals appearances for which a full box score was captured. A finals game can
+        be recorded as played, with a result, and still have no per-player detail.`},
+ {id:'locked',sec:'Badges',term:'LOCKED',
+  tip:'A finished season. Its data no longer changes and is no longer re-checked.',
+  body:`The season is finished. Its games and statistics no longer change, so it is not
+        re-checked on the nightly update. A locked season loading slightly slower is
+        normal — it is served from a separate archive.`},
+ {id:'live',sec:'Badges',term:'LIVE',
+  tip:'Scoring is in progress. The score is not a result and can still change.',
+  body:`Scoring is in progress. The score shown is whatever the scorer's device has sent
+        so far — it is not a result, it counts towards nothing, and it can go up or down
+        as corrections are made.`},
+ {id:'upcoming',sec:'Badges',term:'UPCOMING',
+  tip:'Scheduled but not yet played.',
+  body:`The fixture is scheduled and not yet played. Upcoming games appear as soon as the
+        draw is published, which can be weeks before the first round.`},
+ {id:'medal',sec:'Badges',term:'The medal',
+  tip:'A grand final win.',
+  body:`Marks a season in which the player's team won a grand final.`},
+ {id:'private',sec:'Players',term:'Player # names',
+  tip:'A player whose PlayHQ profile is private. Their games are counted, their name is not shown.',
+  body:`A player whose PlayHQ profile is set to private. They still appear on team
+        sheets and their games still count towards team records, but their name is not
+        published and nothing is shown here beyond the fact that they played.
+        <b>This is the player's own privacy setting</b> and is respected as it stands.`},
+ {id:'noroster',sec:'Teams',term:'No roster data',
+  tip:'No team sheet has been captured for this team yet.',
+  body:`No team sheet has been captured yet. For a team that has played, this usually
+        means the games were scored on paper. For a team in a season that has not started,
+        it simply means the first game has not happened.`},
+ {id:'preseason',sec:'Teams',term:'A team with no games',
+  tip:'Allocated for an upcoming season. Players are listed from registrations, so there are no statistics yet.',
+  body:`A team allocated for a season that has not started. Its players come from
+        registrations rather than from a team sheet, so every statistic reads zero and
+        there are no fixtures until the draw is published. <b>Zeroes here are genuinely
+        zero, not missing data.</b>`},
+ {id:'grade',sec:'Teams',term:'Grade names',
+  tip:'A team can hold several grades in one season — grading rounds and then the main competition.',
+  body:`A team often holds more than one grade in a season: grading rounds first, then
+        the competition proper, and sometimes a reserve grade as well. Several grade
+        names separated by slashes is normal and not a duplicate.`},
+ {id:'shown',sec:'What is shown',term:'Why a season may be missing',
+  tip:'Seasons appear once discovered from PlayHQ. A brand new season can take up to a week.',
+  body:`Seasons are discovered from PlayHQ on a weekly sweep, and teams and fixtures on
+        another. A season created in the last few days may not be here yet. Nothing is
+        hidden deliberately.`},
+ {id:'source',sec:'About the data',term:'Where the data comes from',
+  tip:'Everything here comes from PlayHQ. Nothing is entered by hand.',
+  body:`Everything shown is collected from PlayHQ, the platform Basketball Victoria uses
+        to run its competitions. Nothing is entered or edited by hand.`},
+ {id:'refresh',sec:'About the data',term:'How often it updates',
+  tip:'Results update nightly. Fixtures and new seasons are swept weekly.',
+  body:`Results and box scores are collected nightly. Fixtures, new teams and new seasons
+        are swept weekly, so a newly published draw can take a few days to appear.`},
+ {id:'wrong',sec:'About the data',term:'Something looks wrong',
+  tip:'Compare with PlayHQ first — if the source is wrong too, only the club can fix it.',
+  body:`Compare the page with PlayHQ first. If PlayHQ has it and this does not, the next
+        collection will pick it up. <b>If PlayHQ is wrong too, only the club or
+        association can correct it</b> — nothing here can be edited directly, and a
+        correction at the source flows through on the next update.`},
+];
+const HELP_BY_ID=new Map(HELP.map(h=>[h.id,h]));
+/* Maps a stat column label to its entry, so statCell can mark every label in the
+   app from one place rather than each template doing it. */
+const HELP_LABEL={'GP':'gp','PPG':'ppg','PTS':'pts','FG':'fg','FT':'ft','3PT':'3pt','F':'f'};
+
+/* ⚠️ A TIP IS A TAP TARGET, NOT JUST A title. Hover does not exist on a phone.
+   Returns '' for an unknown id so a typo renders a plain element rather than
+   data-help="undefined" with a title reading "undefined". The quote escape matters
+   for the same reason: one inch mark in a tip closes the attribute early. */
+function helpAttr(id){
+  const h=HELP_BY_ID.get(id);
+  if(!h)return'';
+  return `data-help="${id}" title="${String(h.tip).replace(/"/g,'&quot;')}"`;
+}
+/* ⚠️ ONE DELEGATED LISTENER. Rows are rebuilt with innerHTML on every render, so
+   anything bound directly is lost the first time a filter changes. stopPropagation
+   is not optional: a marked label sits inside rows that open their own view. */
+document.addEventListener('click',(e)=>{
+  const el=e.target&&e.target.closest&&e.target.closest('[data-help]');
+  if(!el)return;
+  e.preventDefault(); e.stopPropagation();
+  openHelp(el.getAttribute('data-help'));
+});
+function helpHTML(id){
+  let out='',sec=null;
+  for(const h of HELP){
+    if(h.sec!==sec){sec=h.sec;out+=`<div class="hpsec">${sec}</div>`;}
+    out+=`<div class="hpitem" id="help-${h.id}"><div class="hpterm">${h.term}</div><div class="hptext">${h.body}</div></div>`;
+  }
+  return out;
+}
+/* ⚠️ OPENING FROM A TIP MUST LAND ON THAT ENTRY. Being dropped at the top of a wall
+   of text to hunt for the thing you tapped is worse than no help at all. The panel
+   is re-rendered on every open, so the previous highlight cannot survive and there
+   is no state to clear. */
+function openHelp(id){
+  const body=document.getElementById('hpbody');
+  if(!body)return;
+  body.innerHTML=helpHTML();
+  document.getElementById('hpwrap').classList.add('on');
+  const t=id&&document.getElementById('help-'+id);
+  if(t){t.classList.add('help-hit');t.scrollIntoView({block:'start'});}
+  else body.scrollTop=0;
+}
+function closeHelp(){const w=document.getElementById('hpwrap');if(w)w.classList.remove('on');}
+
+/* ── Deep links ───────────────────────────────────────────────────────────────
+   navigate() used to call history.pushState(state,'') with NO url, so the address
+   bar never changed: every view shared the app's root link and a refresh dumped
+   you back to home. The hash is now written too, in the same key=value form the
+   footy dashboard uses (parseHash below is that shape), so a link opens the exact
+   view it was copied from.
+   Keys: p=player uuid · t=team tid with s=sid · v=venue vid with vn=name ·
+         o=opponent tid with s=sid and f=from-player · mo=my tid for a team-vs-team
+   Anything unrecognised falls back to home rather than erroring. */
+function parseHash(h){
+  const out={};
+  String(h||'').replace(/^#/,'').split('&').filter(Boolean).forEach(kv=>{
+    const i=kv.indexOf('='); if(i<1)return;
+    out[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1));
+  });
+  return out;
+}
+function hashFor(type,d){
+  const e=encodeURIComponent;
+  if(type==='player') return `p=${e(d.uuid)}`;
+  if(type==='team')   return `t=${e(d.tid)}&s=${e(d.sid)}`;
+  if(type==='venue')  return `v=${e(d.vid)}` + (d.vname?`&vn=${e(d.vname)}`:'');
+  if(type==='opp')    return `o=${e(d.oppTid)}&s=${e(d.sid)}` + (d.fromUuid?`&f=${e(d.fromUuid)}`:'');
+  if(type==='teamopp')return `mo=${e(d.myTid)}&o=${e(d.oppTid)}&s=${e(d.sid)}`;
+  return '';
+}
+/* The share link is always absolute and always names index.html — GitHub Pages
+   serves the directory form too, but a bare directory link is the one that breaks
+   when pasted into apps that append to the path. */
+function shareBase(){
+  let path=location.pathname;
+  if(path.endsWith('/')) path+='index.html';
+  return location.origin+path;
+}
+function shareURL(){
+  const h=(location.hash||'').replace(/^#/,'');
+  return shareBase()+(h?'#'+h:'');
+}
+/* Restore a view from the hash on load. Called once, after the indexes are in. */
+function applyHash(){
+  const q=parseHash(location.hash);
+  if(q.p)       { loadPlayer(q.p,false); return true; }
+  if(q.t&&q.s)  { loadTeam(q.t,q.s,false); return true; }
+  if(q.v)       { loadVenue(q.v,q.vn||'',undefined,false); return true; }
+  if(q.mo&&q.o&&q.s){ openTeamOpp(q.mo,q.o,q.s,false,false); return true; }
+  if(q.o&&q.s)  { openOpp(q.o,q.s,q.f,false); return true; }
+  return false;
+}
+
+/* The QR is a STATIC image of the app's home URL, not a generated code for the
+   current view. An encoder was written and embedded on 2026-09-13 and REMOVED the
+   same day: it passed every structural check available offline — finder, timing and
+   alignment placement, format bits decoding back to ECC M, Reed-Solomon syndromes
+   zero against independently built GF(256) tables, payload round-tripping out of
+   the de-interleaved data — and still would not scan on a phone. None of those
+   checks can catch what a real decoder rejects, so it went out untested in the only
+   way that matters. Do not re-add a generated QR without a scan test.
+   Consequence, stated in the sheet itself: the SCAN opens StatTrack, the COPIED
+   LINK opens this exact view. They are deliberately not the same thing. */
+
+/* ── Share sheet ─────────────────────────────────────────────────────────────*/
+function openShare(){
+  const url=shareURL();
+  el('shurl').textContent=url;
+  el('shqr').innerHTML=`<img src="assets/qr-code.png" alt="QR code to open StatTrack" width="200" height="200" style="display:block;width:200px;height:200px">`;
+  el('shwrap').classList.add('on');
+  // Copy straight away — opening the sheet IS the share action, and the button
+  // below is a retry rather than the first step. This runs inside the click
+  // handler, which is what keeps the clipboard write inside a user gesture; moving
+  // it behind an await or a timeout would make the browser refuse it.
+  copyShare();
+}
+function closeShare(){ el('shwrap').classList.remove('on'); }
+function copyShare(){
+  const url=shareURL(), btn=el('shcopy');
+  const ok=()=>{ btn.textContent='\u2713 Link copied'; setTimeout(()=>{btn.textContent='Copy link again';},2200); };
+  // No clipboard API on http:// or an older browser — select the text instead so
+  // there is still something to do, rather than a dead button.
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(ok).catch(selectShare);
+  else selectShare();
+}
+function selectShare(){
+  const n=el('shurl'), r=document.createRange(); r.selectNodeContents(n);
+  const sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+}
+
 /* ── Navigation / history ── */
 function showV(id){
   ['view-home','view-player','view-team','view-venue','view-opp','view-leaders'].forEach(v=>el(v).classList.toggle('hidden',v!==id));
   // Scroll main to top on every view change
   const m=el('main');if(m)m.scrollTop=0;
+  // Shown on every view INCLUDING home — home is a link worth sharing, it is just
+  // the app itself rather than one player.
+  const sb=el('shbtn'); if(sb)sb.classList.add('on');
   // leaders always fullscreen regardless of device; mobile also fullscreen for non-home
   const fullscreen=id==='view-leaders'||window.innerWidth<=768;
   if(fullscreen){
@@ -800,12 +1083,27 @@ function showV(id){
   }
 }
 function goHome(){
-  history.pushState({type:'home'},'');
+  history.pushState({type:'home'},'',shareBase().replace(/index\.html$/,'')||location.pathname);
   showV('view-home');
 }
 function navigate(type,data){
-  history.pushState({type,...data},'');
+  const h=hashFor(type,data);
+  history.pushState({type,...data},'',h?'#'+h:location.pathname);
 }
+/* ⚠️ 2026-09-13 — BACK USED TO PUSH FORWARD, AND ON MOBILE THAT WAS A DEAD END.
+   Every branch below calls a loader, and every loader began with navigate(), i.e.
+   history.pushState. So a popstate ADDED an entry instead of consuming one: Back
+   could never reach home, showV never ran with 'view-home', the rail kept its
+   mob-hide class, and a full page refresh was the only way out. For venue and opp
+   it happened on every press; for player and team only when the item was not
+   already cached, which is why it looked intermittent.
+   Loaders now take push=false from here — they render without touching history.
+
+   AND THE 'opp' STATE WAS UNREADABLE. openOpp pushed {oppTid,sid,fromUuid} and
+   openTeamOpp pushed {myTid,oppTid,sid} under the SAME type, while this handler
+   read e.state.tid — a key NEITHER writes. Back into an opposition view called
+   openOpp(undefined, sid, undefined), which pushed another broken entry and
+   rendered nothing. They are now separate types, each read with its own keys. */
 window.addEventListener('popstate',e=>{
   if(!e.state||e.state.type==='home'){showV('view-home');return;}
   const{type}=e.state;
@@ -813,15 +1111,17 @@ window.addEventListener('popstate',e=>{
     S.playerUuid=e.state.uuid;
     showV('view-player');
     const p=S.players[e.state.uuid];
-    if(p)renderPlayer(p);else loadPlayer(e.state.uuid);
+    if(p)renderPlayer(p);else loadPlayer(e.state.uuid,false);
   }else if(type==='team'){
     const td=S.teamStats[e.state.sid]?.[e.state.tid];
     if(td){showV('view-team');renderTeam(td,e.state.tid,e.state.sid);}
-    else loadTeam(e.state.tid,e.state.sid);
+    else loadTeam(e.state.tid,e.state.sid,false);
   }else if(type==='venue'){
-    loadVenue(e.state.vid,e.state.vname);
+    loadVenue(e.state.vid,e.state.vname,undefined,false);
   }else if(type==='opp'){
-    openOpp(e.state.tid,e.state.sid,e.state.fromUuid);
+    openOpp(e.state.oppTid,e.state.sid,e.state.fromUuid,false);
+  }else if(type==='teamopp'){
+    openTeamOpp(e.state.myTid,e.state.oppTid,e.state.sid,e.state.isUpcoming,false);
   }else{showV('view-home');}
 });
 
@@ -834,6 +1134,8 @@ async function boot(){
   buildVenueList();
   buildVenueSeasonPicker();
   buildLBSeasonPicker();
+  // A shared link arrives as a hash; restore that view now the indexes are in.
+  try{ applyHash(); }catch(e){ showV('view-home'); }
 }
 
 /* ── Tabs ── */
@@ -937,8 +1239,8 @@ async function searchPlayers(q){
 }
 
 /* ── Player profile ── */
-async function loadPlayer(uuid){
-  navigate('player',{uuid});
+async function loadPlayer(uuid,push=true){
+  if(push)navigate('player',{uuid});
   showV('view-player');
   const ve=el('view-player');ve.innerHTML='<div class="load-row">Loading\u2026</div>';
   S.playerUuid=uuid;
@@ -1245,7 +1547,7 @@ function renderPlayer(p){
             </div>
           </div>
         </div>
-        <div style="flex:7;min-width:0;display:flex;flex-direction:row">${[[stGp||0,'GP',gpIsOurs?'var(--accent)':null],[ppg,'PPG',null],[st.pts||0,'PTS',null],[st.fg||0,'FG',null],[st.ft||0,'FT',null],[st.threePt||0,'3PT',null],[st.fouls||0,'F',null]].map(([v,l,c],i)=>statCell(v,l,i===6,c)).join('')}${regW||regL?`<div class="sstat"><div class="ssv" style="font-size:0.68rem;display:flex;gap:3px;justify-content:center;align-items:baseline;white-space:nowrap;font-variant-numeric:tabular-nums">${regW?`<span style="color:var(--win)">${regW}W</span>`:''}${regL?`<span style="color:var(--loss)">${regL}L</span>`:''}${regD?`<span style="color:var(--draw)">${regD}D</span>`:''}</div><div class="ssl">${regWinPct??''}</div></div>`:''}</div>
+        <div style="flex:7;min-width:0;display:flex;flex-direction:row">${[[stGp||0,'GP',gpIsOurs?'var(--accent)':null],[ppg,'PPG',null],[st.pts||0,'PTS',null],[st.fg||0,'FG',null],[st.ft||0,'FT',null],[st.threePt||0,'3PT',null],[st.fouls||0,'F',null]].map(([v,l,c],i)=>statCell(v,l,i===6,c)).join('')}${`<div class="sstat"><div class="ssv" style="font-size:0.68rem;display:flex;gap:3px;justify-content:center;align-items:baseline;white-space:nowrap;font-variant-numeric:tabular-nums">${(regW||regL||regD)?`${regW?`<span style="color:var(--win)">${regW}W</span>`:''}${regL?`<span style="color:var(--loss)">${regL}L</span>`:''}${regD?`<span style="color:var(--draw)">${regD}D</span>`:''}`:'<span style="color:var(--text3)">\u2014</span>'}</div><div class="ssl">${regWinPct??''}</div></div>`}</div>
       </div>
       <div class="sc-games" id="${esc(cid)}-g"></div>
     </div>`;
@@ -1548,9 +1850,16 @@ async function toggleGames(hdr){
     .sort(([,a],[,b])=>(b.d||'').localeCompare(a.d||''));
   if(!pg.length){ge.innerHTML='<div class="load-row">No game records found.</div>';ge.dataset.loaded='1';return;}
   const allRegGradeNames=regs.map(r=>r.gn||r.tn||'').filter(Boolean);
-  // Mirror of the header's W/L-cell condition (regW||regL from regs[0].stats):
+  // Mirror of the header's W/L cell. ⚠️ 2026-09-13: the header's cell is now
+  // UNCONDITIONAL — it used to be `${regW||regL?…:''}` and emitted NOTHING when a
+  // team had played no games, leaving the flex row with seven children instead of
+  // eight so every other column stretched and fell out of line with the rows above
+  // and below it. A pre-season team has no wins and no losses by definition, so the
+  // whole season card misaligned. The header now always renders the cell, showing an
+  // em dash when there is nothing in it. This pad MUST match it or the game rows
+  // underneath sit one column short of their own header.
   // when the header renders 8 columns, every game row pads to 8.
-  const _hs=regs[0]?.stats;const padWld=!!((_hs?.wins)||(_hs?.losses));
+  const padWld=true;
   // Games PlayHQ does NOT credit, marked in place. Without this the same game
   // appears twice on one card with no connection between them: as an ordinary row
   // here, and again under "Credit differences" as not credited. The season
@@ -1644,8 +1953,8 @@ async function searchTeams(q){
 }
 
 /* ── Team focus ── */
-async function loadTeam(tid,sid){
-  navigate('team',{tid,sid});
+async function loadTeam(tid,sid,push=true){
+  if(push)navigate('team',{tid,sid});
   showV('view-team');
   const ve=el('view-team');ve.innerHTML='<div class="load-row">Loading\u2026</div>';
   S.teamId=tid;S.teamSid=sid;
@@ -1808,8 +2117,8 @@ function renderVenues(list,q){
   }));
 }
 
-async function loadVenue(vid,vname,preDate){
-  navigate('venue',{vid,vname});
+async function loadVenue(vid,vname,preDate,push=true){
+  if(push)navigate('venue',{vid,vname});
   showV('view-venue');
   const ve=el('view-venue');
   S.venueId=vid;
@@ -2028,6 +2337,14 @@ function aTid(g){return g?.a ?? g?.t2 ?? null;}
 function teamNames(g){
   if(g.h)return[g.hn||'',g.an||'',g.h,g.a];
   if(g.t1)return[g.t1n||'',g.t2n||'',g.t1,g.t2];
+  // ⚠️ 2026-09-17 — venue-lookup day entries are a THIRD shape and this returned
+  // nothing for all of them, so every venue on every date rendered "? vs ?".
+  // update-venue-lookup.js writes {id,t,hn,an,hid,aid,sid,comp,grade,st}: the names
+  // are present as hn/an, but the team ids are hid/aid, so both gates above miss and
+  // it fell through to the empty case. The grade line rendered because it is read
+  // directly rather than through here — which is why the rows looked half-populated
+  // rather than empty.
+  if(g.hn||g.an||g.hid||g.aid)return[g.hn||'',g.an||'',g.hid||'',g.aid||''];
   return['','','',''];
 }
 
@@ -2258,8 +2575,8 @@ function fixturePriors(td,myTid){
 function wldChips(r){
   return[r.w?`<span style="color:var(--win)">${r.w}W</span>`:'',r.l?`<span style="color:var(--loss)">${r.l}L</span>`:'',r.d?`<span style="color:var(--draw)">${r.d}D</span>`:''].filter(Boolean).join(' ');
 }
-async function openOpp(oppTid,sid,fromUuid){
-  navigate('opp',{oppTid,sid,fromUuid});
+async function openOpp(oppTid,sid,fromUuid,push=true){
+  if(push)navigate('opp',{oppTid,sid,fromUuid});
   showV('view-opp');
   const ve=el('view-opp');
   ve.innerHTML='<div class="load-row">Loading…</div>';
@@ -2396,8 +2713,8 @@ function toggleOppGames(row,games,oppName){
   gh+='</div>';
   row.insertAdjacentHTML('beforeend',gh);
 }
-async function openTeamOpp(myTid,oppTid,sid,isUpcoming){
-  navigate('opp',{myTid,oppTid,sid});
+async function openTeamOpp(myTid,oppTid,sid,isUpcoming,push=true){
+  if(push)navigate('teamopp',{myTid,oppTid,sid,isUpcoming});
   showV('view-opp');
   const ve=el('view-opp');
   ve.innerHTML='<div class="load-row">Loading…</div>';
@@ -3062,5 +3379,24 @@ async function toggleOppStatGames(oppUuid, myUuid) {
 }
 
 </script>
+<div class="hpwrap" id="hpwrap" onclick="if(event.target===this)closeHelp()">
+  <div class="hpcard">
+    <div class="hphdr"><b>What the numbers mean</b><span class="help-dot" onclick="closeHelp()" title="Close">×</span></div>
+    <div class="hpbody" id="hpbody"></div>
+  </div>
+</div>
+<button class="shbtn on" id="shbtn" onclick="openShare()" title="Share this view">🔗</button>
+<div class="shwrap" id="shwrap" onclick="if(event.target===this)closeShare()">
+  <div class="shcard">
+    <div class="shttl" id="shttl">Share</div>
+    <div class="shqr" id="shqr"></div>
+    <div style="font-size:0.62rem;color:var(--text3);margin-top:6px">Scan to open StatTrack · the link below opens this view</div>
+    <div class="shurl" id="shurl"></div>
+    <div class="shrow">
+      <button class="pri" id="shcopy" onclick="copyShare()">Copy link</button>
+      <button onclick="closeShare()">Close</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
