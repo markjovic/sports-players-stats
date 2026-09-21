@@ -34,21 +34,21 @@ on:
   workflow_dispatch:
     inputs:
       sweep_first:
-        description: 'Dispatch the discovery backfill and STOP. It self-retriggers for hours — re-run this workflow without the flag once it has drained.'
+        description: 'STEP 1 — start the PlayHQ sweep and stop here. Leave UNTICKED for STEP 2, which rebuilds and publishes. The sweep self-retriggers for hours; wait for it to drain before step 2.'
         required: false
         default: false
         type: boolean
       full_team_index:
-        description: 'Scan every player file for team-index rather than the last 2 days. Needed when the sweep ran longer than 2 days.'
+        description: 'STEP 2 — scan every player file rather than the last 2 days. Leave ticked: a sweep lasting more than two days puts its earliest shards outside the default window.'
         required: false
         default: true
         type: boolean
       season:
-        description: 'Single season id for build-team-stats (blank = all active seasons)'
+        description: 'STEP 2 — rebuild one season only. Leave blank for every active season.'
         required: false
         type: string
       deploy:
-        description: 'Publish to Pages when the rebuilds finish'
+        description: 'STEP 2 — publish to Pages when the rebuilds finish. Leave ticked.'
         required: false
         default: true
         type: boolean
@@ -145,9 +145,19 @@ jobs:
   # ── 2. team-stats: the team pages ──────────────────────────────────────────
   team-stats:
     needs: team-index
-    # Runs even if team-index found nothing to do; it reads registrations, not the
-    # index. It must NOT run if team-index was cancelled mid-write.
-    if: ${{ !cancelled() && needs.team-index.result != 'cancelled' }}
+    # ⚠️ 2026-09-17 — THIS RAN DURING A sweep_first DISPATCH AND SHOULD NOT HAVE.
+    # It was `if: ${{ !cancelled() && needs.team-index.result != 'cancelled' }}`,
+    # copied from weekly-indexes.yml where every job is meant to run and the guard
+    # only protects against a cancelled predecessor. Here one branch is supposed to
+    # SKIP ENTIRELY — and a SKIPPED job is not a cancelled one, so `!cancelled()`
+    # was true, team-index's result was 'skipped' rather than 'cancelled', and this
+    # ran anyway. It rebuilt team-stats from PRE-SWEEP data and held the data-write
+    # lock for up to six hours while the sweep it had just dispatched was still
+    # writing registrations.
+    # Gate on the INPUT, not on the upstream job's result: the input is what decides
+    # which branch this dispatch is, and a result cannot express "the other branch
+    # was chosen". Both boolean forms per directive 13.
+    if: ${{ !cancelled() && !(inputs.sweep_first == true || inputs.sweep_first == 'true') && needs.team-index.result != 'cancelled' && needs.team-index.result != 'skipped' }}
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
@@ -172,8 +182,10 @@ jobs:
   publish:
     needs: team-stats
     # Default success-gating on `needs:` means a failed rebuild never publishes —
-    # half-built data must not go live.
-    if: ${{ inputs.deploy == true || inputs.deploy == 'true' }}
+    # half-built data must not go live. The sweep_first test is here too: without it
+    # this published whatever was on disk at the time of a dispatch that was only
+    # ever meant to start the sweep.
+    if: ${{ !(inputs.sweep_first == true || inputs.sweep_first == 'true') && (inputs.deploy == true || inputs.deploy == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
