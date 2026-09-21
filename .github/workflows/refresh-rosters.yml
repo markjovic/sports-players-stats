@@ -1,0 +1,212 @@
+# .github/workflows/refresh-rosters.yml
+name: Refresh rosters (manual chain)
+
+# Runs the derived-data rebuilds IN ORDER after registrations have changed, so a
+# player moved between teams for an upcoming season shows up without waiting for the
+# nightly. Every step here already runs on a schedule; this exists to do it now.
+#
+# ORDER MATTERS AND IS NOT NEGOTIABLE:
+#   1. update-team-index   — puts new teams into data/team-index.json (the SEARCH
+#                            list). Sources from players' seasons[].regs[], so it
+#                            needs the registrations to be on disk already.
+#   2. build-team-stats    — writes team-stats/bv/{sid}.json (the TEAM PAGE). Builds
+#                            rosters from the same registrations. A different file
+#                            and a different tool from step 1 — doing only one of
+#                            them leaves a team that can be found and not opened, or
+#                            opened and not found.
+#   3. deploy-pages        — publishes. Nothing above triggers a Pages build.
+#
+# ⚠️ THE DISCOVERY SWEEP IS NOT PART OF THIS CHAIN, and cannot be.
+# discover-seasons-matrix.yml is what re-probes PlayHQ and writes registration
+# changes into player files. It self-retriggers across many runs over hours, so a
+# job that waited for it would hit the timeout. Set `sweep_first` to dispatch it and
+# stop — then run this workflow again, without the flag, once that chain has drained.
+#
+# ⚠️ A MOVED PLAYER WILL APPEAR ON BOTH TEAMS. discover-seasons.js's reduce applies
+# deltas with upsertReg(), which inserts or updates and NEVER REMOVES. The new
+# registration is added; the old one stays. build-team-stats builds rosters from
+# those registrations, so both teams list the player. Nothing in the pipeline prunes
+# a stale registration, and pruning is not safe by default — regs also come from the
+# nightly writing them from games, so a fill-in appearance would be deleted by a
+# naive prune against publicProfileTeams. Unresolved on purpose; see OUTSTANDING.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sweep_first:
+        description: 'Dispatch the discovery backfill and STOP. It self-retriggers for hours — re-run this workflow without the flag once it has drained.'
+        required: false
+        default: false
+        type: boolean
+      full_team_index:
+        description: 'Scan every player file for team-index rather than the last 2 days. Needed when the sweep ran longer than 2 days.'
+        required: false
+        default: true
+        type: boolean
+      season:
+        description: 'Single season id for build-team-stats (blank = all active seasons)'
+        required: false
+        type: string
+      deploy:
+        description: 'Publish to Pages when the rebuilds finish'
+        required: false
+        default: true
+        type: boolean
+
+# Both rebuild scripts write to the repo and must not race the nightly, the matrix
+# or the fold. cancel-in-progress stays false: queued, never killed.
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write     # dispatches discover-seasons-matrix and deploy-pages
+
+jobs:
+  # ── Optional: kick off the sweep and stop ──────────────────────────────────
+  sweep:
+    if: ${{ inputs.sweep_first == true || inputs.sweep_first == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+      GH_REPO:  ${{ github.repository }}
+    steps:
+      # Helper copied VERBATIM from fetch-profile-stats-matrix.yml. A chain-critical
+      # dispatch is never one-shot: one HTTP 500 breaks the chain and the run still
+      # shows green.
+      - name: Install dispatch retry helper
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 )); [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+
+      - name: Dispatch the discovery backfill
+        run: |
+          /tmp/gh-dispatch.sh discover-seasons-matrix.yml \
+            --field "backfill_teams=true" \
+            --field "fresh_start=true"
+          echo ""
+          echo "The sweep self-retriggers until every shard drains — expect hours, not minutes."
+          echo "Watch 'Discover Seasons (Matrix)'. When it stops retriggering, run THIS"
+          echo "workflow again with sweep_first unticked to rebuild and publish."
+
+  # ── 1. team-index: the search list ─────────────────────────────────────────
+  team-index:
+    if: ${{ !(inputs.sweep_first == true || inputs.sweep_first == 'true') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      # Plain full checkout, no setup-node — neither script here fetches PlayHQ, but
+      # the rule is repo-wide and this is one edit away from being a job that does.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Update team index
+        env:
+          IN_FULL: ${{ inputs.full_team_index }}
+        run: |
+          set -uo pipefail
+          # The default 2-day window filters on player-file mtime. A sweep that ran
+          # longer than that leaves its earliest shards outside the window, so a
+          # full scan is the safe choice after a backfill.
+          ARGS=""
+          if [ "${IN_FULL:-true}" = "true" ]; then ARGS="--all"; fi
+          node scripts/update-team-index.js $ARGS
+
+  # ── 2. team-stats: the team pages ──────────────────────────────────────────
+  team-stats:
+    needs: team-index
+    # Runs even if team-index found nothing to do; it reads registrations, not the
+    # index. It must NOT run if team-index was cancelled mid-write.
+    if: ${{ !cancelled() && needs.team-index.result != 'cancelled' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Build team stats
+        env:
+          IN_SEASON: ${{ inputs.season }}
+        run: |
+          set -uo pipefail
+          ARGS="--active-only"
+          if [ -n "${IN_SEASON:-}" ]; then ARGS="--season=$IN_SEASON"; fi
+          node scripts/build-team-stats.js $ARGS
+
+  # ── 3. publish ─────────────────────────────────────────────────────────────
+  publish:
+    needs: team-stats
+    # Default success-gating on `needs:` means a failed rebuild never publishes —
+    # half-built data must not go live.
+    if: ${{ inputs.deploy == true || inputs.deploy == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+      GH_REPO:  ${{ github.repository }}
+    steps:
+      - name: Install dispatch retry helper
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 )); [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+
+      - name: Publish to Pages
+        run: /tmp/gh-dispatch.sh deploy-pages.yml
