@@ -129,6 +129,7 @@ const args = process.argv.slice(2);
 const BACKFILL_TEAMS = args.includes('--backfill-teams');
 // If backfill is on, force ALL_PLAYERS to true so it scans everyone
 const ALL_PLAYERS = args.includes('--all-players') || BACKFILL_TEAMS;   
+const NO_PRUNE = process.argv.includes('--no-prune');
 const DRY_RUN = args.includes('--dry-run');
 const DEBUG_TEAMS = args.includes('--debug-teams');  // dump raw grade/season per registration
 const FULL      = args.includes('--full');
@@ -758,6 +759,7 @@ async function main() {
     //    This is what eliminates the stale-snapshot clobber risk: we read each
     //    player's CURRENT on-disk content right here, not whatever MAP saw earlier.
     let playersWritten = 0, playersMissing = 0;
+    let prunedRegs = 0; const prunedPlayers = new Set(); const prunedExamples = [];
     const touchedPlayerDirs = new Set();   // relative paths, e.g. 'players/00' — for explicit git add
     for (const [uuid, deltas] of mergedDeltas) {
       const filePath = path.join(PLAYERS_DIR, uuid.substring(0, 2), `${uuid}.json`);
@@ -770,6 +772,56 @@ async function main() {
         let seasonObj = player.seasons.find(s => s.sid === d.sid);
         if (!seasonObj) { seasonObj = { sid: d.sid, sn: d.sn, regs: [] }; player.seasons.push(seasonObj); }
         if (upsertReg(seasonObj, { tid: d.tid, tn: d.tn, gid: d.gid, gn: d.gn })) fileModified = true;
+      }
+
+      // ── PRUNE STALE PRE-SEASON REGISTRATIONS (2026-09-17) ────────────────────
+      // upsertReg inserts or updates and NEVER REMOVES, and nothing else in this
+      // reduce pruned. So a player moved between teams before a season started kept
+      // BOTH registrations for ever, and build-team-stats — which builds rosters
+      // straight from them — listed the child on both teams.
+      //
+      // WHAT MAKES THIS SAFE IS THE PAIR OF GUARDS, NOT THE API ANSWER ALONE.
+      //
+      //   1. `deltas` for this player came from publicProfileTeams on THIS run, so
+      //      the tids in them are PlayHQ's current answer for that season. A season
+      //      absent from the deltas is never touched — a player who errored, or was
+      //      not probed, cannot lose anything.
+      //   2. Only a row with NO `stats` AND NO `gid` is removed. That is precisely a
+      //      pre-season registration: no grade allocated and no game played. A
+      //      FILL-IN APPEARANCE ALWAYS HAS ONE OR THE OTHER, because nightly-crawl
+      //      writes regs from games with the grade on them — so a real appearance
+      //      that publicProfileTeams happens not to list cannot be deleted here.
+      //      This is the guard that makes the difference between pruning a stale
+      //      allocation and erasing a game somebody played.
+      //
+      // In-season moves (a player who transfers mid-season and never plays for the
+      // old team) are NOT handled: those rows carry a gid. Deliberately left for a
+      // separate decision — see OUTSTANDING.
+      if (!NO_PRUNE) {
+        const current = new Map();   // sid -> Set(tid) as PlayHQ reports it now
+        for (const d of deltas) {
+          if (!d.sid || !d.tid) continue;
+          if (!current.has(d.sid)) current.set(d.sid, new Set());
+          current.get(d.sid).add(d.tid);
+        }
+        for (const seasonObj of player.seasons) {
+          const live = current.get(seasonObj.sid);
+          if (!live || !live.size) continue;          // not probed this run — hands off
+          const regs = seasonObj.regs || [];
+          const keep = regs.filter(r => {
+            if (!r || !r.tid) return true;
+            if (live.has(r.tid)) return true;
+            const noStats = !r.stats || Object.keys(r.stats).length === 0;
+            const noGrade = !r.gid;
+            if (!(noStats && noGrade)) return true;   // played, or graded — never ours to remove
+            prunedRegs++;
+            if (prunedExamples.length < 25) {
+              prunedExamples.push(`    ${uuid.slice(0, 13)}  ${seasonObj.sid}  left ${r.tid} ${JSON.stringify(r.tn || '')}  -> now ${[...live].join(', ')}`);
+            }
+            return false;
+          });
+          if (keep.length !== regs.length) { seasonObj.regs = keep; fileModified = true; prunedPlayers.add(uuid); }
+        }
       }
       if (fileModified) {
         syncTeams(player);
@@ -784,6 +836,16 @@ async function main() {
     }
     if (mergedDeltas.size) {
       console.log(`  Roster backfill: ${playersWritten} player(s) updated, ${playersMissing} not found on disk (not checked out or absent) — of ${mergedDeltas.size} with pending deltas.`);
+    }
+    if (NO_PRUNE) {
+      console.log('  Pre-season prune: DISABLED (--no-prune)');
+    } else if (prunedRegs) {
+      console.log(`  Pre-season prune: ${prunedRegs} stale registration(s) removed from ${prunedPlayers.size} player(s)`);
+      console.log('    (no grade, no stats, and the team is not in PlayHQ\'s current answer for that season)');
+      prunedExamples.forEach(l => console.log(l));
+      if (prunedRegs > prunedExamples.length) console.log(`    … and ${prunedRegs - prunedExamples.length} more`);
+    } else {
+      console.log('  Pre-season prune: nothing stale found');
     }
 
     // Once EVERY tracked shard (across all modes, not just this run's targets) is
