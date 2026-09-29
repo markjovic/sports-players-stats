@@ -140,24 +140,66 @@ const HEADERS_SPECTATOR = {
 
 let sessionCookie = null;
 
+// ⚠️ 2026-09-29 — THE BOOTSTRAP QUERY CHANGED. TenantConfig WAS BEING REFUSED.
+//
+// On 2026-09-28/29 this script and discover-org-seasons.js failed EVERY attempt with
+// HTTP 403, no set-cookie, CloudFront block page — while THREE other scripts hit the
+// same API from the same runner in the same hours and succeeded. Nightly Crawl #117
+// shows it starkly: `crawl` failed the session ten times and the
+// `profile-stats-matrix` it dispatched went green minutes later.
+//
+// What separated them was the bootstrap QUERY. Not the headers — identical five keys
+// in all five scripts. Not the runner image — byte-identical between a working and a
+// failing run. Not the IP range — the successes prove it was reachable.
+//   WORKED  discover-fixtures.js and the profile matrix: ProfileSearch, only that.
+//   FAILED  this script: TenantConfig, ONLY that.
+//   FAILED  discover-org-seasons.js: TenantConfig FIRST, then ProfileSearch on the
+//           same keep-alive connection, and BOTH refused — which is why the first
+//           refusal marking the connection is the likelier reading than ProfileSearch
+//           being broken, given it worked elsewhere in the same minutes.
+//
+// ProfileSearch now goes first, copied from the implementation that was working that
+// morning. TenantConfig is KEPT AS A FALLBACK rather than deleted: this evidence is
+// behavioural, PlayHQ may change it back, and a query that stops working is not a
+// query that is wrong.
+//
+// THE COOKIE SHAPE IS NOT ASSUMED. This script needs phq_tier, phq_session and
+// phq_sub BY NAME; discover-fixtures joins whatever comes back. A different operation
+// may not return the same three, so the named extraction is tried first and the
+// joined form is the fallback. The log says which was used, so nobody has to guess.
+const BOOTSTRAP_QUERIES = [
+  { operationName: 'ProfileSearch', variables: { fullName: 'a' },
+    query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
+  { operationName: 'TenantConfig', variables: {},
+    query: 'query TenantConfig { tenantConfiguration { label } }' },
+];
+
 async function refreshSession() {
-  const body = { operationName: 'TenantConfig', variables: {},
-    query: 'query TenantConfig { tenantConfiguration { label } }' };
   for (let attempt = 1; attempt <= 10; attempt++) {
     if (attempt > 1) await sleep(attempt * 3000);
-    try {
-      const { rawCookies } = await doFetch(API_URL, body, HEADERS_MAIN);
-      if (!rawCookies) continue;
-      const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies])
-        .map(c => c.split(';')[0].trim());
-      const get = n => arr.find(p => p.startsWith(n + '=')) || null;
-      const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
-      if (tier && session && sub) {
-        sessionCookie = `${tier}; ${session}; ${sub}`;
-        console.log(`  Session refreshed (attempt ${attempt})`);
-        return;
-      }
-    } catch (_) {}
+    for (const body of BOOTSTRAP_QUERIES) {
+      try {
+        const { rawCookies } = await doFetch(API_URL, body, HEADERS_MAIN);
+        if (!rawCookies) { console.log(`  \u26a0 session attempt ${attempt} ${body.operationName}: no set-cookie`); continue; }
+        const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies])
+          .map(c => c.split(';')[0].trim());
+        const get = n => arr.find(p => p.startsWith(n + '=')) || null;
+        const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
+        if (tier && session && sub) {
+          sessionCookie = `${tier}; ${session}; ${sub}`;
+          console.log(`  Session refreshed (attempt ${attempt}, ${body.operationName})`);
+          return;
+        }
+        // Cookies came back, but not the three this script names. Use them joined,
+        // the way discover-fixtures.js does — a session that works beats discarding a
+        // 200 and retrying into the same wall.
+        if (arr.length) {
+          sessionCookie = arr.join('; ');
+          console.log(`  Session refreshed (attempt ${attempt}, ${body.operationName}) — joined ${arr.length} cookie(s), named set absent`);
+          return;
+        }
+      } catch (_) { /* transport failure — try the next query, then the next attempt */ }
+    }
   }
   throw new Error('Failed to obtain session after 10 attempts');
 }

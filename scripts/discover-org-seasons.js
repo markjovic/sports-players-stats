@@ -143,9 +143,21 @@ const HEADERS_BASE = {
 // ─── Session: promise-locked, copied from discover-seasons.js L161-236 ────────
 let sessionCookie = null, sessionPromise = null, sessionAt = 0;
 const SESSION_MAX_AGE_MS = 15 * 60 * 1000;
+// \u26a0\ufe0f 2026-09-29 — ORDER REVERSED. TenantConfig WAS BEING REFUSED, AND THE
+// ProfileSearch THAT FOLLOWED IT ON THE SAME CONNECTION WAS REFUSED TOO.
+//
+// On 2026-09-28/29 every attempt here failed with HTTP 403, no set-cookie, CloudFront
+// block page, on BOTH queries — while discover-fixtures.js and the profile matrix hit
+// the same API from the same runner in the same hours and succeeded, bootstrapping
+// with ProfileSearch ALONE. Headers identical, runner image identical. The only
+// difference was TenantConfig going first, which is why ProfileSearch failing HERE
+// and working THERE is what needs explaining rather than ProfileSearch being broken.
+//
+// ProfileSearch now goes first. TenantConfig is kept as a fallback rather than
+// deleted: the evidence is behavioural and PlayHQ may change it back.
 const COOKIE_QUERIES = [
-  { operationName: 'TenantConfig', variables: {}, query: 'query TenantConfig { tenantConfiguration { label } }' },
   { operationName: 'ProfileSearch', variables: { fullName: 'a' }, query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
+  { operationName: 'TenantConfig', variables: {}, query: 'query TenantConfig { tenantConfiguration { label } }' },
 ];
 
 async function ensureSession() {
