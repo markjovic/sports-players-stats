@@ -174,11 +174,52 @@ const BOOTSTRAP_QUERIES = [
     query: 'query TenantConfig { tenantConfiguration { label } }' },
 ];
 
+// ⚠️ 2026-09-29 — THE BOOTSTRAP USES fetch(), NOT doFetch(). THIS IS THE FIX.
+//
+// Evidence, gathered over four wrong theories:
+//   · runner image — byte-identical between a working and a failing run.
+//   · IP range — discover-fixtures.js ran 1h02m against this API at 10:01 the same
+//     morning, and the profile matrix went green inside the very run whose `crawl`
+//     job had just been refused ten times.
+//   · bootstrap query — swapping to ProfileSearch changed nothing; BOTH queries 403.
+//   · keep-alive poisoning — impossible here, doFetch builds
+//     `new https.Agent({ keepAlive: false })` per request.
+//
+// What is left, and what actually separates the two scripts: discover-fixtures.js
+// bootstraps with **fetch()** and this script used **https.request** with its own
+// agent and a hand-set content-length. Same URL, same five headers, same query,
+// different CLIENT — and therefore a different TLS and HTTP fingerprint on the wire,
+// which is what a CloudFront WAF rule keys on. That is the same class of cause as
+// this repo's standing rule about actions/setup-node changing the runner's outbound
+// fingerprint and drawing 403s on every request.
+//
+// So the session is obtained with fetch(), copied from the implementation that was
+// working that morning, rather than approximated.
+//
+// ⚠️ IF THE CRAWL NOW GETS A SESSION AND THEN 403s ON ITS FIRST REAL CALL, the
+// fingerprint is the cause and the whole transport needs replacing, not just this.
+// That is the next thing to check, and it is one run away.
+async function sessionFetch(bodyObj) {
+  const res = await fetch(API_URL, {
+    method:  'POST',
+    headers: { ...HEADERS_MAIN, 'request-id': crypto.randomUUID() },
+    body:    JSON.stringify(bodyObj),
+  });
+  const rawText = await res.text().catch(() => '');
+  // undici exposes every Set-Cookie separately; the joined form is the fallback for
+  // older runtimes. Either way the caller wants an array of `name=value` pairs.
+  const rawCookies = typeof res.headers.getSetCookie === 'function'
+    ? res.headers.getSetCookie()
+    : (res.headers.get('set-cookie') ? [res.headers.get('set-cookie')] : undefined);
+  return { status: res.status, rawCookies: (rawCookies && rawCookies.length) ? rawCookies : undefined, rawText };
+}
+
 async function refreshSession() {
   for (let attempt = 1; attempt <= 10; attempt++) {
     if (attempt > 1) await sleep(attempt * 3000);
     for (const body of BOOTSTRAP_QUERIES) {
       try {
+        // ⚠️ THE TRANSPORT, NOT THE QUERY. See the note above the loop.
         // ⚠️ doFetch RESOLVES ON ANY STATUS — it never throws for a 403 (see its
         // definition: it hands back {status, rawCookies, body, rawText} whatever
         // comes back). Reading only rawCookies reported a CloudFront block page as
@@ -186,7 +227,7 @@ async function refreshSession() {
         // failure LOOKED different after a change that had not altered it at all.
         // Log the status and the first of the body, the way discover-org-seasons.js
         // already does, so the next run says what actually came back.
-        const { rawCookies, status, rawText } = await doFetch(API_URL, body, HEADERS_MAIN);
+        const { rawCookies, status, rawText } = await sessionFetch(body);
         if (!rawCookies) {
           const blocked = /cloudfront|Request blocked|ERROR: The request could not be satisfied/i.test(rawText || '');
           const detail = blocked
