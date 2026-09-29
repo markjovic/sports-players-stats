@@ -179,8 +179,22 @@ async function refreshSession() {
     if (attempt > 1) await sleep(attempt * 3000);
     for (const body of BOOTSTRAP_QUERIES) {
       try {
-        const { rawCookies } = await doFetch(API_URL, body, HEADERS_MAIN);
-        if (!rawCookies) { console.log(`  \u26a0 session attempt ${attempt} ${body.operationName}: no set-cookie`); continue; }
+        // ⚠️ doFetch RESOLVES ON ANY STATUS — it never throws for a 403 (see its
+        // definition: it hands back {status, rawCookies, body, rawText} whatever
+        // comes back). Reading only rawCookies reported a CloudFront block page as
+        // "no set-cookie", which is how the 2026-09-29 diagnosis went wrong: the
+        // failure LOOKED different after a change that had not altered it at all.
+        // Log the status and the first of the body, the way discover-org-seasons.js
+        // already does, so the next run says what actually came back.
+        const { rawCookies, status, rawText } = await doFetch(API_URL, body, HEADERS_MAIN);
+        if (!rawCookies) {
+          const blocked = /cloudfront|Request blocked|ERROR: The request could not be satisfied/i.test(rawText || '');
+          const detail = blocked
+            ? `CLOUDFRONT-BLOCK (${(rawText || '').length}b HTML)`
+            : (rawText || '').slice(0, 160).replace(/\s+/g, ' ');
+          console.log(`  \u26a0 session attempt ${attempt} ${body.operationName}: HTTP ${status}, NO set-cookie, body: ${detail || '(empty)'}`);
+          continue;
+        }
         const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies])
           .map(c => c.split(';')[0].trim());
         const get = n => arr.find(p => p.startsWith(n + '=')) || null;
