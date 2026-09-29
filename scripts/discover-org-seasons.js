@@ -178,7 +178,13 @@ async function refreshSession() {
           console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: fetch threw ${err.code || ''} ${err.message}`);
           throw err;
         }
-        const raw = res.headers.get('set-cookie');
+        // undici exposes each Set-Cookie separately. Prefer that: the joined header
+        // is split on ',' below, and a cookie carrying `Expires=Wed, 01 Jan …`
+        // splits in the middle of its own date. That never bit while the shim was
+        // in place because it joined with ', ' too — it is a latent fault that real
+        // fetch lets us avoid rather than a new one.
+        const jar = typeof res.headers.getSetCookie === 'function' ? res.headers.getSetCookie() : null;
+        const raw = (jar && jar.length) ? jar.join('\n') : res.headers.get('set-cookie');
         if (!raw) {
           // The same instrumentation discover-seasons.js carries: a silent continue
           // here is where a CloudFront block page vanishes without trace.
@@ -189,7 +195,7 @@ async function refreshSession() {
           console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: HTTP ${res.status}, NO set-cookie, body: ${sniff.replace(/\s+/g, ' ')}`);
           continue;
         }
-        const parts = raw.split(',').map(c => c.trim().split(';')[0]);
+        const parts = raw.split(/[\n,]/).map(c => c.trim().split(';')[0]).filter(Boolean);
         const get = (n) => parts.find(c => c.startsWith(n + '=')) || null;
         const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
         if (!tier || !session || !sub) {
@@ -210,31 +216,28 @@ async function refreshSession() {
 
 // ─── doFetch: copied from discover-seasons.js L515. keepAlive:false is what keeps
 //     CloudFront's per-connection rate limiting off us - do not pool. ───────────
-function doFetch(url, options) {
-  return new Promise((resolve, reject) => {
-    const parsed = new URL(url);
-    const body = options.body || '';
-    const req = https.request({
-      hostname: parsed.hostname, path: parsed.pathname + parsed.search,
-      method: options.method || 'GET',
-      headers: { ...options.headers, 'content-length': Buffer.byteLength(body) },
-      agent: new https.Agent({ keepAlive: false }),
-    }, (res) => {
-      const chunks = [];
-      res.on('data', c => chunks.push(c));
-      res.on('end', () => {
-        const rawBody = Buffer.concat(chunks).toString('utf8');
-        const hdrs = res.headers;
-        const headers = { get(name) { const v = hdrs[name.toLowerCase()]; return v == null ? null : (Array.isArray(v) ? v.join(', ') : v); } };
-        resolve({ status: res.statusCode, ok: res.statusCode >= 200 && res.statusCode < 300, headers, text: () => Promise.resolve(rawBody), json: () => Promise.resolve(JSON.parse(rawBody)) });
-      });
-      res.on('error', reject);
-    });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
-  });
-}
+// ⚠️ 2026-09-29 — REWRITTEN FROM https.request TO fetch(). THIS IS THE FIX.
+//
+// This function was a SHIM mimicking fetch's interface — status, ok, headers.get(),
+// text(), json() — over https.request, with its own agent and a hand-set
+// content-length. That client was being refused: every call 403 CLOUDFRONT-BLOCK,
+// while discover-fixtures.js (which uses real fetch) worked against the same API
+// from the same runner in the same minutes.
+//
+// nightly-crawl.js had the identical fault and the identical fix, proven in two
+// steps: switching only its bootstrap to fetch() obtained a session on attempt 1,
+// and then every REAL call still came back blocked — so the refusal follows the
+// CLIENT, not the endpoint or the credentials. Rewriting its whole transport on
+// fetch() fixed it outright.
+//
+// Since the shim already presented fetch's own interface, real fetch is a drop-in
+// and every caller is untouched.
+//
+// ⚠️ DO NOT PUT https.request BACK, AND DO NOT SET content-length BY HAND. Both are
+// what was being blocked. Same class as this repo's rule about actions/setup-node
+// changing the runner's outbound fingerprint — this is that idea one level down, in
+// the client library.
+const doFetch = (url, options) => fetch(url, options);
 
 // ─── AIMD, copied from discover-seasons.js L293-418 ──────────────────────────
 // The 2026-09-07 run resolved grades in a plain for-loop with a fixed 120ms sleep
