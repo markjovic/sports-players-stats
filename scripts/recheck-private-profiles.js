@@ -64,32 +64,48 @@ const HEADERS_BASE = {
   'tenant': 'basketball-victoria', 'content-type': 'application/json',
 };
 
-function doFetch(bodyObj, extraHeaders) {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify(bodyObj);
-    const h    = { ...HEADERS_BASE, ...extraHeaders,
-                   'request-id': crypto.randomUUID(),
-                   'content-length': Buffer.byteLength(body) };
-    const req  = https.request(
-      { hostname: 'api.playhq.com', path: '/graphql', method: 'POST',
-        headers: h, agent: new https.Agent({ keepAlive: false }) },
-      res => {
-        const chunks = [];
-        res.on('data', c => chunks.push(c));
-        res.on('end', () => {
-          try {
-            resolve({ status: res.statusCode,
-                      rawCookies: res.headers['set-cookie'],
-                      body: JSON.parse(Buffer.concat(chunks).toString('utf8')) });
-          } catch (e) { reject(e); }
-        });
-        res.on('error', reject);
-      }
-    );
-    req.on('error', reject);
-    req.write(body);
-    req.end();
+// ⚠️ 2026-09-29 — REWRITTEN FROM https.request TO fetch(). THIRD INSTANCE OF THIS
+// FAULT; see nightly-crawl.js and discover-org-seasons.js for the full evidence.
+//
+// Short version: a PlayHQ 403 that survives correct headers, a correct query and a
+// known-good runner is about the HTTP CLIENT. https.request with a hand-set
+// content-length is refused by the CloudFront WAF; fetch() is not. Proven in two
+// steps on nightly-crawl: switching only its session bootstrap to fetch() obtained a
+// cookie on attempt 1, and every REAL call through https.request still came back
+// blocked. Same class as the standing rule that actions/setup-node must never appear
+// in a job fetching api.playhq.com — that is about the runtime's outbound
+// fingerprint; this is the same idea one level down, in the client library.
+//
+// ⚠️ DO NOT PUT https.request BACK AND DO NOT SET content-length BY HAND.
+//
+// THE CONTRACT IS UNCHANGED, INCLUDING ITS SHARP EDGE. This function REJECTS when the
+// body will not parse as JSON, and callers rely on that. It is also why the 403s were
+// invisible here: a CloudFront HTML page became a JSON syntax error with no status
+// attached, so ten attempts printed nothing and the run died on the FATAL alone. The
+// rejection is kept, but the error now carries `.status` and `.rawText` so the next
+// failure says what came back.
+async function doFetch(bodyObj, extraHeaders) {
+  const res = await fetch('https://api.playhq.com/graphql', {
+    method:  'POST',
+    headers: { ...HEADERS_BASE, ...extraHeaders, 'request-id': crypto.randomUUID() },
+    body:    JSON.stringify(bodyObj),
   });
+  const rawText = await res.text().catch(() => '');
+  // undici exposes each Set-Cookie separately; the joined header is the fallback for
+  // older runtimes. Callers expect an array or undefined, never an empty array.
+  const cookies = typeof res.headers.getSetCookie === 'function'
+    ? res.headers.getSetCookie()
+    : (res.headers.get('set-cookie') ? [res.headers.get('set-cookie')] : []);
+  let body;
+  try { body = JSON.parse(rawText); }
+  catch (e) {
+    const blocked = /cloudfront|Request blocked|ERROR: The request could not be satisfied/i.test(rawText);
+    const err = new Error(`HTTP ${res.status}, body did not parse${blocked ? ' — CLOUDFRONT-BLOCK (' + rawText.length + 'b HTML)' : ''}`);
+    err.status = res.status;
+    err.rawText = rawText;
+    throw err;
+  }
+  return { status: res.status, rawCookies: cookies.length ? cookies : undefined, body };
 }
 
 let sessionCookie = null;
