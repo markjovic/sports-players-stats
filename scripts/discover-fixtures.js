@@ -113,6 +113,23 @@ let _cookie = null;
 // (discover-org-seasons.js has had a promise-locked session for this reason.)
 let _sessionPromise = null;
 
+// ⚠️ THE SESSION HAS A REQUEST BUDGET OF ROUGHLY 290 CALLS. Measured 2026-10-04 on
+// season 7f7c13f5: clean to team 280, 403; recovered; clean again to team 580, 403.
+// Twice, ~300 apart. It is a budget, not a block and not a fingerprint.
+//
+// Waiting for the 403 costs TWO MINUTES every time, because the bootstrap inside the
+// penalty window is itself refused and all three backoff steps (20s + 40s + 60s) are
+// consumed before a cookie comes back. Over 648 teams that is two stalls; over the
+// 378 seasons weekly-indexes.yml sweeps it would be hundreds, which is how a run
+// spends six hours and finishes nothing.
+//
+// So ROTATE BEFORE THE BUDGET RUNS OUT. A refresh requested while the current cookie
+// still works is granted immediately — the penalty only applies once PlayHQ has
+// started refusing. 250 leaves room for the ~20 calls already in flight at
+// concurrency 20 to land on the old cookie without crossing the line.
+const ROTATE_AFTER = 250;
+let _callsOnCookie = 0;
+
 function invalidateSession() {
   _cookie = null;
   _sessionPromise = null;
@@ -135,7 +152,10 @@ async function fetchSessionOnce() {
   try {
     if (fs.existsSync(COOKIE_FILE)) {
       const d = JSON.parse(fs.readFileSync(COOKIE_FILE, 'utf8'));
-      if (Date.now() - d.fetchedAt < 5 * 60 * 60 * 1000) { _cookie = d.cookie; return _cookie; }
+      // A cookie read from disk has unknown mileage — a previous run may have used
+      // most of its budget. Start it at the rotation threshold so the first 403 is
+      // not how we find out.
+      if (Date.now() - d.fetchedAt < 5 * 60 * 60 * 1000) { _cookie = d.cookie; _callsOnCookie = ROTATE_AFTER; return _cookie; }
     }
   } catch (e) {}
   console.log('  Fetching session cookie...');
@@ -165,6 +185,7 @@ async function fetchSessionOnce() {
       const raw2 = r2.headers.get('set-cookie');
       if (raw2) {
         _cookie = raw2.split(';')[0];
+        _callsOnCookie = 0;
         fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie: _cookie, fetchedAt: Date.now() }));
         console.log(`  ✓ Cookie obtained (after ${i} backoff attempt(s))`);
         return _cookie;
@@ -173,6 +194,7 @@ async function fetchSessionOnce() {
     throw new Error('No Set-Cookie');
   }
   _cookie = raw.split(';')[0];
+  _callsOnCookie = 0;
   fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie: _cookie, fetchedAt: Date.now() }));
   console.log('  ✓ Cookie obtained');
   return _cookie;
@@ -212,9 +234,17 @@ async function gql(operationName, query, variables) {
   let reauths  = 0;              // session refreshes used on THIS call
   while (true) {
     try {
+      // Rotate BEFORE the budget is exhausted. invalidateSession() is idempotent and
+      // getSession() is single-flight, so the twenty callers that cross the line
+      // together still produce exactly one bootstrap.
+      if (_cookie && _callsOnCookie >= ROTATE_AFTER) {
+        console.log(`  ↻ ${ROTATE_AFTER} calls on this session — rotating before it is refused`);
+        invalidateSession();
+      }
       // Read the cookie INSIDE the loop. It used to be fetched once before the loop,
       // so a refreshed session could never reach the retry that needed it.
       const cookie = await getSession();
+      _callsOnCookie++;
       const res = await fetch(API_URL, {
         method:  'POST',
         headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
