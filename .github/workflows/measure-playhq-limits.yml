@@ -51,9 +51,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
+      # Sparse, blobless, scripts only — the same form generate-shards uses in
+      # discover-seasons-matrix.yml (~8 s). A full checkout of this repo is ~7 minutes
+      # for the one file this job reads, and this job writes nothing, so none of the
+      # sparse-checkout commit-path traps apply.
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            scripts
+          sparse-checkout-cone-mode: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
       # NO actions/setup-node — this job fetches api.playhq.com. Preinstalled node only.
