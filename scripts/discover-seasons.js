@@ -187,8 +187,16 @@ function syncTeams(player) {
 async function refreshSession() {
   if (sessionPromise) return sessionPromise;
   sessionPromise = (async () => {
+    // ⚠️ 2026-10-04 — BACKOFF LENGTHENED, AND A 403 NO LONGER TRIES THE SECOND
+    // QUERY. The old cadence was attempt*5s over 10 attempts — about four minutes —
+    // and it tried BOTH queries every attempt, so a refusal was met with twice the
+    // request rate. Against the penalty window that follows an exhausted session
+    // budget (REPO_MANIFEST §6.59) that is far too short and too eager: the
+    // 2026-10-04 shard job printed 403 on both queries, seven attempts running.
+    // 20s, 40s, 60s, 90s then 120s capped is roughly fifteen minutes, the order the
+    // window actually lasts.
     for (let attempt = 1; attempt <= 10; attempt++) {
-      if (attempt > 1) await sleep(attempt * 5000);
+      if (attempt > 1) await sleep(Math.min(120000, 20000 * attempt));
       for (const body of COOKIE_QUERIES) {
         let res;
         try {
@@ -214,6 +222,9 @@ async function refreshSession() {
                       : b.includes('DOCTYPE')         ? `HTML page (${b.length}b): ${b.slice(0, 80)}`
                       : (b.slice(0, 120) || '(empty body)');
           console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: HTTP ${res.status}, NO set-cookie, body: ${sniff.replace(/\s+/g, ' ')}`);
+          // A 403 is the SOURCE being refused, not this query. Trying the next one
+          // immediately only doubles the rate into a block that is already on.
+          if (res.status === 403) break;
           continue;
         }
         const parts = raw.split(',').map(c => c.trim().split(';')[0]);
@@ -286,9 +297,22 @@ const Q_TEAM_FIXTURE = {
 };
 
 const SESSION_MAX_AGE_MS = 15 * 60 * 1000;
+// ⚠️ THE SESSION ALSO HAS A REQUEST BUDGET, MEASURED AT ROUGHLY 290 CALLS
+// (REPO_MANIFEST §6.59). Age alone does not catch it: a burst-heavy shard can spend
+// the whole budget inside the 15-minute window and then meet the 403 wall. Rotating
+// at 250 is granted instantly; waiting for the refusal costs the penalty window.
+const SESSION_MAX_CALLS = 250;
+let sessionCalls = 0;
 async function ensureSession() {
-  if (sessionCookie && (Date.now() - sessionAt) < SESSION_MAX_AGE_MS) return;
+  if (sessionCookie
+      && (Date.now() - sessionAt) < SESSION_MAX_AGE_MS
+      && sessionCalls < SESSION_MAX_CALLS) { sessionCalls++; return; }
+  if (sessionCookie && sessionCalls >= SESSION_MAX_CALLS) {
+    console.log(`  ↻ ${sessionCalls} calls on this session — rotating before it is refused`);
+    sessionCookie = null;
+  }
   await refreshSession();
+  sessionCalls = 1;
 }
 
 const AIMD_MIN         = 3;
