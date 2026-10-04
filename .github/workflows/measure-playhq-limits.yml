@@ -1,0 +1,77 @@
+# .github/workflows/measure-playhq-limits.yml
+name: Measure PlayHQ limits
+
+# Measures the two PlayHQ limits (REPO_MANIFEST §6.59) instead of guessing at them.
+# Writes nothing, commits nothing, stops at the first refusal.
+#
+# ⚠️ DISPATCH ONLY INTO A QUIET WINDOW. Every PlayHQ workflow must have been idle for
+# an hour first — nightly-crawl, weekly-indexes, discover-fixtures, both matrices.
+# If the first request is refused the run exits 1 with "nothing measured": that means
+# the window was still open, and the only correct response is to wait longer.
+#
+# This workflow deliberately does NOT join the data-write concurrency group: it writes
+# nothing, and queueing behind a nightly would start it the moment that nightly's 40
+# bootstraps had just been spent — the exact condition it must not measure in.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'bootstrap = count cookieless requests until refused; budget = spend one cookie slowly until refused'
+        required: true
+        default: 'bootstrap'
+        type: choice
+        options: [bootstrap, budget]
+      interval_seconds:
+        description: 'Gap between requests in seconds (blank = 10 for bootstrap, 3 for budget)'
+        required: false
+        default: ''
+        type: string
+      max_requests:
+        description: 'Stop after this many requests even if none is refused (blank = 60 for bootstrap, 400 for budget)'
+        required: false
+        default: ''
+        type: string
+      uuid:
+        description: 'Player id to probe — REQUIRED for budget mode, ignored otherwise'
+        required: false
+        default: ''
+        type: string
+      user_agent:
+        description: 'Replace the user-agent on every request. Leave BLANK for the first run; only for the later test of whether the shared key is the user-agent string.'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # NO actions/setup-node — this job fetches api.playhq.com. Preinstalled node only.
+
+      - name: Measure
+        env:
+          IN_MODE:     ${{ inputs.mode }}
+          IN_INTERVAL: ${{ inputs.interval_seconds }}
+          IN_MAX:      ${{ inputs.max_requests }}
+          IN_UUID:     ${{ inputs.uuid }}
+          IN_UA:       ${{ inputs.user_agent }}
+        run: |
+          # Arguments go in an array: a user-agent string contains spaces and must
+          # reach node as ONE argument.
+          ARGS=("--mode=${IN_MODE}")
+          if [ -n "${IN_INTERVAL}" ]; then ARGS+=("--interval=$(( IN_INTERVAL * 1000 ))"); fi
+          if [ -n "${IN_MAX}" ];      then ARGS+=("--max=${IN_MAX}"); fi
+          if [ -n "${IN_UUID}" ];     then ARGS+=("--uuid=${IN_UUID}"); fi
+          if [ -n "${IN_UA}" ];       then ARGS+=("--ua=${IN_UA}"); fi
+          printf 'arg: %s\n' "${ARGS[@]}"
+          node scripts/measure-playhq-limits.js "${ARGS[@]}"

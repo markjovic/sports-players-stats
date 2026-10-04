@@ -25,6 +25,24 @@ name: Discover Seasons (Matrix)
 # !cancelled() (stop-button rule, same fix the stats matrix received 2026-07-21);
 # retrigger's dry_run comparison fixed to the robust boolean form (directive 13).
 #
+# 2026-10-05 — THE SWEEP WAS THE MAIN SOURCE OF THE LOAD THAT BLOCKED IT. Since
+# 2026-10-04 every shard's first request was refused (REPO_MANIFEST §6.60). What a
+# refused shard then DID: discover-seasons.js asked for a session again on every
+# batch, ten attempts over ~13 minutes each, and this job's 10-minute limit killed it
+# at around the seventh — no artifact, nothing to resume, and the next shard in the
+# queue started the same thing. 256 shards, 20 at a time, ~6-7 cookieless requests
+# each, for the two-plus hours a run lasted. New sessions are the scarce resource
+# (§6.60), and that is roughly ten times the request rate the nightly's whole 11,317-
+# call crawl puts on the same key. Four changes (§6.61):
+#   - generate-shards makes ONE cookieless request first (measure-playhq-limits.js).
+#     Refused → the run stops there with one request spent, not 256.
+#   - max_parallel is an input (default 20, unchanged) so the bootstrap rate can be
+#     set to what measure-playhq-limits reports, without a code change.
+#   - reduce is skipped when the canary failed, instead of dying red on --in.
+#   - retrigger does not fire when any shard stopped for want of a session: the
+#     window is open, re-dispatching only extends it, and the cursors are unchanged.
+#     The reduce prints NO_SESSION_SHARDS=n for that gate.
+#
 # NO actions/setup-node ANYWHERE in this file — both map and reduce fetch PlayHQ
 # (map: publicProfileTeams probes; reduce: discoverSeason grade-resolve), and
 # setup-node changes the runner's outbound fingerprint so CloudFront 403-blocks
@@ -99,6 +117,11 @@ on:
         description: 'Burst batch size'
         required: false
         default: '25'
+        type: string
+      max_parallel:
+        description: 'Shard jobs running at once. Sets the fleet bootstrap rate — set it to what measure-playhq-limits reports. 20 = unchanged.'
+        required: false
+        default: '20'
         type: string
       dry_run:
         description: 'Report only'
@@ -257,6 +280,18 @@ jobs:
           # BASH writes the job output (matches the working fetch-profile-stats matrix).
           echo "targets=$targets" >> $GITHUB_OUTPUT
 
+      # ONE cookieless request before the fan-out. A refusal here is fleet-wide — the
+      # key PlayHQ limits new sessions on is shared by every runner — so every shard
+      # would be refused too. Spend one request finding that out, not 256. The script
+      # exits 1 when its first request is refused, which fails this job, which skips
+      # map (needs.generate-shards.result == 'success') and reduce, and the retrigger
+      # never evaluates. The cron picks the sweep up next week; a manual dispatch
+      # after a quiet hour picks it up sooner. The cookie it is issued is not reused.
+      - name: Canary — is PlayHQ issuing sessions right now?
+        run: |
+          node scripts/measure-playhq-limits.js --mode=bootstrap --max=1 --interval=0 \
+            || { echo "::error::PlayHQ refused the canary's session request. The penalty window is open; nothing dispatched. Leave every PlayHQ workflow idle for an hour before dispatching again."; exit 1; }
+
   map:
     needs: generate-shards
     # ⚠️ ADDED 2026-09-08 — WITHOUT THIS THE MATRIX NEVER FANS OUT.
@@ -282,7 +317,9 @@ jobs:
     timeout-minutes: 10
     strategy:
       fail-fast: false
-      max-parallel: 20
+      # From the input, as a number. Scheduled runs receive no inputs, so the || '20'
+      # fallback is what the cron gets.
+      max-parallel: ${{ fromJson(inputs.max_parallel || '20') }}
       matrix:
         shard: ${{ fromJson(needs.generate-shards.outputs.targets) }}
     steps:
@@ -323,11 +360,15 @@ jobs:
     # stops the chain instead of applying + retriggering anyway (stop-button
     # rule; the same fix fetch-profile-stats-matrix.yml received 2026-07-21 —
     # this file was never audited for it until 2026-08-03).
-    if: ${{ !cancelled() }}
+    # 2026-10-05: also requires generate-shards to have succeeded. When the canary
+    # fails there are no artifacts, and this job used to die red on its own --in guard
+    # for want of them — correct, but it buried the real reason one job upstream.
+    if: ${{ !cancelled() && needs.generate-shards.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     outputs:
       undone_shards: ${{ steps.reduce.outputs.undone }}
+      no_session_shards: ${{ steps.reduce.outputs.no_session }}
     # Single writer of index + progress + player files — locked against nightly-crawl
     # and the stats matrix so it can never race them on the same files.
     concurrency:
@@ -398,6 +439,12 @@ jobs:
           if [ -z "$undone" ]; then undone='[]'; fi
           echo "undone=$undone" >> $GITHUB_OUTPUT
           echo "Undone shards this sweep: $undone"
+          # Shards that stopped because PlayHQ would not issue a session. Any at all
+          # means the window is open and the retrigger must not fire into it.
+          no_session=$(grep -o 'NO_SESSION_SHARDS=.*' /tmp/reduce.log | sed 's/NO_SESSION_SHARDS=//')
+          if [ -z "$no_session" ]; then no_session='0'; fi
+          echo "no_session=$no_session" >> $GITHUB_OUTPUT
+          echo "Shards refused a session this sweep: $no_session"
 
   retrigger:
     needs: reduce
@@ -407,7 +454,11 @@ jobs:
     # dispatch sends the STRING 'true'; the old `inputs.dry_run != 'true'`
     # coerced a real boolean to NaN — never equal — so the gate could not block a
     # dry-run's retrigger. KEEP THIS ON ONE LINE (claude_context T1).
-    if: ${{ !cancelled() && !(inputs.dry_run == true || inputs.dry_run == 'true') && needs.reduce.outputs.undone_shards != '[]' && needs.reduce.outputs.undone_shards != '' }}
+    # 2026-10-05: AND no shard stopped for want of a session. If one did, the window is
+    # open, every shard the next run started would be refused, and the cursors are
+    # already saved — so the chain ends here and says so. Cron or a manual dispatch
+    # after a quiet hour resumes it.
+    if: ${{ !cancelled() && !(inputs.dry_run == true || inputs.dry_run == 'true') && needs.reduce.outputs.undone_shards != '[]' && needs.reduce.outputs.undone_shards != '' && (needs.reduce.outputs.no_session_shards == '0' || needs.reduce.outputs.no_session_shards == '') }}
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
@@ -506,5 +557,6 @@ jobs:
             --field "all_players=${{ inputs.all_players || false }}" \
             --field "backfill_teams=${{ (github.event_name == 'schedule' && 'true') || inputs.backfill_teams }}" \
             --field "concurrency=${{ inputs.concurrency || '25' }}" \
+            --field "max_parallel=${{ inputs.max_parallel || '20' }}" \
             --field "dry_run=${{ inputs.dry_run || false }}" \
             --field "run_number=${next_run}"
