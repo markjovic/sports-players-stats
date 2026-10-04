@@ -104,12 +104,33 @@ let _cookie = null;
 // with the identical Cookie header, then "giving up on this call" — for every one of
 // the remaining 386 teams and then 377 more seasons.
 // Invalidating and re-obtaining the session is the only thing that can work.
+// ⚠️ THE REFRESH MUST BE SINGLE-FLIGHT. The first version of this had no lock, and
+// at concurrency 20 the result was visible in the log: twenty calls hit 403, twenty
+// called invalidateSession(), and twenty ran their own bootstrap — "Fetching session
+// cookie..." twenty times in a row. THAT BURST IS ITSELF REFUSED, so the bootstrap
+// came back "No Set-Cookie", every caller retried, and it never escaped.
+// One refresh at a time; everyone else waits on the same promise.
+// (discover-org-seasons.js has had a promise-locked session for this reason.)
+let _sessionPromise = null;
+
 function invalidateSession() {
   _cookie = null;
+  _sessionPromise = null;
   try { if (fs.existsSync(COOKIE_FILE)) fs.unlinkSync(COOKIE_FILE); } catch (_) {}
 }
 
 async function getSession() {
+  if (_cookie) return _cookie;
+  // Someone is already fetching one — wait for theirs rather than starting another.
+  if (_sessionPromise) return _sessionPromise;
+  _sessionPromise = (async () => {
+    try { return await fetchSessionOnce(); }
+    finally { _sessionPromise = null; }
+  })();
+  return _sessionPromise;
+}
+
+async function fetchSessionOnce() {
   if (_cookie) return _cookie;
   try {
     if (fs.existsSync(COOKIE_FILE)) {
@@ -128,7 +149,29 @@ async function getSession() {
     }),
   });
   const raw = res.headers.get('set-cookie');
-  if (!raw) throw new Error('No Set-Cookie');
+  // A refused bootstrap is a rate signal, not a transient blip. Three attempts with
+  // a long, growing wait — retrying this quickly is what kept the block alive.
+  if (!raw) {
+    for (let i = 1; i <= 3; i++) {
+      const wait = 20000 * i;
+      console.log(`  … session bootstrap refused, waiting ${wait / 1000}s (attempt ${i}/3)`);
+      await delay(wait);
+      const r2 = await fetch(API_URL, {
+        method:  'POST',
+        headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() },
+        body:    JSON.stringify({ operationName: 'ProfileSearch', variables: { fullName: 'a' },
+          query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' }),
+      });
+      const raw2 = r2.headers.get('set-cookie');
+      if (raw2) {
+        _cookie = raw2.split(';')[0];
+        fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie: _cookie, fetchedAt: Date.now() }));
+        console.log(`  ✓ Cookie obtained (after ${i} backoff attempt(s))`);
+        return _cookie;
+      }
+    }
+    throw new Error('No Set-Cookie');
+  }
   _cookie = raw.split(';')[0];
   fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie: _cookie, fetchedAt: Date.now() }));
   console.log('  ✓ Cookie obtained');
