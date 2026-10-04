@@ -25,9 +25,10 @@
 //   CONCURRENCY (AIMD): can't rotate IPs on one runner, so it backs off and grinds
 //   through instead (cuts to 60% + backs off on a blocked batch, recovers on clean
 //   ones, re-queues blocked items — never drops them). Kept for manual/adhoc use.
-// Session is refreshed on AGE (~30-40min TTL; concurrency-safe via the promise lock),
-// never on a block (a per-IP WAF block is not a bad cookie — matches fetch-profile-
-// stats.js). Headers, cookie handling and doFetch are copied verbatim from
+// Session bookkeeping (count, age, single-flight rotation) is scripts/lib/
+// playhq-session.cjs since 2026-10-05; refreshSession() here is only the fetcher.
+// A block is never treated as a bad cookie (matches fetch-profile-stats.js).
+// Headers, cookie handling and doFetch are copied verbatim from
 // fetch-profile-stats.js. Queries are copied from fetch-playhq.js /
 // playhq_api_reference.md — never write PlayHQ queries from scratch.
 //
@@ -58,6 +59,7 @@ const path         = require('path');
 const crypto       = require('crypto');
 const https        = require('https');
 const { execSync } = require('child_process');
+const { createSessionGuard } = require('./lib/playhq-session.cjs');
 
 const ROOT        = path.join(__dirname, '..');
 const API_URL     = 'https://api.playhq.com/graphql';
@@ -162,7 +164,14 @@ const HEADERS_BASE = {
 // ─── Session cookie (promise-locked; copied verbatim from fetch-profile-stats) ─
 let sessionCookie  = null;
 let sessionPromise = null;
-let sessionAt      = 0;   // epoch ms of the last successful refresh (for age-based refresh)
+// How a REFUSED bootstrap is handled: wait one full penalty window, then one retry.
+// In SHARD mode there is no retry at all — the map job has a 10-minute limit, so a
+// 15-minute wait would only get the job killed before it wrote its artifact; and the
+// refusal is fleet-wide, so the canary in discover-seasons-matrix.yml's
+// generate-shards job is where the waiting belongs. The shard writes its artifact
+// with noSession:true and exits so the reduce can see why the sweep stopped.
+const BOOTSTRAP_REFUSED_WAIT_MS = 15 * 60 * 1000;
+const BOOTSTRAP_REFUSED_RETRIES = SHARD ? 0 : 1;
 const COOKIE_QUERIES = [
   { operationName: 'TenantConfig', variables: {}, query: 'query TenantConfig { tenantConfiguration { label } }' },
   { operationName: 'ProfileSearch', variables: { fullName: 'a' }, query: 'query ProfileSearch($fullName: String!) { profileSearch(fullName: $fullName) { result { id } } }' },
@@ -187,16 +196,22 @@ function syncTeams(player) {
 async function refreshSession() {
   if (sessionPromise) return sessionPromise;
   sessionPromise = (async () => {
-    // ⚠️ 2026-10-04 — BACKOFF LENGTHENED, AND A 403 NO LONGER TRIES THE SECOND
-    // QUERY. The old cadence was attempt*5s over 10 attempts — about four minutes —
-    // and it tried BOTH queries every attempt, so a refusal was met with twice the
-    // request rate. Against the penalty window that follows an exhausted session
-    // budget (REPO_MANIFEST §6.59) that is far too short and too eager: the
-    // 2026-10-04 shard job printed 403 on both queries, seven attempts running.
-    // 20s, 40s, 60s, 90s then 120s capped is roughly fifteen minutes, the order the
-    // window actually lasts.
-    for (let attempt = 1; attempt <= 10; attempt++) {
-      if (attempt > 1) await sleep(Math.min(120000, 20000 * attempt));
+    // ⚠️ 2026-10-05 — A REFUSED BOOTSTRAP IS RETRIED ONCE, AFTER ONE FULL WINDOW.
+    // The 2026-10-04 cadence (20s, 40s, 60s … 120s, ten attempts, ~13 minutes) made
+    // up to ten cookieless requests INTO the penalty window it was waiting out, and
+    // every request made into that window extends it. Across 256 matrix shards that
+    // was over two thousand cookieless requests in a few minutes — the load that
+    // keeps the window open. The scarce resource is new sessions, not calls
+    // (REPO_MANIFEST §6.60): Nightly Crawl #129 made 11,317 calls clean and a shard
+    // started straight after it could not get a cookie for 13 players.
+    //
+    // Now: a 403 means the window is open, so wait the full ~15 minutes it lasts and
+    // ask ONCE more. A second refusal is final — fail loudly, write nothing. Two
+    // cookieless requests instead of ten. Non-403 failures (an answer with no
+    // cookie in it) are not the window and keep a short retry.
+    let longWaits = 0, shortWaits = 0;
+    for (let attempt = 1; ; attempt++) {
+      let refused = false;
       for (const body of COOKIE_QUERIES) {
         let res;
         try {
@@ -209,6 +224,7 @@ async function refreshSession() {
           // INSTRUMENTATION ONLY: log then rethrow — identical control flow to before
           // (an unhandled doFetch rejection always aborted the refresh immediately).
           console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: fetch threw ${err.code || ''} ${err.message}`);
+          sessionPromise = null;   // was left set, so every later refresh returned this same rejection
           throw err;
         }
         const raw = res.headers.get('set-cookie');
@@ -224,7 +240,7 @@ async function refreshSession() {
           console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: HTTP ${res.status}, NO set-cookie, body: ${sniff.replace(/\s+/g, ' ')}`);
           // A 403 is the SOURCE being refused, not this query. Trying the next one
           // immediately only doubles the rate into a block that is already on.
-          if (res.status === 403) break;
+          if (res.status === 403) { refused = true; break; }
           continue;
         }
         const parts = raw.split(',').map(c => c.trim().split(';')[0]);
@@ -237,14 +253,23 @@ async function refreshSession() {
           continue;
         }
         sessionCookie = `${tier}; ${session}; ${sub}`;
-        sessionAt = Date.now();
         sessionPromise = null;
         console.log(`  Session refreshed (attempt ${attempt})`);
         return;
       }
+      if (refused) {
+        if (longWaits >= BOOTSTRAP_REFUSED_RETRIES) { if (SHARD) console.log('  ⛔ bootstrap refused — shard mode does not wait; stopping dead so the artifact records it.'); break; }
+        longWaits++;
+        console.log(`  ⛔ bootstrap refused (attempt ${attempt}) — the penalty window is open. Waiting ${Math.round(BOOTSTRAP_REFUSED_WAIT_MS / 60000)} minutes for it to close, then asking once more.`);
+        await sleep(BOOTSTRAP_REFUSED_WAIT_MS);
+        continue;
+      }
+      if (shortWaits >= 4) break;
+      shortWaits++;
+      await sleep(20000 * shortWaits);
     }
     sessionPromise = null;
-    throw new Error('Failed to obtain session cookie after 10 attempts — see per-attempt ⚠ lines above for HTTP status and body');
+    throw new Error(`Failed to obtain session cookie: ${longWaits ? `refused ${longWaits + 1} times, ${Math.round(BOOTSTRAP_REFUSED_WAIT_MS / 60000)} minutes apart — the penalty window did not close` : (SHARD ? 'refused — the penalty window is open' : 'no usable cookie in any answer')} — see per-attempt ⚠ lines above for HTTP status and body`);
   })();
   return sessionPromise;
 }
@@ -296,23 +321,43 @@ const Q_TEAM_FIXTURE = {
 }`,
 };
 
-const SESSION_MAX_AGE_MS = 15 * 60 * 1000;
-// ⚠️ THE SESSION ALSO HAS A REQUEST BUDGET, MEASURED AT ROUGHLY 290 CALLS
+// ⚠️ THE SESSION HAS A REQUEST BUDGET, MEASURED AT ROUGHLY 290 CALLS
 // (REPO_MANIFEST §6.59). Age alone does not catch it: a burst-heavy shard can spend
 // the whole budget inside the 15-minute window and then meet the 403 wall. Rotating
 // at 250 is granted instantly; waiting for the refusal costs the penalty window.
-const SESSION_MAX_CALLS = 250;
-let sessionCalls = 0;
+// The counting, the age check and the single-flight rotation live in
+// scripts/lib/playhq-session.cjs (shared with nightly-crawl and fetch-profile-stats);
+// this script only supplies the fetcher. The inline copy that was here under-counted
+// concurrent callers — see the 2026-10-05 note at the top of that file.
+const sessionGuard = createSessionGuard({
+  refresh:   refreshSession,
+  hasCookie: () => !!sessionCookie,
+  clear:     () => { sessionCookie = null; },
+});
+// ⚠️ 2026-10-05 — A REFUSED SESSION STOPS THE RUN. IT USED TO BE STEPPED OVER.
+// ensureSession() is awaited OUTSIDE the try/catch in probeTeams, so when the
+// bootstrap failed the probe REJECTED. burstRun logged the rejection, advanced the
+// cursor past the whole batch anyway, moved to the next batch — which asked for a
+// session again, ten attempts and thirteen minutes of them — and at the end of the
+// shard printed "✔ shard exhausted ... done=true" with "Players probed: 0".
+// Reproduced in a sandbox 2026-10-05: 60 players, every bootstrap refused → 30
+// cookieless requests, cursor 0 → 60, done=true, exit 0. A 750-player shard did
+// that 30 times over, for as long as the job lasted, on every shard in the matrix
+// at once. That is the load that has kept the penalty window open since 2026-10-04,
+// and the shards it "completed" were never probed.
+//
+// Now a session failure is a typed result. The first one marks the source dead for
+// the rest of the run so no later phase asks again; burstRun stops dead at it with
+// the cursor where it was; aimdRun stops and names what it left unprocessed.
+class SessionUnavailable extends Error {}
+let sessionDead = false;
 async function ensureSession() {
-  if (sessionCookie
-      && (Date.now() - sessionAt) < SESSION_MAX_AGE_MS
-      && sessionCalls < SESSION_MAX_CALLS) { sessionCalls++; return; }
-  if (sessionCookie && sessionCalls >= SESSION_MAX_CALLS) {
-    console.log(`  ↻ ${sessionCalls} calls on this session — rotating before it is refused`);
-    sessionCookie = null;
+  if (sessionDead) throw new SessionUnavailable('PlayHQ refused a session earlier in this run — not asking again');
+  try { await sessionGuard.ensure(); }
+  catch (err) {
+    sessionDead = true;
+    throw new SessionUnavailable(err.message);
   }
-  await refreshSession();
-  sessionCalls = 1;
 }
 
 const AIMD_MIN         = 3;
@@ -324,7 +369,8 @@ const AIMD_BACKOFF_MS  = 5000;   // × consecutive blocked batches
 
 // ─── Typed probe: publicProfileTeams → { kind, teams } ────────────────────────
 async function probeTeams(profileID) {
-  await ensureSession();
+  try { await ensureSession(); }
+  catch (err) { return { kind: 'no-session', err }; }
 
   const body = { ...Q_PROFILE_TEAMS, variables: { profileID } };
   let res;
@@ -352,7 +398,8 @@ async function probeTeams(profileID) {
 
 // ─── discoverSeason → grades + competition (for creating the season entry) ────
 async function discoverSeason(seasonID) {
-  await ensureSession();
+  try { await ensureSession(); }
+  catch (err) { return { blocked: true, noSession: true, err }; }
   const body = { ...Q_DISCOVER_SEASON, variables: { id: seasonID } };
   let res;
   try {
@@ -410,13 +457,19 @@ async function aimdRun(items, label, worker, opts = {}) {
     const batch = queue.splice(0, concurrency);
     const results = await Promise.allSettled(batch.map(async (item) => {
       const r = await worker(item);
-      return { item, blocked: !!(r && r.blocked) };
+      return { item, blocked: !!(r && r.blocked), dead: !!(r && r.dead) };
     }));
 
-    let batchBlocked = 0;
+    let batchBlocked = 0, dead = false;
     for (const res of results) {
-      if (res.status === 'fulfilled' && res.value.blocked) { batchBlocked++; blockedEvents++; queue.push(res.value.item); }
+      if (res.status === 'fulfilled' && res.value.blocked) { batchBlocked++; blockedEvents++; queue.push(res.value.item); if (res.value.dead) dead = true; }
       else done++;   // fulfilled-clean, or rejected (worker guards its own errors)
+    }
+    if (dead) {
+      // PlayHQ will not issue a session. Backing off and asking again is what kept
+      // the penalty window open; the items left in the queue wait for the next run.
+      console.log(`    ⛔ ${label}: no session available — stopping with ${queue.length} item(s) unprocessed`);
+      break;
     }
 
     if (batchBlocked > 0) {
@@ -439,7 +492,7 @@ async function aimdRun(items, label, worker, opts = {}) {
       console.log(`    …${label} ${done} done, ${queue.length} queued  conc=${concurrency} cap=${cap}  rate=${rate.toFixed(1)}/s eta≈${eta.toFixed(1)}m${progress()}`);
     }
   }
-  return { done, blockedEvents };
+  return { done, blockedEvents, unprocessed: queue.length };
 }
 
 async function burstRun(items, concurrency, worker) {
@@ -450,19 +503,28 @@ async function burstRun(items, concurrency, worker) {
       const r = await probeTeams(item);
       return { item, r };
     }));
+    const noSession = results.find(res => res.status === 'fulfilled' && res.value.r.kind === 'no-session');
+    if (noSession) {
+      // Stop dead with the cursor where it was: nothing in this batch was asked.
+      console.log(`  ⛔ no session: ${noSession.value.r.err?.message || noSession.value.r.err} — stopping dead; cursor stays at ${completed}`);
+      return { completed, wallHit: true, noSession: true };
+    }
     const anyBlocked = results.some(res => res.status === 'fulfilled' && res.value.r.kind === 'blocked');
     if (anyBlocked) return { completed, wallHit: true };
     results.forEach((res, i) => {
-      if (res.status === 'fulfilled') worker(res.value.item, res.value.r);
+      if (res.status === 'fulfilled') { worker(res.value.item, res.value.r); return; }
       // Promise.allSettled preserves input order, so batch[i] is the item whose probe
       // rejected. Print the REASON — the old line read `reason.item`, which never
       // exists on an Error, so every real failure logged as a bare `?` with the
       // actual error discarded (this is exactly how the 2026-07 session failures hid).
-      else console.log(`  ⚠ unexpected rejection probing ${batch[i]}: ${res.reason?.message || res.reason}`);
+      // And RECORD it as an error so it joins the retry list: a rejected probe used to
+      // be stepped over by the cursor and never asked again.
+      console.log(`  ⚠ unexpected rejection probing ${batch[i]}: ${res.reason?.message || res.reason}`);
+      worker(batch[i], { kind: 'error', err: res.reason instanceof Error ? res.reason : new Error(String(res.reason)) });
     });
     completed = start + batch.length;
   }
-  return { completed, wallHit: false };
+  return { completed, wallHit: false, noSession: false };
 }
 
 // ── git: rewritten to the house pattern 2026-08-20 ───────────────────────────
@@ -573,6 +635,7 @@ async function applyDiscoveries(index, newSeasonMeta, stats = {}, extraCommitPat
     console.log(`\n  Resolving grades for ${metaEntries.length} new season(s) (AIMD cap ${CONCURRENCY})…`);
     await aimdRun(metaEntries, 'grade-resolve', async ([sid]) => {
       const ds = await discoverSeason(sid);
+      if (ds && ds.noSession) { dsById.set(sid, { blocked: true }); return { blocked: true, dead: true }; }   // left for next run
       if (ds && ds.blocked) return { blocked: true };   // requeue — don't store a block as the result
       dsById.set(sid, ds);
       return { blocked: false };
@@ -643,6 +706,7 @@ async function applyDiscoveries(index, newSeasonMeta, stats = {}, extraCommitPat
     const refreshDs = new Map();
     await aimdRun(graceless, 'grade-refresh', async (se) => {
       const ds = await discoverSeason(se.id);
+      if (ds && ds.noSession) { refreshDs.set(se.id, { blocked: true }); return { blocked: true, dead: true }; }   // left for next run
       if (ds && ds.blocked) return { blocked: true };   // requeue
       refreshDs.set(se.id, ds);
       return { blocked: false };
@@ -670,12 +734,11 @@ async function applyDiscoveries(index, newSeasonMeta, stats = {}, extraCommitPat
     console.log(`  Players probed        : ${probed}`);
     console.log(`  Elapsed / throughput  : ${((Date.now() - t0) / 60000).toFixed(1)}m  @ ${(probed / Math.max(1, (Date.now() - t0) / 1000)).toFixed(1)}/s`);
     console.log(`  Private / error       : ${privateN} / ${errors}`);
-    console.log(`  Retried this run      : ${retryList.length}  (${retryDone.completed} completed)`);
-    console.log(`  Carried to next run   : ${stillErrored.length}  ← probed and FAILED; they will be asked again`);
-    if (abandoned.length + newlyAbandoned.length) {
-      console.log(`  Abandoned (${MAX_ERROR_ATTEMPTS}+ fails) : ${abandoned.length + newlyAbandoned.length}`);
-      for (const e of [...abandoned, ...newlyAbandoned].slice(0, 20)) console.log(`      ${e.u}  (${e.a} attempts)`);
-    }
+    // The retry/carried/abandoned lines that were here belong to the SHARD summary
+    // (they read variables that only exist in the shard branch of main). On the
+    // standalone path they threw "ReferenceError: retryList is not defined" after
+    // the commit, so every standalone run that probed anything went red
+    // (reproduced 2026-10-05). The standalone path has no cross-run retry.
     console.log(`  Block events (requeued): ${blockedEvents}`);
   }
   console.log(`  New seasons resolved  : ${newSeasonMeta.size}`);
@@ -719,13 +782,14 @@ async function main() {
     if (fs.existsSync(PROGRESS_FILE)) { try { progress = JSON.parse(fs.readFileSync(PROGRESS_FILE, 'utf8')); } catch { progress = {}; } }
 
     const merged = new Map();
-    let shardProbed = 0, wallHits = 0, doneCount = 0, undoneShards = [];
+    let shardProbed = 0, wallHits = 0, doneCount = 0, undoneShards = [], noSessionShards = [];
     const mergedDeltas = new Map();   // uuid -> [{sid,sn,tid,tn,gid,gn}, ...] merged across shards
     const modesThisRun = new Set();   // for the progress report below — what THIS run actually processed
     for (const f of files) {
       let a; try { a = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { console.log(`  ⚠ unreadable artifact ${f} — skipped`); continue; }
       shardProbed += a.probed || 0;
       if (a.wallHit) wallHits++;
+      if (a.noSession && a.shard) noSessionShards.push(a.shard);
       if (a.mode) modesThisRun.add(a.mode);
       for (const [sid, meta] of Object.entries(a.discovered || {})) {
         if (knownSeasonIds.has(sid) || merged.has(sid)) continue;
@@ -752,6 +816,10 @@ async function main() {
     }
     console.log(`  Merged ${merged.size} distinct new season(s) across ${files.length} shard(s) (probed ${shardProbed}, wall hits ${wallHits}).`);
     console.log(`  Shard progress: ${doneCount} done, ${undoneShards.length} not yet complete this sweep.`);
+    if (noSessionShards.length) {
+      console.log(`  ⛔ ${noSessionShards.length} shard(s) stopped because PlayHQ would not issue a session: ${noSessionShards.join(' ')}`);
+      console.log('     The penalty window is open. Their cursors are unchanged; re-dispatching now would only extend it.');
+    }
 
     // ── Progress report, scoped to THIS RUN'S mode ─────────────────────────────
     // Denominator is the sum of each shard's own `total` (recorded per-shard, per-
@@ -898,6 +966,7 @@ async function main() {
     await applyDiscoveries(index, merged, { t0, playersWritten }, commitPaths);
 
     console.log(`UNDONE_SHARDS_JSON=${JSON.stringify(undoneShards)}`);
+    console.log(`NO_SESSION_SHARDS=${noSessionShards.length}`);
     return;
   }
 
@@ -1129,7 +1198,9 @@ async function main() {
     // `newCursor >= total` alone, which is what let a 42% error rate report as a
     // completed sweep.
     const done = newCursor >= total && stillErrored.length === 0;
-    if (wallHit) console.log(`  ⛔ wall hit after ${completed} clean this run — stopping dead (cursor ${effectiveCursor} → ${newCursor}/${total}). Fresh runner will resume.`);
+    const noSession = retryDone.noSession || (wallHit && sessionDead);
+    if (noSession) console.log(`  ⛔ PlayHQ would not issue a session — stopping dead (cursor ${effectiveCursor} → ${newCursor}/${total}). Nothing in the unasked tail was touched; a later run resumes here.`);
+    else if (wallHit) console.log(`  ⛔ wall hit after ${completed} clean this run — stopping dead (cursor ${effectiveCursor} → ${newCursor}/${total}). Fresh runner will resume.`);
     else if (done) console.log(`  ✔ shard exhausted (cursor ${newCursor}/${total}).`);
 
     const discovered = Object.fromEntries(newSeasonMeta);
@@ -1137,7 +1208,7 @@ async function main() {
       shard: SHARD, mode: BACKFILL_TEAMS ? 'all+backfill' : (ALL_PLAYERS ? 'all' : 'current'),
       discovered,
       playerDeltas,   // uuid -> [{sid,sn,tid,tn,gid,gn}, ...] — applied against a FRESH file in REDUCE
-      cursor: newCursor, total, done, wallHit,
+      cursor: newCursor, total, done, wallHit, noSession,
       errored: stillErrored,                      // retried by the next run for this mode
       abandoned: [...abandoned, ...newlyAbandoned], // gave up after MAX_ERROR_ATTEMPTS
       probed, private: privateN, errors, at: new Date().toISOString(),
@@ -1186,6 +1257,7 @@ async function main() {
 
   const probeStats = await aimdRun(probeList, 'probe', async (uuid) => {
     const r = await probeTeams(uuid);
+    if (r.kind === 'no-session') return { blocked: true, dead: true };
     if (r.kind === 'blocked') return { blocked: true };
     probed++;
 
@@ -1312,6 +1384,12 @@ async function main() {
 
   // Pass tracking vars to applyDiscoveries
   await applyDiscoveries(index, newSeasonMeta, { probed, blockedEvents, privateN, errors, t0, playersWritten, teamsWritten }, [INDEX_FILE_REL, ...touchedPlayerDirsStandalone]);
+  if (sessionDead) {
+    // Whatever was probed and committed above stands; the run itself did not finish
+    // its list and has no resume mechanism, so it must show red.
+    console.error(`\n✗ PlayHQ would not issue a session: ${probeStats.unprocessed} of ${total} player(s) were never asked. Wait for the penalty window to close before running again.`);
+    process.exit(1);
+  }
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
