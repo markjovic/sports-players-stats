@@ -95,6 +95,20 @@ const MOBILE_HEADERS = {
 
 let _cookie = null;
 
+// ⚠️ 2026-10-04 — THE SESSION HAS A REQUEST BUDGET AND IT IS SMALLER THAN IT WAS.
+// The 2026-10-04 Weekly Indexes run obtained a cookie, processed 240 teams cleanly,
+// and then EVERY TeamFixture call returned 403 — for four hours, across retries,
+// never recovering. The cookie was not rejected at the start; it stopped being
+// accepted partway through. Retrying the same dead cookie cannot fix that, which is
+// exactly what the generic !res.ok branch did: four attempts, five seconds apart,
+// with the identical Cookie header, then "giving up on this call" — for every one of
+// the remaining 386 teams and then 377 more seasons.
+// Invalidating and re-obtaining the session is the only thing that can work.
+function invalidateSession() {
+  _cookie = null;
+  try { if (fs.existsSync(COOKIE_FILE)) fs.unlinkSync(COOKIE_FILE); } catch (_) {}
+}
+
 async function getSession() {
   if (_cookie) return _cookie;
   try {
@@ -151,10 +165,13 @@ const GQL_TIMEOUT_MS  = 30000;   // per request
 const GQL_MAX_ATTEMPTS = 4;      // total tries per call, including the first
 
 async function gql(operationName, query, variables) {
-  const cookie = await getSession();
   let attempts = 0;
+  let reauths  = 0;              // session refreshes used on THIS call
   while (true) {
     try {
+      // Read the cookie INSIDE the loop. It used to be fetched once before the loop,
+      // so a refreshed session could never reach the retry that needed it.
+      const cookie = await getSession();
       const res = await fetch(API_URL, {
         method:  'POST',
         headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
@@ -169,6 +186,17 @@ async function gql(operationName, query, variables) {
         const wait = 10000 * attempts;
         console.log(`  … ${operationName}: 429 rate limited, waiting ${wait / 1000}s (attempt ${attempts}/${GQL_MAX_ATTEMPTS})`);
         await delay(wait);
+        continue;
+      }
+      // 403 means the SESSION is being refused, not this request. Throw it away and
+      // get a new one rather than replaying the dead cookie. Bounded at 2 per call:
+      // if a fresh session is refused twice, this is not a session problem and
+      // hammering it is what turned a four-hour run into nothing.
+      if (res.status === 403 && reauths < 2) {
+        reauths++;
+        console.log(`  … ${operationName}: HTTP 403 — session refused, re-authenticating (${reauths}/2)`);
+        invalidateSession();
+        await delay(2000);
         continue;
       }
       if (!res.ok) {
