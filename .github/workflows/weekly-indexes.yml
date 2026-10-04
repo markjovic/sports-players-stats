@@ -11,6 +11,11 @@ on:
         required: false
         default: false
         type: boolean
+      fixtures_concurrency:
+        description: 'discover-fixtures concurrency. 20 is the measured ceiling — see the job comment before raising it.'
+        required: false
+        default: '20'
+        type: string
 
 concurrency:
   group: data-write
@@ -31,6 +36,22 @@ jobs:
     # contention too.
     # NO setup-node — this job fetches api.playhq.com; setup-node changes the
     # runner's outbound fingerprint and causes CloudFront 403s.
+    #
+    # ⚠️ CONCURRENCY WAS 40 AND IS NOW 20. The 2026-10-04 run spent FOUR HOURS AND 45
+    # MINUTES on the FIRST of 378 seasons and collected nothing: a wall of
+    # "TeamFixture: HTTP 403" from team 240 onward, retried four times each at five
+    # seconds, for every remaining team.
+    #
+    # The cause is not a block, a fingerprint or an IP range — it is a REQUEST BUDGET
+    # on the session cookie, measured at roughly 290 calls (clean to team 280, 403;
+    # recovered; clean again to 580, 403). discover-fixtures.js now rotates the
+    # session proactively at 250 calls, which is granted instantly, where a refresh
+    # requested AFTER the 403 sits inside a penalty window and costs two minutes of
+    # backoff.
+    #
+    # 250 is tuned for ~20 calls in flight. At 40 the overshoot is twice as large and
+    # more of them land past the line, which is the condition that produced the
+    # four-hour run. Raising this needs a measurement, not an assumption.
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
@@ -44,7 +65,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - name: Discover fixtures (current seasons — full round list incl. future)
         run: |
-          ARGS="--current-only --concurrency=40"
+          ARGS="--current-only --concurrency=${{ inputs.fixtures_concurrency || '20' }}"
           if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
           node scripts/discover-fixtures.js $ARGS
 
