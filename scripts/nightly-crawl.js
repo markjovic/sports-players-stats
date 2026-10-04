@@ -158,6 +158,18 @@ const HEADERS_SPECTATOR = {
 
 let sessionCookie = null;
 
+// ⚠️ THE SESSION HAS A REQUEST BUDGET OF ROUGHLY 290 CALLS (REPO_MANIFEST §6.59).
+// This script refreshed only when it had NO cookie or after a 403 — so it ran until
+// PlayHQ refused it, and a bootstrap inside the penalty window that follows is itself
+// refused. The guard rotates BEFORE the budget runs out, which is granted instantly,
+// and makes concurrent callers share one refresh instead of starting one each.
+const { createSessionGuard } = require('./lib/playhq-session.cjs');
+const sessionGuard = createSessionGuard({
+  refresh:   () => refreshSession(),
+  hasCookie: () => !!sessionCookie,
+  clear:     () => { sessionCookie = null; },
+});
+
 // ⚠️ 2026-09-29 — THE BOOTSTRAP QUERY CHANGED. TenantConfig WAS BEING REFUSED.
 //
 // On 2026-09-28/29 this script and discover-org-seasons.js failed EVERY attempt with
@@ -278,7 +290,7 @@ async function refreshSession() {
 // that is not throttling. We never collapse a failure into "no data"
 // (see playhq_api_reference.md "Failure handling").
 async function gqlMain(operationName, query, variables) {
-  if (!sessionCookie) await refreshSession();
+  await sessionGuard.ensure();
   for (let attempt = 1; attempt <= 2; attempt++) {
     let status, body, rawText;
     try {
@@ -306,7 +318,7 @@ async function gqlMain(operationName, query, variables) {
 }
 
 async function gqlSpectator(gameId) {
-  if (!sessionCookie) await refreshSession();
+  await sessionGuard.ensure();
   const query = `query game($id: ID!) {
     game(id: $id) {
       id status

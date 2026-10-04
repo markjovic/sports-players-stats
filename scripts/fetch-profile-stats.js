@@ -205,6 +205,18 @@ const HEADERS_BASE = {
 // Promise-locked so concurrent workers don't trigger multiple simultaneous refreshes.
 
 let sessionCookie   = null;
+
+// ⚠️ THE SESSION HAS A REQUEST BUDGET OF ROUGHLY 290 CALLS (REPO_MANIFEST §6.59).
+// This script refreshed only when it had NO cookie or after a 403 — so it ran until
+// PlayHQ refused it, and a bootstrap inside the penalty window that follows is itself
+// refused. The guard rotates BEFORE the budget runs out, which is granted instantly,
+// and makes concurrent callers share one refresh instead of starting one each.
+const { createSessionGuard } = require('./lib/playhq-session.cjs');
+const sessionGuard = createSessionGuard({
+  refresh:   () => refreshSession(),
+  hasCookie: () => !!sessionCookie,
+  clear:     () => { sessionCookie = null; },
+});
 let sessionPromise  = null;
 
 const COOKIE_QUERIES = [
@@ -472,7 +484,7 @@ const PUBLIC_PROFILE_QUERY = {
 let lastPublicProfileFail = null;
 async function fetchPublicProfileName(profileID) {
   lastPublicProfileFail = null;
-  if (!sessionCookie) await refreshSession();
+  await sessionGuard.ensure();
   const mkHeaders = () => ({ ...HEADERS_BASE, 'tenant': 'account', 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie });
   const body = JSON.stringify({ ...PUBLIC_PROFILE_QUERY, variables: { profileID } });
   const readName = async res => {
@@ -515,7 +527,7 @@ async function fetchPublicProfileName(profileID) {
 }
 
 async function fetchProfile(profileID) {
-  if (!sessionCookie) await refreshSession();
+  await sessionGuard.ensure();
 
   requestCount++;
 
@@ -619,7 +631,7 @@ async function fetchProfile(profileID) {
 // vs 0% before pagination). gradeCache holds the AGGREGATED all-pages roster,
 // keyed by gradeID — many players/candidates share a grade.
 async function gradePlayersPage(gradeID, page) {
-  if (!sessionCookie) await refreshSession();
+  await sessionGuard.ensure();
   const body = {
     operationName: 'publicGradeStatistics',
     variables: { gradeID, filter: gradePageFilter(page) },
@@ -663,7 +675,7 @@ async function gradePlayers(gradeID) {
 }
 
 async function profileSearchLookup(fullName) {
-  if (!sessionCookie) await refreshSession();
+  await sessionGuard.ensure();
   const body = { operationName: 'ProfileSearch', variables: { fullName }, query: PROFILE_SEARCH_QUERY };
   let res;
   try {
