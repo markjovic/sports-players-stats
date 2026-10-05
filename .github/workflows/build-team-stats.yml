@@ -1,6 +1,14 @@
 # .github/workflows/build-team-stats.yml
 name: Build Team Stats
 
+# 2026-10-05 — `resume` added. A full run (active_only unticked) rewrites every
+# season and has a 360-minute cap with no progress file. That absence is
+# deliberate — build-finals-stats' progress file reached 110.14 MB, crossed
+# GitHub's hard 100 MB limit and killed a full run (T22), and it was removed
+# rather than resized. `--resume` uses the output as the record instead: a team
+# carrying a `grade` key has been rebuilt since 2026-10-05, so the season is
+# skipped. Tick it on any re-run; leave it unticked for the first pass.
+#
 # 2026-09-13 — NOW BUILDS TEAMS THAT HAVE NO GAMES YET.
 # buildSeasonTeamStats used to return null outright when a season had no game
 # file, and a team only came into existence inside the games loop. So a season
@@ -27,6 +35,11 @@ on:
         description: 'Single season ID (leave blank for all/active)'
         required: false
         type: string
+      resume:
+        description: 'Skip seasons whose team-stats already carry grades. Tick this when re-running after a timeout — there is no progress file by design, the output IS the record.'
+        required: false
+        default: false
+        type: boolean
       dry_run:
         description: 'Dry run — no writes or commits'
         required: false
@@ -69,6 +82,7 @@ jobs:
           ARGS=""
           if [ "${{ inputs.active_only }}" = "true" ]; then ARGS="$ARGS --active-only"; fi
           if [ -n "${{ inputs.season }}" ];             then ARGS="$ARGS --season=${{ inputs.season }}"; fi
+          if [ "${{ inputs.resume }}" = "true" ];       then ARGS="$ARGS --resume"; fi
           if [ "${{ inputs.dry_run }}" = "true" ];      then ARGS="$ARGS --dry-run"; fi
           node scripts/build-team-stats.js $ARGS
 
