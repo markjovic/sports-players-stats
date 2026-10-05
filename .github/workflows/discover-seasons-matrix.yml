@@ -42,8 +42,9 @@ name: Discover Seasons (Matrix)
 # matrix is still the fleet's biggest consumer of them:
 #   - generate-shards makes ONE cookieless request first (measure-playhq-limits.js).
 #     Refused → the run stops there with one request spent, not 256.
-#   - max_parallel is an input (default 20, unchanged) so the bootstrap rate can be
-#     set to what measure-playhq-limits reports, without a code change.
+#   - max_parallel is an input, default 5 — the rate that carried the first full
+#     sweep on the fetch() client (256 shards, 190,874 players, five wall hits, no
+#     session refusals, two runs). The cron gets the same 5.
 #   - reduce is skipped when the canary failed, instead of dying red on --in.
 #   - retrigger does not fire when any shard stopped for want of a session: the
 #     reduce prints NO_SESSION_SHARDS=n for that gate, and cursors are unchanged.
@@ -124,9 +125,9 @@ on:
         default: '25'
         type: string
       max_parallel:
-        description: 'Shard jobs running at once. Sets the fleet bootstrap rate — set it to what measure-playhq-limits reports. 20 = unchanged.'
+        description: 'Shard jobs running at once — the fleet bootstrap rate. 5 carried the full 2026-10-05 sweep (256 shards, 190,874 players) with five wall hits and no session refusals; 20 has no evidence behind it since the 4th.'
         required: false
-        default: '20'
+        default: '5'
         type: string
       dry_run:
         description: 'Report only'
@@ -323,9 +324,9 @@ jobs:
     timeout-minutes: 10
     strategy:
       fail-fast: false
-      # From the input, as a number. Scheduled runs receive no inputs, so the || '20'
-      # fallback is what the cron gets.
-      max-parallel: ${{ fromJson(inputs.max_parallel || '20') }}
+      # From the input, as a number. Scheduled runs receive no inputs, so the || '5'
+      # fallback is what the cron gets — the proven rate, not the old 20.
+      max-parallel: ${{ fromJson(inputs.max_parallel || '5') }}
       matrix:
         shard: ${{ fromJson(needs.generate-shards.outputs.targets) }}
     steps:
@@ -563,6 +564,6 @@ jobs:
             --field "all_players=${{ inputs.all_players || false }}" \
             --field "backfill_teams=${{ (github.event_name == 'schedule' && 'true') || inputs.backfill_teams }}" \
             --field "concurrency=${{ inputs.concurrency || '25' }}" \
-            --field "max_parallel=${{ inputs.max_parallel || '20' }}" \
+            --field "max_parallel=${{ inputs.max_parallel || '5' }}" \
             --field "dry_run=${{ inputs.dry_run || false }}" \
             --field "run_number=${next_run}"
