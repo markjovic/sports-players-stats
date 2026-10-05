@@ -12,6 +12,14 @@
 //   node scripts/build-team-stats.js --dry-run         # no writes or commits
 //   node scripts/build-team-stats.js --season=<id>     # single season
 //
+// 2026-10-05: every team's meta now carries `gid` and `grade` — the grade of
+// the team's MOST RECENT GAME, which is the only place the current grade can
+// come from. data/team-index.json's `grade` is whichever grade was seen first
+// and is deliberately never corrected (update-team-index.js records why: a
+// registration carries no chronology). A team with no games falls back to its
+// registrations, and only when they name exactly one grade. Nothing is written
+// onto individual fixtures — see the note at `latestGrade`.
+//
 // 2026-07-10: team-stats/bv/{sid}.json roster keys are truncated to a
 // TRUNC_LEN (13) char uuid prefix (see scripts/lib/uuid-prefix.cjs) — part of
 // the UUID-storage migration. (Comments previously said 10-char; the runtime
@@ -171,7 +179,14 @@ function buildRegTeamMap() {
           if (!reg.tid) continue;
           const key = `${sid}|${reg.tid}`;
           let e = map.get(key);
-          if (!e) { e = { tn: '', club: '', uuids: [] }; map.set(key, e); }
+          if (!e) { e = { tn: '', club: '', uuids: [], grades: new Map() }; map.set(key, e); }
+          // Registration grades, kept as gid -> name. A team legitimately holds
+          // SEVERAL (a regrade; Decision A, 2026-08-01), and a reg carries no
+          // chronology — measured on 0afc7690, where the RES grade is reg[1]
+          // twice and reg[0] twice across four regrades. So this can only ever
+          // answer "which grade" when there is exactly one, and that is all it
+          // is used for below. A pre-season reg carries gid:null and is skipped.
+          if (reg.gid) e.grades.set(reg.gid, reg.gn || '');
           // First non-empty name wins. The team name is identical across every
           // reg of a regrade on the same player (the note in update-team-index.js
           // records this), so there is nothing to reconcile.
@@ -228,11 +243,36 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
   const games  = (gf && gf.games) || {};
   const teams  = {};  // tid → { meta, roster, fixtures }
 
+  // ── CURRENT GRADE (2026-10-05) ────────────────────────────────────────────
+  // tid → { date, gid, gn } for the team's most recent GAME.
+  //
+  // `grade` in data/team-index.json is whichever grade was seen FIRST and is
+  // never corrected — update-team-index.js says so in place, and says why: a
+  // registration carries no chronology, so the current grade cannot be derived
+  // from registrations at all. The note there names the answer: the gid of the
+  // team's latest game, which lives in the game files this builder already
+  // reads. That is what this computes.
+  //
+  // Only the RESULT is stored — meta.gid and meta.grade, one pair per team.
+  // The grade is deliberately NOT written onto each fixture: team-stats/ is
+  // 159 MB and the Pages artifact has a hard ceiling, so a ~20-byte grade name
+  // on every fixture of 2.3M games is a cost with no reader.
+  const latestGrade = {};
+  function noteGrade(tid, date, gid, gn) {
+    if (!tid || !gid) return;
+    const prev = latestGrade[tid];
+    // An undated game is a fallback only — it can never displace a dated one,
+    // and the first one seen wins among themselves. Nothing orders them.
+    if (!date) { if (!prev) latestGrade[tid] = { date: null, gid, gn: gn || '' }; return; }
+    if (prev && prev.date && prev.date >= date) return;
+    latestGrade[tid] = { date, gid, gn: gn || '' };
+  }
+
   // Helper — ensure team entry exists
   function ensureTeam(tid, tn, club) {
     if (!teams[tid]) {
       teams[tid] = {
-        meta:     { name: tn || tid, club: club || '' },
+        meta:     { name: tn || tid, club: club || '', gid: '', grade: '' },
         roster:   {},
         fixtures: [],
       };
@@ -289,6 +329,10 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
     // Build fixture entry for each team
     const date  = game.d  || null;
     const rn    = game.rn || null;
+
+    // nightly-crawl.js writes gid/gn onto every game it stores (L798-799).
+    noteGrade(hid, date, game.gid, game.gn);
+    noteGrade(aid, date, game.gid, game.gn);
 
     if (hid && aid) {
       // Home team fixture
@@ -384,6 +428,28 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
     const reg = regTeamMap ? regTeamMap.get(`${sid}|${tid}`) : null;
     for (const uuid of (reg ? reg.uuids : [])) {
       addPlayerToRoster(tid, sid, uuid, null);
+    }
+  }
+
+  // ── Resolve the current grade ─────────────────────────────────────────────
+  // The latest game wins. A team with NO games — the whole pre-season case —
+  // falls back to its registrations, and only when they name exactly one grade;
+  // two regs mean a regrade and nothing here can say which is current, so the
+  // field stays empty rather than guessing. An empty meta.grade is an honest
+  // "not known", and StatTrack's grade filter excludes it rather than inventing
+  // a bucket for it.
+  for (const [tid, teamData] of Object.entries(teams)) {
+    const g = latestGrade[tid];
+    if (g) {
+      teamData.meta.gid   = g.gid;
+      teamData.meta.grade = g.gn || '';
+      continue;
+    }
+    const reg = regTeamMap ? regTeamMap.get(`${sid}|${tid}`) : null;
+    if (reg && reg.grades && reg.grades.size === 1) {
+      const [gid, gn] = [...reg.grades.entries()][0];
+      teamData.meta.gid   = gid;
+      teamData.meta.grade = gn || '';
     }
   }
 
