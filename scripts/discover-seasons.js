@@ -28,8 +28,9 @@
 // Session bookkeeping (count, age, single-flight rotation) is scripts/lib/
 // playhq-session.cjs since 2026-10-05; refreshSession() here is only the fetcher.
 // A block is never treated as a bad cookie (matches fetch-profile-stats.js).
-// Headers, cookie handling and doFetch are copied verbatim from
-// fetch-profile-stats.js. Queries are copied from fetch-playhq.js /
+// Headers are the same five keys as every other script. doFetch is the nightly's
+// fetch() client, copied verbatim from nightly-crawl.js on 2026-10-05 — see the
+// note above it for why https.request had to go. Queries are copied from fetch-playhq.js /
 // playhq_api_reference.md — never write PlayHQ queries from scratch.
 //
 // Modes:
@@ -57,7 +58,6 @@
 const fs           = require('fs');
 const path         = require('path');
 const crypto       = require('crypto');
-const https        = require('https');
 const { execSync } = require('child_process');
 const { createSessionGuard } = require('./lib/playhq-session.cjs');
 
@@ -213,13 +213,9 @@ async function refreshSession() {
     for (let attempt = 1; ; attempt++) {
       let refused = false;
       for (const body of COOKIE_QUERIES) {
-        let res;
+        let status, rawCookies, rawText;
         try {
-          res = await doFetch(API_URL, {
-            method: 'POST',
-            headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
-            body: JSON.stringify(body),
-          });
+          ({ status, rawCookies, rawText } = await doFetch(API_URL, body, HEADERS_BASE));
         } catch (err) {
           // INSTRUMENTATION ONLY: log then rethrow — identical control flow to before
           // (an unhandled doFetch rejection always aborted the refresh immediately).
@@ -227,29 +223,31 @@ async function refreshSession() {
           sessionPromise = null;   // was left set, so every later refresh returned this same rejection
           throw err;
         }
-        const raw = res.headers.get('set-cookie');
-        if (!raw) {
+        if (!rawCookies) {
           // INSTRUMENTATION: this silent `continue` is where the 2026-07 shard failures
           // were vanishing — every response in a failed refresh landed here with no
           // status/body recorded. Log both so a CloudFront block page, an application
           // error, and a cookie-scheme change are distinguishable in the run log.
-          let b = ''; try { b = await res.text(); } catch {}
+          const b = rawText || '';
           const sniff = b.includes('Request blocked') ? `CLOUDFRONT-BLOCK (${b.length}b HTML)`
                       : b.includes('DOCTYPE')         ? `HTML page (${b.length}b): ${b.slice(0, 80)}`
                       : (b.slice(0, 120) || '(empty body)');
-          console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: HTTP ${res.status}, NO set-cookie, body: ${sniff.replace(/\s+/g, ' ')}`);
+          console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: HTTP ${status}, NO set-cookie, body: ${sniff.replace(/\s+/g, ' ')}`);
           // A 403 is the SOURCE being refused, not this query. Trying the next one
           // immediately only doubles the rate into a block that is already on.
-          if (res.status === 403) { refused = true; break; }
+          if (status === 403) { refused = true; break; }
           continue;
         }
-        const parts = raw.split(',').map(c => c.trim().split(';')[0]);
+        // undici hands back one entry per Set-Cookie; the joined-header fallback holds
+        // several in one string, so split that on ',' as the old code did.
+        const parts = (Array.isArray(rawCookies) ? rawCookies : [rawCookies])
+          .flatMap(c => c.split(',')).map(c => c.trim().split(';')[0]).filter(Boolean);
         const get = (name) => parts.find(c => c.startsWith(name + '=')) || null;
         const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
         if (!tier || !session || !sub) {
           // INSTRUMENTATION: set-cookie arrived but not the three phq_* names we need
           // — if PlayHQ renamed/restructured its session cookies, this line is the proof.
-          console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: HTTP ${res.status}, set-cookie PRESENT but missing phq_tier/phq_session/phq_sub — names seen: ${parts.map(c => c.split('=')[0]).join(', ')}`);
+          console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: HTTP ${status}, set-cookie PRESENT but missing phq_tier/phq_session/phq_sub — names seen: ${parts.map(c => c.split('=')[0]).join(', ')}`);
           continue;
         }
         sessionCookie = `${tier}; ${session}; ${sub}`;
@@ -372,25 +370,19 @@ async function probeTeams(profileID) {
   try { await ensureSession(); }
   catch (err) { return { kind: 'no-session', err }; }
 
-  const body = { ...Q_PROFILE_TEAMS, variables: { profileID } };
-  let res;
+  let status, json, rawText;
   try {
-    res = await doFetch(API_URL, {
-      method: 'POST',
-      headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
-      body: JSON.stringify(body),
-    });
+    ({ status, body: json, rawText } = await doFetch(API_URL, { ...Q_PROFILE_TEAMS, variables: { profileID } }, { ...HEADERS_BASE, 'Cookie': sessionCookie }));
   } catch (err) { return { kind: 'error', err }; }
 
-  if (res.status === 403) {
-    let b = ''; try { b = await res.text(); } catch {}
-    if (b.includes('DOCTYPE') || b.includes('Request blocked')) return { kind: 'blocked' };
+  if (status === 403) {
+    if (isWafBlock(rawText)) return { kind: 'blocked' };
     return { kind: 'private' };   // application 403 — inaccessible profile
   }
-  if (res.status === 429 || res.status === 503) return { kind: 'blocked' };   // rate signal → AIMD backs off
-  if (!res.ok) return { kind: 'error', err: new Error(`HTTP ${res.status}`) };
+  if (status === 429 || status === 503) return { kind: 'blocked' };   // rate signal → AIMD backs off
+  if (status < 200 || status >= 300) return { kind: 'error', err: new Error(`HTTP ${status}`) };
 
-  let json; try { json = await res.json(); } catch (err) { return { kind: 'error', err }; }
+  if (!json) return { kind: 'error', err: new Error(`unparseable body: ${(rawText || '').slice(0, 80)}`) };
   if (json.errors?.length) return { kind: 'error', err: new Error(json.errors[0]?.message || 'gql') };
   const teams = (json.data || json)?.publicProfileTeams;
   return { kind: 'ok', teams: Array.isArray(teams) ? teams : [] };
@@ -400,23 +392,16 @@ async function probeTeams(profileID) {
 async function discoverSeason(seasonID) {
   try { await ensureSession(); }
   catch (err) { return { blocked: true, noSession: true, err }; }
-  const body = { ...Q_DISCOVER_SEASON, variables: { id: seasonID } };
-  let res;
+  let status, json, rawText;
   try {
-    res = await doFetch(API_URL, {
-      method: 'POST',
-      headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
-      body: JSON.stringify(body),
-    });
+    ({ status, body: json, rawText } = await doFetch(API_URL, { ...Q_DISCOVER_SEASON, variables: { id: seasonID } }, { ...HEADERS_BASE, 'Cookie': sessionCookie }));
   } catch { return null; }
-  if (res.status === 403) {
-    let b = ''; try { b = await res.text(); } catch {}
-    if (b.includes('DOCTYPE') || b.includes('Request blocked')) return { blocked: true };
+  if (status === 403) {
+    if (isWafBlock(rawText)) return { blocked: true };
     return null;
   }
-  if (!res.ok) return null;
-  let json; try { json = await res.json(); } catch { return null; }
-  if (json.errors?.length) return null;
+  if (status < 200 || status >= 300) return null;
+  if (!json || json.errors?.length) return null;
   return (json.data || json)?.discoverSeason || null;
 }
 
@@ -599,31 +584,55 @@ function gitCommit(msg, paths = []) {
   }
 }
 
-function doFetch(url, options) {
-  return new Promise((resolve, reject) => {
-    const parsed = new URL(url);
-    const body = options.body || '';
-    const req = https.request({
-      hostname: parsed.hostname, path: parsed.pathname + parsed.search,
-      method: options.method || 'GET',
-      headers: { ...options.headers, 'content-length': Buffer.byteLength(body) },
-      agent: new https.Agent({ keepAlive: false }),
-    }, (res) => {
-      const chunks = [];
-      res.on('data', c => chunks.push(c));
-      res.on('end', () => {
-        const rawBody = Buffer.concat(chunks).toString('utf8');
-        const hdrs = res.headers;
-        const headers = { get(name) { const v = hdrs[name.toLowerCase()]; return v == null ? null : (Array.isArray(v) ? v.join(', ') : v); } };
-        resolve({ status: res.statusCode, ok: res.statusCode >= 200 && res.statusCode < 300, headers, text: () => Promise.resolve(rawBody), json: () => Promise.resolve(JSON.parse(rawBody)) });
-      });
-      res.on('error', reject);
-    });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
+// ⚠️ 2026-10-05 — REWRITTEN FROM https.request TO fetch(). THE CLIENT WAS THE KEY.
+//
+// Measured on one runner, 10 s apart, same URL, same five headers, same user-agent
+// (measure-playhq-limits.js --mode=compare, REPO_MANIFEST §6.61):
+//     fetch()        ProfileSearch  HTTP 200  GRANTED
+//     https.request  TenantConfig   HTTP 403  REFUSED  CLOUDFRONT-BLOCK (919b HTML)
+//     fetch()        ProfileSearch  HTTP 200  GRANTED
+// PlayHQ was issuing sessions ten seconds before and ten seconds after the
+// https.request bootstrap and refused only that one. Every script that had been moved
+// to fetch() (nightly-crawl, discover-org-seasons, recheck-private-profiles) ran clean
+// through the whole 2026-10-04/05 episode; every script still on https.request with a
+// hand-built header set — this one, the matrix shards built on it, the measurement
+// tool's first two modes — was refused from cold. nightly-crawl.js found the same
+// thing on 2026-09-29 and recorded it above its own doFetch; the 2026-10-04 handoff
+// ruled the client out on older evidence and was wrong.
+//
+// This is nightly-crawl.js's doFetch, pasted VERBATIM — not a Response-shaped wrapper
+// over fetch(), because a hand-set content-length and a per-request agent were
+// exactly what was being refused and nothing of that shape should survive here.
+// Callers were moved to its return shape: { status, rawCookies, body, rawText }.
+// It resolves on ANY status and never throws for a 403.
+//
+// ⚠️ DO NOT "OPTIMISE" THIS BACK TO https.request, AND DO NOT SET content-length BY
+// HAND. keepAlive: fetch() pools connections, as discover-fixtures has always done at
+// concurrency 40 without trouble.
+async function doFetch(url, bodyObj, headers) {
+  const res = await fetch(url, {
+    method:  'POST',
+    headers: { ...headers, 'request-id': crypto.randomUUID() },
+    body:    JSON.stringify(bodyObj),
   });
+  const rawText = await res.text().catch(() => '');
+  let body = null;
+  try { body = JSON.parse(rawText); } catch (_) { body = null; }
+  // undici exposes each Set-Cookie separately; the joined header is the fallback for
+  // older runtimes. Callers expect an array or undefined, never an empty array.
+  const cookies = typeof res.headers.getSetCookie === 'function'
+    ? res.headers.getSetCookie()
+    : (res.headers.get('set-cookie') ? [res.headers.get('set-cookie')] : []);
+  return {
+    status:     res.status,
+    rawCookies: cookies.length ? cookies : undefined,
+    body,
+    rawText,
+  };
 }
+
+// The WAF block page, as nightly-crawl.js recognises it.
+const isWafBlock = (rawText) => /cloudfront|Request blocked|ERROR: The request could not be satisfied/i.test(rawText || '') || (rawText || '').includes('DOCTYPE');
 
 async function applyDiscoveries(index, newSeasonMeta, stats = {}, extraCommitPaths = []) {
   const { probed = 0, blockedEvents = 0, privateN = 0, errors = 0, t0 = Date.now(), playersWritten = 0, teamsWritten = 0 } = stats;
@@ -972,13 +981,8 @@ async function main() {
 
   if (PROBE_TEAM) {
     if (!sessionCookie) await refreshSession();
-    const res = await doFetch(API_URL, {
-      method: 'POST',
-      headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
-      body: JSON.stringify({ ...Q_TEAM_FIXTURE, variables: { teamID: PROBE_TEAM } }),
-    });
-    console.log(`  probe-team ${PROBE_TEAM}: HTTP ${res.status}`);
-    let json = null; try { json = await res.json(); } catch {}
+    const { status, body: json } = await doFetch(API_URL, { ...Q_TEAM_FIXTURE, variables: { teamID: PROBE_TEAM } }, { ...HEADERS_BASE, 'Cookie': sessionCookie });
+    console.log(`  probe-team ${PROBE_TEAM}: HTTP ${status}`);
     const d = json?.data || json;
     const team = d?.discoverTeam;
     const rounds = d?.discoverTeamFixture || [];
