@@ -46,6 +46,7 @@ from a report a live script still reads.
 - `revert-alias-repoints.js`
 - `salvage-spectator-names.js`
 - `scripts/lib/namespace-resolve.cjs`
+- `scripts/lib/playhq-session.cjs`
 - `scripts/lib/uuid-prefix.cjs`
 - `seed-apiid-from-playhq-pairs.js`
 - `size-appearance-gaps.js`
@@ -59,11 +60,16 @@ from a report a live script still reads.
 
 ### 2.2 Kept scripts — on-demand tools, deliberately retained
 
+- `audit-aliases-against-playhq.js`
+- `audit-nonfinal-games.js`
+- `audit-pending-games-vs-playhq.js`
 - `audit-seasons-gaps.js`
 - `audit-tooling-inventory.js`
 - `audit-uuid-collisions.js`
 - `build-alias-worklist.js`
+- `census-wrongly-keyed-players.js`
 - `clear-stats-checked.js`
+- `correct-wrong-aliases.js`
 - `count-stats-checked.js`
 - `db-audit.js`
 - `diagnose-forfeit-game.js`
@@ -76,6 +82,7 @@ from a report a live script still reads.
 - `find-players-by-team.js`
 - `find-shell-aliases.js`
 - `fix-merge-aliases.js`
+- `measure-playhq-limits.js`
 - `probe-alias-credits.js`
 - `probe-alias-names.js`
 - `probe-api-limits.js`
@@ -109,6 +116,7 @@ from a report a live script still reads.
 - `trace-player-game.js`
 - `verify-enrich.js`
 - `verify-p-redundancy.js`
+- `verify-players-against-playhq.js`
 
 ### 2.3 Scripts removed in an earlier cleanup
 
@@ -144,6 +152,13 @@ Removed 2026-09-11:
 - `probe-wrong-rosters.js`
 - `prove-player-files-intact.js`
 - `size-locked-backfill.js`
+
+**2026-10-05 (REPO_MANIFEST §6.62).** Fourteen of the names in the 2026-09-11 list above are
+STILL PRESENT in scripts/, and thirteen of the names in §3.4 are still present in
+.github/workflows/. The record and the directory disagree. Nothing has been re-classified here
+and no name has been moved: §2.3 stays as written. REPO_MANIFEST §2.5 states what is on disk.
+All fourteen fetch api.playhq.com and were moved to the fetch() client on 2026-10-05, because a
+file that is present can be dispatched, and one on https.request is now refused from cold.
 
 ### 2.4 Spent scripts — concluded; their findings are recorded outside this repo
 
@@ -191,12 +206,18 @@ kept out of that group are classified in 2.2.
 
 ### 3.3 Kept workflows — on-demand, deliberately retained
 
+- `audit-aliases-against-playhq.yml`
+- `audit-nonfinal-games.yml`
+- `audit-pending-games-vs-playhq.yml`
 - `audit-removed-org-seasons.yml`
 - `audit-tooling-inventory.yml`
 - `audit-uuid-collisions.yml`
 - `build-alias-worklist.yml`
+- `census-wrongly-keyed-matrix.yml`
+- `census-wrongly-keyed-players.yml`
 - `cleanup-repo.yml`
 - `clear-stats-checked.yml`
+- `correct-wrong-aliases.yml`
 - `count-stats-checked.yml`
 - `db-audit.yml`
 - `diagnose-forfeit-game.yml`
@@ -210,11 +231,13 @@ kept out of that group are classified in 2.2.
 - `find-root-json-refs.yml`
 - `find-shell-aliases.yml`
 - `generate-roster.yml`
+- `measure-playhq-limits.yml`
 - `overnight-chain.yml`
 - `probe-api-limits.yml`
 - `probe-squad-evidence.yml`
 - `rebuild-player-index.yml`
 - `recheck-forfeit-games.yml`
+- `refresh-rosters.yml`
 - `repair-forfeit-score.yml`
 - `repair-legacy-flags.yml`
 - `repair-season-names.yml`
@@ -233,6 +256,7 @@ kept out of that group are classified in 2.2.
 - `update-venue-lookup.yml`
 - `verify-enrich.yml`
 - `verify-p-redundancy.yml`
+- `verify-players-against-playhq.yml`
 - `weekly-future-fixtures.yml`
 
 ### 3.4 Workflows removed in an earlier cleanup
