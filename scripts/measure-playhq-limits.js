@@ -18,7 +18,22 @@
 // spent slowly never runs out, the nightly should pace instead of rotate and the
 // bootstraps it saves become the matrix's. That is mode `budget`.
 //
+// ─── 2026-10-05 — THE QUESTION CHANGED TO "WHICH CLIENT" ────────────────────
+// Two bootstrap runs of this script, 09:08 and 10:37, were refused on their FIRST
+// request. Between them, Discover Org Seasons (scheduled 09:11) got its session and
+// ran green in 35 s, and the nightly got about fifty sessions overnight. Every script
+// that is granted sessions sends its requests with fetch(); every script that is
+// refused from cold — discover-seasons.js, the matrix shards, this one — sends them
+// with https.request and a hand-built header set. nightly-crawl.js's own 2026-09-29
+// note records the same split and the same fix. Mode `compare` tests it on one
+// runner inside half a minute, so no quiet hour is needed and no cron can confound it.
+//
 // ─── MODES ───────────────────────────────────────────────────────────────────
+//   --mode=compare     Three cookieless requests, --interval ms apart, on this runner:
+//                      the nightly's fetch() bootstrap, then this script's
+//                      https.request bootstrap, then fetch() again. Granted / refused
+//                      / granted settles that the CLIENT is the key and the source is
+//                      not blocked. All three refused: the source is blocked right now.
 //   --mode=bootstrap   Make one cookieless request every --interval ms, up to --max
 //                      of them, and stop at the first 403. The number granted before
 //                      the refusal is the answer. Default interval 10 s, max 60.
@@ -60,7 +75,7 @@ const UA       = opt('ua', '') || null;
 const INTERVAL = (() => { const n = parseInt(opt('interval', MODE === 'budget' ? '3000' : '10000'), 10); return Number.isFinite(n) && n >= 0 ? n : 10000; })();
 const MAX      = (() => { const n = parseInt(opt('max', MODE === 'budget' ? '400' : '60'), 10); return Number.isFinite(n) && n > 0 ? n : 60; })();
 
-if (MODE !== 'bootstrap' && MODE !== 'budget') { console.error(`--mode must be bootstrap or budget (got ${MODE})`); process.exit(2); }
+if (MODE !== 'bootstrap' && MODE !== 'budget' && MODE !== 'compare') { console.error(`--mode must be compare, bootstrap or budget (got ${MODE})`); process.exit(2); }
 if (MODE === 'budget' && !UUID) { console.error('--mode=budget needs --uuid=<player id> to probe'); process.exit(2); }
 
 // ─── Headers — full set, never split, never modified (copied verbatim) ────────
@@ -98,7 +113,54 @@ const Q_PROFILE_TEAMS = {
 }`,
 };
 
-// Copied verbatim from discover-seasons.js.
+// ─── The nightly's transport, copied VERBATIM from nightly-crawl.js (2026-09-29) ───
+// This is the client that IS being granted sessions. Compare mode sends through this
+// and through the https.request client below, back to back.
+async function doFetchNightly(url, bodyObj, headers) {
+  const res = await fetch(url, {
+    method:  'POST',
+    headers: { ...headers, 'request-id': crypto.randomUUID() },
+    body:    JSON.stringify(bodyObj),
+  });
+  const rawText = await res.text().catch(() => '');
+  let body = null;
+  try { body = JSON.parse(rawText); } catch (_) { body = null; }
+  // undici exposes each Set-Cookie separately; the joined header is the fallback for
+  // older runtimes. Callers expect an array or undefined, never an empty array.
+  const cookies = typeof res.headers.getSetCookie === 'function'
+    ? res.headers.getSetCookie()
+    : (res.headers.get('set-cookie') ? [res.headers.get('set-cookie')] : []);
+  return {
+    status:     res.status,
+    rawCookies: cookies.length ? cookies : undefined,
+    body,
+    rawText,
+  };
+}
+
+// The nightly's bootstrap query order: ProfileSearch first (copied verbatim).
+const NIGHTLY_BOOTSTRAP_QUERY = COOKIE_QUERIES[1];
+
+// One cookieless request through the nightly's client. Cookie handling copied from
+// nightly-crawl.js refreshSession(). Returns { status, cookie|null, sniff }.
+async function fetchBootstrapOnce() {
+  const { rawCookies, status, rawText } = await doFetchNightly(API_URL, NIGHTLY_BOOTSTRAP_QUERY, HEADERS_BASE);
+  if (!rawCookies) {
+    const blocked = /cloudfront|Request blocked|ERROR: The request could not be satisfied/i.test(rawText || '');
+    const detail = blocked
+      ? `CLOUDFRONT-BLOCK (${(rawText || '').length}b HTML)`
+      : (rawText || '').slice(0, 160).replace(/\s+/g, ' ');
+    return { status, cookie: null, sniff: detail || '(empty)' };
+  }
+  const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies]).map(c => c.split(';')[0].trim());
+  const get = n => arr.find(p => p.startsWith(n + '=')) || null;
+  const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
+  if (tier && session && sub) return { status, cookie: `${tier}; ${session}; ${sub}`, sniff: 'cookie issued (named set)' };
+  if (arr.length) return { status, cookie: arr.join('; '), sniff: `cookie issued (joined ${arr.length}, named set absent)` };
+  return { status, cookie: null, sniff: 'set-cookie present but empty' };
+}
+
+// Copied verbatim from discover-seasons.js. This is the client that is being REFUSED.
 function doFetch(url, options) {
   return new Promise((resolve, reject) => {
     const parsed = new URL(url);
@@ -270,4 +332,50 @@ async function runBudgetMode() {
   else console.log('        Below 290 so nothing is settled yet; raise --max in a later quiet window.');
 }
 
-(MODE === 'bootstrap' ? runBootstrapMode() : runBudgetMode()).catch(e => { console.error(e); process.exit(1); });
+async function runCompareMode() {
+  console.log(`\nmeasure-playhq-limits  mode=compare  interval=${INTERVAL}ms${UA ? `  ua="${UA}"` : ''}`);
+  console.log('Three cookieless requests on this runner: fetch() [nightly-crawl.js], then https.request');
+  console.log('[discover-seasons.js], then fetch() again. Same URL, same five headers, same user-agent.');
+  console.log('─'.repeat(72));
+  const t0 = Date.now();
+  const legs = [
+    { name: 'fetch()        ProfileSearch', run: fetchBootstrapOnce },
+    { name: 'https.request  TenantConfig ', run: bootstrapOnce },
+    { name: 'fetch()        ProfileSearch', run: fetchBootstrapOnce },
+  ];
+  const outcome = [];
+  for (let i = 0; i < legs.length; i++) {
+    if (i > 0) await sleep(INTERVAL);
+    let r;
+    try { r = await legs[i].run(); }
+    catch (err) {
+      console.log(`  #${i + 1}  ${since(t0)}  ${legs[i].name}  transport error: ${err.code || ''} ${err.message}`);
+      outcome.push('error');
+      continue;
+    }
+    const granted = !!r.cookie;
+    console.log(`  #${i + 1}  ${since(t0)}  ${legs[i].name}  HTTP ${r.status}  ${granted ? `GRANTED  session ${tag(r.cookie)}` : `REFUSED  ${r.sniff}`}`);
+    outcome.push(granted ? 'granted' : (r.status === 403 ? 'refused' : `http-${r.status}`));
+  }
+  const [a, b, c] = outcome;
+  console.log(`\nRESULT: fetch=${a}  https=${b}  fetch=${c}`);
+  if (a === 'granted' && b === 'refused' && c === 'granted') {
+    console.log('        The CLIENT is the key. The source was issuing sessions ten seconds before and ten');
+    console.log('        seconds after the https.request bootstrap, and refused only that one. Every script');
+    console.log('        still on https.request needs the nightly\'s doFetch() copied in — the matrix shards');
+    console.log('        and discover-seasons.js first.');
+  } else if (a === 'refused' && b === 'refused' && c === 'refused') {
+    console.log('        All three refused: the source is blocked right now regardless of client. Nothing');
+    console.log('        about the transport is settled by this run. Look at the Actions page for what was');
+    console.log('        running, then dispatch again.');
+  } else if (a === 'granted' && b === 'granted') {
+    console.log('        Both clients granted. The transport is NOT the key, and the refusals seen from cold');
+    console.log('        were the source being blocked at those moments. Back to mode=bootstrap, in a window');
+    console.log('        the Actions page shows is empty.');
+  } else {
+    console.log('        Mixed result that fits no clean reading. Dispatch compare once more; two runs that');
+    console.log('        disagree mean the source\'s state changed between legs, and a third decides.');
+  }
+}
+
+(MODE === 'compare' ? runCompareMode() : MODE === 'bootstrap' ? runBootstrapMode() : runBudgetMode()).catch(e => { console.error(e); process.exit(1); });
