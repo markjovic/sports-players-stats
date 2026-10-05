@@ -57,6 +57,8 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .sinput::placeholder{color:var(--text3)}
 .sresults{flex:1;overflow-y:auto}
 .sseason{padding:7px 8px;border-bottom:1px solid var(--border)}
+.sfilters{display:flex;flex-direction:column;gap:6px}
+.sselect:disabled{opacity:0.45;cursor:default}
 .sselect{width:100%;background:var(--elevated);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-size:0.83rem;outline:none;cursor:pointer;appearance:none}
 .sselect:focus{border-color:var(--accent)}
 .vfilters{padding:6px 8px;border-bottom:1px solid var(--border);display:flex;gap:6px}
@@ -191,10 +193,24 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .tpane{display:none}
 .tpane.on{display:block}
 
-.rtbl{width:100%;border-collapse:collapse}
-.rtbl th{padding:7px 10px;font-size:0.63rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);text-align:right;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg)}
+/* width:auto, not 100%: the table is as wide as its columns need and sits left,
+   rather than stretching across a desktop viewport and dragging the numbers with it. */
+.rtbl{width:auto;max-width:100%;border-collapse:collapse;table-layout:fixed}
+/* ⚠️ A NAME COLUMN IS A FIXED WIDTH, NOT A SHARE OF THE VIEWPORT. It was 34% and
+   then 30%: on a 1600px screen that is ~480px of empty space between the name and
+   GP. The 34% version also totalled 111% with seven numeric columns at 11%, so
+   under table-layout:fixed the table was WIDER THAN ITS CONTAINER and the F column
+   fell off the right edge — which a scroll wrapper then hid rather than fixed. */
+.rtbl th:first-child,.rtbl td:first-child{width:230px}
+/* Number-sized, not screen-sized. With width:auto the seven numeric columns split
+   the whole viewport, so each figure sat at the right edge of a ~170px cell and the
+   row read as scattered. Right alignment is correct — digits should line up — but
+   only inside a cell the width of a number. */
+.rtbl th:not(:first-child),.rtbl td:not(:first-child){width:92px}
+.rtbl th,.rtbl td{padding-left:4px;padding-right:4px}
+.rtbl th{padding:7px 10px;font-size:0.63rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);text-align:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg)}
 .rtbl th:first-child{text-align:left}
-.rtbl td{padding:8px 10px;font-size:0.83rem;border-bottom:1px solid var(--border);text-align:right;font-variant-numeric:tabular-nums}
+.rtbl td{padding:8px 10px;font-size:0.83rem;border-bottom:1px solid var(--border);text-align:center;font-variant-numeric:tabular-nums}
 .rtbl td:first-child{text-align:left;font-weight:500}
 .rtbl tr:hover td{background:var(--elevated);cursor:pointer}
 
@@ -303,6 +319,11 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .opp-opp-enc{font-size:0.72rem;color:var(--accent)}
 .opp-game-detail{background:var(--surface-0)}
 .opp-game-row{display:flex;align-items:center;gap:10px;padding:5px 14px 5px 42px;border-bottom:0.5px solid var(--border);font-size:0.75rem;color:var(--text2);cursor:pointer}
+.opp-game-row .opp-game-date{flex:0 0 86px}
+.opp-game-row .opp-game-grade{flex:0 0 210px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.opp-game-row .opp-game-score{flex:0 0 62px;text-align:center;font-variant-numeric:tabular-nums}
+.opp-game-row .opp-game-res{flex:0 0 18px;text-align:center}
+.opp-game-row .opp-game-stats{flex:1 1 auto;color:var(--text3)}
 .opp-game-row:hover{background:var(--elevated)}
 .opp-game-date{color:var(--text2);min-width:80px;flex-shrink:0}
 .opp-game-grade{flex:1;color:var(--text2)}
@@ -378,6 +399,32 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .hpitem.help-hit{border-left-color:var(--accent);background:rgba(0,245,212,.07)}
 .hpterm{font-weight:700;font-size:0.82rem;margin-bottom:2px}
 .hptext{font-size:0.75rem;color:var(--text2);line-height:1.5}
+.rtbl tr.rsea td{border-bottom:none}
+/* The career line was 0.68rem in --text3 (#555 on #121212 — roughly 2.5:1, below
+   any readable threshold). It carries the only non-zero numbers on a pre-season
+   roster, so it cannot be the hardest thing on the page to read. The accent teal at
+   0.78rem reads clearly against #121212 and distinguishes the career line from the
+   season row by HUE rather than by being dimmer, which is what made it unreadable. */
+.rtbl tr.rcar td{padding-top:0;padding-bottom:7px;font-size:0.78rem;color:var(--accent)}
+.rtbl tr.rcar td:first-child{text-transform:uppercase;letter-spacing:0.05em;font-size:0.62rem;color:var(--accent);opacity:0.75}
+.osec{padding:12px 14px 6px;font-size:0.66rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);font-weight:700;border-top:1px solid var(--border);margin-top:8px}
+.orow{justify-content:flex-start;gap:14px}
+.orow .oname{flex:0 0 auto;min-width:190px}
+.orow .oenc{min-width:72px;text-align:left}
+.opp-opp-row{justify-content:flex-start;gap:14px}
+.opp-opp-row .opp-opp-name{flex:0 0 auto;min-width:175px}
+.opp-opp-row .opp-opp-enc{min-width:52px;text-align:left}
+/* The record and the games/opponents figure are two different things — a result and
+   a sample size — so they get their own columns instead of running together as one
+   string. Same fixed widths at both levels, so a nested row lines up beneath the
+   row it belongs to. */
+.ocol-wld{flex:0 0 72px;display:flex;align-items:center;gap:4px}
+.ocol-enc{flex:0 0 86px;text-align:left}
+/* Nothing to split when there are no meetings: one cell across both columns, so the
+   text reads as a sentence rather than being clipped into the first column's width. */
+.ocol-span{flex:0 0 158px}
+.rtbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-right:2px}
+.rtbl{min-width:520px}
 </style>
 </head>
 <body>
@@ -387,7 +434,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
       <span class="help-dot" onclick="openHelp()" title="What the numbers mean">?</span>
-      <span class="rail-ver">v1.0.1</span>
+      <span class="rail-ver">v1.20</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -402,7 +449,11 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     </div>
     <div id="pnl-teams" class="panel hidden">
       <div class="swrap-hdr"><span>Team</span><button class="rbtn" onclick="resetTeam()">✕ Clear</button></div>
-      <div class="sseason"><select id="q-sn" class="sselect"><option value="">Select season…</option></select></div>
+      <div class="sseason sfilters">
+        <select id="q-sn" class="sselect"><option value="">Select season…</option></select>
+        <select id="q-cp" class="sselect" disabled><option value="">Competition — select a season</option></select>
+        <select id="q-gr" class="sselect" disabled><option value="">Grade — select a competition</option></select>
+      </div>
       <div class="swrap"><input id="q-tm" class="sinput" placeholder="Search teams… (e.g. spirit magic u14)" autocomplete="off" spellcheck="false"></div>
       <div id="res-tm" class="sresults"></div>
     </div>
@@ -499,6 +550,8 @@ const WRKR = 'https://solitary-snowflake-cb3e.insanoflash.workers.dev';
 const S = {
   idx:null, venues:null, teamIdx:null,
   shards:{}, games:{}, players:{}, teamStats:{}, boxes:{}, venueDay:{}, venueDates:{}, dateVenues:{},
+  tmRun:0,   // team-search generation counter — the grade filter awaits a fetch
+
   seasonVenueIdx:null, venueSeasonFilter:null, lbData:{}, lbScope:'all', lbStat:'pts', lbMinGP:10,
   playerUuid:null, teamId:null, teamSid:null, venueId:null,
   calOffset:0, // weeks offset from today for venue calendar
@@ -528,7 +581,7 @@ const el = id => document.getElementById(id);
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};}
 function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function resetPlayer(){const q=document.getElementById('q-pl');if(q)q.value='';const r=document.getElementById('res-pl');if(r){r.innerHTML='';r.style.display='none';}}
-function resetTeam(){const q=document.getElementById('q-tm');if(q)q.value='';const sn=document.getElementById('q-sn');if(sn)sn.selectedIndex=0;const r=document.getElementById('res-tm');if(r)r.innerHTML='';}
+function resetTeam(){const q=document.getElementById('q-tm');if(q)q.value='';const sn=document.getElementById('q-sn');if(sn)sn.selectedIndex=0;buildCompPicker();const r=document.getElementById('res-tm');if(r)r.innerHTML='';}
 function resetVenue(){const q=document.getElementById('q-vn');if(q)q.value='';const vd=document.getElementById('q-vdate');if(vd)vd.value='';const vs=document.getElementById('q-vsn');if(vs)vs.selectedIndex=0;const r=document.getElementById('res-vn');if(r)r.innerHTML='';const ga=document.getElementById('vgrid-area');if(ga)ga.innerHTML='';const cs=document.getElementById('cal-section');if(cs)cs.innerHTML='';}
 function resetLB(){const o=document.getElementById('lb-org');if(o)o.value='';const c=document.getElementById('lb-comp');if(c)c.value='';const g=document.getElementById('lb-grade');if(g)g.value='';const a=document.getElementById('lb-age');if(a)a.value='';const gn=document.getElementById('lb-gender');if(gn)gn.value='';const mg=document.getElementById('lb-mingp');if(mg)mg.value='10';renderLB(S.lbData[S.lbScope]?.[S.lbStat]||[],S.lbData[S.lbScope]||{});}
 // Recent searches (localStorage)
@@ -1934,19 +1987,97 @@ function buildSeasonPicker(){
   });
   const sel=el('q-sn');
   sel.innerHTML='<option value="">Select season\u2026</option>'+sorted.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}${s.active?' \u25cf':' \ud83d\udd12'}</option>`).join('');
+  buildCompPicker();
 }
 async function loadTeamIdx(){if(!S.teamIdx){S.teamIdx=await gj(BASE+'/data/team-index.json')||{};}}
+
+/* ── Season -> competition -> grade (2026-10-05) ──────────────────────────────
+   A season NAME is not a season. "Summer 2026/27" is run by dozens of
+   associations, and data/team-index.json is keyed by that name, so picking a
+   season has always dumped every association's teams into one list. The two
+   selects below narrow it the way the data is actually shaped:
+
+     season name  ->  the sids carrying that name
+     competition  ->  one sid (usually), via sports-index's compName
+     grade        ->  that season's own grades[], from sports-index
+
+   THE GRADE FILTER READS team-stats, NOT team-index. team-index's `grade` is
+   whichever grade the team was seen in FIRST and is never corrected —
+   update-team-index.js refuses to touch it on purpose, because a registration
+   carries no chronology. build-team-stats.js now writes meta.grade from the
+   team's most recent GAME, which is the only thing that can answer "currently".
+   That file is fetched per sid and cached in S.teamStats, where loadTeam() was
+   going to fetch it anyway the moment a result is clicked. */
+function seasonSidsFor(sn,comp){
+  return Object.entries(S.idx?.seasons||{})
+    .filter(([,se])=>se.name===sn&&(!comp||(se.compName||'')===comp))
+    .map(([sid])=>sid);
+}
+function buildCompPicker(){
+  const sn=el('q-sn').value,cp=el('q-cp'),gr=el('q-gr');
+  if(!sn){
+    cp.innerHTML='<option value="">Competition \u2014 select a season</option>';cp.disabled=true;
+    gr.innerHTML='<option value="">Grade \u2014 select a competition</option>';gr.disabled=true;
+    return;
+  }
+  const comps=[...new Set(seasonSidsFor(sn).map(sid=>S.idx.seasons[sid].compName||'').filter(Boolean))].sort();
+  cp.disabled=false;
+  cp.innerHTML='<option value="">All competitions</option>'+comps.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  /* One competition is not a choice — select it so the grade list opens straight
+     away rather than making the user pick the only option there is. */
+  if(comps.length===1)cp.value=comps[0];
+  buildGradePicker();
+}
+function buildGradePicker(){
+  const sn=el('q-sn').value,cp=el('q-cp').value,gr=el('q-gr');
+  if(!sn||!cp){
+    gr.innerHTML='<option value="">Grade \u2014 select a competition</option>';gr.disabled=true;return;
+  }
+  const names=new Set();
+  for(const sid of seasonSidsFor(sn,cp))for(const g of (S.idx.seasons[sid].grades||[]))if(g.name)names.add(g.name);
+  const list=[...names].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  gr.disabled=!list.length;
+  gr.innerHTML=list.length
+    ?'<option value="">All grades</option>'+list.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('')
+    :'<option value="">No grades published yet</option>';
+}
 async function searchTeams(q){
   const sn=el('q-sn').value,re=el('res-tm');
   if(!sn){re.innerHTML='<div class="ri-empty">Select a season first</div>';return;}
+  const run=++S.tmRun;
   await loadTeamIdx();
-  const teams=S.teamIdx[sn]||[];
-  const filtered=q?teams.filter(t=>tokenMatch(t.n,q)):teams;
-  const sorted=[...filtered].sort((a,b)=>a.n.localeCompare(b.n));
+  const cp=el('q-cp').value,grade=el('q-gr').value;
+  const sids=new Set(seasonSidsFor(sn,cp));
+  /* With no competition chosen this is the unfiltered list, byte for byte what
+     it was before — a team-index entry whose sid is absent from sports-index
+     must not silently vanish. */
+  let teams=(S.teamIdx[sn]||[]).filter(t=>!cp||sids.has(t.sid));
+  if(q)teams=teams.filter(t=>tokenMatch(t.n,q));
+  let noGradeData=false;
+  if(grade){
+    re.innerHTML='<div class="ri-empty">Loading grades\u2026</div>';
+    const need=[...new Set(teams.map(t=>t.sid))].filter(sid=>!S.teamStats[sid]);
+    await Promise.all(need.map(async sid=>{S.teamStats[sid]=await sgj('team-stats/bv',sid)||{};}));
+    if(run!==S.tmRun)return;   /* a later keystroke already owns the panel */
+    /* If NOTHING in scope carries a grade, say so. A season whose team pages
+       predate meta.grade would otherwise filter to zero and read as "no such
+       grade", which is a lie about the data rather than about the filter. */
+    noGradeData=teams.length>0&&!teams.some(t=>S.teamStats[t.sid]?.[t.id]?.meta?.grade);
+    teams=teams.filter(t=>(S.teamStats[t.sid]?.[t.id]?.meta?.grade||'')===grade);
+  }
+  if(run!==S.tmRun)return;
+  const sorted=[...teams].sort((a,b)=>a.n.localeCompare(b.n));
+  if(noGradeData){
+    re.innerHTML='<div class="ri-empty">No grades recorded for these teams yet \u2014 their team pages have not been rebuilt since grading. Clear the grade filter to see them.</div>';
+    return;
+  }
   if(!sorted.length){re.innerHTML='<div class="ri-empty">No teams found</div>';return;}
   re.innerHTML=sorted.slice(0,50).map(t=>{
     const si=S.idx?.seasons?.[t.sid];
-    const sub=[t.comp,t.grade].filter(Boolean).join(' · ')||si?.name||sn;
+    /* Prefer the CURRENT grade when the season's team-stats are already loaded;
+       t.grade is the first-seen one and can be a grading-round grade months old. */
+    const live=S.teamStats[t.sid]?.[t.id]?.meta?.grade;
+    const sub=[t.comp,live||t.grade].filter(Boolean).join(' \u00b7 ')||si?.name||sn;
     return`<div class="ri" data-tid="${esc(t.id)}" data-sid="${esc(t.sid)}"><div class="ri-name">${esc(t.n)}</div><div class="ri-sub">${esc(sub)}</div></div>`;
   }).join('');
   re.querySelectorAll('.ri').forEach(r=>r.addEventListener('click',()=>{addRecent('teams',q||sn);loadTeam(r.dataset.tid,r.dataset.sid);if(window.innerWidth<=768)el('rail').classList.add('mob-hide');}));
@@ -1963,6 +2094,61 @@ async function loadTeam(tid,sid,push=true){
   if(!td){ve.innerHTML=`<div class="vhdr"><button class="vback" onclick="history.back()">\u2190</button><div><div class="vtitle">Team not found</div></div></div>`;return;}
   renderTeam(td,tid,sid);
 }
+/* ── Two-row roster: season on top, career below (2026-10-01) ────────────────
+   The roster in team-stats/bv/{sid} carries THAT SEASON with THAT TEAM only, so a
+   roster row could never answer "how good is this player" — only "how are they going
+   this season". The career line comes from the player's own file, one fetch each,
+   cached in S.players and shared with the player view, so opening a player
+   afterwards is instant and a second visit to the team costs nothing.
+   Rendered PROGRESSIVELY: the season rows appear immediately and each career row
+   fills in as its file lands. A roster is eight to twelve players, most of them
+   already cached from browsing, so in practice this is a handful of requests. */
+const CAREER_PENDING = '<span style="color:var(--text3)">…</span>';
+
+function careerOf(pf){
+  const bk = pf && pf.sports && pf.sports.Basketball;
+  if(!bk) return null;
+  return { gp:bk.gp||0, pts:bk.pts||0, fg:bk.fg||0, ft:bk.ft||0, threePt:bk.threePt||0, fouls:bk.fouls||0 };
+}
+async function playerFile(key){
+  if(S.players[key]) return S.players[key];
+  let k=key, d=await gj(BASE+'/players/'+k.slice(0,2)+'/'+k+'.json');
+  if(!d){ const r=await resolveToFullUuid(key); if(r&&r!==k){ k=r; d=S.players[k]||await gj(BASE+'/players/'+k.slice(0,2)+'/'+k+'.json'); } }
+  if(d){ S.players[k]=d; if(k!==key) S.players[key]=d; }
+  return d;
+}
+/* Both rows for one player. The career row is a sibling <tr> rather than a second
+   line inside one cell so the columns stay aligned with the header above. */
+function rosterRows(uuid,pr){
+  const id=('c'+uuid).replace(/[^a-zA-Z0-9]/g,'');
+  const c=careerOf(S.players[uuid]);
+  return `<tr class="rsea" onclick="loadPlayer('${esc(uuid)}')">`
+    +`<td>${esc(pr.name||'#'+uuid.slice(0,8))}</td>`
+    +`<td>${pr.gp||0}</td><td>${pr.pts||0}</td><td>${avg(pr.pts||0,pr.gp||0)}</td>`
+    +`<td>${pr.fg||0}</td><td>${pr.ft||0}</td><td>${pr.threePt||0}</td><td>${pr.fouls||0}</td></tr>`
+    +`<tr class="rcar" id="${id}" onclick="loadPlayer('${esc(uuid)}')">`
+    +`<td>career</td>`
+    +(c?`<td>${c.gp}</td><td>${c.pts}</td><td>${avg(c.pts,c.gp)}</td><td>${c.fg}</td><td>${c.ft}</td><td>${c.threePt}</td><td>${c.fouls}</td>`
+       :`<td colspan="7">${CAREER_PENDING}</td>`)
+    +`</tr>`;
+}
+/* Fill the career rows in place once each file lands. Called after a render and
+   after a re-sort; cached players resolve on the first tick, so a re-sort does not
+   re-fetch anything. */
+function hydrateCareers(keys){
+  for(const uuid of keys){
+    playerFile(uuid).then(()=>{
+      const id=('c'+uuid).replace(/[^a-zA-Z0-9]/g,'');
+      const tr=document.getElementById(id);
+      const c=careerOf(S.players[uuid]);
+      if(!tr) return;
+      tr.innerHTML = c
+        ? `<td>career</td><td>${c.gp}</td><td>${c.pts}</td><td>${avg(c.pts,c.gp)}</td><td>${c.fg}</td><td>${c.ft}</td><td>${c.threePt}</td><td>${c.fouls}</td>`
+        : `<td>career</td><td colspan="7" style="color:var(--text3)">not available</td>`;
+    }).catch(()=>{});
+  }
+}
+
 function renderTeam(td,tid,sid){
   const ve=el('view-team');
   const meta=td.meta||{};
@@ -1992,7 +2178,10 @@ function renderTeam(td,tid,sid){
       });
       const tbody=ve2.querySelector('#rtbl-body');
       if(!tbody)return;
-      tbody.innerHTML=sorted2.map(([uuid,pr])=>{const ppg=avg(pr.pts||0,pr.gp||0);return`<tr onclick="loadPlayer('${esc(uuid)}')"><td>${esc(pr.name||'#'+uuid.slice(0,8))}</td><td>${pr.gp||0}</td><td>${pr.pts||0}</td><td>${ppg}</td><td>${pr.fg||0}</td><td>${pr.ft||0}</td><td>${pr.threePt||0}</td></tr>`;}).join('');
+      // Both rows, and re-hydrate: every file is cached by now, so this repaints
+      // the career lines without a single request.
+      tbody.innerHTML=sorted2.map(([uuid,pr])=>rosterRows(uuid,pr)).join('');
+      hydrateCareers(sorted2.map(([u])=>u));
       ve2.querySelectorAll('.rtbl th[data-col]').forEach(th=>{
         th.style.color=th.dataset.col===col?'var(--accent)':'';
         th.textContent=th.dataset.col===col?(newDir===-1?th.dataset.label+' ↓':th.dataset.label+' ↑'):th.dataset.label;
@@ -2007,12 +2196,11 @@ function renderTeam(td,tid,sid){
       <th data-col="fg" data-label="FG" style="${thStyle}" onclick="el('view-team')._sort('fg')">FG</th>
       <th data-col="ft" data-label="FT" style="${thStyle}" onclick="el('view-team')._sort('ft')">FT</th>
       <th data-col="3pt" data-label="3PT" style="${thStyle}" onclick="el('view-team')._sort('threePt')">3PT</th>
+      <th data-col="fouls" data-label="F" style="${thStyle}" onclick="el('view-team')._sort('fouls')">F</th>
     </tr></thead><tbody id="rtbl-body">`;
     el('view-team').dataset.sortCol='pts'; el('view-team').dataset.sortDir='-1';
     el('view-team')._sort=sortBy;
-    for(const[uuid,pr]of roster){
-      h+=`<tr onclick="loadPlayer('${esc(uuid)}')"><td>${esc(pr.name||'#'+uuid.slice(0,8))}</td><td>${pr.gp||0}</td><td>${pr.pts||0}</td><td>${avg(pr.pts||0,pr.gp||0)}</td><td>${pr.fg||0}</td><td>${pr.ft||0}</td><td>${pr.threePt||0}</td></tr>`;
-    }
+    for(const[uuid,pr]of roster){ h+=rosterRows(uuid,pr); }
     h+=`</tbody></table>`;
   }
   h+=`</div><div id="f${tesc}" class="tpane">`;
@@ -2033,6 +2221,8 @@ function renderTeam(td,tid,sid){
   }
   h+='</div>';
   ve.innerHTML=h;
+  // Career lines fill in after paint — the season rows are already on screen.
+  hydrateCareers(Object.keys(td.roster||{}));
   ve.querySelectorAll('.frow').forEach(r=>r.addEventListener('click',()=>{
     const sid2=r.dataset.sid;
     const gid2=r.dataset.gid;
@@ -2041,7 +2231,16 @@ function renderTeam(td,tid,sid){
     (async()=>{
       if(!S.games[sid2]){const d=await sgj('games/bv',sid2);S.games[sid2]=d||{games:{}};}
       const g2=S.games[sid2]?.games?.[gid2];
-      if(g2&&hTid(g2)&&aTid(g2)){openTeamOpp(hTid(g2),aTid(g2),sid2,true);}
+      // ⚠️ 2026-10-01 — WAS openTeamOpp(hTid(g2), aTid(g2), …), i.e. the HOME team
+      // as "my" team. Whenever the team being viewed was the AWAY side the whole
+      // view inverted: the opposition's players were listed at the top with the
+      // focus team's players nested beneath them. `tid` is the team whose page this
+      // fixture row belongs to, so it is the focus team by definition.
+      if(g2&&hTid(g2)&&aTid(g2)){
+        const home=hTid(g2), away=aTid(g2);
+        const mine=(away===tid)?away:home, theirs=(mine===home)?away:home;
+        openTeamOpp(mine,theirs,sid2,true);
+      }
       else if(g2){openSheet(gid2,sid2);}
     })();
   }));
@@ -2620,7 +2819,7 @@ async function openOpp(oppTid,sid,fromUuid,push=true){
       const row=document.getElementById(r.rowId);
       if(!row)return;
       if(!games.length){
-        if(enc)enc.outerHTML='<span class="onone">No previous meetings</span>';
+        if(enc)enc.outerHTML='<span class="ocol-span onone">No previous meetings</span>';
       }else{
         if(enc)enc.outerHTML=`<span class="oenc">${games.length} meeting${games.length>1?'s':''}</span>`;
         row.style.cursor='pointer';
@@ -2732,7 +2931,22 @@ async function openTeamOpp(myTid,oppTid,sid,isUpcoming,push=true){
   const th2h=seasonH2H(td,new Set([myTid]),oppTid,new Set());
   const th2hH=th2h?`<div class="oh2h" style="padding:8px 14px;font-size:0.78rem;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums">${esc(myName)} vs this team this season: ${wldChips(th2h.team)} <span style="color:var(--text3)">(${th2h.team.n} meeting${th2h.team.n>1?'s':''})</span></div>`
     :`<div class="oh2h" style="padding:8px 14px;font-size:0.78rem;border-bottom:1px solid var(--border);color:var(--text3)">No completed meetings between these teams this season</div>`;
-  ve.innerHTML=`<div class="vhdr">${backBtn}<div><div class="vtitle">${esc(myName)} vs ${esc(oppName)}</div><div class="vsub">${esc(subtitle)}</div></div></div>${th2hH}<div id="opp-roster"></div>`;
+  // The opposition's OWN roster, below the head-to-head block. Before this the view
+  // showed only past results, so an upcoming fixture against a team you have never
+  // played said nothing whatsoever about who you were about to play.
+  // Same two-row table as the team page — season on top, career beneath — and the
+  // rows link straight to the player view. There is nothing to expand on this side,
+  // so the row gesture is free; only the focus-player rows above expand.
+  const oppTbl = oppRoster.length
+    ? `<div class="osec">${esc(oppName)} \u00b7 squad</div>
+       <div class="rtbl-wrap"><table class="rtbl"><thead><tr>
+         <th>Player</th><th>GP</th><th>PTS</th><th>PPG</th><th>FG</th><th>FT</th><th>3PT</th><th>F</th>
+       </tr></thead><tbody id="opp-squad-body">
+       ${Object.entries(oppTeam.roster).sort(([,a],[,b])=>(b.pts||0)-(a.pts||0)).map(([u,pr])=>rosterRows(u,pr)).join('')}
+       </tbody></table></div>`
+    : `<div class="osec">${esc(oppName)} \u00b7 squad</div><div class="empty">No roster data</div>`;
+  ve.innerHTML=`<div class="vhdr">${backBtn}<div><div class="vtitle">${esc(myName)} vs ${esc(oppName)}</div><div class="vsub">${esc(subtitle)}</div></div></div>${th2hH}<div id="opp-roster"></div>${oppTbl}`;
+  hydrateCareers(oppRoster);
   // Load all player files for both rosters
   const allUuids=[...new Set([...myRoster,...oppRoster])];
   await Promise.all(allUuids.map(uuid=>loadPlayerFile(uuid)));
@@ -2766,15 +2980,34 @@ async function openTeamOpp(myTid,oppTid,sid,isUpcoming,push=true){
       const enc=document.getElementById(r.rowId+'-enc');
       const row=document.getElementById(r.rowId);
       if(!row)return;
-      const total=result.reduce((s,e)=>s+e.games.length,0);
-      if(!total){
-        if(enc)enc.outerHTML='<span class="onone">No previous meetings</span>';
+      // Per-opponent row count — used ONLY to decide whether anything was found.
+      // The displayed total comes from the deduped list below: a game in which
+      // three opposition players featured is ONE game, and summing the per-opponent
+      // lists printed "11G" beside a record covering six.
+      const totalRaw=result.reduce((s,e)=>s+e.games.length,0);
+      if(!totalRaw){
+        if(enc)enc.outerHTML='<span class="ocol-span onone">No previous meetings</span>';
       }else{
         const nOpp=result.length;
-        const allGames=result.flatMap(e=>e.games);
+        // Carry the opponent's uuid with each game. When our own player is not in
+        // the box score, the OPPONENT is — and whichever side he is on, ours is the
+        // other. That needs no tid at all.
+        // ⚠️ ONE GAME, COUNTED ONCE. This was flatMap over the per-opponent lists, so
+        // a game in which THREE opposition players featured appeared THREE TIMES and
+        // was scored three times. The nested rows count each game once per opponent,
+        // which is correct for them; the aggregate must not inherit those duplicates.
+        // Deduped by game id, keeping the first opponent seen for the side test.
+        // ⚠️ THE GAME ID IS ON THE ENTRY, NOT INSIDE g. resolveOppGames pushes
+        // {gid, sid, g} — the gid is the key of the games map, never a field of the
+        // game object. Deduping on x.g.id dropped EVERY row (undefined key) and the
+        // W/L chips disappeared entirely at v1.09.
+        const seenGid=new Set();
+        const allGames=result.flatMap(e=>e.games.map(x=>({...x,oppUuid:e.oppUuid})))
+          .filter(x=>{ const k=x.gid; if(!k||seenGid.has(k))return false; seenGid.add(k); return true; });
         const myTidFn=(sid,gid)=>getTidForGame(S.players[r.uuid],sid,gid);
         const wld=wldSummary(allGames,r.uuid,myTidFn);
-        if(enc)enc.outerHTML=`<span style="display:flex;align-items:center;gap:8px;flex-shrink:0">${wld}<span class="oenc">${total}G vs ${nOpp}P</span></span>`;
+        const total=allGames.length;
+        if(enc)enc.outerHTML=`<span style="display:flex;align-items:center;flex-shrink:0"><span class="ocol-wld">${wld}</span><span class="oenc ocol-enc">${total}G vs ${nOpp}P</span></span>`;
         row.style.cursor='pointer';
         row.onclick=()=>toggleTeamOppDetail(row,result,r.uuid);
       }
@@ -2804,8 +3037,40 @@ function getPlayerGameStats(g, uuid) {
 
 function wldSummary(games, myUuid, myTidFn) { // myTidFn(sid,gameId)
   let w = 0, l = 0, d = 0;
-  for (const { g, sid } of games) {
-    const myTid = myTidFn ? myTidFn(sid,g.id) : hTid(g);
+  for (const { g, sid, gid, oppUuid } of games) {
+    // ⚠️ `gid`, NOT `g.id`. The game id lives on the entry; g has no id field. This
+    // was passing undefined into getTidForGame, which therefore never matched a
+    // gameTids entry and fell back to getTidForSeason — ONE team for the whole
+    // season, frequently the wrong one for this game, and the result was read from
+    // the wrong end. That is the inversion, and it had nothing to do with the
+    // transport, the box score or the roster.
+    let myTid = myTidFn ? myTidFn(sid, gid) : hTid(g);
+    // ⚠️ 2026-10-01 — gameCtx FALLS THROUGH TO THE HOME SIDE when the tid matches
+    // neither team (its last line returns myS:g.hs). So any game where the team
+    // lookup failed was scored from the HOME end regardless of which side the
+    // player was on, inverting every away result. Shaarav Gupta read 3W 8L where
+    // the same eleven games give 8W 3L.
+    // The box score knows the answer when the tid does not: find the player in
+    // hp[]/ap[] and take the side he is actually listed on.
+    // ⚠️ THE BOX SCORE WINS. getTidForGame falls back to getTidForSeason, which
+    // returns ONE team for the season — so a player registered to more than one
+    // team can be handed the tid of the team he was NOT playing for in this game,
+    // including the opponent's. That passes the "is this a real tid" test and the
+    // game is then scored from the wrong end. An earlier fix only consulted the
+    // box score when the tid matched NEITHER side, which left that case inverted.
+    // hp[]/ap[] is the record of who actually took the court, so it decides.
+    // Our player, if the box score names him.
+    if ((g.hp||[]).some(p=>matchP(p.profileID,myUuid)))      myTid = hTid(g);
+    else if ((g.ap||[]).some(p=>matchP(p.profileID,myUuid))) myTid = aTid(g);
+    // Otherwise the OPPONENT decides it: he is in this game by definition — that is
+    // why it is in this list — so whichever side he is on, ours is the other. This
+    // is the empirical answer and it needs no tid lookup, which is what kept getting
+    // it wrong: getTidForGame falls back to one team for the whole season and can
+    // hand back the other side's id entirely.
+    else if (oppUuid) {
+      if ((g.hp||[]).some(p=>matchP(p.profileID,oppUuid)))      myTid = aTid(g);
+      else if ((g.ap||[]).some(p=>matchP(p.profileID,oppUuid))) myTid = hTid(g);
+    }
     const ctx = gameCtx(g, myTid);
     // Skip unscored games (0-0 with no stats — typically unscored junior games)
     if (ctx.myS === 0 && ctx.oppS === 0 && !g.hp?.length && !g.ap?.length) continue;
@@ -2840,14 +3105,24 @@ function toggleTeamOppDetail(row, result, myUuid) {
     const gameDetailId = `opp-games-${row.id}-${ri}`;
     const myTidFn = (sid,gid) => getTidForGame(S.players[myUuid],sid,gid);
     const wld = wldSummary(games, myUuid, myTidFn);
-    oppRow.innerHTML = `<span class="opp-opp-name">${esc(opp?.name||'#'+oppUuid.slice(0,8))}</span>${wld}<span class="opp-opp-enc">${games.length}G</span>`;
+    oppRow.innerHTML = `<span class="opp-opp-name">${esc(opp?.name||'#'+oppUuid.slice(0,8))}</span><span class="ocol-wld">${wld}</span><span class="opp-opp-enc ocol-enc">${games.length}G</span>`;
 
     const gameDetail = document.createElement('div');
     gameDetail.className = 'opp-game-detail hidden';
     gameDetail.id = gameDetailId;
 
     for (const { gid, sid, g } of games) {
-      const myTid = getTidForGame(S.players[myUuid],sid,g.id);
+      // ⚠️ `gid`, NOT `g.id` — the id is on the entry, g has no id field. This passed
+      // undefined, so getTidForGame never matched a gameTids entry, fell back to the
+      // season's team, and `myTid || hTid(g)` then defaulted to the HOME side. Every
+      // away game in this list was shown from the opponent's end. Same bug as
+      // wldSummary; this site was missed when that one was fixed.
+      let myTid = getTidForGame(S.players[myUuid],sid,gid);
+      // The box score is the authority when it names either player.
+      if ((g.hp||[]).some(p=>matchP(p.profileID,myUuid)))       myTid = hTid(g);
+      else if ((g.ap||[]).some(p=>matchP(p.profileID,myUuid)))  myTid = aTid(g);
+      else if ((g.hp||[]).some(p=>matchP(p.profileID,oppUuid))) myTid = aTid(g);
+      else if ((g.ap||[]).some(p=>matchP(p.profileID,oppUuid))) myTid = hTid(g);
       const ctx = gameCtx(g, myTid || hTid(g));
       const score = ctx.myS != null ? `${ctx.myS}–${ctx.oppS}` : '—';
       const res = resLetter(ctx.myS, ctx.oppS);
@@ -2857,9 +3132,18 @@ function toggleTeamOppDetail(row, result, myUuid) {
       const myStr = myStats ? `${myStats.pts}pts ${myStats.fouls}f` : '';
       const oppStr = oppStats ? `${oppStats.pts}pts ${oppStats.fouls}f` : '';
       const fc = finalClass(g.rn);
-      const statsSpanId = `opp-gstats-${gid}`;
+      // ⚠️ UNIQUE PER OPPONENT. This was `opp-gstats-${gid}` and the same game
+      // appears under EVERY opponent who played in it, so the id existed two or
+      // three times in the DOM. getElementById updates the first only — every other
+      // copy sat on "Loading…" for ever.
+      const statsSpanId = `opp-gstats-${gid}-${ri}`;
       const gameRow = document.createElement('div');
       gameRow.className = 'opp-game-row';
+      // There was no way to reach the game from here, so nothing on this screen
+      // could be checked against the box score.
+      gameRow.style.cursor = 'pointer';
+      gameRow.title = 'Open the box score';
+      gameRow.addEventListener('click', (ev) => { ev.stopPropagation(); openSheet(gid, sid); });
       gameRow.innerHTML = `
         <span class="opp-game-date">${esc(g.d?.slice(0,10)||'')}</span>
         <span class="opp-game-grade">${esc(g.gn||'')}${fc?` <span style="color:gold;font-size:0.65rem">${esc(g.rn)}</span>`:''}</span>
@@ -2883,6 +3167,10 @@ function toggleTeamOppDetail(row, result, myUuid) {
           const oppS2 = oppBs ? `${oppBs.pts??''}pts ${oppBs.fouls??''}f` : '';
           const sp = document.getElementById(statsSpanId);
           if (sp) sp.textContent = `${myS2?`Me: ${myS2}`:''}${myS2&&oppS2?' · ':''}${oppS2?`Them: ${oppS2}`:''}`;
+        }).catch(() => {
+          // A rejected fetch left the placeholder in place indefinitely.
+          const sp = document.getElementById(statsSpanId);
+          if (sp) sp.textContent = '';
         });
       }
       gameDetail.appendChild(gameRow);
@@ -3104,7 +3392,9 @@ function renderLB(allEntries,data){
 document.querySelectorAll('.stab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
 el('q-pl').addEventListener('input',debounce(e=>searchPlayers(e.target.value.trim()),250));
 el('q-pl').addEventListener('focus',()=>{if(!el('q-pl').value.trim())showRecent('players',el('res-pl'),v=>{el('q-pl').value=v;searchPlayers(v);});});
-el('q-sn').addEventListener('change',()=>searchTeams(el('q-tm').value.trim()));
+el('q-sn').addEventListener('change',()=>{buildCompPicker();searchTeams(el('q-tm').value.trim());});
+el('q-cp').addEventListener('change',()=>{buildGradePicker();searchTeams(el('q-tm').value.trim());});
+el('q-gr').addEventListener('change',()=>searchTeams(el('q-tm').value.trim()));
 el('q-tm').addEventListener('input',debounce(e=>searchTeams(e.target.value.trim()),250));
 el('q-tm').addEventListener('focus',()=>{if(!el('q-tm').value.trim()&&el('q-sn').value)showRecent('teams',el('res-tm'),v=>{el('q-tm').value=v;searchTeams(v);});});
 el('q-vn').addEventListener('input',debounce(()=>searchVenues(),200));

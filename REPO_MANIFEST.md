@@ -3528,6 +3528,25 @@ bootstrap requests before the change and **2** after. The WAF-403 path is untouc
    Fourteen of those scripts and thirteen of those workflows are still in the repository. The
    record and the directory disagree; §2.5 states what is on disk without re-classifying them.
 
-**Still open.** `Close Empty Seasons` has not been dispatched since the conversion, and the
-profile-stats matrix has not run since `fetch-profile-stats.js` was found unconverted. Those two
-runs are the only outstanding evidence. Nothing in this entry was confirmed against live PlayHQ.
+**CONFIRMED AGAINST LIVE PlayHQ, 2026-10-05 04:00Z.** `Close Empty Seasons` dispatched
+`--dry-run`. It had failed on its own schedule the same morning at 3m 8s, on `https.request`,
+from cold. On the `fetch()` client: `Session refreshed (attempt 1)` — granted on the first
+attempt — `CloudFront blocks absorbed : 0`, `0 retried`, final pace still at the 150ms floor,
+assertions PASSED, index not written. That is the transport finding confirmed in production,
+not in a sandbox.
+
+The run's single `no answer` is NOT a refusal: season `19446969` carries `0gr`, so
+`askPlayHQ()` returns at L344 (`no grades in the index to ask about`) before any request is
+made. Nothing was asked and nothing was blocked.
+
+**Unrelated finding from that run, recorded and NOT fixed.** `close-empty-seasons.js` ends an
+incomplete run with `⚠ n season(s) unanswered — this run is INCOMPLETE. Re-run.` for all three
+`answered:false` causes. Only two of them — `CloudFront blocked` and `grade lookup <kind>` — are
+re-runnable. `no grades in the index to ask about` returns before the first API call, so
+re-running cannot ever change it: that season will print the same warning on every future run
+and will train the operator to ignore a message that otherwise means a real capture failure.
+Whether a 0-grade COMPLETED season is closable on other evidence is a separate decision and is
+NOT taken here.
+
+**Still open.** The profile-stats matrix has not run since `fetch-profile-stats.js` was found
+unconverted. That is the last outstanding piece of evidence.
