@@ -766,7 +766,7 @@ async function applyDiscoveries(index, newSeasonMeta, stats = {}, extraCommitPat
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 async function main() {
-  console.log(`\ndiscover-seasons.js${DRY_RUN ? '  [dry-run]' : ''}${FULL ? '  [full]' : ''}${SHARD ? `  [shard=${SHARD}]` : ''}${REDUCE ? '  [reduce]' : ''}${ALL_PLAYERS ? '  [all-players]' : ''}${ONE_UUID ? `  [uuid=${ONE_UUID}]` : ''}`);
+  console.log(`\ndiscover-seasons.js${DRY_RUN ? '  [dry-run]' : ''}${FULL ? '  [full]' : ''}${SHARD ? `  [shard=${SHARD}]` : ''}${REDUCE ? '  [reduce]' : ''}${ALL_PLAYERS ? '  [all-players]' : ''}${BACKFILL_TEAMS ? '  [backfill]' : ''}${ONE_UUID ? `  [uuid=${ONE_UUID}]` : ''}`);
   console.log('─'.repeat(60));
 
   const index = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
@@ -1232,6 +1232,18 @@ async function main() {
       for (const e of [...abandoned, ...newlyAbandoned].slice(0, 20)) console.log(`      ${e.u}  (${e.a} attempts)`);
     }
     console.log(`  New seasons discovered: ${newSeasonMeta.size}`);
+    // ⚠️ 2026-10-05 — MODE AND DELTAS ADDED. The banner printed '[all-players]' for
+    // ALL_PLAYERS, which BACKFILL_TEAMS forces true, so 'all' and 'all+backfill' were
+    // indistinguishable in a shard log — and this summary reported no delta count at
+    // all. Two full sweeps (2026-10-05) completed in 'current' and 'all' mode and
+    // looked clean while writing ZERO registrations; the mode was only discoverable
+    // in the reduce, hours later. The artifact already carried `mode`; now the log
+    // does too, and `Roster deltas` is the number that says the backfill did work.
+    const deltaPlayers = Object.keys(playerDeltas).length;
+    const deltaRegs    = Object.values(playerDeltas).reduce((n, d) => n + d.length, 0);
+    console.log(`  Mode                  : ${artifact.mode}`);
+    console.log(`  Roster deltas         : ${deltaPlayers} player(s), ${deltaRegs} registration(s)` +
+                (BACKFILL_TEAMS ? '' : '   ← ZERO BY DESIGN: --backfill-teams was NOT passed'));
     console.log(`  Artifact              : ${OUT_FILE}`);
     console.log('─'.repeat(60));
     console.log('Done.');
