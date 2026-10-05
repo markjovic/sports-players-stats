@@ -14,7 +14,8 @@ name: Post-Drain Chain
 # leaderboards/search/records effectively stopped running (trap T19, self-inflicted).
 # As jobs under ONE lock acquisition there are no waiters to evict.
 #
-#   team-stats (active) ─┬─> venue-indexes -> search -> records -> leaderboards -> deploy
+#   builds: team-stats (active) -> venue-indexes -> search -> records -> leaderboards
+#           (ONE job, ONE checkout; the fold dispatch is a step inside it)
 #                        └─> dispatch fold (fire-and-forget: fold queues behind THIS
 #                            chain's lock as the lone waiter and runs when the chain
 #                            releases — the exact "arrives while the lock is settling"
@@ -72,39 +73,76 @@ permissions:
   contents: write
   actions: write
 
+# ⚠️ 2026-10-05 — THE FIVE BUILD JOBS ARE NOW ONE JOB, FOR ONE CHECKOUT.
+#
+# They were five jobs, each doing its own full `actions/checkout@v4` of a repo
+# holding ~370k player files. The `needs` chain made them STRICTLY SEQUENTIAL —
+# team-stats -> venue-indexes -> search -> records -> leaderboards — so the split
+# bought no parallelism whatever, and four of the five checkouts were pure overhead
+# paid on every nightly run. Observed run: team-stats 8m09, venue-indexes 5m31,
+# search 5m44, records 2m35, where the venue-indexes comment in this file records
+# that its actual work "takes seconds".
+#
+# Sparse checkout was considered and rejected: build-venue-indexes.js is the ONLY
+# one of the five that never reads `players/` (it reads games, venue-lookup,
+# date-venue-index, data). build-team-stats, build-search-index, build-records and
+# build-leaderboards all walk the full player tree, so there is nothing to prune.
+#
+# WHAT IS PRESERVED
+#   · order, invocations and flags — each script's command line is copied verbatim
+#     from the job it replaces, not rewritten;
+#   · the workflow-level data-write lock, one acquisition for the whole chain (T25);
+#   · `start_at`, which is still the resume path — the per-job gates became the same
+#     expressions as step-level `if`s;
+#   · stop-on-failure. EVERY build step carries `success() &&` explicitly. A step
+#     with its own `if:` LOSES the implicit `success()`, so without it a failed
+#     team-stats would be followed by venue-indexes running anyway. That is the one
+#     trap in this conversion and it is the reason for the shape below;
+#   · the fold dispatch, success-gated and skipped on resumes, exactly as before —
+#     it is a step now, but it still only dispatches, so the fold still queues behind
+#     this chain's lock as the lone waiter;
+#   · dispatch-graduation and deploy stay SEPARATE jobs. They check nothing out and
+#     take 4s; there is nothing to save, and they read better as their own nodes.
+#
+# WHAT IS TRADED, SAID PLAINLY
+#   One job means ONE timeout. The five jobs carried 360/240/120/120/350 = 1190
+#   minutes of budget between them; a GitHub-hosted job cannot exceed 360. Those
+#   numbers were never runtimes — they are backstops for the scripts' push-retry
+#   loops (~3h worst case each, per the venue-indexes note below). Real observed
+#   total is ~22 minutes INCLUDING the four checkouts now removed. But if two
+#   scripts ever hit pathological push contention in the same run, the chain now
+#   dies at 360 where before each had its own budget. If that ever happens, split
+#   leaderboards back out as its own job — it is the one with the 350.
+#
+#   You also lose GitHub's per-job "re-run failed jobs" for the builds. `start_at`
+#   already exists for exactly that and is the documented resume path.
+
 jobs:
-  team-stats:
-    if: ${{ inputs.start_at == 'team-stats' || inputs.start_at == '' }}
+  builds:
+    # ONE checkout for all five sequential builds. See the 2026-10-05 note above.
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
+      # Gated: a `start_at: deploy` resume runs no build step, so it should not pay
+      # for a checkout either. (Under the old five-job shape those jobs were simply
+      # skipped and cost nothing; this keeps that true.)
       - uses: actions/checkout@v4
+        if: ${{ inputs.start_at != 'deploy' }}
         with: { ref: main, fetch-depth: 1, token: "${{ secrets.GITHUB_TOKEN }}" }
       - name: Configure git
+        if: ${{ inputs.start_at != 'deploy' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-      - run: node scripts/build-team-stats.js --active-only
 
-  dispatch-fold:
-    # Fire-and-forget: fold carries its own data-write lock and queues behind THIS
-    # chain until it releases. success-gated like build-team-stats.yml's chain-fold
-    # job; skipped on resumes (start_at past team-stats), matching the old coupling
-    # where only a real team-stats run chained fold.
-    needs: [team-stats]
-    if: ${{ !cancelled() && needs.team-stats.result == 'success' && (inputs.start_at == 'team-stats' || inputs.start_at == '') }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
+      # ── team-stats ─────────────────────────────────────────────────────────────
+      - name: team-stats
+        if: ${{ success() && (inputs.start_at == 'team-stats' || inputs.start_at == '') }}
+        run: node scripts/build-team-stats.js --active-only
+
+      # ── fold dispatch (fire-and-forget, success-gated, skipped on resumes) ─────
       - name: Install dispatch retry helper
-        # A chain-critical `gh workflow run` is never one-shot (directive 14). On
-        # 2026-07-27 a single HTTP 500 stopped the matrix chain — no retrigger, no
-        # terminal, no build-team-stats — so rosters silently went stale repo-wide
-        # while every player file was correct. The four dispatches in this file are
-        # worse: two of them are WEEKLY, so one lost call costs a full week's sweep
-        # and the run still shows green. Helper copied VERBATIM from
-        # fetch-profile-stats-matrix.yml (the proven site) — not retyped.
-        # /tmp is per-job, so each dispatching job installs its own copy.
+        if: ${{ success() && (inputs.start_at == 'team-stats' || inputs.start_at == '') }}
         run: |
           cat > /tmp/gh-dispatch.sh << 'SH'
           #!/usr/bin/env bash
@@ -167,67 +205,31 @@ jobs:
           /tmp/gh-dispatch.sh fold-diverged-players.yml \
             --field "mode=apply" \
             --field "no_refetch_dispatch=true"
+      # ── venue-indexes ──────────────────────────────────────────────────────────
+      # 240-minute backstop carried over from nightly-crawl.yml (2026-08-07 sizing):
+      # the work takes seconds; the budget belonged to the push-retry loop (60
+      # attempts x up to 91s jitter + fetch/merge/push cycles ~ 3h worst case). That
+      # budget is now shared with the rest of the job — see the trade note above.
+      - name: venue-indexes
+        if: ${{ success() && (inputs.start_at == 'team-stats' || inputs.start_at == 'venue-indexes' || inputs.start_at == '') }}
+        run: node scripts/build-venue-indexes.js
 
-  venue-indexes:
-    needs: [team-stats]
-    # 240-minute backstop carried over from nightly-crawl.yml (2026-08-07 sizing): the
-    # work takes seconds; the budget belongs to the push-retry loop (60 attempts x up
-    # to 91s jitter + fetch/merge/push cycles ~ 3h worst case). The loop terminates
-    # this job — success, or red with the real push error — never the clock. Post-drain
-    # under the chain lock the contention that motivated it is largely gone anyway.
-    if: ${{ !cancelled() && needs.team-stats.result != 'failure' && (inputs.start_at == 'team-stats' || inputs.start_at == 'venue-indexes' || inputs.start_at == '') }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 240
-    steps:
-      - uses: actions/checkout@v4
-        with: { ref: main, fetch-depth: 1, token: "${{ secrets.GITHUB_TOKEN }}" }
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      - run: node scripts/build-venue-indexes.js
+      # ── search ─────────────────────────────────────────────────────────────────
+      - name: search
+        if: ${{ success() && inputs.start_at != 'records' && inputs.start_at != 'leaderboards' && inputs.start_at != 'deploy' }}
+        run: node scripts/build-search-index.js
 
-  search:
-    needs: [team-stats, venue-indexes]
-    if: ${{ !cancelled() && needs.team-stats.result != 'failure' && needs.venue-indexes.result != 'failure' && inputs.start_at != 'records' && inputs.start_at != 'leaderboards' && inputs.start_at != 'deploy' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
-    steps:
-      - uses: actions/checkout@v4
-        with: { ref: main, fetch-depth: 1, token: "${{ secrets.GITHUB_TOKEN }}" }
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      - run: node scripts/build-search-index.js
+      # ── records ────────────────────────────────────────────────────────────────
+      - name: records
+        if: ${{ success() && inputs.start_at != 'leaderboards' && inputs.start_at != 'deploy' }}
+        run: node scripts/build-records.js
 
-  records:
-    needs: [team-stats, venue-indexes, search]
-    if: ${{ !cancelled() && needs.team-stats.result != 'failure' && needs.venue-indexes.result != 'failure' && needs.search.result != 'failure' && inputs.start_at != 'leaderboards' && inputs.start_at != 'deploy' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
-    steps:
-      - uses: actions/checkout@v4
-        with: { ref: main, fetch-depth: 1, token: "${{ secrets.GITHUB_TOKEN }}" }
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      - run: node scripts/build-records.js
-
-  leaderboards:
-    needs: [team-stats, venue-indexes, search, records]
-    if: ${{ !cancelled() && needs.team-stats.result != 'failure' && needs.venue-indexes.result != 'failure' && needs.search.result != 'failure' && needs.records.result != 'failure' && inputs.start_at != 'deploy' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 350
-    steps:
-      - uses: actions/checkout@v4
-        with: { ref: main, fetch-depth: 1, token: "${{ secrets.GITHUB_TOKEN }}" }
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      - run: node scripts/build-leaderboards.js
+      # ── leaderboards ───────────────────────────────────────────────────────────
+      # bare = resume, FULL scope — not --active-only; that flag belongs to the
+      # WEEKLY finals chain only.
+      - name: leaderboards
+        if: ${{ success() && inputs.start_at != 'deploy' }}
+        run: node scripts/build-leaderboards.js
 
   dispatch-graduation:
     # 2026-08-07 (§2.7): graduation's dispatch point moved HERE from nightly-crawl.yml.
@@ -239,8 +241,8 @@ jobs:
     # alone); a failed chain night skips it and the next night self-heals — grace makes
     # timing a non-issue. Ancestry gate matches deploy: don't chain new work off a
     # broken night.
-    needs: [team-stats, venue-indexes, search, records, leaderboards]
-    if: ${{ !cancelled() && needs.team-stats.result != 'failure' && needs.venue-indexes.result != 'failure' && needs.search.result != 'failure' && needs.records.result != 'failure' && needs.leaderboards.result != 'failure' }}
+    needs: [builds]
+    if: ${{ !cancelled() && needs.builds.result != 'failure' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -294,8 +296,8 @@ jobs:
         run: /tmp/gh-dispatch.sh graduate-seasons.yml
 
   deploy:
-    needs: [team-stats, venue-indexes, search, records, leaderboards]
-    if: ${{ !cancelled() && needs.team-stats.result != 'failure' && needs.venue-indexes.result != 'failure' && needs.search.result != 'failure' && needs.records.result != 'failure' && needs.leaderboards.result != 'failure' }}
+    needs: [builds]
+    if: ${{ !cancelled() && needs.builds.result != 'failure' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
