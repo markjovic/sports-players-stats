@@ -48,6 +48,20 @@ const ARGS    = Object.fromEntries(
 const DRY_RUN     = !!ARGS['dry-run'];
 const ACTIVE_ONLY = !!ARGS['active-only'];
 const TARGET_SID  = ARGS.season || null;
+// ── --resume (2026-10-05) ────────────────────────────────────────────────────
+// Skip a season whose team-stats file ALREADY carries the grade fields. There is
+// deliberately no progress file: build-finals-stats had one, it reached 110.14 MB,
+// it crossed GitHub's hard 100 MB limit and killed a full run, and the 60-attempt
+// push retry then burned every attempt on a permanent rejection (T22). The
+// mechanism was removed there rather than resized, and nothing has wanted it back.
+//
+// The OUTPUT is the progress record instead, and it needs no new state: before
+// 2026-10-05 no team carried a `grade` key at all, and ensureTeam now writes one
+// on every team unconditionally — so `'grade' in meta` is an exact, free marker
+// for "this season has been rebuilt since the change". An empty string is a
+// rebuilt season with no gradeable team, which is a different fact from an absent
+// key and is treated as DONE, correctly.
+const RESUME      = !!ARGS.resume;
 
 const GAMES_DIR      = path.join(ROOT, 'games', 'bv');
 const INDEX_DIR      = path.join(ROOT, 'players', 'indexes');
@@ -464,11 +478,27 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
   return teams;
 }
 
+// True when this season's file exists AND its teams already carry the grade
+// fields. One small JSON parse per season — the whole directory is ~159 MB across
+// ~2,900 files, so this costs seconds against a rebuild that costs hours.
+// Anything unreadable, absent or empty returns FALSE: a season that cannot prove
+// it has been rebuilt must be rebuilt.
+function seasonAlreadyGraded(sid) {
+  const f = path.join(TEAM_STATS_DIR, `${sid}.json`);
+  if (!fs.existsSync(f)) return false;
+  try {
+    const existing = JSON.parse(fs.readFileSync(f, 'utf8'));
+    const first = Object.values(existing)[0];
+    return !!(first && first.meta && Object.prototype.hasOwnProperty.call(first.meta, 'grade'));
+  } catch (_) { return false; }
+}
+
 async function main() {
   const startTime = Date.now();
   console.log('build-team-stats.js');
   if (ACTIVE_ONLY) console.log('  Mode: active seasons only');
   if (TARGET_SID)  console.log(`  Season: ${TARGET_SID}`);
+  if (RESUME)      console.log('  Resume: skipping seasons whose team-stats already carry grades');
   if (DRY_RUN)     console.log('  ⚠  DRY RUN — no writes or commits');
   console.log('─'.repeat(50));
 
@@ -498,7 +528,14 @@ async function main() {
 
   let processed = 0, written = 0, sinceCommit = 0;
 
+  let skipped = 0;
   for (const season of seasons) {
+    if (RESUME && seasonAlreadyGraded(season.id)) {
+      processed++; skipped++;
+      if (processed % 25 === 0 || processed === seasons.length)
+        process.stdout.write(`  ${processed}/${seasons.length} seasons  ${written} written  ${skipped} skipped\r`);
+      continue;
+    }
     playerCache.clear();  // clear cache between seasons to avoid unbounded growth
 
     const stats = buildSeasonTeamStats(season.id, season, sidTidPlayerMap, regTeamMap);
@@ -514,7 +551,7 @@ async function main() {
     }
 
     if (processed % 25 === 0 || processed === seasons.length)
-      process.stdout.write(`  ${processed}/${seasons.length} seasons  ${written} written\r`);
+      process.stdout.write(`  ${processed}/${seasons.length} seasons  ${written} written${RESUME ? `  ${skipped} skipped` : ''}\r`);
 
     if (sinceCommit >= COMMIT_EVERY) {
       gitCommit(`build-team-stats: ${written} files written (${processed}/${seasons.length} seasons)`, ['team-stats/']);
@@ -522,7 +559,8 @@ async function main() {
     }
   }
 
-  console.log(`\n  ${processed}/${seasons.length} seasons processed  ${written} files written`);
+  console.log(`\n  ${processed}/${seasons.length} seasons processed  ${written} files written` +
+              (RESUME ? `  ${skipped} skipped (already carried grades)` : ''));
   gitCommit(`build-team-stats: complete — ${written} files for ${processed} seasons`, ['team-stats/']);
 
   const elapsed = Math.round((Date.now() - startTime) / 1000);
