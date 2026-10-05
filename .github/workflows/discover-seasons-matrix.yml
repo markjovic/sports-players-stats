@@ -285,17 +285,18 @@ jobs:
           # BASH writes the job output (matches the working fetch-profile-stats matrix).
           echo "targets=$targets" >> $GITHUB_OUTPUT
 
-      # ONE cookieless request before the fan-out. A refusal here is fleet-wide — the
-      # key PlayHQ limits new sessions on is shared by every runner — so every shard
-      # would be refused too. Spend one request finding that out, not 256. The script
-      # exits 1 when its first request is refused, which fails this job, which skips
-      # map (needs.generate-shards.result == 'success') and reduce, and the retrigger
-      # never evaluates. The cron picks the sweep up next week; a manual dispatch
-      # after a quiet hour picks it up sooner. The cookie it is issued is not reused.
+      # ONE cookieless request before the fan-out, through the SAME fetch() client the
+      # shards use (measure-playhq-limits.js --mode=bootstrap; its first dispatch here
+      # went through https.request and refused a run whose shards would have been
+      # granted — fixed the same day). If PlayHQ refuses it, every shard would be
+      # refused too; spend one request finding that out, not 256. The script exits 1
+      # when its first request is refused, which fails this job, which skips map
+      # (needs.generate-shards.result == 'success') and reduce, and the retrigger
+      # never evaluates. The cookie it is issued is not reused.
       - name: Canary — is PlayHQ issuing sessions right now?
         run: |
           node scripts/measure-playhq-limits.js --mode=bootstrap --max=1 --interval=0 \
-            || { echo "::error::PlayHQ refused the canary's session request. The penalty window is open; nothing dispatched. Leave every PlayHQ workflow idle for an hour before dispatching again."; exit 1; }
+            || { echo "::error::PlayHQ refused the canary's session request (fetch() client, the one the shards use). Nothing dispatched. Check the Actions page for what else is running against PlayHQ, then dispatch again."; exit 1; }
 
   map:
     needs: generate-shards
