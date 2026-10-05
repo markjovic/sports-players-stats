@@ -4,10 +4,13 @@ name: Measure PlayHQ limits
 # Measures the two PlayHQ limits (REPO_MANIFEST §6.59) instead of guessing at them.
 # Writes nothing, commits nothing, stops at the first refusal.
 #
-# ⚠️ DISPATCH ONLY INTO A QUIET WINDOW. Every PlayHQ workflow must have been idle for
-# an hour first — nightly-crawl, weekly-indexes, discover-fixtures, both matrices.
-# If the first request is refused the run exits 1 with "nothing measured": that means
-# the window was still open, and the only correct response is to wait longer.
+# mode=compare (the default) needs NO quiet window: it sends the nightly's fetch()
+# bootstrap and discover-seasons.js's https.request bootstrap on the same runner ten
+# seconds apart, so whatever the source's state is, both legs see the same one.
+#
+# ⚠️ bootstrap and budget modes DO need a quiet window, and 2026-10-05 showed the
+# scheduled workflows make one hard to find — check the Actions page for a gap first.
+# If the first request is refused those modes exit 1 with "nothing measured".
 #
 # This workflow deliberately does NOT join the data-write concurrency group: it writes
 # nothing, and queueing behind a nightly would start it the moment that nightly's 40
@@ -17,11 +20,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'bootstrap = count cookieless requests until refused; budget = spend one cookie slowly until refused'
+        description: 'compare = fetch() vs https.request bootstraps back to back (no quiet hour needed); bootstrap = count cookieless requests until refused; budget = spend one cookie slowly until refused'
         required: true
-        default: 'bootstrap'
+        default: 'compare'
         type: choice
-        options: [bootstrap, budget]
+        options: [compare, bootstrap, budget]
       interval_seconds:
         description: 'Gap between requests in seconds (blank = 10 for bootstrap, 3 for budget)'
         required: false
