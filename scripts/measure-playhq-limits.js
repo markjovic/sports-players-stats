@@ -28,6 +28,12 @@
 // note records the same split and the same fix. Mode `compare` tests it on one
 // runner inside half a minute, so no quiet hour is needed and no cron can confound it.
 //
+// ⚠️ 2026-10-05, later — bootstrap and budget modes send through the fetch() client.
+// They sent through https.request until the matrix's canary (this script, --max=1)
+// refused a run whose shards had just been moved to fetch(): the canary was asking
+// on behalf of a client production no longer uses. The https.request client now exists
+// in this file ONLY as the second leg of compare, where it is the thing being compared.
+//
 // ─── MODES ───────────────────────────────────────────────────────────────────
 //   --mode=compare     Three cookieless requests, --interval ms apart, on this runner:
 //                      the nightly's fetch() bootstrap, then this script's
@@ -48,9 +54,10 @@
 //                      of whether the shared key is the user-agent string — not for
 //                      the first run.
 //
-// If the FIRST request is refused, nothing was measured: the window was already
-// open when the run started. The script says so and exits 1. Wait an hour with
-// every PlayHQ workflow idle, then dispatch again.
+// If the FIRST request is refused, nothing was measured: PlayHQ was refusing this
+// client's cookieless requests when the run started. The script says so and exits 1.
+// The Actions page shows what was running; mode=compare shows whether it is the
+// client or the source.
 //
 // Headers, bootstrap queries, cookie parsing and doFetch are copied VERBATIM from
 // scripts/discover-seasons.js (the live script that is failing), so this measures
@@ -197,9 +204,9 @@ function sniffBody(b) {
        : (b.slice(0, 80).replace(/\s+/g, ' ') || '(empty body)');
 }
 
-// One cookieless request. Returns { status, cookie|null, sniff }.
-// Cookie parsing copied verbatim from discover-seasons.js refreshSession().
-async function bootstrapOnce() {
+// One cookieless request through the OLD https.request client — compare mode only.
+// Cookie parsing copied verbatim from the discover-seasons.js that had this client.
+async function httpsBootstrapOnce() {
   const res = await doFetch(API_URL, {
     method: 'POST',
     headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
@@ -219,24 +226,20 @@ async function bootstrapOnce() {
   return { status: res.status, cookie: `${tier}; ${session}; ${sub}`, sniff: 'cookie issued' };
 }
 
-// One cookie-bearing probe. Returns { status, kind, sniff }.
+// One cookie-bearing probe through the fetch() client, the way discover-seasons.js
+// probes. Returns { status, kind, sniff }.
 async function probeOnce(cookie, profileID) {
-  const res = await doFetch(API_URL, {
-    method: 'POST',
-    headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
-    body: JSON.stringify({ ...Q_PROFILE_TEAMS, variables: { profileID } }),
-  });
-  if (res.status === 403) {
-    let b = ''; try { b = await res.text(); } catch {}
-    const blocked = b.includes('DOCTYPE') || b.includes('Request blocked');
-    return { status: 403, kind: blocked ? 'blocked' : 'private', sniff: sniffBody(b) };
+  const { status, body: json, rawText } = await doFetchNightly(API_URL, { ...Q_PROFILE_TEAMS, variables: { profileID } }, { ...HEADERS_BASE, 'Cookie': cookie });
+  if (status === 403) {
+    const blocked = /cloudfront|Request blocked|ERROR: The request could not be satisfied/i.test(rawText || '') || (rawText || '').includes('DOCTYPE');
+    return { status: 403, kind: blocked ? 'blocked' : 'private', sniff: sniffBody(rawText || '') };
   }
-  if (res.status === 429 || res.status === 503) return { status: res.status, kind: 'rate', sniff: `HTTP ${res.status}` };
-  if (!res.ok) return { status: res.status, kind: 'error', sniff: `HTTP ${res.status}` };
-  let json; try { json = await res.json(); } catch (err) { return { status: res.status, kind: 'error', sniff: `unparseable JSON: ${err.message}` }; }
-  if (json.errors?.length) return { status: res.status, kind: 'error', sniff: `GraphQL: ${json.errors[0]?.message || 'error'}` };
+  if (status === 429 || status === 503) return { status, kind: 'rate', sniff: `HTTP ${status}` };
+  if (status < 200 || status >= 300) return { status, kind: 'error', sniff: `HTTP ${status}` };
+  if (!json) return { status, kind: 'error', sniff: `unparseable body: ${(rawText || '').slice(0, 80)}` };
+  if (json.errors?.length) return { status, kind: 'error', sniff: `GraphQL: ${json.errors[0]?.message || 'error'}` };
   const teams = (json.data || json)?.publicProfileTeams;
-  return { status: res.status, kind: 'ok', sniff: `${Array.isArray(teams) ? teams.length : 0} registration(s)` };
+  return { status, kind: 'ok', sniff: `${Array.isArray(teams) ? teams.length : 0} registration(s)` };
 }
 
 // A short, non-reversible tag for a cookie so the log can show whether PlayHQ hands
@@ -245,7 +248,7 @@ const tag = (cookie) => crypto.createHash('sha256').update(cookie).digest('hex')
 
 async function runBootstrapMode() {
   console.log(`\nmeasure-playhq-limits  mode=bootstrap  interval=${INTERVAL}ms  max=${MAX}${UA ? `  ua="${UA}"` : ''}`);
-  console.log('One cookieless TenantConfig request per interval. Stops at the first refusal.');
+  console.log('One cookieless ProfileSearch request per interval through the fetch() client. Stops at the first refusal.');
   console.log('─'.repeat(72));
   const t0 = Date.now();
   let granted = 0;
@@ -253,7 +256,7 @@ async function runBootstrapMode() {
   for (let i = 1; i <= MAX; i++) {
     if (i > 1) await sleep(INTERVAL);
     let r;
-    try { r = await bootstrapOnce(); }
+    try { r = await fetchBootstrapOnce(); }
     catch (err) {
       console.log(`  #${String(i).padStart(3)}  ${since(t0)}  transport error: ${err.code || ''} ${err.message}`);
       console.log('\nRESULT: transport failure, not a PlayHQ answer — nothing measured.');
@@ -268,16 +271,15 @@ async function runBootstrapMode() {
     console.log(`  #${String(i).padStart(3)}  ${since(t0)}  HTTP ${r.status}  NO cookie  ${r.sniff}`);
     if (r.status === 403) {
       if (i === 1) {
-        console.log('\nRESULT: the FIRST cookieless request was refused. The penalty window was already open');
-        console.log('        when this run started, so nothing was measured. Leave every PlayHQ workflow');
-        console.log('        idle for an hour and dispatch again.');
+        console.log('\nRESULT: the FIRST cookieless request was refused, so nothing was measured. PlayHQ is');
+        console.log('        refusing this client right now. The Actions page shows what else is running;');
+        console.log('        mode=compare shows whether it is the client or the source.');
         process.exit(1);
       }
       console.log(`\nRESULT: ${granted} cookieless request(s) granted, then refused on request #${i}`);
       console.log(`        after ${since(t0).trim()} at one request every ${INTERVAL / 1000}s.`);
       console.log(`        Distinct sessions issued: ${tags.size} of ${granted}.`);
-      console.log('        That is the bootstrap allowance per window at this pace. Stopping here —');
-      console.log('        further requests would only extend the window.');
+      console.log('        That is the cookieless allowance at this pace. Stopping here.');
       return;
     }
     // Not a 403 and no cookie: an application answer without a session. Record and continue.
@@ -290,16 +292,16 @@ async function runBootstrapMode() {
 
 async function runBudgetMode() {
   console.log(`\nmeasure-playhq-limits  mode=budget  uuid=${UUID}  interval=${INTERVAL}ms  max=${MAX}${UA ? `  ua="${UA}"` : ''}`);
-  console.log('One bootstrap, then one PublicProfileTeams call per interval on that cookie. Stops at the first refusal.');
+  console.log('One bootstrap, then one PublicProfileTeams call per interval on that cookie, fetch() client. Stops at the first refusal.');
   console.log('─'.repeat(72));
   const t0 = Date.now();
   let boot;
-  try { boot = await bootstrapOnce(); }
+  try { boot = await fetchBootstrapOnce(); }
   catch (err) { console.log(`  bootstrap: transport error: ${err.code || ''} ${err.message}`); console.log('\nRESULT: transport failure — nothing measured.'); process.exit(1); }
   if (!boot.cookie) {
     console.log(`  bootstrap: HTTP ${boot.status}  NO cookie  ${boot.sniff}`);
-    console.log('\nRESULT: could not obtain a cookie, so the budget could not be measured. If that was a');
-    console.log('        403 the window was already open; wait an hour with everything idle and retry.');
+    console.log('\nRESULT: could not obtain a cookie, so the budget could not be measured. PlayHQ is');
+    console.log('        refusing this client right now; see the Actions page for what else is running.');
     process.exit(1);
   }
   console.log(`  bootstrap: HTTP ${boot.status}  cookie issued  session ${tag(boot.cookie)}`);
@@ -340,7 +342,7 @@ async function runCompareMode() {
   const t0 = Date.now();
   const legs = [
     { name: 'fetch()        ProfileSearch', run: fetchBootstrapOnce },
-    { name: 'https.request  TenantConfig ', run: bootstrapOnce },
+    { name: 'https.request  TenantConfig ', run: httpsBootstrapOnce },
     { name: 'fetch()        ProfileSearch', run: fetchBootstrapOnce },
   ];
   const outcome = [];
