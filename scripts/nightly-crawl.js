@@ -26,7 +26,6 @@ function isGrandFinal(rn) {
   return r.includes('grand final') || r === 'gf';
 }
 
-const https        = require('https');
 const crypto       = require('crypto');
 const fs           = require('fs');
 const path         = require('path');
@@ -290,7 +289,9 @@ async function refreshSession() {
 // that is not throttling. We never collapse a failure into "no data"
 // (see playhq_api_reference.md "Failure handling").
 async function gqlMain(operationName, query, variables) {
-  await sessionGuard.ensure();
+  // §6.62 — capture the generation ensure() issues this call on, so a rotation
+  // requested below is skipped when another caller has already replaced the cookie.
+  const gen = await sessionGuard.ensure();
   for (let attempt = 1; attempt <= 2; attempt++) {
     let status, body, rawText;
     try {
@@ -306,7 +307,12 @@ async function gqlMain(operationName, query, variables) {
       const isWaf = rawText && (rawText.includes('DOCTYPE') || rawText.includes('Request blocked'));
       if (isWaf) return { kind: 'blocked', data: null };                 // WAF — do NOT retry
       if (operationName === 'ProfileSeasonStatistics') return { kind: 'empty', data: null };
-      await refreshSession();                                            // session expiry — retry once
+      // ⚠️ 2026-10-05 §6.62 — WAS `await refreshSession()`, WHICH HAS NO SINGLE-FLIGHT
+      // LOCK. N concurrent expiry 403s on the same dead cookie started N bootstraps —
+      // the exact burst lib/playhq-session.cjs was written to stop, and a burst of
+      // bootstraps is itself refused. rotateNow() shares one refresh and skips it
+      // outright when `gen` says the session has already moved on.
+      await sessionGuard.rotateNow('session expiry 403', gen);           // session expiry — retry once
       continue;
     }
     if (status === 429)   return { kind: 'transient', data: null };
@@ -318,7 +324,7 @@ async function gqlMain(operationName, query, variables) {
 }
 
 async function gqlSpectator(gameId) {
-  await sessionGuard.ensure();
+  const gen = await sessionGuard.ensure();   // §6.62 — see gqlMain
   const query = `query game($id: ID!) {
     game(id: $id) {
       id status
@@ -335,8 +341,9 @@ async function gqlSpectator(gameId) {
       { ...HEADERS_SPECTATOR, 'Cookie': sessionCookie }
     );
     if (status === 403) {
-      // Single refresh then retry — do not loop
-      await refreshSession();
+      // Single refresh then retry — do not loop.
+      // §6.62 — through the guard, for the same single-flight reason as gqlMain.
+      await sessionGuard.rotateNow('spectator 403', gen);
       const retry = await doFetch(
         SPECTATOR_URL,
         { operationName: 'game', variables: { id: gameId }, query },

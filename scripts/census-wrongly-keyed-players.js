@@ -47,7 +47,6 @@
 
 'use strict';
 
-const https  = require('https');
 const crypto = require('crypto');
 const fs     = require('fs');
 const path   = require('path');
@@ -177,31 +176,32 @@ const ALL_BUCKETS = [];
 for (const a of HEX) for (const b of HEX) ALL_BUCKETS.push(a + b);
 // ─── HTTP — discover-game-backfill.js, verbatim ───────────────────────────────
 
-function doFetch(url, bodyObj, headers) {
-  return new Promise((resolve, reject) => {
-    const body   = JSON.stringify(bodyObj);
-    const parsed = new URL(url);
-    const h      = { ...headers, 'request-id': crypto.randomUUID(),
-                     'content-length': Buffer.byteLength(body) };
-    const req    = https.request(
-      { hostname: parsed.hostname, path: parsed.pathname, method: 'POST',
-        headers: h, agent: new https.Agent({ keepAlive: false }) },
-      res => {
-        const chunks = [];
-        res.on('data', c => chunks.push(c));
-        res.on('end', () => {
-          const rawText = Buffer.concat(chunks).toString('utf8');
-          let body = null;
-          try { body = JSON.parse(rawText); } catch (_) { body = null; }
-          resolve({ status: res.statusCode, rawCookies: res.headers['set-cookie'], body, rawText });
-        });
-        res.on('error', reject);
-      }
-    );
-    req.on('error', reject);
-    req.write(body);
-    req.end();
+// ⚠️ 2026-10-05 — REWRITTEN FROM https.request TO fetch(). THE CLIENT WAS THE KEY.
+// measure-playhq-limits.js --mode=compare, one runner, 10 s apart, same URL, same five
+// headers, same user-agent: fetch() GRANTED, https.request REFUSED (403 CLOUDFRONT-BLOCK),
+// fetch() GRANTED. REPO_MANIFEST §6.61. nightly-crawl.js's doFetch, pasted VERBATIM.
+// ⚠️ DO NOT "OPTIMISE" THIS BACK TO https.request, AND DO NOT SET content-length BY HAND.
+// Resolves on ANY status — never throws for a 403. Returns { status, rawCookies, body, rawText }.
+async function doFetch(url, bodyObj, headers) {
+  const res = await fetch(url, {
+    method:  'POST',
+    headers: { ...headers, 'request-id': crypto.randomUUID() },
+    body:    JSON.stringify(bodyObj),
   });
+  const rawText = await res.text().catch(() => '');
+  let body = null;
+  try { body = JSON.parse(rawText); } catch (_) { body = null; }
+  // undici exposes each Set-Cookie separately; the joined header is the fallback for
+  // older runtimes. Callers expect an array or undefined, never an empty array.
+  const cookies = typeof res.headers.getSetCookie === 'function'
+    ? res.headers.getSetCookie()
+    : (res.headers.get('set-cookie') ? [res.headers.get('set-cookie')] : []);
+  return {
+    status:     res.status,
+    rawCookies: cookies.length ? cookies : undefined,
+    body,
+    rawText,
+  };
 }
 
 // ─── Session — discover-game-backfill.js, verbatim ────────────────────────────
@@ -228,9 +228,9 @@ let sessionPromise = null;
 // ten attempts inside thirty seconds and every one died with "Failed to obtain
 // session after 10 attempts".
 //
-// The transport differs between the two files (this one uses https.request and
-// returns rawCookies; that one uses fetch and reads res.headers), so the request
-// call itself is this file's, and what is ported is the four things that make it
+// Both files now use the same fetch() client (2026-10-05, §6.62) and the same
+// { status, rawCookies, body, rawText } return shape, so the request call itself is
+// this file's, and what is ported is the four things that make it
 // survive contention:
 //   1. TWO cookie query shapes — if TenantConfig is refused, ProfileSearch is
 //      tried before the attempt is counted as failed
@@ -265,7 +265,17 @@ async function refreshSession() {
           continue;
         }
         const rawCookies = res.rawCookies;
-        if (!rawCookies) continue;
+        if (!rawCookies) {
+          // 2026-10-05 §6.62 — closes the 2026-09-29 instrumentation gap: doFetch resolves
+          // on ANY status, so a CloudFront block page was logged as nothing at all. Shape
+          // copied from nightly-crawl.js refreshSession(). Logging only; no behaviour change.
+          const blocked = /cloudfront|Request blocked|ERROR: The request could not be satisfied/i.test(res.rawText || '');
+          const detail = blocked
+            ? `CLOUDFRONT-BLOCK (${(res.rawText || '').length}b HTML)`
+            : (res.rawText || '').slice(0, 160).replace(/\s+/g, ' ');
+          console.log(`  \u26a0 session attempt ${attempt} ${body.operationName}: HTTP ${res.status}, NO set-cookie, body: ${detail || '(empty)'}`);
+          continue;
+        }
         const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies]).map(c => c.split(';')[0].trim());
         const get = n => arr.find(p => p.startsWith(n + '=')) || null;
         const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');

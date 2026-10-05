@@ -56,7 +56,6 @@
 
 const fs     = require('fs');
 const path   = require('path');
-const https  = require('https');
 const crypto = require('crypto');
 
 const ROOT       = path.join(__dirname, '..');
@@ -101,23 +100,23 @@ async function refreshSession() {
       for (const body of COOKIE_QUERIES) {
         let res;
         try {
-          res = await doFetch(API_URL, { method: 'POST', headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() }, body: JSON.stringify(body) });
+          res = await doFetch(API_URL, body, HEADERS_BASE);
         } catch (err) {
           console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: fetch threw ${err.code || ''} ${err.message}`);
           throw err;
         }
-        const raw = res.headers.get('set-cookie');
+        const raw = res.rawCookies;
         if (!raw) {
           // A silent continue here is where a CloudFront block page vanishes
           // without trace. Same instrumentation the live scripts carry.
-          let b = ''; try { b = await res.text(); } catch {}
+          const b = res.rawText || '';
           const sniff = b.includes('Request blocked') ? `CLOUDFRONT-BLOCK (${b.length}b HTML)`
                       : b.includes('DOCTYPE')         ? `HTML page (${b.length}b): ${b.slice(0, 80)}`
                       : (b.slice(0, 120) || '(empty body)');
           console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: HTTP ${res.status}, NO set-cookie, body: ${sniff.replace(/\s+/g, ' ')}`);
           continue;
         }
-        const parts = raw.split(',').map(c => c.trim().split(';')[0]);
+        const parts = (Array.isArray(raw) ? raw : [raw]).flatMap(c => c.split(',')).map(c => c.trim().split(';')[0]).filter(Boolean);
         const get = (n) => parts.find(c => c.startsWith(n + '=')) || null;
         const tier = get('phq_tier'), session = get('phq_session'), sub = get('phq_sub');
         if (!tier || !session || !sub) {
@@ -136,32 +135,32 @@ async function refreshSession() {
   return sessionPromise;
 }
 
-// ─── doFetch. From discover-org-seasons.js L138. keepAlive:false keeps
-//     CloudFront's per-connection rate limiting off us — do not pool. ──────────
-function doFetch(url, options) {
-  return new Promise((resolve, reject) => {
-    const parsed = new URL(url);
-    const body = options.body || '';
-    const req = https.request({
-      hostname: parsed.hostname, path: parsed.pathname + parsed.search,
-      method: options.method || 'GET',
-      headers: { ...options.headers, 'content-length': Buffer.byteLength(body) },
-      agent: new https.Agent({ keepAlive: false }),
-    }, (res) => {
-      const chunks = [];
-      res.on('data', c => chunks.push(c));
-      res.on('end', () => {
-        const rawBody = Buffer.concat(chunks).toString('utf8');
-        const hdrs = res.headers;
-        const headers = { get(name) { const v = hdrs[name.toLowerCase()]; return v == null ? null : (Array.isArray(v) ? v.join(', ') : v); } };
-        resolve({ status: res.statusCode, ok: res.statusCode >= 200 && res.statusCode < 300, headers, text: () => Promise.resolve(rawBody), json: () => Promise.resolve(JSON.parse(rawBody)) });
-      });
-      res.on('error', reject);
-    });
-    req.on('error', reject);
-    req.write(body);
-    req.end();
+// ⚠️ 2026-10-05 — REWRITTEN FROM https.request TO fetch(). THE CLIENT WAS THE KEY.
+// measure-playhq-limits.js --mode=compare, one runner, 10 s apart, same URL, same five
+// headers, same user-agent: fetch() GRANTED, https.request REFUSED (403 CLOUDFRONT-BLOCK),
+// fetch() GRANTED. REPO_MANIFEST §6.61. nightly-crawl.js's doFetch, pasted VERBATIM.
+// ⚠️ DO NOT "OPTIMISE" THIS BACK TO https.request, AND DO NOT SET content-length BY HAND.
+// Resolves on ANY status — never throws for a 403. Returns { status, rawCookies, body, rawText }.
+async function doFetch(url, bodyObj, headers) {
+  const res = await fetch(url, {
+    method:  'POST',
+    headers: { ...headers, 'request-id': crypto.randomUUID() },
+    body:    JSON.stringify(bodyObj),
   });
+  const rawText = await res.text().catch(() => '');
+  let body = null;
+  try { body = JSON.parse(rawText); } catch (_) { body = null; }
+  // undici exposes each Set-Cookie separately; the joined header is the fallback for
+  // older runtimes. Callers expect an array or undefined, never an empty array.
+  const cookies = typeof res.headers.getSetCookie === 'function'
+    ? res.headers.getSetCookie()
+    : (res.headers.get('set-cookie') ? [res.headers.get('set-cookie')] : []);
+  return {
+    status:     res.status,
+    rawCookies: cookies.length ? cookies : undefined,
+    body,
+    rawText,
+  };
 }
 
 // ─── AIMD. From discover-org-seasons.js L184-235, unchanged. ─────────────────
@@ -238,23 +237,20 @@ async function gql(body, label) {
   await ensureSession();
   let res;
   try {
-    res = await doFetch(API_URL, {
-      method: 'POST',
-      headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
-      body: JSON.stringify(body),
-    });
+    res = await doFetch(API_URL, body, { ...HEADERS_BASE, 'Cookie': sessionCookie });
   } catch (err) { return { kind: 'error', err }; }
 
   if (res.status === 403) {
-    let b = ''; try { b = await res.text(); } catch {}
+    const b = res.rawText || '';
     // A CloudFront block is a transport problem; an application 403 is an answer.
     if (b.includes('DOCTYPE') || b.includes('Request blocked')) return { kind: 'blocked' };
     return { kind: 'forbidden' };
   }
   if (res.status === 429 || res.status === 503) return { kind: 'blocked' };
-  if (!res.ok) return { kind: 'error', err: new Error(`HTTP ${res.status} (${label})`) };
+  if (res.status < 200 || res.status >= 300) return { kind: 'error', err: new Error(`HTTP ${res.status} (${label})`) };
 
-  let json; try { json = await res.json(); } catch (err) { return { kind: 'error', err }; }
+  const json = res.body;
+  if (!json) return { kind: 'error', err: new Error(`unparseable body: ${(res.rawText || '').slice(0, 80)}`) };
   if (json.errors?.length) return { kind: 'error', err: new Error(json.errors[0]?.message || 'gql') };
   return { kind: 'ok', data: json.data || json };
 }

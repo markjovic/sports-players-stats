@@ -46,7 +46,6 @@ function isGrandFinal(rn) {
 }
 
 
-const https        = require('https');
 const crypto       = require('crypto');
 const fs           = require('fs');
 const path         = require('path');
@@ -143,36 +142,32 @@ function writeAliasIdentity(uuid) {
 
 // ─── HTTP — nightly-crawl.js, verbatim ────────────────────────────────────────
 
-function doFetch(url, bodyObj, headers) {
-  return new Promise((resolve, reject) => {
-    const body   = JSON.stringify(bodyObj);
-    const parsed = new URL(url);
-    const h      = { ...headers, 'request-id': crypto.randomUUID(),
-                     'content-length': Buffer.byteLength(body) };
-    const req    = https.request(
-      { hostname: parsed.hostname, path: parsed.pathname, method: 'POST',
-        headers: h, agent: new https.Agent({ keepAlive: false }) },
-      res => {
-        const chunks = [];
-        res.on('data', c => chunks.push(c));
-        res.on('end', () => {
-          const rawText = Buffer.concat(chunks).toString('utf8');
-          let body = null;
-          try { body = JSON.parse(rawText); } catch (_) { body = null; }
-          resolve({
-            status:     res.statusCode,
-            rawCookies: res.headers['set-cookie'],
-            body,
-            rawText,
-          });
-        });
-        res.on('error', reject);
-      }
-    );
-    req.on('error', reject);
-    req.write(body);
-    req.end();
+// ⚠️ 2026-10-05 — REWRITTEN FROM https.request TO fetch(). THE CLIENT WAS THE KEY.
+// measure-playhq-limits.js --mode=compare, one runner, 10 s apart, same URL, same five
+// headers, same user-agent: fetch() GRANTED, https.request REFUSED (403 CLOUDFRONT-BLOCK),
+// fetch() GRANTED. REPO_MANIFEST §6.61. nightly-crawl.js's doFetch, pasted VERBATIM.
+// ⚠️ DO NOT "OPTIMISE" THIS BACK TO https.request, AND DO NOT SET content-length BY HAND.
+// Resolves on ANY status — never throws for a 403. Returns { status, rawCookies, body, rawText }.
+async function doFetch(url, bodyObj, headers) {
+  const res = await fetch(url, {
+    method:  'POST',
+    headers: { ...headers, 'request-id': crypto.randomUUID() },
+    body:    JSON.stringify(bodyObj),
   });
+  const rawText = await res.text().catch(() => '');
+  let body = null;
+  try { body = JSON.parse(rawText); } catch (_) { body = null; }
+  // undici exposes each Set-Cookie separately; the joined header is the fallback for
+  // older runtimes. Callers expect an array or undefined, never an empty array.
+  const cookies = typeof res.headers.getSetCookie === 'function'
+    ? res.headers.getSetCookie()
+    : (res.headers.get('set-cookie') ? [res.headers.get('set-cookie')] : []);
+  return {
+    status:     res.status,
+    rawCookies: cookies.length ? cookies : undefined,
+    body,
+    rawText,
+  };
 }
 
 // ─── Session — nightly-crawl.js, verbatim ─────────────────────────────────────
@@ -196,8 +191,18 @@ async function refreshSession() {
   for (let attempt = 1; attempt <= 10; attempt++) {
     if (attempt > 1) await sleep(attempt * 3000);
     try {
-      const { rawCookies } = await doFetch(API_URL, body, HEADERS_MAIN);
-      if (!rawCookies) continue;
+      const { rawCookies, status, rawText } = await doFetch(API_URL, body, HEADERS_MAIN);
+      if (!rawCookies) {
+        // 2026-10-05 §6.62 — closes the 2026-09-29 instrumentation gap: doFetch resolves
+        // on ANY status, so a CloudFront block page was logged as nothing at all. Shape
+        // copied from nightly-crawl.js refreshSession(). Logging only; no behaviour change.
+        const blocked = /cloudfront|Request blocked|ERROR: The request could not be satisfied/i.test(rawText || '');
+        const detail = blocked
+          ? `CLOUDFRONT-BLOCK (${(rawText || '').length}b HTML)`
+          : (rawText || '').slice(0, 160).replace(/\s+/g, ' ');
+        console.log(`  \u26a0 session attempt ${attempt} ${body.operationName}: HTTP ${status}, NO set-cookie, body: ${detail || '(empty)'}`);
+        continue;
+      }
       const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies])
         .map(c => c.split(';')[0].trim());
       const get = n => arr.find(p => p.startsWith(n + '=')) || null;

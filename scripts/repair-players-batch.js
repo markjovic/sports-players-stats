@@ -56,7 +56,6 @@
 const fs     = require('fs');
 const path   = require('path');
 const crypto = require('crypto');
-const https  = require('https');
 const { execFileSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
@@ -160,22 +159,28 @@ async function refreshSession() {
       for (const body of COOKIE_QUERIES) {
         let res;
         try {
-          res = await doFetch(API_URL, {
-            method:  'POST',
-            headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID() },
-            body:    JSON.stringify(body),
-          });
+          res = await doFetch(API_URL, body, HEADERS_BASE);
         } catch (err) {
           lastErr = err;
           console.log(`  … session refresh attempt ${attempt} network error: ${err.code || err.message} — retrying`);
           continue;
         }
-        const raw = res.headers.get('set-cookie');
-        if (!raw) continue;
+        const raw = res.rawCookies;
+        if (!raw) {
+          // 2026-10-05 §6.62 — closes the 2026-09-29 instrumentation gap: doFetch
+          // resolves on ANY status, so a CloudFront block page was logged as nothing
+          // at all. Shape from nightly-crawl.js refreshSession(). Logging only.
+          const blk = /cloudfront|Request blocked|ERROR: The request could not be satisfied/i.test(res.rawText || '');
+          const detail = blk
+            ? `CLOUDFRONT-BLOCK (${(res.rawText || '').length}b HTML)`
+            : (res.rawText || '').slice(0, 160).replace(/\s+/g, ' ');
+          console.log(`  \u26a0 session attempt ${attempt} ${body.operationName}: HTTP ${res.status}, NO set-cookie, body: ${detail || '(empty)'}`);
+          continue;
+        }
         // Extract each named cookie value, then reassemble in the exact order
         // the mobile client sends them: phq_tier first, phq_session, phq_sub.
         // (The server returns them in a different order in set-cookie headers.)
-        const parts = raw.split(',').map(c => c.trim().split(';')[0]);
+        const parts = (Array.isArray(raw) ? raw : [raw]).flatMap(c => c.split(',')).map(c => c.trim().split(';')[0]).filter(Boolean);
         const get = (name) => {
           const p = parts.find(c => c.startsWith(name + '='));
           return p || null;
@@ -243,71 +248,62 @@ const PROFILE_QUERY = {
 // resetting the idle timer but never finishes. Both destroy the request, which
 // raises 'error' and rejects, and `finish` guarantees the promise settles
 // exactly once no matter which path gets there first.
-const IDLE_TIMEOUT_MS = 45 * 1000;
+// IDLE_TIMEOUT_MS is NO LONGER APPLIED (§6.62): fetch() exposes no socket to time.
+// Kept as the measured value, so re-adding an idle guard does not have to re-measure it.
+const IDLE_TIMEOUT_MS = 45 * 1000;   // unused since 2026-10-05
 const HARD_TIMEOUT_MS = 180 * 1000;
 
-// doFetch: wraps https.request with keepAlive:false to force a new TCP connection
-// per request. This prevents CloudFront per-connection rate limiting.
-function doFetch(url, options) {
-  return new Promise((resolve, reject) => {
-    const parsed = new URL(url);
-    const body   = options.body || '';
-    let settled = false;
-    let hardTimer = null;
-    const finish = (fn, v) => {
-      if (settled) return;
-      settled = true;
-      if (hardTimer) clearTimeout(hardTimer);
-      fn(v);
-    };
-    const req = https.request({
-      hostname: parsed.hostname,
-      path:     parsed.pathname + parsed.search,
-      method:   options.method || 'GET',
-      headers:  { ...options.headers, 'content-length': Buffer.byteLength(body) },
-      agent:    new https.Agent({ keepAlive: false }),
-      timeout:  IDLE_TIMEOUT_MS,
-    }, (res) => {
-      const chunks = [];
-      res.on('data', c => chunks.push(c));
-      res.on('end', () => {
-        const rawBody = Buffer.concat(chunks).toString('utf8');
-        // Build a headers.get() shim matching the Fetch API.
-        // Node's https module stores set-cookie as an array; join with ', '
-        // so our existing cookie-parsing code works unchanged.
-        const hdrs = res.headers;
-        const headers = {
-          get(name) {
-            const val = hdrs[name.toLowerCase()];
-            if (val === undefined || val === null) return null;
-            return Array.isArray(val) ? val.join(', ') : val;
-          },
-        };
-        finish(resolve, {
-          status:  res.statusCode,
-          ok:      res.statusCode >= 200 && res.statusCode < 300,
-          headers,
-          text:    () => Promise.resolve(rawBody),
-          json:    () => Promise.resolve(JSON.parse(rawBody)),
-        });
-      });
-      res.on('error', (e) => finish(reject, e));
-    });
-    req.on('timeout', () => {
-      const e = new Error(`request idle for ${IDLE_TIMEOUT_MS / 1000}s`);
-      e.code = 'ETIMEDOUT';
-      req.destroy(e);
-    });
-    req.on('error', (e) => finish(reject, e));
-    hardTimer = setTimeout(() => {
-      const e = new Error(`request exceeded ${HARD_TIMEOUT_MS / 1000}s`);
-      e.code = 'ETIMEDOUT';
-      try { req.destroy(e); } catch (_) { /* already gone */ }
-      finish(reject, e);
-    }, HARD_TIMEOUT_MS);
-    req.write(body);
-    req.end();
+// ⚠️ 2026-10-05 — REWRITTEN FROM https.request TO fetch(). THE CLIENT WAS THE KEY.
+// measure-playhq-limits.js --mode=compare, one runner, 10 s apart, same URL, same five
+// headers, same user-agent: fetch() GRANTED, https.request REFUSED (403 CLOUDFRONT-BLOCK),
+// fetch() GRANTED. REPO_MANIFEST §6.61. nightly-crawl.js's doFetch, pasted VERBATIM.
+// ⚠️ DO NOT "OPTIMISE" THIS BACK TO https.request, AND DO NOT SET content-length BY HAND.
+// Resolves on ANY status — never throws for a 403. Returns { status, rawCookies, body, rawText }.
+async function doFetch(url, bodyObj, headers) {
+  const res = await fetch(url, {
+    method:  'POST',
+    headers: { ...headers, 'request-id': crypto.randomUUID() },
+    body:    JSON.stringify(bodyObj),
   });
+  const rawText = await res.text().catch(() => '');
+  let body = null;
+  try { body = JSON.parse(rawText); } catch (_) { body = null; }
+  // undici exposes each Set-Cookie separately; the joined header is the fallback for
+  // older runtimes. Callers expect an array or undefined, never an empty array.
+  const cookies = typeof res.headers.getSetCookie === 'function'
+    ? res.headers.getSetCookie()
+    : (res.headers.get('set-cookie') ? [res.headers.get('set-cookie')] : []);
+  return {
+    status:     res.status,
+    rawCookies: cookies.length ? cookies : undefined,
+    body,
+    rawText,
+  };
+}
+
+// ⚠️ 2026-10-05 §6.62 — THE 2026-08-14 TIMEOUT, PRESERVED OUTSIDE THE PASTED CLIENT.
+// doFetch above is nightly-crawl.js's, verbatim, and must not be edited — so the
+// ceiling that stopped the 2026-08-14 hang lives here instead. Two forced changes,
+// both named in the report:
+//   · the 45s IDLE timer is GONE. It existed because https.request sets no timeout
+//     at all, so a socket that opened and went silent never settled. undici's fetch
+//     has its own headers/body timeouts (300s by default), so that hole is closed
+//     later rather than never. HARD below is what keeps it from being 300s.
+//   · HARD is a race, not a destroy. The abandoned fetch is left to undici to reap;
+//     the caller settles exactly once, which is what the 2026-08-14 fix was for.
+// The rejection carries code 'ETIMEDOUT' so fetchProfile's existing catch still
+// reports `timeout` rather than the catch-all `error`.
+function doFetchCapped(url, bodyObj, headers) {
+  let timer;
+  const ceiling = new Promise((_, reject) => {
+    timer = setTimeout(() => {
+      const e = new Error(`request exceeded ${HARD_TIMEOUT_MS}ms`);
+      e.code = 'ETIMEDOUT';
+      reject(e);
+    }, HARD_TIMEOUT_MS);
+  });
+  return Promise.race([doFetch(url, bodyObj, headers), ceiling])
+    .finally(() => clearTimeout(timer));
 }
 
 
@@ -316,11 +312,7 @@ async function fetchProfile(profileID) {
   const body = { ...PROFILE_QUERY, variables: { profileID } };
   let res;
   try {
-    res = await doFetch(API_URL, {
-      method: 'POST',
-      headers: { ...HEADERS_BASE, 'request-id': crypto.randomUUID(), 'Cookie': sessionCookie },
-      body: JSON.stringify(body),
-    });
+    res = await doFetchCapped(API_URL, body, { ...HEADERS_BASE, 'Cookie': sessionCookie });
   } catch (err) {
     // A timeout gets its own status so the log says "this request never came
     // back" rather than the catch-all "error". Both are transport, both are
@@ -328,13 +320,14 @@ async function fetchProfile(profileID) {
     return { status: err && err.code === 'ETIMEDOUT' ? 'timeout' : 'error', err };
   }
   if (res.status === 403) {
-    let b = ''; try { b = await res.text(); } catch {}
+    const b = res.rawText || '';
     if (b.includes('DOCTYPE') || b.includes('Request blocked')) return { status: 'cloudfront-block' };
     return { status: 'private' };
   }
   if (res.status === 404) return { status: 'notfound' };
-  if (!res.ok) return { status: `http-${res.status}` };
-  let json; try { json = await res.json(); } catch (e) { return { status: 'bad-json' }; }
+  if (res.status < 200 || res.status >= 300) return { status: `http-${res.status}` };
+  const json = res.body;
+  if (!json) return { status: 'bad-json' };
   if (json.errors) return { status: 'gql-error', errors: json.errors };
   return { status: 'ok', data: json.data };
 }
@@ -997,7 +990,7 @@ async function main() {
   console.log(`  fetch concurrency: ${conc} (backs off on transport failures, recovers after two clean chunks)`);
   // The log states which guards are compiled in, so "is the fix actually
   // deployed?" is answered by reading the run instead of trusting a commit (T12).
-  console.log(`  guards: http idle ${IDLE_TIMEOUT_MS / 1000}s · http hard ${HARD_TIMEOUT_MS / 1000}s · git ${GIT_TIMEOUT_MS / 1000}s`);
+  console.log(`  guards: http hard ${HARD_TIMEOUT_MS / 1000}s (idle now undici's 300s default, §6.62) · git ${GIT_TIMEOUT_MS / 1000}s`);
 
   for (let cursor = 0; cursor < targets.length && !stopRun; ) {
     const chunk = targets.slice(cursor, cursor + conc);

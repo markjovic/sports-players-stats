@@ -30,7 +30,6 @@
 // Exit codes: 0 = probe answered (read the verdict), 1 = could not answer.
 
 'use strict';
-const https        = require('https');
 const crypto       = require('crypto');
 const fs           = require('fs');
 const path         = require('path');
@@ -54,32 +53,41 @@ const HEADERS = {
   'tenant': 'basketball-victoria', 'content-type': 'application/json',
 };
 
-function doFetch(bodyObj, extraHeaders) {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify(bodyObj);
-    const h    = { ...HEADERS, ...extraHeaders, 'request-id': crypto.randomUUID(),
-                   'content-length': Buffer.byteLength(body) };
-    const req  = https.request(
-      { hostname: 'api.playhq.com', path: '/graphql', method: 'POST',
-        headers: h, agent: new https.Agent({ keepAlive: false }),
-        timeout: 15000 },
-      res => {
-        const chunks = [];
-        res.on('data', c => chunks.push(c));
-        res.on('end', () => {
-          try { resolve({ status: res.statusCode, rawCookies: res.headers['set-cookie'],
-                          body: JSON.parse(Buffer.concat(chunks).toString('utf8')) }); }
-          catch (e) { reject(e); }
-        });
-        res.on('error', reject);
-      }
-    );
-    req.on('timeout', () => req.destroy(new Error('request timeout')));
-    req.on('error', reject);
-    req.write(body);
-    req.end();
+const API_URL = 'https://api.playhq.com/graphql';
+
+// ⚠️ 2026-10-05 — REWRITTEN FROM https.request TO fetch(). THE CLIENT WAS THE KEY.
+// measure-playhq-limits.js --mode=compare, one runner, 10 s apart, same URL, same five
+// headers, same user-agent: fetch() GRANTED, https.request REFUSED (403 CLOUDFRONT-BLOCK),
+// fetch() GRANTED. REPO_MANIFEST §6.61. nightly-crawl.js's doFetch, pasted VERBATIM.
+// ⚠️ DO NOT "OPTIMISE" THIS BACK TO https.request, AND DO NOT SET content-length BY HAND.
+// Resolves on ANY status — never throws for a 403. Returns { status, rawCookies, body, rawText }.
+async function doFetch(url, bodyObj, headers) {
+  const res = await fetch(url, {
+    method:  'POST',
+    headers: { ...headers, 'request-id': crypto.randomUUID() },
+    body:    JSON.stringify(bodyObj),
   });
+  const rawText = await res.text().catch(() => '');
+  let body = null;
+  try { body = JSON.parse(rawText); } catch (_) { body = null; }
+  // undici exposes each Set-Cookie separately; the joined header is the fallback for
+  // older runtimes. Callers expect an array or undefined, never an empty array.
+  const cookies = typeof res.headers.getSetCookie === 'function'
+    ? res.headers.getSetCookie()
+    : (res.headers.get('set-cookie') ? [res.headers.get('set-cookie')] : []);
+  return {
+    status:     res.status,
+    rawCookies: cookies.length ? cookies : undefined,
+    body,
+    rawText,
+  };
 }
+// ⚠️ 2026-10-05 §6.62 — FORCED CHANGES FROM THE CONVERSION, both named in the report:
+//   · the old client's hand-rolled `timeout: 15000` is gone. fetch() has no built-in
+//     timeout; re-adding one would mean editing the pasted client, which is the one
+//     thing that must not drift. A hung request now hangs rather than erroring at 15s.
+//   · the old client REJECTED when the body was not JSON. This one returns body:null,
+//     so every caller that tested `body.errors` now tests `!body || body.errors`.
 
 let sessionCookie = null;
 async function refreshSession() {
@@ -88,8 +96,16 @@ async function refreshSession() {
   for (let attempt = 1; attempt <= 10; attempt++) {
     if (attempt > 1) await sleep(attempt * 3000);
     try {
-      const { rawCookies } = await doFetch(body, {});
-      if (!rawCookies) continue;
+      const { rawCookies, status, rawText } = await doFetch(API_URL, body, HEADERS);
+      if (!rawCookies) {
+        // 2026-10-05 §6.62 — closes the 2026-09-29 instrumentation gap. Logging only.
+        const blocked = /cloudfront|Request blocked|ERROR: The request could not be satisfied/i.test(rawText || '');
+        const detail = blocked
+          ? `CLOUDFRONT-BLOCK (${(rawText || '').length}b HTML)`
+          : (rawText || '').slice(0, 160).replace(/\s+/g, ' ');
+        console.log(`  \u26a0 session attempt ${attempt} ${body.operationName}: HTTP ${status}, NO set-cookie, body: ${detail || '(empty)'}`);
+        continue;
+      }
       const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies])
         .map(c => c.split(';')[0].trim());
       const get = n => arr.find(p => p.startsWith(n + '=')) || null;
@@ -204,11 +220,12 @@ async function main() {
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
       const { status, body } = await doFetch(
+        API_URL,
         { operationName: 'discoverGame', variables: { gameID: GAME_ID }, query: Q_DISCOVER_GAME },
-        { 'Cookie': sessionCookie }
+        { ...HEADERS, 'Cookie': sessionCookie }
       );
-      if (status === 200 && !body.errors) { api = body.data?.discoverGame ?? null; break; }
-      console.error(`  probe attempt ${attempt}: HTTP ${status}${body.errors ? ' + GraphQL errors' : ''}`);
+      if (status === 200 && body && !body.errors) { api = body.data?.discoverGame ?? null; break; }
+      console.error(`  probe attempt ${attempt}: HTTP ${status}${!body ? ' + unparseable body' : (body.errors ? ' + GraphQL errors' : '')}`);
     } catch (e) { console.error(`  probe attempt ${attempt}: ${e.message}`); }
     await sleep(attempt * 2000);
   }
