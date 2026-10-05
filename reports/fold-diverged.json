@@ -1,123 +1,69 @@
 {
   "advisory": "ADVISORY ONLY. This file is a single path overwritten by EVERY fold run, including a 1-player one, so it is not a durable record. Do not build any repair, check or audit on it — reconstruct from the player data instead (spectatorIds[] is the source of truth). See claude_context.md trap T6.",
-  "generatedAt": "2026-10-03T15:14:10.696Z",
+  "generatedAt": "2026-10-05T05:28:35.483Z",
   "dryRun": false,
-  "filesScanned": 420262,
-  "folded": 14,
-  "promotes": 10,
-  "merges": 4,
-  "statsRefetchQueued": 4,
+  "filesScanned": 420721,
+  "folded": 8,
+  "promotes": 7,
+  "merges": 1,
+  "statsRefetchQueued": 1,
   "refetchShards": [
-    "02",
-    "05",
-    "2c",
-    "e4"
+    "dc"
   ],
   "stubWouldHaveWonUnderOldComparator": 0,
-  "apiWouldHaveWonUnderOldComparator": 3,
-  "keeperChangedTotal": 3,
-  "indexShardsTouched": 26,
-  "aliasEntriesScanned": 501470,
-  "aliasValuesRepointed": 13,
-  "aliasShardsTouched": 13,
+  "apiWouldHaveWonUnderOldComparator": 1,
+  "keeperChangedTotal": 1,
+  "indexShardsTouched": 15,
+  "aliasEntriesScanned": 501933,
+  "aliasValuesRepointed": 15,
+  "aliasShardsTouched": 15,
   "entries": [
     {
-      "apiId": "58ade15a-8504-4929-aa8a-72656d288a33",
+      "apiId": "b878775a-430e-4f55-8c22-331375d43024",
       "action": "promote",
-      "oldKey": "0c84cdc1-021b-4480-a831-f041fb71f817"
+      "oldKey": "0106a6b4-81b9-4850-a513-302046dfad41"
     },
     {
-      "apiId": "17a90203-84e1-499c-b4ea-271cda18db4f",
+      "apiId": "c5ceb41a-6421-47fc-9255-80122647ef6c",
       "action": "promote",
-      "oldKey": "25e7616a-8c40-4b60-8e89-179388d871e4"
+      "oldKey": "05a14b71-f9eb-498c-8861-405bca35daf9"
     },
     {
-      "apiId": "00cf7ed8-7ae2-47ab-baca-4202ee858750",
+      "apiId": "39c60765-296a-4323-abe1-099965ebf848",
       "action": "promote",
-      "oldKey": "31ea84be-cd34-4a54-bf98-83f1e52c87af"
+      "oldKey": "326eb480-8bf8-431e-a774-7fc2ea07327a"
     },
     {
-      "apiId": "e1d0722a-3e45-4ca6-ab0f-8961fd8ee505",
-      "action": "promote",
-      "oldKey": "39f74579-0be1-4538-850e-7c9d0c5d488f"
-    },
-    {
-      "apiId": "e4df42f7-f75d-43c2-a44b-f85511c61051",
+      "apiId": "dc19e8f0-7f80-41e1-94b5-748597349d95",
       "action": "merge",
-      "oldKey": "4b89ee86-e106-4de0-92bf-3fa629bf9088",
-      "keeper": "4b89ee86-e106-4de0-92bf-3fa629bf9088",
-      "sourceRank": 3,
-      "targetRank": 3,
-      "sourceGames": 33,
-      "targetGames": 167,
-      "oldComparatorKeeper": "e4df42f7-f75d-43c2-a44b-f85511c61051",
-      "statsRefetchQueued": true
-    },
-    {
-      "apiId": "09356ae5-a96f-40f0-8aaa-547ead154644",
-      "action": "promote",
-      "oldKey": "4c0c3c10-6bf5-4fc0-8b02-4e190ba10d20"
-    },
-    {
-      "apiId": "024ed603-e0a9-48ed-8c31-bc2b213e153d",
-      "action": "merge",
-      "oldKey": "587ed50d-851c-41ca-a8eb-616fd238d625",
-      "keeper": "587ed50d-851c-41ca-a8eb-616fd238d625",
+      "oldKey": "348d2265-d30c-40ec-9d0e-2bbbedd81370",
+      "keeper": "348d2265-d30c-40ec-9d0e-2bbbedd81370",
       "sourceRank": 3,
       "targetRank": 3,
       "sourceGames": 0,
-      "targetGames": 102,
-      "oldComparatorKeeper": "024ed603-e0a9-48ed-8c31-bc2b213e153d",
+      "targetGames": 1,
+      "oldComparatorKeeper": "dc19e8f0-7f80-41e1-94b5-748597349d95",
       "statsRefetchQueued": true
     },
     {
-      "apiId": "8a6ebfe4-96f6-4329-8d26-ba5779690096",
+      "apiId": "85fff0c6-e044-4a18-8725-4010fb179091",
       "action": "promote",
-      "oldKey": "8d1df810-29ba-4244-b18a-47bac33150ee"
+      "oldKey": "c3f39238-64b3-4b91-bf95-bda9d1d643a6"
     },
     {
-      "apiId": "2c738fe1-9278-4de6-a0ad-7c2dae6f5a46",
-      "action": "merge",
-      "oldKey": "a9774493-d1fa-48cc-9622-27667cab1f95",
-      "keeper": "a9774493-d1fa-48cc-9622-27667cab1f95",
-      "sourceRank": 3,
-      "targetRank": 3,
-      "sourceGames": 2,
-      "targetGames": 129,
-      "oldComparatorKeeper": "2c738fe1-9278-4de6-a0ad-7c2dae6f5a46",
-      "statsRefetchQueued": true
-    },
-    {
-      "apiId": "3e226261-492b-4fdb-8853-ee6b2cd9bd9d",
+      "apiId": "0a662082-20fb-4c80-9e53-b692347f2f77",
       "action": "promote",
-      "oldKey": "b1d126a1-3219-4bea-bd4a-645680adaee4"
+      "oldKey": "d590ea08-0cb3-4290-948f-3e48afee0ee7"
     },
     {
-      "apiId": "05635ee0-cd79-4b4c-b4f0-7842b75036da",
-      "action": "merge",
-      "oldKey": "ce079732-a967-4f20-849c-56ae5f5c37ce",
-      "keeper": "ce079732-a967-4f20-849c-56ae5f5c37ce",
-      "sourceRank": 3,
-      "targetRank": 3,
-      "sourceGames": 31,
-      "targetGames": 0,
-      "oldComparatorKeeper": "ce079732-a967-4f20-849c-56ae5f5c37ce",
-      "statsRefetchQueued": true
-    },
-    {
-      "apiId": "26840450-3f8e-4e39-8042-16cbfaf02f37",
+      "apiId": "91c008e0-c87f-45a7-8a72-3fbac36dbbed",
       "action": "promote",
-      "oldKey": "d6727921-0829-4174-a31b-9523fc55815a"
+      "oldKey": "dc1a7f08-3cae-4ec5-8898-a9a303438e1c"
     },
     {
-      "apiId": "b874bac3-15a9-4e0e-a6c0-b1ac1ff56fba",
+      "apiId": "fdc70bcc-c69c-4a6b-adca-aff1876b90e1",
       "action": "promote",
-      "oldKey": "df7cbd8f-8720-42df-b170-780fcaec537c"
-    },
-    {
-      "apiId": "b8faf998-855c-4221-ba8d-a86b1314b5f0",
-      "action": "promote",
-      "oldKey": "f5aeaec7-8013-4f7f-9646-f7a3c9ec46fd"
+      "oldKey": "dee7cc74-c788-4dfd-946e-2eebf3a203aa"
     }
   ]
 }
