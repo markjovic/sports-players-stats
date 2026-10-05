@@ -49,6 +49,13 @@ name: Discover Seasons (Matrix)
 #   - retrigger does not fire when any shard stopped for want of a session: the
 #     reduce prints NO_SESSION_SHARDS=n for that gate, and cursors are unchanged.
 #
+# 2026-10-05 — THE SWEEP NOW FINISHES THE JOB (the `rebuild` job at the bottom).
+# A drained sweep used to leave the registration deltas sitting in player files
+# with nothing reading them: the search list and the team pages are built by two
+# other tools, and someone had to remember to dispatch Refresh rosters afterwards.
+# `rebuild` fires on the run where no shards remain — the exact complement of the
+# retrigger's gate — and only in backfill mode, the only mode that writes deltas.
+#
 # NO actions/setup-node ANYWHERE in this file — both map and reduce fetch PlayHQ
 # (map: publicProfileTeams probes; reduce: discoverSeason grade-resolve), and
 # setup-node changes the runner's outbound fingerprint so CloudFront 403-blocks
@@ -138,6 +145,11 @@ on:
         description: 'Delete existing progress and re-sweep from scratch (only the run you dispatch)'
         required: false
         default: false
+        type: boolean
+      chain_rebuild:
+        description: 'When the sweep DRAINS, dispatch Refresh rosters (step 2) to rebuild team-index + team-stats and publish. Leave ticked.'
+        required: false
+        default: true
         type: boolean
       run_number:
         description: 'Auto-incremented by self-trigger — do not set manually'
@@ -566,4 +578,105 @@ jobs:
             --field "concurrency=${{ inputs.concurrency || '25' }}" \
             --field "max_parallel=${{ inputs.max_parallel || '5' }}" \
             --field "dry_run=${{ inputs.dry_run || false }}" \
+            --field "chain_rebuild=${{ (github.event_name == 'schedule' && 'true') || inputs.chain_rebuild }}" \
             --field "run_number=${next_run}"
+
+  # ── TERMINAL DISPATCH — added 2026-10-05 ───────────────────────────────────
+  # The sweep writes registration deltas into player files and NOTHING ELSE. The
+  # search list (data/team-index.json) and the team pages (team-stats/bv/{sid})
+  # are built by two other tools, and until now someone had to remember to run
+  # them — refresh-rosters.yml's own header says so: "run this workflow again,
+  # without the flag, once that chain has drained". A sweep finished at 04:00 on
+  # a Monday has nobody to remember.
+  #
+  # THE GATE IS THE EXACT COMPLEMENT OF THE RETRIGGER'S. `retrigger` fires while
+  # shards remain; this fires on the run where none do. The two can never both
+  # fire and can never both skip: undone_shards is either '[]' or it is not.
+  # On the 2026-10-05 sweep that was the SECOND run, not the first — which is
+  # the normal shape, and why this is gated on the value rather than on a run
+  # number.
+  #
+  # It also requires BACKFILL mode. `current` and `all` sweeps write no
+  # registration deltas at all (the shard summary prints "ZERO BY DESIGN" for
+  # them), so rebuilding off one would hold the data-write lock for an hour to
+  # produce a byte-identical result. The weekly cron resolves backfill to true,
+  # so the schedule always chains.
+  #
+  # NO data-write lock here. This job dispatches and exits; refresh-rosters takes
+  # the lock itself, and claiming it here would put a second no-op arrival in a
+  # group that holds ONE pending run (T19).
+  rebuild:
+    needs: reduce
+    # KEEP ON ONE LINE (claude_context T1). Both boolean forms per directive 13.
+    #
+    # ⚠️ The backfill test is NOT written as the `(schedule && 'true') || inputs.x`
+    # form used at the bash sites elsewhere in this file. That form is correct
+    # there because bash receives the INTERPOLATED STRING, where a real boolean
+    # renders as "true". Inside a GitHub `if:` it is evaluated, not rendered: a
+    # UI dispatch sends a real boolean, `true == 'true'` coerces to `1 == NaN`,
+    # and the gate is FALSE for exactly the runs it is meant to allow. That is
+    # directive 13's failure, and it is why both forms are tested explicitly.
+    if: ${{ !cancelled() && needs.reduce.result == 'success' && !(inputs.dry_run == true || inputs.dry_run == 'true') && needs.reduce.outputs.undone_shards == '[]' && (needs.reduce.outputs.no_session_shards == '0' || needs.reduce.outputs.no_session_shards == '') && (github.event_name == 'schedule' || inputs.backfill_teams == true || inputs.backfill_teams == 'true') && (github.event_name == 'schedule' || inputs.chain_rebuild == true || inputs.chain_rebuild == 'true') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Install dispatch retry helper
+        # Byte-identical to the retrigger's copy above, which is itself verbatim
+        # from fetch-profile-stats-matrix.yml. A chain-critical dispatch is never
+        # one-shot: one HTTP 500 breaks the chain and the run still shows green.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
+      - name: Rebuild the search list and the team pages, then publish
+        # Field names checked against refresh-rosters.yml's declared inputs — a
+        # wrong one is an HTTP 422, which the helper treats as permanent and
+        # fails on immediately rather than burying.
+        #
+        # full_team_index=true because update-team-index.js's default window is
+        # the last 2 DAYS of player-file mtime, and a sweep that self-retriggers
+        # for hours can leave its earliest shards outside it. The workflow's own
+        # input description says to leave it ticked for exactly this case.
+        run: |
+          echo "Sweep drained — every shard done, no session refusals."
+          /tmp/gh-dispatch.sh refresh-rosters.yml \
+            --field "sweep_first=false" \
+            --field "full_team_index=true" \
+            --field "deploy=true"
+          echo ""
+          echo "Refresh rosters (step 2) is running: update-team-index -> build-team-stats -> Deploy Pages."
+          echo "It takes the data-write lock, so it queues behind anything already holding it."
