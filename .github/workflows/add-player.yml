@@ -55,7 +55,6 @@ jobs:
           node --input-type=module << 'EOF'
           import fs    from 'fs';
           import path  from 'path';
-          import https from 'https';
           import crypto from 'crypto';
 
           const uuid        = '${{ inputs.uuid }}';
@@ -78,29 +77,30 @@ jobs:
               'user-agent': 'PlayHQ/1.47.2 Android/28 (Android SDK built for x86)',
               'tenant': 'basketball-victoria', 'content-type': 'application/json',
             };
-            function post(body, cookie) {
-              return new Promise((resolve, reject) => {
-                const h = { ...HEADERS, 'request-id': crypto.randomUUID(),
-                            'content-length': Buffer.byteLength(body) };
-                if (cookie) h['Cookie'] = cookie;
-                const req = https.request(
-                  { hostname: 'api.playhq.com', path: '/graphql', method: 'POST',
-                    headers: h, agent: new https.Agent({ keepAlive: false }) },
-                  res => {
-                    const c = [];
-                    res.on('data', d => c.push(d));
-                    res.on('end', () => resolve({ status: res.statusCode,
-                      headers: res.headers, body: Buffer.concat(c).toString() }));
-                  }
-                );
-                req.on('error', reject); req.write(body); req.end();
+            // ⚠️ 2026-10-05 §6.62 — REWRITTEN FROM https.request TO fetch(). THE CLIENT
+            // WAS THE KEY. measure-playhq-limits.js --mode=compare, one runner, 10 s
+            // apart, same URL, same five headers: fetch() GRANTED, https.request
+            // REFUSED (403 CLOUDFRONT-BLOCK), fetch() GRANTED. REPO_MANIFEST §6.61.
+            // This step is inline ESM, so it is a real PlayHQ client despite living in
+            // a workflow file — it was the ONLY live https.request left in .github/.
+            // ⚠️ DO NOT PUT https.request BACK, AND DO NOT SET content-length BY HAND.
+            async function post(body, cookie) {
+              const h = { ...HEADERS, 'request-id': crypto.randomUUID() };
+              if (cookie) h['Cookie'] = cookie;
+              const res = await fetch('https://api.playhq.com/graphql', {
+                method: 'POST', headers: h, body,
               });
+              const text = await res.text().catch(() => '');
+              const cookies = typeof res.headers.getSetCookie === 'function'
+                ? res.headers.getSetCookie()
+                : (res.headers.get('set-cookie') ? [res.headers.get('set-cookie')] : []);
+              return { status: res.status, rawCookies: cookies.length ? cookies : undefined, body: text };
             }
             const sess = await post(sessionBody, null);
-            const raw  = sess.headers['set-cookie'];
-            if (!raw) throw new Error('No session cookie');
-            const parts = (Array.isArray(raw) ? raw.join(', ') : raw)
-              .split(',').map(c => c.trim().split(';')[0]);
+            const raw  = sess.rawCookies;
+            if (!raw) throw new Error(`No session cookie (HTTP ${sess.status}: ${(sess.body || '').slice(0, 160).replace(/\s+/g, ' ')})`);
+            const parts = (Array.isArray(raw) ? raw : [raw])
+              .flatMap(c => c.split(',')).map(c => c.trim().split(';')[0]).filter(Boolean);
             const get = n => parts.find(p => p.startsWith(n + '=')) || null;
             const cookie = `${get('phq_tier')}; ${get('phq_session')}; ${get('phq_sub')}`;
 
