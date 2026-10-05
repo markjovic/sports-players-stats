@@ -25,23 +25,28 @@ name: Discover Seasons (Matrix)
 # !cancelled() (stop-button rule, same fix the stats matrix received 2026-07-21);
 # retrigger's dry_run comparison fixed to the robust boolean form (directive 13).
 #
-# 2026-10-05 — THE SWEEP WAS THE MAIN SOURCE OF THE LOAD THAT BLOCKED IT. Since
-# 2026-10-04 every shard's first request was refused (REPO_MANIFEST §6.60). What a
-# refused shard then DID: discover-seasons.js asked for a session again on every
-# batch, ten attempts over ~13 minutes each, and this job's 10-minute limit killed it
-# at around the seventh — no artifact, nothing to resume, and the next shard in the
-# queue started the same thing. 256 shards, 20 at a time, ~6-7 cookieless requests
-# each, for the two-plus hours a run lasted. New sessions are the scarce resource
-# (§6.60), and that is roughly ten times the request rate the nightly's whole 11,317-
-# call crawl puts on the same key. Four changes (§6.61):
+# 2026-10-05 — WHY EVERY SHARD WAS REFUSED FROM COLD, AND WHAT CHANGED (§6.61).
+# The cause was the HTTP CLIENT. discover-seasons.js sent its requests with
+# https.request and a hand-built header set; measure-playhq-limits.js --mode=compare
+# showed PlayHQ granting a fetch() bootstrap, refusing an https.request one ten seconds
+# later, and granting fetch() again ten seconds after that, all on one runner. The
+# script now uses nightly-crawl.js's fetch() client verbatim.
+#
+# What a refused shard then DID made it worse: the script asked for a session again on
+# every batch, ten attempts over ~13 minutes each, and this job's 10-minute limit
+# killed it around the seventh — no artifact, nothing to resume, next shard, same
+# thing. 256 shards, 20 at a time, ~6-7 cookieless requests each, for two-plus hours
+# a run. Those requests were spent for nothing and the script no longer does it
+# (a refused shard now stops at once with its artifact written). The workflow changes
+# below stay, because new sessions are still a limited resource (§6.60) and the
+# matrix is still the fleet's biggest consumer of them:
 #   - generate-shards makes ONE cookieless request first (measure-playhq-limits.js).
 #     Refused → the run stops there with one request spent, not 256.
 #   - max_parallel is an input (default 20, unchanged) so the bootstrap rate can be
 #     set to what measure-playhq-limits reports, without a code change.
 #   - reduce is skipped when the canary failed, instead of dying red on --in.
 #   - retrigger does not fire when any shard stopped for want of a session: the
-#     window is open, re-dispatching only extends it, and the cursors are unchanged.
-#     The reduce prints NO_SESSION_SHARDS=n for that gate.
+#     reduce prints NO_SESSION_SHARDS=n for that gate, and cursors are unchanged.
 #
 # NO actions/setup-node ANYWHERE in this file — both map and reduce fetch PlayHQ
 # (map: publicProfileTeams probes; reduce: discoverSeason grade-resolve), and
