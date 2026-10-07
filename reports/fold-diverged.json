@@ -1,122 +1,30 @@
 {
   "advisory": "ADVISORY ONLY. This file is a single path overwritten by EVERY fold run, including a 1-player one, so it is not a durable record. Do not build any repair, check or audit on it — reconstruct from the player data instead (spectatorIds[] is the source of truth). See claude_context.md trap T6.",
-  "generatedAt": "2026-10-06T22:25:07.526Z",
+  "generatedAt": "2026-10-07T22:18:00.808Z",
   "dryRun": false,
-  "filesScanned": 423422,
-  "folded": 17,
-  "promotes": 15,
-  "merges": 2,
-  "statsRefetchQueued": 2,
-  "refetchShards": [
-    "50",
-    "cd"
-  ],
+  "filesScanned": 424156,
+  "folded": 2,
+  "promotes": 2,
+  "merges": 0,
+  "statsRefetchQueued": 0,
+  "refetchShards": [],
   "stubWouldHaveWonUnderOldComparator": 0,
-  "apiWouldHaveWonUnderOldComparator": 2,
-  "keeperChangedTotal": 2,
-  "indexShardsTouched": 30,
-  "aliasEntriesScanned": 504637,
-  "aliasValuesRepointed": 10,
-  "aliasShardsTouched": 10,
+  "apiWouldHaveWonUnderOldComparator": 0,
+  "keeperChangedTotal": 0,
+  "indexShardsTouched": 4,
+  "aliasEntriesScanned": 505373,
+  "aliasValuesRepointed": 0,
+  "aliasShardsTouched": 0,
   "entries": [
     {
-      "apiId": "df53fe51-658e-435d-aefb-5677aa133134",
+      "apiId": "6786e7d0-405e-431e-892c-bdd680327bb3",
       "action": "promote",
-      "oldKey": "05105c20-adc5-4400-ad5b-d29f1e22597d"
+      "oldKey": "9d352104-890c-4948-b1fb-cb13909627c6"
     },
     {
-      "apiId": "16b146d4-5f29-4a5f-93f0-88ad62849676",
+      "apiId": "ae30cd85-b6cb-4d95-8c15-a818eb0bd7df",
       "action": "promote",
-      "oldKey": "0e694c55-b980-4a9f-9898-e15369ceea8b"
-    },
-    {
-      "apiId": "d0abbfd4-b224-43b6-9046-cf8f70ea8c00",
-      "action": "promote",
-      "oldKey": "40760492-3beb-4d7d-93f4-de5911ee5cee"
-    },
-    {
-      "apiId": "4a1b47e1-5acc-4175-b391-787af9955289",
-      "action": "promote",
-      "oldKey": "4204ecd6-254d-400e-a0b8-f6e675a4f9af"
-    },
-    {
-      "apiId": "88fde48f-02e3-4f61-970c-c0b146ec6785",
-      "action": "promote",
-      "oldKey": "4a897c1f-3981-46b6-9af9-a23fdb64f55f"
-    },
-    {
-      "apiId": "f1508573-a75d-43db-9a99-4c92662b0700",
-      "action": "promote",
-      "oldKey": "6a456f8f-c663-4934-a42f-790263f42ef7"
-    },
-    {
-      "apiId": "dfddaf54-0a8b-419a-b304-d2a2263123d3",
-      "action": "promote",
-      "oldKey": "72dc3c7c-99ef-4f50-972d-9e96a95e9596"
-    },
-    {
-      "apiId": "23321399-5f51-44dc-8505-4d248d580284",
-      "action": "promote",
-      "oldKey": "7a4b93e1-6fe6-48c3-bc6e-7aad84f8a3ff"
-    },
-    {
-      "apiId": "502abcd2-5b94-409e-8ff8-1c8024c8a545",
-      "action": "merge",
-      "oldKey": "7ec0d557-dee4-4edf-88f6-8799fc72f9e0",
-      "keeper": "7ec0d557-dee4-4edf-88f6-8799fc72f9e0",
-      "sourceRank": 3,
-      "targetRank": 3,
-      "sourceGames": 0,
-      "targetGames": 167,
-      "oldComparatorKeeper": "502abcd2-5b94-409e-8ff8-1c8024c8a545",
-      "statsRefetchQueued": true
-    },
-    {
-      "apiId": "dd7144a3-ce3f-43c3-9a89-5da5ebfe62b3",
-      "action": "promote",
-      "oldKey": "8c883f7c-6c9a-4ad0-bde9-95bebcc1c747"
-    },
-    {
-      "apiId": "8b37bccd-cbec-41f6-b91f-f71d93322933",
-      "action": "promote",
-      "oldKey": "94c1d2de-a591-4728-919f-574f65721baa"
-    },
-    {
-      "apiId": "cd12a545-0060-4a1c-90a6-bc9aa71e6bab",
-      "action": "promote",
-      "oldKey": "aa3d8d4b-56a0-471f-ba3a-17e175d8bbbc"
-    },
-    {
-      "apiId": "cd5c3a90-bf36-45d3-ba09-d300d36ae648",
-      "action": "merge",
-      "oldKey": "bdcb4a85-0e3a-4bcd-9613-4c33322594b6",
-      "keeper": "bdcb4a85-0e3a-4bcd-9613-4c33322594b6",
-      "sourceRank": 3,
-      "targetRank": 3,
-      "sourceGames": 0,
-      "targetGames": 190,
-      "oldComparatorKeeper": "cd5c3a90-bf36-45d3-ba09-d300d36ae648",
-      "statsRefetchQueued": true
-    },
-    {
-      "apiId": "1c223471-721f-4d83-b405-488772bf1268",
-      "action": "promote",
-      "oldKey": "e9d50fa6-6de1-4826-ad23-79044b82f668"
-    },
-    {
-      "apiId": "785f2353-dd84-4381-8981-03bbc0543b8e",
-      "action": "promote",
-      "oldKey": "e9e14b7a-7bcb-4833-bdbf-c23fd30735ab"
-    },
-    {
-      "apiId": "83735dc4-0192-4adf-8f89-7a21fa0dba87",
-      "action": "promote",
-      "oldKey": "ed9940db-ebd3-4ccd-b1b2-9549bb6c10fe"
-    },
-    {
-      "apiId": "add6dd07-701d-442a-bd1a-5d742ccb39ac",
-      "action": "promote",
-      "oldKey": "f6e57035-8799-487b-bd67-b1bbac59b2dc"
+      "oldKey": "eb75f0b3-072a-41a2-ae9e-97a0b26b8213"
     }
   ]
 }
