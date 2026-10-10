@@ -1,33 +1,48 @@
 {
   "advisory": "ADVISORY ONLY. This file is a single path overwritten by EVERY fold run, including a 1-player one, so it is not a durable record. Do not build any repair, check or audit on it — reconstruct from the player data instead (spectatorIds[] is the source of truth). See claude_context.md trap T6.",
-  "generatedAt": "2026-10-08T22:16:06.901Z",
+  "generatedAt": "2026-10-10T21:26:39.516Z",
   "dryRun": false,
-  "filesScanned": 424576,
-  "folded": 1,
-  "promotes": 0,
+  "filesScanned": 429308,
+  "folded": 4,
+  "promotes": 3,
   "merges": 1,
   "statsRefetchQueued": 1,
   "refetchShards": [
-    "07"
+    "b0"
   ],
   "stubWouldHaveWonUnderOldComparator": 0,
   "apiWouldHaveWonUnderOldComparator": 1,
   "keeperChangedTotal": 1,
-  "indexShardsTouched": 2,
-  "aliasEntriesScanned": 505793,
-  "aliasValuesRepointed": 0,
-  "aliasShardsTouched": 0,
+  "indexShardsTouched": 8,
+  "aliasEntriesScanned": 510526,
+  "aliasValuesRepointed": 1,
+  "aliasShardsTouched": 1,
   "entries": [
     {
-      "apiId": "07f36fcc-784f-42a2-af94-b7a1958be7aa",
+      "apiId": "998f4517-93b5-4c22-b658-c0bf521dab74",
+      "action": "promote",
+      "oldKey": "4057a263-8a28-4d43-943e-49e587035311"
+    },
+    {
+      "apiId": "f06e88b9-5098-4cb7-9763-f65da5541d9c",
+      "action": "promote",
+      "oldKey": "bc0c3cf0-55f2-43a4-a625-1a31ab1ee26a"
+    },
+    {
+      "apiId": "6ef51dcd-0977-4404-8c67-ae6d91e9b3ae",
+      "action": "promote",
+      "oldKey": "d3f3f9c5-df6d-4cf1-863c-4d5a3d29c5a1"
+    },
+    {
+      "apiId": "b0c46110-1762-4516-ba9d-303c0ddd449d",
       "action": "merge",
-      "oldKey": "3ff01d70-35bb-46f9-8070-aa394312b144",
-      "keeper": "3ff01d70-35bb-46f9-8070-aa394312b144",
+      "oldKey": "ed5b0acb-40fc-4af7-a377-7d36d25dee75",
+      "keeper": "ed5b0acb-40fc-4af7-a377-7d36d25dee75",
       "sourceRank": 3,
       "targetRank": 3,
       "sourceGames": 0,
-      "targetGames": 19,
-      "oldComparatorKeeper": "07f36fcc-784f-42a2-af94-b7a1958be7aa",
+      "targetGames": 36,
+      "oldComparatorKeeper": "b0c46110-1762-4516-ba9d-303c0ddd449d",
       "statsRefetchQueued": true
     }
   ]
