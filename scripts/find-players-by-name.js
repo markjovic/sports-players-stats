@@ -140,7 +140,17 @@ const NICK_GROUPS = [
   ['sophia','sophie','soph'], ['mackenzie','kenzie'], ['jacqueline','jacqui'],
   ['penelope','penny','peppa'], ['georgia','georgie'], ['annabelle','annie','belle','bella'],
   ['scarlett','scarlet'], ['willow','will'], ['imogen','indi','indie'], ['billie','billi','bill'],
-  ['melissa','lish'], ['alicia','alisha','lish'], ['aaliyah','aliyah'], ['milana','mila','milly'],
+  ['melissa','lish'], ['alicia','alisha','lish'], ['aaliyah','aliyah'], ['milana','mila'],
+  // Spelling variants, not short forms — the same name written two ways. Added
+  // 2026-10-10: the near-miss net found Indianna Van Dreumel under "Van Dreumel,
+  // Indi", which the table could not reach. The rest are the same class and are
+  // the common Australian junior-register pairs.
+  ['indi','indie','india','indiana','indianna'],
+  ['aiden','aidan','ayden','aden'], ['jaxson','jaxon','jackson'],
+  ['billie','billi','billy','bille'], ['charlie','charli','charley'],
+  ['lexie','lexi'], ['maisy','maisie','macy'], ['sophie','sofie','sofia','sophia'],
+  ['evie','evey','evy'], ['elsie','elsy'], ['tilly','tillie'], ['abby','abbie','abbey'],
+  ['harry','harrie'], ['ollie','olly','oli'], ['freddie','freddy'], ['tommy','tommie'],
   // Added 2026-10-10 from the first live run's NO MATCH list, where the near-miss
   // net found the child and the nickname table did not: Alisha Cigulov under
   // "Cigulov, Lish", Millie Faletoese under "Faletoese, Melia".
