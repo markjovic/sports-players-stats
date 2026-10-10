@@ -1,0 +1,67 @@
+# .github/workflows/find-players.yml
+#
+# Searches data/name-search.txt across every season and reports every
+# registration, plus who has been a team-mate or an opponent of one target
+# player.
+#
+# ⚠️ MAKES NO PlayHQ CALL and COMMITS NOTHING. It reads what is already on disk
+# and uploads three CSVs as a run artifact. The report names children, so it does
+# not go into the repo.
+#
+# EDIT THE NAME LIST FIRST: data/name-search.txt, one "Lastname, Firstname" per
+# line, # for comments. Edit it in the GitHub web UI.
+
+name: Find players by name
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'target — the player everyone is compared against, as "Lastname, Firstname"'
+        required: false
+        default: 'Jovic, Toby'
+        type: string
+      target_uuid:
+        description: 'target_uuid — only needed when the target name matches more than one person. The log prints the candidates.'
+        required: false
+        default: ''
+        type: string
+
+# Read-only. It cannot write to the repo even if it tried.
+permissions:
+  contents: read
+
+# NOTE: no concurrency group. It makes no PlayHQ call and writes nothing to the
+# repo, so queueing it behind a long fetch would cost a minute's work an hour's
+# wait for nothing.
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      # NOTE: no actions/setup-node. The runner ships Node and this makes no
+      # outbound request at all.
+      - name: Find
+        env:
+          FP_TARGET: ${{ inputs.target }}
+          FP_TARGET_UUID: ${{ inputs.target_uuid }}
+        run: |
+          node --version
+          node scripts/find-players.js
+
+      # ⚠️ always() — a run that fails partway may still have written useful CSVs,
+      # and losing them means running the whole search again to see them.
+      - name: Upload the reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: name-search-${{ github.run_number }}
+          path: reports/
+          if-no-files-found: warn
+          retention-days: 14
