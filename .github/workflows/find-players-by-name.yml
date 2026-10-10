@@ -1,0 +1,95 @@
+# .github/workflows/find-players-by-name.yml
+name: Find Players by Name
+
+# Answers three questions about a list of names, from data already on disk:
+# every team they have ever been registered to and the season it was in; whether
+# they have ever shared a game with a nominated player, as an OPPONENT or as a
+# TEAM-MATE; and what gender we hold for them. No PlayHQ calls — this reads
+# players/, data/sports-index.json, data/team-index.json and, for the handful of
+# seasons a shared game lands in, games/bv.
+#
+# THE NAME LIST lives in reports/name-search-input.json. Edit it in the GitHub web
+# UI and dispatch this workflow. Each entry may be "Lastname, Firstname" or
+# "Firstname Lastname" — both orders are tried, because a comma does not say which
+# one it is and guessing would be inventing a fact. The `names` input below
+# overrides the file for a one-off run that commits nothing.
+#
+# ⚠️ THE CSVs ARE A WORKFLOW ARTIFACT BY DEFAULT, NOT A COMMIT. This repository is
+# public. The input file names specific children and the output cross-references
+# them against one player, which is a different artefact from the bulk database
+# even though every underlying fact is already published. An artifact is visible
+# only to people with access to this repo. Tick `commit_report` if you want the
+# CSVs on main as well; that is a deliberate choice, not the default.
+#
+# NO data-write LOCK and no actions/setup-node. Nothing here writes repo data in
+# the default mode and nothing here fetches PlayHQ — but the setup-node rule is
+# repo-wide and this is one edit away from being a job that does, so it stays out.
+
+on:
+  workflow_dispatch:
+    inputs:
+      names:
+        description: 'One-off list, one name per line. Overrides reports/name-search-input.json and commits nothing. Leave BLANK to use the committed file.'
+        required: false
+        type: string
+      opponent:
+        description: 'Who to test "played against" for — a name, or a uuid prefix if the name is ambiguous. Blank uses the input file, which defaults to Toby Jovic.'
+        required: false
+        type: string
+      commit_report:
+        description: 'Also commit the CSVs to reports/ on main. Leave UNTICKED — the run artifact is the private copy.'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      # Plain full checkout. The scan walks every shard of players/, so a sparse
+      # checkout would silently search a subset — which would report "no match"
+      # for a child who is on file, the exact shape of silent failure this report
+      # is written to avoid.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        if: ${{ inputs.commit_report == true || inputs.commit_report == 'true' }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Search
+        env:
+          IN_NAMES:    ${{ inputs.names }}
+          IN_OPPONENT: ${{ inputs.opponent }}
+          IN_COMMIT:   ${{ inputs.commit_report }}
+        run: |
+          set -uo pipefail
+          ARGS=""
+          if [ -n "${IN_NAMES:-}" ];    then ARGS="$ARGS --names=$IN_NAMES"; fi
+          if [ -n "${IN_OPPONENT:-}" ]; then ARGS="$ARGS --opponent=$IN_OPPONENT"; fi
+          # An inline list is a one-off and is never committed, whatever the box says.
+          if [ "${IN_COMMIT:-false}" = "true" ] && [ -z "${IN_NAMES:-}" ]; then ARGS="$ARGS --commit"; fi
+          node scripts/find-players-by-name.js $ARGS
+
+      # always(): the script exits non-zero when the opponent cannot be resolved,
+      # and in that case the team-and-season CSV is still complete and still worth
+      # collecting. Losing the report because one column could not be computed
+      # would be the masking this script refuses to do.
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: name-search
+          path: |
+            reports/name-search.csv
+            reports/name-search-vs-opponent.csv
+          retention-days: 30
+          if-no-files-found: warn
