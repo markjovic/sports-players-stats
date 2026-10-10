@@ -140,7 +140,12 @@ const NICK_GROUPS = [
   ['sophia','sophie','soph'], ['mackenzie','kenzie'], ['jacqueline','jacqui'],
   ['penelope','penny','peppa'], ['georgia','georgie'], ['annabelle','annie','belle','bella'],
   ['scarlett','scarlet'], ['willow','will'], ['imogen','indi','indie'], ['billie','billi','bill'],
-  ['melissa','lish'], ['alicia','alisha'], ['aaliyah','aliyah'], ['milana','mila','milly'],
+  ['melissa','lish'], ['alicia','alisha','lish'], ['aaliyah','aliyah'], ['milana','mila','milly'],
+  // Added 2026-10-10 from the first live run's NO MATCH list, where the near-miss
+  // net found the child and the nickname table did not: Alisha Cigulov under
+  // "Cigulov, Lish", Millie Faletoese under "Faletoese, Melia".
+  ['amelia','melia','millie','milly','mia'], ['emily','em','emmy','emi'],
+  ['emma','em','emmy'], ['emmerson','em'], ['imogen','indi','indie','india'],
 ];
 const NICK = new Map();
 for (const group of NICK_GROUPS) {
@@ -274,17 +279,31 @@ function main() {
   // ── near-miss net ──────────────────────────────────────────────────────────
   // "Not in the database" is only useful if you can tell a child who has never
   // played from one whose name we hold differently. Any player sharing a whole
-  // TOKEN with a query is kept, capped, and printed under that query if and only
-  // if the query ends with no match. Costs one Map lookup per name token.
+  // TOKEN with an unmatched query is kept and printed beneath it.
+  //
+  // ⚠️ THE CAP IS PER TOKEN, NOT PER QUERY, AND THE RANKING IS BY RARITY. The
+  // first version capped at 8 per query in SCAN ORDER, which is uuid order and
+  // therefore arbitrary: "Chaplin, Em" filled all 8 slots with Chaplins whose
+  // given name was not Em, and an "Em Chaplin" sitting later in the shards could
+  // never have been shown. Worse, a common given name floods the list — every
+  // slot for "Mandis, James" went to a James, none to a Mandis.
+  //
+  // So each token keeps its own slots, and at print time candidates are scored by
+  // the INVERSE FREQUENCY of the tokens they share. A surname is rare and a given
+  // name is common, so sharing the surname outranks sharing the given name without
+  // either being hardcoded as such — which matters because the list is
+  // surname-first and a comma cannot say which half is which.
   const tokenToQueries = new Map();
-  const NEAR_CAP = 8;
+  const tokenFreq = new Map();                      // query token -> players carrying it
+  const NEAR_PER_TOKEN = 6;
+  const NEAR_SHOW = 10;
   const addTok = (t, qi) => {
     if (!t || t.length < 3) return;
     if (!tokenToQueries.has(t)) tokenToQueries.set(t, new Set());
     tokenToQueries.get(t).add(qi);
   };
 
-  queries.forEach((q, qi) => { q.near = []; for (const k of q.keys) for (const t of k.toks) addTok(t, qi); });
+  queries.forEach((q, qi) => { q.near = new Map(); for (const k of q.keys) for (const t of k.toks) addTok(t, qi); });
   console.log(`  Names to find   : ${queries.length}`);
   console.log(`  Source          : ${source}`);
   console.log(`  Opponent        : ${opponentSpec}`);
@@ -340,15 +359,24 @@ function main() {
         for (const k of q.keys) { rule = matchRule(k, ck); if (rule) break; }
         if (rule) q.hits.push({ uuid, p, rule });
       }
-      // Near-miss: shares a token with a query but did not match it.
-      const seenQ = new Set();
+      // Near-miss: shares a token with a query but did not match it. Slots are
+      // per token so a rare surname can never be crowded out by a common given
+      // name, and tokenFreq is counted here so the ranking below has something
+      // to rank with.
+      const tokSeen = new Set();
       for (const t of ck.toks) {
-        for (const qi of (tokenToQueries.get(t) || [])) {
-          if (seenQ.has(qi)) continue;
-          seenQ.add(qi);
+        if (tokSeen.has(t)) continue;
+        tokSeen.add(t);
+        const qis = tokenToQueries.get(t);
+        if (!qis) continue;
+        tokenFreq.set(t, (tokenFreq.get(t) || 0) + 1);
+        for (const qi of qis) {
           const q = queries[qi];
-          if (q.near.length < NEAR_CAP && !q.hits.some(h => h.uuid === uuid))
-            q.near.push({ name: p.name, uuid, seasons: (p.seasons || []).length });
+          if (q.hits.some(h => h.uuid === uuid)) continue;
+          if (!q.near.has(t)) q.near.set(t, []);
+          const slot = q.near.get(t);
+          if (slot.length < NEAR_PER_TOKEN)
+            slot.push({ name: p.name, uuid, seasons: (p.seasons || []).length, gender: p.gender || 'unknown' });
         }
       }
     }
@@ -537,9 +565,20 @@ function main() {
         ]);
 
         const k = full || key;
-        if (!mateTotals.has(k)) mateTotals.set(k, { name: r.name || mate?.name || `#${key}`, seasons: new Set(), together: 0, unreadable: false });
+        if (!mateTotals.has(k)) mateTotals.set(k, {
+          name: r.name || mate?.name || `#${key}`, gender: mate?.gender || 'unknown',
+          seasons: new Set(), together: 0, unreadable: false, rows: [],
+        });
         const agg = mateTotals.get(k);
+        if (agg.gender === 'unknown' && mate?.gender) agg.gender = mate.gender;
         agg.seasons.add(sid);
+        agg.rows.push({
+          season: se.name || sid,
+          team:   reg?.tn || team.meta?.name || te.n || tid,
+          grade:  reg?.gn || team.meta?.grade || gr.name || '',
+          together: typeof together === 'number' ? together : null,
+          theirGames: typeof theirGames === 'number' ? theirGames : null,
+        });
         // An unreadable player file must not roll up as a confident zero — that is
         // the same masking the CSV avoids by leaving the cell blank.
         if (typeof together === 'number') agg.together += together; else agg.unreadable = true;
@@ -550,6 +589,51 @@ function main() {
       console.log(`     Their team-mates are missing from the roster report because the file is not`);
       console.log(`     there to read — not because he had none. Rebuild team-stats for those seasons.`);
     }
+  }
+
+  // ── how a player is described in the log ──────────────────────────────────
+  // Name alone cannot be acted on: three Jack Bakers look identical until you can
+  // see which is a U13 boy at Whitehorse and which is a man playing seniors.
+  const genderOf = p => (p && p.gender) || 'unknown';
+  const teamLabel = tid => {
+    const te = teamById.get(tid) || {};
+    return te.n || tid || '(unknown team)';
+  };
+  const seasonLabel = sid => (sportIdx[sid] || {}).name || sid || '(unknown season)';
+  const gradeLabel = (sid, tid) => {
+    const te = teamById.get(tid) || {};
+    return te.grade || '';
+  };
+  // Shared games, grouped into one line per season and team.
+  function groupShared(list, keep) {
+    const m = new Map();
+    for (const x of list) {
+      if (!keep(x)) continue;
+      const k = `${x.sid}|${x.theirTid || ''}`;
+      if (!m.has(k)) m.set(k, { sid: x.sid, tid: x.theirTid, n: 0 });
+      m.get(k).n++;
+    }
+    return [...m.values()].sort((a, b) => b.n - a.n);
+  }
+  function detailLines(list, keep, indent = '        ') {
+    return groupShared(list, keep).map(gp => {
+      const gr = gradeLabel(gp.sid, gp.tid);
+      return `${indent}${seasonLabel(gp.sid)} · ${teamLabel(gp.tid)}${gr ? ' · ' + gr : ''}` +
+             ` — ${gp.n} game${gp.n === 1 ? '' : 's'}`;
+    });
+  }
+  // Up to `max` "Season · Team" pairs straight off a player's registrations,
+  // for players we hold no shared games with at all.
+  function careerLines(p, max = 3, indent = '        ') {
+    const out = [];
+    for (const season of (p.seasons || [])) {
+      for (const reg of (season.regs || [])) {
+        if (out.length >= max) return out;
+        out.push(`${indent}${seasonLabel(season.sid)} · ${reg.tn || teamLabel(reg.tid)}` +
+                 `${reg.gn ? ' · ' + reg.gn : ''}`);
+      }
+    }
+    return out;
   }
 
   // ── rows ───────────────────────────────────────────────────────────────────
@@ -663,41 +747,84 @@ function main() {
     for (const q of queries) {
       if (q.hits.length) continue;
       console.log(`\n    ${q.raw}`);
-      if (!q.near.length) { console.log('      (nothing in the database shares a word with this name)'); continue; }
-      for (const n of q.near) console.log(`      ? ${String(n.name).padEnd(32)} ${n.uuid.slice(0, 13)}  ${n.seasons} season(s)`);
+      if (!q.near.size) { console.log('      (nothing in the database shares a word with this name)'); continue; }
+      // Score by the rarity of the shared tokens, then by how established the
+      // player is. A shared surname outweighs a shared given name because it is
+      // rarer, not because anything here decided which half is the surname.
+      const byUuid = new Map();
+      for (const [t, list] of q.near) for (const n of list) {
+        if (!byUuid.has(n.uuid)) byUuid.set(n.uuid, { ...n, score: 0, via: [] });
+        const e = byUuid.get(n.uuid);
+        e.score += 1 / Math.max(1, tokenFreq.get(t) || 1);
+        e.via.push(t);
+      }
+      const ranked = [...byUuid.values()]
+        .sort((a, b) => b.score - a.score || b.seasons - a.seasons)
+        .slice(0, NEAR_SHOW);
+      for (const n of ranked)
+        console.log(`      ? ${String(n.name).padEnd(30)} ${String(n.gender).padEnd(8)}` +
+                    ` ${String(n.seasons).padStart(2)} season(s)  ${n.uuid.slice(0, 13)}   via ${n.via.join('+')}`);
     }
   }
   if (ambiguous.length) {
-    console.log(`\n  SEVERAL CANDIDATES (${ambiguous.length}) — all of them are in the CSV; nothing was chosen for you:`);
-    ambiguous.forEach(n => console.log(`    ${n}`));
+    console.log(`\n  SEVERAL CANDIDATES (${ambiguous.length}) — every one is in the CSV; nothing was chosen for you.`);
+    console.log(`  Gender and recent teams are shown so you can tell them apart: a "Men" or "Women"`);
+    console.log(`  grade on a junior list is an adult who happens to share the name.`);
+    for (const q of queries) {
+      if (q.hits.length < 2) continue;
+      console.log(`\n    ${q.raw} → ${q.hits.length} candidates`);
+      for (const h of q.hits) {
+        console.log(`      · ${String(h.p.name || '').padEnd(28)} ${genderOf(h.p).padEnd(8)}` +
+                    ` ${String((h.p.seasons || []).length).padStart(2)} season(s)  ${h.uuid.slice(0, 13)}  [${h.rule}]`);
+        careerLines(h.p, 2, '          ').forEach(l => console.log(l));
+      }
+    }
   }
 
   if (opponent) {
-    const nameOf = uuid => (queries.flatMap(q => q.hits).find(h => h.uuid === uuid) || {}).p?.name || uuid;
+    const recOf  = uuid => (queries.flatMap(q => q.hits).find(h => h.uuid === uuid) || {}).p || null;
+    const nameOf = uuid => recOf(uuid)?.name || uuid;
     const vsPlayers = [...shared.entries()].filter(([, l]) => l.some(x => x.same === false));
     const tmPlayers = [...shared.entries()].filter(([, l]) => l.some(x => x.same === true));
     const unkPlayers = [...shared.entries()].filter(([, l]) => l.some(x => x.same === null));
     console.log(`\n  PLAYED AGAINST ${opponent.p.name}:`);
     if (!vsPlayers.length) console.log('    none on record');
-    for (const [uuid, list] of vsPlayers.sort((a, b) => b[1].length - a[1].length))
-      console.log(`    ${nameOf(uuid).padEnd(30)} ${list.filter(x => x.same === false).length} game(s)`);
+    for (const [uuid, list] of vsPlayers.sort((a, b) => b[1].length - a[1].length)) {
+      const n = list.filter(x => x.same === false).length;
+      console.log(`    ${nameOf(uuid).padEnd(30)} ${genderOf(recOf(uuid)).padEnd(8)} ${String(n).padStart(3)} game(s)  ${uuid.slice(0, 13)}`);
+      detailLines(list, x => x.same === false).forEach(l => console.log(l));
+    }
     if (tmPlayers.length) {
       console.log(`\n  TEAM-MATES of ${opponent.p.name} (not opponents):`);
-      for (const [uuid, list] of tmPlayers.sort((a, b) => b[1].length - a[1].length))
-        console.log(`    ${nameOf(uuid).padEnd(30)} ${list.filter(x => x.same === true).length} game(s)`);
+      for (const [uuid, list] of tmPlayers.sort((a, b) => b[1].length - a[1].length)) {
+        const n = list.filter(x => x.same === true).length;
+        console.log(`    ${nameOf(uuid).padEnd(30)} ${genderOf(recOf(uuid)).padEnd(8)} ${String(n).padStart(3)} game(s)  ${uuid.slice(0, 13)}`);
+        detailLines(list, x => x.same === true).forEach(l => console.log(l));
+      }
     }
     const mates = [...mateTotals.values()].sort((a, b) => b.together - a.together || a.name.localeCompare(b.name));
     console.log(`\n  EVERY TEAM-MATE ${opponent.p.name} HAS EVER HAD: ${mates.length} players across ${new Set([].concat(...mates.map(m => [...m.seasons]))).size} season(s)`);
-    for (const m of mates.slice(0, 40))
-      console.log(`    ${m.name.padEnd(30)} ${(m.unreadable && !m.together ? '  ?' : String(m.together).padStart(3))}` +
-                  ` game(s) alongside   ${m.seasons.size} season(s)` +
+    for (const m of mates.slice(0, 60)) {
+      console.log(`    ${m.name.padEnd(30)} ${String(m.gender).padEnd(8)}` +
+                  ` ${(m.unreadable && !m.together ? '  ?' : String(m.together).padStart(3))} game(s) alongside` +
+                  `   ${m.seasons.size} season(s)` +
                   (m.unreadable ? '   (player file unreadable — not a zero)' : ''));
-    if (mates.length > 40) console.log(`    … and ${mates.length - 40} more — all of them are in opponent-teammates.csv`);
+      // One line per season and team, sorted by how much of it they shared.
+      for (const r of m.rows.slice().sort((a, b) => (b.together || 0) - (a.together || 0))) {
+        const tog = r.together === null ? '?' : r.together;
+        console.log(`        ${r.season} · ${r.team}${r.grade ? ' · ' + r.grade : ''}` +
+                    ` — ${tog} together of ${r.theirGames === null ? '?' : r.theirGames} they played`);
+      }
+    }
+    if (mates.length > 60) console.log(`    … and ${mates.length - 60} more — all of them are in opponent-teammates.csv`);
 
     if (unkPlayers.length) {
       console.log(`\n  SHARED A GAME, SIDE COULD NOT BE RESOLVED (${unkPlayers.length}) — counted as NEITHER:`);
-      for (const [uuid, list] of unkPlayers)
-        console.log(`    ${nameOf(uuid).padEnd(30)} ${list.filter(x => x.same === null).length} game(s)`);
+      for (const [uuid, list] of unkPlayers) {
+        const n = list.filter(x => x.same === null).length;
+        console.log(`    ${nameOf(uuid).padEnd(30)} ${genderOf(recOf(uuid)).padEnd(8)} ${String(n).padStart(3)} game(s)  ${uuid.slice(0, 13)}`);
+        detailLines(list, x => x.same === null).forEach(l => console.log(l));
+      }
     }
 
     console.log(`\n  ⚠  "none on record" is NOT "never happened". 442,939 appearances are known`);
