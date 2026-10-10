@@ -53,6 +53,12 @@ const SPORTS_IDX  = path.join(ROOT, 'data', 'sports-index.json');
 const TEAM_IDX    = path.join(ROOT, 'data', 'team-index.json');
 const OUT_TEAMS   = path.join(ROOT, 'reports', 'name-search.csv');
 const OUT_VS      = path.join(ROOT, 'reports', 'name-search-vs-opponent.csv');
+const OUT_MATES   = path.join(ROOT, 'reports', 'opponent-teammates.csv');
+
+// resolveToFullUuid turns the 13-char truncated key used in team-stats rosters
+// back into a real player file path. Same helper build-team-stats.js uses, so the
+// truncation rules can never drift between the writer and this reader.
+const { resolveToFullUuid } = require('./lib/uuid-prefix.cjs');
 
 // ─── git, house pattern ───────────────────────────────────────────────────────
 // Copied from build-team-stats.js: per-path adds (never -A), staged --shortstat
@@ -180,6 +186,45 @@ function matchRule(q, c) {
   return null;
 }
 
+// A stored roster id may be a 13-char truncated prefix OR a full uuid — measured
+// 2026-08-23 across 29,984,730 p[] entries: 99.24% truncated, 0.76% full, and no
+// roster lists the same person under both. Prefix-compare in either direction.
+const idMatch = (stored, full) => {
+  if (!stored || !full) return false;
+  const a = String(stored).toLowerCase(), b = String(full).toLowerCase();
+  return a === b || b.startsWith(a) || a.startsWith(b);
+};
+
+// WHICH TEAM WAS THIS PLAYER ON FOR THIS GAME?
+//
+// ⚠️ gameTids IS NOT THE ANSWER, and building on it is what made the first run of
+// this script report "none on record" for everything. fetch-profile-stats.js L452
+// writes gameTids ONLY when a player holds several teams in one season — it is a
+// disambiguation hint for the ambiguous minority, not a record of every game. Toby
+// Jovic has twelve seasons and no gameTids at all, which is normal, not broken.
+//
+// So it is used when present and three fallbacks follow it, in the order
+// StatTrack's own getTidForGame uses:
+//   1. gameTids, when this player is one of the ambiguous ones.
+//   2. The BOX SCORE. hp[]/ap[] carry a side; naming the player is proof.
+//   3. The REGISTRATION, but only when exactly one side is a team they hold for
+//      that season. Two matches is the ambiguity gameTids exists for, and is
+//      answered with null rather than a guess.
+// p[] is deliberately not consulted: it carries no side information at all
+// (build-team-stats.js says so in place), so it can prove presence and never team.
+function sideOf(p, uuid, gid, g, sid) {
+  const hint = (p.gameTids || {})[gid];
+  if (hint) return hint;
+  const h = g.h || g.t1 || null, a = g.a || g.t2 || null;
+  if ((g.hp || []).some(x => idMatch(x && x.profileID, uuid))) return h;
+  if ((g.ap || []).some(x => idMatch(x && x.profileID, uuid))) return a;
+  const tids = new Set();
+  for (const se of (p.seasons || [])) if (se.sid === sid)
+    for (const r of (se.regs || [])) if (r.tid) tids.add(r.tid);
+  const hit = [h, a].filter(t => t && tids.has(t));
+  return hit.length === 1 ? hit[0] : null;
+}
+
 const csvCell = v => {
   const s = String(v === null || v === undefined ? '' : v);
   return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
@@ -226,6 +271,20 @@ function main() {
     const keys = [...forms].map(keyOf).filter(Boolean);
     if (keys.length) queries.push({ raw: s, keys, hits: [] });
   }
+  // ── near-miss net ──────────────────────────────────────────────────────────
+  // "Not in the database" is only useful if you can tell a child who has never
+  // played from one whose name we hold differently. Any player sharing a whole
+  // TOKEN with a query is kept, capped, and printed under that query if and only
+  // if the query ends with no match. Costs one Map lookup per name token.
+  const tokenToQueries = new Map();
+  const NEAR_CAP = 8;
+  const addTok = (t, qi) => {
+    if (!t || t.length < 3) return;
+    if (!tokenToQueries.has(t)) tokenToQueries.set(t, new Set());
+    tokenToQueries.get(t).add(qi);
+  };
+
+  queries.forEach((q, qi) => { q.near = []; for (const k of q.keys) for (const t of k.toks) addTok(t, qi); });
   console.log(`  Names to find   : ${queries.length}`);
   console.log(`  Source          : ${source}`);
   console.log(`  Opponent        : ${opponentSpec}`);
@@ -281,6 +340,17 @@ function main() {
         for (const k of q.keys) { rule = matchRule(k, ck); if (rule) break; }
         if (rule) q.hits.push({ uuid, p, rule });
       }
+      // Near-miss: shares a token with a query but did not match it.
+      const seenQ = new Set();
+      for (const t of ck.toks) {
+        for (const qi of (tokenToQueries.get(t) || [])) {
+          if (seenQ.has(qi)) continue;
+          seenQ.add(qi);
+          const q = queries[qi];
+          if (q.near.length < NEAR_CAP && !q.hits.some(h => h.uuid === uuid))
+            q.near.push({ name: p.name, uuid, seasons: (p.seasons || []).length });
+        }
+      }
     }
   }
   console.log(`\n  Player files scanned: ${scanned}   parsed: ${parsed}`);
@@ -296,7 +366,7 @@ function main() {
   } else if (oppCandidates.length === 0) {
     oppFail = `no player matched the opponent "${opponentSpec}"`;
   } else {
-    const withGames = oppCandidates.filter(c => Object.keys(c.p.gameTids || {}).length > 0);
+    const withGames = oppCandidates.filter(c => (c.p.games || []).length > 0);
     if (withGames.length === 1) {
       opponent = withGames[0];
       console.log(`  Opponent: ${oppCandidates.length} name matches, exactly ONE with games on record`);
@@ -307,54 +377,187 @@ function main() {
     }
   }
   if (opponent) {
-    console.log(`  Opponent resolved: ${opponent.p.name}  ${opponent.uuid}` +
-                `  (${(opponent.p.seasons || []).length} seasons, ` +
-                `${Object.keys(opponent.p.gameTids || {}).length} games with a known team)`);
+    // games[] is the real game record and is written for every player. gameTids is
+    // printed beside it only so an empty one is never again mistaken for "no games".
+    console.log(`  Opponent resolved: ${opponent.p.name}  ${opponent.uuid}`);
+    console.log(`    seasons ${(opponent.p.seasons || []).length}   games[] ${(opponent.p.games || []).length}` +
+                `   gameTids ${Object.keys(opponent.p.gameTids || {}).length} (a hint for ambiguous seasons only — 0 is normal)`);
+    if (!(opponent.p.games || []).length)
+      console.log('    ⚠  games[] is EMPTY — nothing can be compared. Run Build Player Games before trusting any "none on record" below.');
   } else {
     console.log(`  ⚠  OPPONENT UNRESOLVED — ${oppFail}`);
     for (const c of oppCandidates.slice(0, 20))
       console.log(`       ${c.uuid}  ${c.p.name}  (${(c.p.seasons || []).length} seasons, ` +
-                  `${Object.keys(c.p.gameTids || {}).length} games)`);
+                  `${(c.p.games || []).length} games)`);
   }
-  const oppTids = opponent ? (opponent.p.gameTids || {}) : {};
 
   // ── shared games ───────────────────────────────────────────────────────────
-  // gameTids maps game id -> the team THAT player was on. Two players holding the
-  // same game id under DIFFERENT teams played against each other; under the SAME
-  // team they were team-mates. Both are reported, separately, because conflating
-  // them answers the wrong question.
-  const shared = new Map();                         // uuid -> [{gid, theirTid, oppTid, same}]
-  const sidsNeeded = new Set();
+  // The intersection is on games[], the bare game-id list build-player-games
+  // writes for EVERY player. Sides then come from the game files via sideOf().
+  // An earlier version intersected gameTids and reported "none on record" for all
+  // 187 names, because the opponent had no gameTids — see the note on sideOf.
+  //
+  // A game where either side cannot be resolved is counted as SIDE UNKNOWN and
+  // reported as its own number. It is not quietly dropped and it is not counted as
+  // "did not play against": those are different facts.
+  const oppGames = new Set(opponent ? (opponent.p.games || []) : []);
+  const gameIndex = new Map();                      // gid -> { sid, g }
+  if (opponent && oppGames.size) {
+    const sids = new Set((opponent.p.seasons || []).map(x => x && x.sid).filter(Boolean));
+    for (const tid of Object.values(opponent.p.gameTids || {})) {
+      const te = teamById.get(tid); if (te && te.sid) sids.add(te.sid);
+    }
+    for (const sid of sids) {
+      const f = path.join(GAMES_DIR, `${sid}.json`);
+      if (!fs.existsSync(f)) continue;
+      let games = null;
+      try { games = JSON.parse(fs.readFileSync(f, 'utf8')).games || {}; } catch (_) { continue; }
+      for (const gid of oppGames) if (games[gid] && !gameIndex.has(gid)) gameIndex.set(gid, { sid, g: games[gid] });
+    }
+    const unlocated = [...oppGames].filter(gid => !gameIndex.has(gid)).length;
+    console.log(`  Opponent games located: ${gameIndex.size} of ${oppGames.size}` +
+                (unlocated ? `   ⚠ ${unlocated} not found in any of his seasons' game files` : ''));
+  }
+
+  // gid -> the opponent's own team for that game, resolved once.
+  const oppSide = new Map();
+  for (const [gid, { sid, g }] of gameIndex) {
+    const t = sideOf(opponent.p, opponent.uuid, gid, g, sid);
+    if (t) oppSide.set(gid, t);
+  }
+  if (opponent && gameIndex.size)
+    console.log(`  Opponent's own team resolved for ${oppSide.size} of ${gameIndex.size} games`);
+
+  // Shared games for one player, classified. Used for the named list and again
+  // for the full team-mate roll-up below.
+  function sharedWith(p, uuid) {
+    const out = [];
+    for (const gid of (p.games || [])) {
+      const entry = gameIndex.get(gid);
+      if (!entry) continue;
+      const oTid = oppSide.get(gid);
+      const tTid = sideOf(p, uuid, gid, entry.g, entry.sid);
+      out.push({ gid, sid: entry.sid, g: entry.g, theirTid: tTid, oppTid: oTid,
+                 same: (tTid && oTid) ? tTid === oTid : null });
+    }
+    return out;
+  }
+
+  const shared = new Map();                         // uuid -> [shared game records]
   if (opponent) {
     for (const q of queries) for (const h of q.hits) {
-      if (h.uuid === opponent.uuid) continue;       // the opponent is in the list; he is not his own opponent
-      const list = [];
-      for (const [gid, tid] of Object.entries(h.p.gameTids || {})) {
-        const oTid = oppTids[gid];
-        if (!oTid) continue;
-        list.push({ gid, theirTid: tid, oppTid: oTid, same: oTid === tid });
-        const te = teamById.get(tid); if (te && te.sid) sidsNeeded.add(te.sid);
-        const oe = teamById.get(oTid); if (oe && oe.sid) sidsNeeded.add(oe.sid);
-      }
+      if (h.uuid === opponent.uuid) continue;       // he is not his own opponent
+      const list = sharedWith(h.p, h.uuid);
       if (list.length) shared.set(h.uuid, list);
     }
   }
-  // Only the seasons those games live in are opened — a handful of files, not the
-  // 2.3M-game corpus, because tid -> sid is already in data/team-index.json.
-  const gameCache = new Map();
-  for (const sid of sidsNeeded) {
-    const f = path.join(GAMES_DIR, `${sid}.json`);
-    if (!fs.existsSync(f)) continue;
-    try { gameCache.set(sid, (JSON.parse(fs.readFileSync(f, 'utf8')).games) || {}); } catch (_) {}
+  const gameOf = gid => (gameIndex.get(gid) || {}).g || null;
+
+  // ── EVERY TEAM-MATE THE OPPONENT HAS EVER HAD ─────────────────────────────
+  // Independent of the name list. The blocks above answer "did these 187 children
+  // ever meet Toby"; this answers "who has Toby actually played alongside", which
+  // is a different question and does not depend on anyone having guessed the right
+  // names in advance.
+  //
+  // The roster is the source, not the games. team-stats/bv/{sid}.json already
+  // holds every team's roster, built from registrations as well as box scores, so
+  // it includes a child who was on the team and never got on the floor — which a
+  // game-derived list would silently drop. Games shared are then counted from each
+  // roster member's own gameTids, so "on the team with him" and "actually played
+  // with him" are two columns rather than one conflated number.
+  //
+  // Cost is a handful of team-stats files plus one player file per roster member.
+  const mateRows = [[
+    'teammate', 'uuid', 'gender_recorded', 'season', 'season_id', 'competition',
+    'association', 'team', 'team_id', 'grade', 'grade_gender', 'grade_age',
+    'their_games_for_this_team', 'games_alongside_opponent', 'games_side_unknown', 'in_your_name_list',
+  ]];
+  const mateTotals = new Map();                     // key -> {name, seasons:Set, together:0}
+  if (opponent) {
+    // Teams he was registered to, PLUS teams he actually played for. A game can
+    // record a team the registration pass never saw (fill-in, late add), and
+    // leaving those out would lose exactly the ad-hoc team-mates worth knowing.
+    const oppTeams = new Map();                     // tid -> sid
+    for (const season of (opponent.p.seasons || []))
+      for (const reg of (season.regs || [])) if (reg.tid) oppTeams.set(reg.tid, season.sid);
+    for (const tid of Object.values(opponent.p.gameTids || {}))
+      if (!oppTeams.has(tid)) { const te = teamById.get(tid); if (te && te.sid) oppTeams.set(tid, te.sid); }
+
+    const listedUuids = new Set(queries.flatMap(q => q.hits).map(h => h.uuid));
+    const tsCache = new Map();
+    const mateFileCache = new Map();
+    let rosterMissing = 0;
+
+    for (const [tid, sid] of oppTeams) {
+      if (!tsCache.has(sid)) {
+        const f = path.join(ROOT, 'team-stats', 'bv', `${sid}.json`);
+        let d = null;
+        if (fs.existsSync(f)) { try { d = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (_) { d = null; } }
+        tsCache.set(sid, d);
+      }
+      const team = tsCache.get(sid)?.[tid];
+      if (!team) { rosterMissing++; continue; }
+      const se = sportIdx[sid] || {};
+      const te = teamById.get(tid) || {};
+      const reg = (opponent.p.seasons || []).flatMap(x => x.sid === sid ? (x.regs || []) : []).find(r => r.tid === tid);
+      const gr = reg && reg.gid ? (gradeById.get(reg.gid) || {}) : {};
+
+      for (const [key, r] of Object.entries(team.roster || {})) {
+        let full = null;
+        try { full = resolveToFullUuid(key, ROOT); } catch (_) { full = null; }
+        if (full && full === opponent.uuid) continue;
+        if (!full && (r.name || '') === opponent.p.name) continue;
+
+        let mate = null;
+        if (full) {
+          if (!mateFileCache.has(full)) {
+            const mf = path.join(PLAYERS_DIR, full.slice(0, 2), `${full}.json`);
+            let d = null;
+            if (fs.existsSync(mf)) { try { d = JSON.parse(fs.readFileSync(mf, 'utf8')); } catch (_) { d = null; } }
+            mateFileCache.set(full, d);
+          }
+          mate = mateFileCache.get(full);
+        }
+        // Games alongside: both hold the same game id under the SAME team. Blank
+        // rather than 0 when the player file could not be read — "we could not
+        // look" and "we looked and found none" are different answers.
+        let together = '', unknownSide = '', theirGames = '';
+        if (mate) {
+          const sh = sharedWith(mate, full);
+          theirGames  = sh.filter(x => x.theirTid === tid).length;
+          together    = sh.filter(x => x.same === true  && x.theirTid === tid).length;
+          unknownSide = sh.filter(x => x.same === null).length;
+        }
+        mateRows.push([
+          r.name || mate?.name || `#${key}`, full || key, mate?.gender || 'unknown',
+          se.name || sid, sid, se.compName || te.comp || '', se.orgName || '',
+          reg?.tn || team.meta?.name || te.n || '', tid,
+          reg?.gn || team.meta?.grade || gr.name || '', gr.gender || '', gr.age || '',
+          theirGames, together, unknownSide, listedUuids.has(full) ? 'yes' : '',
+        ]);
+
+        const k = full || key;
+        if (!mateTotals.has(k)) mateTotals.set(k, { name: r.name || mate?.name || `#${key}`, seasons: new Set(), together: 0, unreadable: false });
+        const agg = mateTotals.get(k);
+        agg.seasons.add(sid);
+        // An unreadable player file must not roll up as a confident zero — that is
+        // the same masking the CSV avoids by leaving the cell blank.
+        if (typeof together === 'number') agg.together += together; else agg.unreadable = true;
+      }
+    }
+    if (rosterMissing) {
+      console.log(`  ⚠  ${rosterMissing} of ${oppTeams.size} of the opponent's teams have NO roster in team-stats/bv.`);
+      console.log(`     Their team-mates are missing from the roster report because the file is not`);
+      console.log(`     there to read — not because he had none. Rebuild team-stats for those seasons.`);
+    }
   }
-  const gameOf = gid => { for (const games of gameCache.values()) if (games[gid]) return games[gid]; return null; };
 
   // ── rows ───────────────────────────────────────────────────────────────────
   const teamRows = [[
     'query', 'matched_name', 'match_rule', 'uuid', 'gender_recorded', 'private',
     'season', 'season_id', 'competition', 'association', 'team', 'team_id',
     'grade', 'grade_gender', 'grade_age', 'games_with_this_team',
-    'vs_opponent_games_on_record', 'teammate_games_on_record',
+    'vs_opponent_games_on_record', 'teammate_games_on_record', 'shared_games_side_unknown',
   ]];
   const vsRows = [[
     'query', 'matched_name', 'uuid', 'relationship', 'season', 'game_id',
@@ -396,8 +599,9 @@ function main() {
             se.name || season.sid, season.sid, se.compName || te.comp || '', se.orgName || '',
             reg.tn || te.n || '', reg.tid, reg.gn || gr.name || '', gr.gender || '', gr.age || '',
             gamesPerTid[reg.tid] || 0,
-            sh.filter(x => !x.same && x.theirTid === reg.tid).length,
-            sh.filter(x =>  x.same && x.theirTid === reg.tid).length,
+            sh.filter(x => x.same === false && x.theirTid === reg.tid).length,
+            sh.filter(x => x.same === true  && x.theirTid === reg.tid).length,
+            sh.filter(x => x.same === null).length,
           ]);
         }
       }
@@ -420,7 +624,8 @@ function main() {
           result = mine > them ? 'W' : mine < them ? 'L' : 'D';
         }
         vsRows.push([
-          q.raw, h.p.name || '', h.uuid, x.same ? 'team-mate' : 'opponent',
+          q.raw, h.p.name || '', h.uuid,
+          x.same === true ? 'team-mate' : x.same === false ? 'opponent' : 'side unknown',
           se.name || te.sid || '', x.gid, g.d || '', g.rn || '',
           te.n || x.theirTid, oe.n || x.oppTid, score, result,
         ]);
@@ -433,6 +638,7 @@ function main() {
     fs.mkdirSync(path.dirname(OUT_TEAMS), { recursive: true });
     fs.writeFileSync(OUT_TEAMS, teamRows.map(csvRow).join('\n') + '\n');
     fs.writeFileSync(OUT_VS,    vsRows.map(csvRow).join('\n') + '\n');
+    fs.writeFileSync(OUT_MATES, mateRows.map(csvRow).join('\n') + '\n');
   }
 
   // ── summary ────────────────────────────────────────────────────────────────
@@ -451,8 +657,15 @@ function main() {
     Object.entries(genderCount).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join('   ') || '(none)');
 
   if (unmatched.length) {
-    console.log(`\n  NO MATCH (${unmatched.length}) — not in the database under any spelling tried:`);
-    unmatched.forEach(n => console.log(`    ${n}`));
+    console.log(`\n  NO MATCH (${unmatched.length}) — not in the database under any spelling tried.`);
+    console.log(`  Each is followed by every player sharing a word with the name, so you can tell a`);
+    console.log(`  child who has never played from one we hold under a different spelling.`);
+    for (const q of queries) {
+      if (q.hits.length) continue;
+      console.log(`\n    ${q.raw}`);
+      if (!q.near.length) { console.log('      (nothing in the database shares a word with this name)'); continue; }
+      for (const n of q.near) console.log(`      ? ${String(n.name).padEnd(32)} ${n.uuid.slice(0, 13)}  ${n.seasons} season(s)`);
+    }
   }
   if (ambiguous.length) {
     console.log(`\n  SEVERAL CANDIDATES (${ambiguous.length}) — all of them are in the CSV; nothing was chosen for you:`);
@@ -461,17 +674,32 @@ function main() {
 
   if (opponent) {
     const nameOf = uuid => (queries.flatMap(q => q.hits).find(h => h.uuid === uuid) || {}).p?.name || uuid;
-    const vsPlayers = [...shared.entries()].filter(([, l]) => l.some(x => !x.same));
-    const tmPlayers = [...shared.entries()].filter(([, l]) => l.some(x =>  x.same));
+    const vsPlayers = [...shared.entries()].filter(([, l]) => l.some(x => x.same === false));
+    const tmPlayers = [...shared.entries()].filter(([, l]) => l.some(x => x.same === true));
+    const unkPlayers = [...shared.entries()].filter(([, l]) => l.some(x => x.same === null));
     console.log(`\n  PLAYED AGAINST ${opponent.p.name}:`);
     if (!vsPlayers.length) console.log('    none on record');
     for (const [uuid, list] of vsPlayers.sort((a, b) => b[1].length - a[1].length))
-      console.log(`    ${nameOf(uuid).padEnd(30)} ${list.filter(x => !x.same).length} game(s)`);
+      console.log(`    ${nameOf(uuid).padEnd(30)} ${list.filter(x => x.same === false).length} game(s)`);
     if (tmPlayers.length) {
       console.log(`\n  TEAM-MATES of ${opponent.p.name} (not opponents):`);
       for (const [uuid, list] of tmPlayers.sort((a, b) => b[1].length - a[1].length))
-        console.log(`    ${nameOf(uuid).padEnd(30)} ${list.filter(x => x.same).length} game(s)`);
+        console.log(`    ${nameOf(uuid).padEnd(30)} ${list.filter(x => x.same === true).length} game(s)`);
     }
+    const mates = [...mateTotals.values()].sort((a, b) => b.together - a.together || a.name.localeCompare(b.name));
+    console.log(`\n  EVERY TEAM-MATE ${opponent.p.name} HAS EVER HAD: ${mates.length} players across ${new Set([].concat(...mates.map(m => [...m.seasons]))).size} season(s)`);
+    for (const m of mates.slice(0, 40))
+      console.log(`    ${m.name.padEnd(30)} ${(m.unreadable && !m.together ? '  ?' : String(m.together).padStart(3))}` +
+                  ` game(s) alongside   ${m.seasons.size} season(s)` +
+                  (m.unreadable ? '   (player file unreadable — not a zero)' : ''));
+    if (mates.length > 40) console.log(`    … and ${mates.length - 40} more — all of them are in opponent-teammates.csv`);
+
+    if (unkPlayers.length) {
+      console.log(`\n  SHARED A GAME, SIDE COULD NOT BE RESOLVED (${unkPlayers.length}) — counted as NEITHER:`);
+      for (const [uuid, list] of unkPlayers)
+        console.log(`    ${nameOf(uuid).padEnd(30)} ${list.filter(x => x.same === null).length} game(s)`);
+    }
+
     console.log(`\n  ⚠  "none on record" is NOT "never happened". 442,939 appearances are known`);
     console.log(`     missing from our rosters, so a shared game FOUND is strong evidence and a`);
     console.log(`     shared game NOT found is weak. See OUTSTANDING_TASKS, appearance gap.`);
@@ -479,8 +707,10 @@ function main() {
 
   console.log(`\n  Written: ${path.relative(ROOT, OUT_TEAMS)}`);
   console.log(`           ${path.relative(ROOT, OUT_VS)}`);
+  console.log(`           ${path.relative(ROOT, OUT_MATES)}`);
   if (DRY_RUN)        console.log('  ⚠  DRY RUN — nothing written');
-  else if (DO_COMMIT) gitCommit('find-players-by-name: report', ['reports/name-search.csv', 'reports/name-search-vs-opponent.csv']);
+  else if (DO_COMMIT) gitCommit('find-players-by-name: report',
+    ['reports/name-search.csv', 'reports/name-search-vs-opponent.csv', 'reports/opponent-teammates.csv']);
   else                console.log("  (not committed — download them from the run's artifact)");
 
   if (oppFail) {
