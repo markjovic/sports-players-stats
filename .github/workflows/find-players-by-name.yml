@@ -1,12 +1,18 @@
 # .github/workflows/find-players-by-name.yml
 name: Find Players by Name
 
-# Answers three questions about a list of names, from data already on disk:
-# every team they have ever been registered to and the season it was in; whether
-# they have ever shared a game with a nominated player, as an OPPONENT or as a
-# TEAM-MATE; and what gender we hold for them. No PlayHQ calls — this reads
-# players/, data/sports-index.json, data/team-index.json and, for the handful of
-# seasons a shared game lands in, games/bv.
+# Answers four questions from data already on disk, with no PlayHQ calls. It reads
+# players/, team-stats/bv, data/sports-index.json, data/team-index.json and, for
+# the handful of seasons a shared game lands in, games/bv.
+#
+# About a LIST OF NAMES: every team they have ever been registered to and the
+# season it was in; whether they have ever shared a game with a nominated player,
+# as an OPPONENT or as a TEAM-MATE; and what gender we hold for them.
+#
+# About the NOMINATED PLAYER, independent of that list: every team-mate he has
+# ever had, from the team ROSTERS rather than from games — so a child who was on
+# the team and never got on the floor is in the report, which a game-derived list
+# would silently drop. That is reports/opponent-teammates.csv.
 #
 # THE NAME LIST lives in reports/name-search-input.json. Edit it in the GitHub web
 # UI and dispatch this workflow. Each entry may be "Lastname, Firstname" or
@@ -91,5 +97,6 @@ jobs:
           path: |
             reports/name-search.csv
             reports/name-search-vs-opponent.csv
+            reports/opponent-teammates.csv
           retention-days: 30
           if-no-files-found: warn
