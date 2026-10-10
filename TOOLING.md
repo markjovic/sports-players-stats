@@ -80,6 +80,7 @@ from a report a live script still reads.
 - `discover-game-backfill.js`
 - `find-flag-collisions.js`
 - `find-players-by-team.js`
+- `find-players-by-name.js`
 - `find-shell-aliases.js`
 - `fix-merge-aliases.js`
 - `measure-playhq-limits.js`
@@ -228,6 +229,7 @@ kept out of that group are classified in 2.2.
 - `find-code-refs.yml`
 - `find-flag-collisions.yml`
 - `find-players-by-team.yml`
+- `find-players-by-name.yml`
 - `find-root-json-refs.yml`
 - `find-shell-aliases.yml`
 - `generate-roster.yml`
@@ -318,6 +320,7 @@ each entry are recorded outside this repository.
 - `git-history-recovery-report.json`
 - `manual-alias-decisions.json`
 - `misrouted-appearances.json`
+- `name-search-input.json`
 - `rebuild-player-index.json`
 - `rekey-apply-log.json`
 - `rekey-enrich-report.json`
