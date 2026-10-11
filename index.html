@@ -335,6 +335,29 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .ssl{font-size:0.58rem;color:#555;text-transform:uppercase;letter-spacing:0.04em;margin-top:1px}
 
 .empty{padding:36px 18px;text-align:center;color:var(--text3);font-size:0.85rem}
+/* ── Clubs tab (v1.22) ── */
+.cweek-nav{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:6}
+.cweek-nav button{padding:4px 10px;border-radius:5px;border:1px solid var(--border);font-size:0.78rem;color:var(--text2);transition:all 0.1s;white-space:nowrap}
+.cweek-nav button:hover{background:var(--elevated);color:var(--text)}
+.cweek-nav .cwk-lbl{flex:1;text-align:center;font-size:0.8rem;color:var(--text2);font-weight:600}
+.cweek-jump{display:flex;align-items:center;gap:8px;padding:6px 14px;border-bottom:1px solid var(--border);font-size:0.75rem;color:var(--text3)}
+.cweek-jump input{padding:3px 8px;font-size:0.78rem}
+.cday-hdr{padding:9px 14px;font-size:0.82rem;font-weight:700;color:var(--text1);border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:41px;z-index:5}
+.cday-hdr .cday-n{font-weight:400;color:var(--text3);font-size:0.74rem;margin-left:6px}
+.ccomp-hdr{padding:5px 14px 5px 18px;font-size:0.71rem;font-weight:600;color:var(--text2);background:var(--elevated);border-bottom:1px solid var(--border);letter-spacing:0.02em}
+.crow{display:grid;grid-template-columns:3.4rem 1fr auto auto;gap:8px;padding:9px 12px 9px 18px;border-bottom:1px solid var(--border);align-items:center;cursor:pointer;transition:background 0.1s;border-left:3px solid transparent}
+.crow:hover{background:var(--elevated)}
+.crow.gf{border-left-color:gold}
+.crow.sf{border-left-color:silver}
+.crow.cmine2{border-left-color:var(--accent)}
+.ctime{font-size:0.74rem;color:var(--text2);font-variant-numeric:tabular-nums}
+.cteam{font-size:0.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.copp{font-size:0.78rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.cmeta{font-size:0.69rem;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cscore{font-size:0.86rem;font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.cnote{padding:8px 14px;font-size:0.72rem;color:var(--text3);border-bottom:1px solid var(--border);line-height:1.5}
+.cnote b{color:var(--text2);font-weight:600}
+@media(max-width:480px){.crow{grid-template-columns:2.9rem 1fr auto;gap:6px;padding-left:14px}.crow .g-res{display:none}}
 
 @media(max-width:768px){
   #app{flex-direction:column}
@@ -434,12 +457,13 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
       <span class="help-dot" onclick="openHelp()" title="What the numbers mean">?</span>
-      <span class="rail-ver">v1.20</span>
+      <span class="rail-ver">v1.22</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
       <button class="stab" data-tab="teams">Teams</button>
       <button class="stab" data-tab="venues">Venues</button>
+      <button class="stab" data-tab="clubs">Clubs</button>
       <button class="stab" data-tab="leaders">Top</button>
     </div>
     <div id="pnl-players" class="panel">
@@ -466,6 +490,11 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
       </div>
       <div id="res-vn" class="sresults"></div>
     </div>
+    <div id="pnl-clubs" class="panel hidden">
+      <div class="swrap-hdr"><span>Club</span><button class="rbtn" onclick="resetClub()">✕ Clear</button></div>
+      <div class="swrap"><input id="q-cl" class="sinput" placeholder="Search clubs… (e.g. kilsyth, eltham)" autocomplete="off" spellcheck="false"></div>
+      <div id="res-cl" class="sresults"></div>
+    </div>
     <div id="pnl-leaders" class="panel hidden"></div>
   </div>
 
@@ -475,6 +504,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div id="view-team" class="hidden"></div>
     <div id="view-venue" class="hidden"></div>
     <div id="view-opp" class="hidden"></div>
+    <div id="view-club" class="hidden"></div>
     <div id="view-leaders" class="hidden">
       <div id="lb-header" style="position:sticky;top:0;background:var(--surface);z-index:5;border-bottom:1px solid var(--border)">
         <div class="lb-top-nav">
@@ -483,6 +513,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
             <button class="lb-tab-btn" onclick="switchFromTop('players')">Players</button>
             <button class="lb-tab-btn" onclick="switchFromTop('teams')">Teams</button>
             <button class="lb-tab-btn" onclick="switchFromTop('venues')">Venues</button>
+            <button class="lb-tab-btn" onclick="switchFromTop('clubs')">Clubs</button>
             <button class="lb-tab-btn on">Top</button>
             <button class="lb-tab-btn" id="lb-records-btn" onclick="toggleRecords()">Records</button>
           </div>
@@ -555,6 +586,10 @@ const S = {
   seasonVenueIdx:null, venueSeasonFilter:null, lbData:{}, lbScope:'all', lbStat:'pts', lbMinGP:10,
   playerUuid:null, teamId:null, teamSid:null, venueId:null,
   calOffset:0, // weeks offset from today for venue calendar
+
+  /* Clubs (v1.22). clubIdx is data/club-index.json — 866 rows, fetched once.
+     clubs[cid] is clubs/{cid}.json. clubWeek is the Monday of the week on show. */
+  clubIdx:null, clubs:{}, clubId:null, clubName:'', clubWeek:null, clubRun:0,
 };
 
 /* ── Helpers ── */
@@ -583,6 +618,7 @@ function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 function resetPlayer(){const q=document.getElementById('q-pl');if(q)q.value='';const r=document.getElementById('res-pl');if(r){r.innerHTML='';r.style.display='none';}}
 function resetTeam(){const q=document.getElementById('q-tm');if(q)q.value='';const sn=document.getElementById('q-sn');if(sn)sn.selectedIndex=0;buildCompPicker();const r=document.getElementById('res-tm');if(r)r.innerHTML='';}
 function resetVenue(){const q=document.getElementById('q-vn');if(q)q.value='';const vd=document.getElementById('q-vdate');if(vd)vd.value='';const vs=document.getElementById('q-vsn');if(vs)vs.selectedIndex=0;const r=document.getElementById('res-vn');if(r)r.innerHTML='';const ga=document.getElementById('vgrid-area');if(ga)ga.innerHTML='';const cs=document.getElementById('cal-section');if(cs)cs.innerHTML='';}
+function resetClub(){const q=el('q-cl');if(q)q.value='';const r=el('res-cl');if(r)r.innerHTML='';renderClubs(S.clubIdx||[],'');}
 function resetLB(){const o=document.getElementById('lb-org');if(o)o.value='';const c=document.getElementById('lb-comp');if(c)c.value='';const g=document.getElementById('lb-grade');if(g)g.value='';const a=document.getElementById('lb-age');if(a)a.value='';const gn=document.getElementById('lb-gender');if(gn)gn.value='';const mg=document.getElementById('lb-mingp');if(mg)mg.value='10';renderLB(S.lbData[S.lbScope]?.[S.lbStat]||[],S.lbData[S.lbScope]||{});}
 // Recent searches (localStorage)
 function getRecent(k){try{return JSON.parse(localStorage.getItem('st_'+k)||'[]');}catch{return[];}}
@@ -1054,6 +1090,7 @@ function hashFor(type,d){
   if(type==='venue')  return `v=${e(d.vid)}` + (d.vname?`&vn=${e(d.vname)}`:'');
   if(type==='opp')    return `o=${e(d.oppTid)}&s=${e(d.sid)}` + (d.fromUuid?`&f=${e(d.fromUuid)}`:'');
   if(type==='teamopp')return `mo=${e(d.myTid)}&o=${e(d.oppTid)}&s=${e(d.sid)}`;
+  if(type==='club')   return `c=${e(d.cid)}` + (d.cname?`&cn=${e(d.cname)}`:'') + (d.week?`&w=${e(d.week)}`:'');
   return '';
 }
 /* The share link is always absolute and always names index.html — GitHub Pages
@@ -1074,6 +1111,7 @@ function applyHash(){
   if(q.p)       { loadPlayer(q.p,false); return true; }
   if(q.t&&q.s)  { loadTeam(q.t,q.s,false); return true; }
   if(q.v)       { loadVenue(q.v,q.vn||'',undefined,false); return true; }
+  if(q.c)       { loadClub(q.c,q.cn||'',q.w||null,false); return true; }
   if(q.mo&&q.o&&q.s){ openTeamOpp(q.mo,q.o,q.s,false,false); return true; }
   if(q.o&&q.s)  { openOpp(q.o,q.s,q.f,false); return true; }
   return false;
@@ -1118,7 +1156,7 @@ function selectShare(){
 
 /* ── Navigation / history ── */
 function showV(id){
-  ['view-home','view-player','view-team','view-venue','view-opp','view-leaders'].forEach(v=>el(v).classList.toggle('hidden',v!==id));
+  ['view-home','view-player','view-team','view-venue','view-opp','view-club','view-leaders'].forEach(v=>el(v).classList.toggle('hidden',v!==id));
   // Scroll main to top on every view change
   const m=el('main');if(m)m.scrollTop=0;
   // Shown on every view INCLUDING home — home is a link worth sharing, it is just
@@ -1173,6 +1211,8 @@ window.addEventListener('popstate',e=>{
     loadVenue(e.state.vid,e.state.vname,undefined,false);
   }else if(type==='opp'){
     openOpp(e.state.oppTid,e.state.sid,e.state.fromUuid,false);
+  }else if(type==='club'){
+    loadClub(e.state.cid,e.state.cname,e.state.week,false);
   }else if(type==='teamopp'){
     openTeamOpp(e.state.myTid,e.state.oppTid,e.state.sid,e.state.isUpcoming,false);
   }else{showV('view-home');}
@@ -1194,7 +1234,8 @@ async function boot(){
 /* ── Tabs ── */
 function switchTab(tab){
   document.querySelectorAll('.stab').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
-  ['players','teams','venues','leaders'].forEach(t=>el('pnl-'+t).classList.toggle('hidden',t!==tab));
+  ['players','teams','venues','clubs','leaders'].forEach(t=>el('pnl-'+t).classList.toggle('hidden',t!==tab));
+  if(tab==='clubs')  buildClubList();
   if(tab==='leaders'){showV('view-leaders');loadLB();}
 }
 function switchFromTop(tab){
@@ -2008,9 +2049,30 @@ async function loadTeamIdx(){if(!S.teamIdx){S.teamIdx=await gj(BASE+'/data/team-
    team's most recent GAME, which is the only thing that can answer "currently".
    That file is fetched per sid and cached in S.teamStats, where loadTeam() was
    going to fetch it anyway the moment a result is clicked. */
-function seasonSidsFor(sn,comp){
+/* — A COMPETITION IS NOT ITS NAME — ------------------------------------------
+   Associations reuse competition names freely: "Junior Domestic" is run by dozens
+   of them. Keying this dropdown on compName (the first version, 2026-10-05)
+   collapsed every one of them into a SINGLE option, so choosing it merged several
+   associations' teams into one list AND unioned their grades, with nothing on
+   screen to say so. That is exactly the silent merge this filter exists to remove,
+   reintroduced one level up.
+   sports-index carries compId, orgId and orgName per season, so the KEY is the
+   competition id and the LABEL names the association. compId is PlayHQ's own and
+   unique across organisations; the fallback key still separates by org, so an
+   entry missing compId cannot merge with another association's. */
+function compKeyOf(se){
+  return se.compId || ('n:'+(se.compName||'')+'|o:'+(se.orgId||se.orgName||''));
+}
+function compLabelOf(se){
+  const c=se.compName||'(unnamed competition)',o=se.orgName||'';
+  /* Several compNames already carry the association, usually bracketed on the end.
+     Appending it again reads as a bug, so only add what is missing. */
+  if(!o||c.toLowerCase().includes(o.toLowerCase()))return c;
+  return c+' \u2014 '+o;
+}
+function seasonSidsFor(sn,compKey){
   return Object.entries(S.idx?.seasons||{})
-    .filter(([,se])=>se.name===sn&&(!comp||(se.compName||'')===comp))
+    .filter(([,se])=>se.name===sn&&(!compKey||compKeyOf(se)===compKey))
     .map(([sid])=>sid);
 }
 function buildCompPicker(){
@@ -2020,12 +2082,22 @@ function buildCompPicker(){
     gr.innerHTML='<option value="">Grade \u2014 select a competition</option>';gr.disabled=true;
     return;
   }
-  const comps=[...new Set(seasonSidsFor(sn).map(sid=>S.idx.seasons[sid].compName||'').filter(Boolean))].sort();
+  const seen=new Map();
+  for(const sid of seasonSidsFor(sn)){
+    const se=S.idx.seasons[sid],k=compKeyOf(se);
+    if(!seen.has(k))seen.set(k,compLabelOf(se));
+  }
+  /* Two DIFFERENT competitions can still produce the same label — same name, same
+     association. Disambiguate by id rather than let them look like one entry. */
+  const counts={};for(const l of seen.values())counts[l]=(counts[l]||0)+1;
+  const comps=[...seen.entries()]
+    .map(([k,l])=>({k,l:counts[l]>1?`${l} (${k.slice(0,6)})`:l}))
+    .sort((a,b)=>a.l.localeCompare(b.l));
   cp.disabled=false;
-  cp.innerHTML='<option value="">All competitions</option>'+comps.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  cp.innerHTML='<option value="">All competitions</option>'+comps.map(c=>`<option value="${esc(c.k)}">${esc(c.l)}</option>`).join('');
   /* One competition is not a choice — select it so the grade list opens straight
      away rather than making the user pick the only option there is. */
-  if(comps.length===1)cp.value=comps[0];
+  if(comps.length===1)cp.value=comps[0].k;
   buildGradePicker();
 }
 function buildGradePicker(){
@@ -2077,7 +2149,11 @@ async function searchTeams(q){
     /* Prefer the CURRENT grade when the season's team-stats are already loaded;
        t.grade is the first-seen one and can be a grading-round grade months old. */
     const live=S.teamStats[t.sid]?.[t.id]?.meta?.grade;
-    const sub=[t.comp,live||t.grade].filter(Boolean).join(' \u00b7 ')||si?.name||sn;
+    /* si carries compName AND the association; t.comp is the bare name. With no
+       competition chosen this list spans associations, so the bare name would make
+       two different competitions look like one. */
+    const compTxt=si?compLabelOf(si):(t.comp||'');
+    const sub=[compTxt,live||t.grade].filter(Boolean).join(' \u00b7 ')||si?.name||sn;
     return`<div class="ri" data-tid="${esc(t.id)}" data-sid="${esc(t.sid)}"><div class="ri-name">${esc(t.n)}</div><div class="ri-sub">${esc(sub)}</div></div>`;
   }).join('');
   re.querySelectorAll('.ri').forEach(r=>r.addEventListener('click',()=>{addRecent('teams',q||sn);loadTeam(r.dataset.tid,r.dataset.sid);if(window.innerWidth<=768)el('rail').classList.add('mob-hide');}));
@@ -2482,6 +2558,289 @@ function renderVGrid(day,container){
       }
     });
   });
+}
+
+/* ── CLUBS (v1.22) ───────────────────────────────────────────────────────────
+   Pick a club, see every team it runs in one Mon–Sun week: results and upcoming
+   games, grouped BY DAY and then BY COMPETITION inside the day.
+
+   WHERE THE CLUB COMES FROM. Nowhere in this repo before 2026-10-11. `club`
+   everywhere else here is `season.club`, which nightly-crawl.js writes as the
+   sports-index `orgName` — the ASSOCIATION, not the club — and team-stats
+   `meta.club` is only ever populated for teams that have played no games. The
+   real club is PlayHQ's team `organisation`, captured by build-club-index.js
+   into clubs/{clubId}.json. Measured over the whole database: 408,784 teams,
+   100.0% of them carrying a club, 866 clubs.
+
+   ⚠️ ASSOCIATIONS APPEAR IN THE CLUB LIST AND ARE NOT FILTERED (Mark, 2026-10-11).
+   The five largest are leagues and associations, not clubs — VJBL alone owns
+   10,371 teams — because PlayHQ genuinely records a rep team as belonging to
+   VJBL. Hiding them would make 10,371 teams unreachable. Do not "tidy" this.
+
+   ⚠️ READ THE GAME FILE, NOT team-stats. A team-stats fixture carries only
+   {gameId,date,rn,oppId,oppName,result,score,st} — no time, no venue, no court
+   and no per-game grade. games/bv/{sid}.json carries all of them, and it is the
+   cache the game sheet and the team view already use, so a click through to a
+   box score afterwards costs nothing.
+
+   ⚠️ g.h/g.a is NEVER sufficient — a game carries h/a OR t1/t2, never both
+   (T44). Every id here goes through hTid()/aTid() and every name through
+   teamNames(), exactly as the other nineteen sites do. */
+
+const CLUB_SEASON_CAP     = 8;   // games files fetched for one week, at most
+const CLUB_DERIVED_MONTHS = 15;  // implied season length when endDate is absent
+
+function dAdd(ds, n){ const d = new Date(ds + 'T00:00:00'); d.setDate(d.getDate() + n); return mkDate(d); }
+function addMonths(ds, n){ const d = new Date(ds + 'T00:00:00'); d.setMonth(d.getMonth() + n); return mkDate(d); }
+/* Monday of the week containing ds. dayOfWeek is 0=Sun..6=Sat, so Monday is 0
+   back and Sunday is 6 back — NOT dow-1, which sends Sunday forward six days
+   into the following week. */
+function mondayOf(ds){
+  const [y, m, dy] = ds.split('-').map(Number);
+  return dAdd(ds, -(((dayOfWeek(y, m, dy)) + 6) % 7));
+}
+function clubWeekLabel(mon){ return fmtDow(mon) + ' – ' + fmtDow(dAdd(mon, 6)); }
+
+/* ── Club search ── */
+async function buildClubList(){
+  const re = el('res-cl');
+  if(!S.clubIdx){
+    if(re) re.innerHTML = '<div class="load-row">Loading clubs…</div>';
+    S.clubIdx = await gj(BASE + '/data/club-index.json');
+    if(!S.clubIdx){
+      // Explicit about WHICH thing is missing — "no clubs found" would read as
+      // an answer when it is a failure to load.
+      if(re) re.innerHTML = '<div class="ri-empty">Club list unavailable — data/club-index.json could not be loaded.</div>';
+      return;
+    }
+  }
+  if(re && !re.innerHTML.includes('data-cid')) renderClubs(S.clubIdx, '');
+}
+function searchClubs(){
+  const q = (el('q-cl').value || '').trim();
+  const list = S.clubIdx || [];
+  renderClubs(q ? list.filter(c => tokenMatch(c.n || c.id, q)) : list, q);
+}
+function renderClubs(list, q){
+  const re = el('res-cl'); if(!re) return;
+  if(!list.length){ re.innerHTML = '<div class="ri-empty">No clubs found</div>'; return; }
+  re.innerHTML = list.slice(0, 80).map(c =>
+      `<div class="ri" data-cid="${esc(c.id)}" data-cn="${esc(c.n || c.id)}">`
+    + `<div class="ri-name">${esc(c.n || c.id)}</div>`
+    + `<div class="ri-sub">${(c.t || 0).toLocaleString()} teams · ${c.s || 0} season${c.s === 1 ? '' : 's'}</div></div>`
+    ).join('')
+    + (list.length > 80 ? `<div class="ri-empty">${list.length - 80} more — keep typing to narrow</div>` : '');
+  re.querySelectorAll('.ri[data-cid]').forEach(r => r.addEventListener('click', () => {
+    addRecent('clubs', r.dataset.cn);
+    loadClub(r.dataset.cid, r.dataset.cn, null);
+    if(window.innerWidth <= 768) el('rail').classList.add('mob-hide');
+  }));
+}
+
+/* ── Club view ── */
+async function loadClub(cid, cname, week, push = true){
+  const mon = mondayOf(week || mkDate(new Date()));
+  if(push) navigate('club', { cid, cname, week: mon });
+  showV('view-club');
+  S.clubId = cid; S.clubName = cname || ''; S.clubWeek = mon;
+  const ve = el('view-club');
+  ve.innerHTML = '<div class="load-row">Loading…</div>';
+  if(!S.clubs[cid]){
+    const d = await gj(BASE + '/clubs/' + cid + '.json');
+    if(!d){
+      ve.innerHTML = `<div class="vhdr"><button class="vback" onclick="history.back()">←</button>
+        <div><div class="vtitle">${esc(cname || cid)}</div><div class="vsub">Club file not found</div></div></div>
+        <div class="empty">clubs/${esc(cid)}.json could not be loaded. The club index may be newer than the published club files — re-run Build Club Index.</div>`;
+      return;
+    }
+    S.clubs[cid] = d;
+  }
+  if(!S.clubName) S.clubName = S.clubs[cid].n || cid;
+  renderClubShell();
+  renderClubWeek();
+}
+
+function renderClubShell(){
+  const ve = el('view-club'), club = S.clubs[S.clubId] || {};
+  const sids = Object.keys(club.seasons || {});
+  const nTeams = sids.reduce((t, s) => t + ((club.seasons[s] || []).length), 0);
+  ve.innerHTML = `<div class="vhdr"><button class="vback" onclick="history.back()">←</button>
+    <div><div class="vtitle">${esc(S.clubName || club.n || S.clubId)}</div>
+    <div class="vsub">${nTeams.toLocaleString()} team${nTeams === 1 ? '' : 's'} across ${sids.length} season${sids.length === 1 ? '' : 's'}</div></div></div>
+  <div class="cweek-nav">
+    <button onclick="shiftClubWeek(-1)">← Prev</button>
+    <span class="cwk-lbl" id="cwk-lbl">${esc(clubWeekLabel(S.clubWeek))}</span>
+    <button onclick="shiftClubWeek(1)">Next →</button>
+  </div>
+  <div class="cweek-jump">
+    <label for="cwk-date">Jump to a date:</label>
+    <input id="cwk-date" type="date" class="sinput" style="width:auto" value="${esc(S.clubWeek)}" onchange="jumpClubWeek(this.value)">
+    <button class="rbtn" style="margin-left:auto" onclick="jumpClubWeek('${esc(mkDate(new Date()))}')">This week</button>
+  </div>
+  <div id="cweek-body"></div>`;
+}
+
+/* Stepping through weeks REPLACES the history entry rather than pushing one.
+   Twenty clicks forward must not become twenty presses of Back to leave. */
+function setClubWeek(mon){
+  S.clubWeek = mon;
+  history.replaceState({ type: 'club', cid: S.clubId, cname: S.clubName, week: mon }, '',
+                       '#' + hashFor('club', { cid: S.clubId, cname: S.clubName, week: mon }));
+  const l = el('cwk-lbl'); if(l) l.textContent = clubWeekLabel(mon);
+  const d = el('cwk-date'); if(d) d.value = mon;
+  renderClubWeek();
+}
+function shiftClubWeek(dir){ setClubWeek(dAdd(S.clubWeek, dir * 7)); }
+function jumpClubWeek(ds){
+  if(!ds || !/^\d{4}-\d{2}-\d{2}$/.test(ds)) return;
+  setClubWeek(mondayOf(ds));
+}
+
+/* Which of the club's seasons could hold a game this week?
+   startDate/endDate come from data/sports-index.json. 808 seasons carry NO
+   endDate — they are returned by no organisation and it will not improve by
+   re-asking — so an absent end is handled explicitly instead of being read as
+   "ended": an UNLOCKED season is still running and always qualifies, and a
+   LOCKED one with no end is capped at CLUB_DERIVED_MONTHS after its start.
+   That cap is a display heuristic, never stored, and the number of seasons
+   admitted without a real end date is reported in the UI — so an empty week can
+   never be mistaken for a complete answer. */
+function clubSeasonCandidates(mon, sun){
+  const club = S.clubs[S.clubId] || {}, out = [];
+  for(const sid of Object.keys(club.seasons || {})){
+    const se = S.idx?.seasons?.[sid] || null;
+    const st = se && se.startDate ? String(se.startDate).slice(0, 10) : null;
+    const en = se && se.endDate   ? String(se.endDate).slice(0, 10)   : null;
+    if(st && st > sun) continue;                                   // starts after this week
+    if(en){ if(en < mon) continue; }                               // ended before it
+    else if(se && se.locked === true && st && addMonths(st, CLUB_DERIVED_MONTHS) < mon) continue;
+    out.push({ sid, se, st, noEnd: !en });
+  }
+  // Most recent first, so the CAP keeps the seasons most likely to be relevant.
+  out.sort((a, b) => String(b.st || '').localeCompare(String(a.st || '')));
+  return out;
+}
+
+async function renderClubWeek(){
+  const run = ++S.clubRun;
+  const body = el('cweek-body'); if(!body) return;
+  const mon = S.clubWeek, sun = dAdd(mon, 6);
+  const club = S.clubs[S.clubId] || {};
+  body.innerHTML = '<div class="load-row">Loading week…</div>';
+
+  const all = clubSeasonCandidates(mon, sun);
+  if(!all.length){
+    body.innerHTML = `<div class="empty">None of this club's ${Object.keys(club.seasons || {}).length} seasons covers ${esc(clubWeekLabel(mon))}.</div>`;
+    return;
+  }
+  const picked = all.slice(0, CLUB_SEASON_CAP), skipped = all.length - picked.length;
+  const noEnd  = picked.filter(c => c.noEnd).length;
+
+  await Promise.all(picked.map(async c => {
+    if(!S.games[c.sid]){ const d = await sgj('games/bv', c.sid); S.games[c.sid] = d || { games: {} }; }
+  }));
+  // A later week may have been asked for while these were in flight. Without
+  // this the slower fetch repaints over the newer one and the view silently
+  // shows a week the user is no longer on.
+  if(run !== S.clubRun) return;
+
+  const rows = [];
+  for(const c of picked){
+    const gf   = S.games[c.sid] || { games: {} };
+    const mine = new Set((club.seasons[c.sid] || []).map(x => String(x).slice(0, 8)));
+    const comp = c.se ? compLabelOf(c.se) : c.sid;
+    for(const [gid, g] of Object.entries(gf.games || {})){
+      if(!g || g.cancelled || g.bye) continue;
+      const d = g.d ? String(g.d).slice(0, 10) : '';
+      if(!d || d < mon || d > sun) continue;
+      const h = String(hTid(g) || '').slice(0, 8), a = String(aTid(g) || '').slice(0, 8);
+      const hMine = !!(h && mine.has(h)), aMine = !!(a && mine.has(a));
+      if(!hMine && !aMine) continue;
+      const [hn, an] = teamNames(g);
+      rows.push({ gid, sid: c.sid, d, g, comp, hMine, aMine, hn: hn || '', an: an || '' });
+    }
+  }
+
+  let note = `<div class="cnote">Checked <b>${picked.length}</b> season${picked.length === 1 ? '' : 's'} for this week`;
+  if(noEnd)   note += ` · <b>${noEnd}</b> of them ${noEnd === 1 ? 'has' : 'have'} no recorded end date, so ${noEnd === 1 ? 'it is' : 'they are'} included on an assumed ${CLUB_DERIVED_MONTHS}-month season`;
+  if(skipped) note += ` · ⚠ <b>${skipped}</b> further season${skipped === 1 ? '' : 's'} also overlapped this week and ${skipped === 1 ? 'was' : 'were'} NOT checked (cap ${CLUB_SEASON_CAP})`;
+  note += '.</div>';
+
+  if(!rows.length){
+    body.innerHTML = note + `<div class="empty">No games for ${esc(S.clubName)} in ${esc(clubWeekLabel(mon))}.</div>`;
+    return;
+  }
+
+  // Day, then competition inside the day. Rows by time, then by team name.
+  const byDay = new Map();
+  for(const r of rows){ if(!byDay.has(r.d)) byDay.set(r.d, []); byDay.get(r.d).push(r); }
+
+  let h = note;
+  for(const day of [...byDay.keys()].sort()){
+    const dayRows = byDay.get(day);
+    h += `<div class="cday-hdr">${esc(fmtDow(day))}<span class="cday-n">${dayRows.length} game${dayRows.length === 1 ? '' : 's'}</span></div>`;
+    const byComp = new Map();
+    for(const r of dayRows){ if(!byComp.has(r.comp)) byComp.set(r.comp, []); byComp.get(r.comp).push(r); }
+    for(const comp of [...byComp.keys()].sort((a, b) => a.localeCompare(b))){
+      h += `<div class="ccomp-hdr">${esc(comp)}</div>`;
+      const list = byComp.get(comp).sort((x, y) =>
+        String(x.g.t || '~').localeCompare(String(y.g.t || '~')) ||
+        clubMyName(x).localeCompare(clubMyName(y)));
+      for(const r of list) h += clubRowHTML(r);
+    }
+  }
+  body.innerHTML = h;
+
+  body.querySelectorAll('.crow').forEach(row => row.addEventListener('click', () => {
+    const gid = row.dataset.gid, sid = row.dataset.sid;
+    // Same behaviour as the team Fixtures tab: a played game opens the box
+    // score, an unplayed one opens the team-vs-team view.
+    if(row.dataset.played === '1'){ openSheet(gid, sid); return; }
+    const g = S.games[sid]?.games?.[gid];
+    const hh = hTid(g), aa = aTid(g);
+    if(g && hh && aa){
+      const mineTid = row.dataset.mytid || hh;
+      openTeamOpp(mineTid, mineTid === hh ? aa : hh, sid, true);
+    } else openSheet(gid, sid);
+  }));
+}
+
+function clubMyName(r){ return r.aMine && !r.hMine ? r.an : r.hn; }
+
+function clubRowHTML(r){
+  const g = r.g;
+  const both = r.hMine && r.aMine;                       // an intra-club game
+  const myIsHome = both ? true : r.hMine;
+  const myName  = myIsHome ? r.hn : r.an;
+  const oppName = myIsHome ? r.an : r.hn;
+  const myTid   = String((myIsHome ? hTid(g) : aTid(g)) || '');
+  const hs = (g.hs === undefined || g.hs === null) ? null : g.hs;
+  const as = (g.as === undefined || g.as === null) ? null : g.as;
+  const mine = myIsHome ? hs : as, theirs = myIsHome ? as : hs;
+
+  let res = null, played = false;
+  if(mine !== null && theirs !== null){ played = true; res = mine > theirs ? 'W' : mine < theirs ? 'L' : 'D'; }
+  else if(g.forfeit){ played = true; res = (g.fo && String(g.fo).slice(0, 8) === myTid.slice(0, 8)) ? 'W' : 'L'; }
+
+  const score = played && mine !== null && theirs !== null ? `${mine}-${theirs}` : '';
+  // An intra-club game has no "us" and "them", so a W/L badge would be a lie.
+  const resH  = both ? '<div class="g-res rU">—</div>'
+              : res  ? `<div class="g-res r${res}">${res}</div>`
+                     : `<div class="g-res rU">${esc(g.st === 'UPCOMING' || g.st === 'PRE_GAME' ? '—' : (g.st || '—'))}</div>`;
+
+  const meta = [g.gn || '', g.vn || '', g.ct || '', g.rn || ''].filter(Boolean).join(' · ');
+  const cls  = [finalClass(g.rn), both ? 'cmine2' : ''].filter(Boolean).join(' ');
+
+  return `<div class="crow${cls ? ' ' + cls : ''}" data-gid="${esc(r.gid)}" data-sid="${esc(r.sid)}" data-played="${played ? 1 : 0}" data-mytid="${esc(myTid)}">
+    <div class="ctime">${esc(g.t || '—')}</div>
+    <div>
+      <div class="cteam">${esc(myName || '—')}${both ? ' <span style="font-weight:400;color:var(--text3)">(club v club)</span>' : ''}</div>
+      <div class="copp">${both ? 'v ' : (myIsHome ? 'v ' : '@ ')}${esc(oppName || '—')}</div>
+      ${meta ? `<div class="cmeta">${esc(meta)}</div>` : ''}
+    </div>
+    <div class="cscore">${esc(score)}</div>
+    ${resH}
+  </div>`;
 }
 
 /* ── Game sheet ── */
@@ -3397,6 +3756,8 @@ el('q-cp').addEventListener('change',()=>{buildGradePicker();searchTeams(el('q-t
 el('q-gr').addEventListener('change',()=>searchTeams(el('q-tm').value.trim()));
 el('q-tm').addEventListener('input',debounce(e=>searchTeams(e.target.value.trim()),250));
 el('q-tm').addEventListener('focus',()=>{if(!el('q-tm').value.trim()&&el('q-sn').value)showRecent('teams',el('res-tm'),v=>{el('q-tm').value=v;searchTeams(v);});});
+el('q-cl').addEventListener('input',debounce(()=>searchClubs(),200));
+el('q-cl').addEventListener('focus',()=>{if(!el('q-cl').value.trim())showRecent('clubs',el('res-cl'),v=>{el('q-cl').value=v;searchClubs();});});
 el('q-vn').addEventListener('input',debounce(()=>searchVenues(),200));
 el('q-vn').addEventListener('focus',()=>{if(!el('q-vn').value.trim())showRecent('venues',el('res-vn'),v=>{el('q-vn').value=v;searchVenues();});});
 el('q-vdate').addEventListener('change',()=>onVenueDateChange());

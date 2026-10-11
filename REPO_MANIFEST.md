@@ -3991,5 +3991,73 @@ already classified (§ lines 146 and 284).
 
 ---
 
+### 6.65 · 2026-10-11 — STATTRACK v1.22: THE CLUBS TAB
+
+**A fifth top tab — Players / Teams / Venues / Clubs / Top.** Pick a club, see every team it runs in
+one **Mon–Sun** week, grouped **by day and then by competition** inside the day. Prev / Next week
+buttons, a date picker, and a "This week" reset. Decisions are Mark's, 2026-10-11, recorded in §6.64.
+
+⚠️ **BOTH COPIES.** `markjovic/stattrack/index.html` is CANONICAL and the data repo's root
+`index.html` is a MIRROR that Pages also serves. Identical content, same pass, or the live app is
+stale on one origin.
+
+**The row reads the GAME FILE, not team-stats.** A team-stats fixture carries only
+`{gameId,date,rn,oppId,oppName,result,score,st}` — **no time, no venue, no court, no per-game
+grade**, which is four of the eight fields the row needs. `games/bv/{sid}.json` carries all of them
+AND is the cache `openSheet` and the team view already use, so clicking a row through to a box score
+afterwards costs nothing. One file per candidate season per club, cached in `S.games`.
+
+**Which seasons are fetched for a week, and why it is bounded.** Candidates are the club's seasons
+whose `startDate`/`endDate` in `data/sports-index.json` overlap the week. **808 seasons carry no
+`endDate`** and never will (returned by no organisation), so an absent end is handled explicitly
+rather than read as "ended": an UNLOCKED season is still running and always qualifies; a LOCKED one
+with no end is capped at `CLUB_DERIVED_MONTHS` (15) after its start. That cap is a DISPLAY
+heuristic, never stored, **and the number of seasons admitted without a real end date is printed in
+the UI**, as is the count of any beyond `CLUB_SEASON_CAP` (8) that were not checked — so an empty
+week can never be mistaken for a complete answer.
+
+**Load order note:** `loadClub` paints the shell and fires `renderClubWeek()` WITHOUT awaiting it,
+so the header and week nav appear before the games files land. That is deliberate; a test that reads
+the body straight after `loadClub` resolves will find it empty.
+
+**Week stepping uses `replaceState`, not `pushState`.** Twenty clicks forward must not become twenty
+presses of Back to leave the club.
+
+**Verified by execution — 49 assertions against the shipped bytes**, the script extracted from
+`index.html` and run under `vm.runInThisContext` with a stub DOM and a stub `fetch` serving
+real-shaped `club-index` / `clubs/{id}` / `sports-index` / `games/bv/{sid}` files:
+
+- **`mondayOf` on all seven days of one week**, plus a year boundary (Fri 2027-01-01 → 2026-12-28),
+  a leap day, and the AEDT changeover Sunday. Monday is `(dow+6)%7` back — `dow-1` sends SUNDAY
+  FORWARD SIX DAYS into the following week, which would have shown the wrong week every Sunday.
+- **Side inversion.** An AWAY game names MY team first, inverts the score (`41-48`, not `48-41`),
+  renders **L not W**, prefixes `@` rather than `v`, and sets `data-mytid` to my side. Getting this
+  backwards is the exact shape of the 2026-10-01 fixture-row fault.
+- **T44.** A `t1`/`t2`-shaped game resolves names and result identically to an `h`/`a` one. Every id
+  goes through `hTid()`/`aTid()`, every name through `teamNames()`.
+- **Forfeits** decided from the record's own `fo`, both directions, with no scoreline invented.
+- **An intra-club game is rendered ONCE, marked, and carries NO W/L badge** — there is no "us" and
+  "them", so a result letter would be a lie.
+- **Filtering**: out-of-week, other-club, `cancelled` and `bye` games all absent; a 2021 season's
+  games file never fetched for a 2026 week.
+- **Grouping and order**: day headers in date order, competition headers alphabetical INSIDE each
+  day and re-opened per day, rows by time then team name.
+- **The race guard.** A slower older week cannot repaint over a newer one — without
+  `if(run !== S.clubRun) return;` the view silently shows a week the user has already left.
+- **An empty week still prints what was checked**, so "no games" and "we did not look" never read
+  the same.
+
+⚠️ **A pre-existing wart the tests pin rather than fix.** `compLabelOf` de-duplicates only in one
+direction — it tests whether the COMP name contains the ORG name. When the org string is the longer
+one it doubles up: *"Victorian Junior Basketball League — Victorian Junior Basketball League
+(VJBL)"*. It is EXISTING shared code that also labels the Teams tab's competition filter, so it is
+asserted as it behaves and **left alone**; tightening it is Mark's call, not a side effect of this
+feature.
+
+**Open against this feature:** `stattrack_html_design.md` has no Clubs section and still describes
+the app as current to v1.21.
+
+---
+
 **Highest trap number after this session: T78.** Before adding one, run
 `grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.
