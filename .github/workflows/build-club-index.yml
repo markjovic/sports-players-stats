@@ -1,0 +1,109 @@
+# .github/workflows/build-club-index.yml
+name: Build Club Index
+
+# BUILDS THE CLUB MAP — one discoverTeams(filter:{seasonID}) request per season.
+#
+# WHY. There is no club anywhere in this repository's stored data. `season.club`
+# everywhere here is sports-index `orgName` — the ASSOCIATION (EDJBA, Camberwell),
+# written by nightly-crawl.js L1229/L1346 — and `team-stats` meta.club is set only
+# for registration-only teams (build-team-stats.js L338-339 passes '' for every
+# team met in the games loop). The real club is PlayHQ's team `organisation`.
+#
+# AUTHORISED BY MEASUREMENT, not by assumption. probe-discover-teams.js, live,
+# 2026-10-11, four seasons — club populated on 100.0% of teams in every one, and
+# 100.0% of the teams we hold in data/team-index.json would receive a club:
+#   1ae60211 EDJBA Winter 2026   [active] 2,093 teams · 22 clubs · 1660/1660 held
+#   aacc7335 Camberwell Winter   [active]   672 teams · 14 clubs ·  514/514  held
+#   7ccb2e98 Altona Winter       [active]   385 teams · 20 clubs ·  374/374  held
+#   9358e51a Waverley Spring '23 [LOCKED]   229 teams ·  7 clubs ·  222/222  held
+# The LOCKED 2023 season answering exactly like the active ones is what makes a
+# full historical sweep viable.
+#
+# OUTPUTS: club-map/bv/{sid}.json, clubs/{clubId}.json (MERGED, never replaced),
+# data/club-index.json. ~15 MB in total against a 763 MB Pages artifact.
+#
+# ⚠️ NO `data-write` LOCK, DELIBERATELY. This writes club-map/, clubs/ and
+# data/club-index.json — not player files, not games/, not sports-index.json. No
+# other writer touches any of them, so the `merge -X ours` hazard that the lock
+# exists to prevent (two writers of the SAME file, second silently keeping its own
+# copy) cannot arise here. Taking the lock would instead serialise a ~70-minute
+# job behind the nightly and expose it to T19 eviction. Adding `concurrency:` is
+# one line if that reasoning ever stops holding.
+#
+# ⚠️ NO actions/setup-node. This job fetches api.playhq.com — setup-node changes
+# the runner's outbound fingerprint and CloudFront 403s every request including
+# session acquisition. ABSOLUTE and per-JOB.
+#
+# A SEASON THAT COULD NOT BE ASKED IS NEVER WRITTEN, and the run exits non-zero
+# listing every one. Re-dispatch with resume ticked to retry only those.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — ask PlayHQ but write and commit nothing'
+        required: false
+        default: false
+        type: boolean
+      active_only:
+        description: 'Active seasons only (locked:false). Historical clubs already on disk are PRESERVED, never deleted.'
+        required: false
+        default: false
+        type: boolean
+      season:
+        description: 'Single season id (blank = every season in sports-index)'
+        required: false
+        type: string
+      resume:
+        description: 'Resume — ask only the seasons a previous run of the same mode did not complete'
+        required: false
+        default: false
+        type: boolean
+      include_removed:
+        description: 'Also ask seasons flagged removed:true (normally pointless — PlayHQ already answered "no grades" for them)'
+        required: false
+        default: false
+        type: boolean
+      concurrency:
+        description: 'Seasons asked in parallel. Default 1 — the probe proved 1, anything higher is a NEW experiment against a WAF that has refused this repo before.'
+        required: false
+        default: '1'
+        type: string
+      commit_every:
+        description: 'Commit and push every N seasons (default 250)'
+        required: false
+        default: '250'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-club-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # NO setup-node — this job fetches api.playhq.com. See the header.
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Build club index
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ];         then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.active_only }}" = "true" ];     then ARGS="$ARGS --active-only"; fi
+          if [ "${{ inputs.resume }}" = "true" ];          then ARGS="$ARGS --resume"; fi
+          if [ "${{ inputs.include_removed }}" = "true" ]; then ARGS="$ARGS --include-removed"; fi
+          if [ -n "${{ inputs.season }}" ];                then ARGS="$ARGS --season=${{ inputs.season }}"; fi
+          if [ -n "${{ inputs.concurrency }}" ];           then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
+          if [ -n "${{ inputs.commit_every }}" ];          then ARGS="$ARGS --commit-every=${{ inputs.commit_every }}"; fi
+          echo "args: $ARGS"
+          node --max-old-space-size=8192 scripts/build-club-index.js $ARGS
