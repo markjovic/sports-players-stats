@@ -207,6 +207,7 @@ build-finals-stats, build-leaderboards, build-player-games, build-records (they 
 | `salvage-spectator-names.js` | ONE-TIME batched spectator-roster name salvage for placeholdered stragglers; `--plan` / `--shard=N` / `--reconcile`; per-game exhaustion — only confirms a placeholder when EVERY game was reached, never freezes on a transient miss **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | salvage-spectator-names.yml (dispatch) | players/{xx}/*, spectator.playhq.com | players/{xx}/*.json, players/indexes/{xx} (reconcile only) |
 | `fold-diverged-players.js` | Move apiId-bearing player files to their api-id path; relocate index entries. **2026-09-01: the MERGE keeper changed.** It kept whichever record held more `games[]` entries — a captured-side count deciding ownership of credited-side data, and inverted in the population it meets (stub median 69 games, real profile 1). It now keeps whichever record actually holds stats, drops `statsChecked` on a tie so the next matrix run settles it, and dispatches a targeted re-fetch for those players. Run #77 rescued **533 of 541 merges** | fold-diverged-players.yml (matrix terminal / manual) | players/**, players/indexes | players/{xx}/*, players/indexes/{xx} (moves), refetch-shards.json |
 | `discover-seasons.js` | Detect seasons/grades; burst+cursor shard mode; roster backfill. **2026-10-05 (§6.61): moved from `https.request` to nightly-crawl's `fetch()` client, verbatim — the client was what PlayHQ refused; session bookkeeping on `lib/playhq-session.cjs`; a refused bootstrap stops the shard at its cursor with `noSession:true` in the artifact instead of re-asking every batch; a rejected probe joins the retry list instead of being stepped over; the standalone path's `ReferenceError: retryList` after commit fixed** | discover-seasons-matrix.yml, discover-seasons.yml, test-backfill.yml, diagnose-season-grades.yml | data/sports-index.json, data/discover-progress.json, players | data/sports-index.json, data/discover-progress.json, players/{xx}/*, `.discover-*-progress` |
+| `build-club-index.js` | **NEW 2026-10-11 (§6.64).** Builds the CLUB map: one `discoverTeams(filter:{seasonID})` per season, reading the team `organisation` — the OWNING CLUB, which exists nowhere else in this repo (`season.club` is the ASSOCIATION). Writes `club-map/bv/{sid}.json`, `clubs/{clubId}.json` (**MERGED, never replaced** — an `--active-only` run must not delete a club's historical seasons) and `data/club-index.json`. A season that could not be ASKED is never written and the run exits NON-ZERO listing them; `--resume` retries only those. Aborts after 25 consecutive failures rather than grinding a dead cookie (2026-10-04 cost four hours). Shrink guard on `club-index.json`. Session/headers/doFetch copied VERBATIM from `probe-discover-teams.js` | discover-fixtures (concurrency 5 pattern), probe-discover-teams | data/sports-index.json, clubs/, PlayHQ | club-map/bv/{sid}.json, clubs/{clubId}.json, data/club-index.json, data/club-index-progress.json |
 | `build-team-stats.js` | Per-team season stats; --active-only for nightly. **Roster stats sourced from player reg stats (games/bv p[] has NO stat lines)** — hence the matrix-terminal trigger (§1.3). TRUNC_LEN import + placeholder fix 2026-07-21. **2026-07-29: gitCommit upgraded to the house pattern (was the last 10-attempt outlier, and it SWALLOWED total push failure); dead `p[]` loop removed** | nightly-crawl.yml, weekly-indexes.yml, build-team-stats.yml, **matrix terminal (2026-07-21)** | games/bv, players | team-stats/bv/{sid}.json |
 | `build-player-games.js` (ESM) | Per-player game index | weekly-indexes.yml, build-player-games.yml | games/bv, players | players/**/*.json, `.build-player-games-progress.json` |
 | `seed-apiid-from-playhq-pairs.js` | Writes `player.apiId` on wrongly-keyed players paired to an api id by PlayHQ, so the fold can rekey them. Refuses on surname disagreement and on an unusable name into a merge. **2026-09-01: the `stubWouldOverwriteRealProfile` refusal was REMOVED** — it existed only because the fold's keeper rule let a bigger stub replace a real profile, which is fixed; `keeperOutlook` now mirrors the new rule and its warning block is a drift tripwire that must read 0 **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | seed-apiid-from-playhq-pairs.yml (dispatch) | reports/wrongly-keyed-census.json, PlayHQ | players/{xx}/*.json (apiId only), reports/apiid-seed-log.json |
@@ -423,6 +424,7 @@ diagnostics is preserved in §6.7. There is no remaining "to delete" list — th
 | `fetch-profile-stats-matrix.yml` | dispatch (by nightly / add-player / self) | fetch-profile-stats.js × 256; terminal fold+rebuilds+**team-stats (2026-07-21)** | git-add fixed 07-16; stop-button fixed 2026-07-21 (apply/summary gates → `!cancelled()`) |
 | `discover-seasons-matrix.yml` | dispatch (by nightly Sundays / self) | discover-seasons.js × shards | setup-node STRIPPED from map+reduce 2026-07-21 (§6.3 resolved); Sunday trigger now backfill_teams=true; **2026-08-03: debug scaffolding stripped (VERBOSE block + verify-output job), self-retrigger on the retry helper, reduce/retrigger gates `!cancelled()`, dry_run gate on the robust boolean form — see §6.24**; **2026-10-05 (§6.61): generate-shards makes ONE cookieless canary request (measure-playhq-limits.js, fetch() client) before the fan-out; `max_parallel` input, default 5 for dispatch, cron and retrigger (20 has no evidence since the 4th); reduce skipped when the canary fails; retrigger gated on `NO_SESSION_SHARDS=0`** |
 | `fold-diverged-players.yml` | dispatch (by matrix terminal) | fold-diverged-players.js | clean; event-driven only |
+| `build-club-index.yml` | dispatch | build-club-index.js | **NEW 2026-10-11 (§6.64).** NO setup-node (fetches api.playhq.com). **NO `data-write` lock, deliberately** — it writes club-map/, clubs/ and data/club-index.json, which no other writer touches, so the `merge -X ours` same-file hazard cannot arise; taking the lock would serialise a ~70-minute job behind the nightly and expose it to T19 eviction. Every input gate is in bash, never in an `if:` (directive 13 / T27). timeout 350 min |
 | `fetch-profile-stats.yml` | dispatch | fetch-profile-stats.js (single shard) | manual escape hatch |
 | `measure-credited-coverage.yml` | dispatch | measure-credited-coverage.js | READ-ONLY; own concurrency group |
 | `audit-diff-fields.yml` | dispatch | audit-diff-fields.js | READ-ONLY; sparse checkout is correct here — one shard, ~1,600 files |
@@ -502,6 +504,9 @@ is the reference self-triggering-matrix shape going forward.
 | `players/{xx}/{uuid}.json` | nightly-crawl, fetch-profile-stats, build-*, fold | StatTrack, all builds | **YES — the player files (~411k)** |
 | `games/bv/{sid}.json` | nightly-crawl (Phase 2), discover-fixtures (historical-backfill TOOL) | everything | **YES — the game data** |
 | `team-stats/bv/{sid}.json` | build-team-stats | build-finals-stats, update-team-index, StatTrack | YES. **`meta` carries `gid` + `grade` since 2026-10-05 — the grade of the team's MOST RECENT GAME**, the only chronological source (registrations carry none; measured on `0afc7690`, T57). StatTrack v1.21's grade filter reads it. A file not rebuilt since grading carries neither, and the app says so explicitly. ⚠️ Rosters include registration-only members (no games) — that is what makes pre-season teams render, and why the name report derives team-mates from here (T68). |
+| `club-map/bv/{sid}.json` | **build-club-index** (new 2026-10-11) | StatTrack club view | YES — `{ tid: clubId }` per season. The team→club direction. A season this file is ABSENT for was never successfully asked; that is not the same as a season with no clubs, which is written as `{}` |
+| `clubs/{clubId}.json` | **build-club-index** (new 2026-10-11) | StatTrack club view | YES — `{ id, n, seasons: { sid: [tid,…] } }`. ⚠️ **MERGED on every write, never replaced.** Only the sids a run actually resolved are rewritten, so `--active-only` cannot delete the historical seasons a full sweep put there |
+| `data/club-index.json` | **build-club-index** (new 2026-10-11) | StatTrack Clubs tab search | YES — `[{ id, n, t, s }]` sorted by name. Rebuilt from `clubs/` ON DISK, not from the run's memory, so a partial run still produces a complete index. Shrink guard: a full sweep that would reduce the club count aborts and writes nothing |
 | `leaderboard/*.json` | build-leaderboards | StatTrack | YES |
 | `search/players/{xx}.json` | build-search-index | StatTrack search | YES |
 | `records/*.json` | build-records | StatTrack | YES |
@@ -551,6 +556,7 @@ progress file as garbage without checking whether its owner is mid-run.
 | `.records-progress.json` | build-records.js | success |
 | `discover-fixtures-progress.json` | discover-fixtures.js (TOOL — kept) | success |
 | `data/discover-progress.json` | discover-seasons.js | success (allDone) / --fresh_start |
+| `data/club-index-progress.json` | build-club-index.js | success ONLY — deliberately SURVIVES a run that had failures, because `--resume` is what retries exactly those seasons. Mode-keyed (`all` / `active` / `single-<sid>`) so modes never cross-resume |
 
 db-audit.js §11b classifies any dotfile-progress in scripts/ as **orphan** (owner deleted → safe remove)
 vs **owner-exists** (mid-run / crashed / failed self-clean → surface, never auto-delete).
@@ -3797,9 +3803,64 @@ coverage; 60.1% populated with the absent-club warning and five named examples (
 `orgs.size` hid completely); 20 organisation ids returned with empty names, warned; and a locked
 season returning zero teams, reported as "not measured" rather than as 0%. `node --check` passes.
 
-**STILL UNANSWERED AT THE CLOSE OF THIS SESSION.** No session can call PlayHQ, so whether the club
-map is one ~3,500-request sweep or forward-only is decided by ONE dispatch of **Probe Discover
-Teams**, and by nothing written here.
+**ANSWERED THE SAME DAY. Probe Discover Teams, live, four seasons — club populated on 100.0% of
+teams in every one, and 100.0% of the teams we hold would receive a club:**
+
+| season | state | teams | clubs | held → would get a club |
+|---|---|---|---|---|
+| `1ae60211` EDJBA Winter 2026 | active | 2,093 | 22 | 1,660 / 1,660 (100.0%) |
+| `aacc7335` Camberwell CBL Winter 2026 | active | 672 | 14 | 514 / 514 (100.0%) |
+| `7ccb2e98` Altona Junior Domestic Winter 2026 | active (control) | 385 | 20 | 374 / 374 (100.0%) |
+| `9358e51a` Waverley Senior Domestic Spring 2023 | **LOCKED** | 229 | 7 | 222 / 222 (100.0%) |
+
+**A locked three-year-old season answering exactly like the active ones is the finding.** History is
+backfillable at one request per season. Zero unnamed organisation ids, zero teams without a club, and
+every club name is a real one (Balwyn Blazers, Eltham Wildcats, Kilsyth Cobras, …).
+
+Three things the run also settled, recorded because they are easy to re-litigate:
+
+- **The association appears in its own club list.** "Eastern Districts Junior Basketball Association
+  (EDJBA)" is one of the 22, and the same holds for Camberwell, Altona Bay and Waverley. The first
+  team returned for EDJBA is `0e9f79de` **"z101"**, U7, `grade: null`, owned by EDJBA itself;
+  Camberwell's is **"zTeam 43"**. Those are PlayHQ's own placeholder teams. Whether EVERY
+  association-owned team is a placeholder is UNMEASURED — do not assume it. The club map records the
+  organisation exactly as PlayHQ gives it; filtering is a display decision for the Clubs tab.
+- **`grade: null` on a returned team is real**, confirmed twice live (EDJBA `z101`, Waverley
+  `393aeb96`). The warning at `discover-fixtures.js` L334-335 stands.
+- **`discoverTeams` is still not a strict superset for GRADES.** Altona: our games use 52 grades, it
+  returned 51. Camberwell returned 13 of 16 in 2026-08-19. Irrelevant to clubs, but it is why the
+  ladder route is unioned rather than replaced.
+
+**Unrelated but confirmed by the same log: §2.20's first overlap has landed.** EDJBA `1ae60211` now
+reads **263 grades (54 grading)** in the index, against the 55 that item predicted it was stuck at.
+The Monday `discover-fixtures` → `data/stale-grade-seasons.json` → Sunday `discover-seasons` handoff
+worked.
+
+**`scripts/build-club-index.js` + `.github/workflows/build-club-index.yml` built on that answer**
+(rows added to §2, §3, §4 and §5 above, and to `TOOLING.md`, in the same commit). One
+`discoverTeams` per season; writes `club-map/bv/{sid}.json`, `clubs/{clubId}.json` and
+`data/club-index.json`. Session, headers, `doFetch` and the ID!/String! fallback copied VERBATIM
+from `probe-discover-teams.js`, which had just run green against this exact query.
+
+Load-bearing properties, each verified by execution in a sandbox with a real git repo and a bare
+remote, `globalThis.fetch` stubbed via `node --require`, the shipped bytes otherwise unmodified:
+
+1. **A season that could not be ASKED is never written** and the run exits non-zero listing it. The
+   recorded-failure-as-answer class wrote 80 seasons `removed:true` off a CloudFront wall (§6.35).
+2. **A 403 invalidates the session and retries ONCE**, then gives up on that season — resending a
+   cookie that has stopped being accepted cannot work (2026-10-04, four hours of it).
+3. **25 consecutive failures abort the run** rather than grinding 3,500 seasons through a dead
+   session.
+4. **`clubs/{clubId}.json` MERGES.** Proven: a full run, then `--active-only`, and the LOCKED
+   season's teams were still on the club file afterwards.
+5. **`--resume` asks only what failed.** Proven: run 1 left one season failed and kept the progress
+   file; run 2 asked exactly that one and then deleted the progress file. Delete-on-SUCCESS only.
+6. **Shrink guard.** A full sweep that would reduce the club count aborts and writes nothing —
+   proven by removing club files and watching it refuse (`4 -> 2 clubs. Nothing written.`).
+7. **An empty answer is recorded as `{}` and reported separately** from a failure, so "no teams" and
+   "we never found out" can never read the same.
+
+`node --check` passes on both delivered scripts.
 
 **Decisions taken this session (Mark), for the view that follows:**
 - Entry point: a **fifth top tab** — Players / Teams / Venues / **Clubs** / Top.

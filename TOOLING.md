@@ -24,6 +24,7 @@ from a report a live script still reads.
 
 - `audit-diff-fields.js`
 - `audit-removed-org-seasons.js`
+- `build-club-index.js`
 - `build-finals-stats.js`
 - `build-leaderboards.js`
 - `build-player-games.js`
@@ -195,6 +196,7 @@ kept out of that group are classified in 2.2.
 
 ### 3.2 Build-trigger workflows
 
+- `build-club-index.yml`
 - `build-finals-stats.yml`
 - `build-leaderboards.yml`
 - `build-player-games.yml`
