@@ -4066,7 +4066,86 @@ presses of Back to leave the club.
 - `.shbtn` is now `opacity:0.42` with a 6px backdrop blur, going solid on hover, focus and press.
   It sat over the last row of a week and hid a score.
 
-**Verified by execution — 100 assertions against the shipped bytes**, the script extracted from
+**ALL FOUR LEVELS COLLAPSE, AND THE ROW BECAME COLUMNS (same day).** Day, competition, age and
+grade each toggle on click. Age and grade are keyed on the LABEL, not on day+competition, so closing
+`U13` or `Saturday U13 Girls Sec 1` closes it everywhere — which is the point when you follow one
+child through a season.
+
+**The grade came OFF the row** (reversing the earlier "keep it on the row" call, after seeing it on
+live data: under its own heading it was repeating itself and eating the width). Round, venue and
+court are now **their own columns**, wrapped in a `.cdets` element that is `display:contents` on a
+wide screen — so the three ARE grid items — and a real flex line on a phone, where they drop to a
+second row while the score and result stay beside the team.
+
+⚠️ **Phone placement is EXPLICIT, not auto.** Once `.cdets` claims the full width, grid
+auto-placement pushes the score and the result badge onto a THIRD row. Every cell is placed by hand
+in the ≤480px rule.
+
+⚠️ **`minmax(0, 7rem)` IS NOT A FIXED COLUMN.** It means "at most 7rem, but shrink to content", so
+`"Knox Regional"` produced a narrower venue track than `"Norwood Secondary College"` and the columns
+did not line up down the page. Caught by comparing each cell's `x` across every row, not by looking
+at a screenshot. The tracks are fixed now, with a 481–860px rule that narrows them rather than
+letting them overflow.
+
+⚠️ **An empty cell collapses an `auto` track.** An unplayed row has no score, which took its track
+to zero width and slid everything left of it. `.cscore` carries a `min-width` floor on wide screens
+and `min-width:0` on a phone.
+
+Two smaller faults the same pass found: `.cday-n` was scoped to `.cday-hdr`, so reusing that span in
+a grade heading rendered `"Saturday U13 Boys Sec 4"` + `"1"` as **"Sec 41"** — it has its own
+`.cgrade-n` now and only appears above one game; and the competition caret, as a sibling flex item,
+was orphaned onto a line of its own when a long competition name wrapped, so it now sits inside
+`.ccomp-name` (which is why the collapsed-state selector is a descendant match, not a child one).
+
+**THE ROW IS ONE LINE (same day, to cut vertical space).** Team and opponent share a line —
+`.cteam` and `.copp` are inline spans and the ellipsis moved to `.cmain`, because an inline
+ellipsis has to live on the PARENT or nothing clips. Column order is now
+**team · round · time · venue · court · score · result**: the time moved out of the leftmost
+position to sit after the round, which also puts it inside `.cdets`, so on a phone it wraps down
+with the other three and line one carries only team, score and result.
+
+Measured: **desktop 30px a row** (one text line), **phone 46px** (two, down from three).
+
+**A STEPPED BACKGROUND FADE, AND COLLAPSE / EXPAND ALL (same day).** The four heading levels
+descend in luminance — day `#343434` → competition `#2a2a2a` → age `#222` → grade `#1a1a1a` → the
+row showing through to `--bg` `#121212` — so the nesting reads as depth rather than as four
+unrelated greys. The day keeps an opaque background because it is STICKY; a translucent sticky bar
+lets rows scroll through it.
+
+⚠️ **The row's hover had to change with it.** `.crow:hover` was `var(--elevated)` = `#2a2a2a`, the
+exact luminance of the competition bar, so a hovered row read as a heading. It is now a 6% accent
+tint, which says "interactive" instead of "another level".
+
+**One button, two jobs.** `Collapse all` / `Expand all` sits beside `This week`. The label is
+derived from the DOM — "is any `.cgrp` still open?" — not from a flag, so opening a single section
+by hand flips it back without any bookkeeping. It writes through `S.clubClosed`, so collapse-all
+survives paging weeks.
+
+**Every heading now states its game count**, age included, and the grade no longer hides it at one —
+`1 game` / `4 games`.
+
+⚠️ Adding the second button pushed "Jump to a date:" onto a second line at 412px, costing a whole
+row of height on the one screen where height is scarcest. The label is hidden below 480px; the date
+field says what it is without being told.
+
+**PER-SECTION COLLAPSE / EXPAND ALL (same day).** Every day, competition and age heading carries a
+small `\u229f` / `\u229e` button that opens or closes **everything beneath that heading and nothing
+else**. Grade headings do NOT get one: game rows are leaves and carry no `.cgrp`, so a grade's own
+caret already is that control.
+
+- The glyph is derived per branch, the same way the global button reads the whole body. Collapsing
+  Saturday flips Saturday's glyph and leaves Sunday's alone.
+- It lives inside a heading that is itself a toggle, so the handler leads with
+  `event.stopPropagation()` — otherwise one click would both collapse below AND close the heading.
+- **Expanding inside a CLOSED section opens that section too.** Otherwise the click does its work
+  behind `display:none` and appears to do nothing.
+
+⚠️ **`flex:0 1 auto` on the competition name put the button on a line of its own.** A flex item
+wraps as a WHOLE UNIT, so a long competition name demanded both of its lines and shoved the button
+down to a third, with a fourth for the chips — four rows for one heading. `flex:1 1 0` lets the name
+wrap internally while the button holds its place: 64px and two text rows, measured.
+
+**Verified by execution — 187 assertions against the shipped bytes**, the script extracted from
 `index.html` and run under `vm.runInThisContext` with a stub DOM and a stub `fetch` serving
 real-shaped `club-index` / `clubs/{id}` / `sports-index` / `games/bv/{sid}` files:
 
@@ -4094,7 +4173,8 @@ real-shaped `club-index` / `clubs/{id}` / `sports-index` / `games/bv/{sid}` file
 - **An empty week still prints what was checked**, so "no games" and "we did not look" never read
   the same.
 
-**And 20 of those run in a REAL BROWSER (Playwright, 412px), because the rest cannot answer these:**
+**And 46 of those run in a REAL BROWSER (Playwright, at 412 / 760 / 1240px), because the rest
+cannot answer these:**
 
 - A chip click actually scrolls, and a mid-page target parks at 80px against a sticky stack ending
   at 41px — on screen and clear of the bars, not parked underneath them.
@@ -4105,6 +4185,28 @@ real-shaped `club-index` / `clubs/{id}` / `sports-index` / `games/bv/{sid}` file
 - The flash highlight is still lit at 900ms and gone by 1300ms (the timer is 1000ms — an earlier
   version of this test asserted the opposite and was wrong, not the code).
 - The share button computes to opacity 0.42 with `blur(6px)` behind it.
+- The four heading backgrounds descend in measured luminance (52 > 42 > 34 > 26) and the row shows
+  through to 18 — checked by computed style, not by eye.
+- One click on `Collapse all` leaves zero rows visible and all three day headers standing; a second
+  restores every row; opening one section by hand flips the label; and the state survives a week
+  change.
+- At 412px the jump row is one line, 35px tall, and ends at 402px of a 412px screen.
+- A day's own button empties that day and leaves the other two days' rows exactly as they were;
+  its competition and grade headings stay on screen; a second click restores precisely that day.
+- An age's button closes only its own grades.
+- Clicking a section button does not toggle the heading it sits inside.
+- All seven cells share one line on a wide screen, run left to right in order, and round, venue,
+  court and score each hold a SINGLE x down the whole page — including on unplayed rows.
+- At 412px round, time, venue and court all drop to line two TOGETHER while team, score and badge
+  hold line one, and nothing crosses the viewport edge.
+- Row height is measured, not eyeballed: a desktop row is under 34px and a phone row under 48px.
+- The longest team-plus-opponent in the sample still fits a 412px line without clipping.
+- At 760px the columns still fit on one line, still align, and still do not overflow.
+- Collapsing one grade hides only its own rows and leaves its sibling grade alone; collapsing an age
+  takes its grade headings with it; closing the day hides all four levels beneath it.
+- A chip pointing at a COLLAPSED age re-opens it and the rows come back.
+- A grade closed before paging a week forward and back comes back closed.
+- The caret's computed transform differs between the open and collapsed states.
 
 ⚠️ **A pre-existing wart the tests pin rather than fix.** `compLabelOf` de-duplicates only in one
 direction — it tests whether the COMP name contains the ORG name. When the org string is the longer
