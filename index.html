@@ -341,23 +341,86 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .cweek-nav button:hover{background:var(--elevated);color:var(--text)}
 .cweek-nav .cwk-lbl{flex:1;text-align:center;font-size:0.8rem;color:var(--text2);font-weight:600}
 .cweek-jump{display:flex;align-items:center;gap:8px;padding:6px 14px;border-bottom:1px solid var(--border);font-size:0.75rem;color:var(--text3)}
+.cweek-jump button{white-space:nowrap}
 .cweek-jump input{padding:3px 8px;font-size:0.78rem}
-.cday-hdr{padding:9px 14px;font-size:0.82rem;font-weight:700;color:var(--text1);border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:41px;z-index:5}
+.cgrp.collapsed > .cbody{display:none}
+.ctw{display:inline-block;width:0.75em;margin-right:5px;color:var(--text3);transform:rotate(90deg);transition:transform 0.15s}
+.cgrp.collapsed > div .ctw{transform:rotate(0deg)}
+.cday-hdr,.ccomp-hdr,.cage-hdr,.cgrade-hdr{cursor:pointer;user-select:none;-webkit-user-select:none}
+.cday-hdr:hover .ctw,.ccomp-hdr:hover .ctw,.cage-hdr:hover .ctw,.cgrade-hdr:hover .ctw{color:var(--accent)}
+.cage-hdr .ctw,.cgrade-hdr .ctw{font-size:0.9em}
+.cday-hdr,.cage-hdr{display:flex;align-items:center}
+.cxall{margin-left:auto;flex:0 0 auto;width:22px;height:22px;border-radius:5px;border:1px solid var(--border);color:var(--text3);font-size:0.8rem;line-height:1;display:inline-flex;align-items:center;justify-content:center;transition:color 0.1s,border-color 0.1s,background 0.1s}
+.cxall:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-dim)}
+.ccomp-hdr .cxall{margin-left:6px;order:2}
+.ccomp-hdr .cchips{order:3}
+.cday-hdr{padding:9px 14px;font-size:0.82rem;font-weight:700;color:var(--text1);border-bottom:1px solid var(--border);background:#343434;position:sticky;top:41px;z-index:5}
 .cday-hdr .cday-n{font-weight:400;color:var(--text3);font-size:0.74rem;margin-left:6px}
-.ccomp-hdr{padding:5px 14px 5px 18px;font-size:0.71rem;font-weight:600;color:var(--text2);background:var(--elevated);border-bottom:1px solid var(--border);letter-spacing:0.02em}
-.crow{display:grid;grid-template-columns:3.4rem 1fr auto auto;gap:8px;padding:9px 12px 9px 18px;border-bottom:1px solid var(--border);align-items:center;cursor:pointer;transition:background 0.1s;border-left:3px solid transparent}
-.crow:hover{background:var(--elevated)}
+.ccomp-hdr{padding:5px 14px 5px 18px;font-size:0.71rem;font-weight:600;color:var(--text2);background:#2a2a2a;border-bottom:1px solid var(--border);letter-spacing:0.02em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ccomp-name{flex:0 1 auto;min-width:0}
+.cchips{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.cchip{padding:2px 8px;border-radius:999px;border:1px solid var(--border);font-size:0.67rem;font-weight:700;color:var(--text2);background:var(--surface);display:inline-flex;align-items:center;gap:4px;transition:background 0.1s,color 0.1s,border-color 0.1s}
+.cchip:hover{background:var(--accent-dim);color:var(--accent);border-color:var(--accent)}
+.cchip-n{font-size:0.6rem;font-weight:500;color:var(--text3);font-variant-numeric:tabular-nums}
+.cchip:hover .cchip-n{color:var(--accent)}
+.cage-hdr{padding:6px 14px 4px 22px;font-size:0.73rem;font-weight:700;color:var(--text1);border-bottom:1px solid var(--border);letter-spacing:0.02em;background:#222;transition:background 0.25s;scroll-margin-top:80px}
+.cage-hdr.cage-flash{background:var(--accent-dim)}
+.cgrade-hdr{padding:4px 14px 4px 28px;font-size:0.68rem;font-weight:600;color:var(--text3);border-bottom:1px solid var(--border);background:#1a1a1a}
+.cgrade-n{margin-left:7px;font-weight:400;color:var(--text3);opacity:0.75;font-variant-numeric:tabular-nums}
+.cage-n{margin-left:7px;font-size:0.68rem;font-weight:400;color:var(--text2);opacity:0.8;font-variant-numeric:tabular-nums}
+.cdets{display:contents}
+.cdet{font-size:0.7rem;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.crow{display:grid;grid-template-columns:minmax(0,1fr) 7rem 3.4rem 12rem 5rem 3.4rem 1.6rem;gap:10px;padding:5px 12px 5px 28px;border-bottom:1px solid var(--border);align-items:center;cursor:pointer;transition:background 0.1s;border-left:3px solid transparent}
+.crow:hover{background:rgba(0,245,212,0.06)}
 .crow.gf{border-left-color:gold}
 .crow.sf{border-left-color:silver}
 .crow.cmine2{border-left-color:var(--accent)}
-.ctime{font-size:0.74rem;color:var(--text2);font-variant-numeric:tabular-nums}
-.cteam{font-size:0.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.copp{font-size:0.78rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
+.ctime{font-size:0.74rem;color:var(--text2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cteam{font-size:0.85rem;font-weight:600}
+.copp{font-size:0.78rem;color:var(--text2);margin-left:7px}
+.cboth{font-size:0.72rem;font-weight:400;color:var(--text3);margin-left:6px}
 .cmeta{font-size:0.69rem;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cscore{font-size:0.86rem;font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.cmain{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cscore{font-size:0.86rem;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;min-width:3.4rem}
 .cnote{padding:8px 14px;font-size:0.72rem;color:var(--text3);border-bottom:1px solid var(--border);line-height:1.5}
 .cnote b{color:var(--text2);font-weight:600}
-@media(max-width:480px){.crow{grid-template-columns:2.9rem 1fr auto;gap:6px;padding-left:14px}.crow .g-res{display:none}}
+@media(max-width:860px) and (min-width:481px){
+  .crow{grid-template-columns:minmax(0,1fr) 5.5rem 3rem 8rem 4rem 3.2rem 1.6rem;gap:7px;padding-left:22px}
+  .cdet{font-size:0.67rem}
+}
+@media(max-width:480px){
+  /* Auto-placement would shove the score and badge onto a THIRD row once .cdets
+     claims the full width, so every cell is placed by hand here. */
+  .crow{grid-template-columns:minmax(0,1fr) auto auto;gap:1px 5px;padding:6px 10px 6px 14px}
+  .crow > .cmain{grid-area:1/1/2/2}
+  .crow > .cscore{grid-area:1/2/2/3}
+  .crow > .g-res{grid-area:1/3/2/4}
+  .crow > .cdets{grid-area:2/1/3/4;display:flex;flex-wrap:wrap;gap:2px 10px;padding-left:0}
+  .cdet{font-size:0.66rem}
+  .cscore{min-width:0}
+  .ctime{font-size:0.7rem}.cteam{font-size:0.8rem}.copp{font-size:0.74rem}
+  .cmeta{font-size:0.66rem}.cscore{font-size:0.8rem}
+  .ccomp-hdr{font-size:0.68rem;padding-left:14px}
+  .cage-hdr{padding-left:16px;font-size:0.7rem}
+  .cgrade-hdr{padding-left:20px;font-size:0.65rem}
+  .ccomp-hdr{padding-left:14px}
+  .cchips{margin-left:0;width:100%}
+  /* order puts the button on the NAME line and sends the chips below it.
+     flex-basis 0 is what keeps it there: with `flex:0 1 auto` the long name
+     demands its full content width, wraps as a WHOLE ITEM across two lines, and
+     shoves the button onto a third line of its own. */
+  .ccomp-hdr .ccomp-name{flex:1 1 0;white-space:normal}
+  .ccomp-hdr .cxall{order:2;margin-left:auto}
+  .ccomp-hdr .cchips{order:3}
+  .cxall{width:24px;height:24px}
+  .cchip{padding:3px 9px;font-size:0.7rem}
+  /* Two buttons pushed the label onto a second line, which cost a whole row of
+     height on the one screen where height is scarcest. The date field says what
+     it is without being told. */
+  .cweek-jump{padding:5px 10px;gap:6px}
+  .cweek-jump label{display:none}
+  .cweek-jump button{padding:3px 8px;font-size:0.72rem}
+}
 
 @media(max-width:768px){
   #app{flex-direction:column}
@@ -397,7 +460,9 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.shbtn{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--elevated);color:var(--accent);font-size:1.15rem;line-height:1;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+.shbtn{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--elevated);color:var(--accent);font-size:1.15rem;line-height:1;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35);opacity:0.42;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:opacity 0.15s}
+.shbtn:hover,.shbtn:focus-visible,.shbtn:active{opacity:1;box-shadow:0 2px 10px rgba(0,0,0,.5)}
+@media(hover:none){.shbtn{opacity:0.5}}
 .shbtn.on{display:flex}
 .shwrap{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:18px}
 .shwrap.on{display:flex}
@@ -590,6 +655,10 @@ const S = {
   /* Clubs (v1.22). clubIdx is data/club-index.json — 866 rows, fetched once.
      clubs[cid] is clubs/{cid}.json. clubWeek is the Monday of the week on show. */
   clubIdx:null, clubs:{}, clubId:null, clubName:'', clubWeek:null, clubRun:0,
+  /* Collapsed day/competition sections, by key. Kept on S rather than rebuilt per
+     render so a competition you have closed STAYS closed as you page through
+     weeks — otherwise it reopens every time and the click is pointless. */
+  clubClosed:new Set(),
 };
 
 /* ── Helpers ── */
@@ -2675,7 +2744,10 @@ function renderClubShell(){
   <div class="cweek-jump">
     <label for="cwk-date">Jump to a date:</label>
     <input id="cwk-date" type="date" class="sinput" style="width:auto" value="${esc(S.clubWeek)}" onchange="jumpClubWeek(this.value)">
-    <button class="rbtn" style="margin-left:auto" onclick="jumpClubWeek('${esc(mkDate(new Date()))}')">This week</button>
+    <span style="margin-left:auto;display:flex;gap:6px">
+      <button id="cwk-all" style="padding:3px 10px;border-radius:5px;border:1px solid var(--border);font-size:0.75rem;color:var(--text2)" onclick="toggleAllSec()">Collapse all</button>
+      <button style="padding:3px 10px;border-radius:5px;border:1px solid var(--border);font-size:0.75rem;color:var(--text2)" onclick="jumpClubWeek('${esc(mkDate(new Date()))}')">This week</button>
+    </span>
   </div>
   <div id="cweek-body"></div>`;
 }
@@ -2757,7 +2829,8 @@ async function renderClubWeek(){
       const hMine = !!(h && mine.has(h)), aMine = !!(a && mine.has(a));
       if(!hMine && !aMine) continue;
       const [hn, an] = teamNames(g);
-      rows.push({ gid, sid: c.sid, d, g, comp, hMine, aMine, hn: hn || '', an: an || '' });
+      rows.push({ gid, sid: c.sid, d, g, comp, age: gameAge(g, c.se),
+                  grade: g.gn || '(no grade recorded)', hMine, aMine, hn: hn || '', an: an || '' });
     }
   }
 
@@ -2771,25 +2844,60 @@ async function renderClubWeek(){
     return;
   }
 
-  // Day, then competition inside the day. Rows by time, then by team name.
-  const byDay = new Map();
-  for(const r of rows){ if(!byDay.has(r.d)) byDay.set(r.d, []); byDay.get(r.d).push(r); }
-
-  let h = note;
-  for(const day of [...byDay.keys()].sort()){
-    const dayRows = byDay.get(day);
-    h += `<div class="cday-hdr">${esc(fmtDow(day))}<span class="cday-n">${dayRows.length} game${dayRows.length === 1 ? '' : 's'}</span></div>`;
-    const byComp = new Map();
-    for(const r of dayRows){ if(!byComp.has(r.comp)) byComp.set(r.comp, []); byComp.get(r.comp).push(r); }
-    for(const comp of [...byComp.keys()].sort((a, b) => a.localeCompare(b))){
-      h += `<div class="ccomp-hdr">${esc(comp)}</div>`;
-      const list = byComp.get(comp).sort((x, y) =>
-        String(x.g.t || '~').localeCompare(String(y.g.t || '~')) ||
-        clubMyName(x).localeCompare(clubMyName(y)));
-      for(const r of list) h += clubRowHTML(r);
+  /* DAY -> COMPETITION -> AGE -> GRADE -> TIME (Mark, 2026-10-11).
+     Age sorts NUMERICALLY (U8 before U10 — as strings "U10" < "U8"), and the
+     no-age bucket carries n=999 so it lands last without being renamed. Grades
+     and competitions sort naturally, so "Sec 10" follows "Sec 2". An untimed
+     game sorts to the end of its grade on '~', not to the front on ''. */
+  let h = note, ageSeq = 0;
+  for(const [day, dayRows] of [...groupBy(rows, r => r.d)].sort((a, b) => natCmp(a[0], b[0]))){
+    const dayKey = 'day:' + day;
+    h += `<div class="cgrp${S.clubClosed.has(dayKey) ? ' collapsed' : ''}">`
+       + `<div class="cday-hdr" data-k="${esc(dayKey)}" onclick="toggleSec(this)"><span class="ctw">\u25b8</span>${esc(fmtDow(day))}`
+       + `<span class="cday-n">${dayRows.length} game${dayRows.length === 1 ? '' : 's'}</span>${CXALL}</div><div class="cbody">`;
+    for(const [comp, compRows] of [...groupBy(dayRows, r => r.comp)].sort((a, b) => natCmp(a[0], b[0]))){
+      const byAge = [...groupBy(compRows, r => r.age.label)]
+        .sort((a, b) => (a[1][0].age.n - b[1][0].age.n) || natCmp(a[0], b[0]));
+      /* The chips are jump links, so the age sections need their ids BEFORE the
+         competition heading is written. The same age recurs under other days and
+         other competitions, so the id is a running sequence, never the label. */
+      const ageIds = byAge.map(() => 'cage-' + (++ageSeq));
+      const chips = byAge.map(([lbl, rws], i) =>
+        `<button type="button" class="cchip" onclick="event.stopPropagation();scrollToAge('${ageIds[i]}')" title="Jump to ${esc(lbl)}">${esc(ageChipLabel(lbl))}<span class="cchip-n">${rws.length}</span></button>`).join('');
+      const compKey = 'comp:' + comp;
+      h += `<div class="cgrp${S.clubClosed.has(compKey) ? ' collapsed' : ''}">`
+         + `<div class="ccomp-hdr" data-k="${esc(compKey)}" onclick="toggleSec(this)">`
+         + `<span class="ccomp-name"><span class="ctw">\u25b8</span>${esc(comp)}</span>`
+         + CXALL + `<span class="cchips">${chips}</span></div><div class="cbody">`;
+      byAge.forEach(([ageLabel, ageRows], ai) => {
+        /* Keyed on the LABEL, not on day+competition, so closing U13 closes it
+           everywhere — which is the point when you follow one child. */
+        const ageKey = 'age:' + ageLabel;
+        h += `<div class="cgrp${S.clubClosed.has(ageKey) ? ' collapsed' : ''}">`
+           + `<div class="cage-hdr" id="${ageIds[ai]}" data-k="${esc(ageKey)}" onclick="toggleSec(this)">`
+           + `<span class="ctw">\u25b8</span>${esc(ageLabel)}`
+           + `<span class="cage-n">${ageRows.length} game${ageRows.length === 1 ? '' : 's'}</span>${CXALL}`
+           + `</div><div class="cbody">`;
+        for(const [grade, gradeRows] of [...groupBy(ageRows, r => r.grade)].sort((a, b) => natCmp(a[0], b[0]))){
+          const gradeKey = 'grade:' + grade;
+          h += `<div class="cgrp${S.clubClosed.has(gradeKey) ? ' collapsed' : ''}">`
+             + `<div class="cgrade-hdr" data-k="${esc(gradeKey)}" onclick="toggleSec(this)">`
+             + `<span class="ctw">\u25b8</span>${esc(grade)}`
+             + `<span class="cgrade-n">${gradeRows.length} game${gradeRows.length === 1 ? '' : 's'}</span>`
+             + `</div><div class="cbody">`;
+          const list = gradeRows.sort((x, y) =>
+            timeCmp(x.g.t, y.g.t) || natCmp(clubMyName(x), clubMyName(y)));
+          for(const r of list) h += clubRowHTML(r);
+          h += `</div></div>`;   // close the grade's cbody + cgrp
+        }
+        h += `</div></div>`;     // close the age's cbody + cgrp
+      });
+      h += `</div></div>`;   // close the competition's cbody + cgrp
     }
+    h += `</div></div>`;     // close the day's cbody + cgrp
   }
   body.innerHTML = h;
+  syncAllBtn();
 
   body.querySelectorAll('.crow').forEach(row => row.addEventListener('click', () => {
     const gid = row.dataset.gid, sid = row.dataset.sid;
@@ -2806,6 +2914,146 @@ async function renderClubWeek(){
 }
 
 function clubMyName(r){ return r.aMine && !r.hMine ? r.an : r.hn; }
+
+/* AGE IS NOT A FIELD ON A GAME. The record carries `gid` and `gn`
+   ("Saturday U19 Boys Sec 3"); the age lives in data/sports-index.json under
+   that season's grades[] as `age` ("Under 15"), written by discover-org-seasons.
+   So: the index first, the grade NAME second, and an explicit bucket third.
+
+   ⚠️ DO NOT USE ageNum() HERE. It strips every non-digit, so
+   "Saturday U19 Boys Sec 3" becomes 193 and sorts after every real age group.
+   It is correct for the `age` FIELD ("Under 15" -> 15) and wrong for a grade
+   name, which is what this has to cope with.
+
+   A grade with no age is its OWN named bucket, sorted last on purpose — never
+   folded into U0 and never silently dropped. OUTSTANDING records ~31% of
+   grade_age as blank, so this is the common case, not the edge case. */
+const NO_AGE_LABEL = 'Senior / no age group';
+function gameAge(g, se){
+  const gid8 = String(g && g.gid || '').slice(0, 8);
+  if(gid8 && se && Array.isArray(se.grades)){
+    const gr = se.grades.find(x => x && String(x.id || '').slice(0, 8) === gid8);
+    const m = gr && gr.age ? String(gr.age).match(/(\d{1,2})/) : null;
+    if(m) return { n: parseInt(m[1], 10), label: 'U' + m[1] };
+  }
+  const m2 = String(g && g.gn || '').match(/\bU(?:nder)?\s*(\d{1,2})\b/i);
+  if(m2) return { n: parseInt(m2[1], 10), label: 'U' + m2[1] };
+  return { n: 999, label: NO_AGE_LABEL };
+}
+/* The full label is right as a heading and far too long as a chip. */
+function ageChipLabel(label){ return label === NO_AGE_LABEL ? 'Senior' : label; }
+/* The key lives in a data attribute, NOT interpolated into the onclick. A
+   competition name carrying an apostrophe would otherwise break the handler. */
+function toggleSec(hdr){
+  const grp = hdr.parentElement;
+  if(!grp) return;
+  const k = hdr.dataset ? hdr.dataset.k : '';
+  const nowClosed = grp.classList.toggle('collapsed');
+  if(k){ if(nowClosed) S.clubClosed.add(k); else S.clubClosed.delete(k); }
+  syncAllBtn();
+}
+/* One button, two jobs. Anything still open means the action is COLLAPSE;
+   everything already shut means it is EXPAND. The label is derived from the DOM
+   rather than from a flag, so it cannot drift out of step with a section the
+   user toggled by hand. */
+function allSecOpen(){
+  const body = el('cweek-body');
+  if(!body) return false;
+  const g = body.querySelectorAll('.cgrp');
+  return g.length > 0 && [...g].some(x => !x.classList.contains('collapsed'));
+}
+function syncAllBtn(){
+  const btn = el('cwk-all');
+  if(btn) btn.textContent = allSecOpen() ? 'Collapse all' : 'Expand all';
+  const body = el('cweek-body');
+  if(!body) return;
+  // Every per-section button reads its own branch, for the same reason the
+  // global one reads the whole body: a flag would drift the moment a single
+  // heading is toggled by hand.
+  for(const b of body.querySelectorAll('.cxall')){
+    const grp = b.closest('.cgrp');
+    const anyOpen = grp && [...grp.querySelectorAll('.cgrp')].some(g => !g.classList.contains('collapsed'));
+    b.textContent = anyOpen ? '\u229f' : '\u229e';
+    b.title = anyOpen ? 'Collapse everything below this' : 'Expand everything below this';
+  }
+}
+const CXALL = '<button type="button" class="cxall" onclick="event.stopPropagation();toggleSubSec(this)">\u229f</button>';
+/* The same two-jobs button, scoped to ONE branch: it touches every .cgrp inside
+   this section and nothing outside it. It lives inside a heading that is itself a
+   toggle, so the click must not bubble. */
+function toggleSubSec(btn){
+  const grp = btn.closest('.cgrp');
+  if(!grp) return;
+  const subs = [...grp.querySelectorAll('.cgrp')];
+  if(!subs.length) return;
+  const close = subs.some(g => !g.classList.contains('collapsed'));
+  for(const g of subs){
+    g.classList.toggle('collapsed', close);
+    const hdr = g.firstElementChild;
+    const k = hdr && hdr.dataset ? hdr.dataset.k : '';
+    if(k){ if(close) S.clubClosed.add(k); else S.clubClosed.delete(k); }
+  }
+  // Expanding the inside of a CLOSED section would show nothing, so open it.
+  if(!close && grp.classList.contains('collapsed')){
+    grp.classList.remove('collapsed');
+    const hk = grp.firstElementChild && grp.firstElementChild.dataset ? grp.firstElementChild.dataset.k : '';
+    if(hk) S.clubClosed.delete(hk);
+  }
+  syncAllBtn();
+}
+function toggleAllSec(){
+  const body = el('cweek-body');
+  if(!body) return;
+  const close = allSecOpen();
+  for(const g of body.querySelectorAll('.cgrp')){
+    g.classList.toggle('collapsed', close);
+    const hdr = g.firstElementChild;
+    const k = hdr && hdr.dataset ? hdr.dataset.k : '';
+    if(!k) continue;
+    if(close) S.clubClosed.add(k); else S.clubClosed.delete(k);
+  }
+  syncAllBtn();
+}
+function scrollToAge(id){
+  const t = document.getElementById(id);
+  if(!t) return;
+  // A chip can point into a section that is collapsed — its own competition, or
+  // the day above it. Open every collapsed ancestor first, or the jump lands on
+  // something with display:none and silently does nothing.
+  for(let p = t.parentElement; p; p = p.parentElement){
+    if(p.classList && p.classList.contains('cgrp') && p.classList.contains('collapsed')){
+      p.classList.remove('collapsed');
+      const hk = p.firstElementChild && p.firstElementChild.dataset ? p.firstElementChild.dataset.k : '';
+      if(hk) S.clubClosed.delete(hk);
+    }
+    if(p.id === 'cweek-body') break;
+  }
+  // scroll-margin-top on .cage-hdr clears the two sticky bars, so this needs no
+  // offset arithmetic and does not care which ancestor is the scroller.
+  try { t.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+  catch(_) { t.scrollIntoView(); }
+  t.classList.add('cage-flash');
+  setTimeout(() => { t.classList.remove('cage-flash'); }, 1000);
+}
+/* Natural order, so "Sec 10" comes after "Sec 2" rather than before it. */
+function natCmp(a, b){ return String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: 'base' }); }
+/* ⚠️ A MISSING TIME IS RANKED EXPLICITLY, NOT WITH A SENTINEL CHARACTER.
+   The first version sorted on `t || '~'` assuming '~' lands after digits. Under
+   locale collation it lands BEFORE them, so an untimed game went to the TOP of
+   its grade instead of the bottom. It was never caught because every test
+   fixture had a time on it. */
+function timeCmp(a, b){
+  const ta = a || '', tb = b || '';
+  if(!ta && !tb) return 0;
+  if(!ta) return 1;
+  if(!tb) return -1;
+  return natCmp(ta, tb);
+}
+function groupBy(list, keyOf){
+  const m = new Map();
+  for(const x of list){ const k = keyOf(x); if(!m.has(k)) m.set(k, []); m.get(k).push(x); }
+  return m;
+}
 
 function clubRowHTML(r){
   const g = r.g;
@@ -2828,16 +3076,18 @@ function clubRowHTML(r){
               : res  ? `<div class="g-res r${res}">${res}</div>`
                      : `<div class="g-res rU">${esc(g.st === 'UPCOMING' || g.st === 'PRE_GAME' ? '—' : (g.st || '—'))}</div>`;
 
-  const meta = [g.gn || '', g.vn || '', g.ct || '', g.rn || ''].filter(Boolean).join(' · ');
+  /* The GRADE is gone from the row: it is the heading immediately above it, and
+     repeating it ate the width that round, venue and court now have. Each is its
+     own column on a wide screen and they wrap to a second line on a phone, rather
+     than one run-on string ellipsised into uselessness. */
+  const det = [g.rn || '', g.vn || '', g.ct || ''];
   const cls  = [finalClass(g.rn), both ? 'cmine2' : ''].filter(Boolean).join(' ');
 
   return `<div class="crow${cls ? ' ' + cls : ''}" data-gid="${esc(r.gid)}" data-sid="${esc(r.sid)}" data-played="${played ? 1 : 0}" data-mytid="${esc(myTid)}">
-    <div class="ctime">${esc(g.t || '—')}</div>
-    <div>
-      <div class="cteam">${esc(myName || '—')}${both ? ' <span style="font-weight:400;color:var(--text3)">(club v club)</span>' : ''}</div>
-      <div class="copp">${both ? 'v ' : (myIsHome ? 'v ' : '@ ')}${esc(oppName || '—')}</div>
-      ${meta ? `<div class="cmeta">${esc(meta)}</div>` : ''}
+    <div class="cmain">
+      <span class="cteam">${esc(myName || '—')}</span><span class="copp">${both ? 'v ' : (myIsHome ? 'v ' : '@ ')}${esc(oppName || '—')}</span>${both ? '<span class="cboth">(club v club)</span>' : ''}
     </div>
+    <div class="cdets"><div class="cdet cdet-rn">${esc(det[0])}</div><div class="ctime">${esc(g.t || '—')}</div><div class="cdet cdet-vn">${esc(det[1])}</div><div class="cdet cdet-ct">${esc(det[2])}</div></div>
     <div class="cscore">${esc(score)}</div>
     ${resH}
   </div>`;
