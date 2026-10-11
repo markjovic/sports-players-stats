@@ -255,6 +255,7 @@ build-finals-stats, build-leaderboards, build-player-games, build-records (they 
 | `probe-shared-name-aliases.js` | **Alias audit, tier 3 — OFFLINE.** For names SEVERAL players share, which candidate held a registration for that game's SEASON to one of the two teams playing it? 24 confirmed, 23 repoint, 4 ambiguous, 36 none-fit | reports/alias-name-audit.json, players, games/bv | reports/shared-name-alias-audit.json ⚠️ artifact only |
 | `repoint-aliases.js` | Applies confirmed repoints. Merges ALL THREE report sources, RE-VERIFIES every one against PlayHQ at apply time, records before/after BEFORE writing. 88 applied 2026-08-24 **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | the three reports, players/aliases | players/aliases, reports/alias-repoint-log.json |
 | `probe-verdict-conflict.js` | **Settles the two-audit disagreement.** Splits each "two people" verdict by whether each side appears under its OWN id or only via an ALIAS — a verdict resting on our own alias is circular (T38) | reports/both-resolve-pairs.json, players/aliases, games/bv | reports/verdict-conflict-audit.json ⚠️ artifact only |
+| `find-players-by-name.js` | **The name report (added 2026-10-05).** For a list of names, every team each has ever been registered to and in which season; whether they have shared a game with a nominated player as OPPONENT or TEAM-MATE; and the recorded gender. OFFLINE — no PlayHQ calls. ⚠️ Team-mates come from the team-stats ROSTER, not from games, so a child on the sheet with zero games is included (T68). ⚠️ Side resolution is `gameTids` → `hp[]`/`ap[]` → registration-when-unambiguous → unknown; `p[]` carries NO side (T67). The `same` column is `true`/`false`/`null` | players/, team-stats/bv, games/bv, data/sports-index.json, data/team-index.json, reports/name-search-input.json | reports/name-search.csv, reports/name-search-vs-opponent.csv, reports/opponent-teammates.csv ⚠️ **artifact only unless `commit_report`** |
 | `trace-player-game.js` | Traces ONE value: for each game in a player's games[], prints every roster id and its alias target, so "how did this get here" is answered by inspection not inference | players, players/aliases, games/bv | — |
 | `scan-roster-id-forms.js` | Counts p[] ids by length and finds rosters listing the same person under BOTH forms. 2026-08-24: 99.24% truncated, 0.76% full, ZERO double-listed (T37) | games/bv | — |
 | `probe-my-aliases.js` | Checks whether aliases written by a given merge deliver appearances their target is registered for | players/aliases, players, games/bv | reports/ ⚠️ artifact only |
@@ -390,7 +391,7 @@ decision and is NOT taken here.
 | `probe-absent-games.js` | READ-ONLY, no writes/git/lock. OUTSTANDING §2.18 follow-up — the last real gap: 133,459 appearances still missing across 51,846 players. **2026-10-05 (§6.62): moved to fetch(), §6.61** | players/**, games/bv, PlayHQ | stdout |
 | `probe-alias-stats.js` | READ-ONLY. Sizes one question: when a player carries spectator aliases, does PlayHQ credit games to those ALIAS profiles that fetch-profile-stats.js never queries? **2026-10-05 (§6.62): moved to fetch(), §6.61** | players/**, PlayHQ | stdout |
 | `probe-both-resolve.js` | READ-ONLY to player data, writes one report. The remaining 416 same-named pairs holding the same games — 6,616 duplicated appearances. **2026-10-05 (§6.62): moved to fetch(), §6.61** | players/**, PlayHQ | reports/both-resolve-pairs.json |
-| `probe-discover-teams.js` | READ-ONLY, a handful of API calls. Whether a GRADING grade's empty `discoverGrade.ladder` can be replaced as discover-fixtures' team source. **2026-10-05 (§6.62): moved to fetch(), §6.61** | PlayHQ | stdout |
+| `probe-discover-teams.js` | READ-ONLY, a handful of API calls. Whether a GRADING grade's empty `discoverGrade.ladder` can be replaced as discover-fixtures' team source. **2026-10-05 (§6.62): moved to fetch(), §6.61.** **2026-10-11 (§6.64): also answers whether a CLUB MAP can be built from `discoverTeams`.** `orgs` was a Set of ids that silently skipped a null organisation, so the 2026-08-19 "22 organisations" said nothing about coverage; it now reports the populated/absent split, names the clubs, and measures the returned set against `data/team-index.json`. Default seasons now include a LOCKED one — backfilling history had never been probed. Reads `data/team-index.json`; a present-but-unreadable index THROWS rather than reading as zero | PlayHQ, data/team-index.json, data/sports-index.json, games/bv | stdout |
 | `probe-duplicate-profiles.js` | READ-ONLY. The 2,895 same-named pairs holding the SAME game ids — 122,866 duplicated appearances. **2026-10-05 (§6.62): moved to fetch(), §6.61** | players/**, PlayHQ | stdout |
 | `probe-grade-ladder.js` | READ-ONLY. Prints RAW discoverGrade responses for the 2026-08-19 "Teams: 0 — no ladder data" case. **2026-10-05 (§6.62): moved to fetch(), §6.61** | PlayHQ | stdout |
 | `probe-missing-games.js` | READ-ONLY. Proves or disproves that hidden/grading games can be reconstructed from data already received, at zero extra API cost. **2026-10-05 (§6.62): moved to fetch(), §6.61** | players/**, games/bv, PlayHQ | stdout |
@@ -457,6 +458,14 @@ sent readers hunting for bugs that no longer existed. Cleared 2026-07-29.)
 `diagnose-forfeit-game.yml` (read-only probe, no lock, sparse OK — reads ONE season file),
 `repair-forfeit-score.yml` (one-off, `data-write` lock, dry-run default via `apply` boolean).
 
+Added 2026-10-05 (§6.63): **`find-players-by-name.yml`** — dispatch only, no cron, no
+`data-write` lock (it writes nothing in the default mode), and **no `actions/setup-node`** even
+though it makes no PlayHQ call, because the rule is repo-wide and this file is one edit away from
+being a job that does. Inputs `names` / `opponent` / `commit_report`. The artifact upload is
+`if: always()` so a non-zero exit on an unresolved opponent still delivers the complete CSVs.
+⚠️ **The CSVs are an artifact by DEFAULT, not a commit** — this repo is public and the input file
+names specific children.
+
 Added 2026-10-05 (§6.62) — six dispatch-only workflows that were in `.github/workflows/`
 but in neither TOOLING.md §3 nor this section, so the inventory judged their scripts on
 age alone: `audit-aliases-against-playhq.yml`, `audit-nonfinal-games.yml`,
@@ -484,7 +493,7 @@ is the reference self-triggering-matrix shape going forward.
 
 | `data/sports-index.json` | discover-seasons, scan-complete-rounds, graduate-seasons (`archivedAt`, 2026-08-07) | nightly-crawl, discover-*, fetch-profile-stats, build-*, deploy-pages strip, deploy-archive-pages (archive repo), StatTrack routing, many | **YES — master season registry.** Per-season flags: `locked`/`lockedAt` (crawl state) + `archivedAt` (VERIFIED live on the archive origin; set only by graduate-seasons after probing; cleared with locked by --unlock) |
 | `data/discover-progress.json` | discover-seasons (matrix reduce) | discover-seasons, discover-seasons-matrix (generate-shards) | YES — discovery resume state |
-| `data/team-index.json` | update-team-index | StatTrack, db tools | YES |
+| `data/team-index.json` | update-team-index | StatTrack, db tools | YES. ⚠️ Its `grade` is FIRST-SEEN and is deliberately NEVER corrected — it is a search subtitle read as a STRING (index.html L1640), and correcting it keyed on `tid` is the T57 fault. For a team's CURRENT grade read `team-stats/bv/{sid}.json` → `meta.grade`. |
 | `data/forfeit-games.json` | nightly-crawl, recheck-forfeit-games | nightly-crawl, fetch-profile-stats, add-player | YES |
 | `data/venue-index.json` | **build-venue-indexes** (added 2026-09-08 — it had NO writer at all before that; "(venue build)" was a placeholder, see T56) | StatTrack | YES |
 | `data/season-venue-index.json` | build-venue-indexes | StatTrack | YES |
@@ -492,7 +501,7 @@ is the reference self-triggering-matrix shape going forward.
 | `players/aliases/{xx}.json` | fetch-profile-stats, build-alias-index(migration) | resolver alias fallback | **YES — spectator→api redirects (~43k)** |
 | `players/{xx}/{uuid}.json` | nightly-crawl, fetch-profile-stats, build-*, fold | StatTrack, all builds | **YES — the player files (~411k)** |
 | `games/bv/{sid}.json` | nightly-crawl (Phase 2), discover-fixtures (historical-backfill TOOL) | everything | **YES — the game data** |
-| `team-stats/bv/{sid}.json` | build-team-stats | build-finals-stats, update-team-index, StatTrack | YES |
+| `team-stats/bv/{sid}.json` | build-team-stats | build-finals-stats, update-team-index, StatTrack | YES. **`meta` carries `gid` + `grade` since 2026-10-05 — the grade of the team's MOST RECENT GAME**, the only chronological source (registrations carry none; measured on `0afc7690`, T57). StatTrack v1.21's grade filter reads it. A file not rebuilt since grading carries neither, and the app says so explicitly. ⚠️ Rosters include registration-only members (no games) — that is what makes pre-season teams render, and why the name report derives team-mates from here (T68). |
 | `leaderboard/*.json` | build-leaderboards | StatTrack | YES |
 | `search/players/{xx}.json` | build-search-index | StatTrack search | YES |
 | `records/*.json` | build-records | StatTrack | YES |
@@ -501,6 +510,7 @@ is the reference self-triggering-matrix shape going forward.
 | `explore-results/` (1.34 MB) | *(ad-hoc, historical)* | — | **KEEP** — output of exploratory API calls made while developing the tooling. Retained as reference for when the docs are unclear. Classified 2026-07-31; previously undocumented. |
 | `roster-results/` (216 KB) | *(ad-hoc, historical)* | — | **KEEP** — output of grade-roster lookups. NOTE: `generate-roster.yml` does NOT produce it (that workflow only prints to the job log), so the writer is historical. Classified 2026-07-31. |
 | `index.html` (repo root, 127 KB) | *(manual)* | GitHub Pages | **KEEP — MIRROR of `markjovic/stattrack/index.html`.** ⚠️ `markjovic/stattrack` is CANONICAL; this copy must be updated in the same pass or it drifts. Pages serves this repo, so a stale mirror is a stale LIVE app, not just a stale file — the same drift class already open on the fixture generator and the dashboard. Classified 2026-07-31. |
+| `reports/name-search-input.json` | *(hand-edited in the GitHub web UI)* | find-players-by-name.js | YES — the committed name list (188 entries) plus the default opponent. The `names` workflow input overrides it for a one-off run that commits nothing. |
 | `zero-team-seasons.json` | discover-fixtures.js | *(none — report)* | YES. ⚠️ OUTSTANDING_TASKS §1.2/§2.3 claimed this "appears nowhere in REPO_MANIFEST". It always did — §2.2 above lists it as a discover-fixtures output and §6.8 names it in the staging-bug pathspec. |
 
 ### 4.2 Transient runtime signals (KEEP — short-lived, regenerated)
@@ -3550,3 +3560,259 @@ NOT taken here.
 
 **Still open.** The profile-stats matrix has not run since `fetch-profile-stats.js` was found
 unconverted. That is the last outstanding piece of evidence.
+
+---
+
+### 6.63 · 2026-10-05/11 — team grades from fixtures, the team-search filters, a self-rebuilding sweep, and the name report
+
+**`build-team-stats.js` now writes a team's CURRENT grade, and it comes from a fixture date because
+nothing else can supply one.** `meta.gid` and `meta.grade` hold the grade of the team's MOST RECENT
+GAME. This closes OUTSTANDING §2.27 and the long-standing "current grade in `team-index.json` is
+ill-defined" item.
+
+```js
+const latestGrade = {};
+function noteGrade(tid, date, gid, gn) {
+  if (!tid || !gid) return;
+  const prev = latestGrade[tid];
+  if (!date) { if (!prev) latestGrade[tid] = { date: null, gid, gn: gn || '' }; return; }
+  if (prev && prev.date && prev.date >= date) return;
+  latestGrade[tid] = { date, gid, gn: gn || '' };
+}
+```
+
+**Registrations cannot supply it and never will.** Measured on Toby Jovic (`0afc7690`), four
+regrades: the RES grade is `reg[1]` twice and `reg[0]` twice. Array order carries no chronology and
+a reg has no date. That is T57, and it is why `data/team-index.json`'s own `grade` is left
+FIRST-SEEN: it is a display hint rendered as a STRING at index.html L1640, and "correcting" it keyed
+on `tid` produced 2,175,659 phantom corrections across 360,777 teams on 2026-09-08.
+
+**`--resume` was added with NO progress file.** T22: a serialised map that scales with the corpus
+crosses GitHub's hard 100 MB limit, which is what killed a full `build-finals-stats` run at
+110.14 MB. The OUTPUT is the record:
+
+```js
+function seasonAlreadyGraded(sid) {
+  const f = path.join(TEAM_STATS_DIR, `${sid}.json`);
+  if (!fs.existsSync(f)) return false;
+  try {
+    const existing = JSON.parse(fs.readFileSync(f, 'utf8'));
+    const first = Object.values(existing)[0];
+    return !!(first && first.meta && Object.prototype.hasOwnProperty.call(first.meta, 'grade'));
+  } catch (_) { return false; }
+}
+```
+
+**Full rebuild, measured:** 3531/3531 seasons, 3465 files, **1040 seconds** — far inside the
+360-minute cap. I had estimated "hours" and said so at the time; the estimate was wrong by an order
+of magnitude.
+
+---
+
+**StatTrack v1.19 → v1.21 — competition and grade filters on team search.**
+Season → competition → grade, showing the teams CURRENTLY in that grade.
+
+⚠️ **Competitions are keyed on `compId`, not on name.** Several associations run a competition
+called "Junior Domestic", and keying on the name collapsed them into ONE filter entry, silently
+mixing two associations' teams. Mark found it: *"i'm worried I'm not seeing some comps which have
+the same name as each other… The name of the comp should really be the comp name - association."*
+
+```js
+function compKeyOf(se){
+  return se.compId || ('n:'+(se.compName||'')+'|o:'+(se.orgId||se.orgName||''));
+}
+function compLabelOf(se){
+  const c=se.compName||'(unnamed competition)',o=se.orgName||'';
+  if(!o||c.toLowerCase().includes(o.toLowerCase()))return c;
+  return c+' \u2014 '+o;
+}
+function seasonSidsFor(sn,compKey){
+  return Object.entries(S.idx?.seasons||{})
+    .filter(([,se])=>se.name===sn&&(!compKey||compKeyOf(se)===compKey))
+    .map(([sid])=>sid);
+}
+```
+
+The grade filter reads `S.teamStats[sid][tid].meta.grade`, fetched per sid and cached — a file
+`loadTeam` needs anyway, so the filter costs no extra request. **When no team in the selection
+carries a grade the app says so explicitly** — *"No grades recorded for these teams yet — their team
+pages have not been rebuilt since grading."* — because an empty list is indistinguishable from "no
+teams".
+
+---
+
+**`discover-seasons-matrix.yml` gained a `rebuild` job: a drained sweep now refreshes rosters by
+itself** instead of Mark having to remember step 2. It dispatches `refresh-rosters.yml` with
+`sweep_first=false, full_team_index=true, deploy=true`, and its gate is the EXACT COMPLEMENT of the
+retrigger's: drained, not dry-run, no undone shards, no no-session shards. A new `chain_rebuild`
+input (default true) is forwarded by the retrigger.
+
+```yaml
+if: ${{ !cancelled() && needs.reduce.result == 'success' && !(inputs.dry_run == true || inputs.dry_run == 'true') && needs.reduce.outputs.undone_shards == '[]' && (needs.reduce.outputs.no_session_shards == '0' || needs.reduce.outputs.no_session_shards == '') && (github.event_name == 'schedule' || inputs.backfill_teams == true || inputs.backfill_teams == 'true') && (github.event_name == 'schedule' || inputs.chain_rebuild == true || inputs.chain_rebuild == 'true') }}
+```
+
+⚠️ **Every boolean there is written `(github.event_name == 'schedule' || inputs.x == true ||
+inputs.x == 'true')`.** The `(github.event_name == 'schedule' && 'true') || inputs.x` form used
+elsewhere in this repo is correct ONLY where bash receives the interpolated STRING. Inside an `if:`
+it is EVALUATED, and `true == 'true'` coerces to `1 == NaN`, which is false — directive 13 and T27
+colliding in one expression. claude_context's T27 now carries this correction.
+
+---
+
+**`find-players-by-name.js` + `.yml` (new).** Offline, no PlayHQ calls. Answers four questions about
+a list of names, and one about a nominated player independent of that list.
+
+**The first version keyed on `gameTids` and reported `Shared-game rows: 0`** — which reads as "they
+have never played each other" and is instead "the field is absent for everyone unambiguous".
+`fetch-profile-stats.js` **L452** writes `gameTids` ONLY when a player holds several teams in one
+season. It is a disambiguation hint, not a game record. **`player.games` — a bare game-id array
+written by `build-player-games.js` — is the universal one.** New trap **T67**.
+
+Side resolution, mirroring StatTrack's `getTidForGame`:
+
+```js
+function sideOf(p, uuid, gid, g, sid) {
+  const hint = (p.gameTids || {})[gid];
+  if (hint) return hint;
+  const h = g.h || g.t1 || null, a = g.a || g.t2 || null;
+  if ((g.hp || []).some(x => idMatch(x && x.profileID, uuid))) return h;
+  if ((g.ap || []).some(x => idMatch(x && x.profileID, uuid))) return a;
+  const tids = new Set();
+  for (const se of (p.seasons || [])) if (se.sid === sid)
+    for (const r of (se.regs || [])) if (r.tid) tids.add(r.tid);
+  const hit = [h, a].filter(t => t && tids.has(t));
+  return hit.length === 1 ? hit[0] : null;
+}
+```
+
+`p[]` is NEVER consulted — it carries no side information. The `same` column is
+`true` / `false` / **`null`**, because a truthiness test files every unresolved game as "opponent".
+Verified by stripping `gameTids` from every fixture player and confirming opponents and team-mates
+still resolve from the game files alone. Note `g.h || g.t1` — T44, a game carries one pair or the
+other and never both.
+
+**Team-mates come from the team-stats ROSTER, not from games**, because those rosters are built from
+registrations as well as box scores, so a child on the team sheet with ZERO games is included. An
+early version required `games > 0` and dropped exactly the children the design existed to catch —
+Mark: *"sebastian defanis is on his current basketball team!?!"* New trap **T68**.
+
+**Faults found and fixed during the build**, each now a trap in `claude_context.md`:
+`O'Beirne` vs the stored `O Beirne` — surnames must be compared with whitespace squashed (**T70**);
+a near-miss list filled in uuid order, so every slot for `Mandis, James` went to a different James
+(**T71**); 31% of `grade_age` blank, so the age penalty never fired and an adult was offered as a
+12-year-old (**T75**); `milly` placed in both the `milana` and `amelia` groups (**T76**); "latest
+season" meaning alphabetically-first, and footy's per-grade rows being summed (**T69**); downstream
+lists rebuilt from the raw report rather than the resolved picks (**T73**); and the nominated
+player excluded from a "has played" list he belongs on (**T74**).
+
+**Cross-sport join with `markjovic/junior-footy-dashboard`.** Footy carries an age band and
+basketball does not, so the join settled **eight basketball ambiguities basketball alone could
+not**: `Baker, Aidan` → `fa0239c4`; `Adams, Jaxson` → `0ab7b68c`; `Driscoll, Nick` → `b5766b7e`;
+`Jenkins, Olivia` → `3b6d7488`; `Wood, Lucas` → `0702b382`; `McMahon, Harper` → `633a844c`;
+`Proctor, Dylan` → `2ddc8b5d`; `Graham, Jake` → `1674a3a7`.
+
+⚠️ **AND IT DISPROVED A PREMISE THIS MANIFEST'S MULTI-SPORT DESIGN RESTS ON.** 26 uuids appear in
+BOTH reports with 26/26 name agreement, which looks like proof that a PlayHQ profile id is one
+person across sports. **Max Counsel has a basketball profile (`e6b76a7d-d45d`) and a SEPARATE footy
+profile (`c8c72749-b53b`).** A shared uuid IS the same person; a uuid present in one sport says
+NOTHING about the other. Option B's shared player layer must keep BOTH ids on a merged record and
+must never resolve one sport's id from the other's. New trap **T72**.
+
+---
+
+**A standing correction about this repository, recorded because I got it wrong.**
+
+Claude sessions have **no GitHub access** to `markjovic/sports-players-stats`: `curl` to
+`raw.githubusercontent.com` returns HTTP `000`, and `gh api repos/markjovic/sports-players-stats/...`
+returns 403 *"GitHub access to this repository is not enabled for this session"*. Mark's staging
+folder (`C:\Temp\stats\stattrack`) is **not a git clone** — there is no `.git` — and he uploads
+through the web UI.
+
+**So no session can state what is or is not on `main`.** On 2026-10-11 I reported ten delivered
+files as "not in GitHub" having checked nothing; all of them had been uploaded. Ask, or say the
+check cannot be run — and do not contradict Mark about the state of his own systems. New trap
+**T78**.
+
+### 6.64 · 2026-10-11 — THE CLUB DOES NOT EXIST IN THIS DATA, AND THREE LIVE SCRIPTS FETCH IT AND THROW IT AWAY
+
+Opened by a request for a per-club week view: pick a club, see every team it runs, that week's
+results and upcoming games, Mon–Sun, with arrows and a date picker.
+
+**There is no club anywhere in the stored data, and the word is already taken.** `club` throughout
+this repo is `season.club`, which `nightly-crawl.js` L1229 and L1346 set to `si?.orgName` — the
+**ASSOCIATION** (EDJBA, Camberwell), not the club. It is rendered as the player header subtitle
+(index.html L1452/L1458), the season-card subtitle (L1598) and the leaderboard sub-line (L3415), and
+`build-leaderboards.js` L237/L331 carries it as `club` alongside a separate `org`. **A real club
+field must not reuse the name.**
+
+**`team-stats` `meta.club` is near-empty and the team page has been showing a blank subtitle because
+of it.** `build-team-stats.js` L338-339 calls `ensureTeam(hid, hn, '')` for every team met in the
+games loop, and `ensureTeam` (L286-297) only fills a club that is currently blank. The only caller
+passing a real value is L429 — the registration-only branch, i.e. teams that have played NO games.
+So any team with a game has `meta.club === ''`, and `index.html` L2196 renders nothing for it.
+
+**The club IS available, on three live code paths, and all three discard it:**
+
+| script | line | field already requested |
+|---|---|---|
+| `nightly-crawl.js` | 383, 388 | `home`/`away … organisation { id name }` on every game of every crawl |
+| `discover-fixtures.js` | 354, 373, 380 | `discoverTeam.organisation` plus per-game home/away organisation |
+| `discover-seasons.js` | 283 | `publicProfileTeams { … organisation { id name } }` per registration |
+
+Neither entry builder writes it: `nightly-crawl.js` L794-813 and `discover-fixtures.js` L749-766
+have no org field. Capturing it costs **no new requests**.
+
+⚠️ **`discover-fixtures.js` carries two dead `storeLookupEntry` blocks (L703-714, L785-793) that
+would have captured it.** Both `require('./team-lookup-utils')` — **a file that does not exist in
+`scripts/`** — inside a bare `try { … } catch (e) {}`. So every game throws MODULE_NOT_FOUND and it
+is swallowed, silently, on every run. Unclassified dead code on a live script, and a masked failure.
+Not touched this session; recorded for a decision.
+
+**Evidence of the shape**, from a captured response Mark holds
+(`…/Norwood Guide/Stats/Other/09-public-profile-teams.json`): team `caab7ccb` "Kilsyth U14 Boys 2"
+carries `organisation { id: "18d29132", name: "Kilsyth Cobras Basketball Club" }`.
+
+**CLUB IS AN ATTRIBUTE OF THE TEAM, NOT OF THE GAME.** So a `tid → {clubId, clubName}` map applies
+to every game that team ever played, history included, and NO completed game is rewritten — which
+`discover-fixtures.js` L735 would forbid anyway ("a game with a score is history").
+
+**What decides the cost.** `discoverTeams(filter:{seasonID})` returns a whole season's teams in ONE
+request, and its query in both `discover-fixtures.js` L336-342 and `probe-discover-teams.js` already
+asks for `organisation { id name }`. The 2026-08-19 probe run recorded "EDJBA → 2,093 teams, 263
+grades, **22 orgs**". **That number decides nothing:** the loop added to a `Set` of ids and skipped a
+null organisation without counting it, so 22 distinct orgs is equally consistent with 1,900 of those
+2,093 teams carrying no club. **A distinct count is not coverage.** Every season ever probed was
+also a live 2026 one, so the backfill case — a locked season — has never been tested.
+
+`probe-discover-teams.js` was therefore changed to report what actually decides: the populated /
+absent split with named examples of the absent, the club NAMES, unnamed-org-id warnings, and the
+overlap against the teams we hold in `data/team-index.json`
+("we hold N here · discoverTeams returns M of them · K would get a club"). `9358e51a` (Waverley
+Senior Domestic Spring 2023, locked) joins the defaults.
+
+**Verified by execution, not by inspection.** The shipped bytes were run in a sandbox with ONLY
+`globalThis.fetch` stubbed via `node --require`, against a crafted `data/team-index.json` and four
+crafted season responses. All four branches fired correctly: 100% populated with 95.0% held-team
+coverage; 60.1% populated with the absent-club warning and five named examples (the case the old
+`orgs.size` hid completely); 20 organisation ids returned with empty names, warned; and a locked
+season returning zero teams, reported as "not measured" rather than as 0%. `node --check` passes.
+
+**STILL UNANSWERED AT THE CLOSE OF THIS SESSION.** No session can call PlayHQ, so whether the club
+map is one ~3,500-request sweep or forward-only is decided by ONE dispatch of **Probe Discover
+Teams**, and by nothing written here.
+
+**Decisions taken this session (Mark), for the view that follows:**
+- Entry point: a **fifth top tab** — Players / Teams / Venues / **Clubs** / Top.
+- A week is **Mon–Sun**, grouped **by day, then by competition** within the day.
+- Row carries: team name · grade · competition · opponent · score · venue · time · court.
+- A completed row clicks through to the **box score sheet**, exactly as the team Fixtures tab does.
+- `comp` is NOT on a game record (`gid`/`gn` is the grade); it is joined from
+  `data/sports-index.json` on the season the game file belongs to.
+
+`TOOLING.md` needed no change: both `probe-discover-teams.js` and `probe-discover-teams.yml` were
+already classified (§ lines 146 and 284).
+
+---
+
+**Highest trap number after this session: T78.** Before adding one, run
+`grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.
