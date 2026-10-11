@@ -22,6 +22,28 @@
 // comes back against the grade list we store, since the import says each team
 // carries its grade and owning club — both currently inferred.
 //
+// ── SECOND QUESTION, ADDED 2026-10-11 ────────────────────────────────────────
+// `organisation` on a returned team IS THE CLUB — e.g. 18d29132 "Kilsyth Cobras
+// Basketball Club". That fact exists NOWHERE in our stored data: `season.club`
+// throughout this repo is sports-index `orgName`, which is the ASSOCIATION
+// (nightly-crawl.js L1229, L1346), and team-stats `meta.club` is only ever
+// populated for registration-only teams (build-team-stats.js L338-339 passes ''
+// for every team that has played a game). Three live scripts already FETCH the
+// club and discard it: nightly-crawl.js L383/L388, discover-fixtures.js
+// L354/L373/L380, discover-seasons.js L283.
+//
+// The 2026-08-19 run of this probe reported "22 organisations" for EDJBA's 2,093
+// teams. THAT NUMBER DECIDES NOTHING. `orgs` was a Set of ids, so a team whose
+// organisation came back null was silently skipped — 22 distinct orgs is exactly
+// consistent with 1,900 of 2,093 teams carrying no club at all. A count is not
+// coverage, and the thing a club map needs is coverage.
+//
+// So this now reports the populated/absent split, names the organisations, and
+// measures the returned set against the teams we actually hold in
+// data/team-index.json. It also probes a LOCKED season by default, because
+// backfilling history is the case that has never been tested — every season this
+// probe has ever been run against was a live 2026 one.
+//
 // Usage:
 //   node scripts/probe-discover-teams.js --seasons=1ae60211,aacc7335,7ccb2e98
 //
@@ -35,7 +57,7 @@ const crypto = require('crypto');
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
 const arg = (f, d) => { const a = args.find(x => x.startsWith('--' + f + '=')); return a ? a.split('=')[1] : d; };
-const SEASONS = arg('seasons', '1ae60211,aacc7335,7ccb2e98').split(',').map(x => x.trim()).filter(Boolean);
+const SEASONS = arg('seasons', '1ae60211,aacc7335,7ccb2e98,9358e51a').split(',').map(x => x.trim()).filter(Boolean);
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
@@ -233,6 +255,8 @@ async function fetchProfile(profileID) {
 
 // Query copied from the junior-footy-dashboard import in playhq_api_reference.md.
 // organisationID is optional there; seasonID alone is the point of the call.
+// `organisation { id name }` is the TEAM'S OWNING CLUB, not the association that
+// runs the competition. Do not remove it: it is the only bulk route to the club.
 const Q_TEAMS = `query discoverTeamsBySeason($seasonId: ID!) {
   discoverTeams(filter: {seasonID: $seasonId}) {
     id name
@@ -301,6 +325,35 @@ async function main() {
     usedGrades.set(sid, m);
   }
 
+  // ── TEAMS WE ALREADY HOLD (2026-10-11) ────────────────────────────────────
+  // A club map built from this call is only worth anything if it covers the teams
+  // in data/team-index.json, so those are loaded and compared against per season.
+  // A missing index is reported and the measurement is skipped; a PRESENT but
+  // unreadable index is a fault and throws, because reading it as "no teams" would
+  // turn a broken file into a clean-looking 0% and bury the real error.
+  const K8 = (s) => String(s == null ? '' : s).slice(0, 8);
+  const heldTeams = new Map();
+  const tiFile = path.join(ROOT, 'data', 'team-index.json');
+  if (!fs.existsSync(tiFile)) {
+    console.log('  ⚠ data/team-index.json not found — held-team coverage will NOT be measured');
+  } else {
+    let ti;
+    try { ti = JSON.parse(fs.readFileSync(tiFile, 'utf8')); }
+    catch (e) { throw new Error('data/team-index.json is present but unreadable: ' + e.message); }
+    const want = new Set(SEASONS.map(K8));
+    for (const entries of Object.values(ti)) {
+      if (!Array.isArray(entries)) continue;
+      for (const e of entries) {
+        if (!e || !e.id || !e.sid) continue;
+        const s8 = K8(e.sid);
+        if (!want.has(s8)) continue;
+        if (!heldTeams.has(s8)) heldTeams.set(s8, new Set());
+        heldTeams.get(s8).add(K8(e.id));
+      }
+    }
+    console.log('  team-index loaded: ' + [...heldTeams.entries()].map(([s, v]) => s + '=' + v.size).join(' · '));
+  }
+
   for (const sid of SEASONS) {
     const meta = idx[sid] || {};
     const stored = Array.isArray(meta.grades) ? meta.grades : [];
@@ -319,15 +372,49 @@ async function main() {
     }
     const teams = r.teams;
     const grades = new Map();
-    const orgs = new Set();
+    const orgs   = new Map();   // orgId -> orgName. A MAP, not a Set: the name is the point.
+    let withOrg = 0, withoutOrg = 0;
+    const noOrgSamples = [];
     for (const t of teams) {
       const gid = t && t.grade && t.grade.id;
       if (gid) grades.set(gid, (t.grade.name || '?'));
       const oid = t && t.organisation && t.organisation.id;
-      if (oid) orgs.add(oid);
+      if (oid) { withOrg++; orgs.set(K8(oid), (t.organisation.name || '')); }
+      else { withoutOrg++; if (noOrgSamples.length < 5) noOrgSamples.push((t && t.name) || (t && t.id) || '?'); }
     }
     console.log('   ✓ discoverTeams returned ' + teams.length + ' teams · ' + grades.size + ' distinct grades · ' + orgs.size + ' organisations');
     if (teams.length) console.log('     RAW first team: ' + JSON.stringify(teams[0]).slice(0, 300));
+
+    // ── CLUB COVERAGE ────────────────────────────────────────────────────────
+    const pct = (n, d) => d ? (100 * n / d).toFixed(1) + '%' : 'n/a';
+    console.log('     club populated on ' + withOrg + ' of ' + teams.length + ' teams (' + pct(withOrg, teams.length) + ')');
+    if (withoutOrg) console.log('     ⚠ ' + withoutOrg + ' team(s) carry NO organisation — e.g. ' + noOrgSamples.join(' | '));
+    const orgNames = [...orgs.values()].filter(Boolean).sort();
+    const unnamed  = orgs.size - orgNames.length;
+    if (orgNames.length) {
+      console.log('     clubs (' + orgNames.length + ' named): ' + orgNames.slice(0, 30).join(' · '));
+      if (orgNames.length > 30) console.log('       … and ' + (orgNames.length - 30) + ' more');
+    }
+    if (unnamed > 0) console.log('     ⚠ ' + unnamed + ' organisation id(s) came back with NO name');
+
+    // Against the teams we hold — the number a backfill actually turns on.
+    const held = heldTeams.get(K8(sid));
+    if (!held) {
+      console.log('     held-team coverage: not measured (no team-index entries for this season)');
+    } else {
+      const returnedTids    = new Set();
+      const returnedWithOrg = new Set();
+      for (const t of teams) {
+        if (!t || !t.id) continue;
+        const k = K8(t.id);
+        returnedTids.add(k);
+        if (t.organisation && t.organisation.id) returnedWithOrg.add(k);
+      }
+      let hit = 0, hitWithOrg = 0;
+      for (const tid of held) { if (returnedTids.has(tid)) { hit++; if (returnedWithOrg.has(tid)) hitWithOrg++; } }
+      console.log('     we hold ' + held.size + ' teams here · discoverTeams returns ' + hit + ' of them (' + pct(hit, held.size) +
+                  ') · ' + hitWithOrg + ' of our held teams would get a club (' + pct(hitWithOrg, held.size) + ')');
+    }
 
     const used = usedGrades.get(sid) || new Map();
     const storedIds = new Set(stored.map(g => String((g && g.id) || '')).filter(Boolean));
@@ -348,6 +435,15 @@ async function main() {
   console.log('  error means this tenant does not support it and the fix is instead to widen');
   console.log('  the grade-refresh in discover-seasons.js (L542), which currently only re-reads');
   console.log('  seasons sitting at grades:[] and so never revisits one captured mid-grading.');
+  console.log('');
+  console.log('  AND FOR THE CLUB MAP, read the LAST line of each season, not the org count.');
+  console.log('  "we hold N teams here · discoverTeams returns M of them · K would get a club"');
+  console.log('  is the only figure that says whether data/club-index.json can be built from');
+  console.log('  this call. High on the LOCKED season too means history is backfillable at one');
+  console.log('  request per season (~3,500 requests, one sweep). Low or refused on the locked');
+  console.log('  season means the club map is FORWARD-ONLY and must instead be harvested from');
+  console.log('  nightly-crawl.js, discover-fixtures.js and discover-seasons.js — all three of');
+  console.log('  which already fetch organisation on every call and throw it away today.');
 }
 
 main()
