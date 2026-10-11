@@ -93,6 +93,28 @@ const COMMIT_EVERY    = Math.max(1, parseInt(val('commit-every', '250'), 10) || 
 // the same failure with a bigger blast radius, so the run ABORTS.
 const MAX_CONSECUTIVE_FAILURES = Math.max(1, parseInt(val('max-consecutive-failures', '25'), 10) || 25);
 
+// ⚠️ 2026-10-11 — PlayHQ RETURNS 5xx AS A GraphQL ERROR WITH HTTP 200.
+// The first live sweep lost 4 seasons of 3,239 (0.12%), and 4,810 teams with
+// them — including VJBL 2025's 1,659. Three of the four read
+// `ID! → gql: 500: Internal Server Error`: HTTP 200, `errors[]` populated, the
+// 500 only visible INSIDE the message. The fourth was a plain HTTP 504. All
+// four are server-side transients, proven by the dry run an hour earlier
+// failing a DIFFERENT pair (5e1d608f, 16dd975c) which then succeeded here.
+// Without this retry every sweep loses a random handful and needs a second
+// dispatch to recover them.
+const TRANSIENT_ATTEMPTS = Math.max(1, parseInt(val('transient-attempts', '3'), 10) || 3);
+const TRANSIENT_BACKOFF_MS = [2000, 6000, 15000];
+
+// A transient is worth re-asking; a permanent answer is not. "Season could not
+// be found" must NEVER match here — retrying it three times with backoff would
+// turn a clean 3-second answer into 23 seconds of nothing, 3,239 times over.
+function isTransient(detail) {
+  const s = String(detail || '');
+  return /\bHTTP 5\d\d\b/.test(s)
+      || /\b5\d\d:/.test(s)
+      || /internal server error|bad gateway|gateway time-?out|service unavailable|timed? ?out/i.test(s);
+}
+
 const MODE = TARGET_SEASON ? `single-${TARGET_SEASON}` : ACTIVE_ONLY ? 'active' : 'all';
 
 const API_URL       = 'https://api.playhq.com/graphql';
@@ -190,7 +212,7 @@ let workingType = null;
 // Returns a TAGGED outcome. `asked:true` means PlayHQ answered — an empty list is
 // then a real answer. `asked:false` means we never got an answer and NOTHING may
 // be written for that season.
-async function discoverTeams(seasonId, allowRefresh = true) {
+async function discoverTeams(seasonId, allowRefresh = true, attempt = 1) {
   if (!sessionCookie) await refreshSession();
   const variants = workingType ? [workingType] : [['ID!', Q_TEAMS], ['String!', Q_TEAMS_STR]];
   let last = '';
@@ -198,7 +220,17 @@ async function discoverTeams(seasonId, allowRefresh = true) {
     const [label, query] = v;
     let res;
     try { res = await doFetch(API_URL, { operationName: 'discoverTeamsBySeason', variables: { seasonId }, query }, { ...HEADERS_BASE, 'Cookie': sessionCookie }); }
-    catch (err) { return { asked: false, status: 'network', detail: err.code || err.message }; }
+    catch (err) {
+      // A socket-level failure is transient by definition.
+      const detail = err.code || err.message;
+      if (attempt < TRANSIENT_ATTEMPTS) {
+        const wait = TRANSIENT_BACKOFF_MS[Math.min(attempt - 1, TRANSIENT_BACKOFF_MS.length - 1)];
+        log(`  ${seasonId}: ${detail} — transient, retry ${attempt + 1}/${TRANSIENT_ATTEMPTS} in ${wait / 1000}s`);
+        await sleep(wait);
+        return discoverTeams(seasonId, allowRefresh, attempt + 1);
+      }
+      return { asked: false, status: 'network', detail: `${detail} (after ${attempt} attempts)` };
+    }
 
     if (res.status === 403) {
       const b = res.rawText || '';
@@ -220,6 +252,9 @@ async function discoverTeams(seasonId, allowRefresh = true) {
     const json = res.body;
     if (!json) { last = `${label} → bad-json`; continue; }
     if (json.errors && json.errors.length) {
+      // ⚠️ THE 500 IS INSIDE THE MESSAGE, NOT IN THE STATUS. PlayHQ answers
+      // HTTP 200 with errors:[{message:"500: Internal Server Error"}]. Reading
+      // only res.status files a server fault as a permanent "no answer".
       last = `${label} → gql: ${json.errors.map(e => e.message).join(' | ').slice(0, 200)}`;
       continue;
     }
@@ -227,7 +262,15 @@ async function discoverTeams(seasonId, allowRefresh = true) {
     const raw = (json.data || json)?.discoverTeams;
     return { asked: true, teams: Array.isArray(raw) ? raw : [] };
   }
-  return { asked: false, status: 'failed', detail: last };
+  // Every variant exhausted. Retry only if what came back looks like a server
+  // fault — a real "could not be found" is an ANSWER and must not be re-asked.
+  if (isTransient(last) && attempt < TRANSIENT_ATTEMPTS) {
+    const wait = TRANSIENT_BACKOFF_MS[Math.min(attempt - 1, TRANSIENT_BACKOFF_MS.length - 1)];
+    log(`  ${seasonId}: ${last.slice(0, 80)} — transient, retry ${attempt + 1}/${TRANSIENT_ATTEMPTS} in ${wait / 1000}s`);
+    await sleep(wait);
+    return discoverTeams(seasonId, allowRefresh, attempt + 1);
+  }
+  return { asked: false, status: isTransient(last) ? 'transient-exhausted' : 'failed', detail: `${last}${attempt > 1 ? ` (after ${attempt} attempts)` : ''}` };
 }
 
 // ─── git — the house pattern ─────────────────────────────────────────────────
