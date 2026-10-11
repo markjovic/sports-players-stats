@@ -3862,6 +3862,122 @@ remote, `globalThis.fetch` stubbed via `node --require`, the shipped bytes other
 
 `node --check` passes on both delivered scripts.
 
+**THE FULL DRY SWEEP RAN THE SAME DAY AND THE ANSWER IS TOTAL.** 3,239 target seasons (the 274
+`removed:true` stubs correctly excluded), ~58 minutes:
+
+```
+seasons asked OK ....... 3237 of 3239
+seasons that answered 0  25
+teams seen ............. 408,733
+  with a club .......... 408,733 (100.0%)
+  with NO club ......... 0        (0.0%)
+clubs ................... 866
+largest: VJBL (10,371) · Casey (7,619) · MEBA (7,223) · Knox (5,443) · Kilsyth Basketball (4,887)
+```
+
+**408,733 teams, every single one carrying a club, across six years of seasons.** There is no
+forward-only fallback to design for and no backfill gap. 866 clubs.
+
+- **25 seasons genuinely answered ZERO teams** — real answers, written as `{}`, correctly separated
+  from failures. Mark's call 2026-10-11: **leave them.** They almost certainly overlap the 808
+  seasons no organisation returns and the empty seasons `close-empty-seasons` already handles.
+- **2 seasons could not be asked** (0.06%): `5e1d608f` Midweek Ladies — Winter 2021 and `16dd975c`
+  BTBC Junior Community League - Foundation — Autumn 2025. NOT a block: a 403 carries its own status
+  and 25 consecutive failures would have aborted the run. `16dd975c` is a season this repo has
+  queried successfully before (OUTSTANDING_TASKS records it among three that got complete PlayHQ
+  coverage, 524 games), so transient is the better reading. `--resume` asks exactly those two.
+- **The final commit's 1,105 paths reconcile exactly** — 237 leftover `club-map` files
+  (3,237 mod 250) + 866 club files + the index + the progress file — which is independent
+  confirmation that the commit batching counts what it says it counts.
+- ⚠️ **Every commit in a live run sits UNDER the 2,000-path `BATCH_THRESHOLD`**, so the per-path
+  `git add` route is used — ~3,250 invocations across 13 commits, roughly 13 minutes of staging.
+  That is the route the sandbox exercised. **The batched `--pathspec-from-file` branch above the
+  threshold has NOT been executed** and is a known untested path; raising `commit_every` to 2,500
+  would switch onto it and should not be done casually.
+
+**A defect found by that run and fixed the same day.** The failure summary printed
+`sid / status / name` and **dropped `detail` — the only field that says WHY**. The reason string
+existed the whole time, on the `✗` line hundreds of lines earlier, which is not where anyone reads
+a failure list. It now prints the detail on a continuation line, says so explicitly when a status
+carries none (a CloudFront block has no detail by construction), and adds a by-cause tally so N
+failures of one cause never read as N unrelated ones. Driven through four distinct causes —
+`gql`, `HTTP 500`, `ECONNRESET`, `cloudfront-block` — against the shipped bytes.
+
+**THE LIVE SWEEP RAN AT CONCURRENCY 5 AND LANDED.** 03:57:50 → 04:35:10, one hour less than the
+sequential dry run:
+
+```
+seasons asked OK ....... 3235 of 3239
+teams seen ............. 403,923   with a club 403,923 (100.0%)   with NO club 0
+clubs ................... 866
+largest: VJBL (8,712) · Casey (7,619) · MEBA (7,223) · Knox (5,443) · Kilsyth (4,885)
+```
+
+**CONCURRENCY 5 IS MEASURED-SAFE ON THIS ENDPOINT.** Sweep 03:57:50 → 04:29:16 — **31½ minutes
+against 58 sequential** — with ZERO 403s and ZERO CloudFront blocks across 3,239 requests. That
+matches `discover-game-backfill.js`, where 5 ran clean and 25 hit a sustained 403 wall after ~140
+games. 5 is the house value on api.playhq.com; it now has a second independent measurement.
+
+**The per-path `git add` cost is confirmed at the T16 rate.** `writing 866 club file(s)` 04:29:17 →
+`staging:` 04:35:06 = **5m49s for 1,097 paths**, ≈0.32 s per invocation. The batched
+`--pathspec-from-file` branch above 2,000 paths REMAINS UNEXECUTED.
+
+⚠️ **An arithmetic discrepancy I could not resolve and am not explaining away.** The final commit
+staged `1097 files changed, 1097 insertions(+), 1 deletion(-)`. Predicted: 235 leftover club-map
+files (3,235 − 12×250) + 866 clubs + `club-index.json` + the modified progress file = **1,103
+paths**, i.e. 1,102 insertions and 1 deletion. **Six short.** `pendingPaths` is a Set so duplicates
+cannot explain it, and on a first run every club-map and club file is new. The intermediate
+`staging:` lines were elided from the log I was given, so this cannot be settled from here. It does
+not affect correctness of the data — the file counts on disk are the authority — but it is recorded
+rather than rationalised.
+
+**4 seasons lost, and with them 4,810 teams — 0.12% of seasons, 1.2% of teams.** The loss is not
+uniform: `b81be631 Victorian Junior Basketball League — 2025` alone accounts for **1,659** of them,
+which is why VJBL reads 8,712 here against 10,371 in the dry run.
+
+| season | cause |
+|---|---|
+| `d8da6b7a` New Balance Representative Tournament — 2025 | `gql: 500: Internal Server Error` |
+| `12840bfc` Junior Domestic — Summer 2023/24 | `gql: 500: Internal Server Error` |
+| `b81be631` Victorian Junior Basketball League — 2025 | `gql: 500: Internal Server Error` |
+| `8c4a644f` Domestic Competition — Winter 2023 | `HTTP 504` |
+
+**These are server-side transients, and the proof is that the sets do not overlap.** The dry run an
+hour earlier lost a DIFFERENT pair — `5e1d608f` and `16dd975c` — both of which succeeded in this
+run; and all four of these had succeeded in the dry run. A permanent fault cannot alternate.
+
+⚠️ **THREE OF THE FOUR CAME BACK AS HTTP 200.** PlayHQ answers
+`{errors:[{message:"500: Internal Server Error"}]}` with a 200 status — **the 500 is inside the
+message, not in the status line**. Any client reading only `res.status` files a server fault as a
+permanent "no answer". That is the same shape as the 2026-09-07 failure that wrote 80 seasons
+`removed:true` off a CloudFront wall, one layer further in.
+
+**Fixed the same day: a transient retry in `discoverTeams`.** Up to `--transient-attempts` (default
+3) with 2 s / 6 s / 15 s backoff, on HTTP 5xx, on a GraphQL message that looks like a server fault
+(`5xx`, internal server error, bad gateway, gateway timeout, service unavailable, timed out), and on
+a socket-level throw. A status of its own, **`transient-exhausted`**, separates "the server kept
+falling over" from "PlayHQ answered and the answer was no".
+
+**The property that makes it safe is that a real answer is never re-asked**, and it is proven by
+request count, not by reading the predicate. Sandbox, shipped bytes, `fetch` stubbed:
+
+```
+REQUESTS PER SEASON: {"s_gql500":3,"s_http504":2,"s_netflap":2,
+                      "s_notfound":1,"s_hard500":3,"s_ok":1}
+```
+
+`s_gql500` (the exact live shape — HTTP 200, 500 inside the message) recovered on attempt 3;
+`s_http504` and an `ECONNRESET` on attempt 2; **`s_notfound` was asked ONCE** and classified
+`failed`; `s_hard500` exhausted and classified `transient-exhausted`; the happy path paid nothing.
+Retrying "Season could not be found" would have turned a clean answer into 23 s of nothing, 3,239
+times over.
+
+**Decision 2026-10-11 (Mark) on the association problem: SHOW EVERYTHING, FLAT.** The five largest
+organisations are associations and leagues, not clubs — VJBL alone owns 10,371 teams. They are not
+filtered, not sectioned and not labelled: PlayHQ is accurate, a VJBL rep team really does belong to
+VJBL, and a parent with a rep child needs that entry. The Clubs tab list simply opens on
+associations rather than on clubs.
+
 **Decisions taken this session (Mark), for the view that follows:**
 - Entry point: a **fifth top tab** — Players / Teams / Venues / **Clubs** / Top.
 - A week is **Mon–Sun**, grouped **by day, then by competition** within the day.
