@@ -480,8 +480,18 @@ async function main() {
   if (failures.length) {
     log('─'.repeat(60));
     log(`⚠ ${failures.length} season(s) COULD NOT BE ASKED. Nothing was written for any of them.`);
-    for (const f of failures.slice(0, 40)) log(`   ${f.sid}  ${f.status}  ${f.name}`);
+    // ⚠️ 2026-10-11 — THIS LINE USED TO DROP `detail`, AND detail IS THE ONLY
+    // THING THAT SAYS WHY. The first live dry run reported two seasons as bare
+    // `failed` with no cause, and the reason string existed the whole time — on
+    // the ✗ line printed hundreds of lines earlier, which is not where anyone
+    // reads a failure list. A summary that names a failure without naming its
+    // cause is a failure report you cannot act on.
+    for (const f of failures.slice(0, 40)) log(`   ${f.sid}  ${f.status.padEnd(16)} ${f.name}${f.detail ? `\n        └─ ${f.detail}` : '  (no detail recorded — see the ✗ line for this season above)'}`);
     if (failures.length > 40) log(`   … and ${failures.length - 40} more`);
+    // Status tally, so 300 failures of one cause never read like 300 unrelated ones.
+    const byStatus = {};
+    for (const f of failures) byStatus[f.status] = (byStatus[f.status] || 0) + 1;
+    log(`   by cause: ${Object.entries(byStatus).map(([k, v]) => `${k}=${v}`).join(' · ')}`);
     log('Re-run with --resume to retry only these.');
     // The progress file is DELIBERATELY left in place so --resume retries exactly
     // the failures. Delete-on-SUCCESS only.
