@@ -465,6 +465,37 @@ function report(teams, surviving) {
     console.log('   ' + k.padEnd(50) + String(pa + '%').padStart(10) + '  ' + String(pb + '%').padStart(11));
   }
 
+  // ⚠️ DISCRIMINATOR, REPORTED BEFORE THE VERDICT. The first build of this probe
+  // filtered every `organisation.*` key out of the verdict on the grounds that
+  // `organisation` is the field we already have — and so printed "no field
+  // carries a club" while `organisation.type` sat in the table at 100%/100%
+  // reading ASSOCIATION on the mis-attributed teams and CLUB on the control.
+  // That is not a route to the club, but it IS a deterministic way to know which
+  // attribution you are looking at, which was most of the point. A field that
+  // separates the two groups is a finding even when it is not the one asked for.
+  const typeTally = (set) => { const m = new Map();
+    for (const t of set) { const v = (t.organisation && t.organisation.type) || '(absent)';
+      m.set(v, (m.get(v) || 0) + 1); } return m; };
+  const tm = typeTally(mis), tg = typeTally(good);
+  if (tm.size || tg.size) {
+    console.log('\n   ORGANISATION TYPE');
+    const all = [...new Set([...tm.keys(), ...tg.keys()])].sort();
+    for (const v of all) console.log('     ' + String(v).padEnd(16)
+      + 'host-org teams ' + String(tm.get(v) || 0).padStart(6)
+      + '   club teams ' + String(tg.get(v) || 0).padStart(6));
+    const misTypes  = [...tm.keys()].filter(v => v !== '(absent)');
+    const goodTypes = [...tg.keys()].filter(v => v !== '(absent)');
+    const separates = misTypes.length && goodTypes.length
+      && !misTypes.some(v => goodTypes.includes(v));
+    if (separates) {
+      console.log('     ✓ SEPARATES THE TWO GROUPS CLEANLY — a tournament/association');
+      console.log('       attribution can be told from a real club attribution with no name');
+      console.log('       matching at all.');
+    } else {
+      console.log('     ✗ does not separate the two groups — both carry overlapping values.');
+    }
+  }
+
   // THE VERDICT. A field is only useful if it is populated on the teams that are
   // mis-attributed AND is not just the host org repeated back.
   console.log('\n   VERDICT');
@@ -481,10 +512,14 @@ function report(teams, surviving) {
     console.log('   Inspect the specimens below before trusting these — a populated field');
     console.log('   that echoes the host org is not the club.');
   } else {
-    console.log('   ✗ NO field other than `organisation` carries a club on the mis-attributed');
-    console.log('     teams. PlayHQ does not hold the owning club for a team entered under a');
-    console.log('     tournament, so the club cannot be recovered from the API — only inferred');
-    console.log('     from the team name, with the 68/294 error rate recorded in this header.');
+    console.log('   ✗ NO field carries the OWNING CLUB on the mis-attributed teams. PlayHQ');
+    console.log('     does not hold it for a team entered under a tournament, so the club');
+    console.log('     itself can only be inferred from the team name.');
+    console.log('     → But see ORGANISATION TYPE above before concluding nothing can be done:');
+    console.log('       knowing WHICH teams are mis-attributed is most of the problem, and if');
+    console.log('       type separates them, any name inference can be confined to exactly');
+    console.log('       those teams and to candidate organisations of type CLUB — which is a');
+    console.log('       different and much smaller error surface than matching names at large.');
   }
   if (surviving) console.log('\n   fields that validated: ' + surviving.filter(f => !BASE_FIELDS.includes(f)).map(FIELD_OF).join(', '));
 

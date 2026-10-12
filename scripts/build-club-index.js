@@ -37,8 +37,12 @@
 //
 // ── OUTPUTS ────────────────────────────────────────────────────────────────
 //   club-map/bv/{sid}.json   { tid: clubId }                     per season
-//   clubs/{clubId}.json      { id, n, seasons: { sid: [tid] } }  per club, MERGED
-//   data/club-index.json     [{ id, n, t, s }] sorted by name    the search list
+//   clubs/{clubId}.json      { id, n, ty, seasons: { sid: [tid] } }  per club, MERGED
+//   data/club-index.json     [{ id, n, ty, t, s }] sorted by name   the search list
+//
+//   `ty` is PlayHQ's organisation type — CLUB or ASSOCIATION — added 2026-10-12.
+//   It is MERGED like `n`: a run that does not see an organisation never blanks a
+//   type a previous run captured, so an --active-only run cannot strip history.
 //
 // Sized from the probe: ~368,000 teams at ~20 bytes is ~7.5 MB for club-map and
 // about the same again for clubs/, against a 763 MB Pages artifact. Negligible,
@@ -193,6 +197,14 @@ async function refreshSession() {
 }
 
 // ─── The query ───────────────────────────────────────────────────────────────
+// ⚠️ `type` ADDED 2026-10-12 (§6.69). PlayHQ publishes CLUB or ASSOCIATION on
+// every team's organisation, 100% populated, and it is the ONLY deterministic way
+// to tell a real club attribution from a tournament/association one — measured on
+// 0869ea69: all 1,010 host-org teams read ASSOCIATION, all 311 others read CLUB.
+// It does not recover the owning club of a tournament-entered team (nothing in the
+// API does), but it says exactly WHICH teams have that problem, which is what any
+// later inference has to be confined to. Do not drop it.
+//
 // Copied from probe-discover-teams.js. `organisation { id name }` is the TEAM'S
 // OWNING CLUB — the whole point of this script. `grade` CAN be null on a returned
 // team (EDJBA's first team: z101, U7, grade null — seen again live 2026-10-11).
@@ -200,7 +212,7 @@ const Q_TEAMS = `query discoverTeamsBySeason($seasonId: ID!) {
   discoverTeams(filter: {seasonID: $seasonId}) {
     id name
     grade { id name }
-    organisation { id name }
+    organisation { id name type }
   }
 }`;
 // ID! is PROVEN on this tenant (probe run 2026-10-11: "variable type that works:
@@ -395,8 +407,9 @@ async function main() {
     teamsWithClub++;
     const cid = String(org.id);
     let c = clubs.get(cid);
-    if (!c) { c = { id: cid, n: org.name || '', seasons: new Map() }; clubs.set(cid, c); }
+    if (!c) { c = { id: cid, n: org.name || '', ty: org.type || '', seasons: new Map() }; clubs.set(cid, c); }
     if (!c.n && org.name) c.n = org.name;
+    if (!c.ty && org.type) c.ty = org.type;
     if (!c.seasons.has(sid)) c.seasons.set(sid, new Set());
     c.seasons.get(sid).add(String(tid));
   }
@@ -466,8 +479,8 @@ async function main() {
     const file = path.join(CLUBS_DIR, `${c.id}.json`);
     const existing = readJson(file, null);
     const merged = existing && typeof existing === 'object' && existing.seasons && typeof existing.seasons === 'object'
-      ? { id: c.id, n: c.n || existing.n || '', seasons: { ...existing.seasons } }
-      : { id: c.id, n: c.n || '', seasons: {} };
+      ? { id: c.id, n: c.n || existing.n || '', ty: c.ty || existing.ty || '', seasons: { ...existing.seasons } }
+      : { id: c.id, n: c.n || '', ty: c.ty || '', seasons: {} };
     // Only the sids this run RESOLVED are replaced. Every other season this club
     // holds is carried through untouched — that is what makes --active-only safe.
     for (const [sid, tids] of c.seasons) merged.seasons[sid] = [...tids].sort();
@@ -485,11 +498,11 @@ async function main() {
       if (!c || !c.id) continue;
       const sids = Object.keys(c.seasons || {});
       const teamTotal = sids.reduce((t, s) => t + ((c.seasons[s] || []).length), 0);
-      indexRows.push({ id: c.id, n: c.n || '', t: teamTotal, s: sids.length });
+      indexRows.push({ id: c.id, n: c.n || '', ty: c.ty || '', t: teamTotal, s: sids.length });
     }
   } else {
     for (const c of clubs.values()) {
-      indexRows.push({ id: c.id, n: c.n || '', t: [...c.seasons.values()].reduce((t, s) => t + s.size, 0), s: c.seasons.size });
+      indexRows.push({ id: c.id, n: c.n || '', ty: c.ty || '', t: [...c.seasons.values()].reduce((t, s) => t + s.size, 0), s: c.seasons.size });
     }
   }
   indexRows.sort((a, b) => (a.n || '').localeCompare(b.n || '') || a.id.localeCompare(b.id));
@@ -507,6 +520,16 @@ async function main() {
   flushCommit(`build-club-index: ${askedOk} seasons, ${indexRows.length} clubs`);
 
   // ── Report ────────────────────────────────────────────────────────────────
+  // Report the type split. A run that captured no types at all means PlayHQ
+  // stopped returning the field, and that must be visible in the log rather than
+  // discovered later as a column of empty strings.
+  const tyTally = new Map();
+  for (const r of indexRows) tyTally.set(r.ty || '(none)', (tyTally.get(r.ty || '(none)') || 0) + 1);
+  console.log('');
+  log('organisation types across ' + indexRows.length + ' club file(s):');
+  for (const [k, v] of [...tyTally.entries()].sort((a, b) => b[1] - a[1])) log('    ' + String(k).padEnd(14) + String(v).padStart(6));
+  if ((tyTally.get('(none)') || 0) === indexRows.length) log('  ⚠ NOT ONE organisation carried a type — check the query before trusting this run.');
+
   const pct = (n, d) => d ? (100 * n / d).toFixed(1) + '%' : 'n/a';
   console.log('');
   log('─'.repeat(60));
