@@ -83,6 +83,16 @@ on:
         required: false
         default: false
         type: boolean
+      rate:
+        description: 'Requests per rolling 60s across queries AND cookie bootstraps. 600 is the default and is DERIVED from the documented ~1,256-1,790 per ~80s trip point, not measured. 0 disables the gate (pre-2026-10-13 behaviour).'
+        required: false
+        default: ''
+        type: string
+      rotate_age_min:
+        description: 'Rotate the session cookie at this age in minutes. TTL is ~30-40 min. Blank = 25. Replaces the old 250-CALL rotation, which measurement showed bought nothing.'
+        required: false
+        default: ''
+        type: string
       concurrency:
         description: 'Team fetches in parallel. The weekly cron runs at 40, which is the PROVEN working value on this endpoint (2026-08-13). Blank = the script default of 20. The 2026-08-13 freeze was NOT concurrency — it was two silent-hang bugs in gql() (no request timeout, uncapped 429 retry loop), both since fixed.'
         required: false
@@ -138,6 +148,8 @@ jobs:
           if [ "${{ inputs.no_season_teams }}" = "true" ]; then ARGS="$ARGS --no-season-teams"; fi
           if [ -n "${{ inputs.season }}" ];            then ARGS="$ARGS --season=${{ inputs.season }}"; fi
           if [ -n "${{ inputs.concurrency }}" ];       then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
+          if [ -n "${{ inputs.rate }}" ];              then ARGS="$ARGS --rate=${{ inputs.rate }}"; fi
+          if [ -n "${{ inputs.rotate_age_min }}" ];    then ARGS="$ARGS --rotate-age-min=${{ inputs.rotate_age_min }}"; fi
           node scripts/discover-fixtures.js $ARGS
 
   # Weekly chain link (2026-07-21, §C7): fixtures sweep → finals → leaderboards.
