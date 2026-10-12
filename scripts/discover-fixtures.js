@@ -667,7 +667,12 @@ function gitCommitPush(message) {
 // counted/logged as "updated") when one of these actually changes — everything
 // else on the object (nightly-crawl's player roster `p`, the `spc` flag, etc.) is
 // preserved by merging rather than replacing.
-const TRACKED = ['d', 'rn', 'h', 'hn', 'a', 'an', 'hs', 'as', 'vid', 'vn', 'ct', 't', 'st'];
+// ⚠️ 2026-10-12 — `gid`/`gn` ADDED. They were missing from BOTH the entry and
+// this list, and the second omission is the one that matters: diffEntry only
+// compares the keys named here, so a fixture already on disk would never gain a
+// grade no matter how many times the sweep re-ran. With them listed, one ordinary
+// Discover Fixtures run backfills every unplayed game.
+const TRACKED = ['d', 'rn', 'gid', 'gn', 'h', 'hn', 'a', 'an', 'hs', 'as', 'vid', 'vn', 'ct', 't', 'st'];
 
 function diffEntry(existing, entry) {
   const changes = [];
@@ -751,6 +756,18 @@ async function processTeam(teamId, seasonId) {
         rn:  roundName,   // BARE round name — matches nightly-crawl (line 570) and
                           // isFinal(rn) detection; a "Finals — " prefix here diverged
                           // from stored data and churned every finals game.
+        // ⚠️ 2026-10-12 — THE GRADE WAS FETCHED AND THROWN AWAY. `round.grade`
+        // carries `id` and `name` on every round of the TeamFixture response, and
+        // the only code that touched them was the dead storeLookupEntry block
+        // below, which requires a `team-lookup-utils` module that does not exist in
+        // scripts/ and throws MODULE_NOT_FOUND into an empty catch on every game.
+        // nightly-crawl.js L798-799 writes `gid`/`gn` on everything it stores, so a
+        // PLAYED game had a grade and an unplayed FIXTURE did not — which is why
+        // StatTrack's club view could group results by age and not future games.
+        // Existing values win if PlayHQ answers with nothing, same as every other
+        // field here.
+        ...(round.grade?.id ? { gid: round.grade.id } : existing?.gid ? { gid: existing.gid } : {}),
+        ...(roundGradeName   ? { gn:  roundGradeName } : existing?.gn  ? { gn:  existing.gn  } : {}),
         h:   game.home?.id   || existing?.h   || null,
         hn:  game.home?.name || existing?.hn  || null,
         a:   game.away?.id   || existing?.a   || null,
