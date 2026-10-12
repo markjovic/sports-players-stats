@@ -869,6 +869,10 @@ async function main() {
   let sinceLastCommit = 0;
   const zeroTeamSeasons = [];
   const staleGradeSeasons = [];
+  // Which seasons THIS run actually scanned. The stale-grade worklist is
+  // repository-wide and merges against it: a season this run did not look at
+  // keeps whatever a previous run recorded. See the write block at the bottom.
+  const scannedSeasonIds = new Set();
 
   // Sweep one season. Returns 'ok' | 'zero-team' | 'transient'.
   // TRANSIENT means every enumeration call for the season returned null — that is an API
@@ -985,6 +989,7 @@ async function main() {
       if (status === 'transient') { leftover.push(season); continue; }
       seasonsProcessed++;
       sinceLastCommit++;
+      if (season.id) scannedSeasonIds.add(season.id);
       doneSeasonsSet.add(season.id);
       saveProgress(doneSeasonsSet);
 
@@ -1066,13 +1071,51 @@ async function main() {
   // Written even when EMPTY, deliberately. An absent file is indistinguishable
   // from "this run found none", and the consumer must be able to tell the
   // difference between nothing stale and never checked.
+  //
+  // ⚠️ MERGE, NEVER REPLACE — added 2026-10-12 after a --season=5e26f10f run
+  // overwrote this file with its own one-season view: `count 12, seasonsScanned
+  // 188` became `count 0, seasonsScanned 1`, and discover-seasons.js would next
+  // have read "nothing is stale" for a repository it had scanned 1/188th of.
+  // A PARTIAL RUN MUST NOT CLEAR A REPOSITORY-WIDE WORKLIST. This is the same
+  // rule build-club-index.js applies to clubs/{clubId}.json, for the same reason.
+  //
+  // The merge is by season id: an entry for a season this run SCANNED is replaced
+  // by this run's finding (and disappears when the season is no longer stale,
+  // which is how entries retire); an entry for a season this run did not reach is
+  // carried through untouched. An entry with no id cannot be matched either way,
+  // so it is KEPT — dropping it would be a silent loss on a guess.
   if (!DRY_RUN) {
-    fs.writeFileSync(path.join(ROOT, 'data', 'stale-grade-seasons.json'), JSON.stringify({
-      generatedAt: new Date().toISOString(),
+    const STALE_FILE = path.join(ROOT, 'data', 'stale-grade-seasons.json');
+    let carried = [];
+    try {
+      const prev = JSON.parse(fs.readFileSync(STALE_FILE, 'utf8'));
+      if (prev && Array.isArray(prev.seasons)) {
+        carried = prev.seasons.filter(x => !(x && x.id && scannedSeasonIds.has(x.id)));
+      }
+    } catch (e) {
+      // No previous file, or an unreadable one. Starting fresh is correct for the
+      // first case and the only option in the second, but it must be VISIBLE
+      // rather than looking like a clean sweep that found nothing.
+      if (fs.existsSync(STALE_FILE)) {
+        console.log(`  ⚠ stale-grade-seasons.json could not be parsed (${e.message}) — writing this run's findings only; entries for seasons this run did not scan are LOST.`);
+      }
+    }
+    const mergedStale = carried.concat(staleGradeSeasons);
+    fs.writeFileSync(STALE_FILE, JSON.stringify({
+      generatedAt:    new Date().toISOString(),
+      // What this run covered, so a reader can tell a full sweep's verdict from a
+      // single season's. `seasonsScanned` alone said 1 and looked authoritative.
+      scope:          TARGET_SEASON ? `single season ${TARGET_SEASON}`
+                    : LOCKED_RESWEEP ? 'locked re-sweep'
+                    : ALL_SEASONS ? 'all seasons'
+                    : CURRENT_ONLY ? 'active, current only'
+                    : 'active only',
       seasonsScanned: seasonsProcessed,
-      count: staleGradeSeasons.length,
-      seasons: staleGradeSeasons,
+      carriedForward: carried.length,
+      count:          mergedStale.length,
+      seasons:        mergedStale,
     }, null, 2));
+    console.log(`  stale-grade worklist: ${staleGradeSeasons.length} from this run + ${carried.length} carried forward = ${mergedStale.length}`);
   }
 
   clearProgress();
