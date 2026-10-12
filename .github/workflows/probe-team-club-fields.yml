@@ -76,9 +76,22 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      # SPARSE, AND ONE FILE. This probe reads NOTHING from the repository — it
+      # fetches api.playhq.com and prints. A plain checkout of this repo writes
+      # 527,900 files and downloads every blob at HEAD, which was the whole cost
+      # of the job (~5 min, 2026-10-12). blob:none fetches commit + trees only,
+      # and the non-cone sparse pattern then pulls exactly one blob.
+      #
+      # This is the opposite case to audit-grade-coverage.yml, which walks every
+      # file in games/bv and so must take the full checkout. Sparse is right when
+      # the job needs a handful of files and wrong when it needs most of them.
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts/probe-team-club-fields.js
 
       # Inputs go through env, never interpolated into the shell — a season id is
       # attacker-controlled text as far as this runner is concerned, and `${{ }}`
@@ -92,6 +105,13 @@ jobs:
           NO_INTROSPECT: ${{ inputs.no_introspect }}
         run: |
           set -euo pipefail
+
+          # A sparse checkout that silently missed the file would otherwise fail
+          # as "node: cannot find module", which reads like a code fault.
+          if [ ! -f scripts/probe-team-club-fields.js ]; then
+            echo "::error::scripts/probe-team-club-fields.js is not in the checkout — the sparse pattern did not match."
+            exit 1
+          fi
 
           SEASON="${SEASON:-0869ea69}"
           if [ -z "$SEASON" ]; then

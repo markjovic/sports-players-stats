@@ -1,0 +1,98 @@
+# .github/workflows/audit-grade-coverage.yml
+name: Audit grade coverage
+
+# READ-ONLY. No PlayHQ calls, no writes, no commit, no data-write lock. Reads the
+# game files already in the checkout and prints to the job log.
+#
+# WHAT IT ANSWERS. Which seasons still have games with no `gn` (grade name), the
+# field StatTrack groups fixtures by and whose absence produced "future fixtures
+# for the saturday comp is not showing age bands" (2026-10-11).
+#
+# WHY IT EXISTS. discover-fixtures.js was fixed on 2026-10-12 to write `gn`/`gid`
+# on every entry and to TRACK them, so an existing fixture is backfilled on the
+# next sweep. The sweep then reported `0 new, 0 updated` on every season, which
+# READS like the fix never ran. It had: spot-checked against main 2026-10-12,
+#   2e623bd2  5,835 games 100% gn · 3f8e0029  6,547 games 100% (244/244 upcoming)
+#   e26f328b  6,501 games 100%
+# — so `0 updated` was CORRECT for those seasons. But the backfill is PARTIAL:
+#   1ae60211  EDJBA Winter 2026        12,842 games  41% gn
+#   96c25259  After School Spring 2026     983 games  48% gn  (48/556 upcoming)
+# and those sit in a queue of 427 the sweep cannot reach inside its timeout while
+# PlayHQ is refusing session bootstraps.
+#
+# So the problem is the ORDER, not the script. This produces the worklist, and
+# the short seasons get dispatched BY ID — one sweep per season instead of one
+# sweep per repository.
+#
+# MAIN REPO ONLY. Locked seasons' game files live in the ARCHIVE repo (the
+# active/locked split), so a season absent from games/bv here is reported as
+# ABSENT and never as 0%. Likewise an unreadable file is named, never scored.
+#
+# Full checkout, not sparse: this walks every file in games/bv, which is the case
+# where a blobless clone costs more than it saves (see audit-diff-fields.yml for
+# the one place sparse IS correct).
+
+on:
+  workflow_dispatch:
+    inputs:
+      threshold:
+        description: 'Report seasons below this % grade-name coverage. 100 = every season with even one gap.'
+        required: false
+        default: '100'
+        type: string
+      upcoming_only:
+        description: 'Score UPCOMING games only — the fixtures-with-no-age-band symptom. Seasons with no upcoming games are then out of scope rather than 0%.'
+        required: false
+        default: false
+        type: boolean
+      include_locked:
+        description: 'Audit locked seasons too. Most will read as absent here — their game files live in the archive repo.'
+        required: false
+        default: false
+        type: boolean
+      limit:
+        description: 'Rows to print, and season ids to put in the worklist.'
+        required: false
+        default: '60'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # Inputs go through env and are gated in bash — never interpolated into
+      # run:, never in an `if:` (directive 13 / T27).
+      - name: Audit gn/gid coverage across games/bv
+        env:
+          THRESHOLD:      ${{ inputs.threshold }}
+          LIMIT:          ${{ inputs.limit }}
+          UPCOMING_ONLY:  ${{ inputs.upcoming_only }}
+          INCLUDE_LOCKED: ${{ inputs.include_locked }}
+        run: |
+          set -euo pipefail
+
+          ARGS=""
+
+          case "${THRESHOLD:-100}" in
+            ''|*[!0-9.]*) echo "::error::threshold must be a number, got '${THRESHOLD:-}'"; exit 1 ;;
+            *)            ARGS="$ARGS --threshold=${THRESHOLD:-100}" ;;
+          esac
+
+          case "${LIMIT:-60}" in
+            ''|*[!0-9]*) echo "::error::limit must be a whole number, got '${LIMIT:-}'"; exit 1 ;;
+            *)           ARGS="$ARGS --limit=${LIMIT:-60}" ;;
+          esac
+
+          if [ "${UPCOMING_ONLY:-false}" = "true" ];  then ARGS="$ARGS --upcoming-only";  fi
+          if [ "${INCLUDE_LOCKED:-false}" = "true" ]; then ARGS="$ARGS --include-locked"; fi
+
+          echo "running: node scripts/audit-grade-coverage.js $ARGS"
+          node --max-old-space-size=8192 scripts/audit-grade-coverage.js $ARGS
