@@ -207,12 +207,13 @@ build-finals-stats, build-leaderboards, build-player-games, build-records (they 
 | `salvage-spectator-names.js` | ONE-TIME batched spectator-roster name salvage for placeholdered stragglers; `--plan` / `--shard=N` / `--reconcile`; per-game exhaustion — only confirms a placeholder when EVERY game was reached, never freezes on a transient miss **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | salvage-spectator-names.yml (dispatch) | players/{xx}/*, spectator.playhq.com | players/{xx}/*.json, players/indexes/{xx} (reconcile only) |
 | `fold-diverged-players.js` | Move apiId-bearing player files to their api-id path; relocate index entries. **2026-09-01: the MERGE keeper changed.** It kept whichever record held more `games[]` entries — a captured-side count deciding ownership of credited-side data, and inverted in the population it meets (stub median 69 games, real profile 1). It now keeps whichever record actually holds stats, drops `statsChecked` on a tie so the next matrix run settles it, and dispatches a targeted re-fetch for those players. Run #77 rescued **533 of 541 merges** | fold-diverged-players.yml (matrix terminal / manual) | players/**, players/indexes | players/{xx}/*, players/indexes/{xx} (moves), refetch-shards.json |
 | `discover-seasons.js` | Detect seasons/grades; burst+cursor shard mode; roster backfill. **2026-10-05 (§6.61): moved from `https.request` to nightly-crawl's `fetch()` client, verbatim — the client was what PlayHQ refused; session bookkeeping on `lib/playhq-session.cjs`; a refused bootstrap stops the shard at its cursor with `noSession:true` in the artifact instead of re-asking every batch; a rejected probe joins the retry list instead of being stepped over; the standalone path's `ReferenceError: retryList` after commit fixed** | discover-seasons-matrix.yml, discover-seasons.yml, test-backfill.yml, diagnose-season-grades.yml | data/sports-index.json, data/discover-progress.json, players | data/sports-index.json, data/discover-progress.json, players/{xx}/*, `.discover-*-progress` |
-| `build-club-index.js` | **NEW 2026-10-11 (§6.64).** Builds the CLUB map: one `discoverTeams(filter:{seasonID})` per season, reading the team `organisation` — the OWNING CLUB, which exists nowhere else in this repo (`season.club` is the ASSOCIATION). Writes `club-map/bv/{sid}.json`, `clubs/{clubId}.json` (**MERGED, never replaced** — an `--active-only` run must not delete a club's historical seasons) and `data/club-index.json`. A season that could not be ASKED is never written and the run exits NON-ZERO listing them; `--resume` retries only those. Aborts after 25 consecutive failures rather than grinding a dead cookie (2026-10-04 cost four hours). Shrink guard on `club-index.json`. Session/headers/doFetch copied VERBATIM from `probe-discover-teams.js` | discover-fixtures (concurrency 5 pattern), probe-discover-teams | data/sports-index.json, clubs/, PlayHQ | club-map/bv/{sid}.json, clubs/{clubId}.json, data/club-index.json, data/club-index-progress.json |
+| `build-club-index.js` | **§6.69 (2026-10-12): also captures `organisation.type` as `ty`** on `clubs/{clubId}.json` and `data/club-index.json` — CLUB or ASSOCIATION, 100% populated, MERGED like `n` so an `--active-only` run cannot blank it. The only deterministic way to tell a real club attribution from a tournament/association one. **NEW 2026-10-11 (§6.64).** Builds the CLUB map: one `discoverTeams(filter:{seasonID})` per season, reading the team `organisation` — the OWNING CLUB, which exists nowhere else in this repo (`season.club` is the ASSOCIATION). Writes `club-map/bv/{sid}.json`, `clubs/{clubId}.json` (**MERGED, never replaced** — an `--active-only` run must not delete a club's historical seasons) and `data/club-index.json`. A season that could not be ASKED is never written and the run exits NON-ZERO listing them; `--resume` retries only those. Aborts after 25 consecutive failures rather than grinding a dead cookie (2026-10-04 cost four hours). Shrink guard on `club-index.json`. Session/headers/doFetch copied VERBATIM from `probe-discover-teams.js` | discover-fixtures (concurrency 5 pattern), probe-discover-teams | data/sports-index.json, clubs/, PlayHQ | club-map/bv/{sid}.json, clubs/{clubId}.json, data/club-index.json, data/club-index-progress.json |
 | `build-team-stats.js` | Per-team season stats; --active-only for nightly. **Roster stats sourced from player reg stats (games/bv p[] has NO stat lines)** — hence the matrix-terminal trigger (§1.3). TRUNC_LEN import + placeholder fix 2026-07-21. **2026-07-29: gitCommit upgraded to the house pattern (was the last 10-attempt outlier, and it SWALLOWED total push failure); dead `p[]` loop removed** | nightly-crawl.yml, weekly-indexes.yml, build-team-stats.yml, **matrix terminal (2026-07-21)** | games/bv, players | team-stats/bv/{sid}.json |
 | `build-player-games.js` (ESM) | Per-player game index | weekly-indexes.yml, build-player-games.yml | games/bv, players | players/**/*.json, `.build-player-games-progress.json` |
 | `seed-apiid-from-playhq-pairs.js` | Writes `player.apiId` on wrongly-keyed players paired to an api id by PlayHQ, so the fold can rekey them. Refuses on surname disagreement and on an unusable name into a merge. **2026-09-01: the `stubWouldOverwriteRealProfile` refusal was REMOVED** — it existed only because the fold's keeper rule let a bigger stub replace a real profile, which is fixed; `keeperOutlook` now mirrors the new rule and its warning block is a drift tripwire that must read 0 **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | seed-apiid-from-playhq-pairs.yml (dispatch) | reports/wrongly-keyed-census.json, PlayHQ | players/{xx}/*.json (apiId only), reports/apiid-seed-log.json |
 | `measure-credited-coverage.js` | READ-ONLY. Samples players, fetches PlayHQ's credited game list and buckets every captured-not-credited game: forfeit / already in `u` / not in games/bv / no-registration season / **residue**. Also partitions `u` by whether PlayHQ credits it. One report file per stratum. Aborts if captured and credited share zero game ids — an id-form mismatch, not a finding **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | measure-credited-coverage.yml (dispatch) | players/**, games/bv, data/forfeit-games.json, PlayHQ | reports/measure-credited-coverage-{stratum}.json |
 | `audit-diff-fields.js` | READ-ONLY, one shard. Checks `sports.Basketball.c`/`.x` were written and that `gp - games[] == c - x` holds. **Excludes withheld players** — `markNotObtainable` never reaches `finishOk`, so the diff never runs for them and comparing their stale `gp` reports the audit's own missing-field handling as a fault | audit-diff-fields.yml (dispatch) | players/{xx} (sparse) | stdout only |
+| `audit-grade-coverage.js` | **NEW 2026-10-12 (§6.68).** READ-ONLY, NO PlayHQ calls. Walks `games/bv/*.json` in the checkout and reports per-season `gn`/`gid` coverage split by status, emitting a comma-separated WORKLIST of season ids to dispatch Discover fixtures against individually. Exists because the 2026-10-12 sweep reported `0 new, 0 updated` on every season and that was CORRECT for the seasons it reached (2e623bd2, 3f8e0029, e26f328b all 100% gn) while 1ae60211 sat at 41% and 96c25259 at 48% further down a 427-season queue the sweep cannot finish. MAIN REPO ONLY — a locked season absent from games/bv reads as ABSENT, never 0%; an unparseable file is NAMED, never scored | discover-fixtures (consumer of the worklist) | games/bv, data/sports-index.json | stdout only |
 | `find-lost-stats-from-folds.js` | Finds player files whose stats a pre-2026-09-01 fold destroyed, and un-checks them for re-fetch. **Narrowed 2026-09-04**: private + merged + checked also matches the ordinary public→private transition, so a `gp-ratio` test now separates stale-but-present from actually-lost | find-lost-stats-from-folds.yml (dispatch) | players/** | players/{xx}/*.json (statsChecked only), reports/lost-stats-from-folds.json, refetch-shards.json |
 | `find-misrouted-appearances.js` | Finds `x` games another PlayHQ profile of the SAME PERSON is credited for, names the alias that carried them, and repoints it. Attributes games per alias — an alias carrying even one credited game is held back. Also runs the box-score verdict on every genuine gap | find-misrouted-appearances.yml (dispatch) | players/**, players/aliases/**, games/bv, scripts/lib/* | players/aliases/{xx}.json (apply only), reports/misrouted-appearances.json |
 | `revert-alias-repoints.js` | Restores the 117 alias entries changed by the 2026-09-05 12:31 apply run. Old values embedded from that run's own report; each re-checked against disk before restoring | revert-alias-repoints.yml (dispatch) | players/aliases (sparse) | players/aliases/{xx}.json |
@@ -393,6 +394,7 @@ decision and is NOT taken here.
 | `probe-alias-stats.js` | READ-ONLY. Sizes one question: when a player carries spectator aliases, does PlayHQ credit games to those ALIAS profiles that fetch-profile-stats.js never queries? **2026-10-05 (§6.62): moved to fetch(), §6.61** | players/**, PlayHQ | stdout |
 | `probe-both-resolve.js` | READ-ONLY to player data, writes one report. The remaining 416 same-named pairs holding the same games — 6,616 duplicated appearances. **2026-10-05 (§6.62): moved to fetch(), §6.61** | players/**, PlayHQ | reports/both-resolve-pairs.json |
 | `probe-discover-teams.js` | READ-ONLY, a handful of API calls. Whether a GRADING grade's empty `discoverGrade.ladder` can be replaced as discover-fixtures' team source. **2026-10-05 (§6.62): moved to fetch(), §6.61.** **2026-10-11 (§6.64): also answers whether a CLUB MAP can be built from `discoverTeams`.** `orgs` was a Set of ids that silently skipped a null organisation, so the 2026-08-19 "22 organisations" said nothing about coverage; it now reports the populated/absent split, names the clubs, and measures the returned set against `data/team-index.json`. Default seasons now include a LOCKED one — backfilling history had never been probed. Reads `data/team-index.json`; a present-but-unreadable index THROWS rather than reading as zero | PlayHQ, data/team-index.json, data/sports-index.json, games/bv | stdout |
+| `probe-team-club-fields.js` | **NEW 2026-10-12 (§6.67).** READ-ONLY, a dozen calls. Does PlayHQ hold a team's OWNING CLUB anywhere other than `organisation`? A team entered in a TOURNAMENT carries the tournament as its organisation — 941 of 1,235 teams in 0869ea69, against 294 that came through with a real club, so it is decided per team by whoever created it. Three routes: Team-type introspection; ERROR-DRIVEN field discovery (ask a superset, let GraphQL validation name every unknown field, drop and re-send until it validates — needs no introspection and cannot invent a field); then population split between host-org teams and real-club teams, because a field that exists but is NULL on exactly the mis-attributed teams is not an answer. Exits NON-ZERO if it could not measure. Session/headers/doFetch copied VERBATIM from `probe-discover-teams.js` | probe-discover-teams | PlayHQ | stdout only |
 | `probe-duplicate-profiles.js` | READ-ONLY. The 2,895 same-named pairs holding the SAME game ids — 122,866 duplicated appearances. **2026-10-05 (§6.62): moved to fetch(), §6.61** | players/**, PlayHQ | stdout |
 | `probe-grade-ladder.js` | READ-ONLY. Prints RAW discoverGrade responses for the 2026-08-19 "Teams: 0 — no ladder data" case. **2026-10-05 (§6.62): moved to fetch(), §6.61** | PlayHQ | stdout |
 | `probe-missing-games.js` | READ-ONLY. Proves or disproves that hidden/grading games can be reconstructed from data already received, at zero extra API cost. **2026-10-05 (§6.62): moved to fetch(), §6.61** | players/**, games/bv, PlayHQ | stdout |
@@ -425,9 +427,11 @@ diagnostics is preserved in §6.7. There is no remaining "to delete" list — th
 | `discover-seasons-matrix.yml` | dispatch (by nightly Sundays / self) | discover-seasons.js × shards | setup-node STRIPPED from map+reduce 2026-07-21 (§6.3 resolved); Sunday trigger now backfill_teams=true; **2026-08-03: debug scaffolding stripped (VERBOSE block + verify-output job), self-retrigger on the retry helper, reduce/retrigger gates `!cancelled()`, dry_run gate on the robust boolean form — see §6.24**; **2026-10-05 (§6.61): generate-shards makes ONE cookieless canary request (measure-playhq-limits.js, fetch() client) before the fan-out; `max_parallel` input, default 5 for dispatch, cron and retrigger (20 has no evidence since the 4th); reduce skipped when the canary fails; retrigger gated on `NO_SESSION_SHARDS=0`** |
 | `fold-diverged-players.yml` | dispatch (by matrix terminal) | fold-diverged-players.js | clean; event-driven only |
 | `build-club-index.yml` | dispatch | build-club-index.js | **NEW 2026-10-11 (§6.64).** NO setup-node (fetches api.playhq.com). **NO `data-write` lock, deliberately** — it writes club-map/, clubs/ and data/club-index.json, which no other writer touches, so the `merge -X ours` same-file hazard cannot arise; taking the lock would serialise a ~70-minute job behind the nightly and expose it to T19 eviction. Every input gate is in bash, never in an `if:` (directive 13 / T27). timeout 350 min |
+| `probe-team-club-fields.yml` | dispatch | probe-team-club-fields.js | **NEW 2026-10-12 (§6.67).** READ-ONLY — `permissions: contents: read`, no lock, no commits. NO setup-node (fetches api.playhq.com). Inputs go through `env:` and are gated in bash, never interpolated into `run:` and never in an `if:` (directive 13 / T27). Defaults to 0869ea69, the season the 2026-10-12 measurement was taken on, so a bare run reproduces it. timeout 30 min |
 | `fetch-profile-stats.yml` | dispatch | fetch-profile-stats.js (single shard) | manual escape hatch |
 | `measure-credited-coverage.yml` | dispatch | measure-credited-coverage.js | READ-ONLY; own concurrency group |
 | `audit-diff-fields.yml` | dispatch | audit-diff-fields.js | READ-ONLY; sparse checkout is correct here — one shard, ~1,600 files |
+| `audit-grade-coverage.yml` | dispatch | audit-grade-coverage.js | **NEW 2026-10-12 (§6.68).** READ-ONLY, `permissions: contents: read`, no lock. FULL checkout — it walks every file in games/bv, which is exactly the case where sparse costs more than it saves (contrast `probe-team-club-fields.yml`, one file, sparse+blobless). Inputs via `env:` and gated in bash (directive 13 / T27). timeout 60 min |
 | `find-lost-stats-from-folds.yml` | dispatch | find-lost-stats-from-folds.js | data-write; report committed in BOTH modes |
 | `find-misrouted-appearances.yml` | dispatch | find-misrouted-appearances.js | data-write in apply mode; writes aliases |
 | `revert-alias-repoints.yml` | dispatch | revert-alias-repoints.js | data-write; sparse (aliases only) |
@@ -4250,6 +4254,349 @@ feature.
 
 **Open against this feature:** `stattrack_html_design.md` has no Clubs section and still describes
 the app as current to v1.21.
+
+---
+
+## §6.66 — Player screen: games played per club (2026-10-12, v1.23)
+
+**Mark:** *"I'd like the player screen to show how many games the player has played for each club
+if possible? PlayHQ held data only."*
+
+A **Clubs** panel between the career strip and Season history, one row per club the player has ever
+registered with: credited games, seasons, teams. Clicking a row opens that club in the Clubs tab
+(§6.65), so the two features compose.
+
+### Where the club comes from
+Exactly where §6.64 put it: `club-map/bv/{sid}.json`, a flat `{ tid: clubId }` written by
+`build-club-index.js`. Nothing else in this repo carries it — `season.club` is the sports-index
+`orgName`, i.e. the **association**, and team-stats `meta.club` is only ever populated for teams
+that never played. Names come from `data/club-index.json`, the same file the Clubs tab searches.
+
+`club-map/` is written into the MAIN repo for every season, archived ones included, so this fetch
+deliberately does **not** go through `seasonBase()`/`sgj()`. Routing it through the active/locked
+split would 404 every historical season a long-career player has.
+
+### "PlayHQ held data only" — what the number is, and what it is not
+The figure is `reg.stats.gp`: what PlayHQ itself credits. It is **never** the `games[]` fallback the
+season card uses to fill a registration PlayHQ left empty.
+
+That creates a visible, deliberate disagreement: a season where PlayHQ credits nothing renders
+`3 GP` on the season card (our own count, the 2026-08 fix for Tahlia Parker) and contributes `0` to
+the club total. Leaving that to a footnote would read as a bug, so the shortfall is shown **on the
+row that owns it** as a muted `+3 here`, with the GP figure left strictly PlayHQ's. Private profiles
+show an em dash for GP — the same rule `OFF()` applies to the career strip — and no `+n` badge,
+because there is no published figure to reconcile against.
+
+### ⚠️ MAX, NOT SUM — T20, and this feature is where it bites hardest
+Sibling regs sharing a tid carry IDENTICAL season-cumulative stat blocks. `regsPhqGp` takes the
+per-group MAX, the same rule the season card's `st` reduce applies. Summed instead, a regraded
+player (B → BRES) has **every club total doubled** — and unlike the season card, where the error is
+visible against one row, here it compounds silently across a career. `harness3.cjs` section B
+asserts the panel and the card agree group for group, so changing one without the other fails.
+
+### ⚠️ A season we could not load is not a season with no club
+`gj()` returns `null` for a 404 and for a network failure alike. Bucketing those as "no club
+recorded" would invent an answer, so there are **three** outcomes, not two:
+
+| outcome | row | footnote |
+|---|---|---|
+| map loaded, tid present | the club | — |
+| map loaded, tid absent (or the reg has no tid) | *No club recorded* | — |
+| map `null` — fetch failed | *Club could not be resolved* | names the first `club-map/bv/{sid}.json` that did not load |
+
+A failed fetch is cached as `null` so a dead season is not re-requested for every player, and `null`
+stays distinguishable from a loaded-but-empty `{}`. `clubNameMap()` is the mirror case: it is **not**
+cached when `data/club-index.json` fails, so the next player retries instead of inheriting an empty
+map; until it loads, rows fall back to the raw club id — opaque, but true.
+
+### Mechanics
+* `hydrateClubs(p, groups)` is async and fired after `ve.innerHTML`, exactly like `hydrateFinals` —
+  `renderPlayer` is synchronous and must not wait on a round trip to paint the career strip. It
+  bails on `S.playerUuid !== uuid` if the user has navigated away mid-fetch.
+* Fetches are capped at `PCLUB_FETCH_BATCH = 6` in flight and cached in `S.clubMap`, so a second
+  render of the same player costs no network (asserted).
+* **Listeners, not inline `onclick`.** `esc()` does not escape an apostrophe, so
+  `onclick="loadClub('St Mary's …')"` ends the JS string at `Mary`. Rows carry `data-cid`/`data-cn`
+  and a delegated listener, the same pattern `renderClubs` uses. A test asserts the rendered panel
+  contains **no** `onclick=` at all.
+* The season card's inline `gpFromGames` block was factored out to `gamesForGroup(p, regs)` and is
+  now shared. Behaviour-identical; the browser suite pins the five card GP values unchanged.
+
+### Sorting
+Real clubs before both sentinels **whatever their totals** — a "could not be resolved" row with 99
+games must not head the list. Then GP desc, seasons desc, `natCmp` on name.
+
+### Verification — 90 assertions, all executed
+`harness3.cjs` (56, pure): MAX-not-sum across five sibling shapes; agreement with the season card's
+own reduce; all three bucketing outcomes; the uncredited tally attaching to the right club; ordering;
+and the rendered markup (badge present/absent, private em dash, no `onclick`, apostrophe intact).
+`/tmp/pclub.js` (34, Playwright at 412px and 1240px): row contents and order against a four-season
+mock player, the regraded season counted once (18, not 31), no horizontal overflow, one club-map
+request per season with no duplicates, a second render costing nothing, and click-through landing in
+the club view. `harness.cjs` (56) and `harness2.cjs` (34) re-run unchanged.
+
+### Cost
+One `club-map/bv/{sid}.json` per season the player registered in — typically 1–10, at most ~30 for a
+long career — plus `data/club-index.json` once per session. Both are already published; no new build
+step, no new file, no pipeline change.
+
+**Open against this feature:** `stattrack_html_design.md` still has no Clubs section and describes
+the app as current to v1.21. `.gs-pill` and `.gs-grd` reference `--card-bg` and `--text1`, neither of
+which is defined in `:root` — pre-existing, untouched here, worth a sweep.
+
+---
+
+## §6.67 — Tournament teams carry the tournament, not the club (2026-10-12)
+
+**Mark, on seeing the v1.23 Clubs panel:** *"these tournament games are showing as Nunawading
+Spectres Tournament instead of Spirit Magic — anything that we can do about that?"* and then
+*"I suspect it was because they were registered under the tournament name."*
+
+He is right, and the split is sharper than "tournaments have no club". Measured live against
+`0869ea69` (Nunawading Spectres Tournament 2026, 1,235 teams in the game file):
+
+| | teams |
+|---|---|
+| `organisation` is a **real club** | 294 |
+| `organisation` is the **host org** (Nunawading Spectres Tournament) | 941 |
+
+Altona Gators, Diamond Valley Eagles, Maroondah Magic and 29 other clubs came through correctly
+**in that same season**. So it is decided per team by whoever created it in PlayHQ: entered by the
+club, it carries the club; entered under the tournament, it carries the tournament. Across
+`data/club-index.json` that is 23 tournament organisations holding **10,220 of 408,784 teams (2.5%)**.
+
+Toby Jovic's case: team `9977add9` **"Spirit Magic U14 Boys"** → organisation `c4f7147a`
+*Nunawading Spectres Tournament*. The club is in the team's NAME and nowhere else we read.
+
+### ⚠️ Why the obvious fix is not obviously right
+981 of the 1,235 team names in that season contain a club that exists in the index. But on the 294
+teams where PlayHQ gave a real club **and** the name can be checked against it, a longest-match
+name resolver **disagrees on 68 — 23%**:
+
+* **Club vs Association.** "Blackburn Vikings U18 Boys 3" resolves to *Blackburn Vikings Basketball
+  **Association*** while PlayHQ says *Basketball **Club***. Both exist in the index.
+* **Development squads.** "Sandringham Future Sabres U10 Boys Green" and "Darebin Future Phoenix
+  U14 Girls Sky Blue" do not contain their parent club's name as the index spells it.
+* **Out of scope entirely.** The 254 unmatched names are interstate and academy sides — Blacktown
+  Storm, West Adelaide Bearcats, Marrickville Spirit, AIQ, Baller Academy — which are not in a
+  Victorian club index and never will be.
+
+Scoping candidates to clubs the SAME PLAYER already holds registrations with removes most of this
+(no player holds both Blackburn orgs), which is why a player-scoped fold is preferred over a
+build-time rewrite — but that decision waits on the probe below.
+
+### The probe (Mark's call, 2026-10-12): establish the schema before inferring anything
+`Q_TEAMS` in `probe-discover-teams.js` asks for five fields because that is what the
+junior-footy-dashboard import happened to ask for. **It was never a statement about what the Team
+type exposes.** `probe-team-club-fields.js` settles that:
+
+1. **Introspection** on the `Team` type — definitive when allowed; a production endpoint refusing
+   it is expected and does not block step 2.
+2. **Error-driven field discovery** — ask for a superset of 24 candidate fields in one query and
+   let GraphQL's own validation name every unknown one (`Cannot query field "club" on type
+   "Team"`), dropping and re-sending until it validates. Needs no introspection and cannot invent
+   a field.
+3. **Population, split by group.** A field that exists but is NULL on exactly the mis-attributed
+   teams is **not** an answer, so the report is per-group: host-org teams beside real-club teams.
+4. **Full specimen objects**, problem case beside control.
+
+⚠️ **A 5xx inside an HTTP 200 must never be read as "this field does not exist."** PlayHQ
+returns `{errors:[{message:"500: Internal Server Error"}]}` at HTTP 200 (§6.64), and in a
+discovery loop driven by error text that would silently delete a real field from the candidate
+list. The transient test runs before the unknown-field parse, and the harness pins it.
+
+### Verification — 30 assertions, all executed
+`harness4.cjs` drives the probe against a stub endpoint with a known Team schema:
+field-name extraction from selection-set fragments; `walk` population (null, empty string and
+empty array absent, **zero present**); narrowing converges and drops exactly the fields the stub
+rejects and no real one; two injected 500s change neither the survivors nor the rejects; and four
+verdict cases — nothing-but-organisation reads as a clear NO, a populated `club` field is found,
+a `club` field that is NULL on the mis-attributed teams is rejected as an answer, and an explicit
+`--host-org` overrides the derived majority.
+
+### First live run, 2026-10-12 — two faults in the probe, both mine
+```
+1. INTROSPECTION — __type(name:"Team")
+   introspection unavailable (http-400)
+2. FIELD DISCOVERY
+✗ field discovery failed (http-400) — nothing measured, exiting non-zero.
+   ✗ http-400: {"errors":[{"message":"Cannot query field \"club\" on type \"DiscoverTeam\"", …
+```
+
+1. ⚠️ **GRAPHQL VALIDATION ERRORS ARRIVE AT HTTP 400, NOT 200.** `gql()` classified every
+   non-2xx as transport and returned `http-400` *before parsing the body* — discarding the one
+   thing the narrowing loop exists to read. The body was there and correct the whole time. Fixed:
+   parse first, classify second; a non-2xx carrying a GraphQL `errors` array falls through to the
+   normal error path, and only a non-2xx with no usable body is treated as transport.
+   Note this sits beside the OPPOSITE hazard already handled here — a **5xx inside an HTTP 200**
+   (§6.64). The status code tells you nothing on this endpoint in either direction; the body does.
+2. **The type is `DiscoverTeam`, not `Team`** — named by PlayHQ's own error. Introspection asked
+   for a type that does not exist, so even an endpoint allowing introspection would have returned
+   null. Now tries `DiscoverTeam` then `Team`.
+
+The run also delivered its first real finding for free: **`club` does not exist on `DiscoverTeam`.**
+
+Harness raised to 36 assertions, the new ones pinning exactly this: validation errors served at
+400 still narrow correctly, the rejects are read out of the 400 body, the survivors are unchanged
+by the status code, and `DiscoverTeam` is tried first.
+
+### THE RUN, 2026-10-12 — and what it found that the verdict line did not say
+
+```
+2. FIELD DISCOVERY
+   round 1: dropped 18 — club, entity, owner, ownerOrganisation, parentOrganisation,
+     delegatedOrganisation, registeringOrganisation, sourceOrganisation, association,
+     tenant, shortName, abbreviation, externalId, externalRef, homeVenue, contacts,
+     status, type
+   ✓ query validates after 1 narrowing round
+3. POPULATION — 1,321 teams · host org 1,010 · real club 311 · no organisation 0
+   fields that validated: organisation, logo, gender, ageGroup, grade, season
+```
+
+Introspection refused by Apollo on both type names, as expected; error-driven discovery did the
+whole job in one round. **Every candidate route to an owning club does not exist on
+`DiscoverTeam`** — no `club`, no `entity`, no `owner`, no `parentOrganisation`, no
+`registeringOrganisation`. `grade.season.competition.organisation` is the tournament as well. So
+**the owning club of a tournament-entered team is not in the API**, and the only route to it
+remains the team name.
+
+⚠️ **BUT THE PROBE'S OWN VERDICT HID THE USEFUL FINDING.** `useful` filtered out every key
+beginning `organisation.` — on the reasoning that `organisation` is the field we already have —
+and so printed "NO field other than `organisation` carries a club" while this sat in the table it
+had just printed, at 100% / 100%:
+
+| | host-org teams | club teams |
+|---|---|---|
+| `organisation.type` | **`ASSOCIATION`** | **`CLUB`** |
+
+All 1,010 mis-attributed teams read ASSOCIATION; all 311 correct ones read CLUB. It is not a route
+to the club, but it is a **deterministic, PlayHQ-published discriminator** for which teams have the
+problem — with no name matching whatsoever. The probe now tallies it in its own ORGANISATION TYPE
+section, states whether it separates the groups, and the negative verdict points at it instead of
+reading as "nothing can be done".
+
+**This also resizes the name-inference risk.** The 68/294 error rate in §6.67 was measured on the
+wrong population: those 68 were teams PlayHQ had ALREADY attributed to a real club, which inference
+would now never touch. Confined to ASSOCIATION-attributed teams, and with candidates restricted to
+organisations of type CLUB, the Club-vs-Association near-duplicate failure ("Blackburn Vikings
+Basketball **Club**" vs "... **Association**") cannot arise at all — the Association is no longer a
+candidate. That error rate must be re-measured before anything ships on it; it is not 23% on the
+population that matters, and it is not known yet either.
+
+### §6.69 — `ty` on the club index (2026-10-12)
+`build-club-index.js` now asks for `organisation { id name type }` and stores it as `ty` on
+`clubs/{clubId}.json` and `data/club-index.json`. **MERGED like `n`**: a run that does not see an
+organisation never blanks a type a previous run captured, so `--active-only` cannot strip history.
+The run logs the type tally across every club file and says so loudly if NOT ONE organisation
+carried a type, because the alternative is discovering a column of empty strings weeks later.
+
+This is also the clean answer to the 2026-10-11 note that associations appear in the club list and
+are not filtered. That decision stands — hiding VJBL would make 10,371 teams unreachable — but
+they can now be LABELLED from a published field instead of guessed at from their names.
+
+Verified by `harness5.cjs`, 19 assertions, the merge rule and `noteTeam` lifted out of the source
+and EXECUTED rather than pattern-matched: this run wins, an existing type survives a run that saw
+none, a type arriving on a later sighting is backfilled and then not overwritten, an org-less team
+is counted without creating a club, and both index-row paths carry `ty`.
+
+**Open:** `data/club-index.json` does not carry `ty` until build-club-index has been re-run. Nothing
+in the app may read it before then.
+
+---
+
+## §6.68 — "0 new, 0 updated" was the right answer, and the sweep still cannot finish (2026-10-12)
+
+**The log that looked like a failure.** A resumed active-only Discover fixtures run reported
+`0 new, 0 updated` on every batch of every season — including the first 400 teams of season 1,
+which ran on a healthy cookie with no 403 in sight. I had already told Mark once that the 403 storm
+was starving the run. **That was wrong, and so was the diagnosis before it.**
+
+**What the game files actually say** (read from `main` directly, 2026-10-12):
+
+| season | games | `gn` coverage |
+|---|---|---|
+| `2e623bd2` Fratelli Frankston JD Winter 2026 | 5,835 | **100%** |
+| `3f8e0029` Junior Domestic Winter 2026 | 6,547 | **100%** (244/244 upcoming) |
+| `e26f328b` Junior Domestic Summer 2025/26 | 6,501 | **100%** |
+
+Those are the seasons the run reached, so `0 updated` is arithmetically correct for them.
+
+⚠️ **AND I THEN CLAIMED THE FIX HAD BACKFILLED THEM. IT HAD NOT.** Mark: *"hang on, you
+allegedly fixed this issue in the last session?"* The commit history settles it:
+
+| | |
+|---|---|
+| `scripts/discover-fixtures.js` patched on `main` | **2026-10-12 05:39:44Z** |
+| commits to the repo since | **4** |
+| — of which pipeline commits | **1**: `Fixture discovery: 10 seasons, +0 games`, 06:20:29Z, **1 file changed: the progress file** |
+| `games/bv/3f8e0029.json` last changed | **2026-09-20** — three weeks BEFORE the patch |
+| `games/bv/1ae60211.json` last changed | **2026-10-10** — two days BEFORE the patch |
+
+**The patched script has run against ten seasons and written zero game files.** The 100% coverage
+in 3f8e0029 predates the patch by three weeks and was produced by something else. The `gid`/`gn`
+fix is **UNPROVEN — not proven, and not disproven**: it has never once been exercised against a
+season that has gaps, because every season the sweep has reached was already complete.
+
+Three times in two sessions a claim about this fix was stated ahead of its evidence: that the
+script was missing from `main` (it was not), that the 403 storm caused the zeros (the first 400
+teams ran clean), and that the backfill had completed those seasons (nothing has been written).
+**The pattern is the same each time — a snapshot read as a causal story.**
+
+### How to actually settle it, cheaply
+Dispatch Discover fixtures with `season` set to ONE small season that has a real gap, and compare
+the `gn` count in its game file before and after. `5e26f10f` (Junior Domestic Summer 2026/27) is
+533 games at 94% — 24 FINAL and 8 UPCOMING short — so it finishes in minutes and either produces
+32 `↻` update lines or proves the fix does nothing.
+
+⚠️ One caveat to carry into that test: a game can be short of `gn` because **PlayHQ has no
+grade for it**, not because we failed to copy one. `96c25259` is an After School program where 508
+of 556 upcoming games lack a grade name; those may be legitimately gradeless and no fix will touch
+them. A domestic season like `5e26f10f` or `1ae60211` is the fair test, not that one.
+
+**But the backfill is partial, and the order is wrong:**
+
+| season | games | `gn` coverage |
+|---|---|---|
+| `1ae60211` EDJBA Winter 2026 | 12,842 | **41%** (0/23 abandoned, 0/24 cancelled) |
+| `96c25259` After School Spring 2026 | 983 | **48%** — only **48 of 556 UPCOMING** |
+
+`96c25259` is Mark's original symptom intact: future fixtures with no age band. These sit in a queue
+of 427 behind seasons that need nothing, while PlayHQ refuses session bootstraps (three 20s/40s/60s
+backoffs per 714-team season, ~2 min each, plus 403 bursts of 20 — one per in-flight call at
+`CONCURRENCY=20`). At that rate the sweep does not finish inside its 350-minute timeout, and the
+seasons that need the work are the ones it never reaches.
+
+### ⚠️ THE LESSON: "EVERY SEASON REPORTS ZERO" IS NOT EVIDENCE THE WRITER IS BROKEN
+It is equally consistent with a writer that has already done its job on everything it has reached.
+Twice in this session a uniform zero was read as a fault and stated as one before checking the
+artefact the writer produces. **Read the data the job writes, not the summary it prints.** The
+script was on `main`, byte-identical (`sha256 42ab8b…`, 54,399 bytes), the whole time.
+
+### The fix is dispatch order, not code
+`audit-grade-coverage.js` walks `games/bv` in the checkout — no PlayHQ, no writes — and emits a
+comma-separated worklist of seasons below a coverage threshold, with an `--upcoming-only` mode that
+scores exactly the symptom. Those get dispatched one at a time through Discover fixtures' existing
+`season` input: one sweep per season instead of one sweep per repository.
+
+Two deliberate refusals to guess: a season whose file is absent from `games/bv` reads as **absent**
+(locked seasons live in the archive repo), never as 0%; and a file that will not parse is **named**,
+never scored. Both are the failure-to-ask-recorded-as-an-answer class (§6.64).
+
+Verified against a six-season fixture: a 100% season is absent from the worklist, `--upcoming-only`
+drops seasons with no upcoming games and rescores the short one from 35% to 9%, locked is skipped
+unless asked for, the unparseable file is listed under its own heading, and the thresholds select
+what they say.
+
+### Checkout cost (Mark, mid-run: *"why is the probe doing a full checkout of 5mins?"*)
+`probe-team-club-fields.yml` shipped with a plain `fetch-depth: 1` copied from
+`probe-discover-teams.yml` — which reads `data/team-index.json` and `data/sports-index.json` and
+therefore needs them. **The new probe reads nothing from the repository at all.** A plain checkout
+writes 527,900 files and pulls every blob at HEAD, and that was the entire cost of the job. Now
+`filter: blob:none` plus a non-cone sparse pattern matching the one script, with a bash guard that
+fails loudly if the pattern misses rather than surfacing as `cannot find module`.
+
+The rule, both directions: **sparse when the job needs a handful of files, full when it needs most
+of them.** `audit-grade-coverage.yml` walks all of `games/bv` and correctly takes the full checkout.
 
 ---
 
