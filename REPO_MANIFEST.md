@@ -4774,5 +4774,63 @@ unchanged — 237 assertions in total.
 
 ---
 
+## §6.74 — The PlayHQ limit is a RATE, and §6.59's model was wrong (2026-10-13)
+
+Two read-only `measure-playhq-limits` runs:
+
+| mode | what it did | result |
+|---|---|---|
+| `budget` | 400 `PublicProfileTeams` calls on ONE cookie at 18/min | **400 granted, 0 refused** |
+| `bootstrap` | 60 cookieless `ProfileSearch` bootstraps at 6/min | **60 granted, 0 refused**, 60 distinct sessions |
+
+⚠️ **THERE IS NO PER-SESSION REQUEST BUDGET.** §6.59's "roughly 290 calls" was a RATE observed
+at high concurrency, recorded as a lifetime count. The fixture logs said so independently and were
+not read that way at the time: refusals arrived **60-80 calls after a FRESH cookie**, nowhere near
+290, and a PROACTIVE rotation was granted instantly while every post-403 bootstrap was refused
+three times. One cause explains both — **a per-IP request-rate WAF that refuses everything,
+queries and cookie bootstraps alike, for as long as it is tripped.** That is why the bootstrap
+stalls for 120s: it is not a bootstrap quota, it is the same block.
+
+### What changed in `discover-fixtures.js`
+* **`rateGate()`** — one rolling 60s window in front of EVERY PlayHQ request, queries and
+  bootstraps sharing it, because the WAF does. Check-and-push is synchronous between awaits, so
+  concurrent callers cannot oversubscribe it.
+* **`ROTATE_AFTER = 250` is GONE.** Rotating on a call count cannot help against a rate; it only
+  spends another request, and one that stalls for two minutes if it lands inside the penalty
+  window. Rotation is now by cookie **AGE** (`--rotate-age-min`, default 25), which is what the
+  ~30-40 min TTL actually requires. A cookie read from disk is trusted only inside that window,
+  dated from when it was fetched.
+* `--rate` (default **600**/min) and `--rotate-age-min` are workflow inputs; `--rate=0` restores
+  the old ungated behaviour.
+
+⚠️ **600 IS DERIVED, NOT MEASURED, AND THE FILE SAYS SO.** It comes from
+`playhq_api_reference.md`'s ~1,256-1,790 requests per ~80s trip point (~940-1,340/min), taken
+comfortably below the bottom of that range. **Neither run reached a ceiling** — budget ran at
+18/min and bootstrap at 6/min, both far beneath any threshold — so the real limit is still known
+only from that older figure. To replace the inference with a measurement, run `budget` mode with
+`interval_seconds=0` and a high `max_requests`: it will trip the WAF deliberately and name the
+number. Read-only, and recovery is the documented flat ~80s.
+
+### Verification — 255 assertions
+`harness8.cjs` (18) runs the gate lifted verbatim from the shipped file against a **virtual event
+loop**: 10 of 10 admitted instantly then the 11th waits a full window; 180 requests at 60/min take
+2.00 minutes and no longer; 50 concurrent callers never exceed the limit in any rolling 60s; 800
+requests in bursts of 20 stay under 600/min; `--rate=0` costs nothing; and the wiring checks that
+queries, both bootstrap attempts, and the age-based rotation are all in place with `_callsOnCookie`
+gone.
+
+Two harness faults were found and fixed on the way, both of which had made a correct gate look
+broken — worth recording because the same two will recur in any async rate-limit test:
+1. **A clock that jumps inside `delay()`** fast-forwards time for every other caller, so one
+   waiter's sleep empties the window for all of them. Replaced with a driver that advances time
+   only when every caller is parked.
+2. **Stamping the admission time after `await gate()` resolves** is a microtask late, and the
+   driver can advance the clock in between. The window's own `push` is now instrumented, so the
+   recorded time is the moment the gate admitted the request.
+
+The other six harnesses re-run unchanged.
+
+---
+
 **Highest trap number after this session: T78.** Before adding one, run
 `grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.
