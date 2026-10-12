@@ -127,8 +127,43 @@ let _sessionPromise = null;
 // still works is granted immediately — the penalty only applies once PlayHQ has
 // started refusing. 250 leaves room for the ~20 calls already in flight at
 // concurrency 20 to land on the old cookie without crossing the line.
-const ROTATE_AFTER = 250;
-let _callsOnCookie = 0;
+// ⚠️ MEASURED 2026-10-13, AND IT OVERTURNS THE §6.59 MODEL. Two read-only runs
+// of measure-playhq-limits:
+//   budget    400 calls on ONE cookie at 18/min — zero refusals. No lifetime budget.
+//   bootstrap  60 cookieless bootstraps at 6/min — zero refusals. No bootstrap quota.
+// The ~290 "request budget" was a RATE measured at high concurrency, not a count.
+// The fixture logs agree independently: refusals arrived 60-80 calls after a FRESH
+// cookie, nowhere near 290, and a PROACTIVE rotation was always granted instantly
+// while a post-403 bootstrap was refused three times. Both facts have one cause —
+// a per-IP request-rate WAF that refuses EVERYTHING, queries and bootstraps alike,
+// while it is tripped. Rotating the cookie cannot help with a rate; it only adds a
+// request, and one that stalls for 120s if it lands inside the penalty window.
+//
+// So rotation is now keyed to the cookie's AGE (TTL is ~30-40 min per
+// playhq_api_reference.md), and the rate itself is governed by rateGate() below.
+const ROTATE_AGE_MS = parseInt(ARGS['rotate-age-min'] || '25', 10) * 60 * 1000;
+let _cookieAt = 0;
+
+// Requests per rolling 60s across EVERY PlayHQ call this process makes — queries
+// and bootstraps share one window, because the WAF does. 600/min is DERIVED, not
+// measured: playhq_api_reference records the trip at ~1,256-1,790 requests per
+// ~80s window (~940-1,340/min) for discoverGrade/discoverFixtureByRound, and this
+// sits comfortably under the bottom of that range. Neither 2026-10-13 run reached
+// a ceiling — both were far below it — so the true limit is still only known from
+// that older figure. --rate=0 disables the gate.
+const RATE_PER_MIN = parseInt(ARGS.rate === undefined ? '600' : ARGS.rate, 10);
+const _rateWindow = [];
+async function rateGate() {
+  if (!(RATE_PER_MIN > 0)) return;
+  for (;;) {
+    const now = Date.now(), cut = now - 60000;
+    while (_rateWindow.length && _rateWindow[0] <= cut) _rateWindow.shift();
+    if (_rateWindow.length < RATE_PER_MIN) { _rateWindow.push(now); return; }
+    // Wait only until the oldest request leaves the window. Concurrent waiters all
+    // re-test after sleeping, so the window is never oversubscribed.
+    await delay(Math.max(50, _rateWindow[0] - cut));
+  }
+}
 
 function invalidateSession() {
   _cookie = null;
@@ -155,10 +190,14 @@ async function fetchSessionOnce() {
       // A cookie read from disk has unknown mileage — a previous run may have used
       // most of its budget. Start it at the rotation threshold so the first 403 is
       // not how we find out.
-      if (Date.now() - d.fetchedAt < 5 * 60 * 60 * 1000) { _cookie = d.cookie; _callsOnCookie = ROTATE_AFTER; return _cookie; }
+      // A cookie from disk has unknown AGE as well as unknown mileage, and the TTL
+      // is the thing that matters now. Trust it only inside the rotation window,
+      // dated from when it was actually fetched.
+      if (Date.now() - d.fetchedAt < ROTATE_AGE_MS) { _cookie = d.cookie; _cookieAt = d.fetchedAt; return _cookie; }
     }
   } catch (e) {}
   console.log('  Fetching session cookie...');
+  await rateGate();               // a bootstrap is a request like any other
   const res = await fetch(API_URL, {
     method:  'POST',
     headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() },
@@ -176,6 +215,7 @@ async function fetchSessionOnce() {
       const wait = 20000 * i;
       console.log(`  … session bootstrap refused, waiting ${wait / 1000}s (attempt ${i}/3)`);
       await delay(wait);
+      await rateGate();
       const r2 = await fetch(API_URL, {
         method:  'POST',
         headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() },
@@ -185,7 +225,7 @@ async function fetchSessionOnce() {
       const raw2 = r2.headers.get('set-cookie');
       if (raw2) {
         _cookie = raw2.split(';')[0];
-        _callsOnCookie = 0;
+        _cookieAt = Date.now();
         fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie: _cookie, fetchedAt: Date.now() }));
         console.log(`  ✓ Cookie obtained (after ${i} backoff attempt(s))`);
         return _cookie;
@@ -194,7 +234,7 @@ async function fetchSessionOnce() {
     throw new Error('No Set-Cookie');
   }
   _cookie = raw.split(';')[0];
-  _callsOnCookie = 0;
+  _cookieAt = Date.now();
   fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie: _cookie, fetchedAt: Date.now() }));
   console.log('  ✓ Cookie obtained');
   return _cookie;
@@ -234,17 +274,22 @@ async function gql(operationName, query, variables) {
   let reauths  = 0;              // session refreshes used on THIS call
   while (true) {
     try {
-      // Rotate BEFORE the budget is exhausted. invalidateSession() is idempotent and
-      // getSession() is single-flight, so the twenty callers that cross the line
-      // together still produce exactly one bootstrap.
-      if (_cookie && _callsOnCookie >= ROTATE_AFTER) {
-        console.log(`  ↻ ${ROTATE_AFTER} calls on this session — rotating before it is refused`);
+      // Rotate on AGE, before the ~30-40 min TTL expires. invalidateSession() is
+      // idempotent and getSession() is single-flight, so the twenty callers that
+      // cross the line together still produce exactly one bootstrap.
+      // (Was a 250-CALL rotation. Measured 2026-10-13: there is no per-cookie call
+      // budget, so counting calls bought nothing and spent a request each time.)
+      if (_cookie && _cookieAt && (Date.now() - _cookieAt) >= ROTATE_AGE_MS) {
+        console.log(`  ↻ session is ${Math.round((Date.now()-_cookieAt)/60000)} min old — rotating before the TTL expires`);
         invalidateSession();
       }
       // Read the cookie INSIDE the loop. It used to be fetched once before the loop,
       // so a refreshed session could never reach the retry that needed it.
       const cookie = await getSession();
-      _callsOnCookie++;
+      // The gate is taken HERE, after the cookie is in hand and immediately before
+      // the request leaves — so a bootstrap that happened on the way through has
+      // already spent its own slot, and the window counts what actually went out.
+      await rateGate();
       const res = await fetch(API_URL, {
         method:  'POST',
         headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
@@ -820,6 +865,8 @@ async function main() {
   console.log('=== discover-fixtures.js ===');
   console.log(`Tenant:      ${TENANT}`);
   console.log(`Concurrency: ${CONCURRENCY}`);
+  console.log(`Rate limit:  ${RATE_PER_MIN > 0 ? RATE_PER_MIN + ' req/min (rolling 60s, queries + bootstraps)' : 'DISABLED (--rate=0)'}`);
+  console.log(`Rotate at:   ${Math.round(ROTATE_AGE_MS/60000)} min of cookie age`);
   console.log(`Mode:        ${TARGET_SEASON ? `single season ${TARGET_SEASON}` : LOCKED_RESWEEP ? 'locked re-sweep (locked && !removed)' : ALL_SEASONS ? 'all seasons' : 'active only (locked: false)'}${CURRENT_ONLY ? ' [current-only]' : ''}${DRY_RUN ? '   [DRY RUN — no writes/commits]' : ''}  progress-key: ${MODE}\n`);
 
   if (!fs.existsSync(INDEX_FILE)) { console.error('sports-index.json not found'); process.exit(1); }
