@@ -35,13 +35,15 @@
 // statement about what the Team type exposes.
 //
 // ── HOW IT ANSWERS IT ────────────────────────────────────────────────────────
-// 1. INTROSPECTION. `__type(name:"Team"){fields{...}}`. If the endpoint allows
+// 1. INTROSPECTION. `__type(name:"DiscoverTeam")` — the type `discoverTeams`
+//    actually returns, named by PlayHQ's own validation error. If the endpoint allows
 //    it this is definitive and the rest is confirmation. Production endpoints
 //    often disable introspection, so a refusal here is expected, not a failure.
 //
 // 2. ERROR-DRIVEN FIELD DISCOVERY. Ask for a superset of candidate fields in one
 //    query. GraphQL validation names every unknown field precisely — `Cannot
-//    query field "club" on type "Team"` — so each rejected field is dropped and
+//    query field "club" on type "DiscoverTeam"`, AT HTTP 400 — so each rejected
+//    field is dropped and
 //    the query re-sent until it validates. What survives is what exists. This
 //    needs no introspection and cannot invent a field.
 //
@@ -314,11 +316,20 @@ async function gql(operationName, query, variables) {
       if (reauths < 2) { reauths++; console.log('    … HTTP 403 — session refused, re-authenticating (' + reauths + '/2)'); invalidateSession(); await sleep(2000); continue; }
       return { status: 'http-403' };
     }
-    if (res.status < 200 || res.status >= 300) {
-      if (attempt === 4) return { status: 'http-' + res.status, detail: (res.rawText || '').slice(0, 200) };
-      await sleep(2000 * attempt); continue;
-    }
+    // ⚠️ A GRAPHQL VALIDATION ERROR ARRIVES AT HTTP 400, NOT 200 (measured
+    // 2026-10-12: `Cannot query field "club" on type "DiscoverTeam"` came back
+    // as http-400). Treating every non-2xx as transport threw the body away
+    // before the narrowing loop could read the one thing it exists to read, and
+    // the probe exited having measured nothing. Parse FIRST, classify second.
     const json = res.body;
+    if (res.status < 200 || res.status >= 300) {
+      const hasErrors = json && Array.isArray(json.errors) && json.errors.length;
+      if (!hasErrors) {
+        if (attempt === 4) return { status: 'http-' + res.status, detail: (res.rawText || '').slice(0, 200) };
+        await sleep(2000 * attempt); continue;
+      }
+      // fall through — the body is a real GraphQL answer about our query
+    }
     if (!json) return { status: 'bad-json', detail: (res.rawText || '').slice(0, 200) };
     // ⚠️ PlayHQ returns 5xx INSIDE a GraphQL error body at HTTP 200. A transient
     // server error must never be read as "this field does not exist".
@@ -337,24 +348,36 @@ async function gql(operationName, query, variables) {
 }
 
 // ── 1. Introspection ─────────────────────────────────────────────────────────
+// `discoverTeams` returns DiscoverTeam, NOT Team — named by PlayHQ's own
+// validation error on 2026-10-12. `Team` is asked for second only so a schema
+// that renames it back does not silently return nothing.
+const TEAM_TYPES = ['DiscoverTeam', 'Team'];
+
 async function introspectTeam() {
-  console.log('\n1. INTROSPECTION — __type(name:"Team")');
-  const q = `query probeIntrospect { __type(name: "Team") { name fields { name type { kind name ofType { kind name } } } } }`;
-  const r = await gql('probeIntrospect', q, {});
-  if (r.status !== 'ok') {
-    console.log('   introspection unavailable (' + r.status + ')'
-      + (r.errors ? ': ' + r.errors.map(e => e.message).join(' | ').slice(0, 160) : '')
-      + '\n   EXPECTED on a production endpoint — step 2 does not depend on it.');
+  console.log('\n1. INTROSPECTION — ' + TEAM_TYPES.map(n => '__type(name:"' + n + '")').join(' then '));
+  let t = null;
+  for (const name of TEAM_TYPES) {
+    const q = `query probeIntrospect { __type(name: "${name}") { name fields { name type { kind name ofType { kind name } } } } }`;
+    const r = await gql('probeIntrospect', q, {});
+    if (r.status !== 'ok') {
+      console.log('   ' + name + ': introspection unavailable (' + r.status + ')'
+        + (r.errors ? ': ' + r.errors.map(e => e.message).join(' | ').slice(0, 140) : ''));
+      continue;
+    }
+    if (r.data && r.data.__type && Array.isArray(r.data.__type.fields)) { t = r.data.__type; break; }
+    console.log('   ' + name + ': no such type');
+  }
+  if (!t) {
+    console.log('   EXPECTED on a production endpoint — step 2 does not depend on it.');
     return null;
   }
-  const t = r.data && r.data.__type;
-  if (!t || !Array.isArray(t.fields)) { console.log('   introspection returned no Team type'); return null; }
+  console.log('   type: ' + t.name);
   const names = t.fields.map(f => {
     const ty = f.type || {};
     const label = ty.name || (ty.ofType && ty.ofType.name) || ty.kind || '?';
     return f.name + ': ' + label;
   }).sort();
-  console.log('   ✓ Team exposes ' + names.length + ' field(s):');
+  console.log('   ✓ ' + t.name + ' exposes ' + names.length + ' field(s):');
   for (const n of names) console.log('       ' + n);
   return t.fields.map(f => f.name);
 }
