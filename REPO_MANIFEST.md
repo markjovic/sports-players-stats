@@ -4741,5 +4741,38 @@ horizontal overflow. `harness.cjs` (56), `harness2.cjs` (34), `harness5.cjs` (19
 
 ---
 
+## §6.73 — Clear wiped the recent searches until a reload (v1.25, 2026-10-13)
+
+**Mark:** *"if i hit clear here, i dont see any of my autofill players until i next reload the page"*
+
+Two faults stacked, and the second would have survived a fix to the first.
+
+1. **`showRecent` is wired ONLY to the input's `focus` event.** Clear does not blur an
+   already-focused input, so nothing re-rendered the list. The recents were still in
+   `localStorage` the whole time — only the DOM was empty.
+2. **`resetPlayer` set the results panel to `display:none`,** and ONLY `searchPlayers` ever set
+   it back (`re.style.display=''`). So even a genuine re-focus would have painted the recents
+   into a hidden element and still shown nothing.
+
+**`resetClub` never had either fault** because it re-renders its own list
+(`renderClubs(S.clubIdx||[],'')`). The three boxes whose list IS the recents — players, teams,
+venues — all shared fault 1; only players had fault 2. Now one `resetSearch(input, results, key,
+onSelect)` helper does it for all three, so they cannot drift apart again.
+
+⚠️ **Teams keeps the focus handler's own condition.** That handler shows team recents only when
+a season is selected (`!q-tm.value.trim() && q-sn.value`), and Clear unsets the season — so after
+a team Clear the panel is empty by design, not by oversight. Reproducing the condition rather than
+showing them anyway is what keeps Clear and focus agreeing.
+
+Verified by `harness7.cjs` — 20 assertions driving the REAL reset functions against a DOM stub
+faithful enough to catch both faults: the recents reappear with no reload, the panel's `display`
+is restored, stale results are gone, a handler is attached to each row and firing it re-runs that
+search and refills the box, an empty store leaves an empty panel rather than a stale one, venue
+Clear still clears date/season/grid/calendar, and the team box shows recents only with a season
+set. `harness.cjs`, `harness2.cjs`, `harness3.cjs`, `harness5.cjs` and `harness6.cjs` re-run
+unchanged — 237 assertions in total.
+
+---
+
 **Highest trap number after this session: T78.** Before adding one, run
 `grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.
