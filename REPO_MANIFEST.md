@@ -4600,5 +4600,146 @@ of them.** `audit-grade-coverage.yml` walks all of `games/bv` and correctly take
 
 ---
 
+## §6.70 — A partial run must not clear a repository-wide worklist (2026-10-12)
+
+**Found while proving the `gid`/`gn` fix.** The `--season=5e26f10f` test run did what it was asked
+— 270 new games, and five `↻ gid ∅→…, gn ∅→…` lines, which is the §6.66 fix working — and
+on its way out overwrote `data/stale-grade-seasons.json` with its own one-season view:
+
+```
+before   generatedAt 2026-10-06   seasonsScanned 188   count 12
+after    generatedAt 2026-10-12   seasonsScanned   1   count  0
+```
+
+`discover-seasons.js` reads that file for its grade refresh. It would next have read **"nothing is
+stale"** for a repository one season out of 188 had been looked at. Twelve seasons' worth of
+detected grade drift — including `c686a998` GUB Community Competitions, 82 grades missing — gone,
+and nothing in the run's output said so.
+
+⚠️ **THE RULE, AND IT IS NOT NEW.** `build-club-index.js` already applies it to
+`clubs/{clubId}.json`: an `--active-only` run merges rather than replaces, because a run that did
+not look at something has said nothing about it. `discover-fixtures.js` wrote this file
+unconditionally from the start; the single-season path simply had never been exercised against a
+populated worklist.
+
+**Fixed as a merge by season id.** A season THIS run scanned has its entry replaced by this run's
+finding — and disappears when it is no longer stale, which is how entries retire. A season this
+run did not reach is carried through untouched. An entry with no `id` cannot be matched either way,
+so it is KEPT: dropping it would be a silent loss on a guess.
+
+Two things the file now says about itself, because `seasonsScanned: 1` alone looked authoritative:
+`scope` (`single season <id>` / `locked re-sweep` / `all seasons` / `active, current only` /
+`active only`) and `carriedForward`. The run prints one line: `stale-grade worklist: N from this
+run + M carried forward = T`. An unparseable existing file is reported with the word LOST rather
+than quietly becoming a fresh start.
+
+Verified by `harness6.cjs` — **24 assertions**, with the merge block lifted out of the shipped
+source and EXECUTED against a real file, not pattern-matched: the exact 12-season / one-season case
+that caused this, retirement, replacement without duplication, a full sweep still rewriting
+everything it covered, the id-less entry surviving, a first run and a corrupt file, all five scope
+labels, and the summary line.
+
+**Mark must restore the file** — the merge protects it from here, but the 12 entries are already
+gone from `main` and a merge against an empty list keeps them gone. They are intact in commit
+`a4a72ed7`.
+
+---
+
+## §6.71 — `ty` landed, and the name-inference error rate re-measured (2026-10-12)
+
+**Build Club Index, full sweep:** 3,242 of 3,242 seasons asked OK, 409,141 teams, 100% carrying a
+club, 866 clubs — **688 CLUB, 178 ASSOCIATION**. `ty` is on `main` in both `clubs/{clubId}.json`
+and `data/club-index.json`. Spot-checked: Spirit Magic Basketball Club `CLUB`, Nunawading Spectres
+Tournament `ASSOCIATION`, MEBA `ASSOCIATION`.
+
+⚠️ **Pages still serves the OLD index** — `ty` absent on every row at the Pages origin while
+present on `main`. T23 again: a commit is not a publication. Nothing in the app may read `ty` until
+Deploy Pages has run.
+
+### The re-measurement §6.67 said was needed
+§6.67 recorded a 23% error (68/294) for name inference and said it was measured on the wrong
+population. With candidates restricted to `ty === 'CLUB'` organisations and whole-word matching
+(`' ' + key + ' '`, so " rocketstars " no longer matches " stars "), measured against the control —
+the teams where PlayHQ DID give a real club, so the name's answer can be checked:
+
+| tournament season | control decided | wrong | assoc teams | resolved |
+|---|---|---|---|---|
+| `0869ea69` Nunawading Spectres 2026 | 242 | **0** | 941 | 710 (**75.5%**) |
+| `6b0cab9c` Eltham-Dandenong | 0 | — | 1,952 | 149 (**7.6%**) |
+| `d8da6b7a` Southern Peninsula | 40 | **0** | 276 | 5 (**1.8%**) |
+| **total** | **282** | **0 (0.00%)** | **3,169** | **864 (27%)** |
+
+**Not one wrong in 282 checkable cases**, against 23% before. The Club-vs-Association failures are
+gone because an Association can no longer be a candidate.
+
+### ⚠️ BUT COVERAGE IS A PROPERTY OF EACH TOURNAMENT'S NAMING, NOT OF THE METHOD
+75.5% → 7.6% → 1.8% across three tournaments. The reason is visible in the names:
+
+```
+Nunawading        "Spirit Magic U14 Boys"      → resolves
+Eltham-Dandenong  "Westgate B12.1"  "Darebin B18.2"  "Knox G16.9"   → declines
+```
+
+Eltham-Dandenong writes locality abbreviations with no club suffix. Loosening the matcher to catch
+them would reintroduce exactly the ambiguity the CLUB-only restriction removed — "Knox G16.9" is
+either Knox Basketball Association or Knox City Cougars Basketball Club — and **that season has
+ZERO club-attributed teams, so there would be no control to measure the error against.** A looser
+matcher there would be unfalsifiable by construction.
+
+**So the conservative matcher's low coverage is the correct behaviour, not a shortfall.** It
+declines rather than guesses, and the three seasons above show it declining exactly where the
+evidence runs out. Had this been validated on `0869ea69` alone, 75.5% would have been reported as
+the method's coverage and it is nothing of the kind — the single-season figure was 10× optimistic.
+
+**Decision (Mark, 2026-10-12):** *"fold confident into the club, but ideally it would show a sub
+row that states 'here is the total for the club, of which these were folded in as a match'. Then
+label the others."* Built as §6.72.
+
+---
+
+## §6.72 — Folding tournament teams into their club, declared on the row (v1.24, 2026-10-12)
+
+```
+CLUBS
+  Spirit Magic Basketball Club                25 GP   2 seasons · 2 teams
+    ↳ includes 5 GP matched by team name from Nunawading Spectres Tournament
+  Melbourne East Basketball Association (MEBA)  ASSOCIATION    4 GP   1 season · 1 team
+```
+
+The club row carries the TOTAL. The sub-row says what is inside it and on what basis. A bucket that
+is itself an association keeps its games and is labelled rather than quietly reading as a club.
+
+**The fold fires only when PlayHQ named an ASSOCIATION** (`ty`, §6.69) and the registration's own
+`reg.tn` resolves to a `ty === 'CLUB'` organisation on a whole-word match. `reg.tn` is already on
+the player record, so this costs no fetch and no new file.
+
+⚠️ **NO `ty`, NO INFERENCE.** Until Deploy Pages publishes a club-index carrying `ty`,
+`S.clubKeys` is empty, nothing folds, no row is tagged, and the panel behaves exactly as v1.23.
+A silently half-applied inference would be worse than none, so the degradation is total and
+deliberate — pinned by a test.
+
+⚠️ **A FOLDED GAME IS NEVER INVISIBLE INSIDE A TOTAL.** The sub-row is not decoration: it is the
+only thing separating "PlayHQ says this player played 25 games for Spirit Magic" from "PlayHQ says
+20 and we matched 5 more by name". Two tournaments folding into one club produce two sub-rows,
+largest first. Private profiles show neither — there are no published figures to attribute.
+
+**Extrapolation declared:** the 282-case, 0-error measurement (§6.71) was taken on tournament
+seasons. This applies the same rule to every ASSOCIATION-attributed team, including domestic ones
+under VJBL and MEBA, which was not measured. The sub-row is the mitigation — every folded game is
+attributable on sight, so an error is discoverable rather than buried in a total.
+
+### Verification — 217 assertions, all executed
+`harness3.cjs` raised 56 → 84: an ASSOCIATION is never a candidate; "Spirit Magic U14 Boys"
+resolves; "Rocketstars U16 Boys" does NOT match "STARS Basketball Club"; "Blackburn Vikings U18
+Boys 3" goes to the Club and never the Association; "Westgate B12.1" and "Knox G16.9" decline
+rather than guess; an already-CLUB attribution is left untouched; no `ty` means no fold and no tag;
+a reg with no team name stays put; two tournaments into one club give two sub-rows ordered by size.
+`/tmp/fold.js` adds 16 Playwright assertions at 412px and 1240px — the total absorbs the folded
+games, the sub-row sits directly under its own club row, only the association row is tagged, no
+horizontal overflow. `harness.cjs` (56), `harness2.cjs` (34), `harness5.cjs` (19) and `harness6.cjs`
+(24) re-run unchanged.
+
+---
+
 **Highest trap number after this session: T78.** Before adding one, run
 `grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.
