@@ -2656,7 +2656,7 @@ function renderVGrid(day,container){
    (T44). Every id here goes through hTid()/aTid() and every name through
    teamNames(), exactly as the other nineteen sites do. */
 
-const CLUB_SEASON_CAP     = 8;   // games files fetched for one week, at most
+const CLUB_SEASON_CAP     = 12;  // games files fetched for one week, at most
 const CLUB_DERIVED_MONTHS = 15;  // implied season length when endDate is absent
 
 function dAdd(ds, n){ const d = new Date(ds + 'T00:00:00'); d.setDate(d.getDate() + n); return mkDate(d); }
@@ -2788,8 +2788,11 @@ function clubSeasonCandidates(mon, sun){
     else if(se && se.locked === true && st && addMonths(st, CLUB_DERIVED_MONTHS) < mon) continue;
     out.push({ sid, se, st, noEnd: !en });
   }
-  // Most recent first, so the CAP keeps the seasons most likely to be relevant.
-  out.sort((a, b) => String(b.st || '').localeCompare(String(a.st || '')));
+  /* Seasons with a REAL end date first, then most recent first. When the cap
+     bites it must drop the seasons admitted on a 15-month ASSUMPTION before it
+     drops one PlayHQ actually dated — otherwise a guess can push out a fact. */
+  out.sort((a, b) => (a.noEnd === b.noEnd ? 0 : a.noEnd ? 1 : -1)
+                  || String(b.st || '').localeCompare(String(a.st || '')));
   return out;
 }
 
@@ -2834,7 +2837,9 @@ async function renderClubWeek(){
     }
   }
 
+  const noGrade = rows.filter(r => r.age.n === 1000).length;
   let note = `<div class="cnote">Checked <b>${picked.length}</b> season${picked.length === 1 ? '' : 's'} for this week`;
+  if(noGrade) note += ` \u00b7 \u26a0 <b>${noGrade}</b> game${noGrade === 1 ? '' : 's'} carr${noGrade === 1 ? 'ies' : 'y'} no grade, so ${noGrade === 1 ? 'it is' : 'they are'} grouped under "${NO_GRADE_LABEL}"`;
   if(noEnd)   note += ` · <b>${noEnd}</b> of them ${noEnd === 1 ? 'has' : 'have'} no recorded end date, so ${noEnd === 1 ? 'it is' : 'they are'} included on an assumed ${CLUB_DERIVED_MONTHS}-month season`;
   if(skipped) note += ` · ⚠ <b>${skipped}</b> further season${skipped === 1 ? '' : 's'} also overlapped this week and ${skipped === 1 ? 'was' : 'were'} NOT checked (cap ${CLUB_SEASON_CAP})`;
   note += '.</div>';
@@ -2929,6 +2934,11 @@ function clubMyName(r){ return r.aMine && !r.hMine ? r.an : r.hn; }
    folded into U0 and never silently dropped. OUTSTANDING records ~31% of
    grade_age as blank, so this is the common case, not the edge case. */
 const NO_AGE_LABEL = 'Senior / no age group';
+/* A game with NO GRADE AT ALL is a different fact from a senior competition, and
+   folding the two together hid a real data gap: discover-fixtures.js wrote future
+   fixtures with no `gid`/`gn` until 2026-10-12, so an entire Saturday of junior
+   games read as "Senior / no age group". Its own bucket, sorted last. */
+const NO_GRADE_LABEL = 'Grade not recorded';
 function gameAge(g, se){
   const gid8 = String(g && g.gid || '').slice(0, 8);
   if(gid8 && se && Array.isArray(se.grades)){
@@ -2936,12 +2946,18 @@ function gameAge(g, se){
     const m = gr && gr.age ? String(gr.age).match(/(\d{1,2})/) : null;
     if(m) return { n: parseInt(m[1], 10), label: 'U' + m[1] };
   }
-  const m2 = String(g && g.gn || '').match(/\bU(?:nder)?\s*(\d{1,2})\b/i);
+  const gnStr = String(g && g.gn || '').trim();
+  const m2 = gnStr.match(/\bU(?:nder)?\s*(\d{1,2})\b/i);
   if(m2) return { n: parseInt(m2[1], 10), label: 'U' + m2[1] };
+  if(!gnStr && !gid8) return { n: 1000, label: NO_GRADE_LABEL };
   return { n: 999, label: NO_AGE_LABEL };
 }
 /* The full label is right as a heading and far too long as a chip. */
-function ageChipLabel(label){ return label === NO_AGE_LABEL ? 'Senior' : label; }
+function ageChipLabel(label){
+  if(label === NO_AGE_LABEL)   return 'Senior';
+  if(label === NO_GRADE_LABEL) return 'No grade';
+  return label;
+}
 /* The key lives in a data attribute, NOT interpolated into the onclick. A
    competition name carrying an apostrophe would otherwise break the handler. */
 function toggleSec(hdr){

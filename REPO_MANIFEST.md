@@ -281,7 +281,7 @@ build-finals-stats, build-leaderboards, build-player-games, build-records (they 
 | `size-gap-players.yml` (workflow only) | READ-ONLY, offline, zero API calls: per-player appearance-gap distribution (profile `gp` minus `games[]` length) with severity buckets and the worst 20 by name. ⚠️ Read ONLY after a `build-player-games` rebuild — its two inputs update on different clocks | — | players/ | /dev/stdout |
 | `size-resweep.yml` (workflow only) | READ-ONLY: sizes the spectator re-sweep target (FINAL, partial pre-spc `p[]`, no `spc`) with a per-year breakdown. Baseline 2026-08-07: 2,026,441 games, avg 12.8 ids | — | games/bv | /dev/stdout |
 | `scan-complete-rounds.js` | Backfill roundsComplete markers; --unlock reopens locked seasons AND clears `archivedAt` in the same write (split invariant, 2026-08-07) + prints the T23 deploy reminder | games/bv, data/sports-index.json | games/bv, data/sports-index.json |
-| `discover-fixtures.js` | **Full-fixture tool via discoverTeamFixture (returns ALL rounds incl. FUTURE)**: `--all-seasons`/`--season` historical backfill + `--current-only` weekly future-fixtures mode (skips seasons with no game in 21 days). ⚠️ **staging bug — recorded here as "fixed 2026-07-21"; the deployed file did NOT have the fix. Corrected 2026-07-31 by reading it AND by reproducing the failure with its exact pathspec list.** One combined `git add` with any unmatched pathspec stages NOTHING (atomic), silently discarding a whole green run (30,426 games, 2026-07-19). ACTUALLY fixed 2026-07-31: per-path adds, `staging:` shortstat, inline identity, fail-fast on non-contention, THROW on exhaustion, and `cwd: ROOT` (which was missing entirely — it relied on `process.cwd()`). Candidate for a weekly cron (§6.8 pending decision). | games/bv, venue-lookup, data | games/bv/{sid}.json, venue-lookup/*, discover-fixtures-progress.json, zero-team-seasons.json |
+| `discover-fixtures.js` | **2026-10-12: WRITES `gid`/`gn` AT LAST.** `round.grade` carries `id` and `name` on every round of the TeamFixture response and the ONLY code that touched them was the dead `storeLookupEntry` block (L790), so a PLAYED game had a grade and an unplayed FIXTURE did not. `TRACKED` was the second half of the bug: `diffEntry` compares only the keys it names, so a fixture already on disk could never gain a grade however often the sweep re-ran. Both fixed; one ordinary run backfills every unplayed game. **Full-fixture tool via discoverTeamFixture (returns ALL rounds incl. FUTURE)**: `--all-seasons`/`--season` historical backfill + `--current-only` weekly future-fixtures mode (skips seasons with no game in 21 days). ⚠️ **staging bug — recorded here as "fixed 2026-07-21"; the deployed file did NOT have the fix. Corrected 2026-07-31 by reading it AND by reproducing the failure with its exact pathspec list.** One combined `git add` with any unmatched pathspec stages NOTHING (atomic), silently discarding a whole green run (30,426 games, 2026-07-19). ACTUALLY fixed 2026-07-31: per-path adds, `staging:` shortstat, inline identity, fail-fast on non-contention, THROW on exhaustion, and `cwd: ROOT` (which was missing entirely — it relied on `process.cwd()`). Candidate for a weekly cron (§6.8 pending decision). | games/bv, venue-lookup, data | games/bv/{sid}.json, venue-lookup/*, discover-fixtures-progress.json, zero-team-seasons.json |
 | `find-code-refs.js` | *(no script — inline grep in `find-code-refs.yml`)* grep over scripts/ + .github/workflows/. **Exists because GitHub REFUSES to index this repo for code search** ("cannot be searched because it is too large", 6.13 GB, 2026-07-31) and returns "0 files" for every query, which is indistinguishable from "no matches". Scope hard-coded so it can never be aimed at games/ or players/ | scripts/, .github/workflows/ | — (report) |
 | `audit-seasons-gaps.js` | READ-ONLY. Duplicate regs split by grade (regrade / null-gid / exact), regs missing gid, and the seasons[] gap across ALL games with an active/locked split | players/, games/bv, data/sports-index.json | — (report) |
 | `repair-reg-sibling-sync.js` | ONE-OFF: makes regs sharing a (season, team) hold identical stats. Per-key MAX; idempotent; aborts if any value would decrease or a reg count changes. `--core-only` limits it to leaderboard-visible fields | players/ | players/{xx}/*.json |
@@ -4145,7 +4145,37 @@ wraps as a WHOLE UNIT, so a long competition name demanded both of its lines and
 down to a third, with a fourth for the chips — four rows for one heading. `flex:1 1 0` lets the name
 wrap internally while the button holds its place: 64px and two text rows, measured.
 
-**Verified by execution — 187 assertions against the shipped bytes**, the script extracted from
+### The grade gap on future fixtures (2026-10-12)
+
+**Reported from live data:** Spirit Magic's Saturday MEBA competition showed 47 junior games under
+`Senior / no age group` and `(no grade recorded)`, while the Friday competition and every RESULT
+grouped by age correctly.
+
+**Cause, in `discover-fixtures.js`, and it is the §6.64 shape again.** `round.grade` carries `id`
+and `name` on every round of the TeamFixture response. `roundGradeName` is computed at L724 and
+`round.grade?.id` at L790 — and both are used ONLY inside the dead `storeLookupEntry` block, the one
+requiring a `team-lookup-utils` module that does not exist in `scripts/` and throws
+MODULE_NOT_FOUND into an empty catch on every game. The entry build had no `gid`/`gn` at all, while
+`nightly-crawl.js` L798-799 writes them on everything it stores. Hence: played game → grade;
+unplayed fixture → nothing.
+
+⚠️ **`TRACKED` was the second half, and the more dangerous one.** `diffEntry` compares only the keys
+in that list, so adding `gid`/`gn` to the entry alone would have left all 47 existing fixtures
+blank for ever — the sweep would have reported "no changes" and been telling the truth about the
+only fields it was looking at. Both are listed now, so one ordinary Discover Fixtures run backfills
+every unplayed game.
+
+**StatTrack side: "no grade at all" is NOT "senior".** Folding the two together is what let an
+entire Saturday of junior basketball read as senior. `NO_GRADE_LABEL` is its own bucket at `n:1000`,
+sorted after the senior bucket, shortened to `No grade` on a jump chip, and the week note now counts
+the affected GAMES, not just the seasons — so the gap is stated rather than absorbed.
+
+**Also on the back of that screenshot:** `CLUB_SEASON_CAP` 8 → 12 (Spirit Magic spans 22 seasons and
+2 overlapping ones were being dropped), and the candidate sort now puts seasons with a REAL end date
+ahead of those admitted on the 15-month assumption — when the cap bites it must drop a guess before
+it drops a fact.
+
+**Verified by execution — 201 assertions against the shipped bytes**, the script extracted from
 `index.html` and run under `vm.runInThisContext` with a stub DOM and a stub `fetch` serving
 real-shaped `club-index` / `clubs/{id}` / `sports-index` / `games/bv/{sid}` files:
 
@@ -4195,6 +4225,9 @@ cannot answer these:**
   its competition and grade headings stay on screen; a second click restores precisely that day.
 - An age's button closes only its own grades.
 - Clicking a section button does not toggle the heading it sits inside.
+- A fixture with no `gid` and no `gn` gets its OWN heading, sorted last within its day, with its own
+  chip and its own grade line — and is never counted into the senior bucket.
+- The week note states how many GAMES carry no grade.
 - All seven cells share one line on a wide screen, run left to right in order, and round, venue,
   court and score each hold a SINGLE x down the whole page — including on unplayed rows.
 - At 412px round, time, venue and court all drop to line two TOGETHER while team, score and badge
