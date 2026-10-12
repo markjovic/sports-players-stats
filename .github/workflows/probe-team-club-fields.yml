@@ -1,0 +1,122 @@
+# .github/workflows/probe-team-club-fields.yml
+name: Probe Team Club Fields
+
+# READ-ONLY. No writes, no commits, no data-write lock. A dozen API calls at most.
+#
+# THE QUESTION. A team entered in a TOURNAMENT carries the TOURNAMENT as its
+# `organisation`, not the club that owns it. Measured live against 0869ea69
+# (Nunawading Spectres Tournament 2026, 1,235 teams) on 2026-10-12:
+#
+#     attributed to a real club by PlayHQ ....  294
+#     attributed to the host org .............  941
+#
+# So it is NOT that tournaments never carry a club — Altona Gators, Diamond
+# Valley Eagles, Maroondah Magic and 29 others came through correctly in that
+# same season. It is decided per team by whoever created it in PlayHQ. Across
+# data/club-index.json: 23 tournament organisations, 10,220 of 408,784 teams.
+#
+# The team NAME still carries the club ("Spirit Magic U14 Boys"), and 981 of the
+# 1,235 names in that season contain a club that exists in the index. But the
+# inference is measurably wrong: on the 294 teams where PlayHQ gave a real club
+# AND the name can be checked against it, a longest-match resolver disagrees on
+# 68 — Club-vs-Association near-duplicates ("Blackburn Vikings Basketball Club"
+# vs "... Association") and development squads whose name omits the parent
+# ("Sandringham Future Sabres", "Darebin Future Phoenix").
+#
+# BEFORE INFERRING ANYTHING FROM A NAME, this establishes whether PlayHQ holds
+# the owning club on a field we are simply not asking for. Q_TEAMS in
+# probe-discover-teams.js asks for five fields because that is what the
+# junior-footy-dashboard import happened to ask for — it was never a statement
+# about what the Team type exposes.
+#
+# HOW IT ANSWERS IT
+#   1. Introspection on the Team type. Definitive when allowed; a refusal on a
+#      production endpoint is expected and does not block step 2.
+#   2. Error-driven field discovery — ask for a superset, and let GraphQL's own
+#      validation errors name every field that does not exist, dropping them
+#      until the query validates. Needs no introspection, cannot invent a field.
+#   3. Population, split between host-org teams and real-club teams. A field that
+#      exists but is null on exactly the teams we need is not an answer.
+#   4. Full specimen objects, problem case beside control.
+#
+# Reads nothing from the repo and writes nothing to it. Exits NON-ZERO if the
+# probe could not measure — a failure to ask must never read as an answer.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: 'Season id to probe. Default: 0869ea69, the Nunawading Spectres Tournament 2026 season the 2026-10-12 measurement was taken on.'
+        required: false
+        default: '0869ea69'
+        type: string
+      host_org:
+        description: 'Optional club id of the tournament host. Leave blank to derive it from the data (the org held by the most teams) rather than assume it.'
+        required: false
+        default: ''
+        type: string
+      specimens:
+        description: 'Full team objects to print per group (1-10).'
+        required: false
+        default: '3'
+        type: string
+      no_introspect:
+        description: 'Skip the introspection step and go straight to field discovery.'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # Inputs go through env, never interpolated into the shell — a season id is
+      # attacker-controlled text as far as this runner is concerned, and `${{ }}`
+      # inside run: is string substitution into the script itself. Every gate is
+      # in bash, never in an `if:` (directive 13 / T27).
+      - name: Probe the Team type for an owning-club field
+        env:
+          SEASON:        ${{ inputs.season }}
+          HOST_ORG:      ${{ inputs.host_org }}
+          SPECIMENS:     ${{ inputs.specimens }}
+          NO_INTROSPECT: ${{ inputs.no_introspect }}
+        run: |
+          set -euo pipefail
+
+          SEASON="${SEASON:-0869ea69}"
+          if [ -z "$SEASON" ]; then
+            echo "::error::season is empty — nothing to probe."
+            exit 1
+          fi
+
+          ARGS="--season=$SEASON"
+
+          if [ -n "${HOST_ORG:-}" ]; then
+            ARGS="$ARGS --host-org=$HOST_ORG"
+            echo "host org pinned to $HOST_ORG"
+          else
+            echo "host org will be derived from the data"
+          fi
+
+          case "${SPECIMENS:-3}" in
+            ''|*[!0-9]*) echo "::error::specimens must be a number, got '${SPECIMENS:-}'"; exit 1 ;;
+            *)           ARGS="$ARGS --specimens=${SPECIMENS:-3}" ;;
+          esac
+
+          if [ "${NO_INTROSPECT:-false}" = "true" ]; then
+            ARGS="$ARGS --no-introspect"
+            echo "introspection step skipped by input"
+          fi
+
+          echo "running: node scripts/probe-team-club-fields.js $ARGS"
+          node --max-old-space-size=8192 scripts/probe-team-club-fields.js $ARGS
