@@ -542,7 +542,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
       <span class="help-dot" onclick="openHelp()" title="What the numbers mean">?</span>
-      <span class="rail-ver">v1.24</span>
+      <span class="rail-ver">v1.25</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -712,9 +712,38 @@ async function sgj(dir,sid){
 const el = id => document.getElementById(id);
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};}
 function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function resetPlayer(){const q=document.getElementById('q-pl');if(q)q.value='';const r=document.getElementById('res-pl');if(r){r.innerHTML='';r.style.display='none';}}
-function resetTeam(){const q=document.getElementById('q-tm');if(q)q.value='';const sn=document.getElementById('q-sn');if(sn)sn.selectedIndex=0;buildCompPicker();const r=document.getElementById('res-tm');if(r)r.innerHTML='';}
-function resetVenue(){const q=document.getElementById('q-vn');if(q)q.value='';const vd=document.getElementById('q-vdate');if(vd)vd.value='';const vs=document.getElementById('q-vsn');if(vs)vs.selectedIndex=0;const r=document.getElementById('res-vn');if(r)r.innerHTML='';const ga=document.getElementById('vgrid-area');if(ga)ga.innerHTML='';const cs=document.getElementById('cal-section');if(cs)cs.innerHTML='';}
+/* ⚠️ CLEAR MUST LEAVE THE BOX AS A FRESH PAGE LOAD LEAVES IT — empty, with the
+   recent searches showing. `showRecent` is wired ONLY to the input's `focus`
+   event, and clearing does not blur an already-focused input, so the recents
+   stayed gone until the page was reloaded (Mark, 2026-10-13).
+   resetPlayer had a second fault on top: it set the results panel to
+   display:none, and ONLY searchPlayers ever set it back, so even a genuine
+   re-focus would have painted the recents into a hidden element.
+   resetClub never had either fault because it re-renders its own list; this is
+   that same idea for the three boxes whose list is the recents. */
+function resetSearch(inputId, resultsId, key, onSelect){
+  const q=el(inputId); if(q) q.value='';
+  const r=el(resultsId); if(!r) return;
+  r.style.display='';
+  r.innerHTML='';
+  showRecent(key, r, onSelect);   // no-op when there are none, leaving it empty
+}
+function resetPlayer(){resetSearch('q-pl','res-pl','players',v=>{el('q-pl').value=v;searchPlayers(v);});}
+function resetTeam(){
+  const sn=el('q-sn'); if(sn)sn.selectedIndex=0;
+  buildCompPicker();
+  // Team recents mirror the focus handler's own condition: they are only useful
+  // once a season is chosen, and Clear has just unset it.
+  if(el('q-sn')&&el('q-sn').value) resetSearch('q-tm','res-tm','teams',v=>{el('q-tm').value=v;searchTeams(v);});
+  else { const q=el('q-tm'); if(q)q.value=''; const r=el('res-tm'); if(r){r.style.display='';r.innerHTML='';} }
+}
+function resetVenue(){
+  const vd=el('q-vdate'); if(vd)vd.value='';
+  const vs=el('q-vsn');   if(vs)vs.selectedIndex=0;
+  const ga=el('vgrid-area'); if(ga)ga.innerHTML='';
+  const cs=el('cal-section'); if(cs)cs.innerHTML='';
+  resetSearch('q-vn','res-vn','venues',v=>{el('q-vn').value=v;searchVenues();});
+}
 function resetClub(){const q=el('q-cl');if(q)q.value='';const r=el('res-cl');if(r)r.innerHTML='';renderClubs(S.clubIdx||[],'');}
 function resetLB(){const o=document.getElementById('lb-org');if(o)o.value='';const c=document.getElementById('lb-comp');if(c)c.value='';const g=document.getElementById('lb-grade');if(g)g.value='';const a=document.getElementById('lb-age');if(a)a.value='';const gn=document.getElementById('lb-gender');if(gn)gn.value='';const mg=document.getElementById('lb-mingp');if(mg)mg.value='10';renderLB(S.lbData[S.lbScope]?.[S.lbStat]||[],S.lbData[S.lbScope]||{});}
 // Recent searches (localStorage)
