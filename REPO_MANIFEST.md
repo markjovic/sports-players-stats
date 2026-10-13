@@ -4855,5 +4855,50 @@ The other six harnesses re-run unchanged.
 
 ---
 
+## §6.75 — The cron ran the new code, and removing ROTATE_AFTER was a mistake (2026-10-13)
+
+The weekly `--current-only` cron picked up §6.74 before it could be tested by hand. The header
+confirms it was live: `Rate limit: 600 req/min`, `Rotate at: 25 min of cookie age`.
+
+**What worked.** The `gid`/`gn` backfill is running at scale and is the point of all of this:
+117, 181, 53 and 104 games updated across four seasons in the first seven, each line naming the
+field and its old and new value.
+
+**What did not.** ⚠️ **403 bursts in six of the first seven seasons**, unchanged in shape —
+twenty refusals (one per in-flight call), then a bootstrap refused three times for ~120s. The
+600/min gate did not prevent a single one.
+
+**And the intervals are damning.** Counting calls from each fresh cookie to the next burst across
+those seasons: **~235, ~210, ~320, ~327, ~250, ~290.** That is the §6.59 figure, intact.
+
+⚠️ **I REMOVED ROTATE_AFTER ON THE STRENGTH OF A MEASUREMENT OF A DIFFERENT OPERATION.** Both
+probes used `PublicProfileTeams`, which `playhq_api_reference.md` records in as many words as the
+friendlier one ("200 probes returned `blocked: 0`"). The sweep uses `discoverTeamFixture`. I noted
+that caveat twice and then acted as though it did not apply. §6.74's claim that rotating on a call
+count "buys nothing" is **withdrawn**: it was buying most of what was keeping this sweep alive.
+
+### Restored, and two things added rather than another guess
+* **`ROTATE_AFTER` is back** (`--rotate-after`, default 250), alongside the age rotation —
+  whichever fires first. Rotating proactively costs ONE request; not rotating costs 120s. A disk
+  cookie starts AT the threshold, so its first use rotates rather than finding the limit with a 403.
+* **A 403 now parks the WHOLE sweep** (`--block-pause-sec`, default 90, against the documented flat
+  ~80s recovery). Twenty callers each re-authenticating is twenty more refused requests fed to the
+  thing that just blocked us. One block, one pause, counted and reported.
+* **Every progress line now carries elapsed seconds and the rolling request count**, and the
+  summary reports WAF blocks and overall team-calls/min. **The 2026-10-13 cron log cannot be used
+  to compute the achieved request rate, because nothing in it carried a clock** — which is why
+  "is 600/min above or below the threshold" is still unanswered. It will not be after the next run.
+
+**Still open, honestly:** whether the limit is a per-cookie budget for this operation, a rate, or
+both. The 200-330 call intervals fit a budget; the bootstrap being refused for 120s afterwards fits
+a per-IP window, since a budget would hand over a fresh cookie at once. The next log has the
+timestamps to separate them.
+
+`harness8.cjs` raised 18 → 30: a 403 parks every caller and nineteen siblings do not each start
+their own pause; the call rotation fires before the age one; the counter resets on both bootstrap
+paths; a disk cookie starts spent; progress lines carry a clock.
+
+---
+
 **Highest trap number after this session: T78.** Before adding one, run
 `grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.
