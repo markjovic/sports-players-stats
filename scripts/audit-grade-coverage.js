@@ -98,11 +98,25 @@ function main() {
     if (!j) { unreadable.push(sid); continue; }
 
     const games = j.games || j;
-    let n = 0, gn = 0, gid = 0, upN = 0, upGn = 0;
+    // `played` mirrors discover-fixtures.js's own skip guard EXACTLY, because that
+    // guard is what decides whether a sweep can ever reach a game again:
+    //   if (existing && (existing.hs !== undefined || existing.as !== undefined
+    //                    || existing.st === 'FINAL' || existing.forfeit === true)) continue;
+    // Splitting on it answers the question a bare percentage cannot: is a season's
+    // gn gap REACHABLE by re-running the sweep, or is it behind that guard forever?
+    let n = 0, gn = 0, gid = 0, upN = 0, upGn = 0, fnN = 0, fnGn = 0;
     for (const k of Object.keys(games)) {
       const g = games[k]; if (!g || typeof g !== 'object') continue;
       n++; if (g.gn) gn++; if (g.gid) gid++;
-      if (g.st === 'UPCOMING') { upN++; if (g.gn) upGn++; }
+      // T53, repeated here on 2026-10-12 and caught 2026-10-13. Real data uses
+      // PENDING and IN_PROGRESS as well as UPCOMING — the 2026-10-13 sweep logged
+      // `st UPCOMING→PENDING` and `st UPCOMING→IN_PROGRESS` in volume — so testing
+      // only for 'UPCOMING' silently undercounts the unplayed population that
+      // --upcoming-only exists to measure. The trap was already in claude_context.md.
+      const played = (g.hs !== undefined || g.as !== undefined
+                      || g.st === 'FINAL' || g.forfeit === true);
+      if (!played) { upN++; if (g.gn) upGn++; }
+      else { fnN++; if (g.gn) fnGn++; }
     }
     if (!n) continue;
 
@@ -115,7 +129,7 @@ function main() {
 
     rows.push({
       sid, name: (meta.fullName || meta.name || '(not in index)').slice(0, 44),
-      n, gn, gid, upN, upGn, missing: basisN - basisGn, pct,
+      n, gn, gid, upN, upGn, fnN, fnGn, missing: basisN - basisGn, pct,
     });
   }
 
@@ -124,14 +138,20 @@ function main() {
   if (!rows.length) {
     console.log(`✓ every season audited is at or above ${THRESHOLD}% — no worklist.`);
   } else {
-    console.log('  season    games   gn      gid     upcoming gn   coverage  missing  name');
-    console.log('  ' + '-'.repeat(104));
+    console.log('  season    games   gn      gid     unplayed gn   PLAYED gn    coverage  missing  name');
+    console.log('  ' + '-'.repeat(118));
     for (const r of rows.slice(0, LIMIT)) {
       console.log('  ' + r.sid.padEnd(10)
         + String(r.n).padStart(6) + '  '
         + (r.gn + '').padStart(6) + '  '
         + (r.gid + '').padStart(6) + '  '
         + (r.upN ? (r.upGn + '/' + r.upN) : '—').padStart(11) + '  '
+        // The PLAYED column is the one that decides what to do about a season.
+        // Those games are behind discover-fixtures.js's skip guard: no re-run of
+        // that sweep, at any rate, will ever give them a grade. A season whose gap
+        // is mostly here needs a DIFFERENT tool; one whose gap is in the unplayed
+        // column just needs the sweep pointed at it.
+        + (r.fnN ? (r.fnGn + '/' + r.fnN) : '—').padStart(11) + '  '
         + (r.pct.toFixed(1) + '%').padStart(8) + '  '
         + String(r.missing).padStart(7) + '  '
         + r.name);
@@ -140,6 +160,10 @@ function main() {
 
     console.log('\n  WORKLIST — dispatch Discover fixtures with `season` set to each of these,');
     console.log('  worst first. One sweep per season; do NOT run the full 447.');
+    console.log('  ⚠ CHECK THE PLAYED COLUMN FIRST. discover-fixtures skips any game with a score,');
+    console.log('    st=FINAL or forfeit=true, so a gap concentrated there CANNOT be closed by this');
+    console.log('    worklist however many times it is run, and a season on the list for that reason');
+    console.log('    will report 0 updated and look like a failure when it is working as designed.');
     console.log('\n  ' + rows.slice(0, LIMIT).map(r => r.sid).join(','));
   }
 
