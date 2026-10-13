@@ -170,19 +170,21 @@ let _cookieAt = 0, _callsOnCookie = 0;
 // has a TTL and rotating costs one request, but it is not what prevents these.
 // --rate=0 disables the gate.
 // ⚠️ DEFAULT IS OFF. Three runs of the same season, same teams, one variable:
-// BLOCKS PER TEAM is the metric, because elapsed is ~90s x blocks and the work
-// itself costs almost nothing. Compare on that, never on elapsed or on block
-// count against different team totals:
+// SETTLED 2026-10-13. Stop tuning this. BLOCKS PER TEAM is the metric, because
+// elapsed is ~90s x blocks and the work itself costs almost nothing:
+//     600/min counter       6 blocks / 2093 teams = 1 per 349   <-- SHIPPED
 //     no gate (pre-§6.74)   3 blocks /  863 teams = 1 per 288
-//     no gate (2026-10-13)  4 blocks /  940 teams = 1 per 235
 //     300/min counter       8 blocks / 2093 teams = 1 per 262
-//     600/min counter       6 blocks / 2093 teams = 1 per 349   <-- BEST MEASURED
-//     300/min PACED         confounded by the T80 bootstrap storm; discard
-// §6.78 defaulted this to 0 on the claim that no gate was "closest to the best
-// result observed". That was wrong: no gate is the WORST of the four on blocks
-// per team, and the 600/min counter is the best. The default is now 600.
-// PACED 600 has still never been run cleanly — the one paced run was ruined by
-// T80 — so that remains the open measurement, not a settled number.
+//     no gate (2026-10-13)  4 blocks /  940 teams = 1 per 235
+//     300/min PACED         ruined by T80; discard
+//     600/min PACED        16 blocks / 2093 teams = 1 per 131  <-- WORST
+// Six configurations over six runs. The rolling counter at 600 wins and PACING
+// LOSES: spacing requests evenly made the WAF block SOONER, twice, which is the
+// opposite of what every rate-limiter instinct predicts. The mechanism is not
+// understood and does not need to be — the measurement is consistent and the
+// cost of further tuning has already exceeded the ~9 min of pausing it buys.
+// Pacing survives behind --pace for anyone who wants to re-measure it, OFF by
+// default. Do not turn it on without a reason better than "it should work".
 const RATE_PER_MIN = parseInt(ARGS.rate === undefined ? '600' : ARGS.rate, 10);
 const _rateWindow = [];
 // When the WAF refuses us it refuses the whole IP — so twenty callers each
@@ -210,7 +212,8 @@ function noteBlocked(why) {
 // `_minGapMs` fixes the shape. 300/min is now one request every 200ms, enforced
 // between admissions, so twenty concurrent callers are paced instead of firing
 // together. The window cap stays as a second bound for the long run.
-const _minGapMs = RATE_PER_MIN > 0 ? Math.ceil(60000 / RATE_PER_MIN) : 0;
+const PACE = ARGS.pace === '1' || ARGS.pace === 'true' || ARGS.pace === '';
+const _minGapMs = (PACE && RATE_PER_MIN > 0) ? Math.ceil(60000 / RATE_PER_MIN) : 0;
 // WARN: the progress line read `_rateWindow.length`, which only rateGate fed, so
 // with the gate OFF it printed `0/min` for the whole run. The throughput number
 // went dark in exactly the configuration we are trying to measure. Every request
@@ -1001,7 +1004,9 @@ async function main() {
   console.log('=== discover-fixtures.js ===');
   console.log(`Tenant:      ${TENANT}`);
   console.log(`Concurrency: ${CONCURRENCY}`);
-  console.log(`Rate limit:  ${RATE_PER_MIN > 0 ? RATE_PER_MIN + ' req/min = 1 every ' + _minGapMs + 'ms, PACED (queries + bootstraps)' : 'DISABLED (--rate=0)'}`);
+  console.log(`Rate limit:  ${RATE_PER_MIN > 0
+    ? RATE_PER_MIN + ' req/min, rolling-window counter' + (PACE ? `, PACED 1 every ${_minGapMs}ms — MEASURED WORSE, see the note at RATE_PER_MIN` : '')
+    : 'DISABLED (--rate=0) — measured worse than 600, see the note at RATE_PER_MIN'}`);
   console.log(`Rotate at:   ${Math.round(ROTATE_AGE_MS/60000)} min of cookie age`);
   console.log(`Mode:        ${TARGET_SEASON ? `single season ${TARGET_SEASON}` : LOCKED_RESWEEP ? 'locked re-sweep (locked && !removed)' : ALL_SEASONS ? 'all seasons' : 'active only (locked: false)'}${CURRENT_ONLY ? ' [current-only]' : ''}${DRY_RUN ? '   [DRY RUN — no writes/commits]' : ''}  progress-key: ${MODE}\n`);
 
@@ -1234,7 +1239,10 @@ async function main() {
     console.log(`     or as evidence that a season holds no new games. Re-run before concluding.`);
     console.log(`::warning::${totalRefusedTeams} teams unread across the run — totals are a lower bound`);
   }
-  if (_blockEvents) console.log(`  → Still blocked at --rate=${RATE_PER_MIN}. Lower it and compare this block count.`);
+  // SETTLED §6.80: blocks are a known, bounded cost of this endpoint. Lowering the
+  // rate was tried four times and never helped once. The hint that used to live
+  // here told the next operator to do exactly that.
+  if (_blockEvents) console.log(`  → ${_blockEvents} blocks is NORMAL at --rate=${RATE_PER_MIN} (expect ~1 per 349 teams). Do not lower the rate — see REPO_MANIFEST §6.80.`);
   if (staleGradeSeasons.length) {
     console.log(`  Stale grades:  ${staleGradeSeasons.length} season(s) where sports-index holds fewer grades than discoverTeams reports`);
     for (const s of staleGradeSeasons.slice(0, 15)) {
