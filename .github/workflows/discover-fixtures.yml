@@ -84,7 +84,7 @@ on:
         default: false
         type: boolean
       rate:
-        description: 'Requests per rolling 60s across queries AND cookie bootstraps. 300 is the default and is MEASURED: on 1ae60211 the WAF tripped at window counts of 366/422/322/342/362/342. 0 disables the gate.'
+        description: 'Minimum gap AND rolling-60s cap on requests, incl. cookie bootstraps. Blank = 0 = OFF, which is the default: four repeats on 1ae60211 (no gate / 600 / 300 / 300-paced) were each WORSE than the one before, and the 366/422/322/342/362/342 figures were retracted in REPO_MANIFEST §6.77 as burst sizes, not a ceiling. Do not set a value without a measurement behind it.'
         required: false
         default: ''
         type: string
@@ -141,28 +141,56 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+      # Directive 13 / T27: inputs reach bash through env: ONLY. Interpolating
+      # ${{ inputs.* }} into run: splices the dispatcher's text into the script
+      # the runner executes. These were interpolated until 2026-10-13.
       - name: Discover fixtures
+        env:
+          EVENT_NAME:      ${{ github.event_name }}
+          IN_DRY_RUN:      ${{ inputs.dry_run }}
+          IN_ALL_SEASONS:  ${{ inputs.all_seasons }}
+          IN_CURRENT_ONLY: ${{ inputs.current_only }}
+          IN_LOCKED_RESWEEP: ${{ inputs.locked_resweep }}
+          IN_NO_SEASON_TEAMS: ${{ inputs.no_season_teams }}
+          IN_SEASON:       ${{ inputs.season }}
+          IN_CONCURRENCY:  ${{ inputs.concurrency }}
+          IN_RATE:         ${{ inputs.rate }}
+          IN_ROTATE_AGE:   ${{ inputs.rotate_age_min }}
+          IN_ROTATE_AFTER: ${{ inputs.rotate_after }}
+          IN_BLOCK_PAUSE:  ${{ inputs.block_pause_sec }}
         run: |
-          ARGS=""
-          if [ "${{ github.event_name }}" = "schedule" ]; then
+          set -euo pipefail
+          ARGS=()
+          if [ "$EVENT_NAME" = "schedule" ]; then
             # Weekly cron: same arguments the nightly used to pass.
-            ARGS="--current-only"
-            echo "Scheduled weekly sweep — args: $ARGS"
-            node scripts/discover-fixtures.js $ARGS
+            ARGS=(--current-only)
+            echo "Scheduled weekly sweep — args: ${ARGS[*]}"
+            node scripts/discover-fixtures.js "${ARGS[@]}"
             exit 0
           fi
-          if [ "${{ inputs.dry_run }}" = "true" ];     then ARGS="$ARGS --dry-run"; fi
-          if [ "${{ inputs.all_seasons }}" = "true" ]; then ARGS="$ARGS --all-seasons"; fi
-          if [ "${{ inputs.current_only }}" = "true" ]; then ARGS="$ARGS --current-only"; fi
-          if [ "${{ inputs.locked_resweep }}" = "true" ]; then ARGS="$ARGS --locked-resweep"; fi
-          if [ "${{ inputs.no_season_teams }}" = "true" ]; then ARGS="$ARGS --no-season-teams"; fi
-          if [ -n "${{ inputs.season }}" ];            then ARGS="$ARGS --season=${{ inputs.season }}"; fi
-          if [ -n "${{ inputs.concurrency }}" ];       then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
-          if [ -n "${{ inputs.rate }}" ];              then ARGS="$ARGS --rate=${{ inputs.rate }}"; fi
-          if [ -n "${{ inputs.rotate_age_min }}" ];    then ARGS="$ARGS --rotate-age-min=${{ inputs.rotate_age_min }}"; fi
-          if [ -n "${{ inputs.rotate_after }}" ];      then ARGS="$ARGS --rotate-after=${{ inputs.rotate_after }}"; fi
-          if [ -n "${{ inputs.block_pause_sec }}" ];   then ARGS="$ARGS --block-pause-sec=${{ inputs.block_pause_sec }}"; fi
-          node scripts/discover-fixtures.js $ARGS
+          # A dispatched value must look like a value, not a shell fragment.
+          ok() { case "$1" in ''|*[!A-Za-z0-9._-]*) return 1;; *) return 0;; esac; }
+          add_flag() { if [ "$1" = "true" ]; then ARGS+=("$2"); fi; }
+          add_val() {
+            if [ -z "$1" ]; then return 0; fi
+            if ! ok "$1"; then echo "::error::$2 rejected — unexpected characters"; exit 1; fi
+            ARGS+=("$2=$1")
+          }
+          add_flag "$IN_DRY_RUN"          --dry-run
+          add_flag "$IN_ALL_SEASONS"      --all-seasons
+          add_flag "$IN_CURRENT_ONLY"     --current-only
+          add_flag "$IN_LOCKED_RESWEEP"   --locked-resweep
+          add_flag "$IN_NO_SEASON_TEAMS"  --no-season-teams
+          add_val "$IN_SEASON"       --season
+          add_val "$IN_CONCURRENCY"  --concurrency
+          add_val "$IN_RATE"         --rate
+          add_val "$IN_ROTATE_AGE"   --rotate-age-min
+          add_val "$IN_ROTATE_AFTER" --rotate-after
+          add_val "$IN_BLOCK_PAUSE"  --block-pause-sec
+          # An empty array under set -u: "${ARGS[@]+"${ARGS[@]}"}" expands to
+          # NOTHING, while "${ARGS[@]-}" would pass one empty argument.
+          echo "args: ${ARGS[@]+${ARGS[@]}}"
+          node scripts/discover-fixtures.js ${ARGS[@]+"${ARGS[@]}"}
 
   # Weekly chain link (2026-07-21, §C7): fixtures sweep → finals → leaderboards.
   # Only fires when the weekly nightly-crawl dispatch passes chain_stats=true —
