@@ -184,15 +184,34 @@ function noteBlocked(why) {
   _blockUntil = now + BLOCK_PAUSE_MS;
   console.log(`  ⏸ ${why} — pausing ALL requests for ${Math.round(BLOCK_PAUSE_MS/1000)}s (block #${_blockEvents})`);
 }
+// ⚠️ A ROLLING COUNTER IS NOT A PACER, AND THAT WAS THE WHOLE PROBLEM.
+// The first version capped requests per 60s and nothing else, so after a 90s
+// block pause every entry had aged out and the window was EMPTY — it then
+// admitted a full allowance instantly. At concurrency 20 that is ~300 requests
+// in 13-15 seconds, which is the same instantaneous rate as having no gate at
+// all. It is why lowering 600 → 300 made things WORSE rather than better
+// (6 blocks/11.2 min → 8 blocks/17.8 min, 2026-10-13): the burst shape never
+// changed, only how soon each burst ran out.
+//
+// `_minGapMs` fixes the shape. 300/min is now one request every 200ms, enforced
+// between admissions, so twenty concurrent callers are paced instead of firing
+// together. The window cap stays as a second bound for the long run.
+const _minGapMs = RATE_PER_MIN > 0 ? Math.ceil(60000 / RATE_PER_MIN) : 0;
+let _lastAdmit = 0;
 async function rateGate() {
   while (Date.now() < _blockUntil) await delay(Math.min(5000, _blockUntil - Date.now()));
   if (!(RATE_PER_MIN > 0)) return;
   for (;;) {
     const now = Date.now(), cut = now - 60000;
     while (_rateWindow.length && _rateWindow[0] <= cut) _rateWindow.shift();
-    if (_rateWindow.length < RATE_PER_MIN) { _rateWindow.push(now); return; }
-    // Wait only until the oldest request leaves the window. Concurrent waiters all
-    // re-test after sleeping, so the window is never oversubscribed.
+    // Spacing first: this is what stops the post-pause burst.
+    const gap = (_lastAdmit + _minGapMs) - now;
+    if (gap > 0) { await delay(gap); continue; }
+    if (_rateWindow.length < RATE_PER_MIN) {
+      // Check-and-set is synchronous between awaits, so exactly one caller can
+      // take each slot however many are waiting.
+      _lastAdmit = now; _rateWindow.push(now); return;
+    }
     await delay(Math.max(50, _rateWindow[0] - cut));
   }
 }
@@ -904,7 +923,7 @@ async function main() {
   console.log('=== discover-fixtures.js ===');
   console.log(`Tenant:      ${TENANT}`);
   console.log(`Concurrency: ${CONCURRENCY}`);
-  console.log(`Rate limit:  ${RATE_PER_MIN > 0 ? RATE_PER_MIN + ' req/min (rolling 60s, queries + bootstraps)' : 'DISABLED (--rate=0)'}`);
+  console.log(`Rate limit:  ${RATE_PER_MIN > 0 ? RATE_PER_MIN + ' req/min = 1 every ' + _minGapMs + 'ms, PACED (queries + bootstraps)' : 'DISABLED (--rate=0)'}`);
   console.log(`Rotate at:   ${Math.round(ROTATE_AGE_MS/60000)} min of cookie age`);
   console.log(`Mode:        ${TARGET_SEASON ? `single season ${TARGET_SEASON}` : LOCKED_RESWEEP ? 'locked re-sweep (locked && !removed)' : ALL_SEASONS ? 'all seasons' : 'active only (locked: false)'}${CURRENT_ONLY ? ' [current-only]' : ''}${DRY_RUN ? '   [DRY RUN — no writes/commits]' : ''}  progress-key: ${MODE}\n`);
 
