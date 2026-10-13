@@ -90,6 +90,31 @@ const seasonSort = sid => {
   return se.endDate || se.startDate || '0000-00-00';
 };
 
+// ⚠️ A SEASON ID IN --teams RETURNS ZERO, AND ZERO LOOKS LIKE AN ANSWER.
+// 2026-10-13: a run passed two VJBL SEASON ids to --teams. No registration can
+// ever carry a season id as its tid, so the scan read 432,992 players and
+// reported "0 matched" — indistinguishable from "those players are not on file",
+// and the next move would have been to re-crawl data that was already there.
+// Both id kinds are 8 hex characters, so they are not told apart by shape; they
+// ARE told apart by the season index, which is already loaded.
+if (sportIdx) {
+  const sidsInTeams = targetTeams.filter(t => sportIdx[t]);
+  if (sidsInTeams.length) {
+    console.error('');
+    console.error(`✗ ${sidsInTeams.length} value(s) passed as TEAM ids are SEASON ids:`);
+    for (const t of sidsInTeams) console.error(`    ${t}  "${sportIdx[t].name || ''}"`);
+    console.error('  Pass these as season_ids / --seasons=, not team_ids / --teams=.');
+    console.error('  Refusing to run: this filter can only ever return zero, and a zero here');
+    console.error('  reads as "these players are not on file", which would be wrong.');
+    process.exit(1);
+  }
+  const unknownSeasons = targetSeasons.filter(x => !sportIdx[x]);
+  if (unknownSeasons.length) {
+    console.log(`⚠ ${unknownSeasons.length} season id(s) are not in sports-index: ${unknownSeasons.join(', ')}`);
+    console.log('  Continuing — the index can lag — but a zero result here may just mean the id is wrong.');
+  }
+}
+
 const matchedTeamNames = new Map();   // tid -> name, every distinct team swept in
 const results = {};                   // tid -> [row]
 const landed  = new Map();            // uuid -> {name, regs:[...]}
