@@ -84,7 +84,7 @@ on:
         default: false
         type: boolean
       rate:
-        description: 'Minimum gap AND rolling-60s cap on requests, incl. cookie bootstraps. Blank = 0 = OFF, which is the default: four repeats on 1ae60211 (no gate / 600 / 300 / 300-paced) were each WORSE than the one before, and the 366/422/322/342/362/342 figures were retracted in REPO_MANIFEST §6.77 as burst sizes, not a ceiling. Do not set a value without a measurement behind it.'
+        description: 'Minimum gap AND rolling-60s cap on requests, incl. cookie bootstraps. Blank = 600, the BEST MEASURED value on blocks-per-team (1 per 349 vs 1 per 235 with no gate at all; see REPO_MANIFEST §6.79). 0 disables the gate, which measurement says is the WORST option, not a safe one. Elapsed is ~90s x blocks, so blocks-per-team is the only figure worth comparing.'
         required: false
         default: ''
         type: string
