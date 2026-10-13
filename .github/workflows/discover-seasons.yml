@@ -22,6 +22,10 @@ on:
         required: false
         default: ''
         type: string
+      uuids_from_seasons:
+        description: 'Season ids, comma-separated. Probes every player holding a registration in them — selected from players/, so list size does not matter. Use instead of uuid for a whole competition.'
+        required: false
+        type: string
       dry_run:
         description: 'Report only — no writes or commit'
         required: false
@@ -69,6 +73,7 @@ jobs:
       - name: Run discovery
         env:
           IN_UUID:  ${{ inputs.uuid }}
+          IN_FROMS: ${{ inputs.uuids_from_seasons }}
           IN_FULL:  ${{ inputs.full }}
           IN_LIMIT: ${{ inputs.limit }}
           IN_DRY:   ${{ inputs.dry_run }}
@@ -83,6 +88,7 @@ jobs:
             ARGS+=("$2=$1")
           }
           add "$IN_UUID"  --uuid
+          add "$IN_FROMS" --uuids-from-seasons
           add "$IN_LIMIT" --limit
           add "$IN_CONC"  --concurrency
           [ "$IN_FULL" = "true" ] && ARGS+=(--full) || true
