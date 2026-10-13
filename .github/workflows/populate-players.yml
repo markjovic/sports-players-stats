@@ -1,0 +1,140 @@
+# .github/workflows/populate-players.yml
+name: Populate players
+
+# Populate a NAMED LIST of players, not a shard and not the corpus.
+#
+# Feed it the uuid column of a Player Search run (reports/team-search-landed.csv)
+# or paste uuids directly. It clears statsChecked on those players only, then runs
+# the real scripts/fetch-profile-stats.js once per affected shard — the shipped
+# fetch path, not a copy of it.
+#
+# ⚠️ A SHARD RUN ALSO PICKS UP OTHER PLAYERS IN THAT SHARD WITH NO statsChecked.
+# Correct — they are owed a fetch — but the run does more than the names given.
+#
+# ⚠️ IT CANNOT CREATE A PLAYER. A uuid with no players/{xx}/{uuid}.json has never
+# been seen in a game roster; it is reported under MISSING and needs its season
+# crawled instead (nightly-crawl.js --season=<sid>).
+#
+# ⚠️ A COMMIT IS NOT A PUBLICATION (T23). Player files alone change nothing a user
+# sees — rosters come from build-team-stats, findability from build-search-index,
+# and the site only changes when Pages deploys. `rebuild` chains all three.
+
+on:
+  workflow_dispatch:
+    inputs:
+      uuids:
+        description: 'Player uuids, comma-separated. Leave blank to use the CSV below.'
+        required: false
+        type: string
+      from_csv:
+        description: 'Repo path to a CSV with a uuid column, e.g. reports/team-search-landed.csv. Commit it first, or paste uuids above instead.'
+        required: false
+        type: string
+      column:
+        description: 'CSV column holding the uuid. Blank = uuid.'
+        required: false
+        type: string
+      dry_run:
+        description: 'Report what WOULD be done. Writes nothing, fetches nothing. Run this first.'
+        required: false
+        default: true
+        type: boolean
+      rebuild:
+        description: 'After populating, chain team-stats, search index and Deploy Pages. Without this the data lands but nothing visible changes.'
+        required: false
+        default: false
+        type: boolean
+      max_players:
+        description: 'Refuse to run above this many players. Blank = 2000. Guards against the wrong CSV column clearing the corpus.'
+        required: false
+        type: string
+
+# players/ is written here, so it takes the same lock as every other writer.
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write          # the rebuild step dispatches downstream workflows
+
+jobs:
+  populate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      # FULL checkout, deliberately. The affected shards are not known until the
+      # uuids have been read, so a sparse set cannot be computed in advance — and
+      # a sparse checkout that silently lacked a shard would report that player as
+      # MISSING, which is precisely the wrong answer. claude_context.md forbids
+      # sparse-checkout for any job that must read many player files.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # NO setup-node. This job reaches api.playhq.com through
+      # fetch-profile-stats.js, and setup-node changes the runner's outbound
+      # fingerprint and draws CloudFront 403s (REPO_MANIFEST §6.61).
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Directive 13 / T27: inputs reach bash through env: ONLY.
+      - name: Populate
+        env:
+          IN_UUIDS:  ${{ inputs.uuids }}
+          IN_CSV:    ${{ inputs.from_csv }}
+          IN_COL:    ${{ inputs.column }}
+          IN_DRY:    ${{ inputs.dry_run }}
+          IN_MAX:    ${{ inputs.max_players }}
+        run: |
+          set -euo pipefail
+          ARGS=()
+          ok() { case "$1" in ''|*[!A-Za-z0-9,./_-]*) return 1;; *) return 0;; esac; }
+          add() {
+            [ -n "$1" ] || return 0
+            ok "$1" || { echo "::error::$2 rejected — unexpected characters"; exit 1; }
+            ARGS+=("$2=$1")
+          }
+          add "$IN_UUIDS" --uuids
+          add "$IN_CSV"   --from-csv
+          add "$IN_COL"   --column
+          add "$IN_MAX"   --max-players
+          [ "$IN_DRY" = "true" ] && ARGS+=(--dry-run) || true
+          echo "args: ${ARGS[@]+${ARGS[@]}}"
+          node scripts/populate-players.js ${ARGS[@]+"${ARGS[@]}"}
+
+      # The script writes player files but commits nothing — same split as the
+      # profile-stats matrix, where the shard job writes and a later job commits.
+      - name: Commit player files
+        if: ${{ inputs.dry_run != true && inputs.dry_run != 'true' }}
+        run: |
+          set -euo pipefail
+          git add -- players/
+          if git diff --staged --quiet; then
+            echo "No player files changed — nothing to commit."
+            exit 0
+          fi
+          git diff --staged --shortstat
+          git fetch origin main
+          git merge -X ours FETCH_HEAD --no-edit
+          git commit -m "populate-players: targeted profile fetch"
+          git push origin main
+
+      # Player files on their own are invisible. These three are what make the
+      # populated players show up, in the order the nightly chain uses them.
+      - name: Rebuild and publish
+        if: ${{ (inputs.rebuild == true || inputs.rebuild == 'true') && inputs.dry_run != true && inputs.dry_run != 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+        run: |
+          set -euo pipefail
+          gh workflow run build-team-stats.yml  --field active_only=true
+          gh workflow run build-search-index.yml
+          gh workflow run deploy-pages.yml
+          echo "Dispatched: build-team-stats (active-only), build-search-index, deploy-pages."
+          echo "These run on their own; watch the Actions tab. Pages is what makes it visible (T23)."

@@ -11,6 +11,11 @@ name: Advanced Player Search
 on:
   workflow_dispatch:
     inputs:
+      list_teams:
+        description: 'STEP 1 — DISCOVERY. List every team name in season_ids and stop. No player rows. Use this first, pick your names from it, then run again with this unticked.'
+        required: false
+        default: false
+        type: boolean
       team_name:
         description: 'Team NAME, substring, case-insensitive (e.g. Ringwood). Comma-separated for several. Reads reg.tn — no team ids needed.'
         required: false
@@ -76,6 +81,7 @@ jobs:
           IN_SEASONS:   ${{ inputs.season_ids }}
           IN_GRADES:    ${{ inputs.grade_ids }}
           IN_LANDED:    ${{ inputs.landed }}
+          IN_LIST:      ${{ inputs.list_teams }}
           IN_HISTNAME:  ${{ inputs.history_name }}
           IN_SINCE:     ${{ inputs.since }}
         run: |
@@ -112,6 +118,7 @@ jobs:
             ARGS+=("--since=$IN_SINCE")
           fi
           [ "$IN_LANDED" = "true" ] && ARGS+=(--landed) || true
+          [ "$IN_LIST" = "true" ] && ARGS+=(--list-teams) || true
           echo "args: ${ARGS[@]+${ARGS[@]}}"
           node scripts/find-players-by-team.js ${ARGS[@]+"${ARGS[@]}"}
 
