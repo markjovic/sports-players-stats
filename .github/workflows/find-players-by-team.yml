@@ -1,40 +1,113 @@
+# .github/workflows/find-players-by-team.yml
 name: Advanced Player Search
+
+# Who was in these teams, and with `landed` ticked, WHERE THEY ARE NOW.
+# Offline — walks players/ only. No PlayHQ calls.
+#
+# ⚠️ A SEASON WITH NO GAMES PLAYED HOLDS NO REGISTRATIONS. A rep season announced
+# last week cannot be searched at all. Search LAST season's team and tick
+# `landed` to follow those players forward — that is what this is for.
 
 on:
   workflow_dispatch:
     inputs:
+      team_name:
+        description: 'Team NAME, substring, case-insensitive (e.g. Ringwood). Comma-separated for several. Reads reg.tn — no team ids needed.'
+        required: false
+        type: string
       team_ids:
-        description: 'Team IDs (Comma-separated, leave blank to ignore)'
+        description: 'Team IDs, comma-separated. Use when you already have exact tids.'
         required: false
         type: string
       season_ids:
-        description: 'Season IDs (Comma-separated, leave blank to ignore)'
+        description: 'Season IDs, comma-separated. Narrows the MATCH, not the history.'
         required: false
         type: string
       grade_ids:
-        description: 'Grade IDs (Comma-separated, e.g. 51ec2bbf, leave blank to ignore)'
+        description: 'Grade IDs, comma-separated (e.g. 51ec2bbf).'
         required: false
         type: string
+      landed:
+        description: 'Also dump every matched players FULL registration history, newest first — where they went next.'
+        required: false
+        default: true
+        type: boolean
+      since:
+        description: 'Limit the history to seasons ending on/after this (e.g. 2024-01-01), or whose name contains it. Blank = all.'
+        required: false
+        type: string
+
+permissions:
+  contents: read
 
 jobs:
   search-players:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
-      - name: Checkout repository (Sparse)
-        uses: actions/checkout@v4
+      # `data` is REQUIRED as well as players/scripts: without sports-index the
+      # report shows raw sids instead of season names, and cannot order a
+      # player's history at all. The script says so loudly rather than quietly
+      # printing ids, but there is no reason to make it.
+      - uses: actions/checkout@v4
         with:
+          ref: main
+          fetch-depth: 1
           sparse-checkout: |
             players
             scripts
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+            data
+
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Run Search Script
+      # Directive 13 / T27: inputs reach bash through env: ONLY. Interpolating
+      # ${{ inputs.* }} into run: splices dispatcher text into the script the
+      # runner executes. These were interpolated until 2026-10-13.
+      - name: Run search
+        env:
+          IN_TEAM_NAME: ${{ inputs.team_name }}
+          IN_TEAM_IDS:  ${{ inputs.team_ids }}
+          IN_SEASONS:   ${{ inputs.season_ids }}
+          IN_GRADES:    ${{ inputs.grade_ids }}
+          IN_LANDED:    ${{ inputs.landed }}
+          IN_SINCE:     ${{ inputs.since }}
         run: |
-          node scripts/find-players-by-team.js \
-            --teams="${{ inputs.team_ids }}" \
-            --seasons="${{ inputs.season_ids }}" \
-            --grade-ids="${{ inputs.grade_ids }}"
+          set -euo pipefail
+          ARGS=()
+          # A team NAME may legitimately contain spaces, so it is passed as one
+          # array element and never split; the id/season/grade filters are
+          # id-shaped and are checked as such.
+          ok_ids() { case "$1" in ''|*[!A-Za-z0-9,._-]*) return 1;; *) return 0;; esac; }
+          add_ids() {
+            [ -n "$1" ] || return 0
+            ok_ids "$1" || { echo "::error::$2 rejected — unexpected characters"; exit 1; }
+            ARGS+=("$2=$1")
+          }
+          if [ -n "$IN_TEAM_NAME" ]; then
+            case "$IN_TEAM_NAME" in
+              *\"*|*\$*|*\`*) echo "::error::team_name rejected — quotes and shell metacharacters are not accepted"; exit 1;;
+            esac
+            ARGS+=("--team-name=$IN_TEAM_NAME")
+          fi
+          add_ids "$IN_TEAM_IDS" --teams
+          add_ids "$IN_SEASONS"  --seasons
+          add_ids "$IN_GRADES"   --grade-ids
+          if [ -n "$IN_SINCE" ]; then
+            ok_ids "$IN_SINCE" || { echo "::error::since rejected — unexpected characters"; exit 1; }
+            ARGS+=("--since=$IN_SINCE")
+          fi
+          [ "$IN_LANDED" = "true" ] && ARGS+=(--landed) || true
+          echo "args: ${ARGS[@]+${ARGS[@]}}"
+          node scripts/find-players-by-team.js ${ARGS[@]+"${ARGS[@]}"}
+
+      # The CSVs are the deliverable once a squad runs past a few dozen players —
+      # the step summary caps at 1 MB and is unreadable long before that.
+      - name: Upload CSVs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: player-search
+          path: reports/team-search-*.csv
+          if-no-files-found: warn
