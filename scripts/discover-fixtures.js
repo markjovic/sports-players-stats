@@ -169,7 +169,16 @@ let _cookieAt = 0, _callsOnCookie = 0;
 // WINDOW counts do not. It is a rate. ROTATE_AFTER is kept because a cookie still
 // has a TTL and rotating costs one request, but it is not what prevents these.
 // --rate=0 disables the gate.
-const RATE_PER_MIN = parseInt(ARGS.rate === undefined ? '300' : ARGS.rate, 10);
+// ⚠️ DEFAULT IS OFF. Three runs of the same season, same teams, one variable:
+//     no gate (pre-§6.74)     3 bursts over 863 teams, work committed
+//     600/min counter          6 blocks, 11.2 min
+//     300/min counter          8 blocks, 17.8 min
+//     300/min PACED            worse again — and it broke the single-flight lock
+// Every value made it worse than the one before, and the last introduced a fault
+// of its own. The gate stays in the code because it is now correct and testable,
+// but it is OPT-IN until a measurement justifies a number. Turning it on without
+// one is how three runs were spent.
+const RATE_PER_MIN = parseInt(ARGS.rate === undefined ? '0' : ARGS.rate, 10);
 const _rateWindow = [];
 // When the WAF refuses us it refuses the whole IP — so twenty callers each
 // retrying is twenty more refused requests feeding the thing that blocked us.
@@ -216,9 +225,24 @@ async function rateGate() {
   }
 }
 
-function invalidateSession() {
+// ⚠️ T80. DO NOT CLEAR `_sessionPromise` HERE. It is the single-flight lock, and
+// clearing it lets the NEXT caller start a second bootstrap while the first is
+// still in the air. That was survivable while twenty 403s arrived in the same
+// tick — they all invalidated, then all awaited the one promise the first of
+// them created. Pacing (§6.77) spread those callers out in TIME, so each now
+// arrives to find the lock cleared and starts its own: the 2026-10-13 run shows
+// eight "Fetching session cookie..." and eight "✓ Cookie obtained" in a row.
+// That burst is itself refused — §6.59 fault 2 and §6.61's nightly-crawl fault,
+// reintroduced by a change made somewhere else entirely.
+//
+// A refresh already in flight is the refresh this caller wants. `_cookieGen`
+// lets a caller say WHICH cookie it is complaining about, so a 403 raised
+// against an already-replaced cookie does not trigger yet another rotation.
+let _cookieGen = 0;
+function invalidateSession(gen) {
+  if (gen !== undefined && gen !== _cookieGen) return;   // already rotated past it
   _cookie = null;
-  _sessionPromise = null;
+  _cookieGen++;
   try { if (fs.existsSync(COOKIE_FILE)) fs.unlinkSync(COOKIE_FILE); } catch (_) {}
 }
 
@@ -342,6 +366,7 @@ async function gql(operationName, query, variables) {
       // Read the cookie INSIDE the loop. It used to be fetched once before the loop,
       // so a refreshed session could never reach the retry that needed it.
       const cookie = await getSession();
+      const gen = _cookieGen;            // which cookie THIS call is using
       // The gate is taken HERE, after the cookie is in hand and immediately before
       // the request leaves — so a bootstrap that happened on the way through has
       // already spent its own slot, and the window counts what actually went out.
@@ -371,7 +396,7 @@ async function gql(operationName, query, variables) {
         reauths++;
         noteBlocked(`${operationName}: HTTP 403`);
         console.log(`  … ${operationName}: HTTP 403 — session refused, re-authenticating (${reauths}/2)`);
-        invalidateSession();
+        invalidateSession(gen);          // no-op if a sibling already rotated it
         await delay(2000);
         continue;
       }
