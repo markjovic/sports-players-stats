@@ -62,12 +62,30 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      # Directive 13 / T27: inputs reach bash through env: ONLY. `uuid` now accepts
+      # a comma-separated LIST (2026-10-13), so this field carries tens of
+      # thousands of characters of dispatcher-supplied text — exactly the string
+      # that must not be spliced into the script the runner executes.
       - name: Run discovery
+        env:
+          IN_UUID:  ${{ inputs.uuid }}
+          IN_FULL:  ${{ inputs.full }}
+          IN_LIMIT: ${{ inputs.limit }}
+          IN_DRY:   ${{ inputs.dry_run }}
+          IN_CONC:  ${{ inputs.concurrency }}
         run: |
-          ARGS=""
-          if [ -n "${{ inputs.uuid }}" ]; then ARGS="$ARGS --uuid=${{ inputs.uuid }}"; fi
-          if [ "${{ inputs.full }}" = "true" ]; then ARGS="$ARGS --full"; fi
-          if [ -n "${{ inputs.limit }}" ]; then ARGS="$ARGS --limit=${{ inputs.limit }}"; fi
-          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          if [ -n "${{ inputs.concurrency }}" ]; then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
-          node scripts/discover-seasons.js $ARGS
+          set -euo pipefail
+          ARGS=()
+          ok() { case "$1" in ''|*[!A-Za-z0-9,.-]*) return 1;; *) return 0;; esac; }
+          add() {
+            [ -n "$1" ] || return 0
+            ok "$1" || { echo "::error::$2 rejected — unexpected characters"; exit 1; }
+            ARGS+=("$2=$1")
+          }
+          add "$IN_UUID"  --uuid
+          add "$IN_LIMIT" --limit
+          add "$IN_CONC"  --concurrency
+          [ "$IN_FULL" = "true" ] && ARGS+=(--full) || true
+          [ "$IN_DRY" = "true" ] && ARGS+=(--dry-run) || true
+          echo "args: ${#ARGS[@]} argument(s)"
+          node scripts/discover-seasons.js ${ARGS[@]+"${ARGS[@]}"}

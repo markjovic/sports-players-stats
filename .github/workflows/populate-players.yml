@@ -22,6 +22,14 @@ name: Populate players
 on:
   workflow_dispatch:
     inputs:
+      seasons:
+        description: 'Season ids, comma-separated — selects every player holding a registration in them. Use this for a whole competition; no CSV needed.'
+        required: false
+        type: string
+      team_name:
+        description: 'With seasons: narrow to teams whose name contains this. Blank = every team in those seasons.'
+        required: false
+        type: string
       uuids:
         description: 'Player uuids, comma-separated. Leave blank to use the CSV below.'
         required: false
@@ -86,6 +94,8 @@ jobs:
       # Directive 13 / T27: inputs reach bash through env: ONLY.
       - name: Populate
         env:
+          IN_SEASONS: ${{ inputs.seasons }}
+          IN_TEAMNAME: ${{ inputs.team_name }}
           IN_UUIDS:  ${{ inputs.uuids }}
           IN_CSV:    ${{ inputs.from_csv }}
           IN_COL:    ${{ inputs.column }}
@@ -100,6 +110,13 @@ jobs:
             ok "$1" || { echo "::error::$2 rejected — unexpected characters"; exit 1; }
             ARGS+=("$2=$1")
           }
+          add "$IN_SEASONS" --seasons
+          if [ -n "$IN_TEAMNAME" ]; then
+            case "$IN_TEAMNAME" in
+              *\"*|*\$*|*\`*) echo "::error::team_name rejected — quotes and shell metacharacters are not accepted"; exit 1;;
+            esac
+            ARGS+=("--team-name=$IN_TEAMNAME")
+          fi
           add "$IN_UUIDS" --uuids
           add "$IN_CSV"   --from-csv
           add "$IN_COL"   --column
