@@ -9,9 +9,11 @@
 // player files (default: last 2 days). Sources team data from
 // seasons[].regs[] which includes pre-graded teams not yet in game files.
 //
-// Safe to run with the 2-day filter — any new team registration causes
-// publicProfileTeams to update the player file (updatedAt), so recently
-// registered players are always caught within 24-48h.
+// The 2-day filter tests the NEWER of `updatedAt` and `teamsUpdatedAt`. Both are
+// needed: discover-seasons.js --backfill-teams stamps only `teamsUpdatedAt`, so a
+// filter on `updatedAt` alone silently skips exactly the files that just gained a
+// new team registration (measured 2026-10-13, 142 files). See the note at the
+// filter itself before narrowing this again.
 //
 // team-index.json structure:
 //   { "Season Name": [{ id, n, sid, comp, grade }] }
@@ -108,6 +110,8 @@ async function main() {
   if (DRY_RUN)   console.log('  ⚠  DRY RUN');
   console.log('─'.repeat(50));
 
+  const unknownSids = new Map();   // sid -> count of players carrying a reg in it
+
   // Load sports-index for season metadata (name, compName)
   const sportIndex = JSON.parse(fs.readFileSync(SPORTS_INDEX, 'utf8'));
   const sidMeta    = {};
@@ -169,15 +173,40 @@ async function main() {
       catch (_) { continue; }
       playersScanned++;
 
-      // Check updatedAt field in file as well (mtime can be unreliable on some runners)
-      if (!SCAN_ALL && player.updatedAt) {
-        const updatedMs = new Date(player.updatedAt).getTime();
-        if (!isNaN(updatedMs) && updatedMs < cutoff) continue;
+      // Check the recency FIELDS as well (mtime can be unreliable on some runners).
+      //
+      // ⚠️ `updatedAt` ALONE IS NOT ENOUGH, AND SKIPPING THE FILES THAT MATTER MOST
+      // IS THE FAILURE MODE. 2026-10-13: discover-seasons.js --backfill-teams wrote
+      // 142 player files with brand-new rep registrations for the 2027 VJBL season.
+      // Its write path (L1440-1450) calls syncTeams(), which stamps
+      // `teamsUpdatedAt` — it does NOT touch `updatedAt`. So every one of those 142
+      // files still carried a months-old `updatedAt`, this filter dropped all of
+      // them, and a default --days=2 run reported zero new teams while the new
+      // squads sat in players/ unindexed. The header comment above claims
+      // publicProfileTeams always bumps `updatedAt`; for the backfill path that is
+      // simply false.
+      //
+      // The recency of a player file for THIS script's purpose is the newest of the
+      // two stamps, because regs are what this script reads and `teamsUpdatedAt` is
+      // the stamp the reg writer sets. Any future writer that adds another stamp
+      // must be added here too, or its registrations become invisible the same way.
+      if (!SCAN_ALL) {
+        const stamps = [player.updatedAt, player.teamsUpdatedAt]
+          .map(v => (v ? new Date(v).getTime() : NaN))
+          .filter(ms => !isNaN(ms));
+        if (stamps.length && Math.max(...stamps) < cutoff) continue;
       }
 
       for (const season of (player.seasons || [])) {
         const sid  = season.sid;
-        const meta = sidMeta[sid] || { name: sid, compName: '' };
+        // A season absent from sports-index.json still gets indexed, but keyed by
+        // the RAW SID — which becomes a season heading reading "e5908800" in
+        // StatTrack, and means build-team-stats.js (which takes its season list
+        // from sports-index.json, not from here) will never build that season's
+        // team-stats file at all, so every one of those teams renders "Team not
+        // found". It is not silent any more: see the summary at the end of the run.
+        const meta = sidMeta[sid] || (unknownSids.set(sid, (unknownSids.get(sid) || 0) + 1),
+                                      { name: sid, compName: '' });
 
         for (const reg of (season.regs || [])) {
           const tid = reg.tid;
@@ -248,6 +277,15 @@ async function main() {
   }
 
   console.log(`Players checked: ${playersChecked.toLocaleString()}`);
+  if (unknownSids.size) {
+    console.log(`\n  ⚠ ${unknownSids.size} season id(s) in players' regs are NOT in data/sports-index.json.`);
+    console.log(`    Their teams are keyed by the raw sid here, and build-team-stats.js will skip`);
+    console.log(`    them entirely. Run Discover Seasons so the index gains them, then re-run this.`);
+    [...unknownSids.entries()].sort((a, b) => b[1] - a[1]).slice(0, 20)
+      .forEach(([sid, n]) => console.log(`      ${sid}  ${n} reg-bearing player(s)`));
+    if (unknownSids.size > 20) console.log(`      ... and ${unknownSids.size - 20} more`);
+    console.log('');
+  }
   console.log(`Players scanned: ${playersScanned.toLocaleString()}`);
   console.log(`New teams added:    ${newTeams}`);
   console.log(`Existing corrected: ${updatedTeams}   <- name/comp only; grade is NEVER corrected (see the note in the loop)`);
