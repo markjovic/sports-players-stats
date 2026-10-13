@@ -51,8 +51,21 @@ const targetSeasons   = listArg('--seasons=');
 const targetGradeIds  = listArg('--grade-ids=');
 const targetNames     = listArg('--team-name=').map(s => s.toLowerCase());
 const LANDED          = has('landed');
-const SINCE           = strArg('--since=');          // season name/date prefix filter on the history
+// ⚠️ --since and --history-name were ONE argument until 2026-10-13, matching a
+// date OR a name substring. Two unrelated jobs in one flag: "2025" then meant
+// both "seasons ending after 2025" and "seasons whose name contains 2025", and
+// the two answers differ. Split, and each does one thing.
+const SINCE           = strArg('--since=');                              // date only, YYYY-MM-DD
+const HIST_NAMES      = listArg('--history-name=').map(s => s.toLowerCase());
 const LIMIT_ROWS      = parseInt(strArg('--limit=') || '400', 10);
+
+// There is NO flag in the data that says "this season is rep". The club index
+// types an organisation CLUB or ASSOCIATION, but a registration carries neither —
+// it carries tid, tn, gid, gn and stats. The season NAME is the only practical
+// handle, which is why this is an argument the operator supplies rather than a
+// rule the script decides. VJBL seasons are named "VJBL <year>" or
+// "Victorian Junior Basketball League — <year>"; other rep paths (Big V, CBL,
+// tournaments) are named differently again, so pass what you mean.
 
 if (!targetTeams.length && !targetSeasons.length && !targetGradeIds.length && !targetNames.length) {
   console.error('✗ Give at least one filter: --teams=, --team-name=, --seasons= or --grade-ids=');
@@ -126,7 +139,8 @@ function processFile(filePath) {
     for (const season of data.seasons) {
       for (const reg of (season.regs || [])) {
         const label = seasonName(season.sid);
-        if (SINCE && !(seasonSort(season.sid) >= SINCE || label.includes(SINCE))) continue;
+        if (SINCE && seasonSort(season.sid) < SINCE) continue;
+        if (HIST_NAMES.length && !HIST_NAMES.some(n => label.toLowerCase().includes(n))) continue;
         regs.push({
           sid: season.sid, season: label, sort: seasonSort(season.sid),
           team: reg.tn || '(team name not on reg)', tid: reg.tid || '',
@@ -157,7 +171,8 @@ if (targetNames.length)    console.log(`  team name  : ${targetNames.join(', ')}
 if (targetSeasons.length)  console.log(`  seasons    : ${targetSeasons.join(', ')}`);
 if (targetGradeIds.length) console.log(`  grade ids  : ${targetGradeIds.join(', ')}`);
 console.log(`  landed     : ${LANDED ? 'YES — full registration history per matched player' : 'no (--landed to add it)'}`);
-if (SINCE) console.log(`  since      : ${SINCE}`);
+if (HIST_NAMES.length) console.log(`  history    : seasons whose NAME contains ${HIST_NAMES.join(' or ')}`);
+if (SINCE) console.log(`  since      : seasons ending on/after ${SINCE}`);
 console.log('');
 
 walkDir(PLAYERS_DIR);
@@ -195,6 +210,30 @@ if (LANDED) {
   console.log(`  → ${path.relative(ROOT, landedPath)}  (${rows.length - 1} rows)`);
 }
 
+// ── Destinations. The squads answer "who was here"; the landed history answers
+// "where did each one go". Neither answers "where did they ALL go", which is the
+// question a rep list is actually read for, so it is rolled up explicitly.
+// A player is counted ONCE per team however many seasons they spent there. ─────
+let destRows = [];
+if (LANDED) {
+  const byTeam = new Map();   // "tid|team" -> {team, tid, players:Set, seasons:Set}
+  for (const [uuid, p] of landed) {
+    for (const r of p.regs) {
+      const k = `${r.tid}|${r.team}`;
+      let e = byTeam.get(k);
+      if (!e) byTeam.set(k, e = { team: r.team, tid: r.tid, players: new Set(), seasons: new Set(), names: new Set() });
+      e.players.add(uuid); e.seasons.add(r.season); e.names.add(p.name);
+    }
+  }
+  destRows = [...byTeam.values()].sort((a, b) => b.players.size - a.players.size || a.team.localeCompare(b.team));
+  const dp = path.join(REPORTS_DIR, 'team-search-destinations.csv');
+  const rows = [['team', 'tid', 'players', 'seasons', 'player_names']];
+  for (const d of destRows)
+    rows.push([d.team, d.tid, d.players.size, [...d.seasons].sort().join(' | '), [...d.names].sort().join(' | ')]);
+  fs.writeFileSync(dp, rows.map(r => r.map(csv).join(',')).join('\n'));
+  console.log(`  → ${path.relative(ROOT, dp)}  (${rows.length - 1} teams)`);
+}
+
 // ── Step summary: the TEAMS that matched in full, and the squads capped. ──────
 const sp = process.env.GITHUB_STEP_SUMMARY;
 if (sp) {
@@ -217,6 +256,17 @@ if (sp) {
   if (!playersMatched) {
     md += `### No matching records\n\nA season with no games played yet holds no registrations — see the console notes.\n`;
   } else {
+    if (destRows.length) {
+      md += `## Where they landed — ${destRows.length} team(s)\n\n`;
+      md += HIST_NAMES.length
+        ? `History filtered to seasons named like: \`${HIST_NAMES.join('`, `')}\`\n\n`
+        : `⚠️ History is UNFILTERED — this includes domestic as well as rep. Set \`history_name\` to narrow it.\n\n`;
+      md += `| Team | Players | Seasons |\n| :--- | ---: | :--- |\n`;
+      for (const d of destRows.slice(0, 60))
+        md += `| ${d.team} | ${d.players.size} | ${[...d.seasons].sort().join(', ')} |\n`;
+      if (destRows.length > 60) md += `\n_${destRows.length - 60} more in \`team-search-destinations.csv\`._\n`;
+      md += `\n`;
+    }
     md += `## Squads\n\n`;
     let printed = 0;
     for (const [tid, rows] of Object.entries(results)) {
@@ -230,7 +280,7 @@ if (sp) {
       md += `\n`;
       if (printed > LIMIT_ROWS) { md += `_Row cap ${LIMIT_ROWS} reached — the full list is in the CSV artifact._\n\n`; break; }
     }
-    md += `\nCSV artifacts: \`reports/team-search-squad.csv\`${landedPath ? ', `reports/team-search-landed.csv`' : ''} — download from the run.\n`;
+    md += `\nCSV artifacts: \`reports/team-search-squad.csv\`${landedPath ? ', `reports/team-search-landed.csv`, `reports/team-search-destinations.csv`' : ''} — download from the run.\n`;
   }
   fs.writeFileSync(sp, md);
 }
