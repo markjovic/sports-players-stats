@@ -26,6 +26,11 @@ on:
         description: 'Season ids, comma-separated. Probes every player holding a registration in them — selected from players/, so list size does not matter. Use instead of uuid for a whole competition.'
         required: false
         type: string
+      backfill_teams:
+        description: 'WRITE the registrations found, not just print them. REQUIRED to populate rosters — without it the probe reports and writes nothing (the registration write is gated on it). Tick this.'
+        required: false
+        default: false
+        type: boolean
       dry_run:
         description: 'Report only — no writes or commit'
         required: false
@@ -74,6 +79,7 @@ jobs:
         env:
           IN_UUID:  ${{ inputs.uuid }}
           IN_FROMS: ${{ inputs.uuids_from_seasons }}
+          IN_BACKFILL: ${{ inputs.backfill_teams }}
           IN_FULL:  ${{ inputs.full }}
           IN_LIMIT: ${{ inputs.limit }}
           IN_DRY:   ${{ inputs.dry_run }}
@@ -92,6 +98,7 @@ jobs:
           add "$IN_LIMIT" --limit
           add "$IN_CONC"  --concurrency
           [ "$IN_FULL" = "true" ] && ARGS+=(--full) || true
+          [ "$IN_BACKFILL" = "true" ] && ARGS+=(--backfill-teams) || true
           [ "$IN_DRY" = "true" ] && ARGS+=(--dry-run) || true
           echo "args: ${#ARGS[@]} argument(s)"
           node scripts/discover-seasons.js ${ARGS[@]+"${ARGS[@]}"}
