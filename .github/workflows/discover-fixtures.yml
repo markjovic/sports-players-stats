@@ -93,6 +93,16 @@ on:
         required: false
         default: ''
         type: string
+      rotate_after:
+        description: 'Rotate the cookie after this many calls. Blank = 250. RESTORED 2026-10-13 after removing it brought the 403 bursts straight back. 0 disables (age-only).'
+        required: false
+        default: ''
+        type: string
+      block_pause_sec:
+        description: 'On a 403, pause EVERY request for this long rather than letting 20 callers each re-auth. Blank = 90 (documented recovery is a flat ~80s).'
+        required: false
+        default: ''
+        type: string
       concurrency:
         description: 'Team fetches in parallel. The weekly cron runs at 40, which is the PROVEN working value on this endpoint (2026-08-13). Blank = the script default of 20. The 2026-08-13 freeze was NOT concurrency — it was two silent-hang bugs in gql() (no request timeout, uncapped 429 retry loop), both since fixed.'
         required: false
@@ -150,6 +160,8 @@ jobs:
           if [ -n "${{ inputs.concurrency }}" ];       then ARGS="$ARGS --concurrency=${{ inputs.concurrency }}"; fi
           if [ -n "${{ inputs.rate }}" ];              then ARGS="$ARGS --rate=${{ inputs.rate }}"; fi
           if [ -n "${{ inputs.rotate_age_min }}" ];    then ARGS="$ARGS --rotate-age-min=${{ inputs.rotate_age_min }}"; fi
+          if [ -n "${{ inputs.rotate_after }}" ];      then ARGS="$ARGS --rotate-after=${{ inputs.rotate_after }}"; fi
+          if [ -n "${{ inputs.block_pause_sec }}" ];   then ARGS="$ARGS --block-pause-sec=${{ inputs.block_pause_sec }}"; fi
           node scripts/discover-fixtures.js $ARGS
 
   # Weekly chain link (2026-07-21, §C7): fixtures sweep → finals → leaderboards.
