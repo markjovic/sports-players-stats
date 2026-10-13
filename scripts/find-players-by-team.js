@@ -93,7 +93,18 @@ if (!sportIdx) {
   console.log(`⚠ data/sports-index.json ${idxWhy || 'unreadable'} — seasons will show as ids, not names.`);
   console.log('  If this run was meant to be readable, add `data` to the workflow\'s sparse-checkout.');
 }
-const seasonName = sid => (sportIdx && sportIdx[sid] && sportIdx[sid].name) || sid || '(unknown season)';
+// WARN: fullName, NOT name. A VJBL season's `name` is literally "2025/26" — the
+// competition is the part that says VJBL, and it lives in `fullName`
+// ("Victorian Junior Basketball League — 2025/26"). Labelling with `name` alone
+// produced a 2026-10-13 run where every row read "2025/26", indistinguishable
+// from dozens of domestic seasons sharing that name, and a --history-name=VJBL
+// filter matched NOTHING and silently emptied two CSVs beside a squad file
+// holding 3,714 rows. `fullName || name` is the convention in six other scripts
+// here; this one disagreed with all of them.
+const seasonName = sid => {
+  const se = (sportIdx && sportIdx[sid]) || null;
+  return (se && (se.fullName || se.name)) || sid || '(unknown season)';
+};
 // endDate first: a season's END is what orders a player's path through clubs.
 // Seasons with neither date sort last rather than being dropped.
 const seasonSort = sid => {
@@ -130,6 +141,8 @@ const matchedTeamNames = new Map();   // tid -> name, every distinct team swept 
 const teamPlayers      = new Map();   // tid -> {n:Set(uuid), sids:Set(sid)}
 const results = {};                   // tid -> [row]
 const landed  = new Map();            // uuid -> {name, regs:[...]}
+const landedRaw = new Map();          // uuid -> [season label] BEFORE filtering
+let histKept = 0, histDropped = 0;
 let filesScanned = 0, playersMatched = 0;
 
 function regMatches(reg, sid) {
@@ -178,10 +191,12 @@ function processFile(filePath) {
   // matched. This is the question "where did they go next" — it cannot be
   // answered from the matched rows alone, which is all this script used to give.
   if (LANDED) {
+    const allNames = [];
     const regs = [];
     for (const season of data.seasons) {
       for (const reg of (season.regs || [])) {
         const label = seasonName(season.sid);
+        allNames.push(label);
         if (SINCE && seasonSort(season.sid) < SINCE) continue;
         if (HIST_NAMES.length && !HIST_NAMES.some(n => label.toLowerCase().includes(n))) continue;
         regs.push({
@@ -192,7 +207,9 @@ function processFile(filePath) {
       }
     }
     regs.sort((a, b) => (b.sort < a.sort ? -1 : b.sort > a.sort ? 1 : 0));
+    if (regs.length) histKept++; else histDropped++;
     landed.set(data.uuid, { name: data.name || '(no name on file)', regs });
+    landedRaw.set(data.uuid, allNames);
   }
 }
 
@@ -271,6 +288,24 @@ for (const [tid, rows] of Object.entries(results))
   for (const r of rows) squadRows.push([r.teamName || matchedTeamNames.get(tid) || '', tid, r.seasonName, r.sid, r.gradeName, r.name, r.uuid]);
 fs.writeFileSync(squadPath, squadRows.map(r => r.map(csv).join(',')).join('\n'));
 console.log(`\n  → ${path.relative(ROOT, squadPath)}  (${squadRows.length - 1} rows)`);
+
+// WARN: A HISTORY FILTER THAT MATCHES NOTHING IS A FAULT, NOT A RESULT. Writing
+// an empty landed.csv and destinations.csv beside a full squad.csv reads as
+// "these players went nowhere" — the opposite of what was measured.
+if (LANDED && HIST_NAMES.length && histKept === 0 && playersMatched > 0) {
+  console.error('');
+  console.error(`\u2717 --history-name=${HIST_NAMES.join(',')} matched NO season for any of the`);
+  console.error(`  ${playersMatched} players found. Their history has been filtered to nothing.`);
+  console.error('');
+  console.error('  Season names these players actually hold:');
+  const seen = new Map();
+  for (const [, names] of landedRaw) for (const n of names) seen.set(n, (seen.get(n) || 0) + 1);
+  for (const [n, c] of [...seen].sort((a, b) => b[1] - a[1]).slice(0, 25))
+    console.error(`      ${String(c).padStart(6)}  ${n}`);
+  console.error('');
+  console.error('  Pick a substring from that list, or leave history_name blank for all seasons.');
+  process.exit(1);
+}
 
 let landedPath = null;
 if (LANDED) {
