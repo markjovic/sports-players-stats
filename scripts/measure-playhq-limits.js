@@ -234,7 +234,14 @@ async function probeOnce(cookie, profileID) {
     const blocked = /cloudfront|Request blocked|ERROR: The request could not be satisfied/i.test(rawText || '') || (rawText || '').includes('DOCTYPE');
     return { status: 403, kind: blocked ? 'blocked' : 'private', sniff: sniffBody(rawText || '') };
   }
-  if (status === 429 || status === 503) return { status, kind: 'rate', sniff: `HTTP ${status}` };
+  // ⚠️ 429 AND 5xx ARE NOT THE SAME ANSWER, and lumping them together cost a
+  // measurement on 2026-10-13: a budget run ended on a single HTTP 503 at call
+  // #520 and was reported as "the cookie was refused", i.e. as a rate ceiling.
+  // 429 is PlayHQ saying "too fast". 503 is a server having a moment, and one
+  // 503 with no retry proves nothing at all. They are classified apart and the
+  // caller confirms a 5xx before calling it a wall.
+  if (status === 429) return { status, kind: 'rate',   sniff: `HTTP 429 (explicit rate limit)` };
+  if (status >= 500)  return { status, kind: 'server', sniff: `HTTP ${status} (server error — not a rate signal on its own)` };
   if (status < 200 || status >= 300) return { status, kind: 'error', sniff: `HTTP ${status}` };
   if (!json) return { status, kind: 'error', sniff: `unparseable body: ${(rawText || '').slice(0, 80)}` };
   if (json.errors?.length) return { status, kind: 'error', sniff: `GraphQL: ${json.errors[0]?.message || 'error'}` };
@@ -305,7 +312,7 @@ async function runBudgetMode() {
     process.exit(1);
   }
   console.log(`  bootstrap: HTTP ${boot.status}  cookie issued  session ${tag(boot.cookie)}`);
-  let okN = 0, privateN = 0, errorN = 0;
+  let okN = 0, privateN = 0, errorN = 0, serverBlips = 0;
   for (let i = 1; i <= MAX; i++) {
     if (i > 1) await sleep(INTERVAL);
     let r;
@@ -315,13 +322,42 @@ async function runBudgetMode() {
       console.log(`\nRESULT: transport failure on call #${i} — ${okN} clean before it. Not a PlayHQ answer.`);
       process.exit(1);
     }
+    // A 5xx is CONFIRMED before it is allowed to end the run. If the service
+    // comes back, it was a blip: count it, say so, and keep measuring.
+    if (r.kind === 'server') {
+      console.log(`  call #${String(i).padStart(3)}  ${since(t0)}  HTTP ${r.status}  ${r.sniff} — confirming…`);
+      let recovered = null;
+      for (const wait of [2000, 5000, 10000]) {
+        await sleep(wait);
+        let c; try { c = await probeOnce(boot.cookie, UUID); } catch (e) { continue; }
+        if (c.kind !== 'server') { recovered = c; break; }
+        console.log(`        still HTTP ${c.status} after ${wait / 1000}s`);
+      }
+      if (recovered && recovered.kind !== 'blocked' && recovered.kind !== 'rate') {
+        serverBlips++;
+        console.log(`        recovered — transient, not a ceiling. Continuing (${serverBlips} blip(s) so far).`);
+        if (recovered.kind === 'ok') okN++; else if (recovered.kind === 'private') privateN++; else errorN++;
+        continue;
+      }
+      const m = (Date.now() - t0) / 60000;
+      console.log(`\nRESULT: SUSTAINED HTTP ${r.status} from call #${i}, through three retries over 17s.`);
+      console.log(`        ${okN} clean calls before it in ${m.toFixed(1)} min (about ${((i - 1) / Math.max(m, 0.01)).toFixed(0)}/min).`);
+      console.log('        This is a SERVER failure, not a demonstrated rate ceiling — a 5xx is PlayHQ');
+      console.log('        being unwell, and a rate limit presents as 429 or as a 403 CloudFront block.');
+      console.log('        Re-run before drawing any conclusion about the limit from it.');
+      return;
+    }
     if (r.kind === 'blocked' || r.kind === 'rate') {
       console.log(`  call #${String(i).padStart(3)}  ${since(t0)}  HTTP ${r.status}  ${r.sniff}`);
       const mins = (Date.now() - t0) / 60000;
-      console.log(`\nRESULT: the cookie was refused on call #${i} after ${okN + privateN + errorN} answered calls`);
-      console.log(`        (${okN} ok, ${privateN} private, ${errorN} error) in ${mins.toFixed(1)} min — about ${((i - 1) / Math.max(mins, 0.01)).toFixed(0)} calls/min.`);
-      console.log('        Compare with the ~290 measured at high concurrency: a similar count at this slower');
-      console.log('        pace means a LIFETIME budget; a much larger count means a RATE.');
+      const rate = ((i - 1) / Math.max(mins, 0.01)).toFixed(0);
+      console.log(`\nRESULT: REFUSED on call #${i} after ${okN + privateN + errorN} answered calls`);
+      console.log(`        (${okN} ok, ${privateN} private, ${errorN} error) in ${mins.toFixed(1)} min — about ${rate} calls/min.`);
+      console.log(`        ${r.kind === 'rate' ? 'HTTP 429 is an explicit rate limit.' : 'A 403 CloudFront block is the rate-based WAF.'}`);
+      console.log(`        → THE CEILING AT THIS PACE IS ~${rate} calls/min. There is no lifetime budget`);
+      console.log('          (400 calls on one cookie at 18/min passed clean, 2026-10-13), so this is');
+      console.log('          the number a rate limiter must stay under for THIS operation.');
+      if (serverBlips) console.log(`        ${serverBlips} transient 5xx were survived on the way and are not part of this.`);
       return;
     }
     if (r.kind === 'ok') okN++; else if (r.kind === 'private') privateN++; else errorN++;
@@ -329,9 +365,11 @@ async function runBudgetMode() {
   }
   const mins = (Date.now() - t0) / 60000;
   console.log(`\nRESULT: ${MAX} calls on ONE cookie, none refused, in ${mins.toFixed(1)} min (about ${(MAX / Math.max(mins, 0.01)).toFixed(0)} calls/min).`);
-  console.log(`        ${okN} ok, ${privateN} private, ${errorN} error.`);
-  if (MAX > 290) console.log('        That is past the ~290 measured at high concurrency: the budget is a RATE, not a lifetime count.');
-  else console.log('        Below 290 so nothing is settled yet; raise --max in a later quiet window.');
+  console.log(`        ${okN} ok, ${privateN} private, ${errorN} error${serverBlips ? `, ${serverBlips} transient 5xx survived` : ''}.`);
+  console.log('        NO ceiling was found: --max was reached first. The limit at this pace is at');
+  console.log('        least this, and the number is only useful once a run actually gets refused.');
+  console.log('        Raise --max or shorten --interval. (There is no LIFETIME budget — that was');
+  console.log('        settled 2026-10-13; the only question left is the rate.)');
 }
 
 async function runCompareMode() {
