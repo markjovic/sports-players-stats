@@ -62,6 +62,7 @@ from a report a live script still reads.
 ### 2.2 Kept scripts — on-demand tools, deliberately retained
 
 - `audit-aliases-against-playhq.js`
+- `audit-grade-coverage.js`
 - `audit-nonfinal-games.js`
 - `audit-pending-games-vs-playhq.js`
 - `audit-seasons-gaps.js`
@@ -145,6 +146,7 @@ Removed 2026-09-11:
 - `diagnose-nameless-players.js`
 - `probe-alias-stats.js`
 - `probe-discover-teams.js`
+- `probe-team-club-fields.js`
 - `probe-notfound.js`
 - `probe-registrations.js`
 - `probe-roster-sources.js`
@@ -210,6 +212,7 @@ kept out of that group are classified in 2.2.
 ### 3.3 Kept workflows — on-demand, deliberately retained
 
 - `audit-aliases-against-playhq.yml`
+- `audit-grade-coverage.yml`
 - `audit-nonfinal-games.yml`
 - `audit-pending-games-vs-playhq.yml`
 - `audit-removed-org-seasons.yml`
@@ -284,6 +287,7 @@ Removed 2026-09-11:
 - `diagnose-alias-conflicts.yml`
 - `probe-alias-stats.yml`
 - `probe-discover-teams.yml`
+- `probe-team-club-fields.yml`
 - `probe-notfound.yml`
 - `probe-registrations.yml`
 - `probe-roster-sources.yml`
