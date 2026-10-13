@@ -32,8 +32,12 @@ on:
         required: false
         default: true
         type: boolean
+      history_name:
+        description: 'Limit the HISTORY to seasons whose name contains this — e.g. VJBL for rep only. Comma-separated for several. Blank = every season, rep AND domestic.'
+        required: false
+        type: string
       since:
-        description: 'Limit the history to seasons ending on/after this (e.g. 2024-01-01), or whose name contains it. Blank = all.'
+        description: 'Limit the history to seasons ending on/after this date, YYYY-MM-DD. Blank = all. Date only — use history_name for names.'
         required: false
         type: string
 
@@ -72,6 +76,7 @@ jobs:
           IN_SEASONS:   ${{ inputs.season_ids }}
           IN_GRADES:    ${{ inputs.grade_ids }}
           IN_LANDED:    ${{ inputs.landed }}
+          IN_HISTNAME:  ${{ inputs.history_name }}
           IN_SINCE:     ${{ inputs.since }}
         run: |
           set -euo pipefail
@@ -90,6 +95,14 @@ jobs:
               *\"*|*\$*|*\`*) echo "::error::team_name rejected — quotes and shell metacharacters are not accepted"; exit 1;;
             esac
             ARGS+=("--team-name=$IN_TEAM_NAME")
+          fi
+          # Season names carry spaces and em dashes, so this is passed whole like
+          # team_name rather than being validated as an id list.
+          if [ -n "$IN_HISTNAME" ]; then
+            case "$IN_HISTNAME" in
+              *\"*|*\$*|*\`*) echo "::error::history_name rejected — quotes and shell metacharacters are not accepted"; exit 1;;
+            esac
+            ARGS+=("--history-name=$IN_HISTNAME")
           fi
           add_ids "$IN_TEAM_IDS" --teams
           add_ids "$IN_SEASONS"  --seasons
