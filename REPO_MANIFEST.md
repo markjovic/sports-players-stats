@@ -4803,13 +4803,36 @@ stalls for 120s: it is not a bootstrap quota, it is the same block.
 * `--rate` (default **600**/min) and `--rotate-age-min` are workflow inputs; `--rate=0` restores
   the old ungated behaviour.
 
+### The third run, and why it did NOT settle the rate
+`budget --interval=0 --max=2000`: **519 answered calls at ~91/min, then HTTP 503 on #520.** Read
+at face value that says the ceiling is ~91/min — which would be absurd, since it is below the
+600/min default and far below the documented 940-1,340/min, and the sweep demonstrably does more
+than 91/min between its 403 bursts.
+
+⚠️ **IT SAYS NOTHING, FOR TWO REASONS, AND BOTH WERE THE TOOL'S FAULT.**
+1. **503 is not 429.** `probeOnce` classified `429 || 503` as one kind, `'rate'`. A 429 is PlayHQ
+   saying "too fast"; a 503 is PlayHQ being unwell. The rate WAF presents as a 403 CloudFront
+   block or a 429 — never as a 503.
+2. **It stopped on the first one, with no retry.** A single 5xx is not a ceiling; it is one bad
+   response. The run reported "the cookie was refused" on the strength of it.
+
+Fixed: 5xx is its own kind and is **confirmed** — three retries over 17s — before it may end a
+run. A recovery is counted as a blip, reported, and the measurement continues. A sustained 5xx
+says in terms that it is a server failure and **not** a demonstrated ceiling, and to re-run before
+concluding anything. A 429 or a CloudFront 403 still stops immediately and now names the ceiling
+it found. The old verdict text comparing everything to "~290" is gone, since this section
+overturned it. `harness9.cjs`, 21 assertions, including the retry decision executed against
+scripted response sequences (lone 503 → blip; 503 → 429 → refusal; 503 throughout → sustained).
+
 ⚠️ **600 IS DERIVED, NOT MEASURED, AND THE FILE SAYS SO.** It comes from
 `playhq_api_reference.md`'s ~1,256-1,790 requests per ~80s trip point (~940-1,340/min), taken
-comfortably below the bottom of that range. **Neither run reached a ceiling** — budget ran at
-18/min and bootstrap at 6/min, both far beneath any threshold — so the real limit is still known
-only from that older figure. To replace the inference with a measurement, run `budget` mode with
-`interval_seconds=0` and a high `max_requests`: it will trip the WAF deliberately and name the
-number. Read-only, and recovery is the documented flat ~80s.
+comfortably below the bottom of that range. **No run has reached a real ceiling yet** — 18/min
+and 6/min were far beneath any threshold, and the 91/min run ended on a 503 that proves nothing.
+So the rate is STILL known only from that older figure, and it is for a different operation
+(`discoverGrade`/`discoverFixtureByRound`) than the probes used (`PublicProfileTeams`). The
+honest next measurement is a repeat of `budget --interval=0` now that a 5xx no longer ends the
+run early; the definitive one is the sweep itself, which exercises the real operation at the real
+concurrency.
 
 ### Verification — 255 assertions
 `harness8.cjs` (18) runs the gate lifted verbatim from the shipped file against a **virtual event
