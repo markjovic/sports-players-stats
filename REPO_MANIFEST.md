@@ -5387,5 +5387,130 @@ counts. Nine and nine with one not in common means a grade was REPLACED. Reworde
 
 ---
 
-**Highest trap number after this session: T82.** Before adding one, run
+## §6.82 — T53 repeated in the tool built to measure it, and the EDJBA diagnosis retracted (2026-10-13)
+
+### The EDJBA explanation in §6.80/§6.81 was invented
+
+Both sections said `discoverTeamFixture` returns only a team's CURRENT fixture, so EDJBA's old
+rounds have rolled off it. **`README.md` says the opposite in plain words** — *"returns ALL rounds
+incl. FUTURE; works for historical seasons"* — and `claude_context.md` 2026-08-19 says it again:
+one team found in one grade brings back every game it played. A mechanism was asserted from one
+season's zero result, against two documents already in the project.
+
+**The leading explanation is now the played-game guard**, which has been in `processTeam` all along:
+
+```js
+if (existing && (existing.hs !== undefined || existing.as !== undefined
+                 || existing.st === 'FINAL' || existing.forfeit === true)) continue;
+```
+
+A PLAYED game can never gain `gid`/`gn` from this sweep, by design. EDJBA Winter 2026 is finished,
+so most of its 12,842 games sit behind that guard. **Stated as a hypothesis, not a finding**, with
+the test that settles it: `gn` coverage should be high on EDJBA's unplayed games and near zero on
+its played ones. If it is missing on BOTH, the hypothesis is dead.
+
+### T53, repeated in `audit-grade-coverage.js`
+
+The audit shipped 2026-10-12 classified unplayed games as `g.st === 'UPCOMING'` only. Real data uses
+`PENDING` and `IN_PROGRESS` as well — the 2026-10-13 sweep logged both transitions in volume — so
+`--upcoming-only` undercounted the exact population the flag exists to measure. T53 was already in
+`claude_context.md`, recorded when the same test counted zero unplayed games in a season holding
+three.
+
+The classifier now mirrors the sweep's guard EXACTLY, so audit and sweep can never disagree about
+which games are reachable:
+
+```js
+const played = (g.hs !== undefined || g.as !== undefined
+                || g.st === 'FINAL' || g.forfeit === true);
+```
+
+The report gained a PLAYED column, and the worklist a warning that a gap concentrated there cannot
+be closed by re-running the sweep however many times it is dispatched. Proven on a synthetic season
+holding UPCOMING, PENDING, IN_PROGRESS, FINAL and forfeit: 4 unplayed / 3 played, where the old
+test saw 2 unplayed.
+
+> **T83 — WHEN TWO TOOLS DECIDE THE SAME THING, THEY MUST SHARE THE PREDICATE, NOT RESEMBLE IT.**
+> A reporter that classifies "reachable" differently from the writer it reports on will put work on
+> a worklist that cannot be done, and the operator will read the resulting zero as a failure. Copy
+> the condition verbatim and say in a comment that it is a copy.
+
+### `rn` closed
+
+`rn: roundName` was the only field in `TRACKED` without an existing-wins fallback, so a nameless
+round would have blanked a stored one. Never observed; now `roundName || existing?.rn || null`.
+
+### The end-of-run hint quoted a figure that does not transfer
+
+§6.80 shipped *"expect ~1 per 349 teams"*, measured on a ONE-season run. A 97-season sweep spends
+per-season requests no team is charged for, so its blocks-per-team is necessarily worse: 38 / 8,181
+= 1 per 215, perfectly healthy, and against the quoted figure it reads as a regression. T81,
+committed inside the warning about T81. The hint now quotes no number.
+
+---
+
+## §6.83 — the 142 new rep registrations were written, and the team index could not see them (2026-10-13)
+
+`discover-seasons.js --uuids-from-seasons=2ecfa56c,b81be631 --team-name=Ringwood --backfill-teams`
+probed 596 players in 1.4m and persisted 142, logging lines like
+`➕ Added Joshua Sawyer to Ringwood U18 Boys 1 (2027)`. The registrations are on disk and correct.
+
+They would not have reached StatTrack.
+
+`update-team-index.js` is the only thing that turns a reg into a `data/team-index.json` entry, and
+its recency filter read **one** field:
+
+```js
+if (!SCAN_ALL && player.updatedAt) { ... if (updatedMs < cutoff) continue; }
+```
+
+`discover-seasons.js`'s backfill write path (L1440-1450) calls `syncTeams()`, which stamps
+`player.teamsUpdatedAt` and **never touches `player.updatedAt`**. So all 142 files still carried a
+months-old `updatedAt`, a default `--days=2` run would have skipped every one of them, and the run
+would have reported `New teams added: 0` — a clean green zero over a complete miss. The script's own
+header asserted the opposite: *"any new team registration causes publicProfileTeams to update the
+player file (updatedAt), so recently registered players are always caught within 24-48h."* True of
+the `publicProfileStatistics` path, false of the backfill path, and the two have been conflated
+before (§6.65).
+
+The filter now tests the newer of the two stamps, and the header says why:
+
+```js
+if (!SCAN_ALL) {
+  const stamps = [player.updatedAt, player.teamsUpdatedAt]
+    .map(v => (v ? new Date(v).getTime() : NaN))
+    .filter(ms => !isNaN(ms));
+  if (stamps.length && Math.max(...stamps) < cutoff) continue;
+}
+```
+
+Proven on four cases against a synthetic player carrying regs in two seasons: fresh
+`teamsUpdatedAt` + stale `updatedAt` → 2 teams added (was 0); both stale → 0; both stale with
+`--all` → 2; no `teamsUpdatedAt` key at all → 0, old behaviour intact.
+
+> **T84 — A WRITER THAT SETS ITS OWN STAMP MAKES ITS OUTPUT INVISIBLE TO A READER THAT WATCHES A
+> DIFFERENT ONE.** The miss is silent and it reads as success: the downstream job runs green and
+> reports zero, which is indistinguishable from "nothing to do". Any new stamp must be added to
+> every recency filter that selects the files it marks, in the same change. Before trusting a
+> `--days=N` run after a backfill, check which field the backfill actually wrote.
+
+### A season missing from `sports-index.json` was silent too
+
+`const meta = sidMeta[sid] || { name: sid, compName: '' };` keys that season's teams under the raw
+sid. Two consequences, neither announced: StatTrack renders a season heading reading `e5908800`,
+and `build-team-stats.js` — which takes its season list from `sports-index.json`, not from
+`team-index.json` — never builds that season at all, so every team in it renders "Team not found"
+(the failure §6.44 and the 2026-09-13 rewrite were supposed to have ended). The run now prints the
+unknown sids with a count of reg-bearing players each, and says what to do about it.
+
+### `build-team-stats.js --active-only` does include an UPCOMING season
+
+Checked rather than assumed, because the 2027 VJBL season is `UPCOMING`, not `ACTIVE`. L512:
+`seasons = allSeasons.filter(s => s.locked === false);` — the filter is on `locked`, and
+`discover-seasons.js` creates every new season at `locked: false` (L685/L693); only a removed season
+is created locked. So `active_only=true` covers it. The flag's name is the misleading part.
+
+---
+
+**Highest trap number after this session: T84.** Before adding one, run
 `grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.
