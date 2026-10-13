@@ -170,15 +170,20 @@ let _cookieAt = 0, _callsOnCookie = 0;
 // has a TTL and rotating costs one request, but it is not what prevents these.
 // --rate=0 disables the gate.
 // ⚠️ DEFAULT IS OFF. Three runs of the same season, same teams, one variable:
-//     no gate (pre-§6.74)     3 bursts over 863 teams, work committed
-//     600/min counter          6 blocks, 11.2 min
-//     300/min counter          8 blocks, 17.8 min
-//     300/min PACED            worse again — and it broke the single-flight lock
-// Every value made it worse than the one before, and the last introduced a fault
-// of its own. The gate stays in the code because it is now correct and testable,
-// but it is OPT-IN until a measurement justifies a number. Turning it on without
-// one is how three runs were spent.
-const RATE_PER_MIN = parseInt(ARGS.rate === undefined ? '0' : ARGS.rate, 10);
+// BLOCKS PER TEAM is the metric, because elapsed is ~90s x blocks and the work
+// itself costs almost nothing. Compare on that, never on elapsed or on block
+// count against different team totals:
+//     no gate (pre-§6.74)   3 blocks /  863 teams = 1 per 288
+//     no gate (2026-10-13)  4 blocks /  940 teams = 1 per 235
+//     300/min counter       8 blocks / 2093 teams = 1 per 262
+//     600/min counter       6 blocks / 2093 teams = 1 per 349   <-- BEST MEASURED
+//     300/min PACED         confounded by the T80 bootstrap storm; discard
+// §6.78 defaulted this to 0 on the claim that no gate was "closest to the best
+// result observed". That was wrong: no gate is the WORST of the four on blocks
+// per team, and the 600/min counter is the best. The default is now 600.
+// PACED 600 has still never been run cleanly — the one paced run was ruined by
+// T80 — so that remains the open measurement, not a settled number.
+const RATE_PER_MIN = parseInt(ARGS.rate === undefined ? '600' : ARGS.rate, 10);
 const _rateWindow = [];
 // When the WAF refuses us it refuses the whole IP — so twenty callers each
 // retrying is twenty more refused requests feeding the thing that blocked us.
@@ -206,6 +211,22 @@ function noteBlocked(why) {
 // between admissions, so twenty concurrent callers are paced instead of firing
 // together. The window cap stays as a second bound for the long run.
 const _minGapMs = RATE_PER_MIN > 0 ? Math.ceil(60000 / RATE_PER_MIN) : 0;
+// WARN: the progress line read `_rateWindow.length`, which only rateGate fed, so
+// with the gate OFF it printed `0/min` for the whole run. The throughput number
+// went dark in exactly the configuration we are trying to measure. Every request
+// now stamps the window; the gate READS it, it does not own it.
+// WARN: when the gate is ON it stamps its OWN admission, inside the same
+// synchronous block as the cap check. That check-and-set is the reservation, and
+// it must stay atomic: a first attempt at this moved the stamp out here, one
+// microtask later, which left the window reading ONE SHORT between admitting and
+// stamping and let an extra caller past the cap under 300-way concurrency.
+// So this stamps only when the gate is OFF, which is the case it exists for.
+function noteRequest() {
+  if (RATE_PER_MIN > 0) return;
+  const cut = Date.now() - 60000;
+  while (_rateWindow.length && _rateWindow[0] <= cut) _rateWindow.shift();
+  _rateWindow.push(Date.now());
+}
 let _lastAdmit = 0;
 async function rateGate() {
   while (Date.now() < _blockUntil) await delay(Math.min(5000, _blockUntil - Date.now()));
@@ -219,6 +240,9 @@ async function rateGate() {
     if (_rateWindow.length < RATE_PER_MIN) {
       // Check-and-set is synchronous between awaits, so exactly one caller can
       // take each slot however many are waiting.
+      // Check-and-set is synchronous between awaits, so exactly one caller can
+      // take each slot however many are waiting. The stamp MUST happen here, not
+      // in noteRequest() — see the note there.
       _lastAdmit = now; _rateWindow.push(now); return;
     }
     await delay(Math.max(50, _rateWindow[0] - cut));
@@ -239,11 +263,16 @@ async function rateGate() {
 // lets a caller say WHICH cookie it is complaining about, so a 403 raised
 // against an already-replaced cookie does not trigger yet another rotation.
 let _cookieGen = 0;
+// Returns TRUE only when this call actually rotated. The 2026-10-13 run printed
+// twenty "re-authenticating" lines for ONE rotation: the guard was working and
+// the log was describing the intent of each caller rather than what happened.
+// A log that overstates the work is the same fault as one that hides it.
 function invalidateSession(gen) {
-  if (gen !== undefined && gen !== _cookieGen) return;   // already rotated past it
+  if (gen !== undefined && gen !== _cookieGen) return false;   // already rotated past it
   _cookie = null;
   _cookieGen++;
   try { if (fs.existsSync(COOKIE_FILE)) fs.unlinkSync(COOKIE_FILE); } catch (_) {}
+  return true;
 }
 
 async function getSession() {
@@ -275,6 +304,7 @@ async function fetchSessionOnce() {
   } catch (e) {}
   console.log('  Fetching session cookie...');
   await rateGate();               // a bootstrap is a request like any other
+  noteRequest();
   const res = await fetch(API_URL, {
     method:  'POST',
     headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() },
@@ -288,11 +318,18 @@ async function fetchSessionOnce() {
   // A refused bootstrap is a rate signal, not a transient blip. Three attempts with
   // a long, growing wait — retrying this quickly is what kept the block alive.
   if (!raw) {
+    // WARN: a refused BOOTSTRAP is a block, and until 2026-10-13 it did not say so.
+    // noteBlocked() was called on a refused query but not here, so while this
+    // retried over 120s the other 19 callers were never parked and kept firing
+    // into a live block. The 2026-10-13 run ends on exactly that: three refused
+    // bootstraps, no pause, no block counted.
+    noteBlocked('session bootstrap refused');
     for (let i = 1; i <= 3; i++) {
       const wait = 20000 * i;
       console.log(`  … session bootstrap refused, waiting ${wait / 1000}s (attempt ${i}/3)`);
       await delay(wait);
       await rateGate();
+      noteRequest();
       const r2 = await fetch(API_URL, {
         method:  'POST',
         headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID() },
@@ -346,6 +383,10 @@ function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 const GQL_TIMEOUT_MS  = 30000;   // per request
 const GQL_MAX_ATTEMPTS = 4;      // total tries per call, including the first
 
+// Requests that gave up, and 403s seen. A sweep that reports "0 new, 0 updated"
+// after being refused is reporting a measurement it did not take.
+let _refused403 = 0, _gaveUp = 0;
+
 async function gql(operationName, query, variables) {
   let attempts = 0;
   let reauths  = 0;              // session refreshes used on THIS call
@@ -371,6 +412,7 @@ async function gql(operationName, query, variables) {
       // the request leaves — so a bootstrap that happened on the way through has
       // already spent its own slot, and the window counts what actually went out.
       await rateGate();
+      noteRequest();
       _callsOnCookie++;
       const res = await fetch(API_URL, {
         method:  'POST',
@@ -394,9 +436,12 @@ async function gql(operationName, query, variables) {
       // hammering it is what turned a four-hour run into nothing.
       if (res.status === 403 && reauths < 2) {
         reauths++;
+        _refused403++;
         noteBlocked(`${operationName}: HTTP 403`);
-        console.log(`  … ${operationName}: HTTP 403 — session refused, re-authenticating (${reauths}/2)`);
-        invalidateSession(gen);          // no-op if a sibling already rotated it
+        const rotated = invalidateSession(gen);   // false if a sibling already did it
+        console.log(rotated
+          ? `  … ${operationName}: HTTP 403 — session refused, rotating (${reauths}/2)`
+          : `  … ${operationName}: HTTP 403 — refused on cookie gen ${gen}, already rotated — waiting`);
         await delay(2000);
         continue;
       }
@@ -407,6 +452,7 @@ async function gql(operationName, query, variables) {
           continue;
         }
         console.log(`  ⚠ ${operationName}: HTTP ${res.status} after ${attempts} attempts — giving up on this call`);
+        _gaveUp++;
         return null;
       }
       const json = await res.json();
@@ -422,6 +468,7 @@ async function gql(operationName, query, variables) {
         continue;
       }
       console.log(`  ⚠ ${operationName}: ${why} after ${attempts} attempts — giving up on this call`);
+      _gaveUp++;
       return null;
     }
   }
@@ -819,9 +866,15 @@ function fmtVal(v) {
 
 // ─── Process a single team's fixtures ────────────────────────────────────────
 
+// WARN: `data === null` means the CALL FAILED — refused, timed out, or out of
+// retries. `data` present with no discoverTeamFixture means the team genuinely
+// has no fixture. Until 2026-10-13 both returned {added:0,updated:0} and the
+// run reported a refused team as a clean zero, so a sweep that was blocked for
+// half its length still printed "0 new, 0 updated" and exited 0.
 async function processTeam(teamId, seasonId) {
   const data = await gql('TeamFixture', Q_TEAM_FIXTURE, { teamID: teamId });
-  if (!data?.discoverTeamFixture) return { added: 0, updated: 0, updates: [] };
+  if (!data) return { added: 0, updated: 0, updates: [], refused: true };
+  if (!data.discoverTeamFixture) return { added: 0, updated: 0, updates: [] };
 
   const team     = data.discoverTeam;
   const rounds   = data.discoverTeamFixture;
@@ -995,7 +1048,7 @@ async function main() {
   const remaining = targets.filter(s => !doneSeasonsSet.has(s.id));
   if (doneSeasonsSet.size > 0) console.log(`  ↻ Resuming — ${doneSeasonsSet.size} already done, ${remaining.length} remaining`);
 
-  let totalAdded = 0, totalUpdated = 0, totalTeams = 0, seasonsProcessed = 0;
+  let totalAdded = 0, totalUpdated = 0, totalTeams = 0, seasonsProcessed = 0, totalRefusedTeams = 0;
   let sinceLastCommit = 0;
   const zeroTeamSeasons = [];
   const staleGradeSeasons = [];
@@ -1088,20 +1141,25 @@ async function main() {
     console.log(`  Teams: ${teamIds.size}${viaSeason ? ` (${viaSeason} via discoverTeams, ${teamIds.size - viaSeason} more from ladders)` : ''}`);
 
     const teamArr = [...teamIds];
-    let seasonAdded = 0, seasonUpdated = 0; const seasonUpdates = [];
+    let seasonAdded = 0, seasonUpdated = 0, seasonRefused = 0; const seasonUpdates = [];
 
     for (let i = 0; i < teamArr.length; i += CONCURRENCY) {
       const batch = teamArr.slice(i, i + CONCURRENCY);
       const results = await Promise.all(batch.map(tid => processTeam(tid, seasonId)));
-      for (const r of results) { seasonAdded += r.added; seasonUpdated += r.updated; if (r.updates.length) seasonUpdates.push(...r.updates); }
+      for (const r of results) { seasonAdded += r.added; seasonUpdated += r.updated; if (r.refused) { seasonRefused++; totalRefusedTeams++; } if (r.updates.length) seasonUpdates.push(...r.updates); }
       totalTeams += batch.length;
       // Elapsed and achieved rate on every line — the 2026-10-13 cron log could not
       // be used to work out the request rate, because nothing in it carried a clock.
-      process.stdout.write(`  ${Math.min(i + CONCURRENCY, teamArr.length)}/${teamArr.length} teams (${seasonAdded} new, ${seasonUpdated} updated)  ${((Date.now()-RUN_T0)/1000).toFixed(0)}s  ${_rateWindow.length}/min\r`);
+      process.stdout.write(`  ${Math.min(i + CONCURRENCY, teamArr.length)}/${teamArr.length} teams (${seasonAdded} new, ${seasonUpdated} updated${seasonRefused ? `, ${seasonRefused} REFUSED` : ''})  ${((Date.now()-RUN_T0)/1000).toFixed(0)}s  ${_rateWindow.length}/min\r`);
       if (i + CONCURRENCY < teamArr.length) await delay(100);
     }
 
     console.log(`  ✓ ${seasonAdded} new games, ${seasonUpdated} updated`);
+    if (seasonRefused) {
+      console.log(`  ⚠ ${seasonRefused} of ${teamArr.length} teams were NEVER READ — refused or timed out.`);
+      console.log(`    Their contribution to the counts above is UNKNOWN, not zero. This season is INCOMPLETE.`);
+      console.log(`::warning::${seasonId}: ${seasonRefused}/${teamArr.length} teams unread — season incomplete, re-run required`);
+    }
     // Record exactly what changed (game id + field old→new) — an audit trail, not just a count.
     for (const u of seasonUpdates) {
       console.log(`    ↻ ${u.gid}  ${u.changes.map(([f, o, n]) => `${f} ${fmtVal(o)}→${fmtVal(n)}`).join(', ')}`);
@@ -1167,6 +1225,15 @@ async function main() {
   console.log(`  Zero-team:     ${zeroTeamSeasons.length} (no teams from either route — saved to zero-team-seasons.json)`);
   console.log(`  WAF blocks:    ${_blockEvents}${_blockEvents ? `  (× ${Math.round(BLOCK_PAUSE_MS/1000)}s = ${Math.round(_blockEvents*BLOCK_PAUSE_MS/60000)} min paused)` : ''}`);
   console.log(`  Elapsed:       ${((Date.now()-RUN_T0)/60000).toFixed(1)} min — overall ${Math.round(totalTeams / Math.max((Date.now()-RUN_T0)/60000, 0.01))} team-calls/min`);
+  console.log(`  403s seen:     ${_refused403}`);
+  console.log(`  Calls dropped: ${_gaveUp}  (gave up after ${GQL_MAX_ATTEMPTS} attempts)`);
+  if (totalRefusedTeams) {
+    console.log('');
+    console.log(`  ⚠⚠ ${totalRefusedTeams} TEAM(S) WERE NEVER READ. The "new/updated" totals above are a`);
+    console.log(`     LOWER BOUND, not a result. Do not treat this run as a measurement of coverage`);
+    console.log(`     or as evidence that a season holds no new games. Re-run before concluding.`);
+    console.log(`::warning::${totalRefusedTeams} teams unread across the run — totals are a lower bound`);
+  }
   if (_blockEvents) console.log(`  → Still blocked at --rate=${RATE_PER_MIN}. Lower it and compare this block count.`);
   if (staleGradeSeasons.length) {
     console.log(`  Stale grades:  ${staleGradeSeasons.length} season(s) where sports-index holds fewer grades than discoverTeams reports`);
