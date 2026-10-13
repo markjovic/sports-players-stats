@@ -51,6 +51,11 @@ const targetSeasons   = listArg('--seasons=');
 const targetGradeIds  = listArg('--grade-ids=');
 const targetNames     = listArg('--team-name=').map(s => s.toLowerCase());
 const LANDED          = has('landed');
+// Discovery mode. A name filter you have to GUESS is the reason a search comes
+// back empty and gets read as "no data". --list-teams takes the season(s) and
+// reports every distinct team name in them, so the name filter is chosen from
+// what is actually there rather than from what a club calls itself in public.
+const LIST_TEAMS      = has('list-teams');
 // ⚠️ --since and --history-name were ONE argument until 2026-10-13, matching a
 // date OR a name substring. Two unrelated jobs in one flag: "2025" then meant
 // both "seasons ending after 2025" and "seasons whose name contains 2025", and
@@ -69,6 +74,12 @@ const LIMIT_ROWS      = parseInt(strArg('--limit=') || '400', 10);
 
 if (!targetTeams.length && !targetSeasons.length && !targetGradeIds.length && !targetNames.length) {
   console.error('✗ Give at least one filter: --teams=, --team-name=, --seasons= or --grade-ids=');
+  console.error('  To see what is IN a season before filtering: --seasons=<sid> --list-teams');
+  process.exit(1);
+}
+if (LIST_TEAMS && !targetSeasons.length && !targetNames.length && !targetGradeIds.length) {
+  console.error('✗ --list-teams needs a --seasons= (or --team-name=/--grade-ids=) to scope it.');
+  console.error('  Unscoped it would list every team in the database.');
   process.exit(1);
 }
 
@@ -116,6 +127,7 @@ if (sportIdx) {
 }
 
 const matchedTeamNames = new Map();   // tid -> name, every distinct team swept in
+const teamPlayers      = new Map();   // tid -> {n:Set(uuid), sids:Set(sid)}
 const results = {};                   // tid -> [row]
 const landed  = new Map();            // uuid -> {name, regs:[...]}
 let filesScanned = 0, playersMatched = 0;
@@ -141,12 +153,18 @@ function processFile(filePath) {
   for (const season of data.seasons) {
     for (const reg of (season.regs || [])) {
       if (!regMatches(reg, season.sid)) continue;
-      if (reg.tid) matchedTeamNames.set(reg.tid, reg.tn || '(no team name on reg)');
+      if (reg.tid) {
+        matchedTeamNames.set(reg.tid, reg.tn || '(no team name on reg)');
+        let c = teamPlayers.get(reg.tid);
+        if (!c) teamPlayers.set(reg.tid, c = { n: new Set(), sids: new Set() });
+        c.n.add(data.uuid); c.sids.add(season.sid);
+      }
       hits.add([reg.tid || 'unknown', season.sid, reg.gid || '', reg.gn || '', reg.tn || ''].join('|'));
     }
   }
   if (!hits.size) return;
   playersMatched++;
+  if (LIST_TEAMS) return;          // team names only — no squad rows, no history
 
   for (const key of hits) {
     const [tid, sid, gid, gradeName, teamName] = key.split('|');
@@ -195,7 +213,8 @@ if (targetTeams.length)    console.log(`  teams      : ${targetTeams.join(', ')}
 if (targetNames.length)    console.log(`  team name  : ${targetNames.join(', ')}  (substring, case-insensitive)`);
 if (targetSeasons.length)  console.log(`  seasons    : ${targetSeasons.join(', ')}`);
 if (targetGradeIds.length) console.log(`  grade ids  : ${targetGradeIds.join(', ')}`);
-console.log(`  landed     : ${LANDED ? 'YES — full registration history per matched player' : 'no (--landed to add it)'}`);
+console.log(`  mode       : ${LIST_TEAMS ? 'LIST TEAMS — team names only, no player rows' : 'squads'}`);
+console.log(`  landed     : ${LANDED && !LIST_TEAMS ? 'YES — full registration history per matched player' : 'no'}`);
 if (HIST_NAMES.length) console.log(`  history    : seasons whose NAME contains ${HIST_NAMES.join(' or ')}`);
 if (SINCE) console.log(`  since      : seasons ending on/after ${SINCE}`);
 console.log('');
@@ -218,6 +237,34 @@ if (!playersMatched) {
 // a step summary (1 MB cap) and is unreadable long before it is truncated. ────
 fs.mkdirSync(REPORTS_DIR, { recursive: true });
 const csv = v => `"${String(v == null ? '' : v).replace(/"/g, '""')}"`;
+
+// ── --list-teams: the discovery pass. Every team name in scope, with how many
+// players and which seasons. Read this, pick your name filter, run again. ─────
+if (LIST_TEAMS) {
+  const rows = [['team', 'tid', 'players', 'seasons']];
+  const list = [...matchedTeamNames].map(([tid, tn]) => ({
+    tid, tn,
+    players: (teamPlayers.get(tid) || { n: new Set() }).n.size,
+    sids: [...(teamPlayers.get(tid) || { sids: new Set() }).sids].map(seasonName).sort().join(' | '),
+  })).sort((a, b) => a.tn.localeCompare(b.tn));
+  for (const t of list) rows.push([t.tn, t.tid, t.players, t.sids]);
+  const lp = path.join(REPORTS_DIR, 'team-search-teamlist.csv');
+  fs.writeFileSync(lp, rows.map(r => r.map(csv).join(',')).join('\n'));
+  console.log(`\n  → ${path.relative(ROOT, lp)}  (${list.length} teams)`);
+
+  const sp0 = process.env.GITHUB_STEP_SUMMARY;
+  if (sp0) {
+    let md = `# Teams in scope — ${list.length}\n\n`;
+    md += `${playersMatched.toLocaleString()} players across them, from ${filesScanned.toLocaleString()} scanned.\n\n`;
+    md += `Pick the names you want, then re-run WITHOUT \`list_teams\` and with \`team_name\` set.\n\n`;
+    md += `| Team | tid | Players | Seasons |\n| :--- | :--- | ---: | :--- |\n`;
+    for (const t of list.slice(0, 500)) md += `| ${t.tn} | \`${t.tid}\` | ${t.players} | ${t.sids} |\n`;
+    if (list.length > 500) md += `\n_${list.length - 500} more in \`team-search-teamlist.csv\`._\n`;
+    fs.writeFileSync(sp0, md);
+  }
+  console.log('\nDone. READ-ONLY — nothing was written outside reports/.');
+  process.exit(0);
+}
 const squadPath = path.join(REPORTS_DIR, 'team-search-squad.csv');
 const squadRows = [['team_name', 'tid', 'season', 'sid', 'grade', 'player', 'uuid']];
 for (const [tid, rows] of Object.entries(results))
