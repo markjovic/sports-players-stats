@@ -26,6 +26,10 @@ on:
         description: 'Season ids, comma-separated. Probes every player holding a registration in them — selected from players/, so list size does not matter. Use instead of uuid for a whole competition.'
         required: false
         type: string
+      team_name:
+        description: 'With season ids: narrow to teams whose name contains this (e.g. Ringwood). Blank = every player in those seasons.'
+        required: false
+        type: string
       backfill_teams:
         description: 'WRITE the registrations found, not just print them. REQUIRED to populate rosters — without it the probe reports and writes nothing (the registration write is gated on it). Tick this.'
         required: false
@@ -80,6 +84,7 @@ jobs:
           IN_UUID:  ${{ inputs.uuid }}
           IN_FROMS: ${{ inputs.uuids_from_seasons }}
           IN_BACKFILL: ${{ inputs.backfill_teams }}
+          IN_TEAMNAME: ${{ inputs.team_name }}
           IN_FULL:  ${{ inputs.full }}
           IN_LIMIT: ${{ inputs.limit }}
           IN_DRY:   ${{ inputs.dry_run }}
@@ -95,6 +100,12 @@ jobs:
           }
           add "$IN_UUID"  --uuid
           add "$IN_FROMS" --uuids-from-seasons
+          if [ -n "$IN_TEAMNAME" ]; then
+            case "$IN_TEAMNAME" in
+              *\"*|*\$*|*\`*) echo "::error::team_name rejected — quotes and shell metacharacters are not accepted"; exit 1;;
+            esac
+            ARGS+=("--team-name=$IN_TEAMNAME")
+          fi
           add "$IN_LIMIT" --limit
           add "$IN_CONC"  --concurrency
           [ "$IN_FULL" = "true" ] && ARGS+=(--full) || true
