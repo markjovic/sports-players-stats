@@ -154,13 +154,22 @@ const RUN_T0 = Date.now();
 let _cookieAt = 0, _callsOnCookie = 0;
 
 // Requests per rolling 60s across EVERY PlayHQ call this process makes — queries
-// and bootstraps share one window, because the WAF does. 600/min is DERIVED, not
-// measured: playhq_api_reference records the trip at ~1,256-1,790 requests per
-// ~80s window (~940-1,340/min) for discoverGrade/discoverFixtureByRound, and this
-// sits comfortably under the bottom of that range. Neither 2026-10-13 run reached
-// a ceiling — both were far below it — so the true limit is still only known from
-// that older figure. --rate=0 disables the gate.
-const RATE_PER_MIN = parseInt(ARGS.rate === undefined ? '600' : ARGS.rate, 10);
+// and bootstraps share one window, because the WAF does.
+//
+// ⚠️ 300 IS MEASURED NOW, NOT DERIVED. The 1ae60211 run of 2026-10-13 carried a
+// clock on every progress line, and the window count AT THE MOMENT OF EACH BLOCK
+// was: 366, 422, 322, 342, 362, 342. The WAF trips between roughly 320 and 420
+// requests per rolling 60s — NOT the ~940-1,340 playhq_api_reference records, so
+// that figure does not describe this operation. 600 never bound: the block always
+// arrived first, which is exactly why six of them cost 9 minutes of a 11.2 minute
+// run. 300 sits under the lowest observed trip with room to spare.
+//
+// ⚠️ THE SAME RUN SETTLES BUDGET-VS-RATE. Block #1 came 100 teams after a fresh
+// cookie; block #2 came ~160 teams after a rotation; the CALL counts differ, the
+// WINDOW counts do not. It is a rate. ROTATE_AFTER is kept because a cookie still
+// has a TTL and rotating costs one request, but it is not what prevents these.
+// --rate=0 disables the gate.
+const RATE_PER_MIN = parseInt(ARGS.rate === undefined ? '300' : ARGS.rate, 10);
 const _rateWindow = [];
 // When the WAF refuses us it refuses the whole IP — so twenty callers each
 // retrying is twenty more refused requests feeding the thing that blocked us.
