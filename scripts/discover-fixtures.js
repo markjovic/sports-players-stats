@@ -142,7 +142,16 @@ let _sessionPromise = null;
 // So rotation is now keyed to the cookie's AGE (TTL is ~30-40 min per
 // playhq_api_reference.md), and the rate itself is governed by rateGate() below.
 const ROTATE_AGE_MS = parseInt(ARGS['rotate-age-min'] || '25', 10) * 60 * 1000;
-let _cookieAt = 0;
+// ⚠️ RESTORED 2026-10-13 AFTER REMOVING IT WAS WRONG. The probes that said "no
+// lifetime budget" used PublicProfileTeams, which playhq_api_reference records as
+// the FRIENDLIER operation; this sweep uses discoverTeamFixture. The first cron run
+// without the call rotation took a 403 burst in six of seven seasons, every one of
+// them 200-330 calls after a fresh cookie — the same ~290 §6.59 measured. Whatever
+// the mechanism, rotating proactively costs ONE request and not rotating costs a
+// 120s stall, so both triggers apply and whichever comes first wins.
+const ROTATE_AFTER = parseInt(ARGS['rotate-after'] || '250', 10);
+const RUN_T0 = Date.now();
+let _cookieAt = 0, _callsOnCookie = 0;
 
 // Requests per rolling 60s across EVERY PlayHQ call this process makes — queries
 // and bootstraps share one window, because the WAF does. 600/min is DERIVED, not
@@ -153,7 +162,21 @@ let _cookieAt = 0;
 // that older figure. --rate=0 disables the gate.
 const RATE_PER_MIN = parseInt(ARGS.rate === undefined ? '600' : ARGS.rate, 10);
 const _rateWindow = [];
+// When the WAF refuses us it refuses the whole IP — so twenty callers each
+// retrying is twenty more refused requests feeding the thing that blocked us.
+// One 403 parks EVERY caller until the recovery window passes. Documented
+// recovery is a flat ~80s; 90 gives it margin.
+const BLOCK_PAUSE_MS = parseInt(ARGS['block-pause-sec'] || '90', 10) * 1000;
+let _blockUntil = 0, _blockEvents = 0;
+function noteBlocked(why) {
+  const now = Date.now();
+  if (now < _blockUntil) return;            // already parked by a sibling call
+  _blockEvents++;
+  _blockUntil = now + BLOCK_PAUSE_MS;
+  console.log(`  ⏸ ${why} — pausing ALL requests for ${Math.round(BLOCK_PAUSE_MS/1000)}s (block #${_blockEvents})`);
+}
 async function rateGate() {
+  while (Date.now() < _blockUntil) await delay(Math.min(5000, _blockUntil - Date.now()));
   if (!(RATE_PER_MIN > 0)) return;
   for (;;) {
     const now = Date.now(), cut = now - 60000;
@@ -193,7 +216,9 @@ async function fetchSessionOnce() {
       // A cookie from disk has unknown AGE as well as unknown mileage, and the TTL
       // is the thing that matters now. Trust it only inside the rotation window,
       // dated from when it was actually fetched.
-      if (Date.now() - d.fetchedAt < ROTATE_AGE_MS) { _cookie = d.cookie; _cookieAt = d.fetchedAt; return _cookie; }
+      // Unknown mileage: start a disk cookie AT the threshold so its first use
+      // rotates rather than discovering the limit with a 403.
+      if (Date.now() - d.fetchedAt < ROTATE_AGE_MS) { _cookie = d.cookie; _cookieAt = d.fetchedAt; _callsOnCookie = ROTATE_AFTER; return _cookie; }
     }
   } catch (e) {}
   console.log('  Fetching session cookie...');
@@ -225,7 +250,7 @@ async function fetchSessionOnce() {
       const raw2 = r2.headers.get('set-cookie');
       if (raw2) {
         _cookie = raw2.split(';')[0];
-        _cookieAt = Date.now();
+        _cookieAt = Date.now(); _callsOnCookie = 0;
         fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie: _cookie, fetchedAt: Date.now() }));
         console.log(`  ✓ Cookie obtained (after ${i} backoff attempt(s))`);
         return _cookie;
@@ -234,7 +259,7 @@ async function fetchSessionOnce() {
     throw new Error('No Set-Cookie');
   }
   _cookie = raw.split(';')[0];
-  _cookieAt = Date.now();
+  _cookieAt = Date.now(); _callsOnCookie = 0;
   fs.writeFileSync(COOKIE_FILE, JSON.stringify({ cookie: _cookie, fetchedAt: Date.now() }));
   console.log('  ✓ Cookie obtained');
   return _cookie;
@@ -279,7 +304,10 @@ async function gql(operationName, query, variables) {
       // cross the line together still produce exactly one bootstrap.
       // (Was a 250-CALL rotation. Measured 2026-10-13: there is no per-cookie call
       // budget, so counting calls bought nothing and spent a request each time.)
-      if (_cookie && _cookieAt && (Date.now() - _cookieAt) >= ROTATE_AGE_MS) {
+      if (_cookie && ROTATE_AFTER > 0 && _callsOnCookie >= ROTATE_AFTER) {
+        console.log(`  ↻ ${_callsOnCookie} calls on this session — rotating before it is refused`);
+        invalidateSession();
+      } else if (_cookie && _cookieAt && (Date.now() - _cookieAt) >= ROTATE_AGE_MS) {
         console.log(`  ↻ session is ${Math.round((Date.now()-_cookieAt)/60000)} min old — rotating before the TTL expires`);
         invalidateSession();
       }
@@ -290,6 +318,7 @@ async function gql(operationName, query, variables) {
       // the request leaves — so a bootstrap that happened on the way through has
       // already spent its own slot, and the window counts what actually went out.
       await rateGate();
+      _callsOnCookie++;
       const res = await fetch(API_URL, {
         method:  'POST',
         headers: { ...MOBILE_HEADERS, 'request-id': crypto.randomUUID(), 'Cookie': cookie },
@@ -312,6 +341,7 @@ async function gql(operationName, query, variables) {
       // hammering it is what turned a four-hour run into nothing.
       if (res.status === 403 && reauths < 2) {
         reauths++;
+        noteBlocked(`${operationName}: HTTP 403`);
         console.log(`  … ${operationName}: HTTP 403 — session refused, re-authenticating (${reauths}/2)`);
         invalidateSession();
         await delay(2000);
@@ -1012,7 +1042,9 @@ async function main() {
       const results = await Promise.all(batch.map(tid => processTeam(tid, seasonId)));
       for (const r of results) { seasonAdded += r.added; seasonUpdated += r.updated; if (r.updates.length) seasonUpdates.push(...r.updates); }
       totalTeams += batch.length;
-      process.stdout.write(`  ${Math.min(i + CONCURRENCY, teamArr.length)}/${teamArr.length} teams (${seasonAdded} new, ${seasonUpdated} updated)\r`);
+      // Elapsed and achieved rate on every line — the 2026-10-13 cron log could not
+      // be used to work out the request rate, because nothing in it carried a clock.
+      process.stdout.write(`  ${Math.min(i + CONCURRENCY, teamArr.length)}/${teamArr.length} teams (${seasonAdded} new, ${seasonUpdated} updated)  ${((Date.now()-RUN_T0)/1000).toFixed(0)}s  ${_rateWindow.length}/min\r`);
       if (i + CONCURRENCY < teamArr.length) await delay(100);
     }
 
@@ -1080,6 +1112,9 @@ async function main() {
   console.log(`  Added:         ${totalAdded.toLocaleString()}`);
   console.log(`  Updated:       ${totalUpdated.toLocaleString()}`);
   console.log(`  Zero-team:     ${zeroTeamSeasons.length} (no teams from either route — saved to zero-team-seasons.json)`);
+  console.log(`  WAF blocks:    ${_blockEvents}${_blockEvents ? `  (× ${Math.round(BLOCK_PAUSE_MS/1000)}s = ${Math.round(_blockEvents*BLOCK_PAUSE_MS/60000)} min paused)` : ''}`);
+  console.log(`  Elapsed:       ${((Date.now()-RUN_T0)/60000).toFixed(1)} min — overall ${Math.round(totalTeams / Math.max((Date.now()-RUN_T0)/60000, 0.01))} team-calls/min`);
+  if (_blockEvents) console.log(`  → Still blocked at --rate=${RATE_PER_MIN}. Lower it and compare this block count.`);
   if (staleGradeSeasons.length) {
     console.log(`  Stale grades:  ${staleGradeSeasons.length} season(s) where sports-index holds fewer grades than discoverTeams reports`);
     for (const s of staleGradeSeasons.slice(0, 15)) {
