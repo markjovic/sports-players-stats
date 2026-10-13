@@ -142,6 +142,11 @@ const ONE_UUID  = (args.find(a => a.startsWith('--uuid=')) || '').replace('--uui
 // stops mattering. Same targeted intent as --uuid=, no handoff file.
 const FROM_SEASONS = (args.find(a => a.startsWith('--uuids-from-seasons=')) || '')
   .replace('--uuids-from-seasons=', '').split(',').map(x => x.trim()).filter(Boolean);
+// Narrow a season selection by TEAM NAME (reg.tn, substring, case-insensitive).
+// 21,943 rep players take 73 minutes; the ~600 from one club take two. The whole
+// point of a targeted probe is lost if the only scope available is "everyone".
+const FROM_TEAMNAME = (args.find(a => a.startsWith('--team-name=')) || '')
+  .replace('--team-name=', '').split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
 const NAMED_LIST = !!ONE_UUID || FROM_SEASONS.length > 0;
 const LIMIT     = (() => { const a = args.find(a => a.startsWith('--limit=')); return a ? parseInt(a.split('=')[1], 10) : Infinity; })();
 const STOP_AFTER = (() => { const a = args.find(a => a.startsWith('--stop-after=')); return a ? parseInt(a.split('=')[1], 10) : 1000; })();
@@ -1265,6 +1270,14 @@ async function main() {
       process.exit(1);
     }
     console.log(`  Selecting players with a registration in: ${FROM_SEASONS.join(', ')}`);
+    if (FROM_TEAMNAME.length) console.log(`  narrowed to teams whose name contains: ${FROM_TEAMNAME.join(' or ')}`);
+    if (!BACKFILL_TEAMS) {
+      console.log('');
+      console.log('  WARN: --backfill-teams is NOT set. This run will PRINT what it finds and');
+      console.log('  WRITE NOTHING — the registration write is gated on that flag. A 2026-10-13');
+      console.log('  run spent 73 minutes probing 21,943 players and updated 0 of them this way.');
+      console.log('');
+    }
     const picked = new Set();
     let scanned = 0;
     const walk = dir => {
@@ -1277,7 +1290,15 @@ async function main() {
         if (scanned % 100000 === 0) console.log(`    scanned ${scanned.toLocaleString()}…`);
         let d; try { d = JSON.parse(fs.readFileSync(full, 'utf8')); } catch (_) { continue; }
         if (!d || !d.uuid || !Array.isArray(d.seasons)) continue;
-        if (d.seasons.some(se => FROM_SEASONS.includes(se.sid))) picked.add(d.uuid);
+        for (const se of d.seasons) {
+          if (!FROM_SEASONS.includes(se.sid)) continue;
+          if (!FROM_TEAMNAME.length) { picked.add(d.uuid); break; }
+          const hit = (se.regs || []).some(r => {
+            const tn = (r.tn || '').toLowerCase();
+            return tn && FROM_TEAMNAME.some(n => tn.includes(n));
+          });
+          if (hit) { picked.add(d.uuid); break; }
+        }
       }
     };
     walk(PLAYERS_DIR);
