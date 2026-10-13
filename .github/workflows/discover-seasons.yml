@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       uuid:
-        description: 'Manual escape hatch: probe a single player UUID to seed discovery'
+        description: 'Player UUIDs, comma-separated — one or thousands. Probes each for publicProfileTeams and writes any new registration. Use season_ids below instead for a whole competition.'
         required: false
         default: ''
         type: string
