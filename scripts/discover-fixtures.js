@@ -937,7 +937,11 @@ async function processTeam(teamId, seasonId) {
 
       const entry = {
         d:   date,
-        rn:  roundName,   // BARE round name — matches nightly-crawl (line 570) and
+        // 2026-10-13: was `rn: roundName` — the ONLY field in TRACKED without an
+        // existing-wins fallback, so a round that came back nameless would blank a
+        // stored one. Never observed; closed because the other fourteen are closed.
+        rn:  roundName || existing?.rn || null,
+                          // BARE round name — matches nightly-crawl (line 570) and
                           // isFinal(rn) detection; a "Finals — " prefix here diverged
                           // from stored data and churned every finals game.
         // ⚠️ 2026-10-12 — THE GRADE WAS FETCHED AND THROWN AWAY. `round.grade`
@@ -1242,11 +1246,21 @@ async function main() {
   // SETTLED §6.80: blocks are a known, bounded cost of this endpoint. Lowering the
   // rate was tried four times and never helped once. The hint that used to live
   // here told the next operator to do exactly that.
-  if (_blockEvents) console.log(`  → ${_blockEvents} blocks is NORMAL at --rate=${RATE_PER_MIN} (expect ~1 per 349 teams). Do not lower the rate — see REPO_MANIFEST §6.80.`);
+  // ⚠️ T81 AGAIN, in the hint written to warn about T81. This said "expect ~1 per
+  // 349 teams", a figure measured on a ONE-season run. A 97-season sweep spends
+  // extra requests per season (DiscoverSeason, discoverTeams, DiscoverGrade) that
+  // no team is charged for, so its blocks-per-TEAM is necessarily worse: this run
+  // did 38 / 8,181 = 1 per 215 and was perfectly healthy. Blocks track REQUESTS,
+  // and the number of teams is not the number of requests. No figure is quoted.
+  if (_blockEvents) console.log(`  → ${_blockEvents} blocks is EXPECTED at --rate=${RATE_PER_MIN}; the WAF allows a fixed budget of requests per 90s window. Do not lower the rate — see REPO_MANIFEST §6.80.`);
   if (staleGradeSeasons.length) {
     console.log(`  Stale grades:  ${staleGradeSeasons.length} season(s) where sports-index holds fewer grades than discoverTeams reports`);
     for (const s of staleGradeSeasons.slice(0, 15)) {
-      console.log(`      ${s.id}  index ${s.indexGrades} → live ${s.liveGrades} (${s.missing} missing)  ${s.name}`);
+      // `missing` is a SET difference, not liveGrades - indexGrades: it counts live
+      // grade IDs the index lacks. So "index 9 → live 9, 1 not in index" is a grade
+      // that was REPLACED, and is correct however much it looks like a subtraction
+      // error. Spelled out because it was read as one.
+      console.log(`      ${s.id}  index ${s.indexGrades} → live ${s.liveGrades}, ${s.missing} live grade${s.missing === 1 ? '' : 's'} not in index  ${s.name}`);
     }
     console.log('      Harmless for THIS sweep — a team returns its whole fixture regardless of grade.');
     console.log(`      Written to data/stale-grade-seasons.json, which discover-seasons.js reads in its`);
