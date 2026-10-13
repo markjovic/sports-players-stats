@@ -136,6 +136,13 @@ const DRY_RUN = args.includes('--dry-run');
 const DEBUG_TEAMS = args.includes('--debug-teams');  // dump raw grade/season per registration
 const FULL      = args.includes('--full');
 const ONE_UUID  = (args.find(a => a.startsWith('--uuid=')) || '').replace('--uuid=', '').trim() || null;
+// 2026-10-13: select the probe list BY SEASON. --uuid= caps out in practice at a
+// few thousand because a workflow_dispatch field cannot carry 21,944 uuids
+// (~812 KB); this selects them from players/ instead, so the size of the list
+// stops mattering. Same targeted intent as --uuid=, no handoff file.
+const FROM_SEASONS = (args.find(a => a.startsWith('--uuids-from-seasons=')) || '')
+  .replace('--uuids-from-seasons=', '').split(',').map(x => x.trim()).filter(Boolean);
+const NAMED_LIST = !!ONE_UUID || FROM_SEASONS.length > 0;
 const LIMIT     = (() => { const a = args.find(a => a.startsWith('--limit=')); return a ? parseInt(a.split('=')[1], 10) : Infinity; })();
 const STOP_AFTER = (() => { const a = args.find(a => a.startsWith('--stop-after=')); return a ? parseInt(a.split('=')[1], 10) : 1000; })();
 const CONCURRENCY = (() => { const a = args.find(a => a.startsWith('--concurrency=')); const n = a ? parseInt(a.split('=')[1], 10) : 25; return Number.isFinite(n) && n > 0 ? n : 25; })();
@@ -1252,8 +1259,43 @@ async function main() {
 
   // ── Whole-population path (standalone: --uuid, --full, adhoc). 
   let probeList;
-  if (ONE_UUID) {
-    probeList = [ONE_UUID];
+  if (FROM_SEASONS.length) {
+    if (ONE_UUID) {
+      console.error('✗ Use --uuid= OR --uuids-from-seasons=, not both.');
+      process.exit(1);
+    }
+    console.log(`  Selecting players with a registration in: ${FROM_SEASONS.join(', ')}`);
+    const picked = new Set();
+    let scanned = 0;
+    const walk = dir => {
+      if (!fs.existsSync(dir)) return;
+      for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, e.name);
+        if (e.isDirectory()) { walk(full); continue; }
+        if (!e.name.endsWith('.json')) continue;
+        scanned++;
+        if (scanned % 100000 === 0) console.log(`    scanned ${scanned.toLocaleString()}…`);
+        let d; try { d = JSON.parse(fs.readFileSync(full, 'utf8')); } catch (_) { continue; }
+        if (!d || !d.uuid || !Array.isArray(d.seasons)) continue;
+        if (d.seasons.some(se => FROM_SEASONS.includes(se.sid))) picked.add(d.uuid);
+      }
+    };
+    walk(PLAYERS_DIR);
+    probeList = [...picked];
+    console.log(`  scanned ${scanned.toLocaleString()} players, selected ${probeList.length}`);
+    if (!probeList.length) {
+      console.error('✗ No player holds a registration in those seasons — check the ids.');
+      process.exit(1);
+    }
+  } else if (ONE_UUID) {
+    // 2026-10-13: --uuid= now takes a COMMA-SEPARATED LIST. One uuid behaves
+    // exactly as before. This is the only targeted pre-round-1 roster route:
+    // --backfill-teams forces --all-players (L132), so without this the only way
+    // to learn which team a known player has joined is to probe all 433k.
+    // The cron never uses --uuid (it runs --shard/--backfill), so this path is
+    // reachable only by an explicit dispatch.
+    probeList = ONE_UUID.split(',').map(x => x.trim()).filter(Boolean);
+    console.log(`  Probing ${probeList.length} named player(s) — publicProfileTeams.`);
   } else {
     console.log('  Scanning all shards for current-season players…');
     probeList = shuffle(currentSeasonPlayers(activeSids, { shard: null, allPlayers: ALL_PLAYERS }));
@@ -1268,8 +1310,9 @@ async function main() {
   const touchedPlayerDirsStandalone = new Set();
 
   const total = probeList.length;
+  const VERBOSE_MAX = 2000;   // print every registration below this many players
   const t0 = Date.now();
-  if (!ONE_UUID) console.log(`  Probing ${total} player(s), AIMD cap ${ONE_UUID ? 1 : CONCURRENCY}…`);
+  if (!ONE_UUID) console.log(`  Probing ${total} player(s), AIMD cap ${CONCURRENCY}…`);
 
   const probeStats = await aimdRun(probeList, 'probe', async (uuid) => {
     const r = await probeTeams(uuid);
@@ -1277,7 +1320,10 @@ async function main() {
     if (r.kind === 'blocked') return { blocked: true };
     probed++;
 
-    if (ONE_UUID) {
+    // Per-registration printout for a named list — this is the output that shows
+    // which NEW team a player has joined. Capped, because 21,944 players at ~5
+    // registrations each is 100k lines of log.
+    if (NAMED_LIST && total <= VERBOSE_MAX) {
       console.log(`  ── probe result for ${uuid}: kind=${r.kind} ──`);
       for (const reg of (r.teams || [])) {
         console.log(`    team=${reg.id} "${reg.name}"  grade=${reg.grade?.id || 'NULL'} "${reg.grade?.name || ''}"  season=${reg.season?.id} "${reg.season?.name}" (${reg.season?.status?.value})`);
@@ -1386,13 +1432,17 @@ async function main() {
     
     probesSinceNew = foundNew ? 0 : probesSinceNew + 1;
 
-    if (!FULL && !ONE_UUID && !BACKFILL_TEAMS && probesSinceNew >= STOP_AFTER && !stop) {
+    // A NAMED list (by uuid or by season) is deliberate and complete — stop-after
+    // is for the open-ended discovery sweep, and would truncate it.
+    if (!FULL && !NAMED_LIST && !BACKFILL_TEAMS && probesSinceNew >= STOP_AFTER && !stop) {
       stop = true;
       console.log(`  ⏹ ${STOP_AFTER} probes with no new season — stopping dispatch (probed ${probed}).`);
     }
     return { blocked: false };
   }, {
-    cap: ONE_UUID ? 1 : CONCURRENCY,
+    // Serial only for a SINGLE named uuid (the original debug use). A named LIST
+    // is a real sweep and uses the configured cap.
+    cap: (ONE_UUID && probeList.length === 1) ? 1 : CONCURRENCY,   // serial only for ONE named uuid
     shouldStop: () => stop,
     progress: () => `  new=${newSeasonMeta.size} priv=${privateN} err=${errors}`,
   });
