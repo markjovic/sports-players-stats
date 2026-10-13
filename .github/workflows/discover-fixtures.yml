@@ -84,7 +84,7 @@ on:
         default: false
         type: boolean
       rate:
-        description: 'Requests per rolling 60s across queries AND cookie bootstraps. 600 is the default and is DERIVED from the documented ~1,256-1,790 per ~80s trip point, not measured. 0 disables the gate (pre-2026-10-13 behaviour).'
+        description: 'Requests per rolling 60s across queries AND cookie bootstraps. 300 is the default and is MEASURED: on 1ae60211 the WAF tripped at window counts of 366/422/322/342/362/342. 0 disables the gate.'
         required: false
         default: ''
         type: string
