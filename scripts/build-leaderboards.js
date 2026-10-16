@@ -233,9 +233,12 @@ function verifyGameRecords(board, lookup) {
       } else {
         if (dropped.length < 15) {
           const cap = (sid && gk) ? lookup.maxScore(sid, gk) : null;
+          // The sid is printed too: every follow-up tool takes --game= AND --season=
+          // (diagnose-forfeit-game.js, repair-forfeit-score.js, recheck-forfeit-games),
+          // and a game id alone cannot be looked up in games/bv.
           dropped.push(`    ${String(e.v).padStart(4)}  ${e.name || e.uuid}`
             + `  ${verdict}${cap !== null ? ` (game max score ${cap})` : ''}`
-            + `${gk ? `  game ${gk}` : '  no gameKey'}`);
+            + `${gk ? `  game ${gk}` : '  no gameKey'}${sid ? ` season ${sid}` : ''}`);
         }
       }
       if (kept.length >= ALL_TIME_LIMIT) break;
