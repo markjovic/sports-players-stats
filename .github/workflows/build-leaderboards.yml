@@ -29,6 +29,16 @@ on:
         required: false
         default: false
         type: boolean
+      dry_run:
+        description: 'Dry run — scan, verify and report, no writes or commits. Run this first after any change to single-game record verification.'
+        required: false
+        default: false
+        type: boolean
+      keep_unverified_records:
+        description: 'Publish single-game records whose game cannot be checked (no gameKey, game not held, or no scoreline). OFF by default since 2026-10-15 — leaving it off is what keeps unverifiable entries off the Best Game PTS board. The run prints the count either way.'
+        required: false
+        default: false
+        type: boolean
 
 # Serialize against nightly-crawl / weekly-indexes / the discover reduce (2026-08-06).
 # This workflow writes to the repo but held NO lock, so when the matrix terminal fanned
@@ -67,9 +77,19 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      # Inputs reach bash through env:, never interpolated into run: (directive 13 / T27).
       - name: Run build-leaderboards
+        env:
+          FORCE:            ${{ inputs.force }}
+          ACTIVE_ONLY:      ${{ inputs.active_only }}
+          DRY_RUN:          ${{ inputs.dry_run }}
+          KEEP_UNVERIFIED:  ${{ inputs.keep_unverified_records }}
         run: |
+          set -euo pipefail
           ARGS=""
-          if [ "${{ inputs.force }}" = "true" ];       then ARGS="$ARGS --force"; fi
-          if [ "${{ inputs.active_only }}" = "true" ]; then ARGS="$ARGS --active-only"; fi
+          if [ "${FORCE:-false}" = "true" ];           then ARGS="$ARGS --force"; fi
+          if [ "${ACTIVE_ONLY:-false}" = "true" ];     then ARGS="$ARGS --active-only"; fi
+          if [ "${DRY_RUN:-false}" = "true" ];         then ARGS="$ARGS --dry-run"; fi
+          if [ "${KEEP_UNVERIFIED:-false}" = "true" ]; then ARGS="$ARGS --keep-unverified-records"; fi
+          echo "running: node scripts/build-leaderboards.js $ARGS"
           node scripts/build-leaderboards.js $ARGS

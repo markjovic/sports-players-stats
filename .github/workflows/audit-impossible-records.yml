@@ -1,0 +1,85 @@
+# .github/workflows/audit-impossible-records.yml
+name: Audit impossible records
+
+# READ-ONLY. No PlayHQ calls, no writes to data, no commit, no data-write lock.
+# Walks players/ and games/bv in the checkout and prints to the job log.
+#
+# WHAT IT ANSWERS. Which players carry a STORED single-game record that is
+# impossible — a maxGamePTS higher than any team scored in that game, or a
+# maxGameThreePt above that score divided by three.
+#
+# WHY IT EXISTS. 2026-10-13, a finals game at Coburg: the winning side entered
+# junk stats in the on-court app behind a 20-0 forfeit scoreline, and six lines
+# of 100-102 PTS reached the all-time Best Game PTS board. The only guard was a
+# BLOCKLIST keyed on PlayHQ's own FORFEIT label, and it had two holes:
+# build-leaderboards.js published an entry when it had no gameKey to check, and
+# a stored maxGamePTS is never recomputed once written. REPO_MANIFEST §6.84.
+#
+# build-leaderboards.js now verifies against the game's own scoreline, which
+# fixes the BOARD. It does not fix the player files. This names the files, and
+# its CSV feeds populate-players.js --from-csv=, which clears statsChecked so
+# fetch-profile-stats.js recomputes them (it now drops impossible lines at parse
+# time, so the recomputed value is correct).
+#
+# Unverifiable records — no gameKey, game not held, no scoreline — are NOT
+# offenders. They are counted separately and never written to the CSV.
+#
+# Full checkout, not sparse: it walks every file in players/ and games/bv.
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Rows to print in the job log. The CSV always holds every offender.'
+        required: false
+        default: '40'
+        type: string
+      min:
+        description: 'Only report records exceeding the ceiling by more than this. 0 reports every impossible record.'
+        required: false
+        default: '0'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # Inputs go through env and are gated in bash — never interpolated into
+      # run:, never in an `if:` (directive 13 / T27).
+      - name: Audit stored single-game records against game scorelines
+        env:
+          LIMIT: ${{ inputs.limit }}
+          MIN:   ${{ inputs.min }}
+        run: |
+          set -euo pipefail
+
+          ARGS=""
+
+          case "${LIMIT:-40}" in
+            ''|*[!0-9]*) echo "::error::limit must be a whole number, got '${LIMIT:-}'"; exit 1 ;;
+            *)           ARGS="$ARGS --limit=${LIMIT:-40}" ;;
+          esac
+
+          case "${MIN:-0}" in
+            ''|*[!0-9]*) echo "::error::min must be a whole number, got '${MIN:-}'"; exit 1 ;;
+            *)           ARGS="$ARGS --min=${MIN:-0}" ;;
+          esac
+
+          echo "running: node scripts/audit-impossible-records.js $ARGS"
+          node --max-old-space-size=8192 scripts/audit-impossible-records.js $ARGS
+
+      - name: Upload impossible-records.csv
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: impossible-records
+          path: reports/impossible-records.csv
+          if-no-files-found: warn
