@@ -172,6 +172,12 @@ function selectForSeasonHeal(p) {
 
 const API_URL     = 'https://api.playhq.com/graphql';
 
+// Game scoreline lookup — the label-free guard against on-court junk stats.
+// See scripts/lib/game-scores.cjs for why a blocklist alone was never enough.
+const { makeLookup } = require('./lib/game-scores.cjs');
+const gameScores     = makeLookup(ROOT);
+let impossibleLines  = 0;   // stat lines rejected because PTS > the game's top score
+
 // Load forfeit games index — skip these when computing per-game max stats
 const FORFEIT_FILE   = path.join(ROOT, 'data', 'forfeit-games.json');
 const forfeitGameIds = new Set();
@@ -419,6 +425,46 @@ function parseProfileStats(data) {
             const fg      = statValue(stats, '2_POINT_SCORE');
             const ft      = statValue(stats, '1_POINT_SCORE');
             const gp_val  = statValue(stats, 'APPEARANCE') || 1; // 1 game per gameStat entry
+
+            // ── IMPOSSIBLE LINE GUARD (REPO_MANIFEST §6.84) ──────────────────
+            // A player cannot score more points than any team scored in that
+            // game. The line above this one skips games on a LABEL
+            // (forfeitGameIds, fed by nightly-crawl's outcome.value test); this
+            // one tests the NUMBERS, so it holds whatever PlayHQ calls the
+            // result. 2026-10-13, Coburg: six lines of 100-102 PTS entered in
+            // the on-court app behind a 20-0 scoreline, every one internally
+            // consistent (34x3=102, 50x2=100), so only the team score exposes
+            // them.
+            //
+            // UNKNOWN KEEPS THE LINE, deliberately. maxScore returns null when
+            // the season file is absent, the game is not in it, or hs/as are
+            // not both numbers — and PlayHQ credits players with games this
+            // repo does not hold. Dropping on unknown would delete real career
+            // totals for every one of them, which is the overwrite-good-data-
+            // with-bad failure this repo exists to avoid. build-leaderboards.js
+            // makes the OPPOSITE choice for the records board, on purpose; both
+            // call sites say why.
+            //
+            // The whole line is dropped, not just its record candidacy: if the
+            // PTS are fabricated, so are the 2PT/3PT/FT/fouls beside them, and
+            // they feed season and career totals. Same treatment the forfeit
+            // skip above already gives.
+            //
+            // The gameKey STAYS in seenGameKeys, unlike the forfeit skip, which
+            // runs before the add. That is intended: the game was really played
+            // and the player was really credited with it — only the numbers are
+            // fabricated. Leaving it credited keeps it out of `x` and at worst
+            // puts it in `c`, which L1430 already documents as the benign
+            // direction ("worth checking", never "definitely missing").
+            const scoreCap = gameScores.maxScore(seasonId, gameKey);
+            if (scoreCap !== null && pts > scoreCap) {
+              impossibleLines++;
+              if (impossibleLines <= 20) {
+                console.log(`    ⚠ impossible stat line dropped: ${pts} PTS in game ${gameKey}`
+                  + ` (season ${seasonId}, highest team score ${scoreCap})`);
+              }
+              continue;
+            }
 
             // Foul-out = 5 or more fouls in a single game
             if (fouls >= 5) {

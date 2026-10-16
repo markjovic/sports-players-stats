@@ -54,6 +54,7 @@ import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 import { truncateUuid } from './lib/uuid-prefix.cjs';
+import { makeLookup } from './lib/game-scores.cjs';
 
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -65,6 +66,16 @@ const ACTIVE_ONLY     = process.argv.includes('--active-only');
 const MODE            = ACTIVE_ONLY ? 'active' : 'full';
 const FORCE_FULL      = process.argv.includes('--force'); // ignore progress file, full rebuild
 const ALL_TIME_LIMIT  = 2000;
+// An entry on a single-game board whose game we cannot check is DROPPED, and the
+// count is printed. Pass --keep-unverified-records to restore the old behaviour
+// of publishing it. See verifyGameRecords() for why the default is this way.
+const KEEP_UNVERIFIED = process.argv.includes('--keep-unverified-records');
+// maxGamePTS / maxGameThreePt are verified AFTER the heap is final, so the heap
+// must carry spare depth to backfill whatever verification removes. Verification
+// cannot run at push time: it needs a game-file read per entry, and pass 1 pushes
+// ~370k times per category. Running it on the finished 4,000 costs 4,000 lookups.
+const RECORD_CATS     = ['maxGamePTS', 'maxGameThreePt'];
+const RECORD_OVERSHOOT = 2;
 
 const ALL_TIME_CATS = ['pts','ppg','gp','threePt','fouls','threePtPG','foulsPG','foulOuts','foulOutsPG','finals','gfApps','gfWins','finalsPerSeason','maxGamePTS','maxGameThreePt','wins','losses','draws','winPct','lossPct'];
 // SEASON_CATS list moved to StatTrack's client-side statValueForPlayer() — season
@@ -156,7 +167,9 @@ class TopN {
 
 function makeBuckets(cats, limit) {
   const b = {};
-  for (const cat of cats) b[cat] = new TopN(limit);
+  for (const cat of cats) {
+    b[cat] = new TopN(RECORD_CATS.includes(cat) ? limit * RECORD_OVERSHOOT : limit);
+  }
   return b;
 }
 
@@ -164,6 +177,89 @@ function serialise(buckets) {
   const out = {};
   for (const [cat, heap] of Object.entries(buckets)) out[cat] = heap.result();
   return out;
+}
+
+// ─── single-game record verification ─────────────────────────────────────────
+//
+// Runs on the FINAL board (after the active-only merge, so entries retained from
+// the previous all-time.json are checked too — those are the oldest and the most
+// likely to predate gameKey capture). Four verdicts per entry:
+//
+//   impossible — v exceeds the highest team score in that game. A player cannot
+//                outscore every team on the floor. This is the test that catches
+//                on-court junk whatever PlayHQ calls the outcome, and it is the
+//                reason this function exists: the 2026-10-13 Coburg lines were
+//                102 PTS in a game whose scoreline is 20-0.
+//   forfeit    — the game file's own forfeit flag, or the id is in
+//                data/forfeit-games.json. Kept as a second, independent route.
+//   unverified — no sid, no gameKey, season file absent, game absent, or hs/as
+//                not both numbers. DROPPED by default: an unverifiable entry on
+//                a records board is exactly what produced the complaint, and the
+//                cost of dropping it is one row. --keep-unverified-records
+//                restores the old behaviour, and the count is printed either way
+//                so the size of the unverifiable population is never a surprise.
+//   ok         — published.
+//
+// Entries are never rewritten, only removed, and `_sid`/`_gk` are stripped here
+// so the written file keeps its existing shape.
+function verifyGameRecords(board, lookup) {
+  const summary = {};
+  for (const cat of RECORD_CATS) {
+    const entries = board[cat];
+    if (!Array.isArray(entries)) continue;
+
+    const counts = { ok: 0, impossible: 0, forfeit: 0, unverified: 0 };
+    const dropped = [];
+    const kept = [];
+
+    for (const e of entries) {
+      const sid = e._sid, gk = e._gk;
+      let verdict;
+      if (!sid || !gk)                                    verdict = 'unverified';
+      else if (forfeitGameIds.has(gk))                    verdict = 'forfeit';
+      else if (lookup.isForfeit(sid, gk))                 verdict = 'forfeit';
+      else {
+        const cap = lookup.maxScore(sid, gk);
+        if (cap === null)      verdict = 'unverified';
+        else if (e.v > cap)    verdict = 'impossible';
+        else                   verdict = 'ok';
+      }
+
+      counts[verdict]++;
+      const publish = verdict === 'ok' || (verdict === 'unverified' && KEEP_UNVERIFIED);
+      if (publish) {
+        const { _sid, _gk, ...clean } = e;   // eslint-disable-line no-unused-vars
+        kept.push(clean);
+      } else {
+        if (dropped.length < 15) {
+          const cap = (sid && gk) ? lookup.maxScore(sid, gk) : null;
+          dropped.push(`    ${String(e.v).padStart(4)}  ${e.name || e.uuid}`
+            + `  ${verdict}${cap !== null ? ` (game max score ${cap})` : ''}`
+            + `${gk ? `  game ${gk}` : '  no gameKey'}`);
+        }
+      }
+      if (kept.length >= ALL_TIME_LIMIT) break;
+    }
+
+    board[cat] = kept;
+    summary[cat] = counts;
+
+    const removed = counts.impossible + counts.forfeit
+                  + (KEEP_UNVERIFIED ? 0 : counts.unverified);
+    console.log(`  ${cat}: ${kept.length} published, ${removed} removed`
+      + `  (impossible ${counts.impossible}, forfeit ${counts.forfeit}, unverified ${counts.unverified}`
+      + `${KEEP_UNVERIFIED ? ' — PUBLISHED, --keep-unverified-records' : ''})`);
+    if (dropped.length) {
+      console.log('    removed (first 15):');
+      dropped.forEach(d => console.log(d));
+    }
+    // A board that verification empties is a failure, not a clean result.
+    if (entries.length > 0 && kept.length === 0) {
+      throw new Error(`ABORT: verification removed EVERY ${cat} entry (${entries.length} in). `
+        + `Nothing written. Re-run with --dry-run and read the verdicts above.`);
+    }
+  }
+  return summary;
 }
 
 // ─── load sports-index ───────────────────────────────────────────────────────
@@ -308,16 +404,27 @@ function pushAllTime(buckets, player, uuid) {
   if (typeof bball.pts     === 'number') {
     buckets.ppg.push({ ...base, v: Math.round((bball.pts / bball.gp) * 10) / 10 });
   }
-  // Single-game records — skip if gameKey resolves to a known forfeit game
+  // ── Single-game records ────────────────────────────────────────────────────
+  // ⚠️ THIS USED TO READ `if (!gameKey || !forfeitGameIds.has(gameKey))` — WHICH
+  // PUBLISHES THE ENTRY WHEN THERE IS NO gameKey TO CHECK. That is a fail-open
+  // on the one field the check depends on, and it is how the 2026-10-13 Coburg
+  // junk lines reached the Best Game PTS board (REPO_MANIFEST §6.84).
+  // fetch-profile-stats.js L1472-1474 stores `{ v }` with NO gameKey whenever
+  // the game id was absent when the record was captured, so for those players
+  // the blocklist could never match and the entry went through unconditionally,
+  // forever — a forfeit id arriving in data/forfeit-games.json later changed
+  // nothing, because the stored record is never recomputed.
+  //
+  // The sid and gameKey now RIDE WITH the entry and are checked after the heap
+  // is final, against the game's own scoreline, in verifyGameRecords(). Both
+  // are stripped before the file is written.
   if (typeof bball.maxGamePTS === 'number' && bball.maxGamePTS > 0) {
-    const gameKey = player.records?.maxGamePTS?.gameKey;
-    if (!gameKey || !forfeitGameIds.has(gameKey))
-      buckets.maxGamePTS.push({ ...base, v: bball.maxGamePTS });
+    const rec = player.records?.maxGamePTS || {};
+    buckets.maxGamePTS.push({ ...base, v: bball.maxGamePTS, _sid: rec.sid || null, _gk: rec.gameKey || null });
   }
   if (typeof bball.maxGameThreePt === 'number' && bball.maxGameThreePt > 0) {
-    const gameKey = player.records?.maxGameThreePt?.gameKey;
-    if (!gameKey || !forfeitGameIds.has(gameKey))
-      buckets.maxGameThreePt.push({ ...base, v: bball.maxGameThreePt });
+    const rec = player.records?.maxGameThreePt || {};
+    buckets.maxGameThreePt.push({ ...base, v: bball.maxGameThreePt, _sid: rec.sid || null, _gk: rec.gameKey || null });
   }
 }
 
@@ -423,6 +530,14 @@ if (ACTIVE_ONLY) {
     console.log(`  ${cat}: ${entries.length} entries`);
   }
 }
+
+// Verify the single-game boards against the games' own scorelines, AFTER the
+// active-only merge so retained entries are checked too. See verifyGameRecords().
+console.log('\n  Verifying single-game records against game scorelines...');
+const gameLookup = makeLookup(ROOT);
+verifyGameRecords(allTimeOut, gameLookup);
+console.log(`    (${gameLookup.stats.seasonsRead} season game files read`
+  + `, ${gameLookup.stats.seasonsMissing} not held)`);
 
 if (!DRY_RUN) writeJson(path.join(ROOT, 'leaderboard', 'all-time.json'), allTimeOut);
 console.log('  Wrote leaderboard/all-time.json');
