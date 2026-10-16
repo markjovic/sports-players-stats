@@ -253,6 +253,17 @@ function verifyGameRecords(board, lookup) {
       console.log('    removed (first 15):');
       dropped.forEach(d => console.log(d));
     }
+    // A board that ends SHORT of the cap means the heap ran out of depth to
+    // backfill what verification removed — the tail is silently missing, which is
+    // how the 2026-10-16 run published 1,849 of 2,000. Never let that pass
+    // unannounced; raise RECORD_OVERSHOOT if it appears.
+    // `entries.length > kept.length` is the real condition: a category with fewer
+    // players than the cap is simply small, not short, and warning about it is noise.
+    if (kept.length < ALL_TIME_LIMIT && entries.length > kept.length) {
+      console.log(`    ⚠ ${cat} is SHORT of the ${ALL_TIME_LIMIT} cap by ${ALL_TIME_LIMIT - kept.length}`
+        + ` — the heap had ${entries.length} entries and verification removed ${entries.length - kept.length}.`
+        + ` Raise RECORD_OVERSHOOT (currently ${RECORD_OVERSHOOT}) if this persists.`);
+    }
     // A board that verification empties is a failure, not a clean result.
     if (entries.length > 0 && kept.length === 0) {
       throw new Error(`ABORT: verification removed EVERY ${cat} entry (${entries.length} in). `
@@ -520,7 +531,13 @@ if (ACTIVE_ONLY) {
   for (const cat of ALL_TIME_CATS) {
     const freshUuids = new Set(fresh[cat].map(e => e.uuid));
     const retained   = existing ? (existing[cat] || []).filter(e => !freshUuids.has(e.uuid)) : [];
-    const merged = new TopN(ALL_TIME_LIMIT);
+    // ⚠️ THE OVERSHOOT MUST SURVIVE THE MERGE. Measured 2026-10-16: this line read
+    // `new TopN(ALL_TIME_LIMIT)`, so the spare depth the two single-game heaps carry
+    // was discarded here, BEFORE verifyGameRecords() ran — and an active-only run
+    // published 1,849 of 2,000 maxGamePTS instead of backfilling the 151 it removed.
+    // The board silently lost its tail. Verification runs after this block, so the
+    // depth has to be here too.
+    const merged = new TopN(RECORD_CATS.includes(cat) ? ALL_TIME_LIMIT * RECORD_OVERSHOOT : ALL_TIME_LIMIT);
     for (const e of [...retained, ...fresh[cat]]) merged.push(e);
     allTimeOut[cat] = merged.result();
   }
