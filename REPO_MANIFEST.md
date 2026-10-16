@@ -5512,5 +5512,116 @@ is created locked. So `active_only=true` covers it. The flag's name is the misle
 
 ---
 
-**Highest trap number after this session: T84.** Before adding one, run
+## §6.84 — fake points on the Best Game PTS board, and the guard that was never a guard (2026-10-15)
+
+Reported from StatTrack: the all-time **Best Game PTS** board carrying 102, 102, 101, 100, 100
+from one game. Finals Round 1, 13 Oct, Coburg, Big Baller Babes vs QSA Quokkas Q3, **final score
+20-0**. The winning side entered stats in the on-court app during a forfeit.
+
+Mark: *"this was supposed to be fixed months ago."* What was fixed months ago was the plumbing.
+The validation never existed.
+
+### Nothing in the pipeline looked at the numbers
+
+The entire defence was one blocklist, `data/forfeit-games.json`, read in two places —
+`parseProfileStats` skipping a game's stat line at fetch time, and `build-leaderboards.js`
+dropping a record whose `gameKey` is in the list. The list is populated in exactly one place,
+`nightly-crawl.js` L815-824:
+
+```js
+const outcomeValue = game.result?.outcome?.value || '';
+const isForfeit    = outcomeValue.includes('FORFEIT');
+```
+
+A **label**. Never the data. Three failures followed from that, and this game hit all three.
+
+**1. The leaderboard filter failed open on its own key.**
+
+```js
+if (!gameKey || !forfeitGameIds.has(gameKey))
+  buckets.maxGamePTS.push({ ...base, v: bball.maxGamePTS });
+```
+
+No `gameKey` → published, unconditionally. And `fetch-profile-stats.js` L429-430 / L1472-1474
+stores `{ v }` with no key whenever the game id was absent when the record was captured. For
+those players the blocklist could never match, so the blocklist was decorative.
+
+**2. A stored record is never recomputed.** `maxGamePTS` is written once at fetch time. The
+blocklist is consulted at *parse* time, and parse only runs on a re-fetch, which `statsChecked`
+prevents. An id arriving in `forfeit-games.json` tonight changes nothing for a player whose file
+already carries the contaminated value — `recheck-forfeit-games.js` updates the list and touches
+no player file.
+
+**3. No arithmetic check could have caught these lines, and none was there anyway.** Every one
+reconciles: 34×3 = 102, 50×2 = 100, 1×2 + 33×3 = 101, 4×2 + 30×3 + 2 = 100. They were entered to
+add up, and they summed to exactly the 607 the app recorded as the period total.
+
+### The test that holds
+
+> **A player cannot score more points than any team scored in that game.**
+
+102 against 20. No label, no blocklist, no probe, no lag. `scripts/lib/game-scores.cjs` is the
+shared lookup: `maxScore(sid, gameId)` returns the **higher** of `hs`/`as`, deliberately — using
+the player's own team's score would mean resolving the side, which is T44, and the higher of the
+two is a strictly weaker bound that still catches everything worth catching. It returns `null`
+for unknown, never `0`, and an LRU of 12 seasons bounds the resident set (build-leaderboards is
+OOM-paranoid by design and must not acquire an unbounded cache through a helper).
+
+**The two callers disagree about `null`, on purpose, and each says so at the call site:**
+
+| | unknown scoreline | why |
+|---|---|---|
+| `fetch-profile-stats.js` | **keeps** the line | PlayHQ credits players with games this repo does not hold. Dropping on unknown deletes real career totals — the overwrite-good-data-with-bad failure this repo exists to avoid. |
+| `build-leaderboards.js` | **drops** the entry | It costs one row on one board, and an unverifiable record is precisely what produced this report. `--keep-unverified-records` restores the old behaviour; the count prints either way. |
+
+`build-leaderboards.js` verifies **after** the heap is final, not at push time: pass 1 pushes
+~370k times per category, the finished board is 4,000 entries. The two single-game heaps carry
+`RECORD_OVERSHOOT = 2` spare depth to backfill what verification removes, verification runs
+**after** the active-only merge so entries retained from the previous `all-time.json` are checked
+too, and a board that verification empties **throws** rather than writing an empty array.
+
+Proven on a six-player fixture covering every verdict:
+
+```
+maxGamePTS: 1 published, 5 removed  (impossible 1, forfeit 1, unverified 3)
+   102  Junk Player         impossible (game max score 20)  game gJUNK
+   100  Forfeit Player      forfeit (game max score 20)     game gFORFEIT
+    99  No GameKey          unverified  no gameKey
+    98  Missing Scoreline   unverified  game gNOSCORE
+    97  Game Not Held       unverified  game gGHOST
+```
+
+The one genuine record — 61 in an 88-71 game — survives. `--keep-unverified-records` publishes 4
+of 6 and still removes the two real offenders. Emptying the board aborts with the count.
+
+### The stored files are a separate job
+
+The board is clean the moment leaderboards rebuild; the player files are not.
+`scripts/audit-impossible-records.js` (read-only) names them and writes
+`reports/impossible-records.csv`, whose uuid column feeds `populate-players.js --from-csv=` to
+clear `statsChecked` and re-fetch. `maxGameThreePt` is checked against `floor(score / 3)`, not the
+raw score — comparing a 3-pointer COUNT against a points total would have let the fabricated 34
+through on a 20-0 game.
+
+### `build-leaderboards.yml` interpolated its inputs into `run:`
+
+`if [ "${{ inputs.force }}" = "true" ]` — directive 13 / T27, found while adding the new input.
+Both existing inputs now reach bash through `env:`, and `dry_run` is exposed, which it never was.
+
+> **T85 — A GUARD THAT TESTS A LABEL IS NOT A GUARD ON THE DATA.** `outcome.value` carrying
+> `FORFEIT` is an assertion by the source about the record; it is not a property of the numbers,
+> it arrives on its own schedule, and it is absent whenever the source simply does not say. A
+> blocklist built from one is always lagging, always incomplete, and tells you nothing about
+> the case it has not heard of yet. Where an impossibility can be stated in the data's own terms
+> — a player outscoring every team on the floor — state it there, and keep the label as the
+> second route, not the only one.
+
+> **T86 — `if (!key || !blocked.has(key))` IS NOT A FILTER.** A missing key is the one case the
+> filter cannot judge, and this form publishes it. Every check that depends on a field must say
+> what it does when the field is absent, and say it out loud in the run output. Grep for the
+> shape before trusting any blocklist: `!x ||` immediately before `.has(x)`.
+
+---
+
+**Highest trap number after this session: T86.** Before adding one, run
 `grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.
