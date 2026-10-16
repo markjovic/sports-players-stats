@@ -5594,6 +5594,44 @@ maxGamePTS: 1 published, 5 removed  (impossible 1, forfeit 1, unverified 3)
 The one genuine record — 61 in an 88-71 game — survives. `--keep-unverified-records` publishes 4
 of 6 and still removes the two real offenders. Emptying the board aborts with the count.
 
+### First real run, 2026-10-16 — and the two things it exposed
+
+`--active-only --dry-run`, 434,059 players, 3,871 season game files read, 0 not held:
+
+```
+maxGamePTS:     1849 published, 151 removed  (impossible 17, forfeit 15, unverified 119)
+maxGameThreePt: 1864 published, 136 removed  (impossible  7, forfeit 22, unverified 107)
+```
+
+**The Coburg game is NOT in `forfeit-games.json`.** All five of its public profiles —
+Mikaela Hale 102, Stella Dunai 102, Eve Beckford Saunders 101, Abbey Green 100, Stella Webster
+100 — came out as **impossible**, not as *forfeit*, against game `0a99c2d7`, max score 20. The
+blocklist holds 29,720 ids and this game is not one of them, so the label route never had it and
+never would have. T85, demonstrated on the case that prompted it. (The sixth line is a private
+profile and is not in `players/`.)
+
+**The push-time forfeit gate was being undone by the merge, every run.** 15 entries came out as
+*forfeit* — games already in the blocklist. The old gate dropped them from `fresh`, which kept
+their uuid out of `freshUuids`, which meant L522 **retained their stale entry from the previous
+`all-time.json`**: `existing[cat].filter(e => !freshUuids.has(e.uuid))`. Excluding a player from
+the fresh board is exactly what qualified their old row to be carried forward. Luke Howley's 156
+in a 20-0 game had been riding that loop since before the gate existed. The filter worked and the
+merge put it back.
+
+> **T87 — EXCLUDING AN ENTRY FROM THE FRESH RESULT CAN BE WHAT PRESERVES ITS STALE ONE.** Any
+> merge that retains "what this run did not produce" treats a deliberate exclusion as an absence,
+> and absence is its trigger to keep the old value. A filter upstream of such a merge is not a
+> filter; it is a instruction to retain. Verify after the merge, never before it.
+
+### `--active-only` discarded the verification headroom (same run)
+
+1,849 of 2,000, not 2,000. `RECORD_OVERSHOOT` gave the two single-game heaps double depth so
+verification could backfill what it removed, and the active-only merge then rebuilt them at
+`new TopN(ALL_TIME_LIMIT)` — throwing the headroom away *before* verification ran. The board lost
+its tail, silently. The merge now carries the overshoot for `RECORD_CATS`, and a board that still
+ends short of the cap says so with the numbers. Proven on a 10-player fixture at cap 6 with 5
+removals: 6 published, where the unfixed version published 1.
+
 ### The stored files are a separate job
 
 The board is clean the moment leaderboards rebuild; the player files are not.
@@ -5623,5 +5661,5 @@ Both existing inputs now reach bash through `env:`, and `dry_run` is exposed, wh
 
 ---
 
-**Highest trap number after this session: T86.** Before adding one, run
+**Highest trap number after this session: T87.** Before adding one, run
 `grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.
