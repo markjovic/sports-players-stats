@@ -24,6 +24,14 @@ name: Audit impossible records
 # Unverifiable records — no gameKey, game not held, no scoreline — are NOT
 # offenders. They are counted separately and never written to the CSV.
 #
+# TWO PASSES, AND THE TIMEOUT IS A BACKSTOP NOT A BUDGET. The first version checked
+# each record as it met it, which asked for a different season on nearly every player
+# against a 12-season cache — a full season-file re-parse per record. It reached
+# 100,000 of 434,059 players in 90 minutes and was killed having written nothing
+# (2026-10-17). Pass 1 now touches no game file; pass 2 groups by season and reads
+# each file at most once. If a run ever approaches this timeout again, read the phase
+# timings in the log before raising the number — the number was never the problem.
+#
 # Full checkout, not sparse: it walks every file in players/ and games/bv.
 
 on:
