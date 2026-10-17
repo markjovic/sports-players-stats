@@ -59,7 +59,21 @@ const path = require('path');
 
 const CACHE_SEASONS = 12;
 
-function makeLookup(root) {
+// ⚠️ THE CACHE SIZE IS A CONTRACT WITH THE CALLER'S ACCESS ORDER, NOT A TUNING KNOB.
+// 2026-10-17: audit-impossible-records.js walked 434,059 player files asking for a
+// different season on almost every record. With 3,554 seasons behind a 12-entry LRU
+// that is a miss every time — it re-read and re-parsed a whole season game file per
+// lookup, and the job was killed at 90 minutes having reached 100,000 players with
+// nothing written. build-leaderboards.js never saw it because it makes ~4,000
+// lookups, after its heap is final.
+//
+// A caller doing more lookups than the cache can hold MUST order them by sid and ask
+// for cacheSeasons: 1, which turns the whole job into one sequential pass over the
+// season files it actually needs. A caller doing a bounded number of scattered
+// lookups keeps the default. There is no size that makes scattered access over 3,554
+// seasons cheap, so do not try to fix this by raising the number.
+function makeLookup(root, opts) {
+  const maxSeasons = Math.max(1, (opts && opts.cacheSeasons) || CACHE_SEASONS);
   const GAMES_DIR = path.join(root, 'games', 'bv');
   const cache = new Map();   // sid -> Map<gameId, {m:number|null, f:boolean}>
   const stats = { seasonsRead: 0, seasonsMissing: 0 };
@@ -93,7 +107,7 @@ function makeLookup(root) {
     }
 
     cache.set(sid, map);
-    if (cache.size > CACHE_SEASONS) cache.delete(cache.keys().next().value);
+    if (cache.size > maxSeasons) cache.delete(cache.keys().next().value);
     return map;
   }
 
