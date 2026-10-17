@@ -5744,6 +5744,42 @@ Proven on a four-player fixture: a 68 against a stored 0-0 is unverifiable (was:
 against 2-0 is reported but flagged, the 102 against 20-0 still fires, the legitimate 61 in an
 88-71 is untouched, and `--min-cap=20` withholds the 2-0 case as well.
 
+### The cap distribution, 2026-10-17 — 46% of "impossible" is a scoreline problem
+
+With the zero fix in, 726 impossible (was 1,241), 29,280 unverifiable, 42 seconds:
+
+```
+top score    1      76 record(s)
+top score    2     333 record(s)     <- 46% of every offender, one bucket
+top score   10      31 record(s)
+top score    4      12 record(s)
+...
+```
+
+**One third of a thousand records sit behind a stored top team score of exactly 2.** No
+distribution of real basketball scorelines looks like that, and the offenders cluster by SEASON —
+`f373fc05` three times in the worst 40, `1ae60211` (EDJBA) three times, `88026885` three times.
+Scattered fabrication does not cluster; a per-season ingest fault does.
+
+**HYPOTHESIS, NOT A FINDING: those game files hold competition points (2 for a win) where the
+scoreline belongs.** It fits the 2s, the 1s and the 0s as one family, and it fits the clustering.
+It is not confirmed, and §6.82 is the standing reminder of what happens when a mechanism is
+asserted from a pattern. The test that settles it: take one of those games — `3185d4a6` in
+`f373fc05`, stored cap 2 behind a 43-point record — and compare the stored `hs`/`as` against what
+PlayHQ returns for the same game. A real scoreline on PlayHQ's side against a stored 2-0 confirms
+it; a 2-0 on both sides kills it.
+
+Until then the audit reports the two populations separately rather than as one number. `--min-cap`
+is exposed on the workflow, every cap below 20 is listed in full (truncating that table at 15 rows
+is what hid the shape on the first run), the `>=20` total is printed beside the under-20 total, and
+the low-cap offenders are clustered by season so a systematic fault is visible as one.
+
+> **T91 — A GUARD'S FALSE POSITIVES ARRIVE SORTED BY SEVERITY AND READ AS ITS BEST WORK.** The
+> 726 were ordered worst-first, so the real fabrications sat at the top and the scoreline artefacts
+> below — exactly the shape that invites reading the first screen and accepting the total. Always
+> publish the distribution of whatever the guard compared against, never only the list it rejected;
+> a cluster in the comparand is a fault in the input, not in the data being judged.
+
 > **T90 — A SENTINEL THAT IS A VALID VALUE IN THE DOMAIN WILL BE READ AS DATA.** `0` is a real
 > number of points and an absent scoreline, and nothing in the record distinguishes them. A guard
 > that cannot tell "we do not know" from "we know it is zero" does not fail safe — it reports the
@@ -5791,5 +5827,5 @@ Both existing inputs now reach bash through `env:`, and `dry_run` is exposed, wh
 
 ---
 
-**Highest trap number after this session: T90.** Before adding one, run
+**Highest trap number after this session: T91.** Before adding one, run
 `grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.
