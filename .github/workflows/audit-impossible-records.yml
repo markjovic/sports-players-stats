@@ -47,6 +47,11 @@ on:
         required: false
         default: '0'
         type: string
+      min_cap:
+        description: 'Treat a game whose top team score is below this as UNVERIFIABLE rather than as a ceiling. 1 trusts every non-zero scoreline. Raise it when the cap distribution shows a cluster of offenders behind implausible scorelines — those are a games-data problem, not fabricated stats.'
+        required: false
+        default: '1'
+        type: string
 
 permissions:
   contents: read
@@ -64,8 +69,9 @@ jobs:
       # run:, never in an `if:` (directive 13 / T27).
       - name: Audit stored single-game records against game scorelines
         env:
-          LIMIT: ${{ inputs.limit }}
-          MIN:   ${{ inputs.min }}
+          LIMIT:   ${{ inputs.limit }}
+          MIN:     ${{ inputs.min }}
+          MIN_CAP: ${{ inputs.min_cap }}
         run: |
           set -euo pipefail
 
@@ -79,6 +85,11 @@ jobs:
           case "${MIN:-0}" in
             ''|*[!0-9]*) echo "::error::min must be a whole number, got '${MIN:-}'"; exit 1 ;;
             *)           ARGS="$ARGS --min=${MIN:-0}" ;;
+          esac
+
+          case "${MIN_CAP:-1}" in
+            ''|*[!0-9]*) echo "::error::min_cap must be a whole number, got '${MIN_CAP:-}'"; exit 1 ;;
+            *)           ARGS="$ARGS --min-cap=${MIN_CAP:-1}" ;;
           esac
 
           echo "running: node scripts/audit-impossible-records.js $ARGS"
