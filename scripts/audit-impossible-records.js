@@ -64,6 +64,15 @@ const LIMIT = Math.max(1, parseInt(ARGS.limit || '40', 10));
 // An overage of 0 means stored === ceiling, which is legal: a player can score
 // every point their team scored. Only a STRICTLY greater value is impossible.
 const MIN_OVER = Math.max(0, parseInt(ARGS.min || '0', 10));
+// Games whose top team score is below this are treated as UNVERIFIABLE rather than
+// as a cap. A stored 0 is already null in game-scores.cjs (an absent scoreline, not
+// a played game); this raises the floor above that. 2026-10-17 the first full run
+// reported caps of 2 and 4 behind 43- and 40-point records — a basketball game that
+// finished 2-0 is a scoreline problem, not a stats problem, and the two must not be
+// reported as the same thing. The default stays 1 (trust every non-zero scoreline)
+// because where the real floor sits is a judgement about this corpus; the cap
+// distribution printed at the end is the evidence for choosing it.
+const MIN_CAP  = Math.max(1, parseInt(ARGS['min-cap'] || '1', 10));
 
 const PLAYERS_DIR = path.join(ROOT, 'players');
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -149,12 +158,13 @@ function main() {
   // ── PASS 2 — one season at a time, each file read at most once. ───────────
   console.log(`\nPass 2: resolving against ${bySid.size.toLocaleString()} season game files`);
   const offenders = [];
-  let seasonsDone = 0;
+  let seasonsDone = 0, lowCap = 0;
 
   for (const [sid, items] of bySid) {
     for (const it of items) {
       const cap = lookup.maxScore(sid, it.gk);
       if (cap === null) { unverifiable++; continue; }
+      if (cap < MIN_CAP) { lowCap++; unverifiable++; continue; }
       const ceiling = ceilingFor(it.cat, cap);
       if (it.v > ceiling + MIN_OVER) {
         offenders.push({ uuid: it.uuid, name: it.name, cat: it.cat, v: it.v, ceiling, cap, gk: it.gk, sid });
@@ -179,6 +189,27 @@ function main() {
   console.log(`  ${unverifiable.toLocaleString()} unverifiable (no gameKey/sid, game not held, or no scoreline)`);
   console.log(`  ${offenders.length.toLocaleString()} IMPOSSIBLE`);
   console.log('');
+
+  if (lowCap) {
+    console.log(`  ${lowCap.toLocaleString()} of those sat behind a scoreline under --min-cap=${MIN_CAP}`);
+    console.log('');
+  }
+
+  // The cap distribution is the evidence for where --min-cap belongs. A cluster of
+  // offenders against caps of 2 or 4 is a scoreline problem in those game files; a
+  // cluster against 20 is the forfeit convention carrying fabricated stat lines.
+  if (offenders.length) {
+    const byCap = new Map();
+    for (const o of offenders) byCap.set(o.cap, (byCap.get(o.cap) || 0) + 1);
+    const rows = [...byCap.entries()].sort((a, b) => a[0] - b[0]);
+    console.log('  offenders by the game\'s top team score:');
+    for (const [cap, n] of rows.slice(0, 15)) {
+      console.log(`    top score ${String(cap).padStart(4)}  ${String(n).padStart(6)} record(s)`
+        + (cap < 20 ? '   <- suspect SCORELINE, not stats' : ''));
+    }
+    if (rows.length > 15) console.log(`    ... and ${rows.length - 15} more distinct scores`);
+    console.log('');
+  }
 
   offenders.sort((a, b) => (b.v - b.ceiling) - (a.v - a.ceiling));
   if (!offenders.length) {
