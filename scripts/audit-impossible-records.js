@@ -203,12 +203,32 @@ function main() {
     for (const o of offenders) byCap.set(o.cap, (byCap.get(o.cap) || 0) + 1);
     const rows = [...byCap.entries()].sort((a, b) => a[0] - b[0]);
     console.log('  offenders by the game\'s top team score:');
-    for (const [cap, n] of rows.slice(0, 15)) {
-      console.log(`    top score ${String(cap).padStart(4)}  ${String(n).padStart(6)} record(s)`
-        + (cap < 20 ? '   <- suspect SCORELINE, not stats' : ''));
+    let under = 0, atOrOver = 0;
+    for (const [cap, n] of rows) {
+      if (cap < 20) under += n; else atOrOver += n;
     }
-    if (rows.length > 15) console.log(`    ... and ${rows.length - 15} more distinct scores`);
+    // Every cap below 20 is listed in full — truncating this table is what hid the
+    // shape on 2026-10-17, where a single bucket held 46% of the offenders.
+    for (const [cap, n] of rows.filter(r => r[0] < 20)) {
+      console.log(`    top score ${String(cap).padStart(4)}  ${String(n).padStart(6)} record(s)   <- suspect SCORELINE, not stats`);
+    }
+    console.log(`    top score  >=20  ${String(atOrOver).padStart(6)} record(s)`);
+    console.log(`    ── under 20: ${under}   20 and over: ${atOrOver}`);
     console.log('');
+
+    // A scoreline problem is systematic per season; fabricated stat lines are not.
+    // Clustering the low-cap offenders by season says which one this is.
+    const lowBySeason = new Map();
+    for (const o of offenders) {
+      if (o.cap >= 20) continue;
+      lowBySeason.set(o.sid, (lowBySeason.get(o.sid) || 0) + 1);
+    }
+    if (lowBySeason.size) {
+      const top = [...lowBySeason.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12);
+      console.log(`  low-scoreline offenders cluster across ${lowBySeason.size} season(s); worst:`);
+      for (const [sid, n] of top) console.log(`    ${sid}  ${String(n).padStart(5)} record(s)`);
+      console.log('');
+    }
   }
 
   offenders.sort((a, b) => (b.v - b.ceiling) - (a.v - a.ceiling));
