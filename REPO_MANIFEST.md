@@ -5632,6 +5632,136 @@ its tail, silently. The merge now carries the overshoot for `RECORD_CATS`, and a
 ends short of the cap says so with the numbers. Proven on a 10-player fixture at cap 6 with 5
 removals: 6 published, where the unfixed version published 1.
 
+### The probe, 2026-10-17 — PlayHQ says it is NOT a forfeit
+
+`diagnose-forfeit-game.js --game=0a99c2d7 --season=702b232f`:
+
+```
+STORED  score 20-0  st=FINAL  forfeit=false  fo=(absent)
+API     outcome=HOME_TEAM_WON_BY_SCORE  winner=HOME  home.outcome=WON  away.outcome=LOST
+```
+
+Not "the nightly has not reached it". PlayHQ **affirmatively classifies this game as a
+legitimate 20-0 win by score**, today, three days after the fact. The label route was never going
+to catch it, and no number of nightly crawls would have changed that.
+
+That also disposes of the backstop. `recheck-forfeit-games.js` probes 20-0 games that are not
+flagged and marks the ones PlayHQ confirms — it would probe this game, be told it is a normal
+win, and correctly leave it alone. Both routes working exactly as designed, both useless here.
+
+**So a 20-0 scoreline is NOT evidence of a forfeit.** It is the corpus convention for one
+(`repair-forfeit-score.js` writes winner 20 / loser 0, and `recheck-forfeit-games.js` scans for
+exactly that), and 29,720 ids sit in the index on that basis — but PlayHQ's own outcome field can
+call the same scoreline a win. Never add a game to `data/forfeit-games.json` on the strength of
+its scoreline.
+
+And underneath all of it: PlayHQ serves a team score of 20 and player stat lines summing to 607
+for the same game, through the same API, and calls the result valid. Nothing upstream reconciles
+that. The guard has to be ours, and it has to be on the numbers.
+
+### The diagnostic printed a confident wrong repair
+
+The same probe ended with:
+
+> *Both the stored forfeit flag AND fo are stale … Repair: remove forfeit/fo from this game and
+> drop it from data/forfeit-games.json.*
+
+For a record that reads `forfeit=false fo=(absent)` and was never in the index. The `!isForfeit`
+branch assumed the stored record held forfeit state, because the one game the script was built for
+(ba9d21fe) did. Every game the new scoreline guard sends here has `forfeit=false`, so that branch
+was about to become the common path. `repair-forfeit-score.js` refuses unless `forfeit === true`,
+so acting on it would have failed safe — but a diagnostic that states a confident wrong repair is
+worse than one that says nothing.
+
+It now splits on `stored.forfeit === true || stored.fo != null`, names only the fields actually
+present in the repair line, and adds the 20-0 note above when the scoreline matches the
+convention. Exercised offline through the exported `verdict()` across five shapes — this game,
+an ordinary win, stale `forfeit`+`fo`, stale `fo` alone, and the original ba9d21fe case, which is
+unchanged.
+
+### The audit ran 90 minutes and wrote nothing (2026-10-17)
+
+```
+  50000 players scanned
+  100000 players scanned
+Error: The operation was canceled.
+```
+
+100,000 of 434,059, killed by the job timeout, no CSV. The player walk was never the cost.
+`audit-impossible-records.js` checked each record as it met it, and player files are walked in
+uuid-shard order, so consecutive lookups land on unrelated seasons. With 3,554 seasons behind the
+12-entry LRU in `game-scores.cjs` that is a miss every time — a whole season game file re-read and
+re-parsed per record, ~200,000 parses to get a third of the way. `build-leaderboards.js` shares
+that lookup and never saw it, because it makes ~4,000 lookups against a final heap.
+
+The cache size was not the bug. **The access order was**, and no cache size makes scattered access
+over 3,554 seasons cheap. The audit is now two passes: pass 1 reads `players/` and opens no game
+file at all, collecting `(uuid, name, cat, v, sid, gk)`; pass 2 groups those by sid and resolves a
+season at a time, so each file is read at most once — and it asks `makeLookup` for
+`cacheSeasons: 1`, because ordered access needs exactly one slot. ~3,554 reads instead of
+~200,000. `makeLookup` now takes that option and its header states the contract: the size is an
+agreement with the caller's access order, not a tuning knob.
+
+Both passes print elapsed time, the CSV is written every 500 seasons so a timeout leaves a partial
+result, and a run with no offenders writes a header-only CSV — "nothing impossible" and "the job
+died" must not look alike. Proven on an 8-player fixture spanning three seasons interleaved across
+two shards: 3 impossible found (including a 60 in a 54-49 game, nothing to do with 20-0), legitimate
+records untouched, and **2 season files read** for 3 seasons of pending work with a one-slot cache.
+
+### The first full audit turned a missing-data class into a fabrication class
+
+58 seconds after the two-pass rewrite (pass 1 0m38s over 434,448 players, pass 2 0m20s over 2,961
+season files). 633,880 stored records, 28,765 unverifiable, **1,241 impossible** — and the tail of
+that list was wrong:
+
+```
+   68        0  maxGamePTS  Thomas Vuillermin  game a0e581f5 (top team score 0)
+   52        0  maxGamePTS  Caleb Kelly        game 86d1728a (top team score 0)
+   47        0  maxGamePTS  Lucas Buckland     game 3043f21d (top team score 0)
+   43        2  maxGamePTS  Noah Vallos        game 3185d4a6 (top team score 2)
+   40        2  maxGamePTS  Declan Reno        game d2ed9dc0 (top team score 2)
+```
+
+A basketball game in which nobody scored did not happen as recorded. Those game files carry
+**placeholder zeros**: the scoreline is the untrustworthy half there, not the player's stat line.
+The guard was reading a missing scoreline as an authoritative cap of 0 and reporting the result as
+fabrication, right beside the genuine article.
+
+In `build-leaderboards.js` the cost is a withheld row. In `fetch-profile-stats.js` an impossible
+line is **dropped**, so this would have deleted real career totals from every one of those players
+on their next fetch — the overwrite-good-data-with-bad failure the whole repo is built to avoid,
+reintroduced by the guard written to prevent it.
+
+`game-scores.cjs` now returns `null` for a top score of 0, so it is unknown and each caller's
+unknown rule applies: the leaderboard withholds the row, the fetch path **keeps the line**. The
+audit gained `--min-cap` for the floor above zero — caps of 2 and 4 behind 43- and 40-point records
+are the same class — and prints the offender cap distribution, flagging anything under 20 as
+`<- suspect SCORELINE, not stats`, because where that floor belongs is a judgement about this
+corpus and not something to hardcode. Default stays 1: trust every non-zero scoreline until the
+distribution says otherwise.
+
+Proven on a four-player fixture: a 68 against a stored 0-0 is unverifiable (was: impossible), a 43
+against 2-0 is reported but flagged, the 102 against 20-0 still fires, the legitimate 61 in an
+88-71 is untouched, and `--min-cap=20` withholds the 2-0 case as well.
+
+> **T90 — A SENTINEL THAT IS A VALID VALUE IN THE DOMAIN WILL BE READ AS DATA.** `0` is a real
+> number of points and an absent scoreline, and nothing in the record distinguishes them. A guard
+> that cannot tell "we do not know" from "we know it is zero" does not fail safe — it reports the
+> gaps in its own inputs as faults in someone else's, and the louder the guard, the more
+> convincing the false positives. Decide what the empty value means at the boundary where the data
+> is read, once, and never let it reach the comparison.
+
+> **T89 — A CACHE SIZE IS A CONTRACT WITH THE CALLER'S ACCESS ORDER.** A helper sized for one
+> consumer becomes a quadratic trap in the next one, and it fails as a TIMEOUT rather than an
+> error, so it reads as "this job is just big". Before reusing a cached lookup in a new loop,
+> count the lookups against the cache size; if they exceed it, order the loop to match the cache
+> instead of enlarging the cache.
+
+> **T88 — A DIAGNOSTIC WRITTEN FOR ONE CASE WILL BE RUN ON ANOTHER.** Its verdict branches must
+> test the state they describe rather than inherit it from the case that prompted the script.
+> The cost of getting this wrong is not a wrong answer, it is a wrong INSTRUCTION, delivered with
+> the authority of a tool built to settle the question.
+
 ### The stored files are a separate job
 
 The board is clean the moment leaderboards rebuild; the player files are not.
@@ -5661,5 +5791,5 @@ Both existing inputs now reach bash through `env:`, and `dry_run` is exposed, wh
 
 ---
 
-**Highest trap number after this session: T87.** Before adding one, run
+**Highest trap number after this session: T90.** Before adding one, run
 `grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.
