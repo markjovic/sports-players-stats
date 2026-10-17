@@ -31,7 +31,9 @@
 // ── CONTRACT ─────────────────────────────────────────────────────────────────
 // maxScore(sid, gameId) -> number | null
 //   null means UNKNOWN, never zero: the season file is absent, the game is not
-//   in it, or hs/as are not both numbers. A caller must decide what unknown
+//   in it, hs/as are not both numbers, or the top score is 0 (a stored 0-0 is a
+//   placeholder, not a played game — see the note at the reduction below). A
+//   caller must decide what unknown
 //   means for it; it must never be read as "cap of 0". Both callers document
 //   their choice at the call site, and they differ on purpose:
 //     · fetch-profile-stats  — unknown KEEPS the stat line. Dropping a line on
@@ -97,8 +99,25 @@ function makeLookup(root, opts) {
       for (const [gid, g] of Object.entries(games)) {
         const hs = typeof g.hs === 'number' ? g.hs : null;
         const as = typeof g.as === 'number' ? g.as : null;
+        // ⚠️ A TOP SCORE OF 0 IS AN ABSENT SCORELINE, NOT A CAP OF ZERO.
+        // 2026-10-17: the first full audit returned 1,241 "impossible" records, and
+        // most of the tail read `top team score 0` — 68 PTS in a game stored 0-0,
+        // 52, 47, 45, 44, 43 … A basketball game in which nobody scored did not
+        // happen as recorded: those game files carry placeholder zeros, so it is the
+        // SCORELINE that is untrustworthy there, not the player's stat line. Treating
+        // 0 as an authoritative cap turned a missing-data class into a fabrication
+        // class, and in fetch-profile-stats.js — where an impossible line is DROPPED
+        // — it would have deleted real career totals. Exactly the failure this repo
+        // exists to avoid.
+        //
+        // 0 therefore returns null (unknown) and each caller applies its own
+        // unknown rule. minScore raises that floor for a caller that wants it; the
+        // audit exposes it as --min-cap and prints the cap distribution, because
+        // where to put the floor above 0 is a judgement about this corpus, not
+        // something to hardcode here.
+        const top = (hs === null || as === null) ? null : Math.max(hs, as);
         map.set(gid, {
-          m: (hs === null || as === null) ? null : Math.max(hs, as),
+          m: (top === null || top <= 0) ? null : top,
           f: g.forfeit === true,
         });
       }
