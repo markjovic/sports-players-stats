@@ -31,9 +31,9 @@
 // ── CONTRACT ─────────────────────────────────────────────────────────────────
 // maxScore(sid, gameId) -> number | null
 //   null means UNKNOWN, never zero: the season file is absent, the game is not
-//   in it, hs/as are not both numbers, or the top score is 0 (a stored 0-0 is a
-//   placeholder, not a played game — see the note at the reduction below). A
-//   caller must decide what unknown
+//   in it, hs/as are not both numbers, or the top score is below the trusted floor
+//   (a stored 0-0, 1-0 or 2-0 is a placeholder, not a scoreline — see
+//   MIN_TRUSTED_SCORE below). A caller must decide what unknown
 //   means for it; it must never be read as "cap of 0". Both callers document
 //   their choice at the call site, and they differ on purpose:
 //     · fetch-profile-stats  — unknown KEEPS the stat line. Dropping a line on
@@ -74,8 +74,37 @@ const CACHE_SEASONS = 12;
 // season files it actually needs. A caller doing a bounded number of scattered
 // lookups keeps the default. There is no size that makes scattered access over 3,554
 // seasons cheap, so do not try to fix this by raising the number.
+// ⚠️ THE FLOOR IS A SAFETY DEFAULT, AND IT IS 20 FOR A MEASURED REASON.
+// 2026-10-19, audit-impossible-records over 636,166 stored records:
+//   --min-cap=1    726 "impossible"
+//   --min-cap=20   215 "impossible", and 25,694 records sitting behind a stored
+//                  top team score UNDER 20
+// Those 25,694 are not fabrications. Their game files carry 0, 1 or 2 where the
+// scoreline belongs — 333 at exactly 2 in one run, clustered by season, which is a
+// per-season ingest fault and not something a player did. Every offender at or
+// above the floor lands on exactly 20 (156/20, 102/20, 101/20, 100/20, 78/20,
+// 67/20 x5 …), which is this corpus's forfeit convention — a real recorded figure.
+// 20 is therefore the lowest value we have positive evidence is a scoreline at all.
+//
+// WHY IT HAS TO LIVE HERE AND NOT IN ONE CALLER. The floor was added to
+// audit-impossible-records.js first, and that left fetch-profile-stats.js — which
+// DROPS an impossible stat line rather than merely withholding a board row —
+// applying no floor at all. On the next fetch of each affected player it would have
+// deleted 25,694 real stat lines, with their points, games and career totals, on
+// the authority of a game file that says the winning team scored 2. A shared
+// predicate with one caller opted out is not a shared predicate (T83).
+//
+// Raising it costs withheld rows and nothing else; lowering it risks deletion. It
+// is deliberately not wired to an env var: a floor that can be lowered by accident
+// in a workflow input is the same hazard again.
+const MIN_TRUSTED_SCORE = 20;
+
 function makeLookup(root, opts) {
   const maxSeasons = Math.max(1, (opts && opts.cacheSeasons) || CACHE_SEASONS);
+  // minScore: 1 means "report the raw scoreline, I apply my own floor" — only
+  // audit-impossible-records.js does that, because it reports the two populations
+  // separately. Every other caller takes the default.
+  const minScore   = Math.max(1, (opts && opts.minScore) || MIN_TRUSTED_SCORE);
   const GAMES_DIR = path.join(root, 'games', 'bv');
   const cache = new Map();   // sid -> Map<gameId, {m:number|null, f:boolean}>
   const stats = { seasonsRead: 0, seasonsMissing: 0 };
@@ -117,7 +146,7 @@ function makeLookup(root, opts) {
         // something to hardcode here.
         const top = (hs === null || as === null) ? null : Math.max(hs, as);
         map.set(gid, {
-          m: (top === null || top <= 0) ? null : top,
+          m: (top === null || top < minScore) ? null : top,
           f: g.forfeit === true,
         });
       }
