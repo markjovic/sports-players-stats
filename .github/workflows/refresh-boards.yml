@@ -1,0 +1,148 @@
+# .github/workflows/refresh-boards.yml
+name: Refresh Boards
+
+# ONE DISPATCH for the sequence that was being run by hand three times over:
+#   build-leaderboards -> build-records -> Deploy Pages
+#
+# ── WHY IT EXISTS ────────────────────────────────────────────────────────────
+# Those three were dispatched separately after every change to the single-game
+# record guard (§6.84), which meant three form fills, three waits, and three
+# chances to run them out of order. They are not independent: build-records.js
+# sources maxGamePTS / maxGameThreePt straight out of leaderboard/all-time.json
+# (its L290-310), so records built before leaderboards republishes exactly the
+# values leaderboards just removed.
+#
+# ── DEPLOY PAGES IS DISPATCHED HERE, AND HAS TO BE ───────────────────────────
+# deploy-pages.yml already fires on `workflow_run: completed` for "Build
+# Leaderboards (Full)", "Build Single-Game Records", "Build Search Index" and
+# "Weekly Indexes" — so dispatching Deploy Pages by hand AFTER running those
+# workflows was always redundant. It does NOT fire for this one: these jobs run
+# the scripts directly, so no `workflow_run` event for those workflow names is
+# ever emitted. Hence the explicit dispatch job, same as rebuild-chain.yml.
+#
+# ── SHAPE IS THE HOUSE PATTERN (nightly-crawl / rebuild-chain) ───────────────
+# One workflow, jobs chained with `needs`, each on its own runner with its own
+# timeout; the data-write lock held at WORKFLOW level so nothing rewrites main
+# between steps and the chain queues behind a running nightly rather than
+# colliding with it (T25). Every job checks out `ref: main`, never github.sha,
+# which is frozen at trigger time and would hide the previous job's pushes (T21).
+#
+# A failed job stops the chain. To resume, re-dispatch with `start_at` set to the
+# failed step. The gate checks EVERY prior job for `failure`, not just the direct
+# parent: a failure two steps up shows as the parent being SKIPPED, not failed,
+# and a parent-only gate would resume the chain straight past it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      active_only:
+        description: 'Leaderboards: active (unlocked) seasons only. Leave ticked for the normal refresh; untick for a full rebuild.'
+        required: false
+        default: true
+        type: boolean
+      keep_unverified_records:
+        description: 'Publish single-game records whose game cannot be checked. Leave OFF — see build-leaderboards.yml.'
+        required: false
+        default: false
+        type: boolean
+      start_at:
+        description: 'Start at this step (earlier steps are skipped, not re-run)'
+        required: false
+        default: 'leaderboards'
+        type: choice
+        options:
+          - leaderboards
+          - records
+          - deploy
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  leaderboards:
+    if: ${{ inputs.start_at == 'leaderboards' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main, fetch-depth: 1, token: "${{ secrets.GITHUB_TOKEN }}" }
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      # Inputs reach bash through env:, never interpolated into run: (directive 13 / T27).
+      - name: Run build-leaderboards
+        env:
+          ACTIVE_ONLY:     ${{ inputs.active_only }}
+          KEEP_UNVERIFIED: ${{ inputs.keep_unverified_records }}
+        run: |
+          set -euo pipefail
+          ARGS=""
+          if [ "${ACTIVE_ONLY:-true}" = "true" ];      then ARGS="$ARGS --active-only"; fi
+          if [ "${KEEP_UNVERIFIED:-false}" = "true" ]; then ARGS="$ARGS --keep-unverified-records"; fi
+          echo "running: node scripts/build-leaderboards.js $ARGS"
+          node scripts/build-leaderboards.js $ARGS
+
+  records:
+    needs: [leaderboards]
+    if: ${{ !cancelled() && needs.leaderboards.result != 'failure' && inputs.start_at != 'deploy' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main, fetch-depth: 1, token: "${{ secrets.GITHUB_TOKEN }}" }
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - run: node scripts/build-records.js
+
+  deploy:
+    needs: [leaderboards, records]
+    if: ${{ !cancelled() && needs.leaderboards.result != 'failure' && needs.records.result != 'failure' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # Dispatch retry helper — copied VERBATIM from rebuild-chain.yml. Retries
+      # transient failures with backoff, fails FAST on a permanent 4xx, and THROWS
+      # when attempts are exhausted: a lost dispatch is a broken chain, and a broken
+      # chain must show red.
+      - name: Install dispatch retry helper
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+
+      - name: Dispatch Deploy Pages
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+        run: /tmp/gh-dispatch.sh "Deploy Pages"
