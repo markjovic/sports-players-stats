@@ -80,7 +80,11 @@ const OUT_CSV     = path.join(REPORTS_DIR, 'impossible-records.csv');
 
 // cacheSeasons: 1 — pass 2 is ordered by sid, so one slot is all it needs, and
 // asking for more would invite the scattered-access thrash described above.
-const lookup = makeLookup(ROOT, { cacheSeasons: 1 });
+// minScore: 1 — this script reports the raw scoreline and applies MIN_CAP itself,
+// because it exists to show the two populations SEPARATELY (fabricated stats vs
+// games whose scoreline is a placeholder). Every other caller takes the shared
+// MIN_TRUSTED_SCORE default in game-scores.cjs; do not copy this opt-out.
+const lookup = makeLookup(ROOT, { cacheSeasons: 1, minScore: 1 });
 
 const CATS = ['maxGamePTS', 'maxGameThreePt'];
 
