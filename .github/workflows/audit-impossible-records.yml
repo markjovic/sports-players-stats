@@ -90,11 +90,31 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v4
+      # TWO CHECKOUTS, GATED ON THE MODE. The corpus-wide audit genuinely reads
+      # every player file and every season's games, so it takes the lot. Single-game
+      # mode reads ONE season file and ~20 player files named by that game's box
+      # score, so cloning games/bv (1.94 GB) to use one file in it is waste.
+      # Non-cone sparse because the pattern is a single FILE, not a directory.
+      - name: Checkout (full — corpus audit)
+        if: ${{ inputs.game == '' }}
+        uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 1
           token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Checkout (sparse — single game)
+        if: ${{ inputs.game != '' }}
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/
+            /players/
+            /games/bv/${{ inputs.season }}.json
 
       - name: Configure git
         run: |
@@ -148,8 +168,11 @@ jobs:
           echo "running: node scripts/audit-impossible-records.js $ARGS"
           node --max-old-space-size=8192 scripts/audit-impossible-records.js $ARGS
 
+      # Single-game mode writes no CSV. Uploading one would publish the LAST run's
+      # file as if it were this run's result — a stale artifact under a fresh run id
+      # is worse than no artifact.
       - name: Upload impossible-records.csv
-        if: always()
+        if: ${{ always() && inputs.game == '' }}
         uses: actions/upload-artifact@v4
         with:
           name: impossible-records
