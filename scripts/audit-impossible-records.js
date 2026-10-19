@@ -64,6 +64,7 @@ const fs   = require('fs');
 const path = require('path');
 const { execSync }   = require('child_process');
 const { makeLookup } = require('./lib/game-scores.cjs');
+const { resolveToFullUuid } = require('./lib/uuid-prefix.cjs');
 
 const ROOT = path.join(__dirname, '..');
 const ARGS = Object.fromEntries(
@@ -230,30 +231,63 @@ function oneGame() {
   }
   console.log(`  ${roster.length} players in the box score`);
 
-  const stored = new Map();   // uuid -> { name, recs:[{cat,v}] }
-  let readOk = 0, readMiss = 0;
+  // ⚠️ A BOX-SCORE profileID IS NOT A PLAYER-FILE PATH. The first roster-driven
+  // version built players/<2hex>/<profileID>.json straight from the box key and
+  // read 1 file out of 12: box entries carry both truncated (13-char) ids and
+  // api-canonical uuids that differ from the uuid the player file is stored
+  // under. That is the SAME divergence boxLine() already resolves — in the other
+  // direction. Resolve here too, or the control rows are all false negatives:
+  // the run of 2026-10-19 on a9e3b31c printed `no record for this game` for all
+  // 12, including four players the full walk had already proven hold one.
+  const readPlayer = (uuid) => {
+    try {
+      return JSON.parse(fs.readFileSync(
+        path.join(PLAYERS_DIR, uuid.slice(0, 2), `${uuid}.json`), 'utf8'));
+    } catch (_) { return null; }
+  };
+
+  const stored     = new Map();   // box profileID -> { uuid, name, recs:[{cat,v}] }
+  const unresolved = [];          // box ids with NO player file under any id we can reach
+  let readOk = 0, viaAlias = 0;
   for (const profileID of roster) {
-    const f = path.join(PLAYERS_DIR, profileID.slice(0, 2), `${profileID}.json`);
-    let player = null;
-    try { player = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (_) { player = null; }
-    if (!player) { readMiss++; continue; }
+    let uuid   = profileID;
+    let player = readPlayer(uuid);
+    if (!player) {
+      let r = null;
+      try { r = resolveToFullUuid(profileID, ROOT); } catch (_) { r = null; }
+      if (r && r !== profileID) {
+        const p2 = readPlayer(r);
+        if (p2) { uuid = r; player = p2; viaAlias++; }
+      }
+    }
+    if (!player) { unresolved.push(profileID); continue; }
     readOk++;
     const recs = [];
     for (const cat of CATS) {
       const rec = player.records && player.records[cat];
       if (rec && rec.gameKey === ONE_GAME) recs.push({ cat, v: rec.v });
     }
-    stored.set(profileID, { name: player.name || '', recs });
+    stored.set(profileID, { uuid, name: player.name || '', recs });
   }
-  console.log(`  ${readOk} player files read, ${readMiss} not found under their box-score id`);
+  console.log(`  ${readOk} player files read (${viaAlias} only after alias resolution), `
+    + `${unresolved.length} box ids with no player file`);
   console.log('');
 
-  let doubled = 0, equal = 0, other = 0, noRecord = 0;
+  let doubled = 0, equal = 0, other = 0, noRecord = 0, noFile = 0;
   console.log(`    ${'box pts'.padStart(8)} ${'box 3pt'.padStart(8)}  ${'stored'.padStart(8)}  ratio  player`);
   for (const profileID of roster) {
     const l = line(profileID);
     const info = stored.get(profileID);
-    if (!info || !info.recs.length) {
+    if (!info) {
+      // NOT a control. We never read this player's file, so we do not know
+      // whether they hold a record for this game. Counted and named separately
+      // so it can never be mistaken for "checked, holds nothing".
+      noFile++;
+      console.log(`    ${String(l ? l.pts : '—').padStart(8)} ${String(l ? l.pt3 : '—').padStart(8)}`
+        + `  ${'?'.padStart(8)}  ${'—'.padEnd(6)} ${profileID}  [NO PLAYER FILE — id unresolved, NOT CHECKED]`);
+      continue;
+    }
+    if (!info.recs.length) {
       // In the box, holds no record naming this game — their career max is
       // elsewhere. Printed because it is the CONTROL: a duplicated fixture should
       // double everyone, and these are the players a partial pattern would miss.
@@ -278,8 +312,15 @@ function oneGame() {
 
   console.log('');
   console.log(`  ratio x1 (agree): ${equal}   exact multiple >=x2: ${doubled}   other: ${other}`
-    + `   no record for this game: ${noRecord}`);
+    + `   checked, no record for this game: ${noRecord}   NOT CHECKED (no player file): ${noFile}`);
   console.log('');
+  if (noFile) {
+    console.log(`  ⚠️  ${noFile} of ${roster.length} box entries could not be matched to a player`);
+    console.log('     file under any id. THE CONTROL IS INCOMPLETE: those players may or may');
+    console.log('     not hold a record for this game and this run cannot say which.');
+    for (const id of unresolved) console.log(`       unresolved: ${id}`);
+    console.log('');
+  }
   console.log('  A game that doubles for EVERY player in it is a duplicated fixture in');
   console.log('  publicProfileStatistics. A game that doubles for only some is not — and');
   console.log('  players whose stored MAX comes from a different game appear here as');
