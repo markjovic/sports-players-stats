@@ -105,6 +105,14 @@ function makeLookup(root, opts) {
   // audit-impossible-records.js does that, because it reports the two populations
   // separately. Every other caller takes the default.
   const minScore   = Math.max(1, (opts && opts.minScore) || MIN_TRUSTED_SCORE);
+  // box: also index each game's SPECTATOR box score (hp[]/ap[]) as
+  // profileID -> pts. Opt-in, because it is far more memory than {m,f} and only
+  // the reconciliation audit needs it. A game's box score is a SECOND, independent
+  // record of what a player scored — sourced from the spectator endpoint rather
+  // than publicProfileStatistics — and comparing the two is a stronger test than
+  // either against the team score. p[] is only a roster of truncated ids and
+  // carries no points; hp/ap are the real box scores and key on full profileID.
+  const wantBox    = !!(opts && opts.box);
   const GAMES_DIR = path.join(root, 'games', 'bv');
   const cache = new Map();   // sid -> Map<gameId, {m:number|null, f:boolean}>
   const stats = { seasonsRead: 0, seasonsMissing: 0 };
@@ -145,10 +153,23 @@ function makeLookup(root, opts) {
         // where to put the floor above 0 is a judgement about this corpus, not
         // something to hardcode here.
         const top = (hs === null || as === null) ? null : Math.max(hs, as);
-        map.set(gid, {
+        const rec = {
           m: (top === null || top < minScore) ? null : top,
           f: g.forfeit === true,
-        });
+        };
+        if (wantBox) {
+          let b = null;
+          for (const side of [g.hp, g.ap]) {
+            if (!Array.isArray(side)) continue;
+            for (const e of side) {
+              if (!e || !e.profileID) continue;
+              if (!b) b = new Map();
+              b.set(e.profileID, typeof e.pts === 'number' ? e.pts : null);
+            }
+          }
+          rec.b = b;   // null when this game has no box score at all
+        }
+        map.set(gid, rec);
       }
     } else {
       stats.seasonsMissing++;
@@ -166,6 +187,22 @@ function makeLookup(root, opts) {
       if (!s) return null;
       const e = s.get(gameId);
       return e ? e.m : null;
+    },
+    // boxPts(sid, gameId, profileID) -> number | null
+    //   null means NO BOX-SCORE ANSWER for that player in that game: the game has
+    //   no spectator box score, or the player is not in it. Absence is not zero —
+    //   a player can legitimately be missing from a box score we never captured,
+    //   and alias history means a uuid may appear under a different profileID
+    //   (fetch-profile-stats recovers those at fetch time, this does not).
+    boxPts(sid, gameId, profileID) {
+      if (!wantBox) throw new Error('boxPts requires makeLookup(root, { box: true })');
+      if (!sid || !gameId || !profileID) return null;
+      const s = season(sid);
+      if (!s) return null;
+      const e = s.get(gameId);
+      if (!e || !e.b) return null;
+      const v = e.b.get(profileID);
+      return (typeof v === 'number') ? v : null;
     },
     isForfeit(sid, gameId) {
       if (!sid || !gameId) return false;
