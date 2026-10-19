@@ -204,6 +204,12 @@ function serialise(buckets) {
 // so the written file keeps its existing shape.
 function verifyGameRecords(board, lookup) {
   const summary = {};
+  // Collected for the GitHub run summary as well as the log. The four counts are
+  // the whole point of the run and they sit ~40,000 log lines into a nested job;
+  // GITHUB_STEP_SUMMARY puts them on the run's front page. Same mechanism
+  // diagnose-forfeit-game.js already uses. Absent outside Actions, so it no-ops
+  // locally.
+  const md = [];
   for (const cat of RECORD_CATS) {
     const entries = board[cat];
     if (!Array.isArray(entries)) continue;
@@ -249,9 +255,11 @@ function verifyGameRecords(board, lookup) {
 
     const removed = counts.impossible + counts.forfeit
                   + (KEEP_UNVERIFIED ? 0 : counts.unverified);
-    console.log(`  ${cat}: ${kept.length} published, ${removed} removed`
+    const headline = `  ${cat}: ${kept.length} published, ${removed} removed`
       + `  (impossible ${counts.impossible}, forfeit ${counts.forfeit}, unverified ${counts.unverified}`
-      + `${KEEP_UNVERIFIED ? ' — PUBLISHED, --keep-unverified-records' : ''})`);
+      + `${KEEP_UNVERIFIED ? ' — PUBLISHED, --keep-unverified-records' : ''})`;
+    console.log(headline);
+    md.push(`| ${cat} | ${kept.length} | ${counts.impossible} | ${counts.forfeit} | ${counts.unverified} |`);
     if (dropped.length) {
       console.log('    removed (first 15):');
       dropped.forEach(d => console.log(d));
@@ -272,6 +280,20 @@ function verifyGameRecords(board, lookup) {
       throw new Error(`ABORT: verification removed EVERY ${cat} entry (${entries.length} in). `
         + `Nothing written. Re-run with --dry-run and read the verdicts above.`);
     }
+  }
+
+  if (process.env.GITHUB_STEP_SUMMARY && md.length) {
+    const out = [
+      '### Single-game record verification',
+      '',
+      '| category | published | impossible | forfeit | unverified |',
+      '|---|---:|---:|---:|---:|',
+      ...md,
+      '',
+      `Unverified entries are ${KEEP_UNVERIFIED ? '**PUBLISHED** (--keep-unverified-records)' : 'withheld'}.`,
+      '',
+    ].join('\n');
+    try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, out + '\n'); } catch (_) {}
   }
   return summary;
 }

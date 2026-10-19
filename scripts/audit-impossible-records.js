@@ -36,6 +36,15 @@
 // game_max_score,gameKey,sid. The uuid column feeds populate-players.js
 // --from-csv=, which clears statsChecked for exactly those players.
 //
+// ⚠️ IT COMMITS THAT FILE. The first version did not: the workflow ran at
+// `contents: read` and uploaded the CSV as a build artifact, so the only way to
+// get it to populate-players.js — whose --from-csv= reads a REPO PATH — was to
+// download the artifact and re-upload it by hand between two workflows. A report
+// that exists only as an artifact cannot be consumed by the tool it was built to
+// feed. It is one file under reports/, which is what audit-uuid-collisions.js and
+// audit-aliases-against-playhq.js already do, and --no-commit still produces the
+// local file without touching git.
+//
 // The CSV is written even when the offender list is EMPTY, and even when pass 2
 // is interrupted — a header-only file is a result ("nothing impossible"), the
 // absence of a file is a failure, and the two must not look alike.
@@ -53,6 +62,7 @@
 
 const fs   = require('fs');
 const path = require('path');
+const { execSync }   = require('child_process');
 const { makeLookup } = require('./lib/game-scores.cjs');
 
 const ROOT = path.join(__dirname, '..');
@@ -73,6 +83,7 @@ const MIN_OVER = Math.max(0, parseInt(ARGS.min || '0', 10));
 // because where the real floor sits is a judgement about this corpus; the cap
 // distribution printed at the end is the evidence for choosing it.
 const MIN_CAP  = Math.max(1, parseInt(ARGS['min-cap'] || '1', 10));
+const NO_COMMIT = !!ARGS['no-commit'];
 
 const PLAYERS_DIR = path.join(ROOT, 'players');
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -93,6 +104,43 @@ const CATS = ['maxGamePTS', 'maxGameThreePt'];
 // fabricated 34 through on a 20-0 game.
 function ceilingFor(cat, cap) {
   return cat === 'maxGameThreePt' ? Math.floor(cap / 3) : cap;
+}
+
+// Commit discipline copied from update-team-index.js L71-104, which is the
+// CORRECTED house pattern: one file named explicitly (never `git add -A`),
+// --shortstat never --stat, merge with --no-stat, commit BEFORE merge, and a push
+// retry that THROWS when exhausted. The version in audit-uuid-collisions.js wraps
+// the whole thing in a try/catch that prints and returns — a failed push there
+// exits ZERO and the job shows green having written nothing. Do not copy that one.
+const GIT_OPTS      = { cwd: ROOT, stdio: 'pipe', timeout: 10 * 60 * 1000, maxBuffer: 512 * 1024 * 1024 };
+const PUSH_ATTEMPTS = 60;
+
+function gitCommit(message) {
+  if (NO_COMMIT) { console.log(`  [--no-commit] would commit: ${message}`); return; }
+
+  execSync('git add -- reports/impossible-records.csv', GIT_OPTS);
+
+  const shortstat = execSync('git diff --staged --shortstat', GIT_OPTS).toString().trim();
+  if (!shortstat) { console.log('  staging: no changes — nothing to commit'); return; }
+  console.log(`  staging: ${shortstat}`);
+
+  execSync(`git commit -m "${message.replace(/"/g, "'")}"`, GIT_OPTS);
+
+  for (let attempt = 1; attempt <= PUSH_ATTEMPTS; attempt++) {
+    try {
+      execSync('git fetch origin main', GIT_OPTS);
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', GIT_OPTS);
+      execSync('git push origin main', GIT_OPTS);
+      console.log(`  ✔ pushed (attempt ${attempt}): ${message}`);
+      return;
+    } catch (e) {
+      const detail = (e.stderr || e.stdout || '').toString().trim() || e.message;
+      if (attempt === PUSH_ATTEMPTS) throw new Error(`push failed after ${PUSH_ATTEMPTS} attempts: ${detail}`);
+      const wait = 1 + Math.floor(Math.random() * 90);
+      console.log(`  … push contention (attempt ${attempt}) — retry in ${wait}s`);
+      execSync(`sleep ${wait}`, { stdio: 'ignore' });
+    }
+  }
 }
 
 function hhmmss(ms) {
@@ -178,7 +226,7 @@ function main() {
     if (seasonsDone % 500 === 0) {
       console.log(`  ${seasonsDone.toLocaleString()}/${bySid.size.toLocaleString()} seasons`
         + `  ${offenders.length} impossible so far  (${hhmmss(Date.now() - t1)})`);
-      writeCsv(offenders);   // partial result survives a timeout
+      writeCsv(offenders);   // partial result survives a timeout (local file only — gitCommit runs once, at the end)
     }
   }
 
@@ -250,7 +298,15 @@ function main() {
 
   writeCsv(offenders);
   console.log(`\n  Wrote ${path.relative(ROOT, OUT_CSV)} (${offenders.length} rows)`);
-  console.log('  Feed it to populate-players.js --from-csv= to clear statsChecked and re-fetch.');
+  gitCommit(`audit-impossible-records: ${offenders.length} impossible (min-cap ${MIN_CAP})`);
+  // Only claim the file is reachable by populate-players when it was actually
+  // committed. Saying so after --no-commit sends the next run at a path that is
+  // not on main.
+  if (NO_COMMIT) {
+    console.log('  --no-commit: this CSV is NOT on main, so populate-players --from-csv= cannot read it.');
+  } else {
+    console.log('  Now run Populate Players with from_csv=reports/impossible-records.csv — it is committed.');
+  }
   console.log(`  Total ${hhmmss(Date.now() - t0)}`);
 }
 
