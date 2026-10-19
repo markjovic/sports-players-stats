@@ -58,6 +58,14 @@ on:
         required: false
         default: '0'
         type: string
+      game:
+        description: 'Single-game mode: dump this game id''s whole box score beside each player''s stored record. Requires season. Answers whether ONE game doubles for everyone in it — which the corpus-wide distribution cannot.'
+        required: false
+        type: string
+      season:
+        description: 'Season id for the game above. Both are required together.'
+        required: false
+        type: string
       ratios:
         description: 'Cross-check EVERY stored record against its spectator box score and report the stored/box ratio distribution. A spike at a whole number is double-counting in publicProfileStatistics, which would inflate season and career totals too — not just single-game maxima.'
         required: false
@@ -102,6 +110,8 @@ jobs:
           MIN_CAP:   ${{ inputs.min_cap }}
           NO_COMMIT: ${{ inputs.no_commit }}
           RATIOS:    ${{ inputs.ratios }}
+          GAME:      ${{ inputs.game }}
+          SEASON:    ${{ inputs.season }}
         run: |
           set -euo pipefail
 
@@ -124,6 +134,16 @@ jobs:
 
           if [ "${NO_COMMIT:-false}" = "true" ]; then ARGS="$ARGS --no-commit"; fi
           if [ "${RATIOS:-false}" = "true" ];    then ARGS="$ARGS --ratios"; fi
+
+          # Ids are hex short-ids; anything else is rejected rather than passed through.
+          for pair in "game:${GAME:-}" "season:${SEASON:-}"; do
+            k="${pair%%:*}"; v="${pair#*:}"
+            [ -z "$v" ] && continue
+            case "$v" in
+              *[!0-9a-fA-F]*) echo "::error::$k must be a hex id, got '$v'"; exit 1 ;;
+              *)              ARGS="$ARGS --$k=$v" ;;
+            esac
+          done
 
           echo "running: node scripts/audit-impossible-records.js $ARGS"
           node --max-old-space-size=8192 scripts/audit-impossible-records.js $ARGS
