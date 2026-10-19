@@ -115,13 +115,42 @@ function ceilingFor(cat, cap) {
 const GIT_OPTS      = { cwd: ROOT, stdio: 'pipe', timeout: 10 * 60 * 1000, maxBuffer: 512 * 1024 * 1024 };
 const PUSH_ATTEMPTS = 60;
 
+// Returns true only when a commit was actually pushed. The caller must not claim
+// the CSV is available to populate-players on anything else.
 function gitCommit(message) {
-  if (NO_COMMIT) { console.log(`  [--no-commit] would commit: ${message}`); return; }
+  if (NO_COMMIT) { console.log(`  [--no-commit] would commit: ${message}`); return false; }
 
-  execSync('git add -- reports/impossible-records.csv', GIT_OPTS);
+  // ⚠️ -f IS REQUIRED, AND ITS ABSENCE FAILED SILENTLY. 2026-10-19: the first run
+  // wrote 215 rows, uploaded 8,506 bytes as an artifact, printed
+  // "staging: no changes — nothing to commit" and then printed the SUCCESS line
+  // telling the operator to go and use a file that was never committed. The repo
+  // ignores reports/, so a plain `git add` on that path matches nothing and exits
+  // ZERO — git does not treat "everything you named is ignored" as an error.
+  // Some files under reports/ are tracked from before the rule, which is why the
+  // directory looks committed.
+  execSync('git add -f -- reports/impossible-records.csv', GIT_OPTS);
 
   const shortstat = execSync('git diff --staged --shortstat', GIT_OPTS).toString().trim();
-  if (!shortstat) { console.log('  staging: no changes — nothing to commit'); return; }
+  if (!shortstat) {
+    // Empty staging has two causes and they are not the same event. Identical
+    // content already on main is a clean no-op; a file git is not tracking at all
+    // means the add did nothing and the report is unreachable — which must be loud.
+    let tracked = true;
+    try { execSync('git ls-files --error-unmatch -- reports/impossible-records.csv', GIT_OPTS); }
+    catch (_) { tracked = false; }
+
+    if (!tracked) {
+      let rule = '';
+      try { rule = execSync('git check-ignore -v -- reports/impossible-records.csv', GIT_OPTS).toString().trim(); }
+      catch (_) {}
+      throw new Error('reports/impossible-records.csv was written but git is not tracking it, '
+        + 'so populate-players cannot read it.'
+        + (rule ? ` Ignore rule: ${rule}` : ' No ignore rule reported — check the checkout.'));
+    }
+
+    console.log('  staging: no changes — the committed CSV is already identical');
+    return true;
+  }
   console.log(`  staging: ${shortstat}`);
 
   execSync(`git commit -m "${message.replace(/"/g, "'")}"`, GIT_OPTS);
@@ -132,7 +161,7 @@ function gitCommit(message) {
       execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', GIT_OPTS);
       execSync('git push origin main', GIT_OPTS);
       console.log(`  ✔ pushed (attempt ${attempt}): ${message}`);
-      return;
+      return true;
     } catch (e) {
       const detail = (e.stderr || e.stdout || '').toString().trim() || e.message;
       if (attempt === PUSH_ATTEMPTS) throw new Error(`push failed after ${PUSH_ATTEMPTS} attempts: ${detail}`);
@@ -298,14 +327,16 @@ function main() {
 
   writeCsv(offenders);
   console.log(`\n  Wrote ${path.relative(ROOT, OUT_CSV)} (${offenders.length} rows)`);
-  gitCommit(`audit-impossible-records: ${offenders.length} impossible (min-cap ${MIN_CAP})`);
-  // Only claim the file is reachable by populate-players when it was actually
-  // committed. Saying so after --no-commit sends the next run at a path that is
-  // not on main.
-  if (NO_COMMIT) {
-    console.log('  --no-commit: this CSV is NOT on main, so populate-players --from-csv= cannot read it.');
-  } else {
+  // ⚠️ THE NEXT-STEP LINE IS GATED ON THE COMMIT ACTUALLY HAPPENING. It used to
+  // print unconditionally, directly under "staging: no changes — nothing to
+  // commit", telling the operator to run the next workflow against a path that
+  // was not on main. A success message over a no-op is the exact failure this
+  // repo's own traps are about.
+  const committed = gitCommit(`audit-impossible-records: ${offenders.length} impossible (min-cap ${MIN_CAP})`);
+  if (committed) {
     console.log('  Now run Populate Players with from_csv=reports/impossible-records.csv — it is committed.');
+  } else {
+    console.log('  --no-commit: this CSV is NOT on main, so populate-players --from-csv= cannot read it.');
   }
   console.log(`  Total ${hhmmss(Date.now() - t0)}`);
 }
