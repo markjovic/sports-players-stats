@@ -100,6 +100,18 @@ const RATIOS    = !!ARGS.ratios;
 // exactly twice their box line, which chance does not do.
 const ONE_GAME  = (ARGS.game   === true ? null : ARGS.game)   || null;
 const ONE_SID   = (ARGS.season === true ? null : ARGS.season) || null;
+// --emit-paths=<file>: single-game mode only. Resolves the game's box-score
+// roster to player-file paths, writes them one per line, and exits WITHOUT
+// auditing anything.
+//
+// ⚠️ THIS EXISTS TO KILL A 6-MINUTE CHECKOUT. The sparse pattern for single-game
+// mode listed `/players/` — all 435,872 files, ~870 MB — to read about twelve of
+// them, which is most of what a "sparse" run was costing. Resolution itself needs
+// only players/indexes/<2hex>.json and players/aliases/<2hex>.json (512 small
+// files, see uuid-prefix.cjs), so the workflow checks those out, runs this to
+// learn WHICH twelve player files it wants, `git sparse-checkout add`s exactly
+// those, and only then audits. Two cheap fetches instead of one enormous one.
+const EMIT_PATHS = (ARGS['emit-paths'] === true ? null : ARGS['emit-paths']) || null;
 
 const PLAYERS_DIR = path.join(ROOT, 'players');
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -209,6 +221,38 @@ function writeCsv(offenders) {
 // the box with no stored record are shown too: a doubling that only appears for
 // the handful of players whose MAX happens to fall in this game would be a very
 // different fact from one that applies to everyone on the floor.
+// Roster -> repo-relative player-file paths, one per line, for
+// `git sparse-checkout add`. Leading slash because the workflow's sparse file is
+// NON-CONE: a bare `players/ab/x.json` there is a loose pattern matching any
+// depth, an anchored `/players/ab/x.json` is the one file.
+//
+// An id that resolves to nothing is reported on stderr and SKIPPED, never
+// silently dropped: the audit that follows prints it as NOT CHECKED, and the two
+// counts must agree. Exits non-zero only if the file cannot be written — an
+// empty roster resolution is a result, not a crash.
+function emitPaths(roster) {
+  const out  = [];
+  const seen = new Set();
+  let unresolved = 0;
+  for (const profileID of roster) {
+    const cands = [profileID];
+    let r = null;
+    try { r = resolveToFullUuid(profileID, ROOT); } catch (_) { r = null; }
+    if (r && r !== profileID) cands.push(r);
+    let any = false;
+    for (const c of cands) {
+      if (c.length !== 36) continue;          // a truncated id is not a filename
+      const rel = `/players/${c.slice(0, 2)}/${c}.json`;
+      any = true;
+      if (!seen.has(rel)) { seen.add(rel); out.push(rel); }
+    }
+    if (!any) { unresolved++; console.error(`  emit-paths: UNRESOLVED box id ${profileID}`); }
+  }
+  fs.writeFileSync(EMIT_PATHS, out.join('\n') + (out.length ? '\n' : ''));
+  console.log(`  emit-paths: ${out.length} candidate player files, ${unresolved} box ids unresolved`);
+  console.log(`  written to ${EMIT_PATHS}`);
+}
+
 function oneGame() {
   const t0 = Date.now();
   console.log(`audit-impossible-records.js   SINGLE GAME   ${ONE_GAME} (season ${ONE_SID})`);
@@ -230,6 +274,8 @@ function oneGame() {
     process.exit(1);
   }
   console.log(`  ${roster.length} players in the box score`);
+
+  if (EMIT_PATHS) return emitPaths(roster);
 
   // ⚠️ A BOX-SCORE profileID IS NOT A PLAYER-FILE PATH. The first roster-driven
   // version built players/<2hex>/<profileID>.json straight from the box key and
