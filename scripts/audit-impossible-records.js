@@ -92,6 +92,13 @@ const NO_COMMIT = !!ARGS['no-commit'];
 // happen to exceed a team score; it reaches season and career totals for every
 // player in every regraded game, and only a full scan can show that.
 const RATIOS    = !!ARGS.ratios;
+// --game=<gid> --season=<sid>: dump ONE game's whole box score beside whatever
+// each of those players has stored, matched or not. The corpus-wide distribution
+// can say "x2 is rare"; only this can say whether a PARTICULAR game doubles for
+// everyone in it. 2026-10-19: three different players in a9e3b31c each stored
+// exactly twice their box line, which chance does not do.
+const ONE_GAME  = (ARGS.game   === true ? null : ARGS.game)   || null;
+const ONE_SID   = (ARGS.season === true ? null : ARGS.season) || null;
 
 const PLAYERS_DIR = path.join(ROOT, 'players');
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -195,8 +202,85 @@ function writeCsv(offenders) {
   fs.writeFileSync(OUT_CSV, rows.join('\n') + '\n');
 }
 
+// ── --game mode ──────────────────────────────────────────────────────────────
+// Walks players/ once, keeping only records that point at this game, then prints
+// the game's box score with each entry's stored counterpart beside it. Players in
+// the box with no stored record are shown too: a doubling that only appears for
+// the handful of players whose MAX happens to fall in this game would be a very
+// different fact from one that applies to everyone on the floor.
+function oneGame() {
+  const t0 = Date.now();
+  console.log(`audit-impossible-records.js   SINGLE GAME   ${ONE_GAME} (season ${ONE_SID})`);
+  console.log('─'.repeat(60));
+
+  const line = (uuid) => lookup.boxLine(ONE_SID, ONE_GAME, uuid);
+  const cap  = lookup.maxScore(ONE_SID, ONE_GAME);
+  console.log(`  game top team score: ${cap === null ? '(unknown/below floor)' : cap}`);
+
+  // stored records that name this game
+  const stored = new Map();   // uuid -> [{cat, v}]
+  const prefixes = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
+  let scanned = 0;
+  for (const prefix of prefixes) {
+    let files;
+    try { files = fs.readdirSync(path.join(PLAYERS_DIR, prefix)).filter(f => f.endsWith('.json')); }
+    catch (_) { continue; }
+    for (const fname of files) {
+      let player;
+      try { player = JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, prefix, fname), 'utf8')); }
+      catch (_) { continue; }
+      scanned++;
+      for (const cat of CATS) {
+        const rec = player.records && player.records[cat];
+        if (!rec || rec.gameKey !== ONE_GAME) continue;
+        const uuid = fname.replace('.json', '');
+        if (!stored.has(uuid)) stored.set(uuid, { name: player.name || '', recs: [] });
+        stored.get(uuid).recs.push({ cat, v: rec.v });
+      }
+    }
+  }
+  console.log(`  ${scanned.toLocaleString()} players scanned, ${stored.size} with a record naming this game`);
+  console.log('');
+
+  const seen = new Set();
+  let doubled = 0, equal = 0, other = 0;
+  console.log(`    ${'box pts'.padStart(8)} ${'box 3pt'.padStart(8)}  ${'stored'.padStart(8)}  ratio  player`);
+  for (const [uuid, info] of stored) {
+    seen.add(uuid);
+    const l = line(uuid);
+    for (const r of info.recs) {
+      const b = l ? (r.cat === 'maxGameThreePt' ? l.pt3 : l.pts) : null;
+      let ratio = '  —  ';
+      if (b !== null && b !== undefined && b > 0) {
+        const x = Math.round((r.v / b) * 100) / 100;
+        ratio = `x${x}`;
+        if (x === 1) equal++; else if (Number.isInteger(x) && x >= 2) doubled++; else other++;
+      } else if (b === 0 || b === null) { other++; }
+      console.log(`    ${String(l ? l.pts : '—').padStart(8)} ${String(l ? l.pt3 : '—').padStart(8)}`
+        + `  ${String(r.v).padStart(8)}  ${ratio.padEnd(6)} ${info.name || uuid}`
+        + `  [${r.cat}${l && l.via === 'alias' ? ', alias' : ''}]`);
+    }
+  }
+
+  console.log('');
+  console.log(`  ratio x1 (agree): ${equal}   exact multiple >=x2: ${doubled}   other: ${other}`);
+  console.log('');
+  console.log('  A game that doubles for EVERY player in it is a duplicated fixture in');
+  console.log('  publicProfileStatistics. A game that doubles for only some is not — and');
+  console.log('  players whose stored MAX comes from a different game appear here as');
+  console.log('  mismatches that mean nothing. Read the x1 count as the control.');
+  console.log(`  Total ${hhmmss(Date.now() - t0)}`);
+}
+
 function main() {
   const t0 = Date.now();
+  if (ONE_GAME || ONE_SID) {
+    if (!ONE_GAME || !ONE_SID) {
+      console.error('--game and --season must be given together');
+      process.exit(1);
+    }
+    return oneGame();
+  }
   console.log('audit-impossible-records.js   READ-ONLY');
   console.log('─'.repeat(60));
 
