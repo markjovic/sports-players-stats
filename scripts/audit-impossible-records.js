@@ -217,37 +217,51 @@ function oneGame() {
   const cap  = lookup.maxScore(ONE_SID, ONE_GAME);
   console.log(`  game top team score: ${cap === null ? '(unknown/below floor)' : cap}`);
 
-  // stored records that name this game
-  const stored = new Map();   // uuid -> [{cat, v}]
-  const prefixes = fs.readdirSync(PLAYERS_DIR).filter(d => /^[0-9a-f]{2}$/.test(d)).sort();
-  let scanned = 0;
-  for (const prefix of prefixes) {
-    let files;
-    try { files = fs.readdirSync(path.join(PLAYERS_DIR, prefix)).filter(f => f.endsWith('.json')); }
-    catch (_) { continue; }
-    for (const fname of files) {
-      let player;
-      try { player = JSON.parse(fs.readFileSync(path.join(PLAYERS_DIR, prefix, fname), 'utf8')); }
-      catch (_) { continue; }
-      scanned++;
-      for (const cat of CATS) {
-        const rec = player.records && player.records[cat];
-        if (!rec || rec.gameKey !== ONE_GAME) continue;
-        const uuid = fname.replace('.json', '');
-        if (!stored.has(uuid)) stored.set(uuid, { name: player.name || '', recs: [] });
-        stored.get(uuid).recs.push({ cat, v: rec.v });
-      }
-    }
+  // ⚠️ DO NOT WALK players/ HERE. The first version did, reading all 435,872 files
+  // to find records naming one game — when the box score already names everyone who
+  // was on the floor. The roster IS the candidate list: a player cannot hold a
+  // record for a game they are not in. ~20 targeted reads instead of 435,872, and
+  // it lets the workflow sparse-checkout a single season file instead of all of
+  // games/bv (1.94 GB).
+  const roster = lookup.boxRoster(ONE_SID, ONE_GAME);
+  if (!roster) {
+    console.error(`  no box score stored for ${ONE_GAME} — nothing to reconcile against.`);
+    process.exit(1);
   }
-  console.log(`  ${scanned.toLocaleString()} players scanned, ${stored.size} with a record naming this game`);
+  console.log(`  ${roster.length} players in the box score`);
+
+  const stored = new Map();   // uuid -> { name, recs:[{cat,v}] }
+  let readOk = 0, readMiss = 0;
+  for (const profileID of roster) {
+    const f = path.join(PLAYERS_DIR, profileID.slice(0, 2), `${profileID}.json`);
+    let player = null;
+    try { player = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (_) { player = null; }
+    if (!player) { readMiss++; continue; }
+    readOk++;
+    const recs = [];
+    for (const cat of CATS) {
+      const rec = player.records && player.records[cat];
+      if (rec && rec.gameKey === ONE_GAME) recs.push({ cat, v: rec.v });
+    }
+    stored.set(profileID, { name: player.name || '', recs });
+  }
+  console.log(`  ${readOk} player files read, ${readMiss} not found under their box-score id`);
   console.log('');
 
-  const seen = new Set();
-  let doubled = 0, equal = 0, other = 0;
+  let doubled = 0, equal = 0, other = 0, noRecord = 0;
   console.log(`    ${'box pts'.padStart(8)} ${'box 3pt'.padStart(8)}  ${'stored'.padStart(8)}  ratio  player`);
-  for (const [uuid, info] of stored) {
-    seen.add(uuid);
-    const l = line(uuid);
+  for (const profileID of roster) {
+    const l = line(profileID);
+    const info = stored.get(profileID);
+    if (!info || !info.recs.length) {
+      // In the box, holds no record naming this game — their career max is
+      // elsewhere. Printed because it is the CONTROL: a duplicated fixture should
+      // double everyone, and these are the players a partial pattern would miss.
+      noRecord++;
+      console.log(`    ${String(l ? l.pts : '—').padStart(8)} ${String(l ? l.pt3 : '—').padStart(8)}`
+        + `  ${'—'.padStart(8)}  ${'—'.padEnd(6)} ${(info && info.name) || profileID}  [no record for this game]`);
+      continue;
+    }
     for (const r of info.recs) {
       const b = l ? (r.cat === 'maxGameThreePt' ? l.pt3 : l.pts) : null;
       let ratio = '  —  ';
@@ -255,15 +269,16 @@ function oneGame() {
         const x = Math.round((r.v / b) * 100) / 100;
         ratio = `x${x}`;
         if (x === 1) equal++; else if (Number.isInteger(x) && x >= 2) doubled++; else other++;
-      } else if (b === 0 || b === null) { other++; }
+      } else { other++; }
       console.log(`    ${String(l ? l.pts : '—').padStart(8)} ${String(l ? l.pt3 : '—').padStart(8)}`
-        + `  ${String(r.v).padStart(8)}  ${ratio.padEnd(6)} ${info.name || uuid}`
+        + `  ${String(r.v).padStart(8)}  ${ratio.padEnd(6)} ${info.name || profileID}`
         + `  [${r.cat}${l && l.via === 'alias' ? ', alias' : ''}]`);
     }
   }
 
   console.log('');
-  console.log(`  ratio x1 (agree): ${equal}   exact multiple >=x2: ${doubled}   other: ${other}`);
+  console.log(`  ratio x1 (agree): ${equal}   exact multiple >=x2: ${doubled}   other: ${other}`
+    + `   no record for this game: ${noRecord}`);
   console.log('');
   console.log('  A game that doubles for EVERY player in it is a duplicated fixture in');
   console.log('  publicProfileStatistics. A game that doubles for only some is not — and');
