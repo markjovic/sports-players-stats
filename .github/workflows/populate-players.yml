@@ -93,6 +93,7 @@ jobs:
 
       # Directive 13 / T27: inputs reach bash through env: ONLY.
       - name: Populate
+        id: populate
         env:
           IN_SEASONS: ${{ inputs.seasons }}
           IN_TEAMNAME: ${{ inputs.team_name }}
@@ -144,8 +145,18 @@ jobs:
 
       # Player files on their own are invisible. These three are what make the
       # populated players show up, in the order the nightly chain uses them.
+      # ⚠️ REBUILD IS GATED ON THE FETCH HAVING ACTUALLY HAPPENED.
+      # populate-players.js does NOT fetch when the selection spans more than
+      # --inline-shard-limit (24) shards: above that it clears statsChecked, writes
+      # handoff=true, and exits 0 for Fetch Profile Stats (matrix) to do the work.
+      # Measured 2026-10-19: the 215-row impossible-records CSV touches 125 shards,
+      # so this is the NORMAL path for a corpus-wide repair, not an edge case.
+      # Gating only on `rebuild` would then dispatch team-stats, search index and
+      # Pages against player files whose values are unchanged — republishing the
+      # contaminated data under a green run, which is the failure class this repair
+      # exists to end.
       - name: Rebuild and publish
-        if: ${{ (inputs.rebuild == true || inputs.rebuild == 'true') && inputs.dry_run != true && inputs.dry_run != 'true' }}
+        if: ${{ (inputs.rebuild == true || inputs.rebuild == 'true') && inputs.dry_run != true && inputs.dry_run != 'true' && steps.populate.outputs.handoff != 'true' }}
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
         run: |
@@ -154,4 +165,18 @@ jobs:
           gh workflow run build-search-index.yml
           gh workflow run deploy-pages.yml
           echo "Dispatched: build-team-stats (active-only), build-search-index, deploy-pages."
-          echo "These run on their own; watch the Actions tab. Pages is what makes it visible (T23)."
+          echo "These run on their own; watch the Actions tab. Pages is what makes it visible (T23).
+
+      # A skipped rebuild must SAY it was skipped and say what to run instead.
+      # A silently skipped step reads as a completed one (T94).
+      - name: Rebuild deferred — fetch first
+        if: ${{ (inputs.rebuild == true || inputs.rebuild == 'true') && inputs.dry_run != true && inputs.dry_run != 'true' && steps.populate.outputs.handoff == 'true' }}
+        run: |
+          echo "::warning::rebuild was requested but NOT dispatched — nothing has been re-fetched yet."
+          echo ""
+          echo "  statsChecked was cleared on the selected players and the fetch was handed off,"
+          echo "  because the selection spans more shards than populate-players runs inline."
+          echo "  Rebuilding now would republish the OLD values."
+          echo ""
+          echo "  Run next:  Fetch Profile Stats (matrix)   shards=[]   force UNTICKED"
+          echo "  Then:      Refresh Boards  (leaderboards -> records -> Pages)""
