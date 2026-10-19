@@ -165,7 +165,7 @@ jobs:
           gh workflow run build-search-index.yml
           gh workflow run deploy-pages.yml
           echo "Dispatched: build-team-stats (active-only), build-search-index, deploy-pages."
-          echo "These run on their own; watch the Actions tab. Pages is what makes it visible (T23).
+          echo "These run on their own; watch the Actions tab. Pages is what makes it visible (T23)."
 
       # A skipped rebuild must SAY it was skipped and say what to run instead.
       # A silently skipped step reads as a completed one (T94).
@@ -179,4 +179,4 @@ jobs:
           echo "  Rebuilding now would republish the OLD values."
           echo ""
           echo "  Run next:  Fetch Profile Stats (matrix)   shards=[]   force UNTICKED"
-          echo "  Then:      Refresh Boards  (leaderboards -> records -> Pages)""
+          echo "  Then:      Refresh Boards  (leaderboards -> records -> Pages)"
