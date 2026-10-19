@@ -116,6 +116,7 @@ const EMIT_PATHS = (ARGS['emit-paths'] === true ? null : ARGS['emit-paths']) || 
 const PLAYERS_DIR = path.join(ROOT, 'players');
 const REPORTS_DIR = path.join(ROOT, 'reports');
 const OUT_CSV     = path.join(REPORTS_DIR, 'impossible-records.csv');
+const BOX_CSV     = path.join(REPORTS_DIR, 'box-disagreements.csv');
 
 // cacheSeasons: 1 — pass 2 is ordered by sid, so one slot is all it needs, and
 // asking for more would invite the scattered-access thrash described above.
@@ -145,7 +146,8 @@ const PUSH_ATTEMPTS = 60;
 
 // Returns true only when a commit was actually pushed. The caller must not claim
 // the CSV is available to populate-players on anything else.
-function gitCommit(message) {
+function gitCommit(message, rel) {
+  rel = rel || 'reports/impossible-records.csv';
   if (NO_COMMIT) { console.log(`  [--no-commit] would commit: ${message}`); return false; }
 
   // ⚠️ -f IS REQUIRED, AND ITS ABSENCE FAILED SILENTLY. 2026-10-19: the first run
@@ -156,7 +158,7 @@ function gitCommit(message) {
   // ZERO — git does not treat "everything you named is ignored" as an error.
   // Some files under reports/ are tracked from before the rule, which is why the
   // directory looks committed.
-  execSync('git add -f -- reports/impossible-records.csv', GIT_OPTS);
+  execSync(`git add -f -- ${rel}`, GIT_OPTS);
 
   const shortstat = execSync('git diff --staged --shortstat', GIT_OPTS).toString().trim();
   if (!shortstat) {
@@ -164,14 +166,14 @@ function gitCommit(message) {
     // content already on main is a clean no-op; a file git is not tracking at all
     // means the add did nothing and the report is unreachable — which must be loud.
     let tracked = true;
-    try { execSync('git ls-files --error-unmatch -- reports/impossible-records.csv', GIT_OPTS); }
+    try { execSync(`git ls-files --error-unmatch -- ${rel}`, GIT_OPTS); }
     catch (_) { tracked = false; }
 
     if (!tracked) {
       let rule = '';
-      try { rule = execSync('git check-ignore -v -- reports/impossible-records.csv', GIT_OPTS).toString().trim(); }
+      try { rule = execSync(`git check-ignore -v -- ${rel}`, GIT_OPTS).toString().trim(); }
       catch (_) {}
-      throw new Error('reports/impossible-records.csv was written but git is not tracking it, '
+      throw new Error(`${rel} was written but git is not tracking it, `
         + 'so populate-players cannot read it.'
         + (rule ? ` Ignore rule: ${rule}` : ' No ignore rule reported — check the checkout.'));
     }
@@ -320,6 +322,15 @@ function oneGame() {
   console.log('');
 
   let doubled = 0, equal = 0, other = 0, noRecord = 0, noFile = 0;
+  // ⚠️ THE IMPOSSIBLE-RECORDS TEST CANNOT SEE THESE. It compares a stored record
+  // against the TEAM SCORE: Patrick Adler's 44 in a game whose top team score is
+  // 57 passes it, and passes build-leaderboards' verifier for the same reason —
+  // and is still wrong, because his box line says 22. The box score is a second,
+  // tighter ceiling that exists for every game we hold a box for, and a record
+  // that disagrees with it is wrong whatever its ratio. Collected here and
+  // written as a repair list in the SAME shape populate-players --from-csv=
+  // consumes, so finding them and fixing them is one run, not two.
+  const disagree = [];
   console.log(`    ${'box pts'.padStart(8)} ${'box 3pt'.padStart(8)}  ${'stored'.padStart(8)}  ratio  player`);
   for (const profileID of roster) {
     const l = line(profileID);
@@ -350,9 +361,14 @@ function oneGame() {
         ratio = `x${x}`;
         if (x === 1) equal++; else if (Number.isInteger(x) && x >= 2) doubled++; else other++;
       } else { other++; }
+      if (b !== null && b !== undefined && r.v !== b) {
+        disagree.push({ uuid: info.uuid, name: info.name, cat: r.cat, v: r.v, box: b,
+                        ratio: (b > 0 ? Math.round((r.v / b) * 100) / 100 : ''),
+                        gk: ONE_GAME, sid: ONE_SID });
+      }
       console.log(`    ${String(l ? l.pts : '—').padStart(8)} ${String(l ? l.pt3 : '—').padStart(8)}`
         + `  ${String(r.v).padStart(8)}  ${ratio.padEnd(6)} ${info.name || profileID}`
-        + `  [${r.cat}${l && l.via === 'alias' ? ', alias' : ''}]`);
+        + `  [${r.cat}${l && l.via === 'alias' ? ', alias' : ''}]  ${info.uuid}`);
     }
   }
 
@@ -371,6 +387,26 @@ function oneGame() {
   console.log('  publicProfileStatistics. A game that doubles for only some is not — and');
   console.log('  players whose stored MAX comes from a different game appear here as');
   console.log('  mismatches that mean nothing. Read the x1 count as the control.');
+  console.log('');
+
+  // The repair list. Written even when EMPTY — a header-only file is the result
+  // "nothing in this game disagrees with its box score", and the absence of a
+  // file is a failure; the two must never look alike (same rule as the corpus CSV).
+  fs.mkdirSync(REPORTS_DIR, { recursive: true });
+  const rows = ['uuid,name,category,stored,box,ratio,gameKey,sid'];
+  for (const d of disagree) {
+    rows.push([d.uuid, JSON.stringify(d.name || ''), d.cat, d.v, d.box, d.ratio, d.gk, d.sid].join(','));
+  }
+  fs.writeFileSync(BOX_CSV, rows.join('\n') + '\n');
+  console.log(`  wrote reports/box-disagreements.csv — ${disagree.length} record(s) that disagree with the box score`);
+
+  const pushed = gitCommit(`audit: ${disagree.length} box disagreement(s) in game ${ONE_GAME}`,
+                           'reports/box-disagreements.csv');
+  if (pushed && disagree.length) {
+    console.log('');
+    console.log('  NEXT: run populate-players with from_csv = reports/box-disagreements.csv');
+    console.log('  to clear statsChecked for those players and refetch them from PlayHQ.');
+  }
   console.log(`  Total ${hhmmss(Date.now() - t0)}`);
 }
 
