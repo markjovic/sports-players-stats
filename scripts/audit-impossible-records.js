@@ -84,6 +84,14 @@ const MIN_OVER = Math.max(0, parseInt(ARGS.min || '0', 10));
 // distribution printed at the end is the evidence for choosing it.
 const MIN_CAP  = Math.max(1, parseInt(ARGS['min-cap'] || '1', 10));
 const NO_COMMIT = !!ARGS['no-commit'];
+// --ratios: cross-check EVERY stored record against its box score, not only the
+// ones that fail the team-score test. 2026-10-19: Ruben Greer's stored
+// maxGamePTS of 32 against a box score of 16 in game bc5822b6 — exactly 2x, in a
+// game PlayHQ flags HIDDEN GRADE. If regraded games double-count in
+// publicProfileStatistics then the inflation is NOT confined to records that
+// happen to exceed a team score; it reaches season and career totals for every
+// player in every regraded game, and only a full scan can show that.
+const RATIOS    = !!ARGS.ratios;
 
 const PLAYERS_DIR = path.join(ROOT, 'players');
 const REPORTS_DIR = path.join(ROOT, 'reports');
@@ -95,7 +103,7 @@ const OUT_CSV     = path.join(REPORTS_DIR, 'impossible-records.csv');
 // because it exists to show the two populations SEPARATELY (fabricated stats vs
 // games whose scoreline is a placeholder). Every other caller takes the shared
 // MIN_TRUSTED_SCORE default in game-scores.cjs; do not copy this opt-out.
-const lookup = makeLookup(ROOT, { cacheSeasons: 1, minScore: 1 });
+const lookup = makeLookup(ROOT, { cacheSeasons: 1, minScore: 1, box: true });
 
 const CATS = ['maxGamePTS', 'maxGameThreePt'];
 
@@ -179,9 +187,10 @@ function hhmmss(ms) {
 
 function writeCsv(offenders) {
   fs.mkdirSync(REPORTS_DIR, { recursive: true });
-  const rows = ['uuid,name,category,stored,ceiling,game_max_score,gameKey,sid'];
+  const rows = ['uuid,name,category,stored,ceiling,game_max_score,box_pts,gameKey,sid'];
   for (const o of offenders) {
-    rows.push([o.uuid, JSON.stringify(o.name || ''), o.cat, o.v, o.ceiling, o.cap, o.gk, o.sid].join(','));
+    rows.push([o.uuid, JSON.stringify(o.name || ''), o.cat, o.v, o.ceiling, o.cap,
+               (o.box === null || o.box === undefined) ? '' : o.box, o.gk, o.sid].join(','));
   }
   fs.writeFileSync(OUT_CSV, rows.join('\n') + '\n');
 }
@@ -240,15 +249,40 @@ function main() {
   console.log(`\nPass 2: resolving against ${bySid.size.toLocaleString()} season game files`);
   const offenders = [];
   let seasonsDone = 0, lowCap = 0;
+  // Box-score reconciliation. `box` is what the SPECTATOR endpoint recorded for
+  // this player in this game; `v` is what publicProfileStatistics gave us. Two
+  // independent sources for the same fact, and where they disagree the ratio
+  // between them is the diagnostic — an exact small-integer multiple is a
+  // double-count, anything else is a different fault.
+  const ratioHist = new Map();     // ratio (2dp) -> count, --ratios only
+  let ratioChecked = 0, ratioNoBox = 0, ratioExact = 0;
+
+  const RATIO_SAMPLES = [];
+  function noteRatio(it, sid, box) {
+    if (box === null) { ratioNoBox++; return; }
+    ratioChecked++;
+    if (box === it.v) { ratioExact++; return; }
+    // 3-pointers are a COUNT, points are a total; only compare like with like.
+    if (it.cat !== 'maxGamePTS') return;
+    const r = box > 0 ? Math.round((it.v / box) * 100) / 100 : null;
+    if (r === null) return;
+    ratioHist.set(r, (ratioHist.get(r) || 0) + 1);
+    if (RATIO_SAMPLES.length < 20 && Number.isInteger(r) && r >= 2) {
+      RATIO_SAMPLES.push(`    stored ${String(it.v).padStart(4)}  box ${String(box).padStart(4)}`
+        + `  x${r}  ${it.name || it.uuid}  game ${it.gk} (season ${sid})`);
+    }
+  }
 
   for (const [sid, items] of bySid) {
     for (const it of items) {
+      if (RATIOS) noteRatio(it, sid, lookup.boxPts(sid, it.gk, it.uuid));
       const cap = lookup.maxScore(sid, it.gk);
       if (cap === null) { unverifiable++; continue; }
       if (cap < MIN_CAP) { lowCap++; unverifiable++; continue; }
       const ceiling = ceilingFor(it.cat, cap);
       if (it.v > ceiling + MIN_OVER) {
-        offenders.push({ uuid: it.uuid, name: it.name, cat: it.cat, v: it.v, ceiling, cap, gk: it.gk, sid });
+        const box = lookup.boxPts(sid, it.gk, it.uuid);
+        offenders.push({ uuid: it.uuid, name: it.name, cat: it.cat, v: it.v, ceiling, cap, gk: it.gk, sid, box });
       }
     }
     seasonsDone++;
@@ -316,13 +350,69 @@ function main() {
   if (!offenders.length) {
     console.log('  No impossible stored records. (A header-only CSV is still written.)');
   } else {
+    // Three-way reconciliation. Comparing a stored record against the TEAM SCORE
+    // alone can only say "these disagree"; it cannot say which half is wrong. The
+    // box score is a second, independent record of the same player-game, so:
+    //   box == stored  -> the player really did score it; the SCORELINE is the bad
+    //                     half, and the repair belongs to the game file
+    //   box <  stored  -> the stored value is inflated; an exact integer multiple
+    //                     points at double-counting in publicProfileStatistics
+    //   no box         -> genuinely unverifiable, and must not be called impossible
+    const verdictOf = (o) => {
+      if (o.box === null)   return 'NO BOX — unverifiable';
+      if (o.box === o.v)    return 'box AGREES — scoreline is the bad half';
+      const r = o.box > 0 ? o.v / o.box : null;
+      if (r && Number.isInteger(r) && r >= 2) return `box ${o.box} — stored is EXACTLY x${r}`;
+      return `box ${o.box} — differs (no clean ratio)`;
+    };
     console.log(`  worst ${Math.min(LIMIT, offenders.length)}:`);
     console.log(`    ${'stored'.padStart(7)} ${'ceiling'.padStart(8)}  ${'cat'.padEnd(15)} name / game`);
     for (const o of offenders.slice(0, LIMIT)) {
       console.log(`    ${String(o.v).padStart(7)} ${String(o.ceiling).padStart(8)}  ${o.cat.padEnd(15)} `
         + `${o.name || o.uuid}  game ${o.gk} (season ${o.sid}, top team score ${o.cap})`);
+      console.log(`    ${' '.repeat(17)} -> ${verdictOf(o)}`);
+    }
+
+    const byVerdict = new Map();
+    for (const o of offenders) {
+      const k = verdictOf(o).replace(/box \d+ /, 'box ').replace(/x\d+/, 'xN');
+      byVerdict.set(k, (byVerdict.get(k) || 0) + 1);
+    }
+    console.log('');
+    console.log('  offenders by box-score reconciliation:');
+    for (const [k, n] of [...byVerdict.entries()].sort((a, b) => b[1] - a[1])) {
+      console.log(`    ${String(n).padStart(6)}  ${k}`);
     }
     if (offenders.length > LIMIT) console.log(`    ... and ${offenders.length - LIMIT} more`);
+  }
+
+  if (RATIOS) {
+    console.log('');
+    console.log('── Box-score cross-check across EVERY stored record ──────────');
+    console.log(`  checked against a box score : ${ratioChecked.toLocaleString()}`);
+    console.log(`  no box score for that player: ${ratioNoBox.toLocaleString()}`);
+    console.log(`  stored == box               : ${ratioExact.toLocaleString()}`
+      + (ratioChecked ? `  (${(ratioExact / ratioChecked * 100).toFixed(1)}%)` : ''));
+    const mism = ratioChecked - ratioExact;
+    console.log(`  stored != box               : ${mism.toLocaleString()}`);
+    if (ratioHist.size) {
+      const rows = [...ratioHist.entries()].sort((a, b) => b[1] - a[1]).slice(0, 20);
+      console.log('');
+      console.log('  stored/box ratio, most common first (maxGamePTS only):');
+      for (const [r, n] of rows) {
+        const flag = Number.isInteger(r) && r >= 2 ? '   <- EXACT MULTIPLE' : '';
+        console.log(`    x${String(r).padEnd(6)} ${String(n).padStart(7)}${flag}`);
+      }
+    }
+    if (RATIO_SAMPLES.length) {
+      console.log('');
+      console.log('  exact-multiple samples:');
+      RATIO_SAMPLES.forEach(l => console.log(l));
+    }
+    console.log('');
+    console.log('  A spike at a whole number is double-counting in the source, not a');
+    console.log('  scoring anomaly. It would inflate season and career totals too, not');
+    console.log('  just the single-game maximum, because regStats sums the same lines.');
   }
 
   writeCsv(offenders);
