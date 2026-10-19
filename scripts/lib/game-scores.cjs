@@ -235,6 +235,19 @@ function makeLookup(root, opts) {
       }
       return null;
     },
+    // boxRoster(sid, gameId) -> [profileID] | null
+    //   Everyone the spectator box score lists for this game. The candidate list
+    //   for any per-game question: a player cannot hold a record for a game they
+    //   were not in, so this replaces walking players/ entirely.
+    boxRoster(sid, gameId) {
+      if (!wantBox) throw new Error('boxRoster requires makeLookup(root, { box: true })');
+      if (!sid || !gameId) return null;
+      const s = season(sid);
+      if (!s) return null;
+      const e = s.get(gameId);
+      if (!e || !e.b) return null;
+      return [...e.b.keys()];
+    },
     isForfeit(sid, gameId) {
       if (!sid || !gameId) return false;
       const s = season(sid);
