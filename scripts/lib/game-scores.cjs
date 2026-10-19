@@ -58,6 +58,7 @@
 
 const fs   = require('fs');
 const path = require('path');
+const { resolveToFullUuid } = require('./uuid-prefix.cjs');
 
 const CACHE_SEASONS = 12;
 
@@ -164,7 +165,16 @@ function makeLookup(root, opts) {
             for (const e of side) {
               if (!e || !e.profileID) continue;
               if (!b) b = new Map();
-              b.set(e.profileID, typeof e.pts === 'number' ? e.pts : null);
+              // BOTH fields. 2026-10-19: the first version indexed `pts` only, and
+              // the audit then compared maxGameThreePt — a COUNT of 3-pointers —
+              // against a points total. Those can never be equal, roughly half the
+              // stored records are that category, and the result was a 50.0%
+              // agree/disagree split reported as a finding. Compare like with like
+              // (T96, two days after writing it).
+              b.set(e.profileID, {
+                pts: typeof e.pts === 'number' ? e.pts : null,
+                pt3: typeof e.pt3 === 'number' ? e.pt3 : null,
+              });
             }
           }
           rec.b = b;   // null when this game has no box score at all
@@ -188,21 +198,42 @@ function makeLookup(root, opts) {
       const e = s.get(gameId);
       return e ? e.m : null;
     },
-    // boxPts(sid, gameId, profileID) -> number | null
-    //   null means NO BOX-SCORE ANSWER for that player in that game: the game has
-    //   no spectator box score, or the player is not in it. Absence is not zero —
-    //   a player can legitimately be missing from a box score we never captured,
-    //   and alias history means a uuid may appear under a different profileID
-    //   (fetch-profile-stats recovers those at fetch time, this does not).
-    boxPts(sid, gameId, profileID) {
-      if (!wantBox) throw new Error('boxPts requires makeLookup(root, { box: true })');
+    // boxLine(sid, gameId, profileID) -> { pts, pt3, via } | null
+    //   null means NO BOX-SCORE ANSWER: the game has no spectator box score, or
+    //   the player is not in it under any id we can resolve. Absence is not zero.
+    //
+    //   ALIAS-AWARE, because the first version was not and it mattered: a player
+    //   file's uuid and the profileID in a box score can differ (api-canonical
+    //   divergence — fetch-profile-stats logs `recovered apiId -> …` when it hits
+    //   one). An exact-match-only lookup reports those as "no box score", which
+    //   inflates the absent count with misses that are really present. Resolution
+    //   is lazy: exact match first, then the player's own resolved id, then — only
+    //   on a miss — resolve this one game's ~20 entries. `via` says which path hit,
+    //   so alias recoveries can be counted separately from first-try hits.
+    boxLine(sid, gameId, profileID) {
+      if (!wantBox) throw new Error('boxLine requires makeLookup(root, { box: true })');
       if (!sid || !gameId || !profileID) return null;
       const s = season(sid);
       if (!s) return null;
       const e = s.get(gameId);
       if (!e || !e.b) return null;
-      const v = e.b.get(profileID);
-      return (typeof v === 'number') ? v : null;
+
+      let hit = e.b.get(profileID);
+      if (hit) return { ...hit, via: 'exact' };
+
+      let resolved = null;
+      try { resolved = resolveToFullUuid(profileID, root); } catch (_) { resolved = null; }
+      if (resolved && resolved !== profileID) {
+        hit = e.b.get(resolved);
+        if (hit) return { ...hit, via: 'alias' };
+      }
+
+      for (const [id, line] of e.b) {
+        let r = null;
+        try { r = resolveToFullUuid(id, root); } catch (_) { r = null; }
+        if (r && (r === profileID || (resolved && r === resolved))) return { ...line, via: 'alias' };
+      }
+      return null;
     },
     isForfeit(sid, gameId) {
       if (!sid || !gameId) return false;
