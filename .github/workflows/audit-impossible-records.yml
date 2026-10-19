@@ -113,13 +113,54 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /scripts/
-            /players/
+            /players/indexes/
+            /players/aliases/
             /games/bv/${{ inputs.season }}.json
 
       - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # STAGE 2 OF THE SINGLE-GAME CHECKOUT.
+      #
+      # ⚠️ The sparse pattern used to list `/players/` — all 435,872 files, ~870 MB
+      # — so a "sparse" single-game run still spent 6+ minutes checking out, to read
+      # about twelve of them. Resolving a box-score id to a player file needs only
+      # players/indexes/<2hex>.json and players/aliases/<2hex>.json (512 small
+      # files; see resolveToFullUuid in scripts/lib/uuid-prefix.cjs), NOT the files
+      # themselves. So stage 1 takes those, this step asks the script which player
+      # files it will actually read, and sparse-checkout fetches exactly those.
+      #
+      # An unresolved box id is NOT fatal here: it is reported by --emit-paths on
+      # stderr and the audit prints it as NOT CHECKED. An EMPTY resolution is fatal,
+      # because the audit that follows would then report twelve false controls.
+      - name: Fetch the roster's player files
+        if: ${{ inputs.game != '' }}
+        env:
+          GAME:   ${{ inputs.game }}
+          SEASON: ${{ inputs.season }}
+        run: |
+          set -euo pipefail
+
+          case "${GAME:-}" in
+            ''|*[!0-9a-fA-F]*) echo "::error::game must be a hex id"; exit 1 ;;
+          esac
+          case "${SEASON:-}" in
+            ''|*[!0-9a-fA-F]*) echo "::error::season must be a hex id"; exit 1 ;;
+          esac
+
+          PATHS="$RUNNER_TEMP/roster-paths.txt"
+          node scripts/audit-impossible-records.js \
+            --game="$GAME" --season="$SEASON" --emit-paths="$PATHS"
+
+          if [ ! -s "$PATHS" ]; then
+            echo "::error::no player files resolved from the box score — the audit would report every roster entry as a false control"
+            exit 1
+          fi
+
+          echo "adding $(wc -l < "$PATHS") player files to the sparse checkout"
+          xargs -a "$PATHS" git sparse-checkout add
 
       # Inputs go through env and are gated in bash — never interpolated into
       # run:, never in an `if:` (directive 13 / T27).
