@@ -255,34 +255,62 @@ function main() {
   // between them is the diagnostic — an exact small-integer multiple is a
   // double-count, anything else is a different fault.
   const ratioHist = new Map();     // ratio (2dp) -> count, --ratios only
-  let ratioChecked = 0, ratioNoBox = 0, ratioExact = 0;
+  let ratioChecked = 0, ratioNoBox = 0, ratioExact = 0, ratioViaAlias = 0;
+  const perCat = { maxGamePTS: { n: 0, eq: 0 }, maxGameThreePt: { n: 0, eq: 0 } };
 
+  // An exact integer multiple only means something at a magnitude where it is
+  // unlikely by chance. 2026-10-19: the first run's "exact multiples" were
+  // stored 4 / box 2, stored 8 / box 4, stored 6 / box 2 — small numbers that
+  // land on a whole ratio constantly. Flagging those as evidence of
+  // double-counting is reading noise. Counted either way, reported separately.
+  const RATIO_MIN_BOX = 10;
   const RATIO_SAMPLES = [];
-  function noteRatio(it, sid, box) {
-    if (box === null) { ratioNoBox++; return; }
+  let multSmall = 0, multLarge = 0;
+
+  function noteRatio(it, sid, line) {
+    if (line === null) { ratioNoBox++; return; }
     ratioChecked++;
-    if (box === it.v) { ratioExact++; return; }
-    // 3-pointers are a COUNT, points are a total; only compare like with like.
-    if (it.cat !== 'maxGamePTS') return;
+    if (line.via === 'alias') ratioViaAlias++;
+
+    // Compare like with like: maxGamePTS against the box's POINTS, and
+    // maxGameThreePt against its 3-POINTER COUNT. Mixing them is what produced
+    // the meaningless 50.0% split on the first run.
+    const box = (it.cat === 'maxGameThreePt') ? line.pt3 : line.pts;
+    if (box === null || box === undefined) { ratioNoBox++; ratioChecked--; return; }
+
+    const c = perCat[it.cat];
+    if (c) c.n++;
+    if (box === it.v) { ratioExact++; if (c) c.eq++; return; }
+    if (it.cat !== 'maxGamePTS') return;      // ratios only meaningful on points
+
     const r = box > 0 ? Math.round((it.v / box) * 100) / 100 : null;
     if (r === null) return;
     ratioHist.set(r, (ratioHist.get(r) || 0) + 1);
-    if (RATIO_SAMPLES.length < 20 && Number.isInteger(r) && r >= 2) {
-      RATIO_SAMPLES.push(`    stored ${String(it.v).padStart(4)}  box ${String(box).padStart(4)}`
-        + `  x${r}  ${it.name || it.uuid}  game ${it.gk} (season ${sid})`);
+    if (Number.isInteger(r) && r >= 2) {
+      if (box >= RATIO_MIN_BOX) {
+        multLarge++;
+        if (RATIO_SAMPLES.length < 20) {
+          RATIO_SAMPLES.push(`    stored ${String(it.v).padStart(4)}  box ${String(box).padStart(4)}`
+            + `  x${r}  ${it.name || it.uuid}  game ${it.gk} (season ${sid})`);
+        }
+      } else {
+        multSmall++;
+      }
     }
   }
 
   for (const [sid, items] of bySid) {
     for (const it of items) {
-      if (RATIOS) noteRatio(it, sid, lookup.boxPts(sid, it.gk, it.uuid));
+      if (RATIOS) noteRatio(it, sid, lookup.boxLine(sid, it.gk, it.uuid));
       const cap = lookup.maxScore(sid, it.gk);
       if (cap === null) { unverifiable++; continue; }
       if (cap < MIN_CAP) { lowCap++; unverifiable++; continue; }
       const ceiling = ceilingFor(it.cat, cap);
       if (it.v > ceiling + MIN_OVER) {
-        const box = lookup.boxPts(sid, it.gk, it.uuid);
-        offenders.push({ uuid: it.uuid, name: it.name, cat: it.cat, v: it.v, ceiling, cap, gk: it.gk, sid, box });
+        const line = lookup.boxLine(sid, it.gk, it.uuid);
+        const box  = line ? (it.cat === 'maxGameThreePt' ? line.pt3 : line.pts) : null;
+        offenders.push({ uuid: it.uuid, name: it.name, cat: it.cat, v: it.v, ceiling, cap, gk: it.gk, sid,
+                         box: (box === undefined ? null : box), via: line ? line.via : null });
       }
     }
     seasonsDone++;
@@ -359,7 +387,7 @@ function main() {
     //                     points at double-counting in publicProfileStatistics
     //   no box         -> genuinely unverifiable, and must not be called impossible
     const verdictOf = (o) => {
-      if (o.box === null)   return 'NO BOX — unverifiable';
+      if (o.box === null)   return 'NO BOX LINE — unverifiable';
       if (o.box === o.v)    return 'box AGREES — scoreline is the bad half';
       const r = o.box > 0 ? o.v / o.box : null;
       if (r && Number.isInteger(r) && r >= 2) return `box ${o.box} — stored is EXACTLY x${r}`;
@@ -389,12 +417,21 @@ function main() {
   if (RATIOS) {
     console.log('');
     console.log('── Box-score cross-check across EVERY stored record ──────────');
-    console.log(`  checked against a box score : ${ratioChecked.toLocaleString()}`);
-    console.log(`  no box score for that player: ${ratioNoBox.toLocaleString()}`);
+    console.log(`  checked against a box score : ${ratioChecked.toLocaleString()}`
+      + `   (${ratioViaAlias.toLocaleString()} matched only after alias resolution)`);
+    console.log(`  no box line for that player : ${ratioNoBox.toLocaleString()}`);
     console.log(`  stored == box               : ${ratioExact.toLocaleString()}`
       + (ratioChecked ? `  (${(ratioExact / ratioChecked * 100).toFixed(1)}%)` : ''));
     const mism = ratioChecked - ratioExact;
     console.log(`  stored != box               : ${mism.toLocaleString()}`);
+    // Split by category, because they are compared against different fields and
+    // a combined rate hides which one disagrees.
+    for (const [cat, c] of Object.entries(perCat)) {
+      if (!c.n) continue;
+      const field = cat === 'maxGameThreePt' ? 'box pt3' : 'box pts';
+      console.log(`      ${cat.padEnd(15)} vs ${field}: ${c.n.toLocaleString()} checked, `
+        + `${c.eq.toLocaleString()} equal (${(c.eq / c.n * 100).toFixed(1)}%)`);
+    }
     if (ratioHist.size) {
       const rows = [...ratioHist.entries()].sort((a, b) => b[1] - a[1]).slice(0, 20);
       console.log('');
@@ -404,15 +441,21 @@ function main() {
         console.log(`    x${String(r).padEnd(6)} ${String(n).padStart(7)}${flag}`);
       }
     }
+    console.log('');
+    console.log(`  exact integer multiples, box >= ${RATIO_MIN_BOX} : ${multLarge.toLocaleString()}`
+      + '   <- the only ones that mean anything');
+    console.log(`  exact integer multiples, box <  ${RATIO_MIN_BOX} : ${multSmall.toLocaleString()}`
+      + '   (small-number coincidence, not evidence)');
     if (RATIO_SAMPLES.length) {
       console.log('');
-      console.log('  exact-multiple samples:');
+      console.log(`  samples (box >= ${RATIO_MIN_BOX}):`);
       RATIO_SAMPLES.forEach(l => console.log(l));
     }
     console.log('');
-    console.log('  A spike at a whole number is double-counting in the source, not a');
-    console.log('  scoring anomaly. It would inflate season and career totals too, not');
-    console.log('  just the single-game maximum, because regStats sums the same lines.');
+    console.log('  READ THIS AS A DISTRIBUTION, NOT A LIST. Double-counting in the source');
+    console.log('  would make x2 DOMINATE the mismatches. A handful of exact multiples');
+    console.log('  spread across thousands of distinct ratios is what chance looks like,');
+    console.log('  and is evidence AGAINST a systematic multiplier.');
   }
 
   writeCsv(offenders);
