@@ -1,8 +1,19 @@
 # .github/workflows/audit-impossible-records.yml
 name: Audit impossible records
 
-# READ-ONLY. No PlayHQ calls, no writes to data, no commit, no data-write lock.
-# Walks players/ and games/bv in the checkout and prints to the job log.
+# No PlayHQ calls, no writes to players/ or games/. It COMMITS exactly one file:
+# reports/impossible-records.csv.
+#
+# ⚠️ IT USED TO BE contents: read WITH AN ARTIFACT UPLOAD, AND THAT WAS USELESS.
+# populate-players.js --from-csv= takes a REPO PATH, so a CSV that exists only as
+# a build artifact had to be downloaded and re-uploaded by hand to get from this
+# workflow to the one it feeds. The report is now where its consumer can read it.
+#
+# NO CONCURRENCY LOCK, DELIBERATELY — the same call made in update-team-index.yml.
+# This writes one file under reports/ that nothing else writes, so it cannot
+# conflict on content. Giving it `data-write` would queue it behind the nightly and
+# both sweeps, and GitHub allows only ONE waiter per group (T19). Push contention is
+# handled by the 60-attempt retry in the script, which THROWS when exhausted.
 #
 # WHAT IT ANSWERS. Which players carry a STORED single-game record that is
 # impossible — a maxGamePTS higher than any team scored in that game, or a
@@ -47,6 +58,11 @@ on:
         required: false
         default: '0'
         type: string
+      no_commit:
+        description: 'Produce the CSV but do not commit it. Use when you only want the numbers — populate-players cannot read an uncommitted file.'
+        required: false
+        default: false
+        type: boolean
       min_cap:
         description: 'Treat a game whose top team score is below this as UNVERIFIABLE rather than as a ceiling. 1 trusts every non-zero scoreline. Raise it when the cap distribution shows a cluster of offenders behind implausible scorelines — those are a games-data problem, not fabricated stats.'
         required: false
@@ -54,7 +70,7 @@ on:
         type: string
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   audit:
@@ -63,15 +79,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 1
+          token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       # Inputs go through env and are gated in bash — never interpolated into
       # run:, never in an `if:` (directive 13 / T27).
       - name: Audit stored single-game records against game scorelines
         env:
-          LIMIT:   ${{ inputs.limit }}
-          MIN:     ${{ inputs.min }}
-          MIN_CAP: ${{ inputs.min_cap }}
+          LIMIT:     ${{ inputs.limit }}
+          MIN:       ${{ inputs.min }}
+          MIN_CAP:   ${{ inputs.min_cap }}
+          NO_COMMIT: ${{ inputs.no_commit }}
         run: |
           set -euo pipefail
 
@@ -91,6 +115,8 @@ jobs:
             ''|*[!0-9]*) echo "::error::min_cap must be a whole number, got '${MIN_CAP:-}'"; exit 1 ;;
             *)           ARGS="$ARGS --min-cap=${MIN_CAP:-1}" ;;
           esac
+
+          if [ "${NO_COMMIT:-false}" = "true" ]; then ARGS="$ARGS --no-commit"; fi
 
           echo "running: node scripts/audit-impossible-records.js $ARGS"
           node --max-old-space-size=8192 scripts/audit-impossible-records.js $ARGS
