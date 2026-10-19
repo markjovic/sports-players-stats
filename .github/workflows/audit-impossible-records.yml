@@ -115,6 +115,7 @@ jobs:
             /scripts/
             /players/indexes/
             /players/aliases/
+            /reports/
             /games/bv/${{ inputs.season }}.json
 
       - name: Configure git
