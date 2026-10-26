@@ -1,34 +1,44 @@
 {
   "advisory": "ADVISORY ONLY. This file is a single path overwritten by EVERY fold run, including a 1-player one, so it is not a durable record. Do not build any repair, check or audit on it — reconstruct from the player data instead (spectatorIds[] is the source of truth). See claude_context.md trap T6.",
-  "generatedAt": "2026-10-25T20:11:08.886Z",
+  "generatedAt": "2026-10-26T22:38:45.107Z",
   "dryRun": false,
-  "filesScanned": 439293,
-  "folded": 1,
-  "promotes": 0,
+  "filesScanned": 439607,
+  "folded": 3,
+  "promotes": 2,
   "merges": 1,
   "statsRefetchQueued": 1,
   "refetchShards": [
-    "ad"
+    "95"
   ],
   "stubWouldHaveWonUnderOldComparator": 0,
   "apiWouldHaveWonUnderOldComparator": 1,
   "keeperChangedTotal": 1,
-  "indexShardsTouched": 2,
-  "aliasEntriesScanned": 520530,
-  "aliasValuesRepointed": 0,
-  "aliasShardsTouched": 0,
+  "indexShardsTouched": 6,
+  "aliasEntriesScanned": 520846,
+  "aliasValuesRepointed": 6,
+  "aliasShardsTouched": 6,
   "entries": [
     {
-      "apiId": "ad46d3ec-800f-4252-af85-643201699866",
+      "apiId": "9592b10d-e7ad-410c-b5eb-7945bc5cadc5",
       "action": "merge",
-      "oldKey": "37989622-d654-438e-b32a-cc67d0187172",
-      "keeper": "37989622-d654-438e-b32a-cc67d0187172",
+      "oldKey": "b5ec83f0-adee-425b-8264-a8adfdaa2e58",
+      "keeper": "b5ec83f0-adee-425b-8264-a8adfdaa2e58",
       "sourceRank": 3,
       "targetRank": 3,
-      "sourceGames": 2,
-      "targetGames": 180,
-      "oldComparatorKeeper": "ad46d3ec-800f-4252-af85-643201699866",
+      "sourceGames": 168,
+      "targetGames": 255,
+      "oldComparatorKeeper": "9592b10d-e7ad-410c-b5eb-7945bc5cadc5",
       "statsRefetchQueued": true
+    },
+    {
+      "apiId": "2992768d-9555-4b44-9e7a-576e6191ecb3",
+      "action": "promote",
+      "oldKey": "fcc14cb7-1873-47b7-8e05-ffa8f830ab8f"
+    },
+    {
+      "apiId": "b4cc5811-10b8-42e9-a257-a2b35d00990d",
+      "action": "promote",
+      "oldKey": "fda6ce4c-893c-45c3-aaec-ce60028d0cc4"
     }
   ]
 }
