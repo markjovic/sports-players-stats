@@ -1,0 +1,29 @@
+# .github/workflows/probe-junior-clubs.yml
+# READ-ONLY probe #2 for the club player-movement diagram. No writes, no commits, no network calls.
+# It does not replace Probe Club Movement — it answers what that one left open: the real club
+# inventory, the age groups, whether a finishing position is derivable from the fixtures on disk,
+# and how age groups actually progress season to season.
+#
+# Goes RED when it could not establish something it was asked to establish. The log names which.
+#
+# Needs a PLAIN full checkout: it reads several hundred player files, and a sparse/blobless clone
+# fetches each one over the network.
+
+name: Probe Junior Clubs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout (full)
+        uses: actions/checkout@v4
+
+      - name: Probe
+        run: node scripts/probe-junior-clubs.js
