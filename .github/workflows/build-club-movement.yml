@@ -1,0 +1,70 @@
+# .github/workflows/build-club-movement.yml
+# Builds the club player-movement page and uploads it as an artifact. Reads only; commits nothing.
+#
+# The page carries aggregates and pseudonymous player codes (P001…) — no player id, no player
+# name, no roster data — so it is safe to publish. It is NOT committed here: download the
+# artifact and put it where you want it.
+#
+# Needs a PLAIN full checkout: it reads every player file on the competition's rosters, and a
+# sparse/blobless clone fetches each one over the network.
+
+name: Build Club Movement
+
+on:
+  workflow_dispatch:
+    inputs:
+      club:
+        description: 'Club (as PlayHQ records it on the player registration)'
+        required: true
+        default: 'Maroondah Magic Basketball Club'
+        type: choice
+        options:
+          - 'Maroondah Magic Basketball Club'
+          - 'Mt Lilydale Lakers Basketball Club (MLBC)'
+          - 'SEBC Saints'
+          - 'Mt Evelyn Meteors Basketball Club'
+          - 'Crossover United Basketball Club'
+          - 'Eastern Eagles Basketball Club'
+          - 'Kilsyth Heat Basketball Club'
+          - 'Montrose Vikings Basketball Club'
+          - 'Fosters Phantoms Basketball Club'
+          - 'South Croydon Youth Club Scorpions Basketball Club (SCYC)'
+      gender:
+        description: 'Which teams to draw'
+        required: true
+        default: 'Boys'
+        type: choice
+        options: [ 'Boys', 'Girls', 'All' ]
+      allow_ungraded:
+        description: 'Drop club teams whose age group cannot be read (default: fail and list them)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout (full)
+        uses: actions/checkout@v4
+
+      - name: Build
+        env:
+          CLUB: ${{ inputs.club }}
+          GENDER: ${{ inputs.gender }}
+          ALLOW_UNGRADED: ${{ inputs.allow_ungraded }}
+          TEMPLATE: scripts/movement-template.html
+          OUT: movement.html
+        run: node scripts/build-club-movement.js
+
+      - name: Upload page
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: movement
+          path: movement.html
+          if-no-files-found: error
