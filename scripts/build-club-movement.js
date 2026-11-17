@@ -29,9 +29,10 @@ const COMP_ID    = process.env.COMP_ID   || 'f0c4ccaa';                        /
 const ORG_MATCH  = new RegExp(process.env.ORG_MATCH || 'kilsyth', 'i');
 const CLUB       = process.env.CLUB      || 'Maroondah Magic Basketball Club';
 const GENDER     = process.env.GENDER    || 'Boys';                            // Boys | Girls | All
-const TEMPLATE   = process.env.TEMPLATE  || 'scripts/movement-template.html';
+const TEMPLATE   = process.env.TEMPLATE  || 'templates/movement-template.html';
 const OUT        = process.env.OUT       || 'movement.html';
-const ALLOW_UNGRADED = /^(1|true|yes)$/i.test(process.env.ALLOW_UNGRADED || '');
+// true DROPS club teams whose age group cannot be read; false (default) fails and lists them.
+const DROP_UNGRADED = /^(1|true|yes)$/i.test(process.env.DROP_UNGRADED || '');
 const TRUNC_LEN  = 13;
 
 const t0 = Date.now();
@@ -195,22 +196,32 @@ log(`teams with a club resolved from players: ${Object.keys(TEAM_CLUB).length} o
 // ---------------------------------------------------------------- 5. the club's teams
 const genderOk = (g) => GENDER === 'All' || g === GENDER;
 const isOurs = (key) => TEAM_CLUB[key] === CLUB;
-const OURS = Object.keys(TEAMS).filter(k => isOurs(k) && genderOk(TEAMS[k].gender));
-if (!OURS.length) {
+const OURS_ALL = Object.keys(TEAMS).filter(isOurs);
+if (!OURS_ALL.length) {
   const have = [...new Set(Object.values(TEAM_CLUB))].sort();
-  die(`no ${GENDER} teams for club "${CLUB}".\nClubs present in this competition:\n  ` + have.join('\n  '));
+  die(`no teams at all for club "${CLUB}".\nClubs present in this competition:\n  ` + have.join('\n  '));
 }
-const ungraded = OURS.filter(k => TEAMS[k].age === null);
-if (ungraded.length && !ALLOW_UNGRADED) {
-  die(`${ungraded.length} of ${OURS.length} club teams have no readable age group, so they cannot be placed in a panel.\n` +
-      ungraded.slice(0, 20).map(k => `  ${NAME_OF[TEAMS[k].sid]} · ${TEAMS[k].name} · grade ${JSON.stringify(TEAMS[k].grade)}`).join('\n') +
+// The unreadable check runs BEFORE the gender filter, deliberately. A team whose grade cannot be
+// read has no gender either, so filtering first would drop it silently and the build would go
+// green having quietly lost a team. Unreadable is reported here, whichever gender was asked for.
+const ungraded = OURS_ALL.filter(k => TEAMS[k].age === null || TEAMS[k].gender === null);
+if (ungraded.length && !DROP_UNGRADED) {
+  die(`${ungraded.length} of ${OURS_ALL.length} teams for this club have an unreadable grade, so their age group ` +
+      `and gender cannot be determined and they cannot be placed in a panel.\n` +
+      ungraded.slice(0, 20).map(k => `  ${NAME_OF[TEAMS[k].sid]} · ${TEAMS[k].name} · gid ${JSON.stringify(TEAMS[k].gid)} · grade ${JSON.stringify(TEAMS[k].grade)}`).join('\n') +
       (ungraded.length > 20 ? `\n  … +${ungraded.length - 20} more` : '') +
-      `\nRe-run with allow_ungraded=true to drop them, once you have looked at the list.`);
+      `\nRe-run with drop_ungraded=true to leave them out, once you have looked at the list.`);
 }
-const USE = new Set(OURS.filter(k => TEAMS[k].age !== null));
+const readable = OURS_ALL.filter(k => TEAMS[k].age !== null && TEAMS[k].gender !== null);
+const OURS = readable.filter(k => genderOk(TEAMS[k].gender));
+if (!OURS.length) {
+  const seen = [...new Set(readable.map(k => TEAMS[k].gender))].sort();
+  die(`no ${GENDER} teams for club "${CLUB}" — this club's teams are: ${seen.join(', ') || '(none readable)'}`);
+}
+const USE = new Set(OURS);
 const BANDS = [...new Set([...USE].map(k => TEAMS[k].age))].sort((a, b) => a - b);
-log(`club teams: ${USE.size} (${GENDER}) · age bands ${JSON.stringify(BANDS.map(a => 'U' + a))}` +
-    (ungraded.length ? ` · ${ungraded.length} dropped as ungraded` : ''));
+log(`club teams: ${USE.size} of ${OURS_ALL.length} (${GENDER}) · age bands ${JSON.stringify(BANDS.map(a => 'U' + a))}` +
+    (ungraded.length ? ` · ${ungraded.length} LEFT OUT as unreadable (drop_ungraded)` : ''));
 
 // ---------------------------------------------------------------- 6. ladder position per team
 // Within a (season, grade): wins desc, then points difference desc. Every FINAL fixture must carry
