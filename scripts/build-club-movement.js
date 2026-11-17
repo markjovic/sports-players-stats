@@ -190,8 +190,55 @@ for (const [key, v] of teamClubVotes) {
   TEAM_CLUB[key] = ranked[0][0];
   if (ranked.length > 1 && ranked[1][1] === ranked[0][1]) splitVotes++;
 }
+// SECOND PASS, by team name. A season entry does not always carry `club` — measured on Kilsyth
+// Junior Domestic Summer 2026/27, where every team came back clubless, emptied the whole column
+// and sent 102 leavers to a "(unknown club)" box. A club names its teams consistently across
+// seasons (MMB55, U18 Boys MM10), so a name that maps to exactly ONE club in the seasons where
+// the club IS known settles it in the seasons where it is not. A name used by more than one club
+// is left unresolved rather than guessed.
+let byName = 0, byKey = 0, nameAmbiguous = 0;
+{
+  // The naming format CHANGES between seasons: older seasons list "MMB08", the current one lists
+  // "U13 MMB08", and 2020/21 listed "U18 Boys MM10". So the age token, the gender word and the
+  // day of the week are stripped before matching — they describe the GRADE, not the club.
+  const norm = (n) => String(n || '').toUpperCase()
+    .replace(/\bU\s?\/?\s?\d{1,2}\b/g, ' ')
+    .replace(/\b(MON|TUE|TUES|WED|WEDS|THU|THUR|THURS|FRI|SAT|SUN)[A-Z]*\b/g, ' ')
+    .replace(/\b(BOYS?|GIRLS?|MIXED|MEN|WOMEN|MINIBALL|WALLABIES)\b/g, ' ')
+    .replace(/[^A-Z0-9]+/g, ' ').trim();
+  // Second level: the same name with its trailing team NUMBER removed, so a team number that is
+  // new this season still resolves ("MMB123" -> "MMB"). Ambiguous keys are left alone.
+  const keyOf = (n) => norm(n).replace(/\s*\d+\s*$/, '').trim();
+
+  const nameToClubs = new Map(), keyToClubs = new Map();
+  for (const [k, club] of Object.entries(TEAM_CLUB)) {
+    const n = norm(TEAMS[k].name), kk = keyOf(TEAMS[k].name);
+    if (n) { if (!nameToClubs.has(n)) nameToClubs.set(n, new Set()); nameToClubs.get(n).add(club); }
+    if (kk) { if (!keyToClubs.has(kk)) keyToClubs.set(kk, new Set()); keyToClubs.get(kk).add(club); }
+  }
+  for (const k of Object.keys(TEAMS)) {
+    if (TEAM_CLUB[k]) continue;
+    const byN = nameToClubs.get(norm(TEAMS[k].name));
+    if (byN && byN.size === 1) { TEAM_CLUB[k] = [...byN][0]; byName++; continue; }
+    const byK = keyToClubs.get(keyOf(TEAMS[k].name));
+    if (byK && byK.size === 1) { TEAM_CLUB[k] = [...byK][0]; byKey++; continue; }
+    if ((byN && byN.size > 1) || (byK && byK.size > 1)) nameAmbiguous++;
+  }
+  if (byName || byKey || nameAmbiguous) log(`  + ${byName} resolved by exact team name, ${byKey} by club prefix` +
+    (nameAmbiguous ? ` · ${nameAmbiguous} left unresolved because the name is used by more than one club` : ''));
+}
 log(`teams with a club resolved from players: ${Object.keys(TEAM_CLUB).length} of ${teamCount}` +
     (splitVotes ? ` · ${splitVotes} tied votes (first taken)` : ''));
+{
+  const noClub = Object.keys(TEAMS).filter(k => !TEAM_CLUB[k]);
+  if (noClub.length) {
+    const bySeason = new Map();
+    noClub.forEach(k => bySeason.set(TEAMS[k].sid, (bySeason.get(TEAMS[k].sid) || 0) + 1));
+    log(`  ${noClub.length} team(s) have NO club, because no player file carries a registration to them:`);
+    [...bySeason.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8)
+      .forEach(([sid, n]) => log(`    ${String(NAME_OF[sid]).padEnd(18)} ${n} of ${Object.values(TEAMS).filter(t => t.sid === sid).length}`));
+  }
+}
 
 // ---------------------------------------------------------------- 5. the club's teams
 const genderOk = (g) => GENDER === 'All' || g === GENDER;
@@ -222,6 +269,23 @@ const USE = new Set(OURS);
 const BANDS = [...new Set([...USE].map(k => TEAMS[k].age))].sort((a, b) => a - b);
 log(`club teams: ${USE.size} of ${OURS_ALL.length} (${GENDER}) · age bands ${JSON.stringify(BANDS.map(a => 'U' + a))}` +
     (ungraded.length ? ` · ${ungraded.length} LEFT OUT as unreadable (drop_ungraded)` : ''));
+
+// A season that contributes NO node is the failure this table exists to make impossible to miss:
+// the column renders empty and every player reads as having left, which is indistinguishable from
+// a real exodus unless the counts are on screen.
+{
+  log('\nper season — competition teams · with a club · this club · this club (after gender + grade):');
+  const dead = [];
+  for (const se of SEASONS) {
+    const all = Object.keys(TEAMS).filter(k => TEAMS[k].sid === se.id);
+    const withClub = all.filter(k => TEAM_CLUB[k]).length;
+    const mineAll = all.filter(k => TEAM_CLUB[k] === CLUB).length;
+    const mineUse = all.filter(k => USE.has(k)).length;
+    log(`  ${String(se.name).padEnd(18)} ${String(all.length).padStart(5)} ${String(withClub).padStart(8)} ${String(mineAll).padStart(8)} ${String(mineUse).padStart(10)}`);
+    if (all.length && !mineUse) dead.push(se.name);
+  }
+  if (dead.length) log(`  (no teams for this club in: ${dead.join(', ')})`);
+}
 
 // ---------------------------------------------------------------- 6. ladder position per team
 // Within a (season, grade): wins desc, then points difference desc. Every FINAL fixture must carry
@@ -275,8 +339,10 @@ const boxOfLeaver = (rows, afterO) => {
   const nextO = Math.min(...later.filter(r => r.o !== null).map(r => r.o).concat([Infinity]));
   const inComp = later.filter(r => r.o === nextO);
   if (inComp.length) {
-    const c = inComp[0].club;
-    return c && c !== CLUB ? `to:${c}` : (c === CLUB ? 'older' : 'to:(unknown club)');
+    const r0 = inComp[0];
+    const c = r0.club || TEAM_CLUB[`${r0.sid}|${r0.tid}`] || null;   // season entry may carry no club
+    if (!c) return `to:${r0.teamName || '(team with no club recorded)'}`;
+    return c === CLUB ? 'older' : `to:${c}`;
   }
   const out = later.filter(r => r.o === null)[0];
   const org = out ? (ORG_OF[out.sid] || 'another association') : 'another association';
@@ -352,7 +418,8 @@ for (const [full, rows] of CAREER) {
     let sk = 'new';
     if (before.length) {
       const inComp = before.filter(r => r.o !== null).sort((a, b) => b.o - a.o)[0];
-      if (inComp && inComp.club && inComp.club !== CLUB) sk = `from:${inComp.club}`;
+      const pc = inComp ? (inComp.club || TEAM_CLUB[`${inComp.sid}|${inComp.tid}`] || null) : null;
+      if (inComp && pc && pc !== CLUB) sk = `from:${pc}`;
       else if (inComp) sk = 'back';
       else {
         const out = before.filter(r => r.o === null).sort((a, b) => String(START_OF[b.sid]).localeCompare(String(START_OF[a.sid])))[0];
@@ -374,7 +441,7 @@ for (const [full, rows] of CAREER) {
     } else if (o < first) cells.push(null);
     else {
       const here = rows.filter(r => r.o === o);
-      if (here.length) cells.push({ k: 'to', l: here[0].club || here[0].teamName });
+      if (here.length) cells.push({ k: 'to', l: here[0].club || TEAM_CLUB[`${here[0].sid}|${here[0].tid}`] || here[0].teamName });
       else {
         const outside = rows.filter(r => r.o === null && NAME_OF[r.sid] && START_OF[r.sid] &&
           START_OF[r.sid] >= START_OF[SEASONS[o].id] && START_OF[r.sid] <= (START_OF[SEASONS[Math.min(o + 1, NS - 1)].id] || '9999'));
@@ -389,10 +456,12 @@ PLAYERS.forEach((p, i) => { p.c = `P${String(i + 1).padStart(3, '0')}`; delete p
 log(`players on this club's teams: ${PLAYERS.length}` +
     ` · playing up into an older age group: ${playingUp.players} players, ${playingUp.instances} extra registrations`);
 if (sameBand.count) {
-  console.log(`\nANOMALY: ${sameBand.count} registration(s) put a player on TWO teams in the SAME age group in one season.`);
-  console.log('That is not supposed to happen in this competition, and it is not a regrade (those are collapsed by tid first).');
+  console.log(`\nNOTE: ${sameBand.count} registration(s) put a player on TWO teams in the SAME age group in one season.`);
+  console.log('Not a regrade — those are collapsed by tid first — so most are a player changing teams within their age');
+  console.log('group mid-season, which is sequential rather than two teams at once. The team they played more games for');
+  console.log('is taken as the position; the other shows on its team as an extra appearance.');
   sameBand.eg.forEach(e => console.log('  · ' + e));
-  console.log('The younger-then-most-games order resolved them so the build is reproducible — but they are worth a look.\n');
+  console.log('');
 }
 
 // ---------------------------------------------------------------- 8. nodes, with the hard checks
@@ -429,18 +498,37 @@ for (const nd of NODES) {
   for (const [k, v] of hop) if (!all.has(k)) die(`player hops reference a ribbon that does not exist: ${k} (${v})`);
 }
 if (NODES.some(n => !n.g)) die(`${NODES.filter(n => !n.g).length} nodes have no grade`);
+// A column with teams but no PLAYERS renders empty and reads as a mass exodus. That is the one
+// failure a reader cannot tell from a real one, so it is reported in terms of nodes, not teams.
+{
+  const perCol = SEASONS.map((se, i) => ({
+    name: se.name,
+    teams: [...USE].filter(k => TEAMS[k].sid === se.id).length,
+    nodes: NODES.filter(n => n.sid === i).length,
+  }));
+  log('\nper season — this club\'s teams · teams that any player is registered to:');
+  perCol.forEach(c => log(`  ${String(c.name).padEnd(18)} ${String(c.teams).padStart(5)} ${String(c.nodes).padStart(8)}`));
+  const dead = perCol.filter(c => c.teams && !c.nodes).map(c => c.name);
+  if (dead.length) {
+    console.log(`\nWARNING: ${dead.length} season(s) hold teams for this club that NO player is registered to: ${dead.join(', ')}.`);
+    console.log('Those columns render empty, and the players from the season before them show as having left.');
+    console.log('That is a gap in the registration data, not an exodus — the page labels the column so it cannot be misread.\n');
+  }
+}
 log(`nodes ${NODES.length} · links ${links.size} · dest ${dest.size} · src ${src.size} — all partition checks passed`);
 
 // ---------------------------------------------------------------- 9. measured band tenure
 // Replaces the netball ageing-out prediction. For the LAST season, how many players on each team
 // are in their first season in this age band, and how many in their second or later.
 const tenure = {};
-for (const nd of NODES.filter(n => n.sid === NS - 1)) {
+const lastWith = Math.max(-1, ...NODES.map(n => n.sid));
+if (lastWith !== NS - 1) log(`note: tenure reported against ${LABELS[lastWith]} — ${LABELS[NS - 1]} has no teams for this club`);
+for (const nd of NODES.filter(n => n.sid === lastWith)) {
   const T = TEAMS[nd.key];
   let first = 0, repeat = 0;
   for (const [, rows] of CAREER) {
     if (!rows.some(r => `${r.sid}|${r.tid}` === nd.key)) continue;
-    const prior = rows.filter(r => r.o !== null && r.o < NS - 1 && r.age === T.age).length;
+    const prior = rows.filter(r => r.o !== null && r.o < lastWith && r.age === T.age).length;
     if (prior) repeat++; else first++;
   }
   tenure[nd.key] = { first, repeat };
@@ -451,6 +539,8 @@ const DATA = {
   version: 3,
   club: CLUB, org: ORG, gender: GENDER,
   seasons: LABELS,
+  tenureSeason: lastWith >= 0 ? LABELS[lastWith] : null,
+  emptySeasons: LABELS.filter((_, i) => !NODES.some(n => n.sid === i)),
   bands: BANDS.map(a => 'U' + a),
   nodes: NODES.map(n => ({ ...n, tenure: tenure[n.key] || undefined })),
   links: [...links].map(([k, n]) => { const [a, b] = k.split('>'); return { a, b, n }; }),
@@ -461,6 +551,8 @@ const DATA = {
     teams: USE.size, players: PLAYERS.length, resolvedPlayers: nPlayers,
     unresolvedIds: unresolved, ungradedDropped: ungraded.length,
     unreadableFixtures: unreadable, splitClubVotes: splitVotes,
+    clubsByVote: Object.keys(TEAM_CLUB).length - byName - byKey, clubsByName: byName, clubsByPrefix: byKey,
+    clubsAmbiguous: nameAmbiguous,
     playingUpPlayers: playingUp.players, playingUpExtraRegs: playingUp.instances,
     sameBandAnomalies: sameBand.count,
     builtAt: new Date().toISOString(),
