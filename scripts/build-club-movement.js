@@ -270,15 +270,29 @@ if (!OURS_ALL.length) {
 // played for is not a problem to stop the build over — it is reported and skipped.
 const emptyTeams = OURS_ALL.filter(k => !PLAYED.has(k));
 if (emptyTeams.length) log(`${emptyTeams.length} of ${OURS_ALL.length} club teams have no registered players and cannot appear`);
-const ungraded = OURS_ALL.filter(k => PLAYED.has(k) && (TEAMS[k].age === null || TEAMS[k].gender === null));
+// Age and gender are NOT the same failure. No age means the team cannot be placed in any panel,
+// which is fatal. No gender only means it cannot be placed in a GENDERED run — it is reported,
+// named, and excluded from a Boys or Girls build, and included in an All build. Treating the two
+// alike stopped a whole build over one 2021 team whose grade reads "Tuesday U8 A/B": the U8 is
+// perfectly readable, the grade simply names no gender.
+const ungraded = OURS_ALL.filter(k => PLAYED.has(k) && TEAMS[k].age === null);
+const describe = (k) => `  ${NAME_OF[TEAMS[k].sid]} · ${TEAMS[k].name} · gid ${JSON.stringify(TEAMS[k].gid)} · grade ${JSON.stringify(TEAMS[k].grade)}`;
 if (ungraded.length && !DROP_UNGRADED) {
-  die(`${ungraded.length} of ${OURS_ALL.length} teams for this club have an unreadable grade, so their age group ` +
-      `and gender cannot be determined and they cannot be placed in a panel.\n` +
-      ungraded.slice(0, 20).map(k => `  ${NAME_OF[TEAMS[k].sid]} · ${TEAMS[k].name} · gid ${JSON.stringify(TEAMS[k].gid)} · grade ${JSON.stringify(TEAMS[k].grade)}`).join('\n') +
+  die(`${ungraded.length} of ${OURS_ALL.length} teams for this club have no readable AGE GROUP, so they cannot be ` +
+      `placed in a panel.\n` +
+      ungraded.slice(0, 20).map(describe).join('\n') +
       (ungraded.length > 20 ? `\n  … +${ungraded.length - 20} more` : '') +
       `\nRe-run with drop_ungraded=true to leave them out, once you have looked at the list.`);
 }
-const readable = OURS_ALL.filter(k => PLAYED.has(k) && TEAMS[k].age !== null && TEAMS[k].gender !== null);
+const noGender = OURS_ALL.filter(k => PLAYED.has(k) && TEAMS[k].age !== null && TEAMS[k].gender === null);
+if (noGender.length) {
+  log(`${noGender.length} club team(s) have a readable age group but no readable GENDER` +
+      (GENDER === 'All' ? ' — included, because this run draws all teams:' : ` — left out of this ${GENDER} run:`));
+  noGender.slice(0, 10).forEach(k => log(describe(k)));
+  if (noGender.length > 10) log(`  … +${noGender.length - 10} more`);
+}
+const readable = OURS_ALL.filter(k => PLAYED.has(k) && TEAMS[k].age !== null &&
+  (TEAMS[k].gender !== null || GENDER === 'All'));
 const OURS = readable.filter(k => genderOk(TEAMS[k].gender));
 if (!OURS.length) {
   const seen = [...new Set(readable.map(k => TEAMS[k].gender))].sort();
@@ -571,6 +585,7 @@ const DATA = {
     unresolvedIds: unresolved, ungradedDropped: ungraded.length,
     unreadableFixtures: unreadable,
     teamsMappedToClub: mappedTeams, teamsNotInClubMap: unmappedTeams, clubTeamsWithNoPlayers: emptyTeams.length,
+    clubTeamsNoGender: noGender.length,
     playingUpPlayers: playingUp.players, playingUpExtraRegs: playingUp.instances,
     sameBandAnomalies: sameBand.count,
     builtAt: new Date().toISOString(),
