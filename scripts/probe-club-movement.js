@@ -1,277 +1,359 @@
 // scripts/probe-club-movement.js
-// READ-ONLY probe. Writes nothing to the repo and makes no network calls.
-// Answers, from the data actually on disk rather than from documentation, the questions the
-// club player-movement diagram needs settled before anything is built:
-//   1. which seasons this association runs, and how they are ordered
-//   2. how a CLUB is identified on a team (a field, or only the team name)
-//   3. the verbatim key shape of a season entry / team-stats entry / meta / roster entry
-//   4. whether a team carries a GRADE, and whether a finishing POSITION is derivable
-//   5. the verbatim key shape of a player file and of one registration
-//   6. whether a player's registrations reach OTHER associations (i.e. "where they went" is answerable)
-// Every lookup prints what it found or says plainly that it could not look. Nothing is inferred.
+// VERSION 2 — REPLACES the version 1 file of the same name. Version 1 settled the season axis
+// and the file shapes and has nothing left to tell us; it is gone, not merged. The first line
+// this prints names the version, so a log makes it obvious which code ran (trap T54).
 //
-// Tuning constants are at the top. No param() / no CLI args beyond the two optional overrides.
+// READ-ONLY. Writes nothing, no network calls. It answers:
+//   1. which seasons the chosen COMPETITION runs, with team counts and meta.club fill rate
+//   2. the real club inventory — meta.club values AND leading team-name tokens, side by side
+//   3. which age groups the competition runs, and how many teams each has per season
+//   4. whether a finishing POSITION can be derived from the fixtures already on disk
+//   5. how age groups actually progress season to season, measured from players rather than assumed
+//   6. what seasons[].club means in a player file (association, or the club entering the team)
+//
+// Section 5 is the one that decides the ageing-out rule. Age is assessed before each season and
+// the seasons are not calendar-aligned, so the netball rule (read a calendar year off the season
+// label, two-year band) cannot be carried over. This measures the real behaviour instead.
 
 const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');
 
 // ---------------------------------------------------------------- configuration
-const ORG_MATCH   = new RegExp(process.env.ORG_MATCH  || 'kilsyth', 'i');
-const CLUB_MATCH  = new RegExp(process.env.CLUB_MATCH || 'maroondah|magic', 'i');
-const MAX_SEASONS_DEEP = 10;   // how many of the most recent matching seasons to open team-stats for
-const MAX_PLAYERS      = 5;    // how many roster players to resolve and inspect
-const TRUNC_LEN        = 13;   // the id form stored in rosters and game p[]
+const COMP_ID      = process.env.COMP_ID || 'f0c4ccaa';   // Kilsyth Junior Domestic
+const ORG_MATCH    = new RegExp(process.env.ORG_MATCH || 'kilsyth', 'i');
+// The club to hunt for, across EVERY season of the competition rather than a recent slice.
+// Several spellings on purpose: a club's team names are not its name.
+const CLUB_MATCH   = new RegExp(process.env.CLUB_MATCH || 'mmb|maroondah|magic', 'i');
+const DEEP_SEASONS = 8;      // most recent seasons of that competition to open team-stats for
+const CLUB_ROWS    = 90;     // club inventory rows to print
+const SAMPLE_PLAYERS = 700;  // players to resolve for the age-progression measurement
+const TRUNC_LEN    = 13;
 
 const problems = [];
 const note = (m) => { problems.push(m); };
-const hr   = (t) => console.log('\n' + '='.repeat(78) + '\n' + t + '\n' + '='.repeat(78));
-const keysOf = (o) => (o && typeof o === 'object') ? Object.keys(o) : `(not an object: ${typeof o})`;
+const hr = (t) => console.log('\n' + '='.repeat(78) + '\n' + t + '\n' + '='.repeat(78));
 const cut = (s, n) => { const t = JSON.stringify(s); return t.length > n ? t.slice(0, n) + '…' : t; };
+const pad = (s, n) => String(s === null || s === undefined ? '—' : s).padEnd(n);
 
 function readJson(rel) {
   const p = path.join(ROOT, rel);
-  if (!fs.existsSync(p)) return { ok: false, why: 'ENOENT', path: rel };
-  try {
-    return { ok: true, data: JSON.parse(fs.readFileSync(p, 'utf8')), path: rel,
-             bytes: fs.statSync(p).size };
-  } catch (e) {
-    return { ok: false, why: 'PARSE: ' + e.message, path: rel };
-  }
+  if (!fs.existsSync(p)) return { ok: false, why: 'ENOENT' };
+  try { return { ok: true, data: JSON.parse(fs.readFileSync(p, 'utf8')) }; }
+  catch (e) { return { ok: false, why: 'PARSE: ' + e.message }; }
 }
 
-// ---------------------------------------------------------------- 1. seasons
-hr('1. SEASONS — data/sports-index.json');
+console.log('\n#############################################################################');
+console.log('###  PROBE CLUB MOVEMENT — VERSION 2 (clubs · age bands · ladder · progression)');
+console.log('###  If this banner is absent, an older copy of the script ran.');
+console.log('#############################################################################');
+
 const idxR = readJson('data/sports-index.json');
 if (!idxR.ok) { console.error(`CANNOT READ data/sports-index.json (${idxR.why})`); process.exit(1); }
-const INDEX = idxR.data;
-console.log(`file: ${(idxR.bytes / 1048576).toFixed(1)} MB · top-level keys: ${JSON.stringify(keysOf(INDEX))}`);
+const sObj = idxR.data.seasons;
+const ALL = Array.isArray(sObj) ? sObj : Object.values(sObj);
+const SEASON = {}; ALL.forEach(s => { SEASON[s.id] = s; });
 
-const seasonsObj = INDEX.seasons;
-if (!seasonsObj) { console.error('no .seasons on sports-index — stopping'); process.exit(1); }
-const allSeasons = Array.isArray(seasonsObj) ? seasonsObj : Object.values(seasonsObj);
-console.log(`seasons in index: ${allSeasons.length}`);
-console.log(`season entry keys (first entry): ${JSON.stringify(keysOf(allSeasons[0]))}`);
-console.log(`season entry VERBATIM (first entry, grades trimmed):`);
-{
-  const s0 = { ...allSeasons[0] };
-  if (Array.isArray(s0.grades)) s0.grades = s0.grades.slice(0, 2).concat(s0.grades.length > 2 ? ['…+' + (s0.grades.length - 2)] : []);
-  console.log('  ' + cut(s0, 900));
+// grade id -> {age, gender, name} for every season, so a reg's gid resolves to an age band
+const GRADE = {};
+ALL.forEach(s => (s.grades || []).forEach(g => { GRADE[g.id] = { age: g.age, gender: g.gender, name: g.name, sid: s.id }; }));
+
+// ---------------------------------------------------------------- 1. the competition's seasons
+hr('1. THE COMPETITION — seasons, teams, meta.club fill rate');
+const comp = ALL.filter(s => String(s.compId) === COMP_ID && ORG_MATCH.test(String(s.orgName || '')));
+if (!comp.length) {
+  console.error(`no season with compId ${COMP_ID} and orgName matching /${ORG_MATCH.source}/i — stopping`);
+  const cands = [...new Set(ALL.filter(s => ORG_MATCH.test(String(s.orgName || ''))).map(s => `${s.compId}  ${s.compName}`))].sort();
+  cands.forEach(c => console.log('   ' + c));
+  process.exit(1);
+}
+comp.sort((a, b) => String(a.startDate || '').localeCompare(String(b.startDate || '')));
+console.log(`${comp[0].orgName} · ${comp[0].compName} · ${comp.length} seasons\n`);
+
+const TS = {};   // sid -> team-stats data, for the deep seasons only
+const deep = comp.slice(-DEEP_SEASONS);
+console.log('  id        season                 start       status      grades  teams   meta.club set   distinct clubs');
+for (const s of comp) {
+  const isDeep = deep.includes(s);
+  let teams = null, clubSet = null, clubs = null;
+  if (isDeep) {
+    const r = readJson(`team-stats/bv/${s.id}.json`);
+    if (!r.ok) { note(`team-stats missing for ${s.id} (${s.name})`); }
+    else {
+      TS[s.id] = r.data;
+      const tids = Object.keys(r.data);
+      teams = tids.length;
+      const cs = tids.map(t => ((r.data[t] || {}).meta || {}).club).filter(c => c && String(c).trim());
+      clubSet = cs.length; clubs = new Set(cs).size;
+    }
+  }
+  console.log(`  ${pad(s.id, 10)}${pad(s.name, 23)}${pad(String(s.startDate || '').slice(0, 10), 12)}${pad(s.status, 12)}` +
+    `${pad((s.grades || []).length, 8)}${pad(teams, 8)}${pad(clubSet === null ? null : `${clubSet}`, 16)}${pad(clubs, 8)}`);
+}
+const anyClub = Object.values(TS).some(d => Object.values(d).some(t => ((t.meta || {}).club || '').trim()));
+console.log(`\n  meta.club populated anywhere in the deep seasons: ${anyClub ? 'YES' : 'NO'}`);
+// Not a problem — a FINDING. If meta.club is empty the club comes from the team name, which is
+// what the netball build did too. It only becomes a problem if the name yields nothing either.
+
+// ---------------------------------------------------------------- 2. club inventory
+hr('2. CLUB INVENTORY — who actually enters teams in this competition');
+// Teams are named "<Club> <grade/age token> <number>". Strip a trailing age/grade/number tail and
+// take what is left as the club token. This is a PROPOSAL to be checked by eye, not a rule yet.
+function clubToken(name) {
+  let t = String(name || '').replace(/[’']/g, '').trim();
+  t = t.replace(/\s+(mon|tue|wed|thu|fri|sat|sun)[a-z]*\s+/i, ' ');
+  // cut at the first age token (U9 / U12 / 12s) or a trailing grade/number tail
+  const m = t.match(/^(.*?)\s+(?:u\s*\/?\s*\d{1,2}|\d{1,2}\s*(?:s|'s|s')\b)/i);
+  if (m && m[1].trim()) return m[1].trim();
+  return t.replace(/\s+[A-Z]{0,3}\d{1,3}[A-Z]?$/i, '').trim() || t;
+}
+const byToken = new Map(), byMetaClub = new Map(), egOf = new Map();
+for (const sid of Object.keys(TS)) {
+  for (const tid of Object.keys(TS[sid])) {
+    const meta = TS[sid][tid].meta || {};
+    const nm = meta.name || meta.n || '';
+    const tok = clubToken(nm);
+    if (tok) {
+      byToken.set(tok, (byToken.get(tok) || 0) + 1);
+      const eg = egOf.get(tok) || new Set();
+      if (eg.size < 3) eg.add(nm);
+      egOf.set(tok, eg);
+    }
+    const mc = (meta.club || '').trim();
+    if (mc) byMetaClub.set(mc, (byMetaClub.get(mc) || 0) + 1);
+  }
+}
+console.log(`distinct meta.club values: ${byMetaClub.size}`);
+[...byMetaClub.entries()].sort((a, b) => b[1] - a[1]).slice(0, 30).forEach(([c, n]) => console.log(`   ${String(n).padStart(5)}  ${c}`));
+console.log(`\ndistinct club tokens derived from TEAM NAMES: ${byToken.size} (team-season count, across ${Object.keys(TS).length} seasons)`);
+[...byToken.entries()].sort((a, b) => b[1] - a[1]).slice(0, CLUB_ROWS)
+  .forEach(([c, n]) => console.log(`   ${String(n).padStart(5)}  ${pad(c, 26)} e.g. ${[...(egOf.get(c) || [])].join(' | ')}`));
+if (byToken.size > CLUB_ROWS) console.log(`   … +${byToken.size - CLUB_ROWS} more tokens (long tail — likely one-off name variants)`);
+
+// ---- 2b. the named club, hunted across EVERY season of the competition ----------------------
+// Not a recent slice: a club absent from the last few seasons is a finding about those seasons,
+// never a finding about the club.
+console.log(`\n--- teams matching /${CLUB_MATCH.source}/i across ALL ${comp.length} seasons ---`);
+const hits = [];
+for (const s of comp) {
+  const d = TS[s.id] || (readJson(`team-stats/bv/${s.id}.json`).data) || null;
+  if (!d) { continue; }
+  for (const tid of Object.keys(d)) {
+    const meta = d[tid].meta || {};
+    const nm = meta.name || meta.n || '';
+    if (CLUB_MATCH.test(nm) || CLUB_MATCH.test(meta.club || '')) {
+      hits.push({ s, tid, nm, grade: meta.grade, gid: meta.gid,
+                  age: (GRADE[meta.gid] || {}).age, n: Object.keys(d[tid].roster || {}).length });
+    }
+  }
+}
+console.log(`matches: ${hits.length}`);
+if (!hits.length) {
+  note(`no team matched /${CLUB_MATCH.source}/i in any season — widen CLUB_MATCH, the club trades under another name here`);
+} else {
+  console.log('  season                 age    team                                 grade                          roster');
+  hits.slice(0, 120).forEach(h => console.log(
+    `  ${pad(h.s.name, 23)}${pad(h.age, 7)}${pad(String(h.nm).slice(0, 36), 37)}${pad(String(h.grade || '').slice(0, 30), 31)}${h.n}`));
+  if (hits.length > 120) console.log(`  … +${hits.length - 120} more`);
+  const seasonsHit = [...new Set(hits.map(h => h.s.name))];
+  const agesHit = [...new Set(hits.map(h => h.age).filter(Boolean))]
+    .sort((a, b) => (parseInt(String(a).replace(/\D/g, '') || '99') - parseInt(String(b).replace(/\D/g, '') || '99')));
+  console.log(`\n  seasons with at least one such team: ${seasonsHit.length} of ${comp.length}`);
+  console.log(`  age groups they field teams in: ${JSON.stringify(agesHit)}`);
+  console.log(`  distinct team names: ${cut([...new Set(hits.map(h => h.nm))].slice(0, 40), 1600)}`);
+  console.log(`  club token(s) those names reduce to: ${JSON.stringify([...new Set(hits.map(h => clubToken(h.nm)))])}`);
 }
 
-const mine = allSeasons.filter(s => ORG_MATCH.test(String(s.orgName || '')));
-console.log(`\nseasons whose orgName matches /${ORG_MATCH.source}/i: ${mine.length}`);
-if (!mine.length) {
-  note(`no season matched /${ORG_MATCH.source}/i on orgName`);
-  const orgs = [...new Set(allSeasons.map(s => s.orgName).filter(Boolean))].sort();
-  console.log(`DISTINCT orgName values in the index (${orgs.length}) — first 60:`);
-  orgs.slice(0, 60).forEach(o => console.log('   ' + o));
-} else {
-  const byDate = [...mine].sort((a, b) => String(a.startDate || '').localeCompare(String(b.startDate || '')));
-  console.log('  id            start       end         status      locked  grades  competition');
-  byDate.forEach(s => {
-    console.log(`  ${String(s.id).slice(0, TRUNC_LEN).padEnd(14)}${String(s.startDate || '—').slice(0, 10).padEnd(12)}` +
-      `${String(s.endDate || '—').slice(0, 10).padEnd(12)}${String(s.status || '—').padEnd(12)}` +
-      `${String(!!s.locked).padEnd(8)}${String((s.grades || []).length).padEnd(8)}${s.compName || ''} — ${s.name || ''}`);
+// ---------------------------------------------------------------- 3. age groups
+hr('3. AGE GROUPS — what this competition runs, and how big each is');
+const ages = [...new Set(comp.flatMap(s => (s.grades || []).map(g => g.age)).filter(Boolean))]
+  .sort((a, b) => (parseInt(String(a).replace(/\D/g, '') || '99') - parseInt(String(b).replace(/\D/g, '') || '99')));
+console.log(`distinct grade.age values: ${JSON.stringify(ages)}\n`);
+const recent = deep.filter(s => TS[s.id]);
+console.log('  age    ' + recent.map(s => pad(s.name.slice(0, 11), 13)).join(''));
+for (const a of ages) {
+  const row = recent.map(s => {
+    const gids = new Set((s.grades || []).filter(g => g.age === a).map(g => g.id));
+    const n = Object.values(TS[s.id]).filter(t => gids.has(((t.meta || {}).gid))).length;
+    return pad(n || '', 13);
   });
-  const noDate = mine.filter(s => !s.startDate).length;
-  console.log(`\n  seasons with NO startDate (cannot be ordered by date): ${noDate} of ${mine.length}`);
-  if (noDate) note(`${noDate} matching seasons have no startDate — season ordering needs another source for those`);
-
-  const comps = [...new Set(mine.map(s => `${s.compId || '?'}  ${s.compName || '?'}`))].sort();
-  console.log(`\n  competitions run by this association (${comps.length}):`);
-  comps.forEach(c => console.log('   ' + c));
-
-  const ages = [...new Set(mine.flatMap(s => (s.grades || []).map(g => g.age)).filter(Boolean))].sort();
-  const gens = [...new Set(mine.flatMap(s => (s.grades || []).map(g => g.gender)).filter(Boolean))].sort();
-  console.log(`\n  distinct grade.age values across those seasons (${ages.length}): ${JSON.stringify(ages)}`);
-  console.log(`  distinct grade.gender values (${gens.length}): ${JSON.stringify(gens)}`);
-  const sampleGrades = (mine.find(s => (s.grades || []).length) || {}).grades || [];
-  console.log(`  sample grade entries: ${cut(sampleGrades.slice(0, 6), 700)}`);
+  console.log('  ' + pad(a, 7) + row.join(''));
 }
+console.log('\n  (teams per age group per season; blank = none)');
+const gnames = [...new Set(recent.flatMap(s => (s.grades || []).map(g => g.name)))].slice(0, 12);
+console.log(`  sample grade NAMES: ${cut(gnames, 900)}`);
 
-// ---------------------------------------------------------------- 2. teams / club identity
-hr('2. TEAMS AND CLUB IDENTITY — team-stats/bv/{sid}.json');
-const recent = [...mine]
-  .sort((a, b) => String(b.startDate || '').localeCompare(String(a.startDate || '')))
-  .slice(0, MAX_SEASONS_DEEP);
-console.log(`opening team-stats for the ${recent.length} most recent matching seasons\n`);
-
-let shapePrinted = false;
-const magicTeams = [];      // {sid, sname, tid, name, grade, gid, rosterN, metaKeys}
-const nameTokens = new Map();
-
-for (const s of recent) {
-  const r = readJson(`team-stats/bv/${s.id}.json`);
-  if (!r.ok) {
-    console.log(`  ${String(s.name).padEnd(28)} ${String(s.id).slice(0, TRUNC_LEN)}  NO TEAM-STATS FILE (${r.why})`);
-    note(`team-stats missing for season ${s.id} (${s.name})`);
-    continue;
-  }
-  const teams = r.data;
-  const tids = Object.keys(teams);
-  const withGrade = tids.filter(t => teams[t] && teams[t].meta && teams[t].meta.grade).length;
-  console.log(`  ${String(s.name).padEnd(28)} ${String(s.id).slice(0, TRUNC_LEN)}  teams ${String(tids.length).padEnd(5)} with meta.grade ${withGrade}`);
-
-  if (!shapePrinted && tids.length) {
-    const t0 = teams[tids[0]];
-    console.log(`\n  --- SHAPE, season ${s.id} team ${tids[0]} ---`);
-    console.log(`  team entry keys : ${JSON.stringify(keysOf(t0))}`);
-    console.log(`  meta keys       : ${JSON.stringify(keysOf(t0.meta))}`);
-    console.log(`  meta VERBATIM   : ${cut(t0.meta, 700)}`);
-    const rk = keysOf(t0.roster);
-    console.log(`  roster keys     : ${Array.isArray(rk) ? rk.length + ' entries, first 3 ' + JSON.stringify(rk.slice(0, 3)) : rk}`);
-    if (Array.isArray(rk) && rk.length) {
-      console.log(`  roster[0] value : ${cut(t0.roster[rk[0]], 500)}`);
-    }
-    if (t0.fixtures) {
-      const f = Array.isArray(t0.fixtures) ? t0.fixtures[0] : Object.values(t0.fixtures)[0];
-      console.log(`  fixtures type   : ${Array.isArray(t0.fixtures) ? 'array len ' + t0.fixtures.length : 'object'}`);
-      console.log(`  fixture[0]      : ${cut(f, 600)}`);
-    } else {
-      console.log('  fixtures        : ABSENT');
-    }
-    console.log('  ---------------------------------------------\n');
-    shapePrinted = true;
-  }
-
-  for (const tid of tids) {
-    const t = teams[tid] || {};
-    const nm = String((t.meta && (t.meta.n || t.meta.name)) || t.name || '');
-    if (nm) {
-      const tok = nm.split(/\s+/).slice(0, 2).join(' ');
-      nameTokens.set(tok, (nameTokens.get(tok) || 0) + 1);
-    }
-    if (CLUB_MATCH.test(nm)) {
-      magicTeams.push({
-        sid: s.id, sname: s.name, tid, name: nm,
-        grade: (t.meta && t.meta.grade) || null,
-        gid: (t.meta && t.meta.gid) || null,
-        rosterN: t.roster ? Object.keys(t.roster).length : null,
-        metaKeys: keysOf(t.meta),
-      });
-    }
-  }
-}
-
-console.log(`\nteams matching /${CLUB_MATCH.source}/i across those seasons: ${magicTeams.length}`);
-if (!magicTeams.length) {
-  note(`no team name matched /${CLUB_MATCH.source}/i — the club may be named differently`);
-  console.log('MOST COMMON leading two words of team names in those seasons (top 40):');
-  [...nameTokens.entries()].sort((a, b) => b[1] - a[1]).slice(0, 40)
-    .forEach(([t, n]) => console.log(`   ${String(n).padStart(4)}  ${t}`));
-} else {
-  console.log('  season                       team                                      grade            roster');
-  magicTeams.slice(0, 60).forEach(t =>
-    console.log(`  ${String(t.sname).padEnd(28)} ${String(t.name).padEnd(41)} ${String(t.grade || '—').padEnd(16)} ${t.rosterN}`));
-  if (magicTeams.length > 60) console.log(`  … +${magicTeams.length - 60} more`);
-  const noGrade = magicTeams.filter(t => !t.grade).length;
-  console.log(`\n  of those, WITHOUT meta.grade: ${noGrade}`);
-  if (noGrade) note(`${noGrade} club teams carry no meta.grade — grade ordering needs a rebuild or another source`);
-  console.log(`  distinct team meta key sets seen: ${JSON.stringify([...new Set(magicTeams.map(t => JSON.stringify(t.metaKeys)))].slice(0, 4))}`);
-  const ageLike = [...new Set(magicTeams.map(t => (t.name.match(/\bU\s?\d{1,2}\b/i) || [])[0]).filter(Boolean))].sort();
-  console.log(`  age tokens found in club team NAMES: ${JSON.stringify(ageLike)}`);
-}
-
-// ---------------------------------------------------------------- 3. players
-hr('3. PLAYERS — players/{xx}/{uuid}.json and players/indexes/{xx}.json');
-const seed = magicTeams.filter(t => t.rosterN).slice(0, 3);
-if (!seed.length) {
-  console.log('no club team with a roster to sample — skipping the player section');
-  note('player shape not probed: no club roster found');
-} else {
-  const picked = [];
-  for (const t of seed) {
-    const r = readJson(`team-stats/bv/${t.sid}.json`);
-    if (!r.ok) continue;
-    for (const rid of Object.keys(r.data[t.tid].roster || {})) {
-      if (picked.length >= MAX_PLAYERS) break;
-      picked.push({ rid, from: `${t.sname} / ${t.name}` });
-    }
-    if (picked.length >= MAX_PLAYERS) break;
-  }
-  console.log(`sampling ${picked.length} roster ids (shown truncated)\n`);
-
-  let playerShapePrinted = false;
-  for (const { rid, from } of picked) {
-    const shard = rid.slice(0, 2);
-    const ixR = readJson(`players/indexes/${shard}.json`);
-    let full = null, how = null;
-    if (ixR.ok) {
-      const ix = ixR.data;
-      const ks = Object.keys(ix);
-      if (!playerShapePrinted) {
-        console.log(`  index shard ${shard}: ${ks.length} entries · entry[0] key ${ks[0]} · value ${cut(ix[ks[0]], 300)}`);
+// ---------------------------------------------------------------- 4. finishing position
+hr('4. FINISHING POSITION — can it be derived from the fixtures on disk?');
+const done = [...recent].reverse().find(s => s.status === 'COMPLETED');
+if (!done) { console.log('no COMPLETED season among the deep set — skipping'); note('position derivability not tested: no completed deep season'); }
+else {
+  const d = TS[done.id];
+  const byGrade = new Map();
+  Object.entries(d).forEach(([tid, t]) => {
+    const g = (t.meta || {}).gid; if (!g) return;
+    if (!byGrade.has(g)) byGrade.set(g, []); byGrade.get(g).push([tid, t]);
+  });
+  // largest grade, so the test is never skipped just because no grade reached an arbitrary floor
+  const pick = [...byGrade.entries()].sort((a, b) => b[1].length - a[1].length)[0];
+  if (!pick || pick[1].length < 3) { console.log('no grade with 3+ teams — skipping'); note('position derivability not tested: no grade with 3+ teams'); }
+  else {
+    const [gid, teams] = pick;
+    const gname = (teams[0][1].meta || {}).grade || gid;
+    console.log(`${done.name} · grade ${gname} (${gid}) · ${teams.length} teams\n`);
+    // print the raw vocabulary first: deciding a result is unreadable without knowing the values
+    // the field actually takes is how a complete ladder gets reported as incomplete.
+    const vocabR = new Map(), vocabS = new Map();
+    Object.values(d).forEach(t => (Array.isArray(t.fixtures) ? t.fixtures : []).forEach(f => {
+      vocabR.set(JSON.stringify(f.result), (vocabR.get(JSON.stringify(f.result)) || 0) + 1);
+      vocabS.set(JSON.stringify(f.st), (vocabS.get(JSON.stringify(f.st)) || 0) + 1);
+    }));
+    console.log(`  distinct fixture.result values in this season: ${cut([...vocabR.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12), 700)}`);
+    console.log(`  distinct fixture.st values in this season    : ${cut([...vocabS.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12), 700)}\n`);
+    console.log('  team                                 fx   final  W   L   D   no-result  score-pairs');
+    let unresolved = 0;
+    for (const [, t] of teams) {
+      const fx = Array.isArray(t.fixtures) ? t.fixtures : [];
+      let w = 0, l = 0, dr = 0, nr = 0, sp = 0, fin = 0;
+      for (const f of fx) {
+        const st = String(f.st || '').toUpperCase();
+        if (st === 'FINAL') fin++;
+        if (f.score) sp++;
+        const r = String(f.result || '').toUpperCase();
+        if (r.startsWith('W')) w++; else if (r.startsWith('L')) l++; else if (r.startsWith('D')) dr++;
+        else if (st === 'FINAL') nr++;
       }
-      full = ks.find(k => k.startsWith(rid)) || null;
-      if (full) how = 'index prefix match';
+      unresolved += nr;
+      console.log(`  ${pad(((t.meta || {}).name || '').slice(0, 36), 37)}${pad(fx.length, 5)}${pad(fin, 7)}${pad(w, 4)}${pad(l, 4)}${pad(dr, 4)}${pad(nr, 11)}${sp}`);
     }
-    if (!full) {
-      const alR = readJson(`players/aliases/${shard}.json`);
-      if (alR.ok && alR.data[rid]) { full = alR.data[rid]; how = 'alias redirect'; }
-    }
-    if (!full) {
-      console.log(`  ${rid}  UNRESOLVED (no index prefix match, no alias)  [${from}]`);
-      note(`roster id ${rid} did not resolve to a player file`);
-      continue;
-    }
-    const pR = readJson(`players/${full.slice(0, 2)}/${full}.json`);
-    if (!pR.ok) {
-      console.log(`  ${rid} -> ${full.slice(0, TRUNC_LEN)}  PLAYER FILE MISSING (${pR.why})`);
-      note(`player file missing for ${full}`);
-      continue;
-    }
-    const P = pR.data;
-    const seasons = P.seasons || [];
-    const regs = seasons.flatMap(s => s.regs || []);
-    console.log(`  ${rid} -> ${full.slice(0, TRUNC_LEN)}  via ${how} · seasons ${seasons.length} · regs ${regs.length} · games ${(P.games || []).length} · ${(pR.bytes / 1024).toFixed(1)} KB  [${from}]`);
-
-    if (!playerShapePrinted && regs.length) {
-      console.log(`\n  --- PLAYER SHAPE ---`);
-      console.log(`  player top-level keys : ${JSON.stringify(keysOf(P))}`);
-      console.log(`  sports keys           : ${JSON.stringify(keysOf(P.sports))}`);
-      console.log(`  sports.Basketball keys: ${JSON.stringify(keysOf((P.sports || {}).Basketball))}`);
-      console.log(`  seasons[0] keys       : ${JSON.stringify(keysOf(seasons[0]))}`);
-      console.log(`  seasons[0] VERBATIM   : ${cut({ ...seasons[0], regs: (seasons[0].regs || []).slice(0, 1) }, 900)}`);
-      console.log(`  regs[0] keys          : ${JSON.stringify(keysOf(regs[0]))}`);
-      console.log(`  regs[0] VERBATIM      : ${cut(regs[0], 600)}`);
-      console.log(`  does any reg carry a club field? ${regs.some(r => r.club || r.clubId || r.clubName) ? 'YES' : 'no'}`);
-      console.log(`  does any season carry a club field? ${seasons.some(s => s.club || s.clubId || s.clubName) ? 'YES' : 'no'}`);
-      console.log('  --------------------\n');
-      playerShapePrinted = true;
-    }
-
-    // what this player's history REACHES — the question the diagram depends on
-    const sidOf = (r) => r.sid || r.seasonId;
-    const seen = new Map();
-    for (const s of seasons) {
-      for (const r of (s.regs || [])) {
-        const sid = sidOf(r) || s.sid || s.id;
-        const ent = allSeasons.find(x => x.id === sid || String(x.id).startsWith(String(sid)));
-        const label = ent ? `${ent.orgName || '?'}` : `UNKNOWN SEASON ${String(sid).slice(0, TRUNC_LEN)}`;
-        seen.set(label, (seen.get(label) || 0) + 1);
-      }
-    }
-    const inIdx = [...seen.entries()].filter(([k]) => !k.startsWith('UNKNOWN'));
-    const notIdx = [...seen.entries()].filter(([k]) => k.startsWith('UNKNOWN'));
-    console.log(`     associations in this player's registrations: ${inIdx.map(([k, n]) => `${k} ×${n}`).join(' · ') || '(none resolved)'}`);
-    if (notIdx.length) {
-      console.log(`     registrations whose season is NOT in sports-index: ${notIdx.reduce((a, b) => a + b[1], 0)}`);
-      note('some registrations reference a season absent from sports-index');
-    }
+    console.log(`\n  FINAL games with no readable result across this grade: ${unresolved}`);
+    if (unresolved) note(`${unresolved} completed fixtures carry no readable result — a derived ladder would be incomplete for that grade`);
+    console.log(`  fixture entry VERBATIM: ${cut((teams[0][1].fixtures || [])[0], 500)}`);
   }
 }
 
-// ---------------------------------------------------------------- 4. verdict
-hr('4. WHAT THIS PROBE SETTLED');
-console.log(`association seasons found : ${mine.length}`);
-console.log(`club teams found          : ${magicTeams.length}`);
-console.log(`club teams with a grade   : ${magicTeams.filter(t => t.grade).length}`);
+// ---------------------------------------------------------------- 5. age progression (the band question)
+hr('5. AGE PROGRESSION — measured, not assumed');
+const compSids = new Set(comp.map(s => s.id));
+const order = {}; comp.forEach((s, i) => { order[s.id] = i; });
+const seasonLabel = comp.map(s => s.name);
+
+// collect roster ids from the deep seasons' JUNIOR teams
+// Collect EVERY roster id first, then spread the sample across the whole set. Capping the
+// collection instead would fill the sample from whichever seasons and grades happen to iterate
+// first — a sample that fills from the first match is not a sample (T59).
+const pickIds = [];
+for (const s of deep) {
+  if (!TS[s.id]) continue;
+  for (const tid of Object.keys(TS[s.id])) {
+    for (const rid of Object.keys(TS[s.id][tid].roster || {})) pickIds.push(rid);
+  }
+}
+const uniq = [...new Set(pickIds)];
+// even spread rather than the first N, which would all come from one season/grade
+const step = Math.max(1, Math.floor(uniq.length / SAMPLE_PLAYERS));
+const sample = uniq.filter((_, i) => i % step === 0).slice(0, SAMPLE_PLAYERS);
+console.log(`roster ids seen: ${uniq.length} · sampling ${sample.length} evenly across them\n`);
+
+const shardCache = {};
+function resolveFull(rid) {
+  const sh = rid.slice(0, 2);
+  if (!(sh in shardCache)) {
+    const r = readJson(`players/indexes/${sh}.json`);
+    shardCache[sh] = r.ok ? Object.keys(r.data) : null;
+  }
+  if (shardCache[sh]) { const hit = shardCache[sh].find(k => k.startsWith(rid)); if (hit) return hit; }
+  const a = readJson(`players/aliases/${rid.slice(0, 2)}.json`);
+  return (a.ok && a.data[rid]) || null;
+}
+const ageNum = (a) => { const m = String(a || '').match(/(\d+)/); return m ? +m[1] : null; };
+
+let resolved = 0, missing = 0;
+const stepHist = new Map();       // age delta between consecutive seasons played
+const runHist = new Map();        // consecutive seasons spent at the same age
+const multiAge = { same: 0, players: 0 };
+const careers = [];
+for (const rid of sample) {
+  const full = resolveFull(rid);
+  if (!full) { missing++; continue; }
+  const pR = readJson(`players/${full.slice(0, 2)}/${full}.json`);
+  if (!pR.ok) { missing++; continue; }
+  resolved++;
+  const P = pR.data;
+  const rows = [];
+  for (const s of (P.seasons || [])) {
+    if (!compSids.has(s.sid)) continue;
+    const agesHere = [...new Set((s.regs || []).map(r => ageNum((GRADE[r.gid] || {}).age)).filter(x => x !== null))];
+    if (!agesHere.length) continue;
+    if (agesHere.length > 1) multiAge.same++;
+    rows.push({ o: order[s.sid], age: Math.min(...agesHere), spread: agesHere.length > 1 });
+  }
+  if (rows.length > 1 && rows.some(r => r.spread)) multiAge.players++;
+  rows.sort((a, b) => a.o - b.o);
+  if (rows.length < 2) continue;
+  careers.push(rows);
+  for (let i = 1; i < rows.length; i++) {
+    const gap = rows[i].o - rows[i - 1].o;
+    const key = `${rows[i].age - rows[i - 1].age} (after ${gap} season${gap === 1 ? '' : 's'})`;
+    stepHist.set(key, (stepHist.get(key) || 0) + 1);
+  }
+  let run = 1;
+  for (let i = 1; i < rows.length; i++) {
+    if (rows[i].age === rows[i - 1].age) run++;
+    else { runHist.set(run, (runHist.get(run) || 0) + 1); run = 1; }
+  }
+  runHist.set(run, (runHist.get(run) || 0) + 1);
+}
+console.log(`resolved ${resolved} player files · unresolved ${missing} · careers with 2+ seasons in this competition: ${careers.length}\n`);
+if (missing) note(`${missing} sampled roster ids did not resolve to a player file`);
+
+console.log('  age change between consecutive seasons PLAYED:');
+[...stepHist.entries()].sort((a, b) => b[1] - a[1]).slice(0, 14)
+  .forEach(([k, n]) => console.log(`    ${String(n).padStart(6)}  ${k}`));
+const tot = [...stepHist.values()].reduce((a, b) => a + b, 0) || 1;
+const plus1next = [...stepHist.entries()].filter(([k]) => k.startsWith('1 (after 1 ')).reduce((a, b) => a + b[1], 0);
+const zeronext = [...stepHist.entries()].filter(([k]) => k.startsWith('0 (after 1 ')).reduce((a, b) => a + b[1], 0);
+console.log(`\n    consecutive seasons, age +1 : ${plus1next} (${(plus1next / tot * 100).toFixed(1)}% of all transitions)`);
+console.log(`    consecutive seasons, age +0 : ${zeronext} (${(zeronext / tot * 100).toFixed(1)}%)`);
+
+console.log('\n  consecutive seasons spent in the SAME age group (run length):');
+[...runHist.entries()].sort((a, b) => a[0] - b[0])
+  .forEach(([k, n]) => console.log(`    ${String(n).padStart(6)}  ${k} season${k === 1 ? '' : 's'}`));
+console.log(`\n  players registered in TWO age groups in one season (playing up): ${multiAge.players} players · ${multiAge.same} season-instances`);
+
+// ---------------------------------------------------------------- 6. what seasons[].club means
+hr('6. seasons[].club — association, or the club that entered the team?');
+let shown = 0;
+for (const rid of sample) {
+  if (shown >= 6) break;
+  const full = resolveFull(rid); if (!full) continue;
+  const pR = readJson(`players/${full.slice(0, 2)}/${full}.json`); if (!pR.ok) continue;
+  const rows = (pR.data.seasons || []).filter(s => compSids.has(s.sid));
+  if (!rows.length) continue;
+  shown++;
+  rows.slice(0, 3).forEach(s => {
+    const tn = (s.regs || []).map(r => r.tn).join(' / ');
+    console.log(`  ${pad(full.slice(0, TRUNC_LEN), 15)}${pad(s.sn, 20)}club=${pad(JSON.stringify(s.club), 26)}team=${tn}`);
+  });
+}
+const clubVals = new Set();
+for (const rid of sample.slice(0, 200)) {
+  const full = resolveFull(rid); if (!full) continue;
+  const pR = readJson(`players/${full.slice(0, 2)}/${full}.json`); if (!pR.ok) continue;
+  (pR.data.seasons || []).forEach(s => { if (s.club) clubVals.add(s.club); });
+}
+console.log(`\n  distinct seasons[].club values across the sample (${clubVals.size}): ${cut([...clubVals].slice(0, 25), 1200)}`);
+
+// ---------------------------------------------------------------- verdict
+hr('7. WHAT THIS PROBE SETTLED');
+console.log(`competition seasons          : ${comp.length}`);
+console.log(`club tokens from team names  : ${byToken.size}`);
+console.log(`meta.club values             : ${byMetaClub.size}`);
+console.log(`age groups                   : ${ages.length}`);
+console.log(`careers measured             : ${careers.length}`);
 if (problems.length) {
-  console.log(`\nPROBLEMS (${problems.length}) — these are things the probe could NOT establish, not things it found to be fine:`);
+  console.log(`\nPROBLEMS (${problems.length}) — things the probe could NOT establish:`);
   problems.forEach(p => console.log('  · ' + p));
-} else {
-  console.log('\nno problems recorded.');
-}
+} else { console.log('\nno problems recorded.'); }
 console.log('');
 process.exit(problems.length ? 1 : 0);
