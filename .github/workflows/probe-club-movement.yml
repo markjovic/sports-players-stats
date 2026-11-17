@@ -1,0 +1,27 @@
+# .github/workflows/probe-club-movement.yml
+# READ-ONLY probe for the club player-movement diagram. No inputs, no writes, no network calls,
+# no commits. It reads data/sports-index.json, team-stats/bv/*.json and players/** and prints
+# what it found. It goes RED when it could not establish something it was asked to establish —
+# the log says which, and that is the point of the run, not a failure to work around.
+#
+# Needs a PLAIN full checkout: it reads many player files, and a sparse/blobless clone fetches
+# each one over the network (unusable at this scale).
+
+name: Probe Club Movement
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout (full)
+        uses: actions/checkout@v4
+
+      - name: Probe
+        run: node scripts/probe-club-movement.js
