@@ -150,11 +150,14 @@ Object.values(TEAMS).forEach(t => t.roster.forEach(r => rosterIds.add(r)));
 log(`distinct roster ids across the competition: ${rosterIds.size}`);
 
 const CAREER = new Map();      // full uuid -> [{o, sid, tid, club, age, gender, teamName, inComp}]
-const teamClubVotes = new Map();
+const RID2FULL = new Map();    // 13-char roster id -> full uuid
+const PLAYED = new Set();      // team keys that at least one player is registered to
+const REG_GRADE = new Map();   // team key -> {gid, gn} as the PLAYER's registration records it
 let unresolved = 0, noFile = 0, nPlayers = 0;
 for (const rid of rosterIds) {
   const full = resolveFull(rid);
   if (!full) { unresolved++; continue; }
+  RID2FULL.set(rid, full);
   if (CAREER.has(full)) continue;
   const P = readJson(`players/${full.slice(0, 2)}/${full}.json`, false);
   if (!P) { noFile++; continue; }
@@ -167,11 +170,7 @@ for (const rid of rosterIds) {
       const T = TEAMS[key];
       const age = T ? T.age : ageOf(r.gid, r.gn);
       const gen = T ? T.gender : genderOf(r.gid, r.gn);
-      if (inComp && s.club) {
-        const v = teamClubVotes.get(key) || new Map();
-        v.set(s.club, (v.get(s.club) || 0) + 1);
-        teamClubVotes.set(key, v);
-      }
+      if (inComp) { PLAYED.add(key); if (!REG_GRADE.has(key)) REG_GRADE.set(key, { gid: r.gid, gn: r.gn }); }
       rows.push({ o: inComp ? SIDX[s.sid] : null, sid: s.sid, tid: r.tid, club: s.club || null,
                   age, gender: gen, teamName: (T && T.name) || r.tn || r.tid, inComp,
                   gp: (r.stats && +r.stats.gp) || 0 });
@@ -180,64 +179,80 @@ for (const rid of rosterIds) {
   CAREER.set(full, rows);
 }
 log(`players resolved: ${nPlayers} · unresolved ids: ${unresolved} · missing files: ${noFile}`);
+
+// A team can carry NO grade of its own in team-stats (measured: 14 Maroondah Magic teams at
+// gid null / grade null). The players registered to it still carry the grade on their own
+// registration, so that is the second source. Without it those teams have no age group and are
+// thrown out of the diagram for a reason that has nothing to do with the player data.
+{
+  let fixedAge = 0, fixedGen = 0;
+  for (const [key, g] of REG_GRADE) {
+    const T = TEAMS[key]; if (!T) continue;
+    if (T.age === null) {
+      const a2 = ageOf(g.gid, g.gn);
+      if (a2 !== null) {
+        T.age = a2;
+        T.gid = T.gid || g.gid || null;
+        T.grade = T.grade || g.gn || (GRADE[g.gid] || {}).name || null;
+        T.rank = gradeRank(T.grade);
+        fixedAge++;
+      }
+    }
+    if (T.gender === null) { const gd = genderOf(g.gid, g.gn); if (gd) { T.gender = gd; fixedGen++; } }
+  }
+  // the career rows were built before the repair, so bring their age into line
+  if (fixedAge) for (const rows of CAREER.values()) for (const r of rows) {
+    if (r.age === null) { const T = TEAMS[`${r.sid}|${r.tid}`]; if (T && T.age !== null) r.age = T.age; }
+  }
+  if (fixedAge || fixedGen) log(`team grade recovered from player registrations: ${fixedAge} age, ${fixedGen} gender`);
+}
 if (unresolved > rosterIds.size * 0.02) die(`${unresolved} of ${rosterIds.size} roster ids did not resolve (>2%) — identity resolution is broken, refusing to build`);
 
-// team -> club, by vote of the players registered to it. A split vote is reported, never averaged.
-const TEAM_CLUB = {};
-let splitVotes = 0;
-for (const [key, v] of teamClubVotes) {
-  const ranked = [...v.entries()].sort((a, b) => b[1] - a[1]);
-  TEAM_CLUB[key] = ranked[0][0];
-  if (ranked.length > 1 && ranked[1][1] === ranked[0][1]) splitVotes++;
-}
-// SECOND PASS, by team name. A season entry does not always carry `club` — measured on Kilsyth
-// Junior Domestic Summer 2026/27, where every team came back clubless, emptied the whole column
-// and sent 102 leavers to a "(unknown club)" box. A club names its teams consistently across
-// seasons (MMB55, U18 Boys MM10), so a name that maps to exactly ONE club in the seasons where
-// the club IS known settles it in the seasons where it is not. A name used by more than one club
-// is left unresolved rather than guessed.
-let byName = 0, byKey = 0, nameAmbiguous = 0;
+// team -> club comes from club-map/bv/{sid}.json — the { tid: clubId } file build-club-index.js
+// already writes from PlayHQ's own `organisation` on each team, with names in data/club-index.json.
+// NOTHING ELSE IN THE REPO CARRIES THE CLUB: player.seasons[].club is the ASSOCIATION, and
+// team-stats meta.club is only populated for teams that never played. Earlier versions of this
+// script inferred the club from seasons[].club, then from team names, then from roster continuity.
+// All three are wrong and all three are gone — this is the published answer.
+const CLUB_INDEX = readJson('data/club-index.json', true);
+const CLUB_NAME = {};
 {
-  // The naming format CHANGES between seasons: older seasons list "MMB08", the current one lists
-  // "U13 MMB08", and 2020/21 listed "U18 Boys MM10". So the age token, the gender word and the
-  // day of the week are stripped before matching — they describe the GRADE, not the club.
-  const norm = (n) => String(n || '').toUpperCase()
-    .replace(/\bU\s?\/?\s?\d{1,2}\b/g, ' ')
-    .replace(/\b(MON|TUE|TUES|WED|WEDS|THU|THUR|THURS|FRI|SAT|SUN)[A-Z]*\b/g, ' ')
-    .replace(/\b(BOYS?|GIRLS?|MIXED|MEN|WOMEN|MINIBALL|WALLABIES)\b/g, ' ')
-    .replace(/[^A-Z0-9]+/g, ' ').trim();
-  // Second level: the same name with its trailing team NUMBER removed, so a team number that is
-  // new this season still resolves ("MMB123" -> "MMB"). Ambiguous keys are left alone.
-  const keyOf = (n) => norm(n).replace(/\s*\d+\s*$/, '').trim();
+  const src = Array.isArray(CLUB_INDEX) ? CLUB_INDEX
+            : (CLUB_INDEX.clubs && typeof CLUB_INDEX.clubs === 'object') ? CLUB_INDEX.clubs : CLUB_INDEX;
+  const put = (id, v) => {
+    const n = (v && (v.n || v.name || v.clubName)) || (typeof v === 'string' ? v : null);
+    if (id && n) CLUB_NAME[String(id)] = n;
+  };
+  if (Array.isArray(src)) src.forEach(c => put(c && (c.id || c.clubId), c));
+  else Object.entries(src).forEach(([k, v]) => put(v && (v.id || v.clubId) || k, v));
+}
+if (!Object.keys(CLUB_NAME).length) die('data/club-index.json yielded no club names — its shape is not what this script expects');
+log(`club index: ${Object.keys(CLUB_NAME).length} clubs`);
 
-  const nameToClubs = new Map(), keyToClubs = new Map();
-  for (const [k, club] of Object.entries(TEAM_CLUB)) {
-    const n = norm(TEAMS[k].name), kk = keyOf(TEAMS[k].name);
-    if (n) { if (!nameToClubs.has(n)) nameToClubs.set(n, new Set()); nameToClubs.get(n).add(club); }
-    if (kk) { if (!keyToClubs.has(kk)) keyToClubs.set(kk, new Set()); keyToClubs.get(kk).add(club); }
+const TEAM_CLUB = {};
+let mappedTeams = 0, noMapSeasons = [], unmappedTeams = 0;
+for (const se of SEASONS) {
+  const m = readJson(`club-map/bv/${se.id}.json`, false);
+  if (!m) { noMapSeasons.push(`${se.name} (${se.id})`); continue; }
+  const rows = (m && typeof m === 'object' && m.teams && typeof m.teams === 'object') ? m.teams : m;
+  for (const [tid, val] of Object.entries(rows)) {
+    const id = (val && typeof val === 'object') ? (val.id || val.clubId) : val;
+    const name = CLUB_NAME[String(id)] || ((val && typeof val === 'object') ? (val.n || val.name) : null);
+    if (!name) continue;
+    const key = `${se.id}|${tid}`;
+    if (TEAMS[key]) { TEAM_CLUB[key] = name; mappedTeams++; }
   }
-  for (const k of Object.keys(TEAMS)) {
-    if (TEAM_CLUB[k]) continue;
-    const byN = nameToClubs.get(norm(TEAMS[k].name));
-    if (byN && byN.size === 1) { TEAM_CLUB[k] = [...byN][0]; byName++; continue; }
-    const byK = keyToClubs.get(keyOf(TEAMS[k].name));
-    if (byK && byK.size === 1) { TEAM_CLUB[k] = [...byK][0]; byKey++; continue; }
-    if ((byN && byN.size > 1) || (byK && byK.size > 1)) nameAmbiguous++;
-  }
-  if (byName || byKey || nameAmbiguous) log(`  + ${byName} resolved by exact team name, ${byKey} by club prefix` +
-    (nameAmbiguous ? ` · ${nameAmbiguous} left unresolved because the name is used by more than one club` : ''));
 }
-log(`teams with a club resolved from players: ${Object.keys(TEAM_CLUB).length} of ${teamCount}` +
-    (splitVotes ? ` · ${splitVotes} tied votes (first taken)` : ''));
-{
-  const noClub = Object.keys(TEAMS).filter(k => !TEAM_CLUB[k]);
-  if (noClub.length) {
-    const bySeason = new Map();
-    noClub.forEach(k => bySeason.set(TEAMS[k].sid, (bySeason.get(TEAMS[k].sid) || 0) + 1));
-    log(`  ${noClub.length} team(s) have NO club, because no player file carries a registration to them:`);
-    [...bySeason.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8)
-      .forEach(([sid, n]) => log(`    ${String(NAME_OF[sid]).padEnd(18)} ${n} of ${Object.values(TEAMS).filter(t => t.sid === sid).length}`));
-  }
+unmappedTeams = Object.keys(TEAMS).filter(k => !TEAM_CLUB[k]).length;
+log(`teams mapped to a club from club-map/bv: ${mappedTeams} of ${teamCount}`);
+if (noMapSeasons.length) die(`club-map/bv is missing for ${noMapSeasons.length} season(s): ${noMapSeasons.join(', ')}.\n` +
+  `Run Build Club Index for those seasons first — without it a club's teams cannot be identified at all.`);
+if (unmappedTeams) {
+  const bySeason = new Map();
+  Object.keys(TEAMS).filter(k => !TEAM_CLUB[k]).forEach(k => bySeason.set(TEAMS[k].sid, (bySeason.get(TEAMS[k].sid) || 0) + 1));
+  log(`  ${unmappedTeams} team(s) are in team-stats but not in their season's club map:`);
+  [...bySeason.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8)
+    .forEach(([sid, n]) => log(`    ${String(NAME_OF[sid]).padEnd(18)} ${n} of ${Object.values(TEAMS).filter(t => t.sid === sid).length}`));
 }
 
 // ---------------------------------------------------------------- 5. the club's teams
@@ -246,12 +261,16 @@ const isOurs = (key) => TEAM_CLUB[key] === CLUB;
 const OURS_ALL = Object.keys(TEAMS).filter(isOurs);
 if (!OURS_ALL.length) {
   const have = [...new Set(Object.values(TEAM_CLUB))].sort();
-  die(`no teams at all for club "${CLUB}".\nClubs present in this competition:\n  ` + have.join('\n  '));
+  die(`no teams at all for club "${CLUB}".\nClubs with teams in this competition:\n  ` + have.join('\n  '));
 }
 // The unreadable check runs BEFORE the gender filter, deliberately. A team whose grade cannot be
 // read has no gender either, so filtering first would drop it silently and the build would go
 // green having quietly lost a team. Unreadable is reported here, whichever gender was asked for.
-const ungraded = OURS_ALL.filter(k => TEAMS[k].age === null || TEAMS[k].gender === null);
+// Only teams a player is actually registered to can become a node, so a gradeless team nobody
+// played for is not a problem to stop the build over — it is reported and skipped.
+const emptyTeams = OURS_ALL.filter(k => !PLAYED.has(k));
+if (emptyTeams.length) log(`${emptyTeams.length} of ${OURS_ALL.length} club teams have no registered players and cannot appear`);
+const ungraded = OURS_ALL.filter(k => PLAYED.has(k) && (TEAMS[k].age === null || TEAMS[k].gender === null));
 if (ungraded.length && !DROP_UNGRADED) {
   die(`${ungraded.length} of ${OURS_ALL.length} teams for this club have an unreadable grade, so their age group ` +
       `and gender cannot be determined and they cannot be placed in a panel.\n` +
@@ -259,7 +278,7 @@ if (ungraded.length && !DROP_UNGRADED) {
       (ungraded.length > 20 ? `\n  … +${ungraded.length - 20} more` : '') +
       `\nRe-run with drop_ungraded=true to leave them out, once you have looked at the list.`);
 }
-const readable = OURS_ALL.filter(k => TEAMS[k].age !== null && TEAMS[k].gender !== null);
+const readable = OURS_ALL.filter(k => PLAYED.has(k) && TEAMS[k].age !== null && TEAMS[k].gender !== null);
 const OURS = readable.filter(k => genderOk(TEAMS[k].gender));
 if (!OURS.length) {
   const seen = [...new Set(readable.map(k => TEAMS[k].gender))].sort();
@@ -550,9 +569,8 @@ const DATA = {
   stats: {
     teams: USE.size, players: PLAYERS.length, resolvedPlayers: nPlayers,
     unresolvedIds: unresolved, ungradedDropped: ungraded.length,
-    unreadableFixtures: unreadable, splitClubVotes: splitVotes,
-    clubsByVote: Object.keys(TEAM_CLUB).length - byName - byKey, clubsByName: byName, clubsByPrefix: byKey,
-    clubsAmbiguous: nameAmbiguous,
+    unreadableFixtures: unreadable,
+    teamsMappedToClub: mappedTeams, teamsNotInClubMap: unmappedTeams, clubTeamsWithNoPlayers: emptyTeams.length,
     playingUpPlayers: playingUp.players, playingUpExtraRegs: playingUp.instances,
     sameBandAnomalies: sameBand.count,
     builtAt: new Date().toISOString(),
