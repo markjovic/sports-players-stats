@@ -35,8 +35,8 @@ on:
         default: 'Boys'
         type: choice
         options: [ 'Boys', 'Girls', 'All' ]
-      allow_ungraded:
-        description: 'Drop club teams whose age group cannot be read (default: fail and list them)'
+      drop_ungraded:
+        description: 'Leave out club teams whose age group cannot be read (default: fail and list them instead)'
         required: false
         default: false
         type: boolean
@@ -56,8 +56,8 @@ jobs:
         env:
           CLUB: ${{ inputs.club }}
           GENDER: ${{ inputs.gender }}
-          ALLOW_UNGRADED: ${{ inputs.allow_ungraded }}
-          TEMPLATE: scripts/movement-template.html
+          DROP_UNGRADED: ${{ inputs.drop_ungraded }}
+          TEMPLATE: templates/movement-template.html
           OUT: movement.html
         run: node scripts/build-club-movement.js
 
