@@ -88,6 +88,8 @@ const NODE={}; DATA.nodes.forEach(n=>NODE[n.key]=n);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const ORD=n=>n+(['th','st','nd','rd'][(n%100-20)%10]||['th','st','nd','rd'][n%100]||'th');
 const num=b=>+String(b).replace(/\D/g,'');
+const TEN=DATA.tenureSeason||SEAS[NS-1], TENI=SEAS.indexOf(TEN);
+const EMPTY=new Set(DATA.emptySeasons||[]);
 
 const DCOL={to:'#ce93d8',assoc:'#ffb74d',older:'#00f5d4',gap:'#b0bec5',none:'#ef5350',
             from:'#ce93d8',fromassoc:'#ffb74d',back:'#90caf9',new:'#2196f3'};
@@ -140,7 +142,7 @@ function render(){
   const dest=DATA.dest.filter(d=>keys.has(d.a));
   const src=DATA.src.filter(d=>keys.has(d.b));
   const sum=(a,f)=>a.filter(f).reduce((x,y)=>x+y.n,0);
-  const last=vis.filter(n=>n.sid===NS-1);
+  const last=vis.filter(n=>n.sid===TENI);
   const firstYr=last.reduce((a,n)=>a+((n.tenure||{}).first||0),0);
   const repeatYr=last.reduce((a,n)=>a+((n.tenure||{}).repeat||0),0);
   const cards=[
@@ -149,13 +151,14 @@ function render(){
     ['Left for another club','or association',sum(dest,d=>/\|(to|assoc):/.test(d.b))],
     ['Joined from another club','or association',sum(src,d=>/\|(from|fromassoc):/.test(d.a))],
     ['No later record','left this competition',sum(dest,d=>kindOf(d.b)==='none')],
-    [`In ${SEAS[NS-1]}`,'first season in their age group',firstYr],
-    [`In ${SEAS[NS-1]}`,'been in that age group before',repeatYr],
+    [`In ${TEN}`,'first season in their age group',firstYr],
+    [`In ${TEN}`,'been in that age group before',repeatYr],
   ];
   document.getElementById('stats').innerHTML=cards.map(([v,k,val])=>
     `<div class="stat"><div class="v">${val}</div><div class="k">${esc(v)}${k?' · '+esc(k):''}</div></div>`).join('');
   document.getElementById('blurb').innerHTML=`<b>${esc(DATA.club)}</b> — ${vis.length} teams across ${visBands().length} age groups and ${NS} seasons. `+
-    `The panel scrolls both ways; click any team, ribbon or box to trace that group of players across every season and list them below.`;
+    `The panel scrolls both ways; click any team, ribbon or box to trace that group of players across every season and list them below.`+
+    (EMPTY.size?` <b style="color:#ef5350">No registrations are recorded for ${[...EMPTY].join(', ')}</b> — that column is empty and players are NOT shown as having left, they simply have no record there yet.`:'');
   draw(vis,links,dest,src);
 }
 
@@ -217,7 +220,8 @@ function draw(vis,links,dest,src){
 
   let bg=bands.map(b=>`<rect x="4" y="${b.y}" width="${W-8}" height="${b.h}" rx="10" fill="rgba(0,245,212,.025)" stroke="rgba(255,255,255,.06)"></rect>`+
     `<text class="bandlab" x="16" y="${b.y+17}">${esc(b.label)}</text>`).join('');
-  let hdr=SEAS.map((nm,s)=>`<text class="colhdr" x="${colX[s]}" y="24" text-anchor="middle">${esc(nm)}</text>`).join('');
+  let hdr=SEAS.map((nm,s)=>`<text class="colhdr" x="${colX[s]}" y="24" text-anchor="middle"${EMPTY.has(nm)?' style="fill:#ef5350"':''}>${esc(nm)}</text>`+
+    (EMPTY.has(nm)?`<text class="colsub" x="${colX[s]}" y="38" text-anchor="middle" style="fill:#ef5350;font-size:10.5px">no registrations recorded</text>`:'')).join('');
   seps.forEach(p=>{hdr+=`<line class="dsep" x1="${p.x-10}" x2="${p.x+nodeW+10}" y1="${p.y}" y2="${p.y}"></line>`+
     `<text class="dseplab" x="${p.x}" y="${p.y+15}">${esc(p.t)}</text>`;});
 
