@@ -100,7 +100,7 @@ const kindOf=k=>k.slice(k.indexOf('|')+1).split(':')[0];
 const nameOf=k=>{const t=k.slice(k.indexOf('|')+1);const i=t.indexOf(':');return i<0?'':t.slice(i+1);};
 const boxLabel=k=>{const kd=kindOf(k),nm=nameOf(k);
   return kd==='to'?'→ '+nm:kd==='assoc'?'→ '+nm:kd==='from'?'From '+nm:kd==='fromassoc'?'From '+nm:(DLAB[kd]||kd);};
-const boxShort=k=>{const l=boxLabel(k);return l.length>19?l.slice(0,18)+'…':l;};
+const boxShort=k=>{const l=boxLabel(k);return l.length>15?l.slice(0,14)+'…':l;};
 const colOfBox=k=>+k.slice(1,k.indexOf('.'));
 const bandOfBox=k=>k.slice(k.indexOf('.')+1,k.indexOf('|'));
 
@@ -164,7 +164,7 @@ function render(){
 
 function draw(vis,links,dest,src){
   const svg=document.getElementById('sk');
-  const nodeW=138,MARGIN=nodeW/2+26,MINSPACE=252,UNIT=state.unit,GAP=26,MINH=44,DMINH=22,TOP=64,BANDGAP=54;
+  const nodeW=146,MARGIN=nodeW/2+26,MINSPACE=262,UNIT=state.unit,GAP=26,MINH=52,DMINH=22,TOP=64,BANDGAP=54;
   const W=Math.max(2*MARGIN+(NS-1)*MINSPACE,(document.querySelector('.svgwrap').clientWidth||1000)-12);
   const colX=SIX.map(i=>MARGIN+i*(W-2*MARGIN-50)/Math.max(1,NS-1));
   const inW={},outW={};
@@ -235,15 +235,17 @@ function draw(vis,links,dest,src){
     const n=p.n,s=n.sid,col='#7fd8ff';
     const back=s>0?(inW[k]||0):0,nw=s>0?n.n-back:0,left=s<NS-1?n.n-(outW[k]||0):0;
     const inT=[];if(back)inT.push(`<tspan fill="var(--stay)">${back} back</tspan>`);if(nw)inT.push(`<tspan fill="var(--new)">+${nw} new</tspan>`);
-    const gradeTxt=n.g?`${esc(String(n.g).replace(/^.*?\bU\s?\d{1,2}\b\s*/i,'').replace(/\b(boys?|girls?|mixed)\b/ig,'').trim()||n.g)}${n.gp?' · '+ORD(n.gp):''}`:'';
+    const gradeRaw=n.g?(String(n.g).replace(/^.*?\bU\s?\d{1,2}\b\s*/i,'').replace(/\b(boys?|girls?|mixed)\b/ig,'').trim()||n.g):'';
+    const gradeCut=gradeRaw.length>12?gradeRaw.slice(0,11)+'…':gradeRaw;
+    const gradeTxt=gradeRaw?`${esc(gradeCut)}${n.gp?' · '+ORD(n.gp):''}`:'';
     const ten=n.tenure?`${n.tenure.first} 1st yr · ${n.tenure.repeat} returning`:'';
-    const tip=[`${n.band} · ${esc(n.g||'')}`,`${n.n} players`];
+    const tip=[`${n.band} · ${esc(n.g||'')}${n.gp?' · finished '+ORD(n.gp):''}`,`${n.n} players`];
     if(n.alsoN)tip.push(`${n.alsoN} more played up into this team while counted in their own age group`);
     if(ten)tip.push(`in ${SEAS[NS-1]}: ${ten}`);
     nodes+=`<g class="tnode" data-k="${esc(k)}"><rect x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="5" fill="${col}22" stroke="${col}" stroke-width="1.4"></rect>`+
       `<text class="tname" x="${p.x+8}" y="${p.y+15}">${esc(n.team)}</text><text class="tmeta" x="${p.x+p.w-8}" y="${p.y+15}" text-anchor="end">${n.n}</text>`+
       (inT.length?`<text class="ann" x="${p.x+8}" y="${p.y+29}">${inT.join('<tspan>  </tspan>')}</text>`:'')+
-      (left?`<text class="ann" x="${p.x+8}" y="${p.y+p.h-7}"><tspan fill="var(--left)">${left} left after</tspan></text>`:'')+
+      (left?`<text class="ann" x="${p.x+8}" y="${p.y+p.h-7}"><tspan fill="var(--left)">${left} left</tspan></text>`:'')+
       (gradeTxt?`<text class="tmeta" x="${p.x+p.w-8}" y="${p.y+p.h-7}" text-anchor="end">${gradeTxt}</text>`:'')+
       `<title>${esc(tip.join(' · '))}</title></g>`;});
 
