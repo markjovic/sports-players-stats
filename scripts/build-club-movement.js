@@ -186,6 +186,64 @@ for (const rid of rosterIds) {
 }
 log(`players resolved: ${nPlayers} · unresolved ids: ${unresolved} · missing files: ${noFile}`);
 
+// MERGE DUPLICATE RECORDS FOR ONE PERSON. Two player records that share a name AND share a team in
+// some season are one child: two different children with the same name on the same team is not a
+// real case. PlayHQ holds both because the fold only covers one person across the spectator and api
+// namespaces, while two genuine PlayHQ profiles are deliberately kept as two records — so they
+// arrive here as two teammates and inflate every count that follows.
+// Merging here, before positions and ribbons are built, is what keeps the team box, the player
+// list and the nucleus sizes agreeing. The condition is deliberately narrow: same name is not
+// enough on its own, they must have actually been on one team together.
+{
+  const norm = (n) => String(n || '').toLowerCase().normalize('NFKC').replace(/[^a-z0-9]+/g, ' ').trim();
+  const byName = new Map();
+  for (const [full] of CAREER) {
+    const nm = norm(NAMES.get(full));
+    if (!nm) continue;
+    if (!byName.has(nm)) byName.set(nm, []);
+    byName.get(nm).push(full);
+  }
+  let mergedPeople = 0, mergedRecords = 0; const mergedNames = [];
+  globalThis.__mergedRecordsTotal = 0;
+  for (const [, ids] of byName) {
+    if (ids.length < 2) continue;
+    const teamsOf = (f) => new Set((CAREER.get(f) || []).filter(r => r.o !== null).map(r => `${r.sid}|${r.tid}`));
+    const sets = ids.map(teamsOf);
+    // group ids transitively by shared team
+    const used = new Set();
+    for (let i = 0; i < ids.length; i++) {
+      if (used.has(i)) continue;
+      const grp = [i]; used.add(i);
+      for (let j = i + 1; j < ids.length; j++) {
+        if (used.has(j)) continue;
+        if (grp.some(g => [...sets[g]].some(t => sets[j].has(t)))) { grp.push(j); used.add(j); }
+      }
+      if (grp.length < 2) continue;
+      const keep = ids[grp[0]];
+      const rows = CAREER.get(keep);
+      const seen = new Set(rows.map(r => `${r.sid}|${r.tid}`));
+      for (const gi of grp.slice(1)) {
+        for (const r of (CAREER.get(ids[gi]) || [])) {
+          const k = `${r.sid}|${r.tid}`;
+          if (!seen.has(k)) { seen.add(k); rows.push(r); }
+        }
+        CAREER.delete(ids[gi]);
+        mergedRecords++; globalThis.__mergedRecordsTotal++;
+      }
+      mergedPeople++;
+      if (mergedNames.length < 12) mergedNames.push(NAMES.get(keep) || '(unnamed)');
+    }
+  }
+  if (mergedPeople) {
+    log(`duplicate records merged: ${mergedRecords} extra record(s) folded into ${mergedPeople} person(s) — ${mergedNames.join(', ')}`);
+    log(`  (same name AND a shared team; they were two PlayHQ profiles for one child and would otherwise count twice)`);
+  } else if (WITH_NAMES) {
+    log('duplicate records merged: none found');
+  } else {
+    log('duplicate records: NOT CHECKED — needs WITH_NAMES, so two profiles for one child will count twice');
+  }
+}
+
 // A team can carry NO grade of its own in team-stats (measured: 14 Maroondah Magic teams at
 // gid null / grade null). The players registered to it still carry the grade on their own
 // registration, so that is the second source. Without it those teams have no age group and are
@@ -605,6 +663,7 @@ const DATA = {
     teamsMappedToClub: mappedTeams, teamsNotInClubMap: unmappedTeams, clubTeamsWithNoPlayers: emptyTeams.length,
     clubTeamsNoGender: noGender.length,
     playingUpPlayers: playingUp.players, playingUpExtraRegs: playingUp.instances,
+    duplicateRecordsMerged: globalThis.__mergedRecordsTotal || 0,
     sameBandAnomalies: sameBand.count,
     builtAt: new Date().toISOString(),
   },
