@@ -29,8 +29,8 @@ const COMP_ID    = process.env.COMP_ID   || 'f0c4ccaa';                        /
 const ORG_MATCH  = new RegExp(process.env.ORG_MATCH || 'kilsyth', 'i');
 const CLUB       = process.env.CLUB      || 'Maroondah Magic Basketball Club';
 const GENDER     = process.env.GENDER    || 'Boys';                            // Boys | Girls | All
-const TEMPLATE   = process.env.TEMPLATE  || 'templates/movement-template.html';
-const OUT        = process.env.OUT       || 'movement.html';
+const COMMIT     = !/^(0|false|no)$/i.test(process.env.COMMIT || 'true');
+const OUTDIR     = process.env.OUTDIR    || 'movement/bv';
 // true DROPS club teams whose age group cannot be read; false (default) fails and lists them.
 const DROP_UNGRADED = /^(1|true|yes)$/i.test(process.env.DROP_UNGRADED || '');
 const TRUNC_LEN  = 13;
@@ -591,9 +591,67 @@ const DATA = {
     builtAt: new Date().toISOString(),
   },
 };
-const tpl = fs.readFileSync(path.join(ROOT, TEMPLATE), 'utf8');
-if (!tpl.includes('__DATA__')) die(`${TEMPLATE} has no __DATA__ placeholder`);
-const html = tpl.replace('__DATA__', JSON.stringify(DATA));
-fs.writeFileSync(path.join(ROOT, OUT), html, 'utf8');
-log(`\nwrote ${OUT} · ${(Buffer.byteLength(html) / 1024).toFixed(0)} KB · ${((Date.now() - t0) / 1000).toFixed(0)}s`);
-log(`stats: ${JSON.stringify(DATA.stats)}`);
+// ---------------------------------------------------------------- 11. write and commit
+// The page no longer carries the data. It lives here as one file per club+gender, listed by
+// index.json, and the page in markjovic/stattrack fetches it. A template change then needs no
+// rebuild at all — the two were only ever coupled because the data was baked into the HTML.
+const slug = (x) => String(x).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const FILE = `${slug(CLUB)}-${slug(GENDER)}.json`;
+const dir = path.join(ROOT, OUTDIR);
+fs.mkdirSync(dir, { recursive: true });
+fs.writeFileSync(path.join(dir, FILE), JSON.stringify(DATA), 'utf8');
+const bytes = fs.statSync(path.join(dir, FILE)).size;
+log(`\nwrote ${OUTDIR}/${FILE} · ${(bytes / 1024).toFixed(0)} KB · ${((Date.now() - t0) / 1000).toFixed(0)}s`);
+
+// index.json is MERGED, never rebuilt: every other club's entry must survive a single-club run.
+const IDXP = path.join(dir, 'index.json');
+let idx = [];
+if (fs.existsSync(IDXP)) {
+  try { const raw = JSON.parse(fs.readFileSync(IDXP, 'utf8')); idx = Array.isArray(raw) ? raw : (raw.collections || []); }
+  catch (e) { die(`${OUTDIR}/index.json exists but will not parse (${e.message}) — refusing to overwrite it`); }
+}
+const entry = {
+  file: FILE, club: CLUB, gender: GENDER, org: ORG, comp: SEASONS[0].compName,
+  seasons: NS, firstSeason: LABELS[0], lastSeason: LABELS[NS - 1],
+  teams: USE.size, players: PLAYERS.length, bytes, builtAt: DATA.stats.builtAt,
+};
+const at = idx.findIndex(e => e && e.file === FILE);
+if (at >= 0) idx[at] = entry; else idx.push(entry);
+idx.sort((a, b) => String(a.club).localeCompare(String(b.club)) || String(a.gender).localeCompare(String(b.gender)));
+fs.writeFileSync(IDXP, JSON.stringify({ collections: idx }, null, 1), 'utf8');
+log(`index.json now lists ${idx.length} collection(s): ${idx.map(e => e.club + ' ' + e.gender).join(', ')}`);
+
+if (!COMMIT) { log('COMMIT=false — files written, nothing committed'); process.exit(0); }
+
+const { execFileSync } = require('child_process');
+const GIT = { cwd: ROOT, stdio: 'pipe', encoding: 'utf8', maxBuffer: 512 * 1024 * 1024, timeout: 10 * 60 * 1000 };
+const git = (...a) => execFileSync('git', a, GIT);
+const sleep = (ms) => { const end = Date.now() + ms; while (Date.now() < end) { try { execFileSync('sleep', ['0.2'], { stdio: 'ignore', timeout: 5000 }); } catch (e) { break; } } };
+
+for (const rel of [`${OUTDIR}/${FILE}`, `${OUTDIR}/index.json`]) {
+  try { git('add', '--', rel); } catch (e) { die(`git add failed for ${rel}: ${e.message}`); }
+}
+let staged = '';
+try { staged = git('diff', '--cached', '--shortstat'); } catch (e) { staged = ''; }
+if (!staged.trim()) { log('nothing changed — no commit'); process.exit(0); }
+log(`staging:${staged.trim()}`);
+git('commit', '-m', `movement: ${CLUB} ${GENDER} (${PLAYERS.length} players, ${USE.size} teams)`);
+
+let pushed = false;
+for (let attempt = 1; attempt <= 60 && !pushed; attempt++) {
+  try {
+    log(`fetch/merge/push (attempt ${attempt})`);
+    git('fetch', 'origin', 'main');
+    git('merge', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat', '-q');
+    git('push', 'origin', 'HEAD:main');
+    pushed = true;
+  } catch (e) {
+    const msg = String(e.stderr || e.message || '');
+    if (/GH001|exceeds|LFS|size limit/i.test(msg)) die(`push rejected permanently: ${msg}`);
+    try { git('merge', '--abort'); } catch (_) {}
+    if (attempt === 60) break;
+    sleep(1000 + Math.floor(Math.random() * 90000));
+  }
+}
+if (!pushed) die('push failed after 60 attempts — the data was NOT saved');
+log('committed and pushed');
