@@ -62,8 +62,14 @@ svg{display:block}
   <div class="sub" id="sub"></div>
 
   <div class="controls">
-    <label>Age from<select id="lo"></select></label>
-    <label>Age to<select id="hi"></select></label>
+    <label>View<select id="mode">
+      <option value="all">All teams</option>
+      <option value="cohort" selected>Follow a playing group</option>
+    </select></label>
+    <span id="cohortCtl"><label>Season<select id="csid"></select></label>
+      <label>Age group<select id="cband"></select></label></span>
+    <span id="rangeCtl"><label>Age from<select id="lo"></select></label>
+      <label>Age to<select id="hi"></select></label></span>
     <label>Rows<select id="dens"><option value="7">Normal</option><option value="5">Compact</option><option value="10">Tall</option></select></label>
   </div>
 
@@ -104,15 +110,30 @@ const boxShort=k=>{const l=boxLabel(k);return l.length>15?l.slice(0,14)+'…':l;
 const colOfBox=k=>+k.slice(1,k.indexOf('.'));
 const bandOfBox=k=>k.slice(k.indexOf('.')+1,k.indexOf('|'));
 
-let state={lo:BANDS[0],hi:BANDS[BANDS.length-1],sel:null,unit:7};
+let state={mode:'cohort',csid:TENI,cband:null,lo:BANDS[0],hi:BANDS[BANDS.length-1],sel:null,unit:7};
 let GEOM={},LAID={};
 
+const bandsIn=sid=>[...new Set(DATA.nodes.filter(n=>n.sid===sid).map(n=>n.band))].sort((a,b)=>num(a)-num(b));
+function syncCohortBands(){
+  const sel=document.getElementById('cband'),bs=bandsIn(state.csid);
+  if(!bs.includes(state.cband))state.cband=bs.includes('U13')?'U13':bs[bs.length-1];
+  sel.innerHTML=bs.map(x=>`<option value="${x}"${x===state.cband?' selected':''}>${x}</option>`).join('');
+}
 function initControls(){
   const lo=document.getElementById('lo'),hi=document.getElementById('hi');
   const opts=b=>BANDS.map(x=>`<option value="${x}"${x===b?' selected':''}>${x}</option>`).join('');
   lo.innerHTML=opts(state.lo); hi.innerHTML=opts(state.hi);
   lo.onchange=()=>{state.lo=lo.value;if(num(state.lo)>num(state.hi)){state.hi=state.lo;hi.value=state.hi;}state.sel=null;render();};
   hi.onchange=()=>{state.hi=hi.value;if(num(state.hi)<num(state.lo)){state.lo=state.hi;lo.value=state.lo;}state.sel=null;render();};
+  const csid=document.getElementById('csid');
+  csid.innerHTML=SEAS.map((n,i)=>`<option value="${i}"${i===state.csid?' selected':''}>${esc(n)}</option>`).join('');
+  csid.onchange=()=>{state.csid=+csid.value;syncCohortBands();state.sel=null;render();};
+  syncCohortBands();
+  document.getElementById('cband').onchange=e=>{state.cband=e.target.value;state.sel=null;render();};
+  const mode=document.getElementById('mode');
+  mode.value=state.mode;
+  mode.onchange=()=>{state.mode=mode.value;state.sel=null;applyMode();render();};
+  applyMode();
   document.getElementById('dens').onchange=e=>{state.unit=+e.target.value;render();};
   document.getElementById('h1').textContent=`${DATA.club} — player movement`;
   document.getElementById('sub').innerHTML=`${esc(DATA.org)} · ${esc(DATA.gender)} · one panel per age group, youngest at the top · `+
@@ -132,21 +153,62 @@ function initControls(){
     `Built ${esc((DATA.stats||{}).builtAt||'')}.`;
 }
 
+function applyMode(){
+  document.getElementById('cohortCtl').style.display=state.mode==='cohort'?'':'none';
+  document.getElementById('rangeCtl').style.display=state.mode==='cohort'?'none':'';
+}
 const inRange=n=>num(n.band)>=num(state.lo)&&num(n.band)<=num(state.hi);
-const visBands=()=>BANDS.filter(b=>num(b)>=num(state.lo)&&num(b)<=num(state.hi));
+
+// Every team that fed this season's chosen age group: seed on those teams, then walk the ribbons
+// BACKWARDS to their sources, and keep walking. Not an age filter — a U13 team is fed by U12 and
+// U11 teams, and by teams that sat in U13 the year before, so a band filter cannot express it.
+const isBox=k=>k[0]==='D'||k[0]==='S';
+// The cohort is a set of PLAYERS, not of teams. Seed on everyone in the chosen season's chosen age
+// group, then rebuild every count from those players alone — otherwise a 2020/21 U7 team shows its
+// whole roster of 8 when only two of them ever reached this group, which is tracking teams, not a
+// playing group.
+function cohortView(){
+  const seedKeys=new Set(DATA.nodes.filter(n=>n.sid===state.csid&&n.band===state.cband).map(n=>n.key));
+  const nodesOf=p=>{const ks=new Set();p.h.forEach(h=>{if(!isBox(h[0]))ks.add(h[0]);if(!isBox(h[1]))ks.add(h[1]);});return ks;};
+  const members=[];
+  for(const p of PL){const ks=nodesOf(p);for(const k of ks)if(seedKeys.has(k)){members.push([p,ks]);break;}}
+  const nCount=new Map(),lCount=new Map(),dCount=new Map(),sCount=new Map();
+  const bump=(m,k)=>m.set(k,(m.get(k)||0)+1);
+  const keep=k=>!isBox(k)&&NODE[k]&&NODE[k].sid<=state.csid;
+  for(const [p,ks] of members){
+    for(const k of ks)if(keep(k))bump(nCount,k);
+    for(const h of p.h){
+      const [a,b]=h;
+      if(!isBox(a)&&!isBox(b)){ if(keep(a)&&keep(b))bump(lCount,a+'>'+b); }
+      else if(isBox(b)){ if(keep(a))bump(dCount,a+'>'+b); }
+      else if(isBox(a)){ if(keep(b))bump(sCount,a+'>'+b); }
+    }
+  }
+  const nodes=[...nCount.entries()].map(([k,n])=>({...NODE[k],n}));
+  const split=(m)=>[...m.entries()].map(([k,n])=>{const i=k.indexOf('>');return {a:k.slice(0,i),b:k.slice(i+1),n};});
+  return {nodes,links:split(lCount),dest:split(dCount),src:split(sCount),players:members.map(m=>m[0])};
+}
+let COHORT=null;
+function visibleNodes(){
+  if(state.mode!=='cohort'){COHORT=null;return DATA.nodes.filter(inRange);}
+  COHORT=cohortView();
+  return COHORT.nodes;
+}
 
 function render(){
-  const vis=DATA.nodes.filter(inRange);
+  const vis=visibleNodes();
   const keys=new Set(vis.map(n=>n.key));
-  const links=DATA.links.filter(l=>keys.has(l.a)&&keys.has(l.b));
-  const dest=DATA.dest.filter(d=>keys.has(d.a));
-  const src=DATA.src.filter(d=>keys.has(d.b));
+  const BV=[...new Set(vis.map(n=>n.band))].sort((a,b)=>num(a)-num(b));
+  const links=COHORT?COHORT.links:DATA.links.filter(l=>keys.has(l.a)&&keys.has(l.b));
+  const dest=COHORT?COHORT.dest:DATA.dest.filter(d=>keys.has(d.a));
+  const src=COHORT?COHORT.src:DATA.src.filter(d=>keys.has(d.b));
   const sum=(a,f)=>a.filter(f).reduce((x,y)=>x+y.n,0);
   const last=vis.filter(n=>n.sid===TENI);
   const firstYr=last.reduce((a,n)=>a+((n.tenure||{}).first||0),0);
   const repeatYr=last.reduce((a,n)=>a+((n.tenure||{}).repeat||0),0);
   const cards=[
-    ['Teams',`${visBands().length} age groups`,vis.length],
+    ...(COHORT?[['Players followed',`${esc(state.cband)} in ${esc(SEAS[state.csid])}`,COHORT.players.length]]:[]),
+    ['Teams',`${BV.length} age groups`,vis.length],
     ['Moved up an age group','same club',sum(links,l=>num(NODE[l.b].band)>num(NODE[l.a].band))],
     ['Left for another club','or association',sum(dest,d=>/\|(to|assoc):/.test(d.b))],
     ['Joined from another club','or association',sum(src,d=>/\|(from|fromassoc):/.test(d.a))],
@@ -154,15 +216,23 @@ function render(){
     [`In ${TEN}`,'first season in their age group',firstYr],
     [`In ${TEN}`,'been in that age group before',repeatYr],
   ];
-  document.getElementById('stats').innerHTML=cards.map(([v,k,val])=>
+  // In cohort mode several of these are structurally zero — the group is defined as playing in the
+  // chosen season, so it cannot have left before it. Showing a zero there is noise, not a finding.
+  const shown=COHORT?cards.filter(c=>c[2]!==0&&c[2]!=='0'):cards;
+  document.getElementById('stats').innerHTML=shown.map(([v,k,val])=>
     `<div class="stat"><div class="v">${val}</div><div class="k">${esc(v)}${k?' · '+esc(k):''}</div></div>`).join('');
-  document.getElementById('blurb').innerHTML=`<b>${esc(DATA.club)}</b> — ${vis.length} teams across ${visBands().length} age groups and ${NS} seasons. `+
-    `The panel scrolls both ways; click any team, ribbon or box to trace that group of players across every season and list them below.`+
+  const head=state.mode==='cohort'
+    ? `<b>${esc(DATA.club)} ${esc(state.cband)}, ${esc(SEAS[state.csid])}</b> — the <b>${COHORT?COHORT.players.length:0} players</b> in that age group `+
+      `and every team they came through: ${vis.length} teams across ${BV.length} age groups. Every count on this view is those players only, `+
+      `so a team shows how many of ITS players ended up here, not its whole roster.`
+    : `<b>${esc(DATA.club)}</b> — ${vis.length} teams across ${BV.length} age groups and ${NS} seasons.`;
+  document.getElementById('blurb').innerHTML=head+
+    ` The panel scrolls both ways; click any team, ribbon or box to trace that group of players across every season and list them below.`+
     (EMPTY.size?` <b style="color:#ef5350">No registrations are recorded for ${[...EMPTY].join(', ')}</b> — that column is empty and players are NOT shown as having left, they simply have no record there yet.`:'');
-  draw(vis,links,dest,src);
+  draw(vis,links,dest,src,BV);
 }
 
-function draw(vis,links,dest,src){
+function draw(vis,links,dest,src,BV){
   const svg=document.getElementById('sk');
   const nodeW=146,MARGIN=nodeW/2+26,MINSPACE=262,UNIT=state.unit,GAP=26,MINH=52,DMINH=22,TOP=64,BANDGAP=54;
   const W=Math.max(2*MARGIN+(NS-1)*MINSPACE,(document.querySelector('.svgwrap').clientWidth||1000)-12);
@@ -171,7 +241,7 @@ function draw(vis,links,dest,src){
   links.forEach(l=>{inW[l.b]=(inW[l.b]||0)+l.n;outW[l.a]=(outW[l.a]||0)+l.n;});
   // boxes, per band per column
   const box={};
-  visBands().forEach(b=>{box[b]=SEAS.map(()=>({d:{},s:{}}));});
+  BV.forEach(b=>{box[b]=SEAS.map(()=>({d:{},s:{}}));});
   dest.forEach(d=>{const b=bandOfBox(d.b);if(!box[b])return;const c=box[b][colOfBox(d.b)].d;c[d.b]=(c[d.b]||0)+d.n;});
   src.forEach(d=>{const b=bandOfBox(d.a);if(!box[b])return;const c=box[b][colOfBox(d.a)].s;c[d.a]=(c[d.a]||0)+d.n;});
   const kindOrder=['to','older','assoc','gap','none','from','fromassoc','back','new'];
@@ -179,7 +249,7 @@ function draw(vis,links,dest,src){
 
   LAID={};const seps=[],bands=[];
   let y0=TOP;
-  for(const b of visBands()){
+  for(const b of BV){
     const teams=SEAS.map((_,s)=>vis.filter(n=>n.band===b&&n.sid===s)
       .sort((x,y)=>(x.gi-y.gi)||((x.gp||99)-(y.gp||99))||String(x.team).localeCompare(String(y.team))));
     let bottom=y0;
@@ -260,13 +330,14 @@ function draw(vis,links,dest,src){
 const PL=DATA.players||[];
 function playersFor(sel){
   if(!sel)return [];
-  if(sel.type==='player')return PL.filter(p=>p.c===sel.k);
-  if(sel.type==='link'){const [a,b]=sel.k.split('>');return PL.filter(p=>p.h.some(h=>h[0]===a&&h[1]===b));}
+  const POOL=COHORT?COHORT.players:PL;
+  if(sel.type==='player')return POOL.filter(p=>p.c===sel.k);
+  if(sel.type==='link'){const [a,b]=sel.k.split('>');return POOL.filter(p=>p.h.some(h=>h[0]===a&&h[1]===b));}
   const k=sel.k;
-  if(k[0]==='D')return PL.filter(p=>p.h.some(h=>h[1]===k));
-  if(k[0]==='S')return PL.filter(p=>p.h.some(h=>h[0]===k));
+  if(k[0]==='D')return POOL.filter(p=>p.h.some(h=>h[1]===k));
+  if(k[0]==='S')return POOL.filter(p=>p.h.some(h=>h[0]===k));
   const n=NODE[k];if(!n)return [];
-  return PL.filter(p=>p.s[n.sid]&&p.s[n.sid].t===n.team);
+  return POOL.filter(p=>p.s[n.sid]&&p.s[n.sid].t===n.team);
 }
 function select(sel){const same=state.sel&&sel&&state.sel.type===sel.type&&state.sel.k===sel.k;state.sel=same?null:sel;applySelection();}
 function cellHtml(c){
