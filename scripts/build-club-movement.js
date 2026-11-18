@@ -30,6 +30,10 @@ const ORG_MATCH  = new RegExp(process.env.ORG_MATCH || 'kilsyth', 'i');
 const CLUB       = process.env.CLUB      || 'Maroondah Magic Basketball Club';
 const GENDER     = process.env.GENDER    || 'Boys';                            // Boys | Girls | All
 const COMMIT     = !/^(0|false|no)$/i.test(process.env.COMMIT || 'true');
+// Player NAMES in the collection, ON by default. StatTrack already publishes every player's name,
+// team and game stats from this same database on public Pages, so this shows nothing new — set
+// WITH_NAMES=false for pseudonymous codes only.
+const WITH_NAMES = !/^(0|false|no)$/i.test(process.env.WITH_NAMES || 'true');
 const OUTDIR     = process.env.OUTDIR    || 'movement/bv';
 // true DROPS club teams whose age group cannot be read; false (default) fails and lists them.
 const DROP_UNGRADED = /^(1|true|yes)$/i.test(process.env.DROP_UNGRADED || '');
@@ -152,6 +156,7 @@ log(`distinct roster ids across the competition: ${rosterIds.size}`);
 const CAREER = new Map();      // full uuid -> [{o, sid, tid, club, age, gender, teamName, inComp}]
 const RID2FULL = new Map();    // 13-char roster id -> full uuid
 const PLAYED = new Set();      // team keys that at least one player is registered to
+const NAMES = new Map();       // full uuid -> display name, only populated when WITH_NAMES
 const REG_GRADE = new Map();   // team key -> {gid, gn} as the PLAYER's registration records it
 let unresolved = 0, noFile = 0, nPlayers = 0;
 for (const rid of rosterIds) {
@@ -162,6 +167,7 @@ for (const rid of rosterIds) {
   const P = readJson(`players/${full.slice(0, 2)}/${full}.json`, false);
   if (!P) { noFile++; continue; }
   nPlayers++;
+  if (WITH_NAMES && P.name) NAMES.set(full, String(P.name));
   const rows = [];
   for (const s of (P.seasons || [])) {
     const inComp = Object.prototype.hasOwnProperty.call(SIDX, s.sid);
@@ -332,11 +338,14 @@ Object.keys(TEAMS).forEach(k => {
   byGrade.get(g).push(k);
 });
 let unreadable = 0;
+let gradesRanked = 0, gradesUnplayed = 0;
 for (const [, keys] of byGrade) {
+  let finals = 0;
   const rows = keys.map(k => {
     let w = 0, d = 0, pf = 0, pa = 0;
     for (const f of TEAMS[k].fx) {
       if (String(f.st || '').toUpperCase() !== 'FINAL') continue;
+      finals++;
       const r = String(f.result || '').toUpperCase();
       if (r.startsWith('W')) w++; else if (r.startsWith('D')) d++;
       else if (!r.startsWith('L')) { unreadable++; continue; }
@@ -345,9 +354,14 @@ for (const [, keys] of byGrade) {
     }
     return { k, pts: w * 2 + d, diff: pf - pa };
   });
+  // A grade with no completed game has no ladder. Ranking it anyway produces a position that is
+  // really insertion order, and an UPCOMING season would show every team a confident "1st".
+  if (!finals) { gradesUnplayed++; continue; }
+  gradesRanked++;
   rows.sort((a, b) => (b.pts - a.pts) || (b.diff - a.diff));
   rows.forEach((r, i) => { POS[r.k] = i + 1; });
 }
+log(`ladder positions: ${gradesRanked} grades ranked · ${gradesUnplayed} with no completed game (no position given)`);
 if (unreadable) log(`note: ${unreadable} FINAL fixtures carried no readable result (counted as neither W/L/D)`);
 
 // ---------------------------------------------------------------- 7. per-player position per season
@@ -482,10 +496,13 @@ for (const [full, rows] of CAREER) {
       }
     }
   }
-  PLAYERS.push({ _o: [first, pos.get(first).key, full], s: cells, h: hops });
+  const rec = { _o: [first, pos.get(first).key, full], s: cells, h: hops };
+  if (WITH_NAMES) { const nm = NAMES.get(full); if (nm) rec.n = nm; }
+  PLAYERS.push(rec);
 }
 PLAYERS.sort((a, b) => (a._o[0] - b._o[0]) || String(a._o[1]).localeCompare(String(b._o[1])) || String(a._o[2]).localeCompare(String(b._o[2])));
 PLAYERS.forEach((p, i) => { p.c = `P${String(i + 1).padStart(3, '0')}`; delete p._o; });
+log(`names included: ${WITH_NAMES ? `YES — ${PLAYERS.filter(p => p.n).length} of ${PLAYERS.length} players carry a name` : 'no (pseudonymous codes only)'}`);
 log(`players on this club's teams: ${PLAYERS.length}` +
     ` · playing up into an older age group: ${playingUp.players} players, ${playingUp.instances} extra registrations`);
 if (sameBand.count) {
@@ -570,8 +587,9 @@ for (const nd of NODES.filter(n => n.sid === lastWith)) {
 // ---------------------------------------------------------------- 10. emit
 const DATA = {
   version: 3,
-  club: CLUB, org: ORG, gender: GENDER,
+  club: CLUB, org: ORG, gender: GENDER, withNames: WITH_NAMES,
   seasons: LABELS,
+  seasonStatus: SEASONS.map(x => x.status || null),
   tenureSeason: lastWith >= 0 ? LABELS[lastWith] : null,
   emptySeasons: LABELS.filter((_, i) => !NODES.some(n => n.sid === i)),
   bands: BANDS.map(a => 'U' + a),
@@ -611,7 +629,7 @@ if (fs.existsSync(IDXP)) {
   catch (e) { die(`${OUTDIR}/index.json exists but will not parse (${e.message}) — refusing to overwrite it`); }
 }
 const entry = {
-  file: FILE, club: CLUB, gender: GENDER, org: ORG, comp: SEASONS[0].compName,
+  file: FILE, club: CLUB, gender: GENDER, org: ORG, comp: SEASONS[0].compName, withNames: WITH_NAMES,
   seasons: NS, firstSeason: LABELS[0], lastSeason: LABELS[NS - 1],
   teams: USE.size, players: PLAYERS.length, bytes, builtAt: DATA.stats.builtAt,
 };
