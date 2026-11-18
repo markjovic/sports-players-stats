@@ -1,9 +1,12 @@
 # .github/workflows/build-club-movement.yml
-# Builds the club player-movement page and uploads it as an artifact. Reads only; commits nothing.
+# Builds one club's player-movement collection and COMMITS it as movement/bv/{club}-{gender}.json,
+# merging that club into movement/bv/index.json. The page lives in markjovic/stattrack and fetches
+# these files, so a page change needs no run here at all — only a data change does.
 #
-# The page carries aggregates and pseudonymous player codes (P001…) — no player id, no player
-# name, no roster data — so it is safe to publish. It is NOT committed here: download the
-# artifact and put it where you want it.
+# Run it once per club you want in the dropdown. Other clubs' entries are merged, never rebuilt.
+#
+# The collection carries aggregates and pseudonymous player codes (P001…) only — no player id, no
+# player name, no roster data — which is why it is safe to commit to a public repo.
 #
 # Needs a PLAIN full checkout: it reads every player file on the competition's rosters, and a
 # sparse/blobless clone fetches each one over the network.
@@ -14,7 +17,7 @@ on:
   workflow_dispatch:
     inputs:
       club:
-        description: 'Club (as PlayHQ records it on the player registration)'
+        description: 'Club (as PlayHQ records it on the team)'
         required: true
         default: 'Maroondah Magic Basketball Club'
         type: choice
@@ -40,31 +43,53 @@ on:
         required: false
         default: false
         type: boolean
+      deploy:
+        description: 'Dispatch Deploy Pages afterwards (without it the page keeps serving the previous data)'
+        required: false
+        default: true
+        type: boolean
 
 permissions:
-  contents: read
+  contents: write
+  actions: write
+
+# Writes to the repo, so it takes the same lock as every other writer — T25: push contention here
+# is path-agnostic, there is no exemption for "different directories".
+concurrency:
+  group: data-write
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     steps:
       - name: Checkout (full)
         uses: actions/checkout@v4
+        with:
+          ref: main
 
-      - name: Build
+      - name: Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Build and commit
         env:
           CLUB: ${{ inputs.club }}
           GENDER: ${{ inputs.gender }}
           DROP_UNGRADED: ${{ inputs.drop_ungraded }}
-          TEMPLATE: templates/movement-template.html
-          OUT: movement.html
+          COMMIT: 'true'
         run: node scripts/build-club-movement.js
 
-      - name: Upload page
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: movement
-          path: movement.html
-          if-no-files-found: error
+      - name: Dispatch Deploy Pages
+        if: ${{ inputs.deploy == true || inputs.deploy == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT || secrets.GITHUB_TOKEN }}
+        run: |
+          for i in 1 2 3 4 5; do
+            if gh workflow run deploy-pages.yml --ref main; then echo "dispatched"; exit 0; fi
+            echo "dispatch attempt $i failed"; sleep $((i * 10))
+          done
+          echo "::error::could not dispatch Deploy Pages — the data is committed but the site still serves the previous build"
+          exit 1
