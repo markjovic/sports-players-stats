@@ -43,6 +43,11 @@ on:
         required: false
         default: false
         type: boolean
+      with_names:
+        description: 'Include player names (default). Untick for pseudonymous codes only.'
+        required: false
+        default: true
+        type: boolean
       deploy:
         description: 'Dispatch Deploy Pages afterwards (without it the page keeps serving the previous data)'
         required: false
@@ -79,6 +84,7 @@ jobs:
           CLUB: ${{ inputs.club }}
           GENDER: ${{ inputs.gender }}
           DROP_UNGRADED: ${{ inputs.drop_ungraded }}
+          WITH_NAMES: ${{ inputs.with_names }}
           COMMIT: 'true'
         run: node scripts/build-club-movement.js
 
