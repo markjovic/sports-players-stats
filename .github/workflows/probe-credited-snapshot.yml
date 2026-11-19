@@ -1,0 +1,100 @@
+# .github/workflows/probe-credited-snapshot.yml
+#
+# READ-ONLY probe. Writes NOTHING to the repository: no commit, no push, no
+# report committed into reports/. `permissions: contents: read` makes that a
+# property of the token, not a promise in a comment.
+#
+# It does NOT take the `data-write` concurrency group. T25 requires that lock of
+# every workflow that WRITES to the repo; this one does not write, and taking
+# the lock would park it behind multi-hour writers for no reason. It has its own
+# group so two dispatches cannot run at once.
+#
+# No `actions/setup-node`. The runner's node is used as-is. The setup-node x
+# PlayHQ fingerprint block is per-JOB and this job makes no PlayHQ calls, so the
+# action would be harmless here — it is simply not needed.
+#
+# A PLAIN FULL checkout is required. Sparse checkout makes a blobless clone that
+# fetches each file over the network, which is unusable across ~418k player
+# files, and a partial games/bv checkout would report held games as absent —
+# the one error this probe must never make.
+
+name: Probe credited snapshot (read-only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      shards:
+        description: 'Player shard dirs to scan, comma-separated e.g. 00,01 (blank = all 256). games/bv is always scanned in full.'
+        required: false
+        type: string
+        default: ''
+      examples:
+        description: 'Per-bucket example cap'
+        required: false
+        type: string
+        default: '8'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: probe-credited-snapshot
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+
+    steps:
+      - name: Checkout (plain, full tree, main)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Node version
+        run: node --version
+
+      - name: Run probe
+        env:
+          # Inputs reach bash as environment variables, never interpolated into
+          # the script body — a dispatch value containing a quote or a semicolon
+          # is then data, not shell.
+          IN_SHARDS: ${{ inputs.shards }}
+          IN_EXAMPLES: ${{ inputs.examples }}
+        run: |
+          set -euo pipefail
+          SHARDS_ARG=""
+          if [ -n "${IN_SHARDS:-}" ]; then
+            SHARDS_ARG="--shards=${IN_SHARDS}"
+          fi
+          EXAMPLES="${IN_EXAMPLES:-}"
+          if [ -z "$EXAMPLES" ]; then EXAMPLES="8"; fi
+          node --max-old-space-size=6144 scripts/probe-credited-snapshot.js \
+            $SHARDS_ARG \
+            --examples="$EXAMPLES" \
+            --out=/tmp/credited-snapshot-probe.json \
+            2>&1 | tee /tmp/credited-snapshot-probe.log
+
+      - name: Confirm the working tree is unchanged
+        if: always()
+        run: |
+          set -euo pipefail
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "FAIL: the probe modified the working tree. It is supposed to write nothing."
+            git status --porcelain
+            exit 1
+          fi
+          echo "working tree clean — nothing was written to the repository"
+
+      - name: Upload report and log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: credited-snapshot-probe-${{ github.run_number }}
+          path: |
+            /tmp/credited-snapshot-probe.json
+            /tmp/credited-snapshot-probe.log
+          if-no-files-found: warn
+          retention-days: 30
