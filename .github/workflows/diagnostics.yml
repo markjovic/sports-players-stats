@@ -32,7 +32,7 @@ on:
         required: true
         default: 'db-audit'
         type: choice
-        options: ['audit-seasons-gaps', 'db-audit', 'diagnose', 'diagnose-forfeit-game', 'diagnose-id-field-lengths', 'diagnose-nightly-health', 'find-flag-collisions', 'probe-api-limits', 'probe-my-aliases', 'probe-player', 'probe-selfalias-check', 'scan-roster-id-forms', 'size-appearance-gaps', 'size-locked-resweep', 'size-missing-gids', 'size-opposition-index', 'size-report', 'size-spectator-queue', 'trace-player-game', 'verify-enrich', 'verify-p-redundancy']
+        options: ['audit-seasons-gaps', 'db-audit', 'diagnose', 'diagnose-forfeit-game', 'diagnose-id-field-lengths', 'diagnose-nightly-health', 'find-flag-collisions', 'probe-api-limits', 'probe-credited-snapshot', 'probe-my-aliases', 'probe-player', 'probe-selfalias-check', 'scan-roster-id-forms', 'size-appearance-gaps', 'size-locked-resweep', 'size-missing-gids', 'size-opposition-index', 'size-report', 'size-spectator-queue', 'trace-player-game', 'verify-enrich', 'verify-p-redundancy']
       args:
         description: 'Command-line arguments, e.g. --limit=10. Blank for most tools.'
         required: false
@@ -91,6 +91,16 @@ jobs:
             probe-api-limits)
               SPARSE=$'scripts/probe-api-limits.js'
               FLAGS=''; SCRIPT='scripts/probe-api-limits.js'; DEPTH=0; TMO=360; DEFAULT_ARGS='--season=15908988 --op=grade --levels=25,50,100,200,400 --calls=400 --cycles=0 --duration=0 --burst=1000 --rest=90000 --conc=25 --recover' ;;
+            probe-credited-snapshot)
+              # FULL TREE, deliberately. It reads all 256 players/{xx} dirs,
+              # players/indexes, players/aliases and every games/bv season file.
+              # Sparse checkout makes a blobless clone that fetches each file over
+              # the network, which is unusable at ~442k player files. The script
+              # exits 2 if players/indexes or players/aliases is absent rather than
+              # reporting the whole database as an appearance gap.
+              # Full run measured at 50s; TMO is a backstop, not a budget.
+              SPARSE=$''
+              FLAGS='--max-old-space-size=6144'; SCRIPT='scripts/probe-credited-snapshot.js'; DEPTH=1; TMO=60; DEFAULT_ARGS='' ;;
             probe-my-aliases)
               SPARSE=$''
               FLAGS='--max-old-space-size=8192'; SCRIPT='scripts/probe-my-aliases.js'; DEPTH=0; TMO=60; DEFAULT_ARGS='--show=40' ;;
