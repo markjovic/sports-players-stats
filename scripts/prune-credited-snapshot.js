@@ -89,7 +89,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const VERSION = 'prune-credited-snapshot.js v1.0.0 (2026-11-20)';
+const VERSION = 'prune-credited-snapshot.js v1.1.0 (2026-11-20) — REPLACES v1.0.0: refuses to run on an unrecognised argument. Pruning behaviour is UNCHANGED.';
 
 const ROOT = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
@@ -120,6 +120,25 @@ const SHARD_FILTER = (() => {
 if (!Number.isFinite(EXAMPLE_CAP) || EXAMPLE_CAP < 1) {
   console.error(`FATAL: --examples must be a positive number, got "${argValue('examples', '')}"`);
   process.exit(2);
+}
+
+// An argument this script does not understand is a FAILURE, not a no-op.
+// This one writes, so the stakes are higher than in the probe: a mistyped
+// `--shard=00` would be silently ignored and the run would sweep ALL 256
+// shards. Refuse instead.
+{
+  const KNOWN_FLAGS = new Set(['--apply', '--force']);
+  const KNOWN_VALUE_ARGS = ['--shards', '--examples', '--out'];
+  const unknown = process.argv.slice(2).filter((a) =>
+    !KNOWN_FLAGS.has(a) && !KNOWN_VALUE_ARGS.some((k) => a.startsWith(`${k}=`))
+  );
+  if (unknown.length) {
+    console.log(VERSION);
+    console.error(`\nFATAL: unrecognised argument(s): ${unknown.join(' ')}`);
+    console.error(`Known: ${[...KNOWN_FLAGS].join(' ')} ${KNOWN_VALUE_ARGS.map((k) => k + '=').join(' ')}`);
+    console.error('Refusing to run — an ignored flag looks exactly like one that worked.');
+    process.exit(2);
+  }
 }
 
 // ------------------------------------------------------------------ helpers

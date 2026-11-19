@@ -91,7 +91,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const VERSION = 'probe-credited-snapshot.js v1.1.0 (2026-11-19) — READ-ONLY, no writes, no API calls. REPLACES v1.0.0: roster matching now uses lib/uuid-prefix.cjs resolveToFullUuid (v1.0.0 built its own id set and could not match LEGACY 10-char roster ids)';
+const VERSION = 'probe-credited-snapshot.js v1.2.0 (2026-11-20) — READ-ONLY, no writes, no API calls. REPLACES v1.1.0: adds --trace-x. The v1.1.0 buckets and totals are UNCHANGED — the default run is byte-for-byte the same analysis.';
 
 const ROOT = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
@@ -108,6 +108,10 @@ function argValue(name, fallback) {
 
 const EXAMPLE_CAP = Number(argValue('examples', '8'));
 const OUT_PATH = argValue('out', '/tmp/credited-snapshot-probe.json');
+// --trace-x: answer ONE question and stop — why are some players' x entries no
+// longer in their games[]. Skips the c analysis entirely; see traceStaleX below.
+const TRACE_X = process.argv.includes('--trace-x');
+
 const SHARD_FILTER = (() => {
   const raw = argValue('shards', '');
   if (!raw.trim()) return null;
@@ -191,9 +195,204 @@ for (const dir of [path.join(PLAYERS_DIR, 'indexes'), path.join(PLAYERS_DIR, 'al
   }
 }
 
+
+// ─── --trace-x ────────────────────────────────────────────────────────────────
+// WHY THIS EXISTS. The full run found 661 x entries across 28 players that are
+// no longer in those players' games[], and in every case it was the player's
+// WHOLE list. x means "games[] held it, PlayHQ did not credit it", so a whole
+// list going stale means that player's games[] was rebuilt without any of them.
+//
+// We never delete a game: flushGameFiles refuses to write fewer games than are
+// on disk, and applyRoundFixtures is a keyed upsert. So the game is still in
+// games/bv and what changed is ATTRIBUTION — whether that game's team sheet
+// still resolves to this player. There are only three ways that happens:
+//   · an alias repoint moved the games to a different profile;
+//   · a later capture replaced the team sheet with a different id set;
+//   · the id stopped resolving to anyone (345 such ids repo-wide).
+// This distinguishes them BY INSPECTION rather than by inference, which is the
+// whole point: the previous paragraph is a theory until this prints.
+//
+// It resolves every roster id through the same resolveToFullUuid the rebuild
+// uses, so "who holds this game now" is answered by the same relation that
+// decided games[] in the first place.
+function traceStaleX() {
+  const shards = fs.readdirSync(PLAYERS_DIR, { withFileTypes: true })
+    .filter((d) => d.isDirectory()).map((d) => d.name)
+    .filter((n) => /^[0-9a-f]{2}$/i.test(n))
+    .filter((n) => !SHARD_FILTER || SHARD_FILTER.has(n.toLowerCase()))
+    .sort();
+
+  const subjects = [];      // { uuid, gamesLen, xLen, stale: [gid] }
+  const wanted = new Map(); // gid -> [subject index]
+
+  let scanned = 0;
+  for (const shard of shards) {
+    const dir = path.join(PLAYERS_DIR, shard);
+    let files;
+    try { files = fs.readdirSync(dir).filter((n) => n.endsWith('.json')); }
+    catch (err) { parseFailures.push({ file: `players/${shard}/`, error: String(err && err.message) }); continue; }
+
+    for (const f of files) {
+      scanned += 1;
+      let p;
+      try { p = readJson(path.join(dir, f)); }
+      catch (err) { parseFailures.push({ file: `players/${shard}/${f}`, error: String(err && err.message) }); continue; }
+
+      const bk = p && p.sports && p.sports.Basketball;
+      if (!bk || !Array.isArray(bk.x) || !bk.x.length) continue;
+
+      const games = Array.isArray(p.games) ? p.games : [];
+      const held = new Set(games);
+      const stale = bk.x.filter((g) => !held.has(g));
+      if (!stale.length) continue;
+
+      const idx = subjects.length;
+      subjects.push({ uuid: f.replace(/\.json$/, ''), gamesLen: games.length, xLen: bk.x.length, stale });
+      for (const gid of stale) {
+        const list = wanted.get(gid);
+        if (list) list.push(idx); else wanted.set(gid, [idx]);
+      }
+    }
+  }
+
+  console.log(`Pass B  players scanned ${fmt(scanned)}  players with a stale x entry ${fmt(subjects.length)}  stale gids ${fmt(wanted.size)}`);
+
+  // Locate each stale game and resolve its whole team sheet.
+  const found = new Map();  // gid -> { sid, rn, st, date, rosterIds, owners:[], nulls, malformed }
+  const seasonFiles = fs.readdirSync(GAMES_DIR).filter((n) => n.endsWith('.json')).sort();
+  for (const f of seasonFiles) {
+    let obj;
+    try { obj = readJson(path.join(GAMES_DIR, f)); }
+    catch (err) { parseFailures.push({ file: `games/bv/${f}`, error: String(err && err.message) }); continue; }
+    const sid = f.replace(/\.json$/, '');
+    const games = obj && obj.games && typeof obj.games === 'object' ? obj.games : null;
+    if (!games) continue;
+
+    for (const gid of Object.keys(games)) {
+      if (!wanted.has(gid) || found.has(gid)) continue;
+      const g = games[gid] || {};
+      const rosterIds = [];
+      for (const e of Array.isArray(g.p) ? g.p : []) {
+        const rid = typeof e === 'string' ? e : (e && typeof e.id === 'string' ? e.id : null);
+        if (rid) rosterIds.push(rid);
+      }
+      const owners = [];
+      let nulls = 0, malformed = 0;
+      for (const rid of rosterIds) {
+        let owner = null;
+        try { owner = resolveToFullUuid(rid, ROOT); }
+        catch { malformed += 1; malformedRosterIds += 1; continue; }
+        if (owner) owners.push(owner); else { nulls += 1; unresolvedRosterIds += 1; }
+      }
+      found.set(gid, {
+        sid, rn: typeof g.rn === 'string' ? g.rn : null, st: typeof g.st === 'string' ? g.st : null,
+        date: typeof g.d === 'string' ? g.d.slice(0, 10) : null,
+        rosterIds, owners, nulls, malformed,
+      });
+    }
+  }
+
+  // ── verdict per player ──────────────────────────────────────────────────────
+  // Capped PER VERDICT, never globally (T59).
+  const verdicts = {
+    absent_from_games_bv: [],
+    roster_empty: [],
+    reassigned: [],          // sheet resolves to other people, not this player
+    still_on_sheet: [],      // CONTRADICTION — the rebuild should have kept it
+    unresolvable: [],        // sheet ids resolve to nobody
+    mixed: [],
+  };
+
+  for (const s of subjects) {
+    const tally = { absent: 0, empty: 0, reassigned: 0, still: 0, unresolvable: 0 };
+    const detail = [];
+    for (const gid of s.stale) {
+      const g = found.get(gid);
+      if (!g) { tally.absent += 1; detail.push({ gid, verdict: 'not in games/bv' }); continue; }
+      if (g.rosterIds.length === 0) { tally.empty += 1; detail.push({ gid, sid: g.sid, verdict: 'team sheet empty' }); continue; }
+      if (g.owners.includes(s.uuid)) {
+        tally.still += 1;
+        detail.push({ gid, sid: g.sid, verdict: 'STILL ON THE SHEET — rebuild should have kept this', roster: g.rosterIds.length });
+        continue;
+      }
+      if (g.owners.length === 0) {
+        tally.unresolvable += 1;
+        detail.push({ gid, sid: g.sid, verdict: `no id on the sheet resolves to anyone (${g.nulls} null)`, roster: g.rosterIds.length });
+        continue;
+      }
+      tally.reassigned += 1;
+      detail.push({
+        gid, sid: g.sid, rn: g.rn, date: g.date, roster: g.rosterIds.length,
+        verdict: 'sheet now resolves to other profiles',
+        owners: [...new Set(g.owners)].slice(0, 4),
+      });
+    }
+
+    const nonZero = Object.entries(tally).filter(([, n]) => n > 0);
+    let key;
+    if (nonZero.length > 1) key = 'mixed';
+    else if (tally.absent) key = 'absent_from_games_bv';
+    else if (tally.empty) key = 'roster_empty';
+    else if (tally.reassigned) key = 'reassigned';
+    else if (tally.still) key = 'still_on_sheet';
+    else key = 'unresolvable';
+    verdicts[key].push({ uuid: s.uuid, gamesLen: s.gamesLen, xLen: s.xLen, staleLen: s.stale.length, tally, detail });
+  }
+
+  console.log('');
+  console.log('='.repeat(78));
+  console.log('WHY THESE x ENTRIES ARE NO LONGER IN games[]');
+  console.log('='.repeat(78));
+  const labels = {
+    reassigned: 'REASSIGNED — the team sheet now resolves to other profiles (alias repoint)',
+    absent_from_games_bv: 'the game is not in games/bv at all',
+    roster_empty: 'the team sheet is empty',
+    unresolvable: 'no id on the sheet resolves to anyone',
+    still_on_sheet: 'CONTRADICTION — player is still on the sheet; the rebuild dropped it anyway',
+    mixed: 'more than one cause for the same player',
+  };
+  for (const [key, list] of Object.entries(verdicts)) {
+    console.log('-'.repeat(78));
+    console.log(`${key.padEnd(24)} players ${fmt(list.length)}   ${labels[key]}`);
+    for (const p of list.slice(0, EXAMPLE_CAP)) {
+      console.log(`    ${p.uuid}  games[]=${p.gamesLen}  x=${p.xLen}  stale=${p.staleLen}`);
+      for (const d of p.detail.slice(0, 3)) {
+        console.log(`        gid=${d.gid} sid=${d.sid || '-'} ${d.date || ''} roster=${d.roster === undefined ? '-' : d.roster} :: ${d.verdict}`);
+        if (d.owners) for (const o of d.owners) console.log(`            sheet id resolves to ${o}`);
+      }
+      if (p.detail.length > 3) console.log(`        … ${fmt(p.detail.length - 3)} more games not shown`);
+    }
+    if (list.length > EXAMPLE_CAP) console.log(`    … ${fmt(list.length - EXAMPLE_CAP)} more players not shown (cap ${EXAMPLE_CAP})`);
+  }
+  console.log('-'.repeat(78));
+  console.log('');
+  console.log(`roster ids that threw : ${fmt(malformedRosterIds)}`);
+  console.log(`roster ids resolving to null : ${fmt(unresolvedRosterIds)}`);
+  console.log(`files that failed to read or parse: ${fmt(parseFailures.length)}`);
+  for (const pf of parseFailures.slice(0, EXAMPLE_CAP)) console.log(`    ${pf.file}: ${pf.error}`);
+  console.log('');
+
+  fs.writeFileSync(OUT_PATH, JSON.stringify({
+    version: VERSION, mode: 'trace-x', generatedAt: new Date().toISOString(),
+    playersScanned: scanned, subjects: subjects.length, staleGids: wanted.size,
+    verdicts: Object.fromEntries(Object.entries(verdicts).map(([k, v]) => [k, { players: v.length, detail: v }])),
+    malformedRosterIds, unresolvedRosterIds, parseFailureCount: parseFailures.length,
+  }, null, 2));
+  console.log(`report written: ${OUT_PATH}`);
+  console.log(`elapsed: ${Math.round((Date.now() - t0) / 1000)}s`);
+  console.log(VERSION);
+  if (parseFailures.length) {
+    console.error(`\nEXIT 3: ${parseFailures.length} file(s) failed to read or parse.`);
+    process.exit(3);
+  }
+  process.exit(0);
+}
+
 let malformedRosterIds = 0;
 let unresolvedRosterIds = 0;
 const malformedExamples = [];
+
+if (TRACE_X) traceStaleX();   // never returns
 
 // --- Pass B: player scan -----------------------------------------------------
 
