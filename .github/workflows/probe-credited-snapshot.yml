@@ -33,6 +33,11 @@ on:
         required: false
         type: string
         default: '8'
+      trace_x:
+        description: 'Trace mode: skip the c analysis and explain why some players x entries are no longer in their games list'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -63,8 +68,11 @@ jobs:
           # is then data, not shell.
           IN_SHARDS: ${{ inputs.shards }}
           IN_EXAMPLES: ${{ inputs.examples }}
+          IN_TRACE_X: ${{ inputs.trace_x }}
         run: |
           set -euo pipefail
+          TRACE_ARG=""
+          if [ "${IN_TRACE_X:-false}" = "true" ]; then TRACE_ARG="--trace-x"; fi
           SHARDS_ARG=""
           if [ -n "${IN_SHARDS:-}" ]; then
             SHARDS_ARG="--shards=${IN_SHARDS}"
@@ -72,6 +80,7 @@ jobs:
           EXAMPLES="${IN_EXAMPLES:-}"
           if [ -z "$EXAMPLES" ]; then EXAMPLES="8"; fi
           node --max-old-space-size=6144 scripts/probe-credited-snapshot.js \
+            $TRACE_ARG \
             $SHARDS_ARG \
             --examples="$EXAMPLES" \
             --out=/tmp/credited-snapshot-probe.json \
