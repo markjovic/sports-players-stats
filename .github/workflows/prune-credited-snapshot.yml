@@ -1,0 +1,152 @@
+# .github/workflows/prune-credited-snapshot.yml
+#
+# Reconciles sports.Basketball.c and .x against player.games[].
+# DRY RUN BY DEFAULT — `mode: apply` is required before anything is written.
+#
+# ORDERING. This tool is only COMPLETE when it runs after build-player-games.js,
+# because games[] is what it reads and that script is what writes it. Until it is
+# chained into weekly-indexes.yml behind the `player-games` job (T29), that
+# ordering is the operator's responsibility. Running it early is not dangerous —
+# a short games[] means fewer entries qualify and it prunes LESS, never wrongly —
+# so the cost of getting the order wrong is an incomplete pass, not damage.
+#
+# `ref: main` on the checkout is LOAD-BEARING (T21). github.sha is frozen when
+# the run is triggered, so without it this job would read the tree as it stood
+# before build-player-games pushed — exactly the staleness it exists to fix.
+#
+# It takes `data-write`. T25: writes-to-repo ⇒ data-write, no exceptions for
+# "different directories" — push contention on a 6 GB repo is path-agnostic,
+# because every push must merge the others' commits.
+#
+# No `actions/setup-node`: the runner's node is used as-is and this job makes no
+# PlayHQ calls.
+#
+# A PLAIN FULL checkout is required. Sparse checkout makes a blobless clone that
+# fetches each file over the network, unusable across ~418k player files.
+
+name: Prune credited snapshot
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry-run (default, writes nothing) or apply'
+        required: false
+        type: choice
+        options: [dry-run, apply]
+        default: dry-run
+      shards:
+        description: 'Player shard dirs, comma-separated e.g. 00,01 (blank = all 256)'
+        required: false
+        type: string
+        default: ''
+      examples:
+        description: 'Per-bucket example cap'
+        required: false
+        type: string
+        default: '8'
+      force:
+        description: 'Ignore the resume file and start from the first shard'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  prune:
+    runs-on: ubuntu-latest
+    # 360 is a BACKSTOP ABOVE a self-bounding loop, not a budget for it (T55).
+    # The scan is ~418k file reads, call it 15-25 min. The push retry is 60
+    # attempts of pure 1-91s jitter (~46 min expected, ~91 min worst) plus the
+    # fetch/merge/push cycles, each individually capped at 10 min by the
+    # script's own git timeout. A run that reaches this ceiling is wedged in git
+    # and should be killed rather than given more time — the same reasoning and
+    # the same value as build-player-games.
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout (plain, full tree, main)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Node version
+        run: node --version
+
+      - name: Configure git
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Warn if a rebuild is mid-flight
+        run: |
+          set -euo pipefail
+          if [ -f scripts/.build-player-games-progress.json ]; then
+            echo "::warning::build-player-games progress file present — a rebuild is mid-flight or ended early. This run will prune LESS (under-pruning, never mis-pruning)."
+          else
+            echo "no build-player-games progress file — last rebuild completed cleanly"
+          fi
+
+      - name: Prune
+        env:
+          # Inputs reach bash as environment variables, never interpolated into
+          # the script body — a dispatch value containing a quote or a semicolon
+          # is then data, not shell.
+          IN_MODE: ${{ inputs.mode }}
+          IN_SHARDS: ${{ inputs.shards }}
+          IN_EXAMPLES: ${{ inputs.examples }}
+          IN_FORCE: ${{ inputs.force }}
+        run: |
+          set -euo pipefail
+
+          ARGS=""
+          # Fails toward doing less: anything that is not exactly "apply" is a
+          # dry run. An unrecognised mode must never mean "proceed" (T3).
+          if [ "${IN_MODE:-dry-run}" = "apply" ]; then
+            ARGS="$ARGS --apply"
+            echo "MODE: APPLY — player files will be written and committed"
+          else
+            echo "MODE: DRY RUN — nothing will be written"
+          fi
+
+          if [ -n "${IN_SHARDS:-}" ]; then ARGS="$ARGS --shards=${IN_SHARDS}"; fi
+          if [ "${IN_FORCE:-false}" = "true" ]; then ARGS="$ARGS --force"; fi
+
+          EXAMPLES="${IN_EXAMPLES:-}"
+          if [ -z "$EXAMPLES" ]; then EXAMPLES="8"; fi
+
+          node --max-old-space-size=4096 scripts/prune-credited-snapshot.js \
+            $ARGS \
+            --examples="$EXAMPLES" \
+            --out=/tmp/prune-credited-snapshot.json \
+            2>&1 | tee /tmp/prune-credited-snapshot.log
+
+      - name: Confirm the working tree is clean
+        if: always()
+        run: |
+          set -euo pipefail
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "FAIL: uncommitted changes left in the working tree — a commit or push was lost."
+            git status --porcelain | head -50
+            exit 1
+          fi
+          echo "working tree clean"
+
+      - name: Upload report and log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prune-credited-snapshot-${{ github.run_number }}
+          path: |
+            /tmp/prune-credited-snapshot.json
+            /tmp/prune-credited-snapshot.log
+          if-no-files-found: warn
+          retention-days: 30
