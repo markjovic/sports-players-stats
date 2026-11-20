@@ -150,6 +150,61 @@ jobs:
       - name: Build win-loss records (full)
         run: node scripts/build-win-loss.js
 
+  prune-credited:
+    # Reconciles sports.Basketball.c and .x against games[], which build-player-games
+    # has just rebuilt. c is written by fetch-profile-stats.js at fetch time against
+    # games[] AS IT STOOD THEN, and that script's own comment states the contract:
+    # "A consumer must treat c as 'worth checking', not as 'definitely missing'."
+    # StatTrack renders it as the stronger claim, so the stored list has to be true.
+    #
+    # Measured 2026-11-19 across 442,183 players: 256,493 of 828,326 c entries named
+    # a game we hold — 31% of entries but 93% of the players carrying the field, and
+    # 59.7% of them had a list consisting of ONE entry we already held. The first
+    # apply pruned 183,372 entries across 141,193 players in 412 seconds.
+    #
+    # MUST RUN AFTER player-games. It reads games[] and nothing else — no games/bv
+    # scan, no roster resolution — so it re-derives nothing and holds no second copy
+    # of a predicate that lives in build-player-games. Run before that job and games[]
+    # is short, so fewer entries qualify and it prunes LESS. It can never prune MORE:
+    # a gid is in games[] only because the player resolved onto that game's roster.
+    # The failure direction is under-pruning, never mis-pruning.
+    #
+    # ⚠️ ref: main is LOAD-BEARING here (T21), and it is the ONLY job in this file
+    # that sets it. actions/checkout with no ref pins to github.sha, frozen when the
+    # run was triggered — so without it this job would read games[] as it stood
+    # BEFORE player-games pushed, which is exactly the staleness it exists to fix,
+    # and it would silently prune almost nothing. See the note in player-games: the
+    # same question applies to that job's own view of discover-fixtures' pushes.
+    needs: [player-games]
+    if: ${{ !cancelled() && needs.player-games.result != 'cancelled' }}
+    runs-on: ubuntu-latest
+    # 360 is a BACKSTOP ABOVE a self-bounding loop, not a budget for it (T55): the
+    # scan is ~442k file reads (57s measured), and the house push retry is 60
+    # attempts of 1-91s jitter plus fetch/merge/push cycles each capped at 10 min by
+    # the script's own git timeout. Same value as its sibling jobs.
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      # NO actions/setup-node — repo-wide rule. This script never fetches PlayHQ,
+      # but the rule is per-job and one edit away from mattering.
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Prune credited snapshot
+        run: |
+          # The script is DRY RUN unless --apply is passed, so a dry run is the
+          # absence of a flag rather than the presence of one. A schedule trigger
+          # receives no inputs (T27), so inputs.dry_run is empty there and this
+          # correctly resolves to --apply.
+          ARGS="--apply"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS=""; fi
+          node --max-old-space-size=4096 scripts/prune-credited-snapshot.js $ARGS
+
   fold-diverged:
     # Backstop for the fold. The fetch-profile-stats matrix triggers the fold at
     # the tail of each cycle that drains to `stuck`, but that chain is a series of
