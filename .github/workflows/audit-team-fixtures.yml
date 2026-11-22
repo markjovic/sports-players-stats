@@ -1,0 +1,96 @@
+# .github/workflows/audit-team-fixtures.yml
+name: Audit team fixtures
+
+# READ-ONLY. No PlayHQ calls, no writes, no commit, no data-write lock. Reads the
+# game and team-stats files already in the checkout and prints to the job log.
+#
+# WHAT IT ANSWERS. Exactly what this repository currently holds for one team:
+# every stored game with its date, time, round name, grade, opponent, venue and
+# status; which grades those games span; how many are unplayed; how many carry no
+# round name; and what team-stats/bv/{sid}.json — the file StatTrack's team view
+# actually renders — says about the same team.
+#
+# WHY IT EXISTS. It is the BEFORE and the AFTER of the stale-fixture fix
+# (2026-11-22). That fix deletes unplayed games PlayHQ no longer returns, and a
+# deletion is not something to take on trust: the state has to be printed before
+# the change and after it, from the repository itself. The session that wrote the
+# fix cannot read this repository — raw.githubusercontent.com refused at the
+# egress proxy, `gh api` 403, markjovic.github.io blocked by org policy in both
+# browsers, all retested 2026-11-22 — so a dispatch is the only route (T78).
+#
+# MAIN REPO ONLY. Locked seasons' game files live in the ARCHIVE repo (the
+# active/locked split, 2026-08-07). A team whose season is locked will read as
+# NOT FOUND here, and the script says so rather than implying the team has no
+# games.
+#
+# Full checkout, not sparse: without a season id this walks every file in
+# games/bv, which is the case where a blobless clone costs far more than it
+# saves (audit-diff-fields.yml is the one place sparse IS correct — one shard).
+
+on:
+  workflow_dispatch:
+    inputs:
+      tid:
+        description: 'Team id, or several comma-separated. A unique prefix is accepted; an ambiguous one is reported, never guessed.'
+        required: true
+        type: string
+      sid:
+        description: 'Optional season id. Narrows the scan to one season file — much faster when you already know it.'
+        required: false
+        default: ''
+        type: string
+      unplayed_only:
+        description: 'List only unplayed games (no score, not FINAL, not forfeit) — the only games any deletion may ever touch.'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # Inputs go through env and are gated in bash — never interpolated into
+      # run:, never in an `if:` (directive 13 / T27). A scheduled run receives no
+      # inputs at all; this workflow has no schedule, and every default is still
+      # resolved at the use site so adding one later cannot silently degrade it.
+      - name: Print stored fixtures for the team
+        env:
+          TID:           ${{ inputs.tid }}
+          SID:           ${{ inputs.sid }}
+          UNPLAYED_ONLY: ${{ inputs.unplayed_only }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${TID:-}" ]; then
+            echo "::error::tid is required"
+            exit 1
+          fi
+
+          # Ids and commas only. A guard must FAIL TOWARD DOING LESS (T3): an
+          # unrecognised value refuses rather than being passed through to a
+          # shell word-split.
+          case "${TID}" in
+            *[!0-9a-fA-F,-]*) echo "::error::tid may contain only hex digits, hyphens and commas, got '${TID}'"; exit 1 ;;
+          esac
+
+          ARGS="--tid=${TID}"
+
+          if [ -n "${SID:-}" ]; then
+            case "${SID}" in
+              *[!0-9a-fA-F-]*) echo "::error::sid may contain only hex digits and hyphens, got '${SID}'"; exit 1 ;;
+            esac
+            ARGS="$ARGS --sid=${SID}"
+          fi
+
+          if [ "${UNPLAYED_ONLY:-false}" = "true" ]; then ARGS="$ARGS --unplayed-only"; fi
+
+          echo "running: node scripts/audit-team-fixtures.js $ARGS"
+          node --max-old-space-size=8192 scripts/audit-team-fixtures.js $ARGS

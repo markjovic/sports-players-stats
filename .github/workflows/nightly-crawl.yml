@@ -36,6 +36,41 @@ on:
         required: false
         default: '0'
         type: string
+      no_round_refresh:
+        description: 'Turn OFF the per-grade fixture refresh entirely (restores the pre-2026-11-22 behaviour: no forward fetch, no deletions)'
+        required: false
+        default: false
+        type: boolean
+      refresh_rounds_ahead:
+        description: 'Unplayed rounds beyond the current one to re-fetch per grade (default 2)'
+        required: false
+        default: '2'
+        type: string
+      refresh_dry_run:
+        description: 'Refresh fetches and reports, but deletes nothing and writes no fingerprint'
+        required: false
+        default: false
+        type: boolean
+      baseline_grades_per_run:
+        description: 'How many never-seen grades may take their first full pass this run (default 750). The rest wait for a later night and are reported.'
+        required: false
+        default: '750'
+        type: string
+      max_deletes:
+        description: 'Per-run deletion cap. Exceeding it ABORTS the deletion pass and prints what would have gone (default 500).'
+        required: false
+        default: '500'
+        type: string
+      max_deletes_per_season:
+        description: 'Per-season deletion cap, same abort behaviour (default 100)'
+        required: false
+        default: '100'
+        type: string
+      fail_on_delete_cap:
+        description: 'Make a deletion-cap abort fail the run. Default off: the crawl itself succeeded, and failing it skips team-stats, win-loss, team-index and the chain for the whole night.'
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: data-write
@@ -66,10 +101,55 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run nightly crawl
+        # ⚠ A SCHEDULED RUN RECEIVES NO INPUTS (T27). Every value below is
+        # resolved through an explicit fallback at its use site, so the nightly
+        # cron gets the documented defaults rather than empty strings — an empty
+        # `--refresh-rounds-ahead=` would parse as NaN and an empty `--max-deletes=`
+        # would read as 0, which silently disables the very thing that protects
+        # the data.
+        #
+        # The refresh inputs go through `env:` and are gated in bash rather than
+        # interpolated into the command line: these are the arguments that govern
+        # deletion, and a guard must fail toward doing LESS (T3). Anything that is
+        # not a whole number refuses rather than being passed through.
+        env:
+          NO_ROUND_REFRESH:  ${{ inputs.no_round_refresh }}
+          REFRESH_AHEAD:     ${{ inputs.refresh_rounds_ahead }}
+          REFRESH_DRY_RUN:   ${{ inputs.refresh_dry_run }}
+          BASELINE_PER_RUN:  ${{ inputs.baseline_grades_per_run }}
+          MAX_DELETES:       ${{ inputs.max_deletes }}
+          MAX_DELETES_SEAS:  ${{ inputs.max_deletes_per_season }}
+          FAIL_ON_CAP:       ${{ inputs.fail_on_delete_cap }}
         run: |
+          set -euo pipefail
+
           ARGS="--rounds-back=${{ inputs.rounds_back || '2' }}"
           if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
           if [ "${{ inputs.force_recheck }}" = "true" ]; then ARGS="$ARGS --force-recheck"; fi
+
+          num_or_die () {   # $1 = value, $2 = default, $3 = name
+            v="${1:-$2}"
+            case "$v" in
+              # >&2: this runs inside a command substitution, so anything on
+              # stdout is captured into ARGS and never reaches the log. The first
+              # version swallowed its own error annotation.
+              ''|*[!0-9]*) echo "::error::$3 must be a whole number, got '$v'" >&2; exit 1 ;;
+            esac
+            printf '%s' "$v"
+          }
+
+          if [ "${NO_ROUND_REFRESH:-false}" = "true" ]; then
+            ARGS="$ARGS --no-round-refresh"
+          else
+            ARGS="$ARGS --refresh-rounds-ahead=$(num_or_die "${REFRESH_AHEAD:-}" 2 refresh_rounds_ahead)"
+            ARGS="$ARGS --baseline-grades-per-run=$(num_or_die "${BASELINE_PER_RUN:-}" 750 baseline_grades_per_run)"
+            ARGS="$ARGS --max-deletes=$(num_or_die "${MAX_DELETES:-}" 500 max_deletes)"
+            ARGS="$ARGS --max-deletes-per-season=$(num_or_die "${MAX_DELETES_SEAS:-}" 100 max_deletes_per_season)"
+            if [ "${REFRESH_DRY_RUN:-false}" = "true" ]; then ARGS="$ARGS --refresh-dry-run"; fi
+            if [ "${FAIL_ON_CAP:-false}"    = "true" ]; then ARGS="$ARGS --fail-on-delete-cap"; fi
+          fi
+
+          echo "running: node scripts/nightly-crawl.js $ARGS"
           node scripts/nightly-crawl.js $ARGS
 
       - name: Read status
@@ -95,6 +175,15 @@ jobs:
           fi
           echo "stats_rechecks=$rechecks" >> $GITHUB_OUTPUT
           echo "Remaining: $remaining  Processed: $processed  New players: $stubbed  Rechecks: $rechecks"
+          # The refresh's own result, raised to the run summary. A deletion cap
+          # abort does not fail the job by default, so without this line the only
+          # record of it is a ::warning:: part-way up a long log.
+          if [ -f .nightly-status.json ]; then
+            deleted=$(node -e "console.log(require('./.nightly-status.json').refreshDeleted || 0)")
+            capped=$(node -e "console.log(require('./.nightly-status.json').refreshCapHit ? 'YES' : 'no')")
+            echo "Withdrawn fixtures deleted: $deleted   deletion cap hit: $capped"
+            echo "Withdrawn fixtures deleted: **$deleted**, deletion cap hit: **$capped**" >> $GITHUB_STEP_SUMMARY
+          fi
 
   team-stats:
     needs: crawl
