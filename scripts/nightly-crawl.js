@@ -31,6 +31,11 @@ const fs           = require('fs');
 const path         = require('path');
 const { execFileSync } = require('child_process');
 const { truncateUuid, resolveToFullUuid, TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
+// The per-grade fixture refresh lives in its own module because it DELETES data
+// and that logic has to be executable without a PlayHQ session. It is pure: no
+// network, no writes, no git — it decides, this file applies. See the header of
+// scripts/lib/round-refresh.cjs for the four deletion rules it enforces.
+const RR = require('./lib/round-refresh.cjs');
 
 // ─── Identity alias for brand-new players (api-canonical, 2026-07-16) ─────────
 // Every player file key must have an alias entry (trunc13(key) -> key), or the
@@ -66,6 +71,46 @@ const DRY_RUN       = !!ARGS['dry-run'];
 const TARGET_SEASON = ARGS.season || null;
 const ROUNDS_BACK   = Math.max(1, parseInt(ARGS['rounds-back'] || '2', 10));
 const FORCE_RECHECK = !!ARGS['force-recheck'];       // ignore roundsComplete markers, re-fetch every round
+
+// ── Per-grade fixture refresh (2026-11-22) ───────────────────────────────────
+// Until now the nightly fetched the CURRENT round plus ROUNDS_BACK-1 previous
+// rounds and NOTHING forward, and `applyRoundFixtures` has never removed a game
+// PlayHQ stopped returning. So a future fixture was written once by the Monday
+// discover-fixtures sweep and never looked at again until it became current:
+// during grading its date, venue, opponent and grade went stale for up to a
+// week, and a withdrawn game stayed on disk for ever. A team's old-grade games
+// then outlived the regrade, and because build-team-stats takes meta.grade from
+// the grade of the team's LATEST DATED GAME, the team showed the wrong grade.
+//
+// This closes both. Per ACTIVE grade, each night: compare the grade's round list
+// against a stored fingerprint, re-fetch the next REFRESH_AHEAD unplayed rounds,
+// overwrite changed fields, and DELETE stored UNPLAYED games that a SUCCESSFUL
+// fetch did not return. First run for a grade is a baseline over every unplayed
+// round, which is what cleans up what is already on disk.
+//
+// ⚠ Every default here fails toward doing LESS. --no-round-refresh turns the
+// whole thing off and restores the previous behaviour exactly.
+const NO_ROUND_REFRESH   = !!ARGS['no-round-refresh'];
+const REFRESH_AHEAD      = Math.max(0, parseInt(ARGS['refresh-rounds-ahead'] || '2', 10));
+const REFRESH_DRY_RUN    = !!ARGS['refresh-dry-run'];   // fetch and report, delete nothing
+// Baselining every grade at once is ~5,000 grades x ~8 unplayed rounds of extra
+// requests on the first night. The paced pool would survive it, but a cost that
+// large belongs spread across nights rather than spent in one run that then has
+// to be explained. Grades without a fingerprint are taken BASELINE_PER_RUN at a
+// time and the remainder is printed, so the drain is visible rather than silent.
+const BASELINE_PER_RUN   = Math.max(0, parseInt(ARGS['baseline-grades-per-run'] || '750', 10));
+// Caps ABORT the deletion pass; they never trim it. A trimmed deletion list is a
+// half-applied change nobody reviewed. On abort nothing is deleted, no
+// fingerprint is written, and the full would-have-deleted list is printed.
+const MAX_DELETES_RUN    = Math.max(0, parseInt(ARGS['max-deletes'] || '500', 10));
+const MAX_DELETES_SEASON = Math.max(0, parseInt(ARGS['max-deletes-per-season'] || '100', 10));
+// A cap breach is a REFUSAL, not a crash, and by default it does not fail the
+// run: the crawl itself succeeded, and failing it would skip team-stats,
+// win-loss, team-index and the chain for the whole night over a refusal to
+// delete. It is printed, it raises a ::warning::, and it lands in
+// .nightly-status.json. --fail-on-delete-cap makes it red for anyone who would
+// rather lose the night than miss it.
+const FAIL_ON_DELETE_CAP = !!ARGS['fail-on-delete-cap'];
 const COMPLETE_GRACE_MS = 7 * 24 * 60 * 60 * 1000;   // trust a round-complete marker only after 7 days (catch late score corrections first)
 
 const API_URL       = 'https://api.playhq.com/graphql';
@@ -414,6 +459,23 @@ const Q_FIXTURE_BY_ROUND = `query discoverFixtureByRound($roundID: ID!) {
   }
 }`;
 
+// ⚠ COPIED VERBATIM from discover-fixtures.js (Q_SEASON_TEAMS). Never retyped,
+// never trimmed — the standing rule is that a PlayHQ query comes from the live
+// script that exercises it, because authority comes from being exercised rather
+// than from being on disk.
+//
+// `ID!` is the correct variable type here, and that is the OPPOSITE of
+// discoverSeason on this tenant, which needs String!. `grade` CAN BE NULL on a
+// returned team (EDJBA's z101, U7, no grade), so anything reading team.grade.id
+// must tolerate it.
+const Q_SEASON_TEAMS = `
+query discoverTeamsBySeason($seasonId: ID!) {
+  discoverTeams(filter: {seasonID: $seasonId}) {
+    id
+    grade { id name }
+  }
+}`;
+
 // ─── Stat helpers ─────────────────────────────────────────────────────────────
 
 function parseScore(statistics) {
@@ -658,6 +720,11 @@ async function tryPeriodicCommit(message, dirs) {
 
 const gameCache = new Map();   // seasonId → { games: {} }
 const gameDirty = new Set();   // seasonIds with pending writes
+// seasonId → how many games THIS RUN deliberately deleted from that season.
+// Read by the shrink guard in flushGameFiles, and by nothing else. A season is
+// only ever allowed to lose the exact number of games the refresh removed from
+// it on purpose; any larger shortfall is still refused.
+const intentionalDeletes = new Map();
 
 function loadGameFile(seasonId) {
   if (gameCache.has(seasonId)) return gameCache.get(seasonId);
@@ -691,10 +758,28 @@ function flushGameFiles() {
     if (fs.existsSync(file)) {
       let prevN = 0;
       try { prevN = Object.keys((JSON.parse(fs.readFileSync(file, 'utf8')).games) || {}).length; } catch { prevN = Infinity; }
-      if (nextN < prevN) {
-        console.error(`  ⚠ SHRINK GUARD: ${seasonId} would drop from ${prevN} to ${nextN} games — refusing to write.`);
+      // ⚠ THE SHRINK GUARD NOW HAS AN ALLOWANCE, AND IT IS NARROW ON PURPOSE.
+      // The guard exists because a stripped or empty API response must never be
+      // able to delete games we may not be able to get back. That is unchanged.
+      // What changed on 2026-11-22 is that the refresh pass CAN delete games, on
+      // purpose, having proved from a successful fetch that PlayHQ no longer
+      // holds them — and without an allowance this guard would silently refuse
+      // every one of those writes and print a warning that looked like a fault.
+      //
+      // The allowance is the exact count this run deleted from THIS season, and
+      // the test is `shortfall > allowed`, not equality: the same run routinely
+      // ADDS games to a season it also deleted from, which offsets the shortfall.
+      // So a season may lose at most what the refresh deliberately removed, and
+      // anything beyond that is still refused exactly as before.
+      const allowedLoss = intentionalDeletes.get(seasonId) || 0;
+      if (prevN - nextN > allowedLoss) {
+        console.error(`  ⚠ SHRINK GUARD: ${seasonId} would drop from ${prevN} to ${nextN} games`
+                    + ` (${prevN - nextN} lost, only ${allowedLoss} deliberately deleted) — refusing to write.`);
         gameDirty.delete(seasonId);
         continue;
+      }
+      if (allowedLoss > 0) {
+        console.log(`  shrink guard: ${seasonId} ${prevN} → ${nextN} games, ${allowedLoss} deliberate deletion(s) allowed`);
       }
     }
     fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -1012,11 +1097,22 @@ async function main() {
   if (reclassifiedSpectator.length > 0) allNeedsSpectator.push(...reclassifiedSpectator);
   const allNewForfeitIds  = [];  // new forfeit game IDs detected this run
 
+  // Phase 2R reuses what this pass fetched instead of asking PlayHQ twice for
+  // the same rounds — and reusing the CURRENT round's ids is what lets the
+  // withdrawal check cover it at all. Phase 2 has never deleted anything, so
+  // without this a game withdrawn from the current round would survive for ever.
+  const p2RoundIds = new Map();   // `${gradeId}|${roundName}` -> [gameId]
+
   const p2 = await runPaced(roundQueue, async ({ roundId, roundName, grade, isCurrent }) => {
     const { kind, data } = await gqlMain('discoverFixtureByRound', Q_FIXTURE_BY_ROUND, { roundID: roundId });
     if (kind !== 'ok') return kind;                  // blocked/transient -> requeue
     const { needsSpectator, forfeitGameIds } = applyRoundFixtures(
       data, grade.gradeId, grade.gradeName, roundName, isCurrent
+    );
+    p2RoundIds.set(
+      `${grade.gradeId}|${roundName}`,
+      ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.games) || [])
+        .map(g => g && g.id).filter(Boolean)
     );
     allNeedsSpectator.push(...needsSpectator);
     allNewForfeitIds.push(...forfeitGameIds);
@@ -1040,6 +1136,396 @@ async function main() {
     return 'ok';
   }, { conc: CONCURRENCY_FIXTURES, burst: PACE_BURST, rest: PACE_REST, label: 'P2 fixtures' });
   console.log(`  ${roundQueue.length} rounds done — ok=${p2.counts.ok} empty=${p2.counts.empty} blocked=${p2.counts.blocked} transient=${p2.counts.transient} dropped=${p2.counts.dropped} remaining=${p2.remaining}`);
+
+  // ── Phase 2R: per-grade fixture refresh, and withdrawal deletion ───────────
+  //
+  // Phase 2 above fetched the CURRENT round and ROUNDS_BACK-1 previous rounds.
+  // This pass fetches FORWARD, and it is the only place in this repository that
+  // removes a game.
+  //
+  // Per active grade: compare the grade's round list — which Phase 1 already
+  // fetched, so it costs nothing — against the fingerprint stored from the last
+  // successful run. Re-fetch the next REFRESH_AHEAD unplayed rounds, plus any
+  // round the fingerprint has never seen. Overwrite changed fields through the
+  // same applyRoundFixtures the rest of the crawl uses. Then delete the stored
+  // UNPLAYED games that a SUCCESSFUL fetch did not return.
+  //
+  // ⚠ A GRADE WHOSE FETCHES DID NOT ALL SUCCEED IS LEFT ENTIRELY ALONE: no
+  // deletions, no fingerprint. A 403, a GraphQL error, a timeout or a round that
+  // came back empty while still being listed all disqualify the whole grade for
+  // the night. This is the failure-to-ASK rule, which has cost this repository
+  // four separate incidents: PlayHQ declining to answer must never be recorded
+  // as PlayHQ answering with nothing.
+  //
+  // ⚠ IT RUNS BEFORE THE SPECTATOR DEDUPE DELIBERATELY. A forward round can come
+  // back already FINAL — a late entry, or a game brought forward — and those
+  // belong in tonight's spectator queue like any other. Pushing into
+  // allNeedsSpectator here and letting the existing dedupe below handle the
+  // overlap is why this block sits above it rather than after.
+  const refresh = {
+    gradesConsidered: 0, baselined: 0, incremental: 0, baselineDeferred: 0,
+    roundsFetched: 0, roundsFailed: 0, suspectEmpty: 0,
+    deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
+    listChanged: 0, seasonsRegraded: 0, newGradesSwept: 0,
+    abortedBy: null,
+  };
+  const refreshStatePaths = [];
+
+  if (NO_ROUND_REFRESH) {
+    console.log('\nPhase 2R — per-grade fixture refresh: DISABLED (--no-round-refresh)\n');
+  } else {
+    console.log(`\nPhase 2R — per-grade fixture refresh (${REFRESH_AHEAD} round(s) ahead)…`);
+    if (REFRESH_DRY_RUN) console.log('  ⚠ --refresh-dry-run: fetches and reports, deletes nothing, writes no fingerprint');
+
+    // A corrupt fingerprint file THROWS rather than being treated as absent —
+    // silently baselining the whole repository off a parse failure would be a
+    // very large amount of work presented as routine.
+    const fp = RR.loadFingerprints(ROOT);
+
+    // Completed seasons are out of scope by decision: their fixtures cannot
+    // change and their games are history. `locked` is already excluded upstream
+    // — gradeEntries is built from seasons at locked === false.
+    const seasonStatus = (sid) => (sportIndex.seasons && sportIndex.seasons[sid] && sportIndex.seasons[sid].status) || null;
+
+    let baselinesLeft = BASELINE_PER_RUN;
+    const work = [];
+
+    for (const grade of normalGrades) {
+      if (!grade.seasonId) continue;                       // cannot scope a write without it
+      if (seasonStatus(grade.seasonId) === 'COMPLETED') continue;
+
+      const gfNow = loadGameFile(grade.seasonId);
+      const { byRound, noRound } = RR.groupStoredByRound(gfNow.games, grade.gradeId);
+      refresh.noRoundSkipped += noRound.length;
+
+      const stored = fp.grades[grade.gradeId] || null;
+      const plan = RR.planGrade({ grade, stored, byRound, aheadN: REFRESH_AHEAD });
+
+      if (plan.mode === 'baseline') {
+        if (baselinesLeft <= 0) { refresh.baselineDeferred++; continue; }
+        baselinesLeft--;
+        refresh.baselined++;
+      } else {
+        refresh.incremental++;
+      }
+      if (plan.listChanged) refresh.listChanged++;
+      refresh.gradesConsidered++;
+      work.push({ grade, plan, byRound, stored });
+    }
+
+    console.log(`  Grades considered: ${refresh.gradesConsidered}`
+              + `  (baseline ${refresh.baselined}, incremental ${refresh.incremental}`
+              + `${refresh.baselineDeferred ? `, ${refresh.baselineDeferred} baseline deferred to a later run` : ''})`);
+    if (refresh.noRoundSkipped) {
+      console.log(`  ${refresh.noRoundSkipped} stored game(s) carry no round name and are OUT OF SCOPE for deletion`
+                + ` — games/bv holds the round NAME and no round id, so they cannot be scoped to a round.`);
+    }
+
+    // ── Fetch every planned round through the paced pool ─────────────────────
+    const fetchItems = [];
+    for (const w of work) for (const f of w.plan.fetch) fetchItems.push({ w, f });
+    console.log(`  Round fetches queued: ${fetchItems.length}`);
+
+    // Seeded with what PHASE 2 ALREADY FETCHED. The current round is queued by
+    // Phase 2 for every grade that has one, so asking for it again here would be
+    // one duplicate request per grade — thousands on a baseline night. Reusing
+    // its ids also means the CURRENT round gets the same withdrawal check as the
+    // forward ones, which it otherwise would not: Phase 2 fetches it and has
+    // never deleted anything.
+    const roundResults = new Map(p2RoundIds);   // `${gid}|${roundName}` → [gameId]
+
+    if (fetchItems.length) {
+      const p2r = await runPaced(fetchItems, async ({ w, f }) => {
+        const { kind, data } = await gqlMain('discoverFixtureByRound', Q_FIXTURE_BY_ROUND, { roundID: f.roundId });
+        if (kind !== 'ok') return kind;                    // blocked/transient → requeue
+        const { needsSpectator, forfeitGameIds } = applyRoundFixtures(
+          data, w.grade.gradeId, w.grade.gradeName, f.roundName, false
+        );
+        allNeedsSpectator.push(...needsSpectator);
+        allNewForfeitIds.push(...forfeitGameIds);
+        const ids = ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.games) || [])
+          .map(g => g && g.id).filter(Boolean);
+        roundResults.set(`${w.grade.gradeId}|${f.roundName}`, ids);
+        return 'ok';
+      }, { conc: CONCURRENCY_FIXTURES, burst: PACE_BURST, rest: PACE_REST, label: 'P2R refresh' });
+      console.log(`  ${fetchItems.length} rounds done — ok=${p2r.counts.ok} empty=${p2r.counts.empty}`
+                + ` blocked=${p2r.counts.blocked} transient=${p2r.counts.transient} dropped=${p2r.counts.dropped}`
+                + ` remaining=${p2r.remaining}`);
+    }
+
+    // ── Decide deletions, per grade, all-or-nothing ──────────────────────────
+    const budget  = RR.makeDeletionBudget({ maxPerRun: MAX_DELETES_RUN, maxPerSeason: MAX_DELETES_SEASON });
+    const toDelete = [];           // { sid, gid, rn, gameId }
+    const fpNext   = new Map();    // gid → fingerprint entry, applied only at the end
+    const regradedSeasons = new Set();
+
+    for (const w of work) {
+      const gid = w.grade.gradeId;
+      const sid = w.grade.seasonId;
+      const liveNames = new Set((w.grade.rounds || []).map(r => r && r.name).filter(Boolean));
+      const roundHashes = Object.assign({}, (w.stored && w.stored.r) || {});
+      const gradeDeletes = [];
+      // `gradeClean` governs only whether the ROUND-LIST hash is written. A
+      // round that failed or came back suspect says nothing about the other
+      // rounds — deletions are scoped to (gid, rn), so each round's verdict
+      // stands on its own fetch. But withholding `rl` keeps listChanged true
+      // next run, which guarantees the unresolved round is looked at again
+      // instead of sliding out of the ahead-window and never being re-asked.
+      let gradeClean = true;
+
+      // The current round comes from Phase 2's fetch rather than a second one.
+      const judged = w.plan.fetch.slice();
+      const curr = (w.grade.rounds || []).find(r => r && r.current);
+      if (curr && roundResults.has(`${gid}|${curr.name}`) && !judged.some(f => f.roundName === curr.name)) {
+        judged.unshift({ roundId: null, roundName: curr.name, reason: 'current (reusing Phase 2)' });
+      }
+
+      for (const f of judged) {
+        const ids = roundResults.get(`${gid}|${f.roundName}`);
+        if (ids === undefined) {
+          // The fetch never succeeded. Rule 1: no deletion can come from it.
+          refresh.roundsFailed++;
+          gradeClean = false;
+          continue;
+        }
+        if (f.roundId !== null) refresh.roundsFetched++;
+        const d = RR.computeRoundDeletions({
+          roundStillListed: liveNames.has(f.roundName),
+          returnedIds:      ids,
+          storedGames:      w.byRound.get(f.roundName) || [],
+        });
+        if (d.suspectEmpty) {
+          // Rule 3. Listed, we hold games for it, and it came back with nothing.
+          refresh.suspectEmpty++;
+          gradeClean = false;
+          console.log(`  ⚠ SUSPECT: grade ${gid} round "${f.roundName}" is still in PlayHQ's round list`
+                    + ` and we hold ${(w.byRound.get(f.roundName) || []).length} game(s) for it, but it returned ZERO.`
+                    + ` Deleting nothing from that round.`);
+          continue;
+        }
+        refresh.keptPlayed += d.keptPlayed;
+        for (const e of d.deletable) gradeDeletes.push({ sid, gid, rn: f.roundName, gameId: e.gameId });
+        roundHashes[f.roundName] = RR.hashIdSet(ids);
+      }
+
+      // A round PlayHQ has withdrawn from the list entirely. The round list came
+      // from a gradeRounds call that succeeded (this grade is in normalGrades
+      // only because it did), so rule 1 is satisfied without a fixture fetch.
+      for (const rn of w.plan.vanished) {
+        const d = RR.computeRoundDeletions({
+          roundStillListed: false,
+          returnedIds:      [],
+          storedGames:      w.byRound.get(rn) || [],
+        });
+        refresh.keptPlayed += d.keptPlayed;
+        for (const e of d.deletable) gradeDeletes.push({ sid, gid, rn, gameId: e.gameId });
+        delete roundHashes[rn];
+        console.log(`  round withdrawn: grade ${gid} "${rn}" — ${d.deletable.length} unplayed game(s) to remove,`
+                  + ` ${d.keptPlayed} played game(s) kept`);
+      }
+
+      if (gradeDeletes.length) {
+        const refused = budget.tryTake(sid, gradeDeletes.length);
+        if (refused) {
+          refresh.abortedBy = refused;
+          console.log(`\n  ⚠⚠ DELETION CAP REACHED — ${refused}`);
+          console.log('  NOTHING will be deleted this run and no fingerprint will be written.');
+          console.log('  What would have been deleted, in full:');
+          for (const d of toDelete.concat(gradeDeletes)) {
+            console.log(`    sid=${d.sid} gid=${d.gid} round="${d.rn}" game=${d.gameId}`);
+          }
+          console.log(`::warning::nightly-crawl refresh: deletion cap reached (${refused}) — ${toDelete.length + gradeDeletes.length} game(s) NOT deleted`);
+          break;
+        }
+        toDelete.push(...gradeDeletes);
+      }
+
+      // When to suspect the SEASON has been regraded, and therefore pay for a
+      // discoverTeams call:
+      //   · the round list genuinely changed since last night — the live signal;
+      //   · or this grade's FIRST pass found rounds on disk that PlayHQ no longer
+      //     lists, which is the same evidence arriving from history instead of
+      //     from a diff. Restricted to the baseline so it fires once per grade:
+      //     a withdrawn round that still holds a played game keeps showing up in
+      //     `vanished` for ever, and without the mode test that would re-resolve
+      //     the season every single night.
+      if (w.plan.listChanged || (w.plan.mode === 'baseline' && w.plan.vanished.length)) {
+        regradedSeasons.add(sid);
+      }
+      // `rl` only on a clean grade — see gradeClean above. Writing the
+      // round-list hash is the claim "this grade's rounds are accounted for",
+      // and a grade with an unresolved round has not earned it.
+      fpNext.set(gid, {
+        ...(gradeClean ? { rl: w.plan.roundListHash } : {}),
+        r: roundHashes,
+        at: new Date().toISOString(),
+        ...(gradeClean ? {} : { incomplete: true }),
+      });
+    }
+
+    // ── Apply ────────────────────────────────────────────────────────────────
+    if (refresh.abortedBy) {
+      console.log('  Deletions abandoned; field updates fetched above are kept, as they are the same');
+      console.log('  overwrite Phase 2 performs on the current round and carry no risk of loss.');
+    } else if (REFRESH_DRY_RUN) {
+      console.log(`  [refresh-dry-run] would delete ${toDelete.length} game(s):`);
+      for (const d of toDelete) console.log(`    sid=${d.sid} gid=${d.gid} round="${d.rn}" game=${d.gameId}`);
+    } else {
+      for (const d of toDelete) {
+        const gfDel = loadGameFile(d.sid);
+        if (!gfDel.games[d.gameId]) continue;             // already gone; nothing to report
+        delete gfDel.games[d.gameId];
+        markGameDirty(d.sid);
+        intentionalDeletes.set(d.sid, (intentionalDeletes.get(d.sid) || 0) + 1);
+        refresh.deleted++;
+        // Every deletion is printed in full. A deletion nobody can find in a log
+        // is a deletion nobody can audit.
+        console.log(`  ✖ DELETED  sid=${d.sid}  gid=${d.gid}  round="${d.rn}"  game=${d.gameId}`);
+      }
+      console.log(`  Deletions applied: ${refresh.deleted}`);
+    }
+
+    // ── A changed round list may mean the SEASON was regraded ────────────────
+    // A regrade moves a team's games to a DIFFERENT grade. The old grade stops
+    // returning them, which the pass above handles. The NEW grade only reaches
+    // the nightly if it is in sports-index.json — and that list is written once
+    // at season creation and refreshed on discover-seasons' Sunday sweep, which
+    // reads the worklist discover-fixtures writes on Monday. That is a six-day
+    // lag by construction, and it is long enough for a regraded team to look
+    // empty here.
+    //
+    // So when a grade's round list changed, re-resolve that season's grades now,
+    // sweep any the index lacks, and record them on the SAME worklist
+    // discover-fixtures writes so the index is corrected permanently on Sunday.
+    //
+    // ⚠ THIS DOES NOT WRITE sports-index.json. discover-seasons.js owns that
+    // file and this script has never written it — adding a second writer of the
+    // season index to the most contended workflow in the repository is not worth
+    // saving one sweep. The games land in games/bv keyed by season regardless of
+    // whether the grade is in the index yet, so the DATA is correct tonight and
+    // the bookkeeping catches up on schedule.
+    const staleFound = [];
+    if (!REFRESH_DRY_RUN && regradedSeasons.size) {
+      console.log(`\n  Round list changed in ${regradedSeasons.size} season(s) — re-resolving their grades via discoverTeams`);
+      for (const sid of regradedSeasons) {
+        const { kind, data } = await gqlMain('discoverTeamsBySeason', Q_SEASON_TEAMS, { seasonId: sid });
+        if (kind !== 'ok') {
+          console.log(`    ${sid}: discoverTeams ${kind} — skipped, will be re-asked next run`);
+          continue;
+        }
+        const liveGrades = new Map();
+        for (const t of ((data && data.discoverTeams) || [])) {
+          if (t && t.grade && t.grade.id) liveGrades.set(t.grade.id, t.grade.name || '');
+        }
+        if (!liveGrades.size) continue;
+        const known = new Set(((sportIndex.seasons && sportIndex.seasons[sid] && sportIndex.seasons[sid].grades) || [])
+          .map(g => String(g && g.id)));
+        const unseen = [...liveGrades.keys()].filter(g => !known.has(String(g)));
+        if (!unseen.length) continue;
+
+        refresh.seasonsRegraded++;
+        console.log(`    ${sid}: index holds ${known.size} grade(s), discoverTeams reports ${liveGrades.size}`
+                  + ` — ${unseen.length} the index lacks`);
+        staleFound.push({
+          id: sid,
+          name: (sportIndex.seasons && sportIndex.seasons[sid] && (sportIndex.seasons[sid].fullName || sportIndex.seasons[sid].name)) || null,
+          indexGrades: known.size, liveGrades: liveGrades.size,
+          missing: unseen.length, missingIds: unseen.slice(0, 50),
+          seenAt: new Date().toISOString(),
+        });
+
+        // Sweep the new grades now so tonight's fixtures land rather than waiting
+        // for Sunday. Nothing stored under a brand-new grade, so there is nothing
+        // to delete — this is additive only.
+        for (const newGid of unseen) {
+          const gr = await gqlMain('gradeRounds', Q_GRADE_ROUNDS, { gradeID: newGid });
+          if (gr.kind !== 'ok' || !gr.data || !gr.data.discoverGrade) continue;
+          const g = gr.data.discoverGrade;
+          if (g.hideScores) continue;
+          const newRounds = g.rounds || [];
+          const hashes = {};
+          let allOk = true;
+          for (const r of newRounds) {
+            if (!r || !r.id) continue;
+            const fr = await gqlMain('discoverFixtureByRound', Q_FIXTURE_BY_ROUND, { roundID: r.id });
+            if (fr.kind !== 'ok') { allOk = false; continue; }
+            const { needsSpectator, forfeitGameIds } = applyRoundFixtures(fr.data, g.id, g.name || '', r.name, !!r.current);
+            allNeedsSpectator.push(...needsSpectator);
+            allNewForfeitIds.push(...forfeitGameIds);
+            const ids = ((fr.data && fr.data.discoverFixtureByRound && fr.data.discoverFixtureByRound.games) || [])
+              .map(x => x && x.id).filter(Boolean);
+            hashes[r.name] = RR.hashIdSet(ids);
+          }
+          refresh.newGradesSwept++;
+          console.log(`      swept new grade ${newGid} "${g.name || ''}" — ${newRounds.length} round(s)`);
+          if (allOk) fpNext.set(g.id, { rl: RR.hashRoundList(newRounds), r: hashes, at: new Date().toISOString() });
+        }
+      }
+    }
+
+    // ── Persist the fingerprints ─────────────────────────────────────────────
+    // Only on a run that did not abort, and only for grades that completed
+    // cleanly. A fingerprint is a claim that we have seen this grade's rounds;
+    // writing one for a grade we failed to read would stop the next run asking.
+    if (!refresh.abortedBy && !REFRESH_DRY_RUN && !DRY_RUN) {
+      for (const [gid, entry] of fpNext) fp.grades[gid] = entry;
+      // Grades that are no longer active must leave the file or it grows without
+      // bound and eventually trips its own size ceiling on a healthy repository.
+      // Grades swept above are active too, even though they were not in the
+      // season index when Phase 1 built its list — that is precisely why they
+      // were swept. Without them here the prune would delete the fingerprint
+      // written seconds earlier and the grade would baseline again every night
+      // until discover-seasons catches up on Sunday.
+      const activeIds = new Set([...normalGrades.map(g => g.gradeId), ...fpNext.keys()]);
+      const pruned = RR.pruneFingerprints(fp, activeIds);
+      const bytes = RR.saveFingerprints(ROOT, fp);
+      refreshStatePaths.push('data/round-fingerprints.json');
+      console.log(`  Fingerprints: ${fpNext.size} written, ${pruned} pruned, ${Object.keys(fp.grades).length} total`
+                + ` (${(bytes / 1024).toFixed(0)} KB)`);
+
+      // The stale-grade worklist. ⚠ MERGE, NEVER REPLACE, and by season id —
+      // identical semantics to discover-fixtures.js, which is the other writer of
+      // this file. A partial run must not clear a repository-wide worklist: a
+      // --season=<id> run of discover-fixtures once overwrote it with its own
+      // one-season view and took `count 12, seasonsScanned 188` to
+      // `count 0, seasonsScanned 1`. Entries for seasons this run did not look at
+      // are carried through untouched; an entry with no id cannot be matched
+      // either way, so it is KEPT rather than dropped on a guess.
+      if (staleFound.length) {
+        const STALE_FILE = path.join(ROOT, 'data', 'stale-grade-seasons.json');
+        const scanned = new Set(staleFound.map(x => x.id));
+        let carried = [];
+        try {
+          const prev = JSON.parse(fs.readFileSync(STALE_FILE, 'utf8'));
+          if (prev && Array.isArray(prev.seasons)) {
+            carried = prev.seasons.filter(x => !(x && x.id && scanned.has(x.id)));
+          }
+        } catch (e) {
+          if (fs.existsSync(STALE_FILE)) {
+            console.log(`  ⚠ stale-grade-seasons.json could not be parsed (${e.message}) — writing this run's findings only;`
+                      + ` entries for seasons this run did not scan are LOST.`);
+          }
+        }
+        const merged = carried.concat(staleFound);
+        fs.mkdirSync(path.dirname(STALE_FILE), { recursive: true });
+        fs.writeFileSync(STALE_FILE, JSON.stringify({
+          generatedAt:    new Date().toISOString(),
+          scope:          'nightly-crawl round refresh (regraded seasons only)',
+          seasonsScanned: staleFound.length,
+          carriedForward: carried.length,
+          count:          merged.length,
+          seasons:        merged,
+        }, null, 2));
+        refreshStatePaths.push('data/stale-grade-seasons.json');
+        console.log(`  stale-grade worklist: ${staleFound.length} from this run + ${carried.length} carried forward = ${merged.length}`);
+      }
+    }
+
+    if (refresh.abortedBy && FAIL_ON_DELETE_CAP) {
+      throw new Error(`nightly-crawl refresh: ${refresh.abortedBy} (--fail-on-delete-cap)`);
+    }
+    console.log('');
+  }
 
   // Update forfeit-games.json with any newly detected forfeits
   if (allNewForfeitIds.length > 0 && !DRY_RUN) {
@@ -1383,6 +1869,14 @@ async function main() {
     ['players/', 'needs-matrix-shards.json']
   );
 
+  // The refresh's own state files. Committed here rather than inside Phase 2R so
+  // the fingerprints land in the same run as the game deletions they describe —
+  // a fingerprint that says "this round is settled" must never be on main while
+  // the deletion it justifies is not.
+  if (refreshStatePaths.length) {
+    await gitCommit(`nightly-crawl: round fingerprints (${refresh.deleted} withdrawn game(s) deleted)`, refreshStatePaths);
+  }
+
   // ── Status file ───────────────────────────────────────────────────────────────
   // gamesRemaining is the count the workflow uses to decide whether to self-trigger.
   // Only a genuinely bailed phase is resumable. spectatorMiss = FINAL games the
@@ -1398,6 +1892,8 @@ async function main() {
       statsCleared,
       stubbed,
       completed:       gamesRemaining === 0,
+      refreshDeleted:  refresh.deleted,
+      refreshCapHit:   !!refresh.abortedBy,
       timestamp:       new Date().toISOString(),
     }));
   }
@@ -1414,6 +1910,12 @@ async function main() {
   console.log(`  Spectator hits:    ${spectatorHits}  misses: ${spectatorMiss}`);
   console.log(`  statsChecked cleared: ${statsCleared}`);
   console.log(`  New players:       ${stubbed}`);
+  console.log(`  Refresh grades:    ${refresh.gradesConsidered} (${refresh.baselined} baseline, ${refresh.incremental} incremental)`
+            + `  rounds ok=${refresh.roundsFetched} failed=${refresh.roundsFailed}`);
+  console.log(`  Refresh deletions: ${refresh.deleted}  kept-because-played: ${refresh.keptPlayed}`
+            + `  suspect-empty rounds: ${refresh.suspectEmpty}  unscopeable (no rn): ${refresh.noRoundSkipped}`);
+  if (refresh.baselineDeferred) console.log(`  Baseline backlog:  ${refresh.baselineDeferred} grade(s) waiting for a later run`);
+  if (refresh.abortedBy)        console.log(`  ⚠ DELETIONS ABORTED: ${refresh.abortedBy}`);
   console.log(`  Games remaining:   ${gamesRemaining}`);
   console.log(`  Elapsed:           ${elapsed}s`);
   console.log('─'.repeat(50));
