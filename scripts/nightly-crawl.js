@@ -1116,11 +1116,15 @@ async function main() {
     const { needsSpectator, forfeitGameIds } = applyRoundFixtures(
       data, grade.gradeId, grade.gradeName, roundName, isCurrent
     );
-    p2RoundIds.set(
-      `${grade.gradeId}|${roundName}`,
-      ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.games) || [])
-        .map(g => g && g.id).filter(Boolean)
-    );
+    // {ids, answered}. `answered` is whether PlayHQ returned a payload for the
+    // round at all: a null discoverFixtureByRound is NOT an answer, an empty
+    // games array IS one. Collapsing the two is what would have protected 103
+    // rounds of withdrawn fixtures for ever.
+    p2RoundIds.set(`${grade.gradeId}|${roundName}`, {
+      ids: ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.games) || [])
+        .map(g => g && g.id).filter(Boolean),
+      answered: !!(data && data.discoverFixtureByRound),
+    });
     allNeedsSpectator.push(...needsSpectator);
     allNewForfeitIds.push(...forfeitGameIds);
 
@@ -1172,6 +1176,7 @@ async function main() {
   const refresh = {
     gradesConsidered: 0, baselined: 0, incremental: 0, baselineDeferred: 0,
     noRounds: 0, currentIsLast: 0, nothingToFetch: 0,
+    movedNotDeleted: 0, gradesUnaccounted: 0,
     roundsFetched: 0, roundsFailed: 0, suspectEmpty: 0,
     deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
     listChanged: 0, seasonsRegraded: 0, newGradesSwept: 0,
@@ -1263,7 +1268,7 @@ async function main() {
     // its ids also means the CURRENT round gets the same withdrawal check as the
     // forward ones, which it otherwise would not: Phase 2 fetches it and has
     // never deleted anything.
-    const roundResults = new Map(p2RoundIds);   // `${gid}|${roundName}` → [gameId]
+    const roundResults = new Map(p2RoundIds);   // `${gid}|${roundName}` → {ids, answered}
 
     if (fetchItems.length) {
       const p2r = await runPaced(fetchItems, async ({ w, f }) => {
@@ -1274,9 +1279,11 @@ async function main() {
         );
         allNeedsSpectator.push(...needsSpectator);
         allNewForfeitIds.push(...forfeitGameIds);
-        const ids = ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.games) || [])
-          .map(g => g && g.id).filter(Boolean);
-        roundResults.set(`${w.grade.gradeId}|${f.roundName}`, ids);
+        roundResults.set(`${w.grade.gradeId}|${f.roundName}`, {
+          ids: ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.games) || [])
+            .map(g => g && g.id).filter(Boolean),
+          answered: !!(data && data.discoverFixtureByRound),
+        });
         return 'ok';
       }, { conc: CONCURRENCY_FIXTURES, burst: PACE_BURST, rest: PACE_REST, label: 'P2R refresh' });
       console.log(`  ${fetchItems.length} rounds done — ok=${p2r.counts.ok} empty=${p2r.counts.empty}`
@@ -1311,9 +1318,31 @@ async function main() {
         judged.unshift({ roundId: null, roundName: curr.name, reason: 'current (reusing Phase 2)' });
       }
 
+      // RULE 5, half one: everything PlayHQ returned anywhere in this grade. A
+      // game that came back under ANY round is alive, whatever round it is now
+      // in — which is the case a per-round comparison gets wrong when an
+      // association re-draws or renames its rounds.
+      const aliveGradeWide = new Set();
+      const fetchedNames   = new Set();
       for (const f of judged) {
-        const ids = roundResults.get(`${gid}|${f.roundName}`);
-        if (ids === undefined) {
+        const got = roundResults.get(`${gid}|${f.roundName}`);
+        if (got === undefined) continue;
+        fetchedNames.add(f.roundName);
+        for (const id of got.ids) aliveGradeWide.add(id);
+      }
+
+      // RULE 5, half two: can we account for every round this grade holds
+      // unplayed games in? If not, a game moved out of the fetch window is
+      // indistinguishable from one that is gone, and we delete nothing.
+      const cov = RR.assessGradeCoverage({ rounds: w.grade.rounds, byRound: w.byRound, fetchedRoundNames: fetchedNames });
+      if (!cov.fullyAccounted) {
+        refresh.gradesUnaccounted++;
+        gradeClean = false;
+      }
+
+      for (const f of judged) {
+        const got = roundResults.get(`${gid}|${f.roundName}`);
+        if (got === undefined) {
           // The fetch never succeeded. Rule 1: no deletion can come from it.
           refresh.roundsFailed++;
           gradeClean = false;
@@ -1322,7 +1351,8 @@ async function main() {
         if (f.roundId !== null) refresh.roundsFetched++;
         const d = RR.computeRoundDeletions({
           roundStillListed: liveNames.has(f.roundName),
-          returnedIds:      ids,
+          returnedIds:      got.ids,
+          answered:         got.answered,
           storedGames:      w.byRound.get(f.roundName) || [],
         });
         if (d.suspectEmpty) {
@@ -1330,13 +1360,25 @@ async function main() {
           refresh.suspectEmpty++;
           gradeClean = false;
           console.log(`  ⚠ SUSPECT: grade ${gid} round "${f.roundName}" is still in PlayHQ's round list`
-                    + ` and we hold ${(w.byRound.get(f.roundName) || []).length} game(s) for it, but it returned ZERO.`
-                    + ` Deleting nothing from that round.`);
+                    + ` and we hold ${(w.byRound.get(f.roundName) || []).length} game(s) for it, but PlayHQ returned`
+                    + ` NO PAYLOAD for it (not an empty round — no answer). Deleting nothing from that round.`);
           continue;
         }
         refresh.keptPlayed += d.keptPlayed;
-        for (const e of d.deletable) gradeDeletes.push({ sid, gid, rn: f.roundName, gameId: e.gameId });
-        roundHashes[f.roundName] = RR.hashIdSet(ids);
+        const live = RR.withholdLiveElsewhere(d.deletable, aliveGradeWide);
+        refresh.movedNotDeleted += live.moved.length;
+        for (const e of live.moved) {
+          console.log(`  ↷ MOVED, not deleted: grade ${gid} game ${e.gameId} was in "${f.roundName}"`
+                    + ` and PlayHQ returned it under another round of the same grade.`);
+        }
+        if (cov.fullyAccounted) {
+          for (const e of live.deletable) gradeDeletes.push({ sid, gid, rn: f.roundName, gameId: e.gameId });
+        } else if (live.deletable.length) {
+          console.log(`  ⚠ grade ${gid}: ${live.deletable.length} candidate(s) in "${f.roundName}" WITHHELD —`
+                    + ` round(s) ${cov.unaccounted.slice(0, 6).join(', ')}${cov.unaccounted.length > 6 ? ', …' : ''}`
+                    + ` hold unplayed games and were not fetched, so a moved game cannot be told from a withdrawn one.`);
+        }
+        roundHashes[f.roundName] = RR.hashIdSet(got.ids);
       }
 
       // A round PlayHQ has withdrawn from the list entirely. The round list came
@@ -1346,10 +1388,19 @@ async function main() {
         const d = RR.computeRoundDeletions({
           roundStillListed: false,
           returnedIds:      [],
+          answered:         true,   // the ROUND LIST answered: this round is gone
           storedGames:      w.byRound.get(rn) || [],
         });
         refresh.keptPlayed += d.keptPlayed;
-        for (const e of d.deletable) gradeDeletes.push({ sid, gid, rn, gameId: e.gameId });
+        const liveV = RR.withholdLiveElsewhere(d.deletable, aliveGradeWide);
+        refresh.movedNotDeleted += liveV.moved.length;
+        for (const e of liveV.moved) {
+          console.log(`  ↷ MOVED, not deleted: grade ${gid} game ${e.gameId} was in withdrawn round "${rn}"`
+                    + ` and PlayHQ returned it under a live round of the same grade.`);
+        }
+        if (cov.fullyAccounted) {
+          for (const e of liveV.deletable) gradeDeletes.push({ sid, gid, rn, gameId: e.gameId });
+        }
         delete roundHashes[rn];
         console.log(`  round withdrawn: grade ${gid} "${rn}" — ${d.deletable.length} unplayed game(s) to remove,`
                   + ` ${d.keptPlayed} played game(s) kept`);
@@ -1961,6 +2012,8 @@ async function main() {
   console.log(`  New players:       ${stubbed}`);
   console.log(`  Refresh grades:    ${refresh.gradesConsidered} (${refresh.baselined} baseline, ${refresh.incremental} incremental)`
             + `  rounds ok=${refresh.roundsFetched} failed=${refresh.roundsFailed}`);
+  console.log(`  Refresh moved-not-deleted: ${refresh.movedNotDeleted}`
+            + `  grades withheld for incomplete coverage: ${refresh.gradesUnaccounted}`);
   console.log(`  Refresh deletions: ${refresh.deleted}  kept-because-played: ${refresh.keptPlayed}`
             + `  suspect-empty rounds: ${refresh.suspectEmpty}  unscopeable (no rn): ${refresh.noRoundSkipped}`);
   if (refresh.baselineDeferred) console.log(`  Baseline backlog:  ${refresh.baselineDeferred} grade(s) waiting for a later run`);
