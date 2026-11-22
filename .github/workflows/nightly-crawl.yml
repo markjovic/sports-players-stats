@@ -346,7 +346,13 @@ jobs:
     #
     # `always()` below is preserved deliberately: a FAILED win-loss must not skip the
     # matrix, only a still-RUNNING one should delay it.
-    needs: [crawl, team-stats, win-loss]
+    #
+    # 2026-11-23: `player-games` added to needs, same reasoning one level on. That
+    # job writes players/ from inside this workflow; the dispatched matrix writes
+    # players/ from a run this workflow's lock does not cover. `always()` below is
+    # still deliberate — a FAILED or SKIPPED player-games must not skip the matrix,
+    # only a still-RUNNING one should delay it.
+    needs: [crawl, team-stats, win-loss, player-games]
     runs-on: ubuntu-latest
     if: |
       always() &&
@@ -457,6 +463,77 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - name: Build win-loss records (active seasons)
         run: node scripts/build-win-loss.js --active-only
+
+  player-games:
+    # ADDED 2026-11-23 — why games[] is now rebuilt NIGHTLY and not only on Sunday.
+    #
+    # player.games[] has exactly two writers in the repo: build-player-games.js (the
+    # canonical rebuilder) and fold-diverged-players.js (a union during an identity
+    # merge). Until today its only SCHEDULED run was the player-games job in
+    # weekly-indexes.yml, cron '0 2 * * 0'. So a game played during the week reached
+    # games/bv that night and games[] the FOLLOWING SUNDAY — up to seven days later.
+    # StatTrack's season card reads registration stats, which the matrix refreshes
+    # nightly; its calendar-year card sums games[]. So the two disagreed all week:
+    # MMB08 69 PTS on the season card against 62 on the year card, with a 7-point
+    # game played that week (measured 2026-11-22).
+    #
+    # The script makes NO PlayHQ calls. It is a pure local pass over games/bv — its
+    # own header, line 5: "no new files, no API". Measured on dispatch runs #23-#30
+    # (25 Aug - 6 Sep): 9m19s to 11m29s end to end, of which ~5 min is the checkout
+    # of a 6 GB repo and ~4m07s is the script itself. That is what makes a nightly
+    # run affordable, and nothing in it is rate-limit exposed.
+    #
+    # ORDERING, NOT LOCKING. Three constraints, each of which has already cost data:
+    #   - AFTER crawl. build-player-games derives games[] ENTIRELY from p[] in
+    #     games/bv, and crawl is this workflow's only writer of it (T29). Running it
+    #     against a partial view is the 2026-08-13 fault that cost a full day: it
+    #     reported 9,353 files updated where a standalone re-run updated 13,046, and
+    #     wrote a games[] of 30 for a player holding 473 roster entries.
+    #   - AFTER team-stats and win-loss. All three write player files from
+    #     independent checkouts and push with `merge -X ours`, which is a LOST-UPDATE
+    #     path, not merely a stale one (T28).
+    #   - BEFORE the matrix is dispatched. profile-stats-matrix now carries this job
+    #     in its `needs` for exactly the reason its own comment gives: the dispatched
+    #     matrix is a SEPARATE run, this workflow's data-write lock does not cover it
+    #     (T10), and its apply-and-commit writes players/ too. Ordering removes the
+    #     overlap at a cost of ~10 minutes of dispatch delay, against the up-to-120
+    #     minutes win-loss already costs it.
+    #
+    # NO `if:` gate, deliberately. A night where crawl wrote nothing makes this a
+    # no-op — the script writes only files whose games[] actually changed and
+    # commits nothing when none did — so a gate would buy ten minutes at the price of
+    # another boolean-input expression to get wrong (T13, T27). A FAILED crawl skips
+    # this job through `needs` alone, which is correct: there is nothing new to
+    # derive from.
+    #
+    # NO actions/setup-node — repo-wide rule, per-job. This script never fetches
+    # PlayHQ so it would be harmless, but the runner's preinstalled Node is what
+    # weekly-indexes already runs this exact script on, green, every Sunday.
+    needs: [crawl, team-stats, win-loss]
+    runs-on: ubuntu-latest
+    # 120 is a BACKSTOP ABOVE a self-bounding loop, not a budget for it (T55). The
+    # measured work is ~4 minutes; the script's own push retry is 60 attempts of
+    # 1-91s jitter, with every git call carrying its own 10-minute timeout and a
+    # 512 MB maxBuffer internally (T26, T35). Same value as its sibling jobs.
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # ref: main is LOAD-BEARING (T21). Without it checkout uses github.sha —
+          # the tree AS OF THE RUN TRIGGER, frozen before the crawl wrote anything —
+          # so this job would rebuild games[] from YESTERDAY'S games/bv and publish a
+          # games[] that is still a day stale, every night, while looking correct.
+          # That is the whole point of the job, so getting this wrong is silent and
+          # total.
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Build player games index
+        run: node scripts/build-player-games.js
 
   retrigger:
     needs: crawl
