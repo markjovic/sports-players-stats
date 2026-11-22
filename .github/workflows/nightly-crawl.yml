@@ -52,9 +52,9 @@ on:
         default: false
         type: boolean
       baseline_grades_per_run:
-        description: 'How many never-seen grades may take their first full pass this run (default 750). The rest wait for a later night and are reported.'
+        description: 'How many never-seen grades may take their first full pass this run (default 2000). The rest wait for a later night and are reported.'
         required: false
-        default: '750'
+        default: '2000'
         type: string
       max_deletes:
         description: 'Per-run deletion cap. Exceeding it ABORTS the deletion pass and prints what would have gone (default 500).'
@@ -142,7 +142,7 @@ jobs:
             ARGS="$ARGS --no-round-refresh"
           else
             ARGS="$ARGS --refresh-rounds-ahead=$(num_or_die "${REFRESH_AHEAD:-}" 2 refresh_rounds_ahead)"
-            ARGS="$ARGS --baseline-grades-per-run=$(num_or_die "${BASELINE_PER_RUN:-}" 750 baseline_grades_per_run)"
+            ARGS="$ARGS --baseline-grades-per-run=$(num_or_die "${BASELINE_PER_RUN:-}" 2000 baseline_grades_per_run)"
             ARGS="$ARGS --max-deletes=$(num_or_die "${MAX_DELETES:-}" 500 max_deletes)"
             ARGS="$ARGS --max-deletes-per-season=$(num_or_die "${MAX_DELETES_SEAS:-}" 100 max_deletes_per_season)"
             if [ "${REFRESH_DRY_RUN:-false}" = "true" ]; then ARGS="$ARGS --refresh-dry-run"; fi
