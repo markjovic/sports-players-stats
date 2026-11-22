@@ -118,6 +118,11 @@ const MAX_DELETES_SEASON = Math.max(0, parseInt(ARGS['max-deletes-per-season'] |
 // .nightly-status.json. --fail-on-delete-cap makes it red for anyone who would
 // rather lose the night than miss it.
 const FAIL_ON_DELETE_CAP = !!ARGS['fail-on-delete-cap'];
+// The runaway stop. NOT a review gate — the caps above are advisory now, because
+// a large regrade is a normal event and blocking on volume stopped the cleanup
+// dead while catching nothing. This is the "the world has changed in a way
+// nothing here anticipated" halt, set far above any plausible regrade.
+const RUNAWAY_STOP = Math.max(1, parseInt(ARGS['runaway-stop'] || '20000', 10));
 const COMPLETE_GRACE_MS = 7 * 24 * 60 * 60 * 1000;   // trust a round-complete marker only after 7 days (catch late score corrections first)
 
 const API_URL       = 'https://api.playhq.com/graphql';
@@ -1116,11 +1121,15 @@ async function main() {
     const { needsSpectator, forfeitGameIds } = applyRoundFixtures(
       data, grade.gradeId, grade.gradeName, roundName, isCurrent
     );
-    p2RoundIds.set(
-      `${grade.gradeId}|${roundName}`,
-      ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.games) || [])
-        .map(g => g && g.id).filter(Boolean)
-    );
+    // {ids, answered}. `answered` is whether PlayHQ returned a payload for the
+    // round at all: a null discoverFixtureByRound is NOT an answer, an empty
+    // games array IS one. Collapsing the two is what would have protected 103
+    // rounds of withdrawn fixtures for ever.
+    p2RoundIds.set(`${grade.gradeId}|${roundName}`, {
+      ids: ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.games) || [])
+        .map(g => g && g.id).filter(Boolean),
+      answered: !!(data && data.discoverFixtureByRound),
+    });
     allNeedsSpectator.push(...needsSpectator);
     allNewForfeitIds.push(...forfeitGameIds);
 
@@ -1172,6 +1181,7 @@ async function main() {
   const refresh = {
     gradesConsidered: 0, baselined: 0, incremental: 0, baselineDeferred: 0,
     noRounds: 0, currentIsLast: 0, nothingToFetch: 0,
+    movedNotDeleted: 0, gradesUnaccounted: 0, capWarnings: 0, archived: 0, resurrected: 0,
     roundsFetched: 0, roundsFailed: 0, suspectEmpty: 0,
     deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
     listChanged: 0, seasonsRegraded: 0, newGradesSwept: 0,
@@ -1263,7 +1273,7 @@ async function main() {
     // its ids also means the CURRENT round gets the same withdrawal check as the
     // forward ones, which it otherwise would not: Phase 2 fetches it and has
     // never deleted anything.
-    const roundResults = new Map(p2RoundIds);   // `${gid}|${roundName}` → [gameId]
+    const roundResults = new Map(p2RoundIds);   // `${gid}|${roundName}` → {ids, answered}
 
     if (fetchItems.length) {
       const p2r = await runPaced(fetchItems, async ({ w, f }) => {
@@ -1274,9 +1284,11 @@ async function main() {
         );
         allNeedsSpectator.push(...needsSpectator);
         allNewForfeitIds.push(...forfeitGameIds);
-        const ids = ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.games) || [])
-          .map(g => g && g.id).filter(Boolean);
-        roundResults.set(`${w.grade.gradeId}|${f.roundName}`, ids);
+        roundResults.set(`${w.grade.gradeId}|${f.roundName}`, {
+          ids: ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.games) || [])
+            .map(g => g && g.id).filter(Boolean),
+          answered: !!(data && data.discoverFixtureByRound),
+        });
         return 'ok';
       }, { conc: CONCURRENCY_FIXTURES, burst: PACE_BURST, rest: PACE_REST, label: 'P2R refresh' });
       console.log(`  ${fetchItems.length} rounds done — ok=${p2r.counts.ok} empty=${p2r.counts.empty}`
@@ -1311,9 +1323,31 @@ async function main() {
         judged.unshift({ roundId: null, roundName: curr.name, reason: 'current (reusing Phase 2)' });
       }
 
+      // RULE 5, half one: everything PlayHQ returned anywhere in this grade. A
+      // game that came back under ANY round is alive, whatever round it is now
+      // in — which is the case a per-round comparison gets wrong when an
+      // association re-draws or renames its rounds.
+      const aliveGradeWide = new Set();
+      const fetchedNames   = new Set();
       for (const f of judged) {
-        const ids = roundResults.get(`${gid}|${f.roundName}`);
-        if (ids === undefined) {
+        const got = roundResults.get(`${gid}|${f.roundName}`);
+        if (got === undefined) continue;
+        fetchedNames.add(f.roundName);
+        for (const id of got.ids) aliveGradeWide.add(id);
+      }
+
+      // RULE 5, half two: can we account for every round this grade holds
+      // unplayed games in? If not, a game moved out of the fetch window is
+      // indistinguishable from one that is gone, and we delete nothing.
+      const cov = RR.assessGradeCoverage({ rounds: w.grade.rounds, byRound: w.byRound, fetchedRoundNames: fetchedNames });
+      if (!cov.fullyAccounted) {
+        refresh.gradesUnaccounted++;
+        gradeClean = false;
+      }
+
+      for (const f of judged) {
+        const got = roundResults.get(`${gid}|${f.roundName}`);
+        if (got === undefined) {
           // The fetch never succeeded. Rule 1: no deletion can come from it.
           refresh.roundsFailed++;
           gradeClean = false;
@@ -1322,7 +1356,8 @@ async function main() {
         if (f.roundId !== null) refresh.roundsFetched++;
         const d = RR.computeRoundDeletions({
           roundStillListed: liveNames.has(f.roundName),
-          returnedIds:      ids,
+          returnedIds:      got.ids,
+          answered:         got.answered,
           storedGames:      w.byRound.get(f.roundName) || [],
         });
         if (d.suspectEmpty) {
@@ -1330,13 +1365,25 @@ async function main() {
           refresh.suspectEmpty++;
           gradeClean = false;
           console.log(`  ⚠ SUSPECT: grade ${gid} round "${f.roundName}" is still in PlayHQ's round list`
-                    + ` and we hold ${(w.byRound.get(f.roundName) || []).length} game(s) for it, but it returned ZERO.`
-                    + ` Deleting nothing from that round.`);
+                    + ` and we hold ${(w.byRound.get(f.roundName) || []).length} game(s) for it, but PlayHQ returned`
+                    + ` NO PAYLOAD for it (not an empty round — no answer). Deleting nothing from that round.`);
           continue;
         }
         refresh.keptPlayed += d.keptPlayed;
-        for (const e of d.deletable) gradeDeletes.push({ sid, gid, rn: f.roundName, gameId: e.gameId });
-        roundHashes[f.roundName] = RR.hashIdSet(ids);
+        const live = RR.withholdLiveElsewhere(d.deletable, aliveGradeWide);
+        refresh.movedNotDeleted += live.moved.length;
+        for (const e of live.moved) {
+          console.log(`  ↷ MOVED, not deleted: grade ${gid} game ${e.gameId} was in "${f.roundName}"`
+                    + ` and PlayHQ returned it under another round of the same grade.`);
+        }
+        if (cov.fullyAccounted) {
+          for (const e of live.deletable) gradeDeletes.push({ sid, gid, rn: f.roundName, gameId: e.gameId });
+        } else if (live.deletable.length) {
+          console.log(`  ⚠ grade ${gid}: ${live.deletable.length} candidate(s) in "${f.roundName}" WITHHELD —`
+                    + ` round(s) ${cov.unaccounted.slice(0, 6).join(', ')}${cov.unaccounted.length > 6 ? ', …' : ''}`
+                    + ` hold unplayed games and were not fetched, so a moved game cannot be told from a withdrawn one.`);
+        }
+        roundHashes[f.roundName] = RR.hashIdSet(got.ids);
       }
 
       // A round PlayHQ has withdrawn from the list entirely. The round list came
@@ -1346,29 +1393,71 @@ async function main() {
         const d = RR.computeRoundDeletions({
           roundStillListed: false,
           returnedIds:      [],
+          answered:         true,   // the ROUND LIST answered: this round is gone
           storedGames:      w.byRound.get(rn) || [],
         });
         refresh.keptPlayed += d.keptPlayed;
-        for (const e of d.deletable) gradeDeletes.push({ sid, gid, rn, gameId: e.gameId });
+        const liveV = RR.withholdLiveElsewhere(d.deletable, aliveGradeWide);
+        refresh.movedNotDeleted += liveV.moved.length;
+        for (const e of liveV.moved) {
+          console.log(`  ↷ MOVED, not deleted: grade ${gid} game ${e.gameId} was in withdrawn round "${rn}"`
+                    + ` and PlayHQ returned it under a live round of the same grade.`);
+        }
+        if (cov.fullyAccounted) {
+          for (const e of liveV.deletable) gradeDeletes.push({ sid, gid, rn, gameId: e.gameId });
+        }
         delete roundHashes[rn];
         console.log(`  round withdrawn: grade ${gid} "${rn}" — ${d.deletable.length} unplayed game(s) to remove,`
                   + ` ${d.keptPlayed} played game(s) kept`);
       }
 
       if (gradeDeletes.length) {
+        // ⚠ THE CAP IS A WARNING, NOT A GATE — CHANGED 2026-11-22 AND THE
+        // REASONING MATTERS MORE THAN THE CODE.
+        //
+        // It was originally an abort: exceed the count, delete nothing, make a
+        // human look. The first live contact showed why that is the wrong
+        // instrument. MEBA published a fixture, regraded, and withdrew most of
+        // it — 108 games in rounds 7-10 and several hundred more across rounds
+        // 11-18, in ONE season, every one of them correctly identified. A flat
+        // cap of 100 aborted the lot.
+        //
+        // Volume does not correlate with wrongness. A regrade withdrawing 400
+        // fixtures is exactly as legitimate as one withdrawing 4, and a bug that
+        // deleted 50 WRONG games would pass a cap of 100 untouched. So the cap
+        // fired on the common legitimate case and would miss the dangerous one.
+        // Worse, it left the cleanup permanently blocked until someone noticed
+        // and raised a number by hand — on a job that runs unattended at 01:00.
+        //
+        // What actually catches wrongness is the semantic guards: unplayed only,
+        // successful fetch only, a null payload is suspect, the grade-wide alive
+        // set, and the full-coverage requirement. Those are kept and are strict.
+        //
+        // The cap existed because deletion was irreversible. It is not any more:
+        // every deleted game is archived IN FULL to data/withdrawn-games/{sid}.json
+        // before it is removed, and restore-withdrawn-games.js puts it back
+        // verbatim. So the cap now warns, records and proceeds, and RUNAWAY_STOP
+        // below is the only thing that still halts a run.
         const refused = budget.tryTake(sid, gradeDeletes.length);
         if (refused) {
-          refresh.abortedBy = refused;
-          console.log(`\n  ⚠⚠ DELETION CAP REACHED — ${refused}`);
-          console.log('  NOTHING will be deleted this run and no fingerprint will be written.');
-          console.log('  What would have been deleted, in full:');
-          for (const d of toDelete.concat(gradeDeletes)) {
-            console.log(`    sid=${d.sid} gid=${d.gid} round="${d.rn}" game=${d.gameId}`);
-          }
-          console.log(`::warning::nightly-crawl refresh: deletion cap reached (${refused}) — ${toDelete.length + gradeDeletes.length} game(s) NOT deleted`);
-          break;
+          refresh.capWarnings++;
+          console.log(`  ⚠ deletion cap exceeded — ${refused}`);
+          console.log(`    Proceeding anyway: volume is not evidence of error, and every deletion is`);
+          console.log(`    archived to data/withdrawn-games/${sid}.json and restorable. Raise the cap to silence this.`);
+          console.log(`::warning::nightly-crawl refresh: ${refused} — proceeding, ${gradeDeletes.length} game(s) archived and deleted`);
         }
         toDelete.push(...gradeDeletes);
+
+        // The one thing that still STOPS a run. Not a review gate — a runaway
+        // stop, set far above any plausible regrade, for the case where the
+        // world has changed in a way nothing here anticipated.
+        if (toDelete.length > RUNAWAY_STOP) {
+          refresh.abortedBy = `runaway stop: ${toDelete.length} deletions in one run exceeds --runaway-stop=${RUNAWAY_STOP}`;
+          console.log(`\n  ⚠⚠ RUNAWAY STOP — ${refresh.abortedBy}`);
+          console.log('  NOTHING will be deleted this run and no fingerprint will be written.');
+          console.log(`::warning::nightly-crawl refresh: runaway stop at ${toDelete.length} deletions — nothing deleted`);
+          break;
+        }
       }
 
       // When to suspect the SEASON has been regraded, and therefore pay for a
@@ -1402,16 +1491,89 @@ async function main() {
       console.log(`  [refresh-dry-run] would delete ${toDelete.length} game(s):`);
       for (const d of toDelete) console.log(`    sid=${d.sid} gid=${d.gid} round="${d.rn}" game=${d.gameId}`);
     } else {
+      // ── ARCHIVE BEFORE DELETE ────────────────────────────────────────────
+      // This is what makes a deletion reversible, and therefore what lets the
+      // cap be a warning rather than a gate. The FULL stored entry is written
+      // to data/withdrawn-games/{sid}.json — not the id, the whole object — so
+      // restore-withdrawn-games.js can put it back byte-for-byte.
+      //
+      // data/, not reports/: reports/ is gitignored, a plain `git add` on an
+      // ignored path matches nothing and EXITS ZERO, and the script then prints
+      // its success line over a file that was never committed (T94). The archive
+      // has to be committed or it does not exist to anything, so it goes
+      // somewhere that is tracked by default.
+      //
+      // Keyed by game id and MERGED with what is already there, never replaced:
+      // a season can be cleaned on more than one night and losing the first
+      // night's record would be the same silent loss this exists to prevent.
+      const archives = new Map();   // sid -> object
+      const loadArchive = (sid) => {
+        if (archives.has(sid)) return archives.get(sid);
+        const f = path.join(ROOT, 'data', 'withdrawn-games', `${sid}.json`);
+        let obj = {};
+        if (fs.existsSync(f)) {
+          // An unreadable archive THROWS. Overwriting it would destroy the
+          // record of every earlier deletion, which is strictly worse than
+          // stopping.
+          try { obj = JSON.parse(fs.readFileSync(f, 'utf8')); }
+          catch (e) { throw new Error(`round-refresh: data/withdrawn-games/${sid}.json exists but failed to parse (${e.message}) — refusing to overwrite the record of earlier deletions`); }
+        }
+        archives.set(sid, obj);
+        return obj;
+      };
+
+      const runAt = new Date().toISOString();
       for (const d of toDelete) {
         const gfDel = loadGameFile(d.sid);
-        if (!gfDel.games[d.gameId]) continue;             // already gone; nothing to report
+        const entry = gfDel.games[d.gameId];
+        if (!entry) continue;                             // already gone; nothing to report
+
+        // ── RESURRECTION DETECTOR ────────────────────────────────────────
+        // An id ALREADY in the archive means we deleted this game before and it
+        // has come back. That is the signature of two writers disagreeing about
+        // the same game, and the likely other writer is discover-fixtures.js:
+        // it resolves fixtures through `discoverTeamFixture`, a DIFFERENT query
+        // from the `discoverFixtureByRound` this pass deletes on, and it runs
+        // weekly from weekly-indexes.yml. If the two endpoints disagree, the
+        // nightly deletes and the weekly restores, for ever, churning git and
+        // leaving the stale fixture on the site anyway.
+        //
+        // This is cheap and exact, and it costs nothing when there is no loop.
+        // The first-seen time is preserved so the age of the loop is readable.
+        const arch = loadArchive(d.sid);
+        const prior = arch[d.gameId];
+        if (prior) {
+          refresh.resurrected++;
+          console.log(`  \u26a0 RESURRECTED: ${d.gameId} was deleted ${String(prior.firstDeletedAt || prior.at).slice(0, 19)}`
+                    + ` and has come back \u2014 something re-added it. Deleting again.`);
+        }
+        arch[d.gameId] = {
+          at: runAt,
+          firstDeletedAt: (prior && (prior.firstDeletedAt || prior.at)) || runAt,
+          deletions: ((prior && prior.deletions) || 0) + 1,
+          gid: d.gid, rn: d.rn, reason: 'withdrawn-at-playhq', entry,
+        };
+        refresh.archived++;
+
         delete gfDel.games[d.gameId];
         markGameDirty(d.sid);
         intentionalDeletes.set(d.sid, (intentionalDeletes.get(d.sid) || 0) + 1);
         refresh.deleted++;
         // Every deletion is printed in full. A deletion nobody can find in a log
         // is a deletion nobody can audit.
-        console.log(`  ✖ DELETED  sid=${d.sid}  gid=${d.gid}  round="${d.rn}"  game=${d.gameId}`);
+        console.log(`  ✖ DELETED  sid=${d.sid}  gid=${d.gid}  round="${d.rn}"  game=${d.gameId}`
+                  + `  d=${entry.d || '∅'}  ${entry.hn || '?'} v ${entry.an || '?'}`);
+      }
+
+      if (archives.size) {
+        const dir = path.join(ROOT, 'data', 'withdrawn-games');
+        fs.mkdirSync(dir, { recursive: true });
+        for (const [sid, obj] of archives) {
+          fs.writeFileSync(path.join(dir, `${sid}.json`), JSON.stringify(obj));
+        }
+        refreshStatePaths.push('data/withdrawn-games');
+        console.log(`  Archived ${refresh.archived} deleted game(s) in full across ${archives.size} season file(s)`
+                  + ` — restore with restore-withdrawn-games.js`);
       }
       console.log(`  Deletions applied: ${refresh.deleted}`);
     }
@@ -1961,6 +2123,17 @@ async function main() {
   console.log(`  New players:       ${stubbed}`);
   console.log(`  Refresh grades:    ${refresh.gradesConsidered} (${refresh.baselined} baseline, ${refresh.incremental} incremental)`
             + `  rounds ok=${refresh.roundsFetched} failed=${refresh.roundsFailed}`);
+  if (refresh.resurrected) {
+    console.log(`  ⚠⚠ ${refresh.resurrected} game(s) RESURRECTED — previously deleted by this pass and re-added by something else.`);
+    console.log(`     The likely culprit is discover-fixtures.js (weekly-indexes.yml), which resolves fixtures through`);
+    console.log(`     discoverTeamFixture while this pass deletes on discoverFixtureByRound. Two writers disagreeing about`);
+    console.log(`     the same games is a delete/re-add loop, not a transient. Investigate before the next weekly sweep.`);
+    console.log(`::warning::nightly-crawl refresh: ${refresh.resurrected} previously-deleted game(s) have been re-added by another writer`);
+  }
+  console.log(`  Refresh archived:  ${refresh.archived} game(s) written to data/withdrawn-games/ before deletion`
+            + `${refresh.capWarnings ? `  (advisory cap exceeded ${refresh.capWarnings}x — proceeded)` : ''}`);
+  console.log(`  Refresh moved-not-deleted: ${refresh.movedNotDeleted}`
+            + `  grades withheld for incomplete coverage: ${refresh.gradesUnaccounted}`);
   console.log(`  Refresh deletions: ${refresh.deleted}  kept-because-played: ${refresh.keptPlayed}`
             + `  suspect-empty rounds: ${refresh.suspectEmpty}  unscopeable (no rn): ${refresh.noRoundSkipped}`);
   if (refresh.baselineDeferred) console.log(`  Baseline backlog:  ${refresh.baselineDeferred} grade(s) waiting for a later run`);

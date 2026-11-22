@@ -56,18 +56,23 @@ on:
         required: false
         default: '2000'
         type: string
+      runaway_stop:
+        description: 'Hard halt if one run would delete more than this many games (default 20000). A runaway stop, NOT a review gate.'
+        required: false
+        default: '20000'
+        type: string
       max_deletes:
-        description: 'Per-run deletion cap. Exceeding it ABORTS the deletion pass and prints what would have gone (default 500).'
+        description: 'Advisory per-run deletion threshold (default 500). Exceeding it WARNS and proceeds — every deletion is archived to data/withdrawn-games/ and restorable.'
         required: false
         default: '500'
         type: string
       max_deletes_per_season:
-        description: 'Per-season deletion cap, same abort behaviour (default 100)'
+        description: 'Advisory per-season deletion threshold (default 100). Warns and proceeds, same as max_deletes.'
         required: false
         default: '100'
         type: string
       fail_on_delete_cap:
-        description: 'Make a deletion-cap abort fail the run. Default off: the crawl itself succeeded, and failing it skips team-stats, win-loss, team-index and the chain for the whole night.'
+        description: 'Fail the run if the runaway stop fires. Default off: the crawl itself succeeded, and failing it skips team-stats, win-loss, team-index and the chain for the whole night.'
         required: false
         default: false
         type: boolean
@@ -119,9 +124,29 @@ jobs:
           BASELINE_PER_RUN:  ${{ inputs.baseline_grades_per_run }}
           MAX_DELETES:       ${{ inputs.max_deletes }}
           MAX_DELETES_SEAS:  ${{ inputs.max_deletes_per_season }}
+          RUNAWAY_STOP:      ${{ inputs.runaway_stop }}
           FAIL_ON_CAP:       ${{ inputs.fail_on_delete_cap }}
         run: |
           set -euo pipefail
+
+          # ⚠ PRINT WHAT GITHUB ACTUALLY PASSED, BEFORE ANY GATING.
+          # On 2026-11-22 a run that was dispatched with refresh_dry_run ticked
+          # reached the script WITHOUT --refresh-dry-run, and deleted live up to
+          # the per-season cap. The gating below reads correctly and the failure
+          # could not be reproduced, so the next occurrence has to diagnose
+          # itself rather than rest on anyone's recollection. These five lines
+          # are the raw inputs context as the runner received it.
+          echo "::group::Resolved dispatch inputs (raw)"
+          echo "  no_round_refresh        = '${NO_ROUND_REFRESH:-<unset>}'"
+          echo "  refresh_dry_run         = '${REFRESH_DRY_RUN:-<unset>}'"
+          echo "  refresh_rounds_ahead    = '${REFRESH_AHEAD:-<unset>}'"
+          echo "  baseline_grades_per_run = '${BASELINE_PER_RUN:-<unset>}'"
+          echo "  max_deletes             = '${MAX_DELETES:-<unset>}'"
+          echo "  max_deletes_per_season  = '${MAX_DELETES_SEAS:-<unset>}'"
+          echo "  runaway_stop            = '${RUNAWAY_STOP:-<unset>}'"
+          echo "  fail_on_delete_cap      = '${FAIL_ON_CAP:-<unset>}'"
+          echo "  event_name              = '${GITHUB_EVENT_NAME:-<unset>}'"
+          echo "::endgroup::"
 
           ARGS="--rounds-back=${{ inputs.rounds_back || '2' }}"
           if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
@@ -145,10 +170,16 @@ jobs:
             ARGS="$ARGS --baseline-grades-per-run=$(num_or_die "${BASELINE_PER_RUN:-}" 2000 baseline_grades_per_run)"
             ARGS="$ARGS --max-deletes=$(num_or_die "${MAX_DELETES:-}" 500 max_deletes)"
             ARGS="$ARGS --max-deletes-per-season=$(num_or_die "${MAX_DELETES_SEAS:-}" 100 max_deletes_per_season)"
+            ARGS="$ARGS --runaway-stop=$(num_or_die "${RUNAWAY_STOP:-}" 20000 runaway_stop)"
             if [ "${REFRESH_DRY_RUN:-false}" = "true" ]; then ARGS="$ARGS --refresh-dry-run"; fi
             if [ "${FAIL_ON_CAP:-false}"    = "true" ]; then ARGS="$ARGS --fail-on-delete-cap"; fi
           fi
 
+          case "$ARGS" in
+            *--no-round-refresh*) echo "MODE: refresh DISABLED" ;;
+            *--refresh-dry-run*)  echo "MODE: refresh DRY RUN — nothing will be deleted" ;;
+            *)                    echo "MODE: refresh LIVE — withdrawn fixtures WILL be deleted (caps apply)" ;;
+          esac
           echo "running: node scripts/nightly-crawl.js $ARGS"
           node scripts/nightly-crawl.js $ARGS
 

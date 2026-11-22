@@ -1,0 +1,144 @@
+# .github/workflows/restore-withdrawn-games.yml
+name: Restore withdrawn games
+
+# Puts back games nightly-crawl's Phase 2R deleted, from the full entries it
+# archived to data/withdrawn-games/{sid}.json before removing them.
+#
+# WHY IT EXISTS. The refresh's deletion caps used to ABORT a run — exceed a flat
+# count and nothing was deleted until someone raised a number by hand. The first
+# live run showed that was the wrong instrument: MEBA published a fixture,
+# regraded, and legitimately withdrew several hundred games from one season, so
+# the cap fired on the NORMAL case, while a bug deleting fifty wrong games would
+# have passed a cap of 100 untouched. Volume is not evidence of error.
+#
+# The cap was only justified because deletion was irreversible. It is not any
+# more, and this is the tool that makes that true rather than merely stated.
+#
+# DEFAULT IS A DRY RUN. `apply` must be ticked to write anything.
+#
+# Holds `data-write`: it writes games/bv, which is the most contended path in
+# the repository. Every writer takes this lock, with no exception for "different
+# directories" — push contention on a multi-GB repo is path-agnostic (T25).
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: 'Season id to restore. Leave blank for every season that has an archive.'
+        required: false
+        default: ''
+        type: string
+      game:
+        description: 'A single game id to restore. Narrower than season; both may be given.'
+        required: false
+        default: ''
+        type: string
+      since:
+        description: 'Only entries deleted on or after this ISO date, e.g. 2026-11-22. Blank for all.'
+        required: false
+        default: ''
+        type: string
+      list:
+        description: 'List what is in the archive and change nothing. Ignores apply.'
+        required: false
+        default: true
+        type: boolean
+      apply:
+        description: 'Actually write the games back and commit. Without this it is a dry run.'
+        required: false
+        default: false
+        type: boolean
+      keep_archive:
+        description: 'Leave the archive entries in place after restoring. Normally they are consumed.'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    # Above the push-retry budget (T55): the house loop is 60 attempts with 1-91s
+    # jitter, roughly 109 minutes for a single commit. A timeout inside that
+    # budget kills the job mid-retry and shows a timeout instead of git's real
+    # error. If the retry count or jitter range changes, re-check this number.
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # ref: main, not the trigger SHA — this must see the archive as it is
+          # now, including anything last night's crawl wrote (T21).
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Restore
+        # Inputs via env and gated in bash, never interpolated into the command
+        # line (directive 13 / T27). Ids are validated before use and anything
+        # unrecognised REFUSES — a guard fails toward doing less (T3).
+        env:
+          SEASON:       ${{ inputs.season }}
+          GAME:         ${{ inputs.game }}
+          SINCE:        ${{ inputs.since }}
+          LIST:         ${{ inputs.list }}
+          APPLY:        ${{ inputs.apply }}
+          KEEP_ARCHIVE: ${{ inputs.keep_archive }}
+        run: |
+          set -euo pipefail
+
+          echo "::group::Resolved dispatch inputs (raw)"
+          echo "  season       = '${SEASON:-<unset>}'"
+          echo "  game         = '${GAME:-<unset>}'"
+          echo "  since        = '${SINCE:-<unset>}'"
+          echo "  list         = '${LIST:-<unset>}'"
+          echo "  apply        = '${APPLY:-<unset>}'"
+          echo "  keep_archive = '${KEEP_ARCHIVE:-<unset>}'"
+          echo "::endgroup::"
+
+          ARGS=""
+
+          if [ -n "${SEASON:-}" ]; then
+            case "${SEASON}" in
+              *[!0-9a-fA-F-]*) echo "::error::season may contain only hex digits and hyphens, got '${SEASON}'" >&2; exit 1 ;;
+            esac
+            ARGS="$ARGS --season=${SEASON}"
+          fi
+
+          if [ -n "${GAME:-}" ]; then
+            case "${GAME}" in
+              *[!0-9a-fA-F-]*) echo "::error::game may contain only hex digits and hyphens, got '${GAME}'" >&2; exit 1 ;;
+            esac
+            ARGS="$ARGS --game=${GAME}"
+          fi
+
+          if [ -n "${SINCE:-}" ]; then
+            case "${SINCE}" in
+              [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]*) ARGS="$ARGS --since=${SINCE}" ;;
+              *) echo "::error::since must start with YYYY-MM-DD, got '${SINCE}'" >&2; exit 1 ;;
+            esac
+          fi
+
+          if [ "${LIST:-false}" = "true" ]; then
+            ARGS="$ARGS --list"
+            echo "MODE: LIST ONLY — nothing will be written"
+          elif [ "${APPLY:-false}" = "true" ]; then
+            ARGS="$ARGS --apply"
+            if [ "${KEEP_ARCHIVE:-false}" = "true" ]; then ARGS="$ARGS --keep-archive"; fi
+            echo "MODE: APPLY — games WILL be written back and committed"
+          else
+            echo "MODE: DRY RUN — nothing will be written"
+          fi
+
+          echo "running: node scripts/restore-withdrawn-games.js $ARGS"
+          node --max-old-space-size=8192 scripts/restore-withdrawn-games.js $ARGS

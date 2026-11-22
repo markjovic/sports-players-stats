@@ -304,25 +304,40 @@ function planGrade({ grade, stored, byRound, aheadN = 2, skipCurrent = true }) {
 //   storedGames       [{ gameId, g }] we hold for (gid, roundName)
 //
 // Returns { deletable: [{gameId, g}], keptPlayed: n, suspectEmpty: bool }
-function computeRoundDeletions({ roundStillListed, returnedIds, storedGames }) {
+// `answered` — did PlayHQ return a payload for this round at all? The caller
+// passes `data.discoverFixtureByRound !== null`. Defaults to TRUE only when the
+// caller supplies ids, so an old call site cannot silently flip the meaning.
+function computeRoundDeletions({ roundStillListed, returnedIds, storedGames, answered }) {
+  if (answered === undefined) answered = Array.isArray(returnedIds) && returnedIds.length > 0;
   const held = storedGames || [];
 
-  // RULE 3, AND IT IS NARROWER THAN IT FIRST LOOKS.
+  // RULE 3, AND THE WHOLE RULE TURNS ON `answered`.
   //
-  // An empty response for a listed round is only suspect WHEN WE HOLD GAMES FOR
-  // THAT ROUND. Then PlayHQ is either declining to answer or answering about
-  // something we disagree with, and deleting on that basis is exactly the
-  // failure-to-ASK mistake.
+  // "Never let a failure to ASK become a recorded ANSWER" is the rule this
+  // repository has been bitten by four times. But the mirror of it is just as
+  // wrong: refusing to accept an answer that was actually given.
   //
-  // An empty response for a round we hold NOTHING for is the ordinary case: a
-  // round that exists in the competition and has not been drawn yet. The first
-  // version of this treated both alike and disqualified the grade, and running
-  // it against a realistic fixture showed the consequence — three of three
-  // grades disqualified, zero deletions, zero fingerprints. In the real
-  // repository, where undrawn rounds are everywhere, the refresh would have
-  // done nothing at all while reporting itself healthy. There is nothing to
-  // delete and nothing to be suspicious of when we hold no games.
-  if (roundStillListed && (!returnedIds || returnedIds.length === 0) && held.length > 0) {
+  //   discoverFixtureByRound === null   → PlayHQ did not answer about this
+  //                                       round. Not evidence. SUSPECT.
+  //   discoverFixtureByRound = {games:[]} → PlayHQ answered, and the answer is
+  //                                       that the round holds no games. That
+  //                                       IS evidence.
+  //
+  // `gqlMain` already separates a refusal (blocked / transient) from an `ok`,
+  // so by the time a result reaches here the call succeeded. The caller passes
+  // `answered = payload !== null`.
+  //
+  // The first version collapsed both shapes into an empty id list and called
+  // them suspect. Measured consequence on MEBA Summer 2026/27, confirmed
+  // against PlayHQ's own page: the association published a fixture, regraded,
+  // and withdrew most of it. Rounds 11-18 of sixteen grades now read
+  // "Fixture has not yet been confirmed" and hold NO games, while we hold two
+  // to five stale games in each. 103 rounds of games PlayHQ has explicitly
+  // removed, which the suspect rule would have protected for ever.
+  //
+  // A round we hold NOTHING for is never suspect either way — there is nothing
+  // to delete and nothing to be suspicious about.
+  if (roundStillListed && !answered && held.length > 0) {
     return { deletable: [], keptPlayed: 0, suspectEmpty: true };
   }
 
@@ -335,6 +350,59 @@ function computeRoundDeletions({ roundStillListed, returnedIds, storedGames }) {
     deletable.push(e);
   }
   return { deletable, keptPlayed, suspectEmpty: false };
+}
+
+// ─── RULE 5: A GAME IS JUDGED AGAINST THE WHOLE GRADE, NEVER ONE ROUND ───────
+//
+// This rule was missing, and its absence would have deleted live fixtures.
+//
+// `groupStoredByRound` buckets our stored games by the `rn` they carry AT PLAN
+// TIME — before any fetch. `applyRoundFixtures` then rewrites `rn` from whatever
+// PlayHQ now calls the round. So when an association re-draws or renames a
+// competition's rounds, every stored game keeps its OLD bucket while PlayHQ
+// returns it under a NEW name. Judged round by round, each of those games looks
+// withdrawn: we fetched "Round 7", PlayHQ answered about a round it now calls
+// something else, and our Round 7 bucket came back unmatched.
+//
+// Proven, not suspected: three games PlayHQ still held, all three marked
+// deletable, in a fixture where the only change was the round's name.
+//
+// TWO CONDITIONS, BOTH REQUIRED, before a stored game may be called withdrawn:
+//
+//   1. ITS ID APPEARS IN NO ROUND WE FETCHED FOR THIS GRADE. A game that came
+//      back anywhere in the grade is alive, whatever round it is now in.
+//
+//   2. THE GRADE IS FULLY ACCOUNTED FOR — every live round we hold unplayed
+//      games in was actually fetched this run. Without this, a game moved into a
+//      round outside the fetch window is indistinguishable from a game that is
+//      gone, and the incremental pass only fetches two rounds ahead. A grade
+//      that is not fully accounted for yields NO deletions and says so.
+//
+// The cost is that incremental runs rarely delete, and the baseline — which
+// fetches every unplayed round — does the removing. That is the right way round:
+// the baseline is the pass that can see the whole grade.
+function assessGradeCoverage({ rounds, byRound, fetchedRoundNames }) {
+  const fetched = fetchedRoundNames instanceof Set ? fetchedRoundNames : new Set(fetchedRoundNames || []);
+  const live = new Set((rounds || []).map(r => r && r.name).filter(Boolean));
+  const unaccounted = [];
+  for (const [rn, held] of byRound) {
+    if (!live.has(rn)) continue;                       // vanished rounds are judged separately
+    if (fetched.has(rn)) continue;                     // we looked
+    if (!held.some(e => !isPlayedGame(e.g))) continue; // only played games there — nothing at risk
+    unaccounted.push(rn);
+  }
+  return { fullyAccounted: unaccounted.length === 0, unaccounted };
+}
+
+// Filter a round's candidate deletions against the grade-wide alive set.
+function withholdLiveElsewhere(deletable, aliveGradeWide) {
+  const alive = aliveGradeWide instanceof Set ? aliveGradeWide : new Set(aliveGradeWide || []);
+  const keep = [], moved = [];
+  for (const e of deletable) {
+    if (alive.has(e.gameId)) moved.push(e);
+    else keep.push(e);
+  }
+  return { deletable: keep, moved };
 }
 
 // ─── Caps ────────────────────────────────────────────────────────────────────
@@ -380,5 +448,7 @@ module.exports = {
   groupStoredByRound,
   planGrade,
   computeRoundDeletions,
+  assessGradeCoverage,
+  withholdLiveElsewhere,
   makeDeletionBudget,
 };
