@@ -1181,7 +1181,7 @@ async function main() {
   const refresh = {
     gradesConsidered: 0, baselined: 0, incremental: 0, baselineDeferred: 0,
     noRounds: 0, currentIsLast: 0, nothingToFetch: 0,
-    movedNotDeleted: 0, gradesUnaccounted: 0, capWarnings: 0, archived: 0,
+    movedNotDeleted: 0, gradesUnaccounted: 0, capWarnings: 0, archived: 0, resurrected: 0,
     roundsFetched: 0, roundsFailed: 0, suspectEmpty: 0,
     deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
     listChanged: 0, seasonsRegraded: 0, newGradesSwept: 0,
@@ -1528,8 +1528,31 @@ async function main() {
         const entry = gfDel.games[d.gameId];
         if (!entry) continue;                             // already gone; nothing to report
 
+        // ── RESURRECTION DETECTOR ────────────────────────────────────────
+        // An id ALREADY in the archive means we deleted this game before and it
+        // has come back. That is the signature of two writers disagreeing about
+        // the same game, and the likely other writer is discover-fixtures.js:
+        // it resolves fixtures through `discoverTeamFixture`, a DIFFERENT query
+        // from the `discoverFixtureByRound` this pass deletes on, and it runs
+        // weekly from weekly-indexes.yml. If the two endpoints disagree, the
+        // nightly deletes and the weekly restores, for ever, churning git and
+        // leaving the stale fixture on the site anyway.
+        //
+        // This is cheap and exact, and it costs nothing when there is no loop.
+        // The first-seen time is preserved so the age of the loop is readable.
         const arch = loadArchive(d.sid);
-        arch[d.gameId] = { at: runAt, gid: d.gid, rn: d.rn, reason: 'withdrawn-at-playhq', entry };
+        const prior = arch[d.gameId];
+        if (prior) {
+          refresh.resurrected++;
+          console.log(`  \u26a0 RESURRECTED: ${d.gameId} was deleted ${String(prior.firstDeletedAt || prior.at).slice(0, 19)}`
+                    + ` and has come back \u2014 something re-added it. Deleting again.`);
+        }
+        arch[d.gameId] = {
+          at: runAt,
+          firstDeletedAt: (prior && (prior.firstDeletedAt || prior.at)) || runAt,
+          deletions: ((prior && prior.deletions) || 0) + 1,
+          gid: d.gid, rn: d.rn, reason: 'withdrawn-at-playhq', entry,
+        };
         refresh.archived++;
 
         delete gfDel.games[d.gameId];
@@ -2100,6 +2123,13 @@ async function main() {
   console.log(`  New players:       ${stubbed}`);
   console.log(`  Refresh grades:    ${refresh.gradesConsidered} (${refresh.baselined} baseline, ${refresh.incremental} incremental)`
             + `  rounds ok=${refresh.roundsFetched} failed=${refresh.roundsFailed}`);
+  if (refresh.resurrected) {
+    console.log(`  ⚠⚠ ${refresh.resurrected} game(s) RESURRECTED — previously deleted by this pass and re-added by something else.`);
+    console.log(`     The likely culprit is discover-fixtures.js (weekly-indexes.yml), which resolves fixtures through`);
+    console.log(`     discoverTeamFixture while this pass deletes on discoverFixtureByRound. Two writers disagreeing about`);
+    console.log(`     the same games is a delete/re-add loop, not a transient. Investigate before the next weekly sweep.`);
+    console.log(`::warning::nightly-crawl refresh: ${refresh.resurrected} previously-deleted game(s) have been re-added by another writer`);
+  }
   console.log(`  Refresh archived:  ${refresh.archived} game(s) written to data/withdrawn-games/ before deletion`
             + `${refresh.capWarnings ? `  (advisory cap exceeded ${refresh.capWarnings}x — proceeded)` : ''}`);
   console.log(`  Refresh moved-not-deleted: ${refresh.movedNotDeleted}`
