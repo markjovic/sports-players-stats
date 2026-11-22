@@ -123,6 +123,24 @@ jobs:
         run: |
           set -euo pipefail
 
+          # ⚠ PRINT WHAT GITHUB ACTUALLY PASSED, BEFORE ANY GATING.
+          # On 2026-11-22 a run that was dispatched with refresh_dry_run ticked
+          # reached the script WITHOUT --refresh-dry-run, and deleted live up to
+          # the per-season cap. The gating below reads correctly and the failure
+          # could not be reproduced, so the next occurrence has to diagnose
+          # itself rather than rest on anyone's recollection. These five lines
+          # are the raw inputs context as the runner received it.
+          echo "::group::Resolved dispatch inputs (raw)"
+          echo "  no_round_refresh        = '${NO_ROUND_REFRESH:-<unset>}'"
+          echo "  refresh_dry_run         = '${REFRESH_DRY_RUN:-<unset>}'"
+          echo "  refresh_rounds_ahead    = '${REFRESH_AHEAD:-<unset>}'"
+          echo "  baseline_grades_per_run = '${BASELINE_PER_RUN:-<unset>}'"
+          echo "  max_deletes             = '${MAX_DELETES:-<unset>}'"
+          echo "  max_deletes_per_season  = '${MAX_DELETES_SEAS:-<unset>}'"
+          echo "  fail_on_delete_cap      = '${FAIL_ON_CAP:-<unset>}'"
+          echo "  event_name              = '${GITHUB_EVENT_NAME:-<unset>}'"
+          echo "::endgroup::"
+
           ARGS="--rounds-back=${{ inputs.rounds_back || '2' }}"
           if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
           if [ "${{ inputs.force_recheck }}" = "true" ]; then ARGS="$ARGS --force-recheck"; fi
@@ -149,6 +167,11 @@ jobs:
             if [ "${FAIL_ON_CAP:-false}"    = "true" ]; then ARGS="$ARGS --fail-on-delete-cap"; fi
           fi
 
+          case "$ARGS" in
+            *--no-round-refresh*) echo "MODE: refresh DISABLED" ;;
+            *--refresh-dry-run*)  echo "MODE: refresh DRY RUN — nothing will be deleted" ;;
+            *)                    echo "MODE: refresh LIVE — withdrawn fixtures WILL be deleted (caps apply)" ;;
+          esac
           echo "running: node scripts/nightly-crawl.js $ARGS"
           node scripts/nightly-crawl.js $ARGS
 
