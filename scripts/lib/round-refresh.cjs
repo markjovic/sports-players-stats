@@ -1,0 +1,384 @@
+// scripts/lib/round-refresh.cjs
+//
+// The per-grade fixture refresh: decide which rounds of an active grade to
+// re-fetch tonight, and which stored UNPLAYED games a successful fetch proves
+// PlayHQ no longer holds.
+//
+// WHY THIS IS A LIBRARY AND NOT MORE OF nightly-crawl.js. It deletes data. The
+// only honest way to trust a deletion rule is to execute it against constructed
+// cases — a withdrawn game, a regrade, a round that vanished, a fetch that was
+// refused, an empty response, a played game PlayHQ stopped returning — and none
+// of that is reachable inside the crawl without a PlayHQ session. Here it is
+// pure: no network, no filesystem writes, no git. `scripts/lib/` already holds
+// the shared predicates this repo could not afford to have two copies of
+// (game-scores.cjs exists because an audit and a deleting consumer disagreed
+// about MIN_TRUSTED_SCORE). This is the same reasoning.
+//
+// WHAT IT DOES NOT DO. It never calls PlayHQ and it never writes a file. The
+// caller fetches, the caller applies, the caller commits. Everything here is a
+// decision about data it was handed.
+//
+// ── THE RULES, which are not negotiable and are enforced here rather than at
+// ── the call site, so a future caller cannot quietly drop one.
+//
+// 1. A deletion comes ONLY from a round fetch that SUCCEEDED. The caller passes
+//    `returnedIds` only for a `kind === 'ok'` response; there is no code path in
+//    this file that produces a deletion from an absent or failed fetch.
+// 2. Only UNPLAYED games may be deleted. `isPlayedGame` is deliberately
+//    over-inclusive: a score, FINAL, a forfeit, a captured roster (`spc`/`dg`)
+//    or a non-empty `p[]` all mean something happened, and an unrecognised shape
+//    returns TRUE. The failure direction is "refuse to delete", always.
+// 3. An EMPTY result for a round that is STILL IN THE ROUND LIST is suspect, not
+//    evidence. It deletes nothing and is reported. (PlayHQ answering with
+//    nothing and PlayHQ having nothing are different facts — the failure-to-ASK
+//    class has struck this repository four times.)
+// 4. A game with no `rn` cannot be scoped to a round. games/bv stores the round
+//    NAME and no round id, so a game that never recorded one is unreachable by a
+//    (gid, rn) scope. It is counted and reported, never deleted.
+//
+// ── THE FINGERPRINT FILE
+//
+// `data/round-fingerprints.json` holds, per ACTIVE grade, a hash of the round
+// list and a hash of the game-id set of each round we have fetched:
+//
+//   { generatedAt, grades: { "<gid>": { rl: "<hash12>", r: { "<roundName>": "<hash12>" }, at } } }
+//
+// HASHES, NOT IDS, AND THE ARITHMETIC IS WHY. Storing the ids themselves is
+// ~450k entries across ~5,000 active grades — roughly 17 MB and rising with
+// every season that opens. T22 is the standing rule against committing derived
+// state that scales with the corpus: build-finals-stats serialised its map, hit
+// 110.14 MB, crossed GitHub's hard 100 MB file limit, and the 60-attempt push
+// retry then burned every attempt on a rejection that could never succeed.
+// A 12-char hash per round is ~2.5 MB at the same scale, it is bounded by the
+// number of UNLOCKED grades rather than by history, and the season-lifecycle
+// rule keeps that number falling. `saveFingerprints` still refuses outright
+// above MAX_FINGERPRINT_BYTES rather than discovering the limit from a push
+// rejection.
+//
+// 12 hex characters is 48 bits. The set being compared is the ~6 games of one
+// round, and a collision would mean failing to NOTICE a change — it cannot
+// cause a deletion, because deletions come from the fetched id set and never
+// from the hash. So the cost of a collision is one missed refresh, not data.
+
+'use strict';
+
+const crypto = require('crypto');
+const fs     = require('fs');
+const path   = require('path');
+
+const FINGERPRINT_REL   = path.join('data', 'round-fingerprints.json');
+const MAX_FINGERPRINT_BYTES = 40 * 1024 * 1024;   // refuse long before GitHub's 100 MB (T22)
+
+// NUL as the separator, not a comma: it cannot occur in a uuid or a round name,
+// so ["a","b"] and ["a,b"] can never hash alike.
+const SEP = '\u0000';
+
+function sha12(s) {
+  return crypto.createHash('sha1').update(s, 'utf8').digest('hex').slice(0, 12);
+}
+
+// Order MATTERS for the round list — a round inserted in the middle is a change
+// worth noticing even if the names are otherwise the same set.
+function hashRoundList(rounds) {
+  return sha12((rounds || []).map(r => String((r && r.name) ?? '')).join(SEP));
+}
+
+// Order does NOT matter for a round's games — PlayHQ returns them in whatever
+// order it likes, and re-ordering is not a change.
+function hashIdSet(ids) {
+  return sha12([...new Set(ids || [])].sort().join(SEP));
+}
+
+// ⚠ OVER-INCLUSIVE BY DESIGN. Anything that might mean the game happened
+// returns TRUE and is therefore undeletable. An unrecognised or missing entry
+// returns TRUE as well: a guard must FAIL TOWARD DOING LESS (T3).
+//
+// `hs !== undefined` rather than a truthiness test — a legitimate 0 score is a
+// played game, and `if (g.hs)` would call it unplayed. The 0-0 scoreline is a
+// real shape in this data (game-scores.cjs returns null for it rather than a cap
+// of 0, after treating it as a cap produced 1,241 false "impossible" records).
+function isPlayedGame(g) {
+  if (!g || typeof g !== 'object') return true;
+  if (g.hs !== undefined || g.as !== undefined) return true;
+  if (g.st === 'FINAL') return true;
+  if (g.forfeit === true) return true;
+  if (g.spc || g.dg) return true;                          // a roster was captured
+  if (Array.isArray(g.p) && g.p.length > 0) return true;   // attendees recorded
+  return false;
+}
+
+// ─── Fingerprint file ─────────────────────────────────────────────────────────
+
+function fingerprintPath(ROOT) { return path.join(ROOT, FINGERPRINT_REL); }
+
+// An ABSENT file is a first run — every grade baselines, which is correct.
+// An UNREADABLE file is a fault and THROWS: silently treating a corrupt
+// fingerprint as "no fingerprint" would baseline the whole repository and
+// present it as routine. (Same reasoning as loadGameFile's parse guard.)
+function loadFingerprints(ROOT) {
+  const f = fingerprintPath(ROOT);
+  if (!fs.existsSync(f)) return { generatedAt: null, grades: {} };
+  let raw;
+  try { raw = fs.readFileSync(f, 'utf8'); }
+  catch (e) { throw new Error(`round-refresh: ${FINGERPRINT_REL} exists but could not be read (${e.message})`); }
+  let data;
+  try { data = JSON.parse(raw); }
+  catch (e) { throw new Error(`round-refresh: ${FINGERPRINT_REL} exists but failed to parse (${e.message}) — refusing to treat a corrupt fingerprint as an absent one`); }
+  if (!data || typeof data !== 'object' || typeof data.grades !== 'object' || data.grades === null) {
+    throw new Error(`round-refresh: ${FINGERPRINT_REL} has an unexpected shape — refusing to proceed`);
+  }
+  return data;
+}
+
+function saveFingerprints(ROOT, data) {
+  const out = JSON.stringify({ generatedAt: new Date().toISOString(), grades: data.grades || {} });
+  const bytes = Buffer.byteLength(out, 'utf8');
+  if (bytes > MAX_FINGERPRINT_BYTES) {
+    throw new Error(
+      `round-refresh: ${FINGERPRINT_REL} would be ${(bytes / 1048576).toFixed(1)} MB, over the ${(MAX_FINGERPRINT_BYTES / 1048576)} MB ceiling. ` +
+      `This file is meant to scale with ACTIVE grades, not with history — if it has grown this far, grades are not being retired from it. ` +
+      `Refusing to write (T22: a file that crosses GitHub's 100 MB limit is a permanent push rejection, and the retry loop cannot tell).`
+    );
+  }
+  const f = fingerprintPath(ROOT);
+  fs.mkdirSync(path.dirname(f), { recursive: true });
+  fs.writeFileSync(f, out);
+  return bytes;
+}
+
+// Grades that are no longer active must leave the file, or it grows forever and
+// the ceiling above eventually fires on a healthy repository. Called with the
+// set of grade ids the crawl considered tonight.
+function pruneFingerprints(fp, activeGradeIds) {
+  const keep = activeGradeIds instanceof Set ? activeGradeIds : new Set(activeGradeIds || []);
+  let removed = 0;
+  for (const gid of Object.keys(fp.grades || {})) {
+    if (!keep.has(gid)) { delete fp.grades[gid]; removed++; }
+  }
+  return removed;
+}
+
+// ─── Reading what we already hold for a grade ────────────────────────────────
+
+// Group a season's stored games by round name, for ONE grade.
+//
+// ⚠ Scoped by `gid` AND `rn`, and both must be present. A game with no `rn` goes
+// into `noRound` and is never a deletion candidate — see rule 4. This is not a
+// defensive nicety: `applyRoundFixtures` writes `rn` conditionally
+// (`...(roundName ? { rn: roundName } : {})`), so the shape genuinely occurs.
+function groupStoredByRound(games, gradeId) {
+  const byRound = new Map();   // roundName -> [{ gameId, g }]
+  const noRound = [];
+  for (const [gameId, g] of Object.entries(games || {})) {
+    if (!g || g.gid !== gradeId) continue;
+    if (!g.rn) { noRound.push({ gameId, g }); continue; }
+    if (!byRound.has(g.rn)) byRound.set(g.rn, []);
+    byRound.get(g.rn).push({ gameId, g });
+  }
+  return { byRound, noRound };
+}
+
+// ─── The plan ────────────────────────────────────────────────────────────────
+
+// Decide what to fetch for one grade tonight.
+//
+//   grade          { gradeId, gradeName, seasonId, rounds: [{id,name,number,current}] }
+//   stored         this grade's fingerprint entry, or null/undefined
+//   byRound        from groupStoredByRound
+//   aheadN         how many unplayed rounds beyond the current one to re-fetch
+//   skipCurrent    true when Phase 2 already queues the current round (it does)
+//
+// Returns { mode, listChanged, roundListHash, fetch: [{roundId, roundName, reason}], vanished: [roundName] }
+//
+// ⚠ "UNPLAYED ROUND" MEANS "WE DO NOT HOLD A COMPLETE RESULT FOR IT", not "it is
+// in the future". A round we hold nothing for is unplayed — that is the whole
+// point, since a round whose fixtures have not been discovered yet holds zero
+// games and must still be reachable.
+//
+// ⚠ A grade with NO CURRENT ROUND is not skipped here. nightly-crawl's Phase 2
+// does `if (!currentRound) continue;` and so contributes nothing for such a
+// grade — which is exactly the shape a freshly created grading grade has. This
+// plan treats the whole round list as candidates in that case, which is what
+// closes that hole.
+function planGrade({ grade, stored, byRound, aheadN = 2, skipCurrent = true }) {
+  const rounds = Array.isArray(grade.rounds) ? grade.rounds : [];
+  const roundListHash = hashRoundList(rounds);
+  // TWO DIFFERENT FACTS, and conflating them cost a nightly request per season.
+  //
+  // listUnverified — we cannot prove the list is the same as last time. True for
+  //   a baseline (no fingerprint at all) and for a grade whose last run was
+  //   incomplete (a suspect or failed round withholds `rl` on purpose). Drives
+  //   the "fetch rounds the fingerprint has never seen" behaviour, which fails
+  //   toward MORE checking and is therefore right to be generous.
+  //
+  // listChanged — we have a previous list and it genuinely differs. Only this
+  //   justifies the expensive consequence: re-resolving the whole season's
+  //   grades via discoverTeams. The first version used the generous test for
+  //   both, so one permanently-suspect grade made the crawl re-resolve its
+  //   season and re-sweep every grade the index lacked EVERY NIGHT, for ever.
+  //   Seen on the second run of the harness, not reasoned about.
+  const listUnverified = !stored || !stored.rl || stored.rl !== roundListHash;
+  const listChanged    = !!(stored && stored.rl && stored.rl !== roundListHash);
+
+  const roundIsUnplayed = (name) => {
+    const held = byRound.get(name);
+    if (!held || held.length === 0) return true;          // hold nothing -> unplayed
+    return held.some(e => !isPlayedGame(e.g));            // any unplayed game -> unplayed round
+  };
+
+  const currentIdx = rounds.findIndex(r => r && r.current);
+  // No current round: every round is a candidate. This is the grading case.
+  const firstIdx = currentIdx >= 0 ? (skipCurrent ? currentIdx + 1 : currentIdx) : 0;
+
+  const fetch = [];
+  const seen  = new Set();
+  const add = (r, reason) => {
+    if (!r || !r.id || seen.has(r.id)) return;
+    seen.add(r.id);
+    fetch.push({ roundId: r.id, roundName: r.name, reason });
+  };
+
+  const mode = stored ? 'incremental' : 'baseline';
+
+  if (mode === 'baseline') {
+    // THE BASELINE IS THE CLEAN-UP. Every stale game already on disk was written
+    // by a sweep that has never looked at it again, so the first run for a grade
+    // must see every unplayed round once or those games are never reconsidered.
+    // It happens exactly once per grade; the fingerprint written afterwards is
+    // what makes every later night cheap.
+    //
+    // It starts at firstIdx, i.e. AFTER the current round, for the same reason
+    // the incremental path does: Phase 2 of the crawl has already fetched the
+    // current round, and the caller feeds those ids in rather than asking for
+    // them twice. Re-fetching would be ~5,000 duplicate requests on a baseline
+    // night — found by running this, not by reading it.
+    for (let i = firstIdx; i < rounds.length; i++) {
+      if (roundIsUnplayed(rounds[i].name)) add(rounds[i], 'baseline');
+    }
+  } else {
+    let taken = 0;
+    for (let i = firstIdx; i < rounds.length && taken < aheadN; i++) {
+      if (!roundIsUnplayed(rounds[i].name)) continue;
+      add(rounds[i], 'ahead');
+      taken++;
+    }
+    if (listUnverified) {
+      // A round the fingerprint has never seen is new — fetch it however far out
+      // it sits, because a new round IS the signal that something was regraded
+      // or rescheduled. Bounded by the round list, so it cannot run away.
+      const known = new Set(Object.keys(stored.r || {}));
+      for (let i = firstIdx; i < rounds.length; i++) {
+        if (!known.has(rounds[i].name) && roundIsUnplayed(rounds[i].name)) add(rounds[i], 'new-round');
+      }
+    }
+  }
+
+  // A round that is no longer in PlayHQ's list has been withdrawn. Its unplayed
+  // games are deletion candidates WITHOUT a fetch — the round list itself came
+  // from a successful gradeRounds call, which is the "successful fetch" rule 1
+  // requires. The caller must only use this when the gradeRounds call for this
+  // grade actually succeeded.
+  //
+  // ⚠ THE CANDIDATE SET IS THE ROUNDS WE HOLD GAMES FOR, not just the rounds the
+  // fingerprint knows about. The first version read only the fingerprint, so on
+  // a BASELINE run — where there is no fingerprint by definition — `vanished`
+  // was always empty and a game sitting in a withdrawn round survived the very
+  // pass whose job is to clean up what is already on disk. Caught by running it:
+  // a stale game in a withdrawn round came through the baseline untouched.
+  const liveNames = new Set(rounds.map(r => r && r.name).filter(Boolean));
+  const seenNames = new Set([
+    ...Object.keys((stored && stored.r) || {}),
+    ...byRound.keys(),
+  ]);
+  const vanished = [...seenNames].filter(n => !liveNames.has(n));
+
+  return { mode, listChanged, listUnverified, roundListHash, fetch, vanished };
+}
+
+// ─── The deletion decision ───────────────────────────────────────────────────
+
+// For ONE round, given what a SUCCESSFUL fetch returned and what we hold.
+//
+//   roundStillListed  is this round still in PlayHQ's round list?
+//   returnedIds       game ids the successful fetch returned for this round
+//   storedGames       [{ gameId, g }] we hold for (gid, roundName)
+//
+// Returns { deletable: [{gameId, g}], keptPlayed: n, suspectEmpty: bool }
+function computeRoundDeletions({ roundStillListed, returnedIds, storedGames }) {
+  const held = storedGames || [];
+
+  // RULE 3, AND IT IS NARROWER THAN IT FIRST LOOKS.
+  //
+  // An empty response for a listed round is only suspect WHEN WE HOLD GAMES FOR
+  // THAT ROUND. Then PlayHQ is either declining to answer or answering about
+  // something we disagree with, and deleting on that basis is exactly the
+  // failure-to-ASK mistake.
+  //
+  // An empty response for a round we hold NOTHING for is the ordinary case: a
+  // round that exists in the competition and has not been drawn yet. The first
+  // version of this treated both alike and disqualified the grade, and running
+  // it against a realistic fixture showed the consequence — three of three
+  // grades disqualified, zero deletions, zero fingerprints. In the real
+  // repository, where undrawn rounds are everywhere, the refresh would have
+  // done nothing at all while reporting itself healthy. There is nothing to
+  // delete and nothing to be suspicious of when we hold no games.
+  if (roundStillListed && (!returnedIds || returnedIds.length === 0) && held.length > 0) {
+    return { deletable: [], keptPlayed: 0, suspectEmpty: true };
+  }
+
+  const ret = new Set(returnedIds || []);
+  const deletable = [];
+  let keptPlayed = 0;
+  for (const e of held) {
+    if (ret.has(e.gameId)) continue;           // still there
+    if (isPlayedGame(e.g)) { keptPlayed++; continue; }   // RULE 2
+    deletable.push(e);
+  }
+  return { deletable, keptPlayed, suspectEmpty: false };
+}
+
+// ─── Caps ────────────────────────────────────────────────────────────────────
+//
+// A cap that trims the deletion list and carries on is worse than no cap: it
+// half-applies a change nobody reviewed. These ABORT, and the caller prints the
+// full list of what it would have deleted and commits nothing from the refresh.
+function makeDeletionBudget({ maxPerRun, maxPerSeason }) {
+  const perSeason = new Map();
+  let total = 0;
+  return {
+    // Returns null when the deletion is allowed, or a string reason when a cap
+    // would be crossed. Never partially admits a round's deletions: a round is
+    // taken whole or the run aborts, so the result can never be a half-applied
+    // round.
+    tryTake(seasonId, n) {
+      const s = (perSeason.get(seasonId) || 0) + n;
+      if (total + n > maxPerRun) {
+        return `per-run deletion cap of ${maxPerRun} would be exceeded (${total} taken, ${n} more requested)`;
+      }
+      if (s > maxPerSeason) {
+        return `per-season deletion cap of ${maxPerSeason} would be exceeded for ${seasonId} (${perSeason.get(seasonId) || 0} taken, ${n} more requested)`;
+      }
+      perSeason.set(seasonId, s);
+      total += n;
+      return null;
+    },
+    get total() { return total; },
+    perSeasonCounts() { return new Map(perSeason); },
+  };
+}
+
+module.exports = {
+  FINGERPRINT_REL,
+  MAX_FINGERPRINT_BYTES,
+  sha12,
+  hashRoundList,
+  hashIdSet,
+  isPlayedGame,
+  loadFingerprints,
+  saveFingerprints,
+  pruneFingerprints,
+  groupStoredByRound,
+  planGrade,
+  computeRoundDeletions,
+  makeDeletionBudget,
+};
