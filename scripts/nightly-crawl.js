@@ -98,7 +98,14 @@ const REFRESH_DRY_RUN    = !!ARGS['refresh-dry-run'];   // fetch and report, del
 // large belongs spread across nights rather than spent in one run that then has
 // to be explained. Grades without a fingerprint are taken BASELINE_PER_RUN at a
 // time and the remainder is printed, so the drain is visible rather than silent.
-const BASELINE_PER_RUN   = Math.max(0, parseInt(ARGS['baseline-grades-per-run'] || '750', 10));
+//
+// 2000 IS MEASURED, NOT GUESSED. The first production dry run baselined 750
+// grades and that cost 361 round fetches — 0.48 per grade, with blocked=0 across
+// the entire run — because most grades have nothing ahead of their current round.
+// At 750 the 7,819-grade backlog takes eleven nights; at 2000 it takes four, for
+// roughly 960 fetches a night against the 11,326 Phase 2 already makes. Raise it
+// further only against a measurement, not against this comment.
+const BASELINE_PER_RUN   = Math.max(0, parseInt(ARGS['baseline-grades-per-run'] || '2000', 10));
 // Caps ABORT the deletion pass; they never trim it. A trimmed deletion list is a
 // half-applied change nobody reviewed. On abort nothing is deleted, no
 // fingerprint is written, and the full would-have-deleted list is printed.
@@ -1164,6 +1171,7 @@ async function main() {
   // overlap is why this block sits above it rather than after.
   const refresh = {
     gradesConsidered: 0, baselined: 0, incremental: 0, baselineDeferred: 0,
+    noRounds: 0, currentIsLast: 0, nothingToFetch: 0,
     roundsFetched: 0, roundsFailed: 0, suspectEmpty: 0,
     deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
     listChanged: 0, seasonsRegraded: 0, newGradesSwept: 0,
@@ -1210,6 +1218,23 @@ async function main() {
       }
       if (plan.listChanged) refresh.listChanged++;
       refresh.gradesConsidered++;
+
+      // WHY A GRADE PLANNED NOTHING. The first production dry run fetched 361
+      // rounds for 750 grades — 0.48 each — and nothing in the log said whether
+      // that was correct or a planner that was too narrow. These three counters
+      // answer it without another dispatch: a grade with no rounds at all is a
+      // grading grade PlayHQ has not drawn yet, and a grade whose CURRENT round
+      // is its LAST is a season that is over but not yet locked (lock_after_months
+      // is 3, so recently finished seasons sit here for months). Both legitimately
+      // have nothing ahead to fetch.
+      if (plan.fetch.length === 0) {
+        refresh.nothingToFetch++;
+        const rs = grade.rounds || [];
+        const ci = rs.findIndex(r => r && r.current);
+        if (rs.length === 0) refresh.noRounds++;
+        else if (ci === rs.length - 1) refresh.currentIsLast++;
+      }
+
       work.push({ grade, plan, byRound, stored });
     }
 
@@ -1225,6 +1250,12 @@ async function main() {
     const fetchItems = [];
     for (const w of work) for (const f of w.plan.fetch) fetchItems.push({ w, f });
     console.log(`  Round fetches queued: ${fetchItems.length}`);
+    if (refresh.nothingToFetch) {
+      console.log(`  ${refresh.nothingToFetch} grade(s) planned no fetch at all —`
+                + ` ${refresh.noRounds} have no rounds yet (undrawn),`
+                + ` ${refresh.currentIsLast} are on their LAST round (season over, not yet locked),`
+                + ` ${refresh.nothingToFetch - refresh.noRounds - refresh.currentIsLast} have every round ahead already played.`);
+    }
 
     // Seeded with what PHASE 2 ALREADY FETCHED. The current round is queued by
     // Phase 2 for every grade that has one, so asking for it again here would be
@@ -1471,13 +1502,31 @@ async function main() {
       for (const [gid, entry] of fpNext) fp.grades[gid] = entry;
       // Grades that are no longer active must leave the file or it grows without
       // bound and eventually trips its own size ceiling on a healthy repository.
+      // ⚠ PRUNE ONLY ON A FULL-REPOSITORY RUN. `normalGrades` holds the grades
+      // THIS RUN considered, and on a --season run that is one season's worth.
+      // Pruning against it would delete every other grade's fingerprint and
+      // force a repo-wide re-baseline — ~7,800 grades, ten nights of work — as
+      // a silent side effect of a one-season diagnostic. Found when the first
+      // production dry run made a targeted run the obvious next step; the dry
+      // run itself writes no fingerprint, so nothing was damaged.
+      //
+      // A partial run must never clear a repository-wide record. Same rule
+      // discover-fixtures.js applies to the stale-grade worklist and
+      // build-club-index.js to clubs/, for the same reason.
+      //
       // Grades swept above are active too, even though they were not in the
       // season index when Phase 1 built its list — that is precisely why they
-      // were swept. Without them here the prune would delete the fingerprint
-      // written seconds earlier and the grade would baseline again every night
-      // until discover-seasons catches up on Sunday.
-      const activeIds = new Set([...normalGrades.map(g => g.gradeId), ...fpNext.keys()]);
-      const pruned = RR.pruneFingerprints(fp, activeIds);
+      // were swept. Without them the prune would delete the fingerprint written
+      // seconds earlier and the grade would baseline again every night until
+      // discover-seasons catches up on Sunday.
+      let pruned = 0;
+      if (TARGET_SEASON) {
+        console.log('  Fingerprint prune SKIPPED — this run covered one season, and a partial run'
+                  + ' must not clear a repository-wide record.');
+      } else {
+        const activeIds = new Set([...normalGrades.map(g => g.gradeId), ...fpNext.keys()]);
+        pruned = RR.pruneFingerprints(fp, activeIds);
+      }
       const bytes = RR.saveFingerprints(ROOT, fp);
       refreshStatePaths.push('data/round-fingerprints.json');
       console.log(`  Fingerprints: ${fpNext.size} written, ${pruned} pruned, ${Object.keys(fp.grades).length} total`
