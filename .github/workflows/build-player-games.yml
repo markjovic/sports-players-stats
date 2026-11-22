@@ -31,6 +31,22 @@ on:
         default: false
         type: boolean
 
+# 2026-11-23: actions/setup-node REMOVED. The rule is per-JOB and this script
+# never fetches PlayHQ, so it was harmless here — but weekly-indexes.yml runs this
+# exact script with no setup-node and has been green on the runner's preinstalled
+# Node every Sunday, so pinning a second Node version bought nothing and left the
+# file one edit away from mattering.
+#
+# 2026-11-23: concurrency data-write ADDED (T25). This workflow writes players/,
+# the most contended path in the repo, and held no lock at all — so a manual
+# dispatch landing while the nightly or the matrix was writing player files was a
+# lost-update race, not merely a slow push. Push contention on a 6 GB repo is
+# path-agnostic: every push must merge the others' commits.
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -45,11 +61,6 @@ jobs:
         with:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       - name: Configure git
         run: |
