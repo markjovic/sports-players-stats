@@ -691,6 +691,55 @@ function findSameDayNameConflicts(games) {
   return conflicts;
 }
 
+// ─── ONE INDEX, ONE RULE — SHARED BY THE REPORT AND THE FLAG ─────────────────
+//
+// ⚠ WHY THIS EXISTS. The stale report and the `sup` flag each built their own
+// played-game lookup and each applied their own idea of "superseded". On the
+// first live run they disagreed: the report said 52, the flag set 47. Two
+// numbers for one concept, printed three lines apart, is how a report stops
+// being evidence. They now share this index and this predicate, so they cannot
+// drift again.
+//
+// ⚠⚠ AND THE FLAG'S OWN LOOKUP WAS ORDER-DEPENDENT. It stored ONE played game
+// per team-day — `if (!map.has(key)) map.set(key, id)` — so a team with two
+// played games that day kept whichever `Object.keys()` happened to yield first.
+// If that one was in the SAME grade as the stale fixture, the different-grade
+// game that genuinely superseded it was never seen and no flag was written. A
+// silent miss decided by key order. This keeps every played game per team-day.
+function playedGamesByTeamDay(games) {
+  const byTeamDay = new Map();                       // `${tid}|${d}` → [gameId]
+  for (const id of Object.keys(games || {})) {
+    const g = games[id];
+    if (!g || !g.d || !isPlayedGame(g)) continue;
+    for (const tid of sideIds(g)) {
+      const key = `${tid}|${g.d}`;
+      if (!byTeamDay.has(key)) byTeamDay.set(key, []);
+      byTeamDay.get(key).push(id);
+    }
+  }
+  return byTeamDay;
+}
+
+// The game that superseded this fixture, or null. ONE definition:
+//   · this game is unplayed and dated in the past
+//   · one of its teams has a PLAYED game on that same date
+//   · in a DIFFERENT grade — same-grade is a double-header or a fixture error,
+//     not a regrade, and is not this rule's business
+// Returns the FIRST qualifying different-grade game, searched over all of them
+// rather than over whichever one an index happened to keep.
+function findSupersedingGame(games, g, index, cutoff) {
+  if (!g || !g.d || !g.gid) return null;
+  if (isPlayedGame(g)) return null;
+  if (!(g.d < cutoff)) return null;
+  for (const tid of sideIds(g)) {
+    for (const other of (index.get(`${tid}|${g.d}`) || [])) {
+      const o = games[other];
+      if (o && o.gid !== g.gid) return other;
+    }
+  }
+  return null;
+}
+
 // ─── STALE FIXTURES, PER GRADE ───────────────────────────────────────────────
 //
 // ⚠ THIS REPLACES A "DEAD GRADE" TEST THAT WAS BUILT ON A WRONG READING AND
@@ -716,12 +765,7 @@ function findSameDayNameConflicts(games) {
 // superseded rather than merely postponed.
 function findStaleFixtureGrades(games, { today, minStale = 1 } = {}) {
   const cutoff = today || new Date().toISOString().slice(0, 10);
-  const playedTeamDay = new Set();                   // `${tid}|${d}` where the team PLAYED
-  for (const id of Object.keys(games || {})) {
-    const g = games[id];
-    if (!g || !g.d || !isPlayedGame(g)) continue;
-    for (const tid of sideIds(g)) playedTeamDay.add(`${tid}|${g.d}`);
-  }
+  const index = playedGamesByTeamDay(games);
   const byGrade = new Map();
   for (const id of Object.keys(games || {})) {
     const g = games[id];
@@ -739,7 +783,10 @@ function findStaleFixtureGrades(games, { today, minStale = 1 } = {}) {
     if (!g.d || !(g.d < cutoff)) continue;           // unplayed but not yet due: normal
     e.stale++;
     e.staleDates.push(g.d);
-    const elsewhere = sideIds(g).some(tid => playedTeamDay.has(`${tid}|${g.d}`));
+    // ⚠ The SAME rule the flag uses, not a looser one. This counted any played
+    // game that day, same grade included, and so reported 52 where the flag
+    // wrote 47. Mislabelling five double-headers as superseded regrades.
+    const elsewhere = findSupersedingGame(games, g, index, cutoff) !== null;
     if (elsewhere) e.withPlayedElsewhere++;
     if (e.examples.length < 3) e.examples.push({ id, d: g.d, rn: g.rn || null, superseded: elsewhere });
   }
@@ -792,15 +839,7 @@ function findStaleFixtureGrades(games, { today, minStale = 1 } = {}) {
 function computeSupersededFlags(games, { today } = {}) {
   const cutoff = today || new Date().toISOString().slice(0, 10);
 
-  // `${tid}|${date}` → the id of a game that team PLAYED that day.
-  const playedTeamDay = new Map();
-  for (const id of Object.keys(games || {})) {
-    const g = games[id];
-    if (!g || !g.d || !isPlayedGame(g)) continue;
-    for (const tid of sideIds(g)) {
-      if (!playedTeamDay.has(`${tid}|${g.d}`)) playedTeamDay.set(`${tid}|${g.d}`, id);
-    }
-  }
+  const index = playedGamesByTeamDay(games);
 
   const set = new Map();     // gameId → superseding gameId
   const clear = [];          // gameId
@@ -809,19 +848,7 @@ function computeSupersededFlags(games, { today } = {}) {
     if (!g) continue;
     const had = Object.prototype.hasOwnProperty.call(g, 'sup');
 
-    let supersededBy = null;
-    if (g.d && g.gid && !isPlayedGame(g) && g.d < cutoff) {
-      for (const tid of sideIds(g)) {
-        const other = playedTeamDay.get(`${tid}|${g.d}`);
-        // ⚠ The played game must be in a DIFFERENT grade. Two games for one team
-        //   on one day inside the SAME grade is a double-header or a fixture
-        //   error, not a regrade, and is not this flag's business.
-        if (other && other !== id && games[other] && games[other].gid !== g.gid) {
-          supersededBy = other;
-          break;
-        }
-      }
-    }
+    const supersededBy = findSupersedingGame(games, g, index, cutoff);
 
     if (supersededBy) {
       if (!had || g.sup !== supersededBy) set.set(id, supersededBy);
@@ -851,6 +878,8 @@ module.exports = {
   findSameDayGradeConflicts,
   findSameDayNameConflicts,
   findStaleFixtureGrades,
+  playedGamesByTeamDay,
+  findSupersedingGame,
   computeSupersededFlags,
   computeRoundDeletions,
   assessGradeCoverage,
