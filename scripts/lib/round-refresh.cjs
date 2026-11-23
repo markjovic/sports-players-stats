@@ -240,31 +240,38 @@ function planGrade({ grade, stored, byRound, aheadN = 2, skipCurrent = true }) {
 
   const mode = stored ? 'incremental' : 'baseline';
 
-  // ── ROUNDS BEFORE THE CURRENT ONE THAT STILL HOLD UNPLAYED GAMES ────────
-  // Added 2026-11-23 after the first live run reported `grades withheld for
-  // incomplete coverage: 197`.
+  // ── EVERY ROUND WE HOLD AN UNPLAYED GAME IN GETS FETCHED ────────────────
   //
-  // The fetch window starts after the current round, so a round in the PAST
-  // holding an unplayed game was never fetched — and the coverage rule then
-  // refused to delete anything for that grade, for ever. The guard was blocking
-  // the exact cleanup it exists to make safe. Live example: grade 647b4d51 had a
-  // candidate in "Finals Round 3" withheld because "Finals Round 1" held unplayed
-  // games and had not been fetched.
+  // This is what the coverage rule actually requires, and getting it half right
+  // cost two rounds of measurement.
   //
-  // A past round holding an unplayed game is unusual — a postponement, or a
-  // stale fixture of precisely the kind this pass removes — so the extra cost is
-  // small and falls on the grades that need it. Applied in BOTH modes: without
-  // it in the incremental pass, a grade that keeps one genuinely unplayed past
-  // game could never satisfy coverage again.
-  const addPastUnplayed = () => {
-    // STRICTLY BEFORE the current round. `firstIdx` is currentIdx+1, so using it
-    // as the bound swept the CURRENT round in — which Phase 2 has already
-    // fetched and whose ids are fed in, so re-fetching it is one wasted request
-    // per grade. Caught by the existing tests the moment the bound was wrong.
-    const pastEnd = currentIdx >= 0 ? currentIdx : 0;
-    for (let i = 0; i < pastEnd && i < rounds.length; i++) {
+  // v1 fetched only from after the current round, so a PAST round holding an
+  // unplayed game was never looked at and coverage refused every deletion for
+  // that grade: 197 grades withheld on the first live run, the guard blocking
+  // the cleanup it exists to protect.
+  //
+  // v2 added past rounds and took that to 26. The residual was the mirror of the
+  // same mistake: a round BEYOND the `aheadN` window holding unplayed games was
+  // also never fetched, so those grades could never satisfy coverage either —
+  // and since a grade is incremental for ever after its baseline, that was a
+  // PERMANENT blind spot rather than a one-off.
+  //
+  // So the rule is symmetric and stated once: if we hold an unplayed game in a
+  // round, we fetch that round, wherever it sits. `aheadN` then governs only
+  // rounds we hold NOTHING for, which is its real job — discovering fixtures
+  // that have appeared since.
+  //
+  // The cost is bounded by our own stale data and falls as it is cleaned: a
+  // grade with unplayed games in eight far-out rounds costs eight fetches a
+  // night until those games are played or removed, then nothing.
+  //
+  // The CURRENT round is always excluded — Phase 2 has already fetched it and
+  // the caller feeds its ids in.
+  const addHeldUnplayed = () => {
+    for (let i = 0; i < rounds.length; i++) {
+      if (currentIdx >= 0 && i === currentIdx) continue;
       const held = byRound.get(rounds[i].name);
-      if (held && held.some(e => !isPlayedGame(e.g))) add(rounds[i], 'past-unplayed');
+      if (held && held.some(e => !isPlayedGame(e.g))) add(rounds[i], 'held-unplayed');
     }
   };
 
@@ -283,7 +290,7 @@ function planGrade({ grade, stored, byRound, aheadN = 2, skipCurrent = true }) {
     for (let i = firstIdx; i < rounds.length; i++) {
       if (roundIsUnplayed(rounds[i].name)) add(rounds[i], 'baseline');
     }
-    addPastUnplayed();
+    addHeldUnplayed();
   } else {
     let taken = 0;
     for (let i = firstIdx; i < rounds.length && taken < aheadN; i++) {
@@ -300,7 +307,7 @@ function planGrade({ grade, stored, byRound, aheadN = 2, skipCurrent = true }) {
         if (!known.has(rounds[i].name) && roundIsUnplayed(rounds[i].name)) add(rounds[i], 'new-round');
       }
     }
-    addPastUnplayed();
+    addHeldUnplayed();
   }
 
   // A round that is no longer in PlayHQ's list has been withdrawn. Its unplayed
