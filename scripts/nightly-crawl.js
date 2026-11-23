@@ -1304,6 +1304,11 @@ async function main() {
           ids: ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.games) || [])
             .map(g => g && g.id).filter(Boolean),
           answered: !!(data && data.discoverFixtureByRound),
+          // ⚠ `byes` IS A SEPARATE ARRAY FROM `games`, and this is why an empty
+          // games list can be a TRUE answer. A bye round returns no games at
+          // all. On 2026-11-23 three deletions from a bye round were briefly
+          // believed to be wrong because nothing in the log said "bye".
+          byes: ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.byes) || []).length,
         });
         return 'ok';
       }, { conc: CONCURRENCY_FIXTURES, burst: PACE_BURST, rest: PACE_REST, label: 'P2R refresh' });
@@ -1386,6 +1391,11 @@ async function main() {
           continue;
         }
         refresh.keptPlayed += d.keptPlayed;
+        if (got.answered && got.ids.length === 0 && d.deletable.length) {
+          console.log(`  · grade ${gid} round "${f.roundName}": PlayHQ returned the round with 0 games`
+                    + ` and ${got.byes} bye(s) — the round exists and holds no fixtures, so the`
+                    + ` ${d.deletable.length} stored game(s) are pre-regrade residue.`);
+        }
         const live = RR.withholdLiveElsewhere(d.deletable, aliveGradeWide);
         refresh.movedNotDeleted += live.moved.length;
         for (const e of live.moved) {
