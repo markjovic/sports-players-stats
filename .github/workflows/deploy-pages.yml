@@ -41,6 +41,9 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  # actions: read — added 2026-11-23 for the artifact-visibility gate below,
+  # which calls the Actions artifacts REST API. Read-only; nothing else uses it.
+  actions: read
 
 # The three nightly builds finish within minutes of each other, each firing a
 # workflow_run. cancel-in-progress collapses them: each new trigger cancels the
@@ -180,6 +183,55 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
+
+      # ── WAIT FOR THE ARTIFACT TO BE VISIBLE TO THE REST API ────────────────
+      #
+      # THE FAULT THIS FIXES, measured from run #445's raw log (2026-11-23):
+      #
+      #   00:06:54.2521782Z  Artifact github-pages.zip successfully finalized.
+      #                      Artifact ID 14779716770
+      #   00:06:54.2522452Z  ...successfully uploaded! Final size is 826259565 bytes
+      #   00:06:54.4723413Z  Fetching artifact metadata for "github-pages"
+      #   00:06:54.5499688Z  Found 0 artifact(s)
+      #
+      # The upload SUCCEEDED — 788 MB, finalised, with an id and a live download
+      # URL. `deploy-pages` then queried the artifacts REST API 0.3 SECONDS later
+      # and got nothing back, because that endpoint had not yet caught up with
+      # the write. It treats the first miss as fatal and exits; its `error_count`
+      # input governs deployment-status polling, not this metadata fetch, so
+      # there is no retry to tune.
+      #
+      # That race is why the failures are intermittent: roughly 6 of the last 10
+      # runs, with successes interleaved on identical code and data. It is not
+      # artifact size (788 MB is nowhere near a limit), not the upload-artifact
+      # version (v4 is already in use — the error's own advice is a red herring),
+      # and not the tar step being truncated in the UI (that is just `-v` listing
+      # ~500k files).
+      #
+      # Polling the same endpoint `deploy-pages` reads means we wait on exactly
+      # the condition it needs, rather than guessing at a fixed sleep. Bounded at
+      # ~3.5 minutes and it FAILS LOUDLY if the artifact never appears — an
+      # invisible artifact is a real fault and must not be papered over.
+      - name: Wait for the artifact to be visible to the Actions API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 42); do
+            # `|| echo 0` so a transient API error is a retry, never a hard stop.
+            n="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts" \
+                   --jq '[.artifacts[] | select(.name == "github-pages")] | length' 2>/dev/null || echo 0)"
+            case "${n:-0}" in
+              ''|*[!0-9]*) n=0 ;;
+            esac
+            if [ "$n" -ge 1 ]; then
+              echo "artifact visible to the API after ${i} poll(s) (~$(( (i - 1) * 5 ))s)"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::github-pages artifact never became visible to the Actions API after ~3.5 min — the upload step's own log will say whether it finalised."
+          exit 1
 
       - name: Deploy to GitHub Pages
         id: deploy
