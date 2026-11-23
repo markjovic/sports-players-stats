@@ -79,6 +79,11 @@ on:
         required: false
         default: false
         type: boolean
+      test_shards:
+        description: 'TESTING ONLY. Space-separated shards (e.g. "0a 11") to add to the sparse checkout even when the round needs none. Exercises the git mechanics without touching data. Ignored when the round has its own shards.'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: write
@@ -179,13 +184,29 @@ jobs:
       #   the whole pattern list is re-set — the original patterns plus one per
       #   shard. Blobs for the newly matched files are fetched on demand, which is
       #   what the blobless clone above buys.
+      #
+      # ⚠ THIS STEP IS THE ONLY GENUINELY NEW MACHINERY HERE and it only runs when
+      #   the round produced box scores — which, outside a Friday evening, it never
+      #   does, because the nightly has already processed everything. `test_shards`
+      #   exists so the git mechanics can be exercised on demand against shards that
+      #   are checked out and then ignored, rather than first running for real at
+      #   22:00 on a Friday.
       - name: Add just the player shards this round touched
-        if: steps.fetch.outputs.fetch_shard_count != '0' && steps.fetch.outputs.fetch_shard_count != ''
+        if: |
+          (steps.fetch.outputs.fetch_shard_count != '0' && steps.fetch.outputs.fetch_shard_count != '')
+          || inputs.test_shards != ''
         env:
-          SHARDS:   ${{ steps.fetch.outputs.fetch_shards }}
-          IN_SEASON: ${{ inputs.season }}
+          SHARDS:      ${{ steps.fetch.outputs.fetch_shards }}
+          TEST_SHARDS: ${{ inputs.test_shards }}
+          IN_SEASON:   ${{ inputs.season }}
         run: |
           set -euo pipefail
+          # The round's own shards always win. test_shards is a fallback for a run
+          # that produced none, never an override of a real one.
+          if [ -z "${SHARDS}" ]; then
+            SHARDS="${TEST_SHARDS}"
+            echo "⚠ no shards from this round — using test_shards='${TEST_SHARDS}' to exercise the sparse-checkout path. NO DATA IS AFFECTED: these files are checked out and then not written to."
+          fi
           PATTERNS=( scripts/publish-final-game.js scripts/lib
                      data/sports-index.json data/forfeit-games.json
                      "games/bv/${IN_SEASON}.json"
