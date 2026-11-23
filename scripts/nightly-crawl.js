@@ -1328,10 +1328,9 @@ async function main() {
     for (const w of work) {
       for (const arr of w.byRound.values()) {
         for (const e of arr) {
-          const g = (e && e.g) || {};
-          for (const k of ['hTid', 'aTid', 't1', 't2']) {
-            const tid = g[k];
-            if (typeof tid !== 'string' || !tid) continue;
+          // Same side keys as everywhere else: `h`/`a`, or `t1`/`t2` on older
+          // rows. NOT hTid/aTid, which this read got wrong the first time.
+          for (const tid of RR.sideIds((e && e.g) || {})) {
             if (!gradesOfTeam.has(tid)) gradesOfTeam.set(tid, new Set());
             gradesOfTeam.get(tid).add(w.grade.gradeId);
           }
