@@ -1,0 +1,240 @@
+# .github/workflows/publish-final-game.yml
+name: Publish Final Game
+
+# FAST PUBLISH ON FINAL.
+#
+# Dispatched by markjovic/fixture-watch the moment a watched team's game flips to
+# FINAL, so the result, the box score and the players' profile stats land within
+# minutes instead of waiting for the 01:00 nightly.
+#
+# ⚠ THIS IS THE ONLY WORKFLOW IN THE REPO DISPATCHED FROM OUTSIDE IT. Everything
+# it is allowed to do is bounded by that:
+#   - it writes games/ and players/ and NOTHING ELSE
+#   - it DELETES NOTHING (publish-final-game.js never removes a game; withdrawal
+#     is Phase 2R's job inside nightly-crawl.js and is deliberately not reachable
+#     from here)
+#   - season, grade and round are all REQUIRED, with no defaults, so a malformed
+#     dispatch stops rather than widening into a repo-wide run
+#   - the script refuses outright if PlayHQ says the grade belongs to a different
+#     season than the one dispatched
+#
+# It holds `data-write` (T25) because it writes players/.
+#
+# ⚠ W/L IS NOT UPDATED HERE. build-win-loss.js has no season or team scope and
+# opens with a pre-pass over every player file — it is the ~11-minute job on the
+# nightly chain and it stays there. A player's win/loss record lags until 01:00.
+#
+# ⚠ TEAM-STATS IS NOT DISPATCHED HERE, deliberately. build-team-stats.js READS
+# players/ to build roster stats, and the matrix this workflow dispatches WRITES
+# players/ in a separate run that no lock here covers. Dispatching both would be
+# the exact ordering race nightly-crawl.yml solved with `needs:` — and `needs:`
+# cannot reach across two dispatched runs. The team page's fixture and result come
+# from games/bv and are correct immediately; its roster aggregate waits for the
+# nightly. Revisit with a measurement of what is actually stale, not a guess.
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: 'Season ID (REQUIRED) — e.g. 3d25b666'
+        required: true
+        type: string
+      grade:
+        description: 'Grade ID (REQUIRED) — e.g. 7d0c2383'
+        required: true
+        type: string
+      round:
+        description: 'Round NAME (REQUIRED) — e.g. Round 7. The round id is resolved here, never carried across repos.'
+        required: true
+        type: string
+      games:
+        description: 'Comma-separated game ids the dispatcher saw flip to FINAL. Reported only — the whole round is fetched regardless.'
+        required: false
+        default: ''
+        type: string
+      source:
+        description: 'Who dispatched this (e.g. fixture-watch). Logged so an unexpected run can be traced.'
+        required: false
+        default: 'manual'
+        type: string
+      dry_run:
+        description: 'Fetch and report, write and commit nothing'
+        required: false
+        default: false
+        type: boolean
+      skip_matrix:
+        description: 'Do not dispatch the profile-stats matrix afterwards (the game and box score are still published)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: data-write
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      shards:      ${{ steps.run.outputs.shards }}
+      shard_count: ${{ steps.run.outputs.shard_count }}
+      season:      ${{ steps.run.outputs.season }}
+      games:       ${{ steps.run.outputs.games }}
+    steps:
+      # ⚠ SPARSE, and cone mode OFF so a single file can be named. A full checkout
+      # of this repo is ~35 minutes before any work starts, which is not a fast
+      # publish. Pattern copied from fetch-profile-stats.yml, the proven site.
+      # players/ is taken whole because the shards that need writing are not known
+      # until the box score has been fetched — the `du -sh` below measures what
+      # that actually costs so the next version can be decided on a number.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: |
+            scripts/publish-final-game.js
+            scripts/lib
+            data/sports-index.json
+            data/forfeit-games.json
+            games/bv/${{ inputs.season }}.json
+            players
+          sparse-checkout-cone-mode: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: What was dispatched, and what it cost to check out
+        # Printed BEFORE the run so an unexpected dispatch is traceable even when
+        # the script then refuses. Inputs go through env: — never interpolated into
+        # the script body (T30).
+        env:
+          IN_SEASON: ${{ inputs.season }}
+          IN_GRADE:  ${{ inputs.grade }}
+          IN_ROUND:  ${{ inputs.round }}
+          IN_GAMES:  ${{ inputs.games }}
+          IN_SOURCE: ${{ inputs.source }}
+          IN_DRY:    ${{ inputs.dry_run }}
+          IN_SKIPM:  ${{ inputs.skip_matrix }}
+        run: |
+          echo "::group::Dispatch"
+          printf '  season     = %s\n' "${IN_SEASON}"
+          printf '  grade      = %s\n' "${IN_GRADE}"
+          printf '  round      = %s\n' "${IN_ROUND}"
+          printf '  games      = %s\n' "${IN_GAMES}"
+          printf '  source     = %s\n' "${IN_SOURCE}"
+          printf '  dry_run    = %s\n' "${IN_DRY}"
+          printf '  skip_matrix= %s\n' "${IN_SKIPM}"
+          printf '  actor      = %s\n' "${GITHUB_ACTOR}"
+          echo "::endgroup::"
+          echo "::group::Checkout size (this is the number that decides whether the sparse set needs narrowing)"
+          du -sh .git players games data 2>/dev/null || true
+          echo "::endgroup::"
+
+      - name: Publish
+        id: run
+        env:
+          IN_SEASON: ${{ inputs.season }}
+          IN_GRADE:  ${{ inputs.grade }}
+          IN_ROUND:  ${{ inputs.round }}
+          IN_GAMES:  ${{ inputs.games }}
+          IN_DRY:    ${{ inputs.dry_run }}
+        run: |
+          set -o pipefail
+          # Booleans arrive as a real boolean from the UI and as a STRING when
+          # chained or sent over the API. Both forms, always (directive 13 / T27).
+          ARGS=( "--season=${IN_SEASON}" "--grade=${IN_GRADE}" "--round=${IN_ROUND}" )
+          if [ -n "${IN_GAMES}" ]; then ARGS+=( "--games=${IN_GAMES}" ); fi
+          if [ "${IN_DRY}" = "true" ] || [ "${IN_DRY}" = "True" ]; then ARGS+=( "--dry-run" ); fi
+          node scripts/publish-final-game.js "${ARGS[@]}"
+
+  # ── Profile stats ───────────────────────────────────────────────────────────
+  # The box score does NOT produce the numbers on a player's profile: gp/pts/fg/
+  # ft/3pt/fouls come from PlayHQ's own publicProfileStatistics, fetched by
+  # fetch-profile-stats.js, which only touches players whose statsChecked has been
+  # cleared. The publish job clears it; this dispatch is what makes it visible.
+  #
+  # The existing matrix is dispatched rather than reimplemented: it already fans
+  # out per shard, writes nothing from the shard jobs, and funnels every change
+  # through ONE apply-and-commit. Reproducing that here would be a second writer
+  # of players/ with no lock between them.
+  matrix:
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: |
+      always() &&
+      needs.publish.result == 'success' &&
+      needs.publish.outputs.shard_count != '0' &&
+      needs.publish.outputs.shard_count != '' &&
+      (inputs.skip_matrix != true && inputs.skip_matrix != 'true' && inputs.skip_matrix != 'True') &&
+      (inputs.dry_run != true && inputs.dry_run != 'true' && inputs.dry_run != 'True')
+    steps:
+      - name: Install dispatch retry helper
+        # A chain-critical `gh workflow run` is never one-shot (directive 14).
+        # Copied VERBATIM from nightly-crawl.yml — not retyped.
+        run: |
+          cat > /tmp/gh-dispatch.sh << 'SH'
+          #!/usr/bin/env bash
+          # usage: gh-dispatch.sh <workflow.yml> [--field k=v ...]
+          # Retries transient failures (5xx, network) with backoff.
+          # Fails FAST on permanent HTTP 4xx (422 bad input, 404 missing workflow,
+          # 401/403 bad token) — retrying those burns minutes and buries the real
+          # error. THROWS when attempts are exhausted: a lost dispatch is a broken
+          # chain, and a broken chain must show red.
+          set -uo pipefail
+          wf="$1"; shift
+          attempts=10
+          for i in $(seq 1 $attempts); do
+            if out=$(gh workflow run "$wf" --repo "$GH_REPO" "$@" 2>&1); then
+              echo "  ✓ dispatched ${wf} (attempt ${i})"
+              exit 0
+            fi
+            echo "$out"
+            if printf '%s' "$out" | grep -qE 'HTTP 4[0-9][0-9]'; then
+              echo "  ✗ ${wf}: permanent error — not retrying"
+              exit 1
+            fi
+            if [ "$i" -lt "$attempts" ]; then
+              delay=$(( i * 10 ))
+              [ "$delay" -gt 90 ] && delay=90
+              echo "  … transient failure dispatching ${wf} — retry $((i+1))/${attempts} in ${delay}s"
+              sleep "$delay"
+            fi
+          done
+          echo "  ✗ ${wf}: dispatch failed after ${attempts} attempts"
+          exit 1
+          SH
+          chmod +x /tmp/gh-dispatch.sh
+          echo "Helper installed."
+
+      - name: Dispatch targeted matrix shards
+        env:
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
+          SHARDS:   ${{ needs.publish.outputs.shards }}
+        run: |
+          set -euo pipefail
+          # An EMPTY or malformed shard list must NOT fall through to the matrix's
+          # own '[]' default, which means ALL 256 SHARDS. A fast publish that
+          # accidentally sweeps the whole database is the one outcome here that is
+          # worse than doing nothing.
+          compact="$(printf '%s' "${SHARDS}" | tr -d '[:space:]')"
+          case "${compact}" in
+            '['*']') : ;;
+            *) echo "::error::shard list is not a JSON array: '${SHARDS}'. Refusing to dispatch — an unrecognised value would sweep all 256 shards."; exit 1 ;;
+          esac
+          if [ "${compact}" = "[]" ]; then
+            echo "::error::shard list is empty but shard_count said otherwise. Refusing to dispatch."; exit 1
+          fi
+          echo "Targeted shards: ${compact}"
+          /tmp/gh-dispatch.sh fetch-profile-stats-matrix.yml \
+            --field "run_number=1" \
+            --field "consecutive_zeros=0" \
+            --field "shards=${compact}"
