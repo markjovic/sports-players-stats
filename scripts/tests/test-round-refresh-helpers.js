@@ -105,40 +105,41 @@ t('sideIds: prefers h over t1 when both present', RR.sideIds({h:'E1',t1:'E9',a:'
       r1:{d:'2026-11-13',gid:'AR',h:'T1'}, r2:{d:'2026-11-13',gid:'A',h:'T2'} }).length === 0);
 }
 
-// ─── Dead grades: the Friday U11 Boys AR shape ─────────────────────────────
+// ─── Stale fixtures per grade: the real AR shape (a REAL division) ─────────
 {
   const TODAY = '2026-11-24';
   const G = {
-    // AR: five games, all PENDING, all dated in the past, nothing ever played
-    ar1:{d:'2026-10-09',gid:'AR',gn:'Friday U11 Boys AR',h:'RAPT',hn:'Raptors 1',a:'MM1',an:'Magic 1',st:'PENDING'},
-    ar2:{d:'2026-10-16',gid:'AR',gn:'Friday U11 Boys AR',h:'RAPT',hn:'Raptors 1',a:'EB1',an:'E.Bees 1',st:'PENDING'},
-    ar3:{d:'2026-10-23',gid:'AR',gn:'Friday U11 Boys AR',h:'RAPT',hn:'Raptors 1',a:'VH1',an:'Hoopers 1',st:'PENDING'},
-    ar4:{d:'2026-11-06',gid:'AR',gn:'Friday U11 Boys AR',h:'MM1',hn:'Magic 1',a:'WPS',an:'Saints 1',st:'PENDING'},
-    ar5:{d:'2027-02-05',gid:'AR',gn:'Friday U11 Boys AR',h:'RAPT',hn:'Raptors 1',a:'WAV',an:'Waverley 1',st:'PENDING'},
-    // B: the real grade, with real results on the same dates
-    b1:{d:'2026-10-23',gid:'B',gn:'Friday U11 Boys B',h:'RAPT',hn:'Raptors 1',a:'MM3',an:'Magic 3',hs:10,as:32,st:'FINAL'},
-    b2:{d:'2026-10-09',gid:'B',gn:'Friday U11 Boys B',h:'MM1',hn:'Magic 1',a:'EB1',an:'E.Bees 1',hs:40,as:38,st:'FINAL'},
-    b3:{d:'2026-10-16',gid:'B',gn:'Friday U11 Boys B',h:'VH1',hn:'Hoopers 1',a:'WPS',an:'Saints 1',hs:22,as:30,st:'FINAL'},
-    // A future-only grade: every game unplayed, but nothing in the past
-    f1:{d:'2027-03-05',gid:'FUT',gn:'Autumn U11 A',h:'RAPT',hn:'Raptors 1',a:'MM1',an:'Magic 1',st:'PENDING'},
-    f2:{d:'2027-03-12',gid:'FUT',gn:'Autumn U11 A',h:'RAPT',hn:'Raptors 1',a:'EB1',an:'E.Bees 1',st:'PENDING'},
+    // AR is A-Reserve: a real division with real results AND stale leftovers
+    ar_p1:{d:'2026-10-09',gid:'AR',gn:'Friday U11 Boys AR',h:'RAPT',hn:'Raptors 1',a:'WAV',an:'Waverley 1',hs:30,as:28,st:'FINAL'},
+    ar_p2:{d:'2026-10-16',gid:'AR',gn:'Friday U11 Boys AR',h:'WAV', hn:'Waverley 1',a:'EB1',an:'E.Bees 1',hs:21,as:40,st:'FINAL'},
+    // stale, and the team played in another grade that day -> SUPERSEDED
+    ar_s1:{d:'2026-10-23',gid:'AR',gn:'Friday U11 Boys AR',h:'RAPT',hn:'Raptors 1',a:'VH1',an:'Hoopers 1',rn:'Round 3',st:'PENDING'},
+    // stale, nobody played anywhere that day -> a washout, NOT superseded
+    ar_s2:{d:'2026-10-30',gid:'AR',gn:'Friday U11 Boys AR',h:'WAV', hn:'Waverley 1',a:'EB1',an:'E.Bees 1',rn:'Round 4',st:'PENDING'},
+    // future and unplayed -> not stale at all
+    ar_f1:{d:'2027-02-05',gid:'AR',gn:'Friday U11 Boys AR',h:'RAPT',hn:'Raptors 1',a:'WAV',an:'Waverley 1',st:'PENDING'},
+    // B: Raptors played here on 23 Oct, which is what supersedes ar_s1
+    b_p1: {d:'2026-10-23',gid:'B', gn:'Friday U11 Boys B', h:'RAPT',hn:'Raptors 1',a:'MM3',an:'Magic 3',hs:10,as:32,st:'FINAL'},
   };
-  const dead = RR.findDeadGrades(G, { today: TODAY });
-  const ar = dead.find(d => d.gid === 'AR');
-  t('dead: AR detected', !!ar);
-  t('dead: counts all its games', ar && ar.games === 5);
-  t('dead: counts only past-dated ones separately', ar && ar.pastGames === 4);
-  t('dead: carries the grade name', ar && ar.gn === 'Friday U11 Boys AR');
-  t('dead: date range reported', ar && ar.firstDate === '2026-10-09' && ar.lastDate === '2027-02-05');
-  t('dead: corroborated by teams playing elsewhere', ar && ar.teamsAlsoElsewhere >= 4);
-  t('dead: the real grade is NOT dead', !dead.some(d => d.gid === 'B'));
-  t('dead: a future-only grade is NOT dead', !dead.some(d => d.gid === 'FUT'));
-  t('dead: one played game clears a grade',
-    !RR.findDeadGrades({ ...G, ar1:{...G.ar1, hs:1, as:2, st:'FINAL'} }, { today: TODAY }).some(d => d.gid === 'AR'));
-  t('dead: undated grade is not judged',
-    RR.findDeadGrades({ u1:{gid:'U',h:'T1',st:'PENDING'} }, { today: TODAY }).length === 0);
-  t('dead: sorted by size', dead.length < 2 || dead[0].games >= dead[dead.length-1].games);
-  t('dead: no games at all -> nothing', RR.findDeadGrades({}, { today: TODAY }).length === 0);
+  const st = RR.findStaleFixtureGrades(G, { today: TODAY });
+  const ar = st.find(x => x.gid === 'AR');
+  t('stale: AR reported despite holding played games', !!ar);
+  t('stale: played games counted, not conflated', ar && ar.played === 2);
+  t('stale: two stale games', ar && ar.stale === 2);
+  t('stale: future game not counted stale', ar && ar.total === 5 && ar.stale === 2);
+  t('stale: superseded counted separately', ar && ar.withPlayedElsewhere === 1);
+  t('stale: a washout is NOT marked superseded',
+    ar && ar.examples.some(e => e.d === '2026-10-30' && e.superseded === false));
+  t('stale: superseded example flagged',
+    ar && ar.examples.some(e => e.d === '2026-10-23' && e.superseded === true));
+  t('stale: date range of stale games only', ar && ar.firstStale === '2026-10-23' && ar.lastStale === '2026-10-30');
+  t('stale: round name carried', ar && ar.examples.some(e => e.rn === 'Round 3'));
+  t('stale: a clean grade is absent', !st.some(x => x.gid === 'B'));
+  t('stale: minStale filters', RR.findStaleFixtureGrades(G, { today: TODAY, minStale: 3 }).length === 0);
+  t('stale: sorted by stale count desc', st.length < 2 || st[0].stale >= st[st.length-1].stale);
+  t('stale: no games -> nothing', RR.findStaleFixtureGrades({}, { today: TODAY }).length === 0);
+  t('stale: undated unplayed game ignored',
+    RR.findStaleFixtureGrades({ u:{gid:'U',h:'T',st:'PENDING'} }, { today: TODAY }).length === 0);
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);
