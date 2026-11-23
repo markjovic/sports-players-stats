@@ -31,19 +31,19 @@ t('change: unanswered ignored',
 
 // teamsInRounds — both side shapes
 const byRound=new Map([
-  ['Round 6',[{g:{hTid:'T1',aTid:'T2'}},{g:{t1:'T3',t2:'T4'}}]],
-  ['Round 7',[{g:{hTid:'T5'}}]],
+  ['Round 6',[{g:{h:'T1',a:'T2'}},{g:{t1:'T3',t2:'T4'}}]],
+  ['Round 7',[{g:{h:'T5'}}]],
 ]);
 let tm=RR.teamsInRounds({byRound, roundNames:['Round 6']});
-t('teams: hTid/aTid', tm.has('T1')&&tm.has('T2'));
+t('teams: h/a', tm.has('T1')&&tm.has('T2'));
 t('teams: t1/t2', tm.has('T3')&&tm.has('T4'));
 t('teams: scoped to round', !tm.has('T5'));
 
 // findSameDayGradeConflicts
 const games={
-  g1:{d:'2026-11-13',gid:'AR',hTid:'M1',aTid:'V2'},
-  g2:{d:'2026-11-13',gid:'A', hTid:'M1',aTid:'H1'},
-  g3:{d:'2026-11-20',gid:'A', hTid:'M1',aTid:'V1'},
+  g1:{d:'2026-11-13',gid:'AR',h:'M1',a:'V2'},
+  g2:{d:'2026-11-13',gid:'A', h:'M1',a:'H1'},
+  g3:{d:'2026-11-20',gid:'A', h:'M1',a:'V1'},
   g4:{d:'2026-11-13',gid:'A', t1:'S1',t2:'X9'},
 };
 const c=RR.findSameDayGradeConflicts(games);
@@ -53,8 +53,22 @@ t('conflict: names both grades', m1 && m1.grades.includes('AR') && m1.grades.inc
 t('conflict: carries game ids', m1 && m1.gameIds.length===2);
 t('conflict: single-grade day clean', !c.some(x=>x.tid==='S1'));
 t('conflict: different days not flagged', !c.some(x=>x.tid==='M1'&&x.date==='2026-11-20'));
-t('conflict: no gid -> skipped', RR.findSameDayGradeConflicts({x:{d:'2026-01-01',hTid:'T'}}).length===0);
-t('conflict: no date -> skipped', RR.findSameDayGradeConflicts({x:{gid:'A',hTid:'T'}}).length===0);
+t('conflict: no gid -> skipped', RR.findSameDayGradeConflicts({x:{d:'2026-01-01',h:'T'}}).length===0);
+t('conflict: no date -> skipped', RR.findSameDayGradeConflicts({x:{gid:'A',h:'T'}}).length===0);
+
+// ── REGRESSION GUARD. These names are NOT the shape games/bv uses. The first
+// version of sideIds() read them, returned nothing on real data, and passed its
+// own tests because the fixtures used the same wrong names. If someone puts
+// hTid/aTid back, these two go red instead of the run going quietly empty.
+t('GUARD: sideIds reads h/a', RR.sideIds({h:'A1',a:'A2'}).join()==='A1,A2');
+t('GUARD: sideIds reads t1/t2', RR.sideIds({t1:'B1',t2:'B2'}).join()==='B1,B2');
+t('GUARD: sideIds IGNORES hTid/aTid', RR.sideIds({hTid:'C1',aTid:'C2'}).length===0);
+t('GUARD: invariant blind to hTid', RR.findSameDayGradeConflicts({
+    z1:{d:'2026-11-13',gid:'AR',hTid:'M1'}, z2:{d:'2026-11-13',gid:'A',hTid:'M1'}}).length===0);
+t('GUARD: invariant sees h', RR.findSameDayGradeConflicts({
+    z1:{d:'2026-11-13',gid:'AR',h:'M1'}, z2:{d:'2026-11-13',gid:'A',h:'M1'}}).length===1);
+t('sideIds: half a pairing still counts', RR.sideIds({h:'D1'}).join()==='D1');
+t('sideIds: prefers h over t1 when both present', RR.sideIds({h:'E1',t1:'E9',a:'E2'}).join()==='E1,E2');
 
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail?1:0);

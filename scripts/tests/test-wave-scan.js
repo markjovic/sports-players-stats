@@ -7,7 +7,7 @@ const rounds = (n, cur) => Array.from({length:n},(_,i)=>({id:`r${i+1}`,name:RN(i
 
 // ── The real shape. AR holds M1's pre-regrade residue in R4,6..10 (past, unplayed)
 //    and R11..16 (future, unplayed). A holds M1's real played games R6,R7 + R8 upcoming.
-const mk = (id, gid, d, h, a, played) => ({ id, g:{ gid, d, hTid:h, aTid:a, rn:null, ...(played?{hs:40,as:42,st:'FINAL'}:{}) } });
+const mk = (id, gid, d, h, a, played) => ({ id, g:{ gid, d, h, a, rn:null, ...(played?{hs:40,as:42,st:'FINAL'}:{}) } });
 const arGames = [
   ...[[4,'2026-10-30'],[6,'2026-11-13'],[7,'2026-11-20'],[8,'2026-11-27'],[9,'2026-12-04'],[10,'2026-12-11']].map(([n,d]) => ({ rn:RN(n), e: mk(`ar${n}`,'AR',d,'M1',`V${n}`,false) })),
   ...[11,12,13,14,15,16].map(n => ({ rn:RN(n), e: mk(`ar${n}`,'AR','2027-02-01','M1',`V${n}`,false) })),
@@ -47,7 +47,7 @@ const noteFetched=(gid,rn)=>{ if(!fetchedByGrade.has(gid)) fetchedByGrade.set(gi
 const workByGid = new Map(work.map(w=>[w.grade.gradeId,w]));
 const gradesOfTeam = new Map();
 for (const w of work) for (const arr of w.byRound.values()) for (const e of arr)
-  for (const k of ['hTid','aTid','t1','t2']) { const v=e.g[k]; if(v){ if(!gradesOfTeam.has(v)) gradesOfTeam.set(v,new Set()); gradesOfTeam.get(v).add(w.grade.gradeId);} }
+  for (const v of RR.sideIds(e.g)) { if(v){ if(!gradesOfTeam.has(v)) gradesOfTeam.set(v,new Set()); gradesOfTeam.get(v).add(w.grade.gradeId);} }
 t('expansion index links M1 to both grades', gradesOfTeam.get('M1').size===2);
 
 const fullRescanned=new Set(), seenChanged=new Set(), unfetchable=new Map();
