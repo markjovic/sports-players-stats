@@ -691,73 +691,70 @@ function findSameDayNameConflicts(games) {
   return conflicts;
 }
 
-// ─── DEAD GRADES: a published fixture nobody ever played ─────────────────────
+// ─── STALE FIXTURES, PER GRADE ───────────────────────────────────────────────
 //
-// WHAT THIS IS FOR. Friday U11 Boys AR in season 3d25b666 is a complete,
-// live, published fixture in which NOT ONE GAME HAS EVER BEEN PLAYED. Every game
-// is PENDING with TBC time and venue, across rounds dated 9 Oct to 6 Nov 2026 and
-// beyond, while the same teams carry real results — real scores, real courts — in
-// Friday U11 Boys B, C and A on those exact dates. The association published a
-// grading fixture, allocated the teams out of it, and never withdrew it.
+// ⚠ THIS REPLACES A "DEAD GRADE" TEST THAT WAS BUILT ON A WRONG READING AND
+// REPORTED ZERO. That test asked whether a grade had NO played game at all,
+// on the theory that `Friday U11 Boys AR` was an abandoned grading pool. It is
+// not: AR, BR, CR and DR are A-Reserve, B-Reserve, C-Reserve and D-Reserve —
+// real divisions with real results — and PlayHQ even tags visiting teams with
+// their home division, e.g. "B11 Waverley 2 (CR)". So `played > 0` always held
+// and the test never fired, while the problem it was aimed at was plainly in
+// the data. A whole-grade story generalised from four screenshots.
 //
-// PlayHQ still serves every one of those games, so Phase 2R will never delete
-// them and is right not to: rule 1 is "PlayHQ is canonical", and PlayHQ says they
-// exist. This is therefore NOT a deletion problem and must not be turned into
-// one. It is reported so that the thing polluting fixture counts, "still to play"
-// totals and the grading-flow diagram has a name and a number.
+// What is actually wrong is a SUBSET of a grade's games: fixtures dated in the
+// past that were never played and never withdrawn. PlayHQ still serves them, so
+// they are not deletion candidates — rule 1 is that PlayHQ is canonical. They
+// are what inflates "still to play", shows PENDING on a date long gone, and
+// makes the grading flow draw moves nobody made.
 //
-// THE TEST, AND WHY IT IS THIS ONE. A grade is dead when it holds a game dated in
-// the PAST and NOT ONE game in it has ever been played. A grade published for a
-// future season also has every game unplayed, which is why the past-date term is
-// required; and a real grade with a past round has results, which is why zero
-// played games is damning rather than merely odd.
-//
-// `teamsAlsoElsewhere` is the corroboration, not the test — the count of this
-// grade's teams that hold a PLAYED game in some other grade. A dead grading pool
-// scores near 100%. A genuinely washed-out round scores 0% and is left alone.
-function findDeadGrades(games, { today } = {}) {
+// Reported as counts per grade so the shape is visible without reading 113
+// lines: how many of a grade's games are stale, against how many it has.
+// `withPlayedElsewhere` is the corroboration — stale games whose team has a
+// PLAYED game in another grade on that same date. That subset is the overlap
+// with findSameDayGradeConflicts and is the strongest evidence a fixture was
+// superseded rather than merely postponed.
+function findStaleFixtureGrades(games, { today, minStale = 1 } = {}) {
   const cutoff = today || new Date().toISOString().slice(0, 10);
-  const byGrade = new Map();                         // gid → {gn, total, played, dates, teams}
-  const playedTeamGrades = new Map();                // tid → Set(gid) where it PLAYED
+  const playedTeamDay = new Set();                   // `${tid}|${d}` where the team PLAYED
+  for (const id of Object.keys(games || {})) {
+    const g = games[id];
+    if (!g || !g.d || !isPlayedGame(g)) continue;
+    for (const tid of sideIds(g)) playedTeamDay.add(`${tid}|${g.d}`);
+  }
+  const byGrade = new Map();
   for (const id of Object.keys(games || {})) {
     const g = games[id];
     if (!g || !g.gid) continue;
     if (!byGrade.has(g.gid)) {
-      byGrade.set(g.gid, { gid: g.gid, gn: g.gn || null, total: 0, played: 0, dates: [], teams: new Set() });
+      byGrade.set(g.gid, {
+        gid: g.gid, gn: g.gn || null, total: 0, played: 0,
+        stale: 0, withPlayedElsewhere: 0, staleDates: [], examples: [],
+      });
     }
     const e = byGrade.get(g.gid);
-    e.total++;
     if (g.gn && !e.gn) e.gn = g.gn;
-    if (g.d) e.dates.push(g.d);
-    const played = isPlayedGame(g);
-    if (played) e.played++;
-    for (const tid of sideIds(g)) {
-      e.teams.add(tid);
-      if (played) {
-        if (!playedTeamGrades.has(tid)) playedTeamGrades.set(tid, new Set());
-        playedTeamGrades.get(tid).add(g.gid);
-      }
-    }
+    e.total++;
+    if (isPlayedGame(g)) { e.played++; continue; }
+    if (!g.d || !(g.d < cutoff)) continue;           // unplayed but not yet due: normal
+    e.stale++;
+    e.staleDates.push(g.d);
+    const elsewhere = sideIds(g).some(tid => playedTeamDay.has(`${tid}|${g.d}`));
+    if (elsewhere) e.withPlayedElsewhere++;
+    if (e.examples.length < 3) e.examples.push({ id, d: g.d, rn: g.rn || null, superseded: elsewhere });
   }
-  const dead = [];
+  const out = [];
   for (const e of byGrade.values()) {
-    if (e.played > 0) continue;                      // somebody played: not dead
-    if (!e.dates.length) continue;                   // undated: cannot judge, say nothing
-    const dates = e.dates.slice().sort();
-    if (!(dates[0] < cutoff)) continue;              // entirely in the future: a normal new fixture
-    let elsewhere = 0;
-    for (const tid of e.teams) {
-      const gs = playedTeamGrades.get(tid);
-      if (gs && [...gs].some(x => x !== e.gid)) elsewhere++;
-    }
-    dead.push({
-      gid: e.gid, gn: e.gn, games: e.total, teams: e.teams.size,
-      firstDate: dates[0], lastDate: dates[dates.length - 1],
-      pastGames: dates.filter(d => d < cutoff).length,
-      teamsAlsoElsewhere: elsewhere,
+    if (e.stale < minStale) continue;
+    const dates = e.staleDates.slice().sort();
+    out.push({
+      gid: e.gid, gn: e.gn, total: e.total, played: e.played, stale: e.stale,
+      withPlayedElsewhere: e.withPlayedElsewhere,
+      firstStale: dates[0], lastStale: dates[dates.length - 1],
+      examples: e.examples,
     });
   }
-  return dead.sort((a, b) => b.games - a.games);
+  return out.sort((a, b) => b.stale - a.stale);
 }
 
 module.exports = {
@@ -778,7 +775,7 @@ module.exports = {
   teamsInRounds,
   findSameDayGradeConflicts,
   findSameDayNameConflicts,
-  findDeadGrades,
+  findStaleFixtureGrades,
   computeRoundDeletions,
   assessGradeCoverage,
   withholdLiveElsewhere,
