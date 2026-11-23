@@ -20,6 +20,18 @@ name: Publish Final Game
 #
 # It holds `data-write` (T25) because it writes players/.
 #
+# ⚠ THE CHECKOUT IS THE JOB. MEASURED 2026-11-23 on run #1: `actions/checkout@v4`
+#   took 8m 15s of an 8m 22s job, for a script that ran in 3 SECONDS. The sparse
+#   set was `everything except games/bv`, which spared about 1 MB: `du -sh` on that
+#   run read .git 906M, players 3.4G, data 4.8M, games 920K. A full tree on the
+#   same repo (the `probe` workflow) is 5m52s, so the sparse set was costing MORE
+#   than no sparse set at all.
+#
+#   The fix is a blobless partial clone plus a SECOND, narrower checkout: the
+#   publish needs roughly ten player files out of ~370,000, but which ten is not
+#   known until the box scores are back. So the script runs in two phases and the
+#   shards are added to the sparse set in between. See the steps below.
+#
 # ⚠ W/L IS NOT UPDATED HERE. build-win-loss.js has no season or team scope and
 # opens with a pre-pass over every player file — it is the ~11-minute job on the
 # nightly chain and it stays there. A player's win/loss record lags until 01:00.
@@ -86,22 +98,24 @@ jobs:
       season:      ${{ steps.run.outputs.season }}
       games:       ${{ steps.run.outputs.games }}
     steps:
-      # ⚠ SPARSE, and cone mode OFF so a single file can be named. A full checkout
-      # of this repo is ~35 minutes before any work starts, which is not a fast
-      # publish. Pattern copied from fetch-profile-stats.yml, the proven site.
-      # players/ is taken whole because the shards that need writing are not known
-      # until the box score has been fetched — the `du -sh` below measures what
-      # that actually costs so the next version can be decided on a number.
+      # ⚠ BLOBLESS AND SPARSE, cone mode OFF so single files can be named.
+      # `filter: blob:none` means git fetches blobs on demand rather than the whole
+      # history's contents — the 906M .git measured on run #1 was almost entirely
+      # blobs for files this job never opens. players/ is NOT here: only the index
+      # and alias shards the fetch phase needs to resolve spectator ids. The player
+      # files themselves are added after the box scores name their shards.
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+          filter: blob:none
           sparse-checkout: |
             scripts/publish-final-game.js
             scripts/lib
             data/sports-index.json
             data/forfeit-games.json
             games/bv/${{ inputs.season }}.json
-            players
+            players/indexes
+            players/aliases
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -133,12 +147,17 @@ jobs:
           printf '  skip_matrix= %s\n' "${IN_SKIPM}"
           printf '  actor      = %s\n' "${GITHUB_ACTOR}"
           echo "::endgroup::"
-          echo "::group::Checkout size (this is the number that decides whether the sparse set needs narrowing)"
+          echo "::group::Checkout size BEFORE the player shards are added"
           du -sh .git players games data 2>/dev/null || true
           echo "::endgroup::"
 
-      - name: Publish
-        id: run
+      # ── Phase 1 ────────────────────────────────────────────────────────────
+      # Writes the round and pulls the box scores. Touches NO player files, so it
+      # needs none of them checked out. Hands its state to phase 2 on disk, OUTSIDE
+      # the repo — a state file inside it would be a blob of player ids in a public
+      # repository and would collide with the nightly.
+      - name: Fetch the round and the box scores
+        id: fetch
         env:
           IN_SEASON: ${{ inputs.season }}
           IN_GRADE:  ${{ inputs.grade }}
@@ -149,8 +168,56 @@ jobs:
           set -o pipefail
           # Booleans arrive as a real boolean from the UI and as a STRING when
           # chained or sent over the API. Both forms, always (directive 13 / T27).
-          ARGS=( "--season=${IN_SEASON}" "--grade=${IN_GRADE}" "--round=${IN_ROUND}" )
+          ARGS=( "--season=${IN_SEASON}" "--grade=${IN_GRADE}" "--round=${IN_ROUND}"
+                 "--phase=fetch" "--state=${RUNNER_TEMP}/pfg-state.json" )
           if [ -n "${IN_GAMES}" ]; then ARGS+=( "--games=${IN_GAMES}" ); fi
+          if [ "${IN_DRY}" = "true" ] || [ "${IN_DRY}" = "True" ]; then ARGS+=( "--dry-run" ); fi
+          node scripts/publish-final-game.js "${ARGS[@]}"
+
+      # ── The narrow second checkout ─────────────────────────────────────────
+      # ⚠ `git sparse-checkout add` is CONE-MODE ONLY. This checkout is non-cone, so
+      #   the whole pattern list is re-set — the original patterns plus one per
+      #   shard. Blobs for the newly matched files are fetched on demand, which is
+      #   what the blobless clone above buys.
+      - name: Add just the player shards this round touched
+        if: steps.fetch.outputs.fetch_shard_count != '0' && steps.fetch.outputs.fetch_shard_count != ''
+        env:
+          SHARDS:   ${{ steps.fetch.outputs.fetch_shards }}
+          IN_SEASON: ${{ inputs.season }}
+        run: |
+          set -euo pipefail
+          PATTERNS=( scripts/publish-final-game.js scripts/lib
+                     data/sports-index.json data/forfeit-games.json
+                     "games/bv/${IN_SEASON}.json"
+                     players/indexes players/aliases )
+          n=0
+          for sh in ${SHARDS}; do
+            # Two hex characters and nothing else. A shard name is derived from a
+            # uuid, so anything else means the state file is not what it claims and
+            # the pattern must not reach git.
+            case "${sh}" in
+              [0-9a-f][0-9a-f]) PATTERNS+=( "players/${sh}" ); n=$((n+1)) ;;
+              *) echo "::error::refusing shard name '${sh}' — expected two hex characters"; exit 1 ;;
+            esac
+          done
+          echo "Adding ${n} player shard(s): ${SHARDS}"
+          git sparse-checkout set --no-cone "${PATTERNS[@]}"
+          echo "::group::Checkout size AFTER the player shards are added"
+          du -sh .git players games data 2>/dev/null || true
+          echo "::endgroup::"
+
+      # ── Phase 2 ────────────────────────────────────────────────────────────
+      - name: Clear statsChecked and stub new players
+        id: run
+        env:
+          IN_SEASON: ${{ inputs.season }}
+          IN_GRADE:  ${{ inputs.grade }}
+          IN_ROUND:  ${{ inputs.round }}
+          IN_DRY:    ${{ inputs.dry_run }}
+        run: |
+          set -o pipefail
+          ARGS=( "--season=${IN_SEASON}" "--grade=${IN_GRADE}" "--round=${IN_ROUND}"
+                 "--phase=players" "--state=${RUNNER_TEMP}/pfg-state.json" )
           if [ "${IN_DRY}" = "true" ] || [ "${IN_DRY}" = "True" ]; then ARGS+=( "--dry-run" ); fi
           node scripts/publish-final-game.js "${ARGS[@]}"
 
