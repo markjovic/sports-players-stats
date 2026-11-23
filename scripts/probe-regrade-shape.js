@@ -34,9 +34,11 @@ const INDEX_FILE  = path.join(ROOT, 'data', 'sports-index.json');
 const REPORT_DIR  = path.join(ROOT, 'reports');
 const REPORT_FILE = path.join(REPORT_DIR, 'regrade-probe.json');
 
-// v2 REPLACES v1, which crashed on `index.seasons` because it assumed an array.
+// v2 REPLACED v1, which crashed on `index.seasons` because it assumed an array.
 // Container shapes are now DISCOVERED and printed, never assumed.
-const VERSION = 'probe-regrade-shape v2 (2026-11-23)';
+// v3 adds --find (search seasons by name) and parses the age group out of a
+// grade NAME when the index carries no age — grading grades never carry one.
+const VERSION = 'probe-regrade-shape v3 (2026-11-23)';
 
 // ---------------------------------------------------------------- args
 
@@ -47,11 +49,13 @@ function arg(name, dflt) {
 
 const SEASON_TOKENS = String(arg('seasons', ''))
   .split(',').map(s => s.trim()).filter(Boolean);
+const FIND         = String(arg('find', '')).trim();
 const SAMPLES      = Number(arg('samples', 3));
 const MAX_EXAMPLES = Number(arg('examples', 8));
+const FIND_LIMIT   = Number(arg('find-limit', 60));
 
-if (!SEASON_TOKENS.length) {
-  console.error('FATAL: --seasons is required (comma-separated ids or unique prefixes).');
+if (!SEASON_TOKENS.length && !FIND) {
+  console.error('FATAL: pass --seasons=<ids or prefixes> or --find=<text to search season names for>.');
   process.exit(2);
 }
 
@@ -135,6 +139,26 @@ function gradeSuffix(name) {
 
 const isGradingName = name => /\bgrading\b/i.test(String(name || ''));
 
+// The index carries an `age` on ordinary grades but NOT on grading grades, so
+// without this every grading move buckets as "Unspecified". The age is in the
+// name: "Boys U09 B Grading", and in some associations "Wednesday 18U Girls".
+function ageFromName(name) {
+  const s = String(name || '');
+  let m = /\b(?:u|under\s*)(\d{1,2})\b/i.exec(s);
+  if (m) return normAge(m[1]);
+  m = /\b(\d{1,2})u\b/i.exec(s);
+  if (m) return normAge(m[1]);
+  return null;
+}
+
+// The index writes "U9" and the grade name writes "U09". Without normalising,
+// one age group becomes two buckets — proven on a fixture, not assumed.
+function normAge(age) {
+  if (age == null || age === '') return null;
+  const m = /(\d{1,2})/.exec(String(age));
+  return m ? `U${String(Number(m[1]))}` : String(age);
+}
+
 // ---------------------------------------------------------------- season resolution
 
 function resolveSeasons(tokens) {
@@ -195,9 +219,16 @@ function probeSeason(sid, indexSeason) {
     if (gradeFromTeamStats.has(gid)) return gradeFromTeamStats.get(gid);
     return null;
   };
+  // Index age first; then parse it out of the grade name, which is the only
+  // place a grading grade's age group exists.
+  let ageFromIndexCount = 0, ageFromNameCount = 0, ageUnknownCount = 0;
   const gradeAge = gid => {
     const fromIdx = gradeFromIndex.get(gid);
-    return (fromIdx && fromIdx.age) || null;
+    if (fromIdx && fromIdx.age) { ageFromIndexCount++; return normAge(fromIdx.age); }
+    const parsed = ageFromName(gradeName(gid));
+    if (parsed) { ageFromNameCount++; return parsed; }
+    ageUnknownCount++;
+    return null;
   };
 
   // --- load games --------------------------------------------------------
@@ -419,6 +450,11 @@ function probeSeason(sid, indexSeason) {
   const cw = [...changeWeeks.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1));
   out.changeWeeks = cw.map(([w, n]) => ({ week: w, teamsChanging: n }));
   out.columnsThatWouldBeDrawn = cw.length;
+  out.ageResolution = {
+    fromIndex: ageFromIndexCount,
+    fromGradeName: ageFromNameCount,
+    unresolved: ageUnknownCount,
+  };
   out.changeWeeksByAgeGroup = [...changesByAge.entries()].map(([age, m]) => ({
     age,
     weeks: [...m.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1))
@@ -468,6 +504,66 @@ function main() {
     // A shape we cannot read is a failure, not an empty answer.
     console.error('FATAL: no seasons readable from data/sports-index.json — see the container line above.');
     process.exit(2);
+  }
+
+  // --- --find: locate a season by name, so nobody needs a uuid to hand ----
+  if (FIND) {
+    const needle = FIND.toLowerCase();
+    const haveGames = new Set(
+      fs.existsSync(GAMES_DIR)
+        ? fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.slice(0, -5))
+        : []
+    );
+    const hits = [];
+    for (const [sid, s] of seasonById.entries()) {
+      const hay = [s.fullName, s.name, s.compName, s.orgName].filter(Boolean).join(' ').toLowerCase();
+      if (!hay.includes(needle)) continue;
+      let games = null;
+      if (haveGames.has(sid)) {
+        try {
+          const j = readJson(path.join(GAMES_DIR, `${sid}.json`));
+          games = Object.keys((j && j.games) || j || {}).length;
+        } catch (e) { games = 'UNREADABLE'; }
+      }
+      hits.push({
+        sid,
+        label: s.fullName || s.name || '(unnamed)',
+        comp: s.compName || null,
+        org: s.orgName || null,
+        status: s.status || null,
+        locked: s.locked === true,
+        startDate: s.startDate || null,
+        endDate: s.endDate || null,
+        gamesFile: haveGames.has(sid),
+        games,
+      });
+    }
+    hits.sort((a, b) => String(b.startDate || '').localeCompare(String(a.startDate || '')));
+
+    console.log(`SEARCH "${FIND}" — ${hits.length} season(s) matched; showing up to ${FIND_LIMIT}, newest first`);
+    console.log('');
+    console.log('  prefix    games    status      ends        name');
+    console.log('  ' + '-'.repeat(92));
+    for (const h of hits.slice(0, FIND_LIMIT)) {
+      const g = h.gamesFile ? String(h.games) : 'NO FILE';
+      console.log(
+        `  ${h.sid.slice(0, 8)}  ${String(g).padStart(7)}  ${String(h.status || '?').padEnd(10)}  ` +
+        `${String(h.endDate || '').slice(0, 10).padEnd(10)}  ${h.label}${h.locked ? '  [LOCKED]' : ''}`
+      );
+    }
+    console.log('');
+    console.log('Take the 8-character prefix of the season you want and pass it as the seasons input.');
+
+    fs.mkdirSync(REPORT_DIR, { recursive: true });
+    fs.writeFileSync(REPORT_FILE, JSON.stringify({ version: VERSION, generatedAt: new Date().toISOString(), find: FIND, hits }, null, 2));
+    console.log(`Report written: ${path.relative(ROOT, REPORT_FILE)}`);
+
+    if (!hits.length) {
+      console.error(`\nNo season name contains "${FIND}".`);
+      process.exit(1);
+    }
+    if (!SEASON_TOKENS.length) return;   // search only — nothing more to do
+    console.log('');
   }
 
   const resolved = resolveSeasons(SEASON_TOKENS);
@@ -536,6 +632,7 @@ function main() {
     if (res.changeWeeks.length) {
       console.log(`  change weeks              : ${res.changeWeeks.map(c => `${c.week}(${c.teamsChanging})`).join(', ')}`);
     }
+    console.log(`  age group resolved from   : index ${res.ageResolution.fromIndex}, grade name ${res.ageResolution.fromGradeName}, unresolved ${res.ageResolution.unresolved}`);
     for (const ag of res.changeWeeksByAgeGroup.slice(0, 12)) {
       console.log(`    ${String(ag.age).padEnd(8)} : ${ag.weeks.map(w => `${w.week}(${w.teamsChanging})`).join(', ')}`);
     }
