@@ -36,9 +36,12 @@ const REPORT_FILE = path.join(REPORT_DIR, 'regrade-probe.json');
 
 // v2 REPLACED v1, which crashed on `index.seasons` because it assumed an array.
 // Container shapes are now DISCOVERED and printed, never assumed.
-// v3 adds --find (search seasons by name) and parses the age group out of a
-// grade NAME when the index carries no age — grading grades never carry one.
-const VERSION = 'probe-regrade-shape v3 (2026-11-23)';
+// v3 added --find and age parsing from the grade name.
+// v4 resolves seasons from the INDEX, not a games/bv listing, so the workflow
+// can clone two files instead of the whole 6 GB repo. --resolve-only feeds the
+// download step.
+
+const VERSION = 'probe-regrade-shape v4 (2026-11-23)';
 
 // ---------------------------------------------------------------- args
 
@@ -53,6 +56,11 @@ const FIND         = String(arg('find', '')).trim();
 const SAMPLES      = Number(arg('samples', 3));
 const MAX_EXAMPLES = Number(arg('examples', 8));
 const FIND_LIMIT   = Number(arg('find-limit', 60));
+// Print the resolved full season ids and nothing else, so the workflow can
+// download exactly those season files before the probe proper runs.
+const RESOLVE_ONLY = process.argv.includes('--resolve-only');
+// In --resolve-only, stdout carries season ids and nothing else.
+const log = RESOLVE_ONLY ? ((...a) => console.error(...a)) : ((...a) => console.log(...a));
 
 if (!SEASON_TOKENS.length && !FIND) {
   console.error('FATAL: pass --seasons=<ids or prefixes> or --find=<text to search season names for>.');
@@ -161,18 +169,17 @@ function normAge(age) {
 
 // ---------------------------------------------------------------- season resolution
 
-function resolveSeasons(tokens) {
-  if (!fs.existsSync(GAMES_DIR)) {
-    console.error(`FATAL: ${GAMES_DIR} does not exist.`);
-    process.exit(2);
-  }
-  const files = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json'));
-  const ids = files.map(f => f.slice(0, -5));
+// Resolve against sports-index.json, NOT a directory listing of games/bv.
+// The index is one small file, so the job never needs games/bv checked out to
+// work out which season a prefix means — which is what lets the workflow clone
+// two files instead of six gigabytes.
+function resolveSeasons(tokens, seasonById) {
+  const ids = [...seasonById.keys()];
   const out = [];
   for (const tok of tokens) {
     const hits = ids.filter(id => id === tok || id.startsWith(tok));
     if (hits.length === 1) out.push({ token: tok, sid: hits[0] });
-    else if (hits.length === 0) out.push({ token: tok, sid: null, why: 'no games/bv file matches' });
+    else if (hits.length === 0) out.push({ token: tok, sid: null, why: 'no season in sports-index.json matches' });
     else out.push({ token: tok, sid: null, why: `ambiguous — ${hits.length} matches: ${hits.slice(0, 5).join(', ')}` });
   }
   return out;
@@ -233,6 +240,12 @@ function probeSeason(sid, indexSeason) {
 
   // --- load games --------------------------------------------------------
   const file = path.join(GAMES_DIR, `${sid}.json`);
+  if (!fs.existsSync(file)) {
+    // Explicit: a file the download step should have fetched and did not. This
+    // is never reported as "no games".
+    out.fatal = `games file NOT PRESENT at ${path.relative(ROOT, file)} — the workflow's download step did not fetch it`;
+    return out;
+  }
   let raw;
   try {
     raw = readJson(file);
@@ -484,8 +497,8 @@ function probeSeason(sid, indexSeason) {
 // ---------------------------------------------------------------- main
 
 function main() {
-  console.log(VERSION);
-  console.log(`ROOT: ${ROOT}`);
+  log(VERSION);
+  log(`ROOT: ${ROOT}`);
 
   let index = null;
   try {
@@ -494,12 +507,12 @@ function main() {
     console.error(`FATAL: could not read ${INDEX_FILE}: ${e.message || e}`);
     process.exit(2);
   }
-  console.log(`sports-index top-level keys: ${Object.keys(index || {}).join(', ') || '(none)'}`);
+  log(`sports-index top-level keys: ${Object.keys(index || {}).join(', ') || '(none)'}`);
   const seasonsFound = asRecordList(index && index.seasons, 'id');
-  console.log(`sports-index seasons container: ${seasonsFound.shape}`);
+  log(`sports-index seasons container: ${seasonsFound.shape}`);
   const seasonById = new Map();
   for (const s of seasonsFound.list) if (s && s.id) seasonById.set(s.id, s);
-  console.log(`sports-index: ${seasonById.size} seasons\n`);
+  log(`sports-index: ${seasonById.size} seasons\n`);
   if (!seasonById.size) {
     // A shape we cannot read is a failure, not an empty answer.
     console.error('FATAL: no seasons readable from data/sports-index.json — see the container line above.');
@@ -509,8 +522,12 @@ function main() {
   // --- --find: locate a season by name, so nobody needs a uuid to hand ----
   if (FIND) {
     const needle = FIND.toLowerCase();
+    // Under the sparse checkout games/bv is not present at all. That is NOT
+    // the same as a season having no games, and must never be printed as if
+    // it were.
+    const gamesDirPresent = fs.existsSync(GAMES_DIR);
     const haveGames = new Set(
-      fs.existsSync(GAMES_DIR)
+      gamesDirPresent
         ? fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.slice(0, -5))
         : []
     );
@@ -545,13 +562,16 @@ function main() {
     console.log('  prefix    games    status      ends        name');
     console.log('  ' + '-'.repeat(92));
     for (const h of hits.slice(0, FIND_LIMIT)) {
-      const g = h.gamesFile ? String(h.games) : 'NO FILE';
+      const g = !gamesDirPresent ? '-' : (h.gamesFile ? String(h.games) : 'none');
       console.log(
         `  ${h.sid.slice(0, 8)}  ${String(g).padStart(7)}  ${String(h.status || '?').padEnd(10)}  ` +
         `${String(h.endDate || '').slice(0, 10).padEnd(10)}  ${h.label}${h.locked ? '  [LOCKED]' : ''}`
       );
     }
     console.log('');
+    if (!gamesDirPresent) {
+      console.log('games column "-" means games/bv is not checked out in this job, NOT that the season has no games.');
+    }
     console.log('Take the 8-character prefix of the season you want and pass it as the seasons input.');
 
     fs.mkdirSync(REPORT_DIR, { recursive: true });
@@ -566,7 +586,16 @@ function main() {
     console.log('');
   }
 
-  const resolved = resolveSeasons(SEASON_TOKENS);
+  const resolved = resolveSeasons(SEASON_TOKENS, seasonById);
+
+  if (RESOLVE_ONLY) {
+    let bad = 0;
+    for (const r of resolved) {
+      if (r.sid) process.stdout.write(r.sid + '\n');
+      else { console.error(`UNRESOLVED "${r.token}": ${r.why}`); bad++; }
+    }
+    process.exit(bad ? 1 : 0);
+  }
   const report = { version: VERSION, generatedAt: new Date().toISOString(), seasons: [] };
   let failed = 0;
 
