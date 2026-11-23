@@ -240,6 +240,34 @@ function planGrade({ grade, stored, byRound, aheadN = 2, skipCurrent = true }) {
 
   const mode = stored ? 'incremental' : 'baseline';
 
+  // ── ROUNDS BEFORE THE CURRENT ONE THAT STILL HOLD UNPLAYED GAMES ────────
+  // Added 2026-11-23 after the first live run reported `grades withheld for
+  // incomplete coverage: 197`.
+  //
+  // The fetch window starts after the current round, so a round in the PAST
+  // holding an unplayed game was never fetched — and the coverage rule then
+  // refused to delete anything for that grade, for ever. The guard was blocking
+  // the exact cleanup it exists to make safe. Live example: grade 647b4d51 had a
+  // candidate in "Finals Round 3" withheld because "Finals Round 1" held unplayed
+  // games and had not been fetched.
+  //
+  // A past round holding an unplayed game is unusual — a postponement, or a
+  // stale fixture of precisely the kind this pass removes — so the extra cost is
+  // small and falls on the grades that need it. Applied in BOTH modes: without
+  // it in the incremental pass, a grade that keeps one genuinely unplayed past
+  // game could never satisfy coverage again.
+  const addPastUnplayed = () => {
+    // STRICTLY BEFORE the current round. `firstIdx` is currentIdx+1, so using it
+    // as the bound swept the CURRENT round in — which Phase 2 has already
+    // fetched and whose ids are fed in, so re-fetching it is one wasted request
+    // per grade. Caught by the existing tests the moment the bound was wrong.
+    const pastEnd = currentIdx >= 0 ? currentIdx : 0;
+    for (let i = 0; i < pastEnd && i < rounds.length; i++) {
+      const held = byRound.get(rounds[i].name);
+      if (held && held.some(e => !isPlayedGame(e.g))) add(rounds[i], 'past-unplayed');
+    }
+  };
+
   if (mode === 'baseline') {
     // THE BASELINE IS THE CLEAN-UP. Every stale game already on disk was written
     // by a sweep that has never looked at it again, so the first run for a grade
@@ -255,6 +283,7 @@ function planGrade({ grade, stored, byRound, aheadN = 2, skipCurrent = true }) {
     for (let i = firstIdx; i < rounds.length; i++) {
       if (roundIsUnplayed(rounds[i].name)) add(rounds[i], 'baseline');
     }
+    addPastUnplayed();
   } else {
     let taken = 0;
     for (let i = firstIdx; i < rounds.length && taken < aheadN; i++) {
@@ -271,6 +300,7 @@ function planGrade({ grade, stored, byRound, aheadN = 2, skipCurrent = true }) {
         if (!known.has(rounds[i].name) && roundIsUnplayed(rounds[i].name)) add(rounds[i], 'new-round');
       }
     }
+    addPastUnplayed();
   }
 
   // A round that is no longer in PlayHQ's list has been withdrawn. Its unplayed
@@ -337,6 +367,32 @@ function computeRoundDeletions({ roundStillListed, returnedIds, storedGames, ans
   //
   // A round we hold NOTHING for is never suspect either way — there is nothing
   // to delete and nothing to be suspicious about.
+  // RULE 3, AND THE EVIDENCE FOR IT IS NOW THREE-DEEP.
+  //
+  //   discoverFixtureByRound === null   → PlayHQ did not answer. SUSPECT.
+  //   {games: []}                       → PlayHQ answered, and the answer is
+  //                                       that the round holds no games.
+  //
+  // `gqlMain` already separates a refusal (blocked / transient) from an `ok`, so
+  // by the time a result reaches here the call succeeded. The caller passes
+  // `answered = payload !== null`.
+  //
+  // ⚠ THIS RULE WAS SHIPPED, THEN REVERTED ON 2026-11-23, THEN RESTORED THE SAME
+  // DAY. The reversal is the part worth remembering. Three games dated
+  // 2026-11-27 were deleted from grade fd985ec5 Round 8, and a PlayHQ screenshot
+  // appeared to show the fixture still live, so the rule was blamed and undone.
+  // The screenshot was StatTrack's own dark-themed team view — OUR data — not
+  // PlayHQ. PlayHQ's actual team fixture shows **Round 8 as a BYE**.
+  //
+  // WHICH EXPLAINS THE EMPTY ARRAY EXACTLY: `Q_FIXTURE_BY_ROUND` requests `byes`
+  // and `games` as SEPARATE arrays, and this code reads only `games`. A bye round
+  // genuinely returns no games. The empty answer was a true answer and the stored
+  // fixture was pre-regrade residue.
+  //
+  // The lesson is not about byes. It is that a screenshot is only evidence when
+  // you know which system produced it, and that reversing a measured rule on one
+  // unverified image is worse than shipping it was. The bye count is now carried
+  // through to the log so the next ambiguous case names its own cause.
   if (roundStillListed && !answered && held.length > 0) {
     return { deletable: [], keptPlayed: 0, suspectEmpty: true };
   }
