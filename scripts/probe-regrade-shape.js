@@ -34,7 +34,9 @@ const INDEX_FILE  = path.join(ROOT, 'data', 'sports-index.json');
 const REPORT_DIR  = path.join(ROOT, 'reports');
 const REPORT_FILE = path.join(REPORT_DIR, 'regrade-probe.json');
 
-const VERSION = 'probe-regrade-shape v1 (2026-11-23)';
+// v2 REPLACES v1, which crashed on `index.seasons` because it assumed an array.
+// Container shapes are now DISCOVERED and printed, never assumed.
+const VERSION = 'probe-regrade-shape v2 (2026-11-23)';
 
 // ---------------------------------------------------------------- args
 
@@ -57,6 +59,25 @@ if (!SEASON_TOKENS.length) {
 
 function readJson(file) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
+}
+
+// A collection in this repo may be an ARRAY or an OBJECT keyed by id, and the
+// project docs record a record's FIELDS without recording its container. So
+// never assume: take both, and report which one was found. Returns
+// { shape, list } where list is always an array of records, each carrying an id.
+function asRecordList(value, idKey) {
+  if (Array.isArray(value)) {
+    return { shape: 'array', list: value.filter(v => v && typeof v === 'object') };
+  }
+  if (value && typeof value === 'object') {
+    const list = [];
+    for (const [k, v] of Object.entries(value)) {
+      if (!v || typeof v !== 'object') continue;
+      list.push(v[idKey] ? v : Object.assign({}, v, { [idKey]: k }));
+    }
+    return { shape: 'object keyed by id', list };
+  }
+  return { shape: value === undefined ? 'ABSENT' : `UNUSABLE (${typeof value})`, list: [] };
 }
 
 // Never parse a date string with new Date(). Build from parts, then do the
@@ -140,7 +161,9 @@ function probeSeason(sid, indexSeason) {
 
   // --- grade names, from two independent sources -------------------------
   const gradeFromIndex = new Map();   // gid -> {name, age, gender}
-  for (const g of (indexSeason && indexSeason.grades) || []) {
+  const gradesFound = asRecordList(indexSeason && indexSeason.grades, 'id');
+  out.gradesContainer = gradesFound.shape;
+  for (const g of gradesFound.list) {
     if (g && g.id) gradeFromIndex.set(g.id, { name: g.name, age: g.age, gender: g.gender });
   }
 
@@ -318,6 +341,7 @@ function probeSeason(sid, indexSeason) {
 
   const distinctGidDist = new Map();
   const movers = [];
+  const noTransition = [];
   let sameWeekTwoGrades = 0;
   const sameWeekExamples = [];
   const changeWeeks = new Map();           // week -> number of teams changing
@@ -364,7 +388,7 @@ function probeSeason(sid, indexSeason) {
         tally(changesByAge.get(age), seq[i].week);
       }
     }
-    movers.push({
+    const rec = {
       tid,
       team: teamName.get(tid) || null,
       distinctGrades: distinct.size,
@@ -373,7 +397,12 @@ function probeSeason(sid, indexSeason) {
         from: gradeName(h.from) || h.from,
         to: gradeName(h.to) || h.to,
       })),
-    });
+    };
+    // Several grades but no week-to-week transition means the grades sit inside
+    // one week, or the games are undated. That is a distinct finding, not a
+    // mover, and the diagram has to decide what to draw for it.
+    if (hops.length) movers.push(rec);
+    else noTransition.push(rec);
   }
 
   out.distinctGradesPerTeam = [...distinctGidDist.entries()]
@@ -381,8 +410,10 @@ function probeSeason(sid, indexSeason) {
     .map(([n, teams]) => ({ distinctGrades: n, teams }));
   out.teamsThatChangedGrade = movers.length;
   out.teamsThatChangedGradeShare = pct(movers.length, perTeam.size);
-  out.teamsInTwoGradesInOneWeek = sameWeekTwoGrades;
-  out.teamsInTwoGradesInOneWeekExamples = sameWeekExamples;
+  out.teamsMultiGradeNoTransition = noTransition.length;
+  out.teamsMultiGradeNoTransitionExamples = noTransition.slice(0, MAX_EXAMPLES);
+  out.teamWeeksInTwoGrades = sameWeekTwoGrades;
+  out.teamWeeksInTwoGradesExamples = sameWeekExamples;
   out.moverExamples = movers.slice(0, MAX_EXAMPLES);
 
   const cw = [...changeWeeks.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1));
@@ -427,9 +458,17 @@ function main() {
     console.error(`FATAL: could not read ${INDEX_FILE}: ${e.message || e}`);
     process.exit(2);
   }
+  console.log(`sports-index top-level keys: ${Object.keys(index || {}).join(', ') || '(none)'}`);
+  const seasonsFound = asRecordList(index && index.seasons, 'id');
+  console.log(`sports-index seasons container: ${seasonsFound.shape}`);
   const seasonById = new Map();
-  for (const s of (index.seasons || [])) if (s && s.id) seasonById.set(s.id, s);
+  for (const s of seasonsFound.list) if (s && s.id) seasonById.set(s.id, s);
   console.log(`sports-index: ${seasonById.size} seasons\n`);
+  if (!seasonById.size) {
+    // A shape we cannot read is a failure, not an empty answer.
+    console.error('FATAL: no seasons readable from data/sports-index.json — see the container line above.');
+    process.exit(2);
+  }
 
   const resolved = resolveSeasons(SEASON_TOKENS);
   const report = { version: VERSION, generatedAt: new Date().toISOString(), seasons: [] };
@@ -466,7 +505,7 @@ function main() {
     console.log('  --- Q1  grade ids and grading phase ---');
     console.log(`  games carrying gid        : ${res.gid.gamesWithGid} (${res.gid.coverage})`);
     console.log(`  distinct gids in games    : ${res.gid.distinctGids}`);
-    console.log(`  grades in sports-index    : ${res.gid.gradesInIndex}`);
+    console.log(`  grades in sports-index    : ${res.gid.gradesInIndex}   (container: ${res.gradesContainer})`);
     console.log(`  grades from team-stats    : ${res.gid.gradesRecoveredFromTeamStats}${res.teamStatsPresent ? '' : '   (team-stats file ABSENT)'}`);
     console.log(`  gids with NO name         : ${res.gid.gidsWithNoResolvableName}`);
     console.log(`  games in a "Grading" grade: ${res.gid.gamesInAGradeNamedGrading}`);
@@ -491,7 +530,8 @@ function main() {
     console.log(`  teams seen                : ${res.teamCount}   (unresolved sides: ${res.sidesUnresolved})`);
     console.log(`  teams changing grade      : ${res.teamsThatChangedGrade} (${res.teamsThatChangedGradeShare})`);
     console.log(`  distinct grades per team  : ${res.distinctGradesPerTeam.map(d => `${d.distinctGrades}→${d.teams}`).join(', ')}`);
-    console.log(`  two grades in ONE week    : ${res.teamsInTwoGradesInOneWeek}`);
+    console.log(`  multi-grade, NO transition: ${res.teamsMultiGradeNoTransition}   (grades inside one week, or undated games)`);
+    console.log(`  team-weeks in 2+ grades   : ${res.teamWeeksInTwoGrades}`);
     console.log(`  COLUMNS THAT WOULD DRAW   : ${res.columnsThatWouldBeDrawn}`);
     if (res.changeWeeks.length) {
       console.log(`  change weeks              : ${res.changeWeeks.map(c => `${c.week}(${c.teamsChanging})`).join(', ')}`);
