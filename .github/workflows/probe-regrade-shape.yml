@@ -1,0 +1,74 @@
+# .github/workflows/probe-regrade-shape.yml
+#
+# READ-ONLY probe for the regrade-flow design. Makes no PlayHQ calls, writes
+# nothing to the repo, runs no git. Dispatch only — never scheduled.
+#
+# Output: the full summary is in the job log; reports/regrade-probe.json is
+# uploaded as an artifact. Nothing downstream reads it, so it is deliberately
+# NOT committed.
+#
+# No setup-node step: this job touches api.playhq.com zero times, and leaving
+# it out keeps the fingerprint-block trap unreachable by construction.
+
+name: Probe Regrade Shape
+
+on:
+  workflow_dispatch:
+    inputs:
+      seasons:
+        description: 'Comma-separated season ids or unique prefixes'
+        required: true
+        default: '1ae60211,aacc7335,7ccb2e98'
+      samples:
+        description: 'Full sample game records to print per season'
+        required: false
+        default: '3'
+      examples:
+        description: 'Max examples per example list'
+        required: false
+        default: '8'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: probe-regrade-shape
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout (plain, full tree — the probe reads whole season files)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Show what we are running against
+        run: |
+          echo "HEAD: $(git rev-parse --short HEAD)"
+          echo "node: $(node --version)"
+          ls -la games/bv | head -5
+          echo "games/bv season files: $(ls games/bv | wc -l)"
+
+      - name: Run probe
+        env:
+          SEASONS: ${{ inputs.seasons }}
+          SAMPLES: ${{ inputs.samples }}
+          EXAMPLES: ${{ inputs.examples }}
+        run: |
+          set -o pipefail
+          node scripts/probe-regrade-shape.js \
+            --seasons="${SEASONS}" \
+            --samples="${SAMPLES:-3}" \
+            --examples="${EXAMPLES:-8}"
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regrade-probe
+          path: reports/regrade-probe.json
+          if-no-files-found: warn
+          retention-days: 14
