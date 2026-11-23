@@ -498,6 +498,132 @@ function makeDeletionBudget({ maxPerRun, maxPerSeason }) {
   };
 }
 
+// ─── FULL-GRADE RESCAN AND CHANGE EXPANSION (2026-11-23) ─────────────────────
+//
+// THE DESIGN, IN MARK'S WORDS: "we are looking for any changes in fixtures, and
+// when we find one we scan all of them for that grade and expand until we find
+// the boundary of the changes."
+//
+// WHAT THIS REPLACES, AND WHY. The first version treated the forward window as
+// the whole mechanism: it fetched the next `aheadN` unplayed rounds plus any
+// round we hold a past-dated unplayed game in, and then — if that partial view
+// could not account for every round — refused to delete anything in the grade
+// (`assessGradeCoverage`). The stated reason was that a game vanishing from
+// Round 6 might have MOVED to Round 14.
+//
+// That reason does not survive contact with the fixture. A rescheduled game
+// moves by days, and rarely; it does not move two months down a junior season.
+// And `withholdLiveElsewhere` already catches the real case — a game that comes
+// back under any round of the grade is alive, whatever round it is now in.
+//
+// The guard's only measured effect was to block the cleanup the feature exists
+// to perform: 26 grades and 251 candidate games withheld on 2026-11-23, every
+// one of them pre-regrade residue PlayHQ had already dropped. A team was left
+// holding two fixtures in two grades on the same day, which is the state the
+// guard was supposed to make impossible.
+//
+// So the window is now for DISCOVERY ONLY — finding fixtures that have appeared
+// since — and any detected change triggers a full scan of the grade, which then
+// expands along the teams whose games changed into the grades they now sit in.
+// Coverage is satisfied by construction rather than asserted, and PlayHQ is
+// canonical: a round that was scanned and came back without a game means that
+// game is gone.
+
+// Every round of a grade that can be fetched, minus the ones already fetched.
+// A round with no `id` cannot be fetched at all — `discoverFixtureByRound` takes
+// the id — so it is RETURNED SEPARATELY rather than dropped silently, which is
+// what the previous `add()` did and what cost a night's diagnosis.
+function planGradeFull({ grade, fetchedRoundNames }) {
+  const fetched = fetchedRoundNames instanceof Set ? fetchedRoundNames : new Set(fetchedRoundNames || []);
+  const rounds  = Array.isArray(grade.rounds) ? grade.rounds : [];
+  const fetch   = [];
+  const unfetchable = [];
+  const seen = new Set();
+  for (const r of rounds) {
+    if (!r || !r.name) continue;
+    if (fetched.has(r.name)) continue;
+    if (!r.id) { unfetchable.push(r.name); continue; }
+    if (seen.has(r.id)) { unfetchable.push(r.name); continue; }   // duplicate id: second one is unaddressable
+    seen.add(r.id);
+    fetch.push({ roundId: r.id, roundName: r.name, reason: 'full-rescan' });
+  }
+  return { fetch, unfetchable };
+}
+
+// Did anything about this grade's fixtures change? Compares each round we
+// actually fetched against the id-set hash stored for it, and treats a round the
+// fingerprint has never seen as a change. A grade with no fingerprint is NOT
+// reported as changed — it is a baseline, which already scans everything.
+function detectGradeChange({ stored, gid, roundResults, roundListHash }) {
+  if (!stored) return { changed: false, reason: 'baseline', rounds: [] };
+  const prev = (stored && stored.r) || {};
+  const rounds = [];
+  let listChanged = !!(stored.rl && roundListHash && stored.rl !== roundListHash);
+  for (const [key, got] of roundResults) {
+    const bar = key.indexOf('|');
+    if (bar < 0 || key.slice(0, bar) !== gid) continue;
+    if (!got || !got.answered) continue;
+    const rn = key.slice(bar + 1);
+    const now = hashIdSet(got.ids);
+    if (!Object.prototype.hasOwnProperty.call(prev, rn)) { rounds.push(rn); continue; }
+    if (prev[rn] !== now) rounds.push(rn);
+  }
+  return { changed: listChanged || rounds.length > 0, reason: listChanged ? 'round-list' : 'round-ids', rounds };
+}
+
+// The expansion step. Given the rounds that changed in a grade, the team ids of
+// every stored game in those rounds are the teams the change is ABOUT — a
+// regrade removes a team's games from one grade and creates them in another, so
+// those teams are the thread to follow into the next grade.
+//
+// ⚠ SIDES ARE hTid/aTid OR t1/t2, NEVER BOTH (T44), and `p[]` carries no side
+// information at all (T67). Both shapes are read here.
+function teamsInRounds({ byRound, roundNames }) {
+  const out = new Set();
+  for (const rn of roundNames) {
+    for (const e of (byRound.get(rn) || [])) {
+      const g = (e && e.g) || {};
+      for (const k of ['hTid', 'aTid', 't1', 't2']) {
+        const v = g[k];
+        if (typeof v === 'string' && v) out.add(v);
+      }
+    }
+  }
+  return out;
+}
+
+// THE INVARIANT. A team holding fixtures in two different grades on the same
+// DATE is wrong on its face, whatever the coverage state — it is the shape a
+// half-applied regrade leaves behind. Reported in its own right rather than
+// inferred from deletion arithmetic, because the previous design permitted
+// exactly this state while reporting itself healthy.
+function findSameDayGradeConflicts(games) {
+  const byTeamDay = new Map();                       // `${tid}|${d}` → Set(gid)
+  for (const id of Object.keys(games || {})) {
+    const g = games[id];
+    if (!g || !g.d || !g.gid) continue;
+    for (const k of ['hTid', 'aTid', 't1', 't2']) {
+      const tid = g[k];
+      if (typeof tid !== 'string' || !tid) continue;
+      const key = `${tid}|${g.d}`;
+      if (!byTeamDay.has(key)) byTeamDay.set(key, new Map());
+      byTeamDay.get(key).set(g.gid, id);
+    }
+  }
+  const conflicts = [];
+  for (const [key, gidMap] of byTeamDay) {
+    if (gidMap.size < 2) continue;
+    const bar = key.indexOf('|');
+    conflicts.push({
+      tid:   key.slice(0, bar),
+      date:  key.slice(bar + 1),
+      grades: [...gidMap.keys()],
+      gameIds: [...gidMap.values()],
+    });
+  }
+  return conflicts;
+}
+
 module.exports = {
   FINGERPRINT_REL,
   MAX_FINGERPRINT_BYTES,
@@ -510,6 +636,10 @@ module.exports = {
   pruneFingerprints,
   groupStoredByRound,
   planGrade,
+  planGradeFull,
+  detectGradeChange,
+  teamsInRounds,
+  findSameDayGradeConflicts,
   computeRoundDeletions,
   assessGradeCoverage,
   withholdLiveElsewhere,
