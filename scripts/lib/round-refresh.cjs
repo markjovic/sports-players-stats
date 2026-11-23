@@ -576,17 +576,25 @@ function detectGradeChange({ stored, gid, roundResults, roundListHash }) {
 // regrade removes a team's games from one grade and creates them in another, so
 // those teams are the thread to follow into the next grade.
 //
-// ⚠ SIDES ARE hTid/aTid OR t1/t2, NEVER BOTH (T44), and `p[]` carries no side
-// information at all (T67). Both shapes are read here.
+// ⚠ THE SIDE KEYS IN games/bv ARE `h` AND `a`, OR `t1`/`t2` — NEVER hTid/aTid.
+// `applyRoundFixtures` writes `{ h, hn, a, an }`; `hTid`/`aTid` do not exist in
+// that file at all. The first version of this function read hTid/aTid, taken
+// from a doc instead of from the writer, so it returned NO teams and expansion
+// silently expanded nothing — while its tests passed, because the fixtures were
+// built with the same wrong names. Read exactly as build-player-games.js:197
+// does, which is the canonical both-shapes read in this repo (T44). `p[]` carries
+// no side information at all (T67) and is never consulted.
+function sideIds(g) {
+  const h = (g && (g.h ?? g.t1)) || null;
+  const a = (g && (g.a ?? g.t2)) || null;
+  return [h, a].filter(v => typeof v === 'string' && v);
+}
+
 function teamsInRounds({ byRound, roundNames }) {
   const out = new Set();
   for (const rn of roundNames) {
     for (const e of (byRound.get(rn) || [])) {
-      const g = (e && e.g) || {};
-      for (const k of ['hTid', 'aTid', 't1', 't2']) {
-        const v = g[k];
-        if (typeof v === 'string' && v) out.add(v);
-      }
+      for (const tid of sideIds((e && e.g) || {})) out.add(tid);
     }
   }
   return out;
@@ -602,9 +610,7 @@ function findSameDayGradeConflicts(games) {
   for (const id of Object.keys(games || {})) {
     const g = games[id];
     if (!g || !g.d || !g.gid) continue;
-    for (const k of ['hTid', 'aTid', 't1', 't2']) {
-      const tid = g[k];
-      if (typeof tid !== 'string' || !tid) continue;
+    for (const tid of sideIds(g)) {
       const key = `${tid}|${g.d}`;
       if (!byTeamDay.has(key)) byTeamDay.set(key, new Map());
       byTeamDay.get(key).set(g.gid, id);
@@ -638,6 +644,7 @@ module.exports = {
   planGrade,
   planGradeFull,
   detectGradeChange,
+  sideIds,
   teamsInRounds,
   findSameDayGradeConflicts,
   computeRoundDeletions,
