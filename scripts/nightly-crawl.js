@@ -2502,12 +2502,18 @@ async function main() {
   console.log(`  Refresh coverage gaps: ${refresh.gradesUnaccounted} grade(s) had a live unplayed round left unfetched`
             + ` (reported, no longer blocking deletions)`
             + `${refresh.wavesExhausted ? `  ⚠ EXPANSION DID NOT SETTLE: ${refresh.wavesExhausted} round(s) left` : ''}`);
+  // ⚠ THE WARNING BELONGS TO THE INVARIANT LINE, NOT THE LAST LINE PRINTED.
+  // It was appended as the final term of a four-line template, so it rendered as
+  // "sup flags: 0 set, 0 cleared  ⚠ regrade cleanup incomplete" — which reads as
+  // the flag write being incomplete when it is the regrade cleanup that is. A
+  // true statement attached to the wrong number is a false one.
   console.log(`  Refresh invariant: ${refresh.sameDayConflicts} team-day(s) holding two grades on one date`
             + `  ${refresh.sameDayNameConflicts} same-name-day(s) across two team ids`
-            + `\n  Refresh stale fixtures: ${refresh.staleGames} past-dated unplayed game(s) across ${refresh.staleGrades} grade(s)`
-            + `, ${refresh.staleSuperseded} superseded by a game elsewhere that day`
-            + `\n  Refresh sup flags: ${refresh.supSet} set, ${refresh.supClear} cleared`
             + `${refresh.sameDayConflicts || refresh.sameDayNameConflicts ? '  ⚠ regrade cleanup incomplete' : ''}`);
+  console.log(`  Refresh stale fixtures: ${refresh.staleGames} past-dated unplayed game(s) across ${refresh.staleGrades} grade(s)`
+            + `, ${refresh.staleSuperseded} superseded by a game elsewhere that day`);
+  console.log(`  Refresh sup flags: ${refresh.supSet} set, ${refresh.supClear} cleared`
+            + `${REFRESH_DRY_RUN || DRY_RUN ? '  (dry run — no write)' : ''}`);
   console.log(`  Refresh deletions: ${refresh.deleted}  kept-because-played: ${refresh.keptPlayed}`
             + `  suspect-empty rounds: ${refresh.suspectEmpty}  unscopeable (no rn): ${refresh.noRoundSkipped}`);
   if (refresh.baselineDeferred) console.log(`  Baseline backlog:  ${refresh.baselineDeferred} grade(s) waiting for a later run`);
