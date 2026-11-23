@@ -1007,6 +1007,51 @@ async function main() {
   const RNAME = String(ARGS.round  || '').trim();
   const ONLY  = String(ARGS.games === true ? '' : (ARGS.games || '')).split(/[\s,]+/).filter(Boolean);
 
+  // ── PHASES ──────────────────────────────────────────────────────────────────
+  // MEASURED 2026-11-23: players/ is 3.4 GB of a 4.3 GB checkout and a full tree
+  // takes 5m52s on a runner, for a script that runs in 3 seconds. A fast publish
+  // needs about TEN player files out of ~370,000, but which ten is not known until
+  // the box score has been fetched — so the checkout cannot be narrowed in one
+  // pass. It is split instead:
+  //
+  //   --phase=fetch    needs games/bv/{sid}.json, players/indexes, players/aliases
+  //                    (~160 MB). Writes the round, pulls the box scores, resolves
+  //                    spectator ids to canonical api ids, and writes its state to
+  //                    --state. Emits fetch_shards for the workflow to
+  //                    `git sparse-checkout add` before the second half.
+  //   --phase=players  reads --state, then clears statsChecked and stubs new
+  //                    players against the shards just added.
+  //   --phase=all      both, in one process. The default, and what a local run or
+  //                    a manual dispatch uses.
+  //
+  // ⚠ The split is a CHECKOUT optimisation only. Neither phase changes what is
+  //   written, and `all` is the same code path end to end.
+  const PHASE = String(ARGS.phase || 'all').trim().toLowerCase();
+  if (!['all', 'fetch', 'players'].includes(PHASE)) {
+    console.error(`::error::--phase must be all, fetch or players (got "${PHASE}")`);
+    process.exit(2);
+  }
+  const DO_FETCH   = PHASE === 'all' || PHASE === 'fetch';
+  const DO_PLAYERS = PHASE === 'all' || PHASE === 'players';
+  const STATE_PATH = String(ARGS.state || '').trim();
+  if (PHASE !== 'all' && !STATE_PATH) {
+    console.error(`::error::--phase=${PHASE} needs --state=<path> — the two phases are separate processes and the deltas are handed over on disk.`);
+    process.exit(2);
+  }
+  // ⚠ NOT inside the repo. A state file committed by accident would be a blob of
+  //   player ids in a public repository, and it would collide with the nightly.
+  if (STATE_PATH && !path.isAbsolute(STATE_PATH)) {
+    console.error(`::error::--state must be an ABSOLUTE path outside the repo (got "${STATE_PATH}")`);
+    process.exit(2);
+  }
+
+  // Hoisted out of the spectator block so the players phase can see them without
+  // having run it. See the generator for the two declaration-only edits this needs.
+  let playerDeltas = new Map();
+  let spectatorHits = 0, spectatorMiss = 0;
+  let totalGames = 0, byeCount = 0, forfeitCount = 0, queuedCount = 0;
+  let gradeName = GID, roundName = RNAME;
+
   // All three are REQUIRED and none has a default. A missing value must stop the
   // run, never widen it: this script is dispatched from another repository and is
   // allowed to touch exactly the round it was given.
@@ -1023,12 +1068,19 @@ async function main() {
   console.log(`  season:  ${SID}`);
   console.log(`  grade:   ${GID}`);
   console.log(`  round:   "${RNAME}"`);
+  if (PHASE !== 'all') console.log(`  phase:   ${PHASE}  (state ${STATE_PATH})`);
   if (ONLY.length) console.log(`  games:   ${ONLY.join(', ')}  (the dispatcher's list — the whole round is fetched regardless)`);
   if (DRY_RUN) console.log('  ⚠  DRY RUN — no writes or commits');
   console.log('─'.repeat(50));
 
   if (!fs.existsSync(INDEX_FILE)) { console.error('::error::data/sports-index.json not found'); process.exit(1); }
   const sportIndex = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf8'));
+
+  // ⚠ The fetch half below is WRAPPED BUT NOT RE-INDENTED, deliberately. The
+  //   spectator and alias blocks inside it are verbatim copies of nightly-crawl.js
+  //   and have to stay byte-comparable with it; an indentation pass would make
+  //   every future diff between the two files meaningless.
+  if (DO_FETCH) {
 
   // ── Step 1: the grade's round list ──────────────────────────────────────────
   // The dispatcher sends a round NAME, because that is what its state file holds.
@@ -1075,10 +1127,14 @@ async function main() {
     process.exit(1);
   }
 
-  const { needsSpectator: roundSpectator, forfeitGameIds, totalGames } = applyRoundFixtures(
+  gradeName = grade.name || GID;
+  roundName = round.name || RNAME;
+  const { needsSpectator: roundSpectator, forfeitGameIds, totalGames: fetchedTotal } = applyRoundFixtures(
     fr.data, GID, grade.name || null, round.name || RNAME, !!round.current
   );
-  const byeCount = ((fr.data.discoverFixtureByRound.byes) || []).length;
+  totalGames = fetchedTotal;
+  byeCount = ((fr.data.discoverFixtureByRound.byes) || []).length;
+  forfeitCount = forfeitGameIds.length;
   console.log(`  fixture: ${totalGames} game(s), ${byeCount} bye(s), ${forfeitGameIds.length} forfeit(s)`);
 
   // The dispatcher named the games it saw flip. Say plainly whether they were in
@@ -1111,6 +1167,7 @@ async function main() {
     seenGameIds.add(gameId);
     return true;
   });
+  queuedCount = needsSpectator.length;
   console.log(`  Games needing spectator: ${needsSpectator.length}`);
 
   const flushedGames = flushGameFiles();
@@ -1126,8 +1183,8 @@ async function main() {
   console.log(`Phase 3/4 — Spectator box scores (${needsSpectator.length} games)…`);
 
   // playerDeltas: Map<uuid, { name, deltas: [{seasonId, pts, pt3, fouls}] }>
-  const playerDeltas = new Map();
-  let spectatorHits = 0, spectatorMiss = 0, p3Done = 0;
+  playerDeltas = new Map();
+  let p3Done = 0;
 
   const p3Tasks = needsSpectator.map(({ gameId, seasonId, rn, gradeId, gradeName, homeTid, awayTid, homeScore, awayScore }) => async () => {
     const game = await gqlSpectator(gameId);
@@ -1222,6 +1279,64 @@ async function main() {
     if (redirected > 0) console.log(`  Alias-resolved ${redirected} spectator id(s) to canonical api ids`);
   }
 
+
+  // ── Hand over to the players phase ──────────────────────────────────────────
+  if (!DO_PLAYERS) {
+    const st = {
+      v: 1, season: SID, grade: GID, gradeName, roundName,
+      totalGames, byeCount, forfeitCount, queuedCount, spectatorHits, spectatorMiss,
+      deltas: [...playerDeltas],
+    };
+    fs.writeFileSync(STATE_PATH, JSON.stringify(st));
+    const fetchShards = [...new Set([...playerDeltas.keys()].map(playerShard))].sort();
+    console.log(`  State written to ${STATE_PATH} — ${playerDeltas.size} player(s) across ${fetchShards.length} shard(s)`);
+    if (process.env.GITHUB_OUTPUT) {
+      // The SUPERSET of shards the players phase can touch, for the sparse-checkout
+      // add. The matrix's own list comes later and is narrower.
+      fs.appendFileSync(process.env.GITHUB_OUTPUT,
+        `fetch_shards=${fetchShards.join(' ')}\n` +
+        `fetch_shard_count=${fetchShards.length}\n` +
+        `games=${totalGames}\n` +
+        `spectator_hits=${spectatorHits}\n`);
+    }
+    console.log('─'.repeat(50));
+    console.log(`  Phase FETCH complete: ${totalGames} game(s), ${spectatorHits} box score(s), ${playerDeltas.size} player(s), ${fetchShards.length} shard(s)`);
+    console.log(`  Elapsed: ${Math.round((Date.now() - startTime) / 1000)}s`);
+    console.log('─'.repeat(50));
+    return;
+  }
+
+  } else {
+  // ── Resume from the fetch phase ─────────────────────────────────────────────
+  // A missing or unreadable state file is FATAL, never an empty run: "no players
+  // to update" and "the first half's output was lost" must not look the same.
+  let st;
+  try { st = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')); }
+  catch (err) {
+    console.error(`::error::--phase=players could not read ${STATE_PATH}: ${err.message}`);
+    console.error('  The fetch phase either did not run or its state was lost. Nothing has been changed by this phase.');
+    process.exit(1);
+  }
+  if (!st || st.v !== 1 || !Array.isArray(st.deltas)) {
+    console.error(`::error::${STATE_PATH} is not a v1 publish-final-game state file.`);
+    process.exit(1);
+  }
+  if (st.season !== SID || st.grade !== GID) {
+    console.error(`::error::state file is for ${st.season}/${st.grade}, this phase was given ${SID}/${GID}. Refusing.`);
+    process.exit(1);
+  }
+  playerDeltas  = new Map(st.deltas);
+  gradeName     = st.gradeName || GID;
+  roundName     = st.roundName || RNAME;
+  totalGames    = st.totalGames    || 0;
+  byeCount      = st.byeCount      || 0;
+  forfeitCount  = st.forfeitCount  || 0;
+  queuedCount   = st.queuedCount   || 0;
+  spectatorHits = st.spectatorHits || 0;
+  spectatorMiss = st.spectatorMiss || 0;
+  console.log(`Resumed from ${STATE_PATH} — ${playerDeltas.size} player(s), ${totalGames} game(s) fetched, ${spectatorHits} box score(s).`);
+  console.log();
+  }
 
   // ── Phase 3 cont.: Clear statsChecked for all players in tonight's games ───────
   // All player stat computation is owned by the matrix (fetch-profile-stats.js).
@@ -1475,9 +1590,9 @@ async function main() {
   const elapsed = Math.round((Date.now() - startTime) / 1000);
   console.log('─'.repeat(50));
   console.log(`  Season:            ${SID}`);
-  console.log(`  Grade / round:     ${grade.name || GID} / "${round.name}"`);
-  console.log(`  Games in round:    ${totalGames}  (byes ${byeCount}, forfeits ${forfeitGameIds.length})`);
-  console.log(`  Spectator queued:  ${needsSpectator.length}`);
+  console.log(`  Grade / round:     ${gradeName} / "${roundName}"`);
+  console.log(`  Games in round:    ${totalGames}  (byes ${byeCount}, forfeits ${forfeitCount})`);
+  console.log(`  Spectator queued:  ${queuedCount}`);
   console.log(`  Spectator hits:    ${spectatorHits}  misses: ${spectatorMiss}`);
   console.log(`  statsChecked cleared: ${statsCleared}  new regs: ${newRegsAdded}`);
   console.log(`  New players:       ${stubbed}`);
