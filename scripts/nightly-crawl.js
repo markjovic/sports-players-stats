@@ -1791,23 +1791,44 @@ async function main() {
     // cleanup has not finished.
     {
       const seasonsToCheck = new Set(work.map(w => w.grade.seasonId).filter(Boolean));
-      let shown = 0;
+      // ⚠ COUNT WHAT WAS PRINTED, NOT WHAT WAS SEEN. The first version
+      // incremented one counter for every conflict and then compared the total
+      // against it, so `113 > 113` was false and the "and N more" line never
+      // fired: 40 lines printed, 73 dropped, and nothing said so. A truncation
+      // that does not announce itself is the same class of fault as a swallowed
+      // error.
+      const PRINT_CAP = 40;
+      let printed = 0;
+      // Which grades collide, across the whole run — this is the part worth
+      // reading when the list is long. A gid appearing on one side of dozens of
+      // conflicts is a grading pool or a wholesale regrade, not 40 coincidences.
+      const gradePairs = new Map();
       for (const sid of seasonsToCheck) {
         const gfC = loadGameFile(sid);
         const conflicts = RR.findSameDayGradeConflicts(gfC.games);
         if (!conflicts.length) continue;
         refresh.sameDayConflicts += conflicts.length;
         for (const c of conflicts) {
-          if (shown++ >= 40) continue;
-          console.log(`  ⚠ TWO GRADES ONE DAY: sid=${sid} team=${c.tid} date=${c.date}`
-                    + ` grades=${c.grades.join(' + ')} games=${c.gameIds.join(' ')}`);
+          const pk = [...c.grades].sort().join(' + ');
+          gradePairs.set(pk, (gradePairs.get(pk) || 0) + 1);
+          if (printed >= PRINT_CAP) continue;
+          printed++;
+          const sides = c.grades.map((g, i) =>
+            `${g}${c.gradeNames[i] ? ` "${c.gradeNames[i]}"` : ''}${c.played[i] ? ' [PLAYED]' : ' [unplayed]'}`);
+          console.log(`  ⚠ TWO GRADES ONE DAY: sid=${sid} team=${c.tid} date=${c.date}`);
+          console.log(`             ${sides.join('  +  ')}`);
           for (const id of c.gameIds) console.log(`             ${gcUrl(id)}`);
         }
       }
       if (refresh.sameDayConflicts) {
-        if (refresh.sameDayConflicts > shown) {
-          console.log(`  … and ${refresh.sameDayConflicts - shown} more same-day conflict(s) not printed`);
+        if (refresh.sameDayConflicts > printed) {
+          console.log(`  … ${printed} of ${refresh.sameDayConflicts} same-day conflict(s) printed;`
+                    + ` ${refresh.sameDayConflicts - printed} not shown. Raise PRINT_CAP to see them all.`);
         }
+        const pairs = [...gradePairs.entries()].sort((a, b) => b[1] - a[1]);
+        console.log(`  Same-day conflicts by grade pair (${pairs.length} distinct pair(s)):`);
+        for (const [pk, n] of pairs.slice(0, 15)) console.log(`      ${n.toString().padStart(4)} × ${pk}`);
+        if (pairs.length > 15) console.log(`      … and ${pairs.length - 15} more pair(s)`);
         console.log(`::warning::nightly-crawl refresh: ${refresh.sameDayConflicts} team-day(s) hold fixtures in`
                   + ` two or more grades on the same date — a regrade that has not finished cleaning up.`);
       } else {
