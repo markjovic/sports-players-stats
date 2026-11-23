@@ -601,6 +601,24 @@ let commitLock = false;
 // get the larger buffer; `-q` on the merge suppresses the per-file lines at
 // source. Reproduced at the exact failing size before this change was made.
 const GIT_MAXBUF = 512 * 1024 * 1024;
+// ⚠ ADDED 2026-11-24 AFTER A RUN HUNG FOR 70+ MINUTES ON ONE GIT CALL.
+//
+// Every execFileSync in gitCommit carried maxBuffer and NO timeout, so a stalled
+// fetch or push waited for ever. The run printed `staging: 1 file changed` and
+// then nothing — and because every retry path in the loop below PRINTS, silence
+// was proof it was not retrying but hung inside a single call. `timeout-minutes`
+// on the job is 300, so it would have held the data-write lock for five hours
+// before anything noticed.
+//
+// 10 minutes is deliberately generous: the successful pushes in this repo take
+// seconds, and the slowest legitimate operation here is a fetch against ~6 GB.
+// Anything past that is a stall, not slow progress.
+//
+// ⚠ A TIMEOUT IS RETRYABLE, NOT FATAL. A hung connection is the transient case
+// the retry loop exists for; failing fast on it would turn a recoverable stall
+// into a red run. It is counted and printed separately from contention so the
+// two are never confused in a log.
+const GIT_TIMEOUT = 10 * 60 * 1000;
 async function gitCommit(message, dirs) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
   const paths = (dirs && dirs.length ? dirs : ['.']);
@@ -614,7 +632,7 @@ async function gitCommit(message, dirs) {
   // reported loudly.
   let addFailures = 0, hardAddFailures = 0;
   for (const p of paths) {
-    try { execFileSync('git', ['add', '--', p], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }); }
+    try { execFileSync('git', ['add', '--', p], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT }); }
     catch (e) {
       addFailures++;
       const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n')[0];
@@ -625,7 +643,7 @@ async function gitCommit(message, dirs) {
   }
 
   const staged = (() => {
-    try { return execFileSync('git', ['diff', '--staged', '--shortstat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }).toString().trim(); }
+    try { return execFileSync('git', ['diff', '--staged', '--shortstat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT }).toString().trim(); }
     catch (_) { return ''; }
   })();
 
@@ -662,7 +680,7 @@ async function gitCommit(message, dirs) {
 
   // execFileSync with an argument array — the message is no longer interpolated
   // into a shell string, so the `"` -> `'` escaping hack is gone with it.
-  try { execFileSync('git', [...IDENT, 'commit', '-q', '-m', message], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }); }
+  try { execFileSync('git', [...IDENT, 'commit', '-q', '-m', message], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT }); }
   catch (e) {
     const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim();
     throw new Error(`gitCommit: commit failed for "${message}" — ${detail}`);
@@ -682,28 +700,41 @@ async function gitCommit(message, dirs) {
   // Phase 2 paced pool, and blocking here would stall sibling fetch workers.
   const MAX = 60;
   for (let attempt = 1; attempt <= MAX; attempt++) {
-    try { execFileSync('git', ['merge', '--abort'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF }); } catch (_) { /* none in progress */ }
+    try { execFileSync('git', ['merge', '--abort'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT }); } catch (_) { /* none in progress */ }
 
     try {
-      execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF });
+      execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT });
     } catch (e) {
       if (attempt === MAX) throw e;
+      const stalled = e.code === 'ETIMEDOUT' || e.signal === 'SIGTERM';
       const s = 1 + Math.floor(Math.random() * 91);
-      console.log(`  fetch failed (attempt ${attempt}/${MAX}), retrying in ${s}s`);
+      console.log(`  fetch ${stalled ? `STALLED past ${GIT_TIMEOUT / 60000} min and was killed` : 'failed'}`
+                + ` (attempt ${attempt}/${MAX}), retrying in ${s}s`);
       await sleep(s * 1000);
       continue;
     }
 
     // A merge failure is a config or content problem, not a race — fatal.
-    execFileSync('git', [...IDENT, 'merge', '-q', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF });
+    execFileSync('git', [...IDENT, 'merge', '-q', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT });
 
     try {
-      execFileSync('git', ['push', 'origin', 'HEAD:main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF });
+      execFileSync('git', ['push', 'origin', 'HEAD:main'], { stdio: 'pipe', cwd: ROOT, maxBuffer: GIT_MAXBUF, timeout: GIT_TIMEOUT });
       console.log(`  ✓ Committed: ${message} (pushed on attempt ${attempt})`);
       return;
     } catch (e) {
       const detail = ((e.stderr && e.stderr.toString()) || e.message || '').trim();
       const contention = /non-fast-forward|fetch first|\[rejected\]|failed to push some refs|cannot lock ref/i.test(detail);
+      // A killed-on-timeout child reports ETIMEDOUT / SIGTERM rather than any of
+      // git's own rejection strings. Treated as retryable and labelled as a
+      // STALL, never folded into the contention count.
+      const stalled = e.code === 'ETIMEDOUT' || e.signal === 'SIGTERM';
+      if (stalled && attempt < MAX) {
+        const s2 = 1 + Math.floor(Math.random() * 91);
+        console.log(`  ⚠ push STALLED past ${GIT_TIMEOUT / 60000} min and was killed`
+                  + ` (attempt ${attempt}/${MAX}) — retrying in ${s2}s`);
+        await sleep(s2 * 1000);
+        continue;
+      }
       if (!contention) {
         console.error(`  push failed — NOT contention, failing fast. git said:\n${detail}`);
         throw e;
