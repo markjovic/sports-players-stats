@@ -1319,6 +1319,11 @@ async function main() {
 
     // ── Decide deletions, per grade, all-or-nothing ──────────────────────────
     const budget  = RR.makeDeletionBudget({ maxPerRun: MAX_DELETES_RUN, maxPerSeason: MAX_DELETES_SEASON });
+    // A deletion nobody can look up is a deletion nobody can audit. PlayHQ's
+    // game centre resolves on the game id alone and ignores the org/season/grade
+    // slugs, so placeholder slugs give a working link from the id we already hold
+    // (same construction as audit-nonfinal-games.js and build-alias-worklist.js).
+    const gcUrl = (id) => `https://www.playhq.com/basketball-victoria/org/a/a/a/game-centre/${id}`;
     const toDelete = [];           // { sid, gid, rn, gameId }
     const fpNext   = new Map();    // gid → fingerprint entry, applied only at the end
     const regradedSeasons = new Set();
@@ -1364,6 +1369,42 @@ async function main() {
       if (!cov.fullyAccounted) {
         refresh.gradesUnaccounted++;
         gradeClean = false;
+
+        // ── DIAGNOSTIC, 2026-11-23. LOG ONLY — changes no decision. ──────────
+        //
+        // WHY: 26 grades withheld every deletion on the first full repo-wide run,
+        // all naming far-out rounds they hold unplayed games in. `planGrade` calls
+        // `addHeldUnplayed()` uncapped in BOTH modes, so a round we hold unplayed
+        // games in is supposed to be fetched wherever it sits. These were not.
+        // The withheld line names the round but not WHY it went unfetched, so the
+        // cause cannot be told apart from the log as it stands:
+        //
+        //   planned=no  + id=<missing>  → `add()` drops any round with no `r.id`
+        //   planned=no  + id=<present>  → the plan itself is skipping it
+        //   planned=yes                 → planned but no result landed, i.e. the
+        //                                 fetch never answered and was not counted
+        //
+        // Bounded by `gradesUnaccounted`, which is the summary's
+        // "grades withheld for incomplete coverage" — 26 last run — so this is at
+        // most 26 blocks. It vanishes entirely when coverage is fixed.
+        //
+        // That counter also explains the 26-vs-18 gap: 26 grades were unaccounted,
+        // but only 18 of them held deletion candidates, and the WITHHELD line only
+        // fires when there is something to withhold. The two numbers never
+        // contradicted each other.
+        const plannedNames = new Set(w.plan.fetch.map(f => f.roundName));
+        const roundById    = new Map((w.grade.rounds || []).filter(r => r && r.name).map(r => [r.name, r]));
+        const diag = cov.unaccounted.map((rn) => {
+          const r = roundById.get(rn);
+          return `"${rn}" planned=${plannedNames.has(rn) ? 'yes' : 'NO'}`
+               + ` id=${r ? (r.id || '<MISSING>') : '<NOT-IN-ROUND-LIST>'}`
+               + ` current=${r && r.current ? 'yes' : 'no'}`
+               + ` held=${(w.byRound.get(rn) || []).length}`;
+        });
+        console.log(`  · COVERAGE DIAG sid=${sid} gid=${gid} unaccounted=${cov.unaccounted.length}`
+                  + ` planned=${w.plan.fetch.length} fetched=${fetchedNames.size} mode=${w.plan.mode}`);
+        for (const line of diag.slice(0, 20)) console.log(`      ${line}`);
+        if (diag.length > 20) console.log(`      … and ${diag.length - 20} more`);
       }
 
       for (const f of judged) {
@@ -1515,7 +1556,7 @@ async function main() {
       console.log('  overwrite Phase 2 performs on the current round and carry no risk of loss.');
     } else if (REFRESH_DRY_RUN) {
       console.log(`  [refresh-dry-run] would delete ${toDelete.length} game(s):`);
-      for (const d of toDelete) console.log(`    sid=${d.sid} gid=${d.gid} round="${d.rn}" game=${d.gameId}`);
+      for (const d of toDelete) console.log(`    sid=${d.sid} gid=${d.gid} round="${d.rn}" game=${d.gameId}  ${gcUrl(d.gameId)}`);
     } else {
       // ── ARCHIVE BEFORE DELETE ────────────────────────────────────────────
       // This is what makes a deletion reversible, and therefore what lets the
@@ -1588,7 +1629,8 @@ async function main() {
         // Every deletion is printed in full. A deletion nobody can find in a log
         // is a deletion nobody can audit.
         console.log(`  ✖ DELETED  sid=${d.sid}  gid=${d.gid}  round="${d.rn}"  game=${d.gameId}`
-                  + `  d=${entry.d || '∅'}  ${entry.hn || '?'} v ${entry.an || '?'}`);
+                  + `  d=${entry.d || '∅'}  ${entry.hn || '?'} v ${entry.an || '?'}`
+                  + `\n             ${gcUrl(d.gameId)}`);
       }
 
       if (archives.size) {
