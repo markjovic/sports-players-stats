@@ -3,6 +3,17 @@
 # READ-ONLY probe for the regrade-flow design. Makes no PlayHQ calls, writes
 # nothing to the repo, runs no git. Dispatch only — never scheduled.
 #
+# ⚠️ THIS JOB DOES NOT CHECK OUT THE REPO. v3 and earlier did a plain full
+# checkout — five to seven minutes to clone ~6 GB and 529k files so the probe
+# could read FIVE of them. It now checks out exactly two paths with a blobless,
+# non-cone sparse checkout, then downloads only the season files the run needs
+# from raw.githubusercontent.com. Do not "fix" this back to a plain checkout.
+#
+# The repo rule against sparse-checkout applies to jobs that read MANY player
+# files, where a blobless clone fetches each one over the network at ~1s each.
+# This job reads one index file plus one or two files per season, so that rule
+# does not apply and the trade-off runs the other way.
+#
 # Output: the full summary is in the job log; reports/regrade-probe.json is
 # uploaded as an artifact. Nothing downstream reads it, so it is deliberately
 # NOT committed.
@@ -42,19 +53,58 @@ concurrency:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 20
     steps:
-      - name: Checkout (plain, full tree — the probe reads whole season files)
+      # Two files. Not the repository.
+      - name: Sparse checkout (script + season index only)
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            scripts/probe-regrade-shape.js
+            data/sports-index.json
 
-      - name: Show what we are running against
+      - name: Confirm the checkout is small and holds what we need
         run: |
+          set -euo pipefail
           echo "HEAD: $(git rev-parse --short HEAD)"
           echo "node: $(node --version)"
-          ls -la games/bv | head -5
-          echo "games/bv season files: $(ls games/bv | wc -l)"
+          echo "working tree size: $(du -sh . | cut -f1)"
+          test -f scripts/probe-regrade-shape.js || { echo "FATAL: script not checked out"; exit 1; }
+          test -f data/sports-index.json        || { echo "FATAL: sports-index.json not checked out"; exit 1; }
+          ls -la data/sports-index.json
+
+      # Resolve the prefixes from the index, then pull ONLY those season files.
+      # Skipped entirely in search-only mode, which needs no season data.
+      - name: Download the season files this run needs
+        if: ${{ inputs.seasons != '' }}
+        env:
+          SEASONS: ${{ inputs.seasons }}
+        run: |
+          set -euo pipefail
+          echo "Resolving season prefixes against data/sports-index.json ..."
+          node scripts/probe-regrade-shape.js --seasons="${SEASONS}" --resolve-only > /tmp/sids.txt
+          echo "Resolved:"; cat /tmp/sids.txt
+          WANT=$(grep -c . /tmp/sids.txt || true)
+          echo "seasons to download: ${WANT}"
+          test "${WANT}" -gt 0 || { echo "FATAL: nothing resolved"; exit 1; }
+          mkdir -p games/bv team-stats/bv
+          BASE="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}"
+          GOT=0
+          # `|| [ -n "$SID" ]` so a file with no trailing newline cannot silently
+          # drop its last season — verified to do exactly that without it.
+          while read -r SID || [ -n "$SID" ]; do
+            [ -z "$SID" ] && continue
+            echo "--- $SID"
+            curl -fsSL --retry 3 --retry-delay 2 -o "games/bv/${SID}.json" "${BASE}/games/bv/${SID}.json" || { echo "FATAL: could not download games/bv/${SID}.json"; exit 1; }
+            curl -fsSL --retry 3 --retry-delay 2 -o "team-stats/bv/${SID}.json" "${BASE}/team-stats/bv/${SID}.json" || { echo "note: no team-stats/bv/${SID}.json — grade names fall back to the index"; rm -f "team-stats/bv/${SID}.json"; }
+            ls -lh "games/bv/${SID}.json"
+            GOT=$((GOT+1))
+          done < /tmp/sids.txt
+          echo "downloaded ${GOT} of ${WANT}"
+          test "${GOT}" -eq "${WANT}" || { echo "FATAL: downloaded ${GOT} season files but resolved ${WANT}"; exit 1; }
 
       - name: Run probe
         env:
