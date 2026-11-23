@@ -41,8 +41,8 @@ t('teams: scoped to round', !tm.has('T5'));
 
 // findSameDayGradeConflicts
 const games={
-  g1:{d:'2026-11-13',gid:'AR',h:'M1',a:'V2'},
-  g2:{d:'2026-11-13',gid:'A', h:'M1',a:'H1'},
+  g1:{d:'2026-11-13',gid:'AR',gn:'Friday U13 Boys AR',h:'M1',a:'V2'},
+  g2:{d:'2026-11-13',gid:'A', gn:'Friday U13 Boys A', h:'M1',a:'H1',hs:39,as:42,st:'FINAL'},
   g3:{d:'2026-11-20',gid:'A', h:'M1',a:'V1'},
   g4:{d:'2026-11-13',gid:'A', t1:'S1',t2:'X9'},
 };
@@ -51,8 +51,13 @@ const m1=c.find(x=>x.tid==='M1'&&x.date==='2026-11-13');
 t('conflict: found M1 two grades same day', !!m1 && m1.grades.length===2);
 t('conflict: names both grades', m1 && m1.grades.includes('AR') && m1.grades.includes('A'));
 t('conflict: carries game ids', m1 && m1.gameIds.length===2);
+t('conflict: carries grade names', m1 && m1.gradeNames.length===2);
+t('conflict: carries played flags', m1 && m1.played.length===2);
 t('conflict: single-grade day clean', !c.some(x=>x.tid==='S1'));
 t('conflict: different days not flagged', !c.some(x=>x.tid==='M1'&&x.date==='2026-11-20'));
+t('conflict: names the grades', m1 && m1.gradeNames.includes('Friday U13 Boys AR') && m1.gradeNames.includes('Friday U13 Boys A'));
+t('conflict: played side flagged played', m1 && m1.played[m1.grades.indexOf('A')]===true);
+t('conflict: unplayed side flagged unplayed', m1 && m1.played[m1.grades.indexOf('AR')]===false);
 t('conflict: no gid -> skipped', RR.findSameDayGradeConflicts({x:{d:'2026-01-01',h:'T'}}).length===0);
 t('conflict: no date -> skipped', RR.findSameDayGradeConflicts({x:{gid:'A',h:'T'}}).length===0);
 
