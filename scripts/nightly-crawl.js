@@ -1180,7 +1180,7 @@ async function main() {
   // overlap is why this block sits above it rather than after.
   const refresh = {
     gradesConsidered: 0, baselined: 0, incremental: 0, baselineDeferred: 0,
-    noRounds: 0, currentIsLast: 0, nothingToFetch: 0,
+    noRounds: 0, currentIsLast: 0, nothingToFetch: 0, baselineFree: 0,
     movedNotDeleted: 0, gradesUnaccounted: 0, capWarnings: 0, archived: 0, resurrected: 0,
     roundsFetched: 0, roundsFailed: 0, suspectEmpty: 0,
     deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
@@ -1220,8 +1220,21 @@ async function main() {
       const plan = RR.planGrade({ grade, stored, byRound, aheadN: REFRESH_AHEAD });
 
       if (plan.mode === 'baseline') {
-        if (baselinesLeft <= 0) { refresh.baselineDeferred++; continue; }
-        baselinesLeft--;
+        // ⚠ A GRADE THAT PLANS NO FETCH DOES NOT SPEND BASELINE BUDGET.
+        // Measured on the first live run: of 2,000 grades baselined, 1,978
+        // planned no fetch at all — 1,972 of them sitting on their LAST round,
+        // i.e. seasons that are over but not yet locked (lock_after_months is 3).
+        // They cost nothing in API terms and are "done" the moment a fingerprint
+        // is written, but under the old accounting they consumed 98.6% of the
+        // night's budget and the 5,598-grade backlog was draining in name only.
+        // Spending the budget on grades that actually fetch something means the
+        // real work drains in a handful of nights instead of weeks.
+        if (plan.fetch.length > 0) {
+          if (baselinesLeft <= 0) { refresh.baselineDeferred++; continue; }
+          baselinesLeft--;
+        } else {
+          refresh.baselineFree++;
+        }
         refresh.baselined++;
       } else {
         refresh.incremental++;
@@ -1251,6 +1264,9 @@ async function main() {
     console.log(`  Grades considered: ${refresh.gradesConsidered}`
               + `  (baseline ${refresh.baselined}, incremental ${refresh.incremental}`
               + `${refresh.baselineDeferred ? `, ${refresh.baselineDeferred} baseline deferred to a later run` : ''})`);
+    if (refresh.baselineFree) {
+      console.log(`  ${refresh.baselineFree} grade(s) baselined for free — they plan no fetch, so they did not spend budget.`);
+    }
     if (refresh.noRoundSkipped) {
       console.log(`  ${refresh.noRoundSkipped} stored game(s) carry no round name and are OUT OF SCOPE for deletion`
                 + ` — games/bv holds the round NAME and no round id, so they cannot be scoped to a round.`);
