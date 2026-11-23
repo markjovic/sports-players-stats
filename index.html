@@ -128,6 +128,21 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .slist{padding:10px 14px;display:flex;flex-direction:column;gap:6px}
 .sec-lbl{font-size:0.67rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:2px}
 .sc{background:var(--elevated);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+/* A season PERIOD that carries several registrations (a domestic comp, a rep
+   comp, a tournament — each its own sid) gets one header with the period total,
+   and its cards sit indented beneath it instead of reading as unrelated seasons. */
+.sp-hdr{display:flex;align-items:stretch;background:var(--surface);border:1px solid var(--border);
+  border-left:3px solid var(--accent);border-radius:8px;margin:6px -8px 0;padding-left:0}
+.sp-hdr .sp-info{flex:1;min-width:0;padding:7px 12px 6px}
+.sp-hdr .sp-n{font-weight:700;font-size:0.84rem}
+.sp-hdr .sp-s{color:var(--text3);font-size:0.66rem;margin-top:1px}
+.sp-cells{flex:7;min-width:0;display:flex}
+/* Member cards sit flush with every other season card, so every per-team stat
+   column lines up down the whole list. Only the period header is offset — wider
+   by 8px each side with an accent edge — so the combined line reads as the
+   container rather than as another team. */
+.sp-mem{margin-left:0}
+.sp-mem+.sp-mem{margin-top:4px}
 .sc-hdr{border-left:3px solid transparent;padding:0;cursor:pointer;display:flex;align-items:center;gap:0;transition:background 0.1s;user-select:none;background:var(--elevated)}
 .sc-hdr:hover,.sc-hdr.open{background:#333}
 .sc-info{flex:1;min-width:0;padding:7px 12px 6px}
@@ -149,14 +164,38 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
    than being truncated — a club is identified by its tail ("... Basketball
    Club") as often as its head. */
 .pclub-wrap{padding:6px 14px 2px}
-.pclub-row{display:flex;align-items:baseline;gap:8px;padding:5px 8px;margin-bottom:4px;border:1px solid var(--border);border-radius:5px;background:var(--surface);cursor:pointer}
+/* The finals strip starts shut. It is a second seven-column row directly under
+   the career strip, and open by default it reads as part of it. */
+.fin-lbl{cursor:pointer;user-select:none;display:flex;align-items:center;gap:6px}
+.fin-chev{display:inline-block;font-size:0.6rem;color:var(--text3);transition:transform .15s}
+.fin-lbl.open .fin-chev{transform:rotate(90deg);color:var(--accent)}
+.fin-strip,.fin-note{display:none}
+.fin-strip.open{display:flex}
+.fin-note.open{display:block}
+.pclub-row{display:flex;align-items:stretch;gap:0;padding:0;margin-bottom:4px;border:1px solid var(--border);border-radius:5px;background:var(--surface);cursor:pointer}
 .pclub-row.pclub-na{cursor:default;opacity:0.7}
+.pclub-link{cursor:pointer}
+.pclub-link:hover{color:var(--accent)}
+.pclub-row.open{border-color:var(--accent);border-bottom-left-radius:0;border-bottom-right-radius:0;margin-bottom:0}
+.pclub-exp{display:none;border:1px solid var(--accent);border-top:0;border-radius:0 0 5px 5px;background:var(--surface);margin-bottom:4px}
+.pclub-exp.open{display:block}
+.pclub-tot,.pclub-treg{display:flex;align-items:stretch;border-top:1px solid var(--border)}
+.pclub-tot{border-top:0;background:var(--accent-dim)}
+.pclub-row>.pclub-tl{flex:1;min-width:0;padding:9px 12px}
+.pclub-row .pclub-n{display:block;font-size:0.84rem}
+.pclub-row .pclub-cells{flex:7;min-width:0;display:flex}
+.pclub-exp{margin-top:-4px}
+.pclub-tl{flex:1;min-width:0;padding:7px 12px;font-size:0.78rem}
+.pclub-ts{color:var(--text3);font-size:0.65rem;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pclub-cells{flex:7;min-width:0;display:flex}
+.pclub-fold{font-size:0.6rem;color:var(--draw);border:1px solid var(--border);border-radius:3px;padding:0 4px;white-space:nowrap}
 .pclub-row:not(.pclub-na):hover{background:rgba(0,245,212,0.06)}
-.pclub-n{flex:1 1 0;min-width:0;font-size:0.82rem;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pclub-n{min-width:0;font-size:0.82rem;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pclub-row.pclub-na .pclub-n{font-weight:500;color:var(--text2)}
 .pclub-gp{font-size:0.88rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}
 .pclub-row.pclub-na .pclub-gp{color:var(--text2)}
 .pclub-x{font-size:0.62rem;color:var(--text3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.pclub-ts .pclub-tag{margin:0}
 .pclub-tag{margin-left:6px;padding:1px 5px;border:1px solid var(--border);border-radius:3px;font-size:0.56rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--text3);vertical-align:middle}
 .pclub-sub{margin:-2px 0 5px 10px;padding-left:8px;border-left:1px solid var(--border);font-size:0.64rem;color:var(--text2);line-height:1.5}
 .pclub-sub-src{color:var(--text3)}
@@ -215,6 +254,103 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 
 /* width:auto, not 100%: the table is as wide as its columns need and sits left,
    rather than stretching across a desktop viewport and dragging the numbers with it. */
+.tc-tlbl{font-size:0.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin:4px 14px 6px}
+/* ── v1.68 panels: career highs, splits, team-mates, round chart, availability ── */
+.hi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:7px}
+.hi-t{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 9px;cursor:pointer;transition:border-color .12s}
+.hi-t:hover{border-color:var(--text3)}
+.hi-q{cursor:default}
+.hi-k{font-size:0.54rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3)}
+.hi-v{font-size:1.35rem;font-weight:700;line-height:1.15;font-variant-numeric:tabular-nums}
+.hi-w{font-size:0.6rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hi-d{font-size:0.54rem;color:var(--text3)}
+.hi-note{font-size:0.68rem;color:var(--text3);padding:6px 0 0}
+.sp-hd{display:flex;align-items:baseline;justify-content:space-between;font-size:0.62rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);padding:4px 0 2px}
+.sp-hd span{text-transform:none;letter-spacing:0}
+.sp-list{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 10px}
+.sp-r{display:flex;align-items:center;gap:8px;padding:4px 0}
+.sp-r .n{width:200px;flex:0 0 200px;font-size:0.74rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-r .n i{font-style:normal;color:var(--text3);font-size:0.58rem}
+.sp-r .t{flex:1;height:9px;background:var(--elevated);border-radius:2px;overflow:hidden}
+.sp-r .t i{display:block;height:100%;background:var(--text3);opacity:.6}
+.sp-r.b .t i{background:var(--accent);opacity:1}
+.sp-r .g{width:34px;text-align:right;font-size:0.62rem;color:var(--text3);font-variant-numeric:tabular-nums}
+.sp-r .v{width:46px;text-align:right;font-size:0.74rem;color:var(--text2);font-variant-numeric:tabular-nums}
+.sp-none,.av-msg,.sp-wait{font-size:0.78rem;color:var(--text3);padding:6px 0}
+.sp-r.sp-h{padding:0 0 3px}
+.sp-r.sp-h .t,.sp-r.sp-t .t{background:none}
+.sp-r.sp-h .g,.sp-r.sp-h .v{font-size:0.54rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3)}
+.sp-r.sp-t{border-top:1px solid var(--border);margin-top:4px;padding-top:6px}
+.sp-r.sp-t .n{color:var(--text3);font-size:0.64rem}
+.sp-r.sp-t .g,.sp-r.sp-t .v{color:var(--text);font-weight:600}
+.mt-key{display:flex;align-items:center;gap:8px;padding:0 0 8px}
+.mt-ke{font-size:0.58rem;color:var(--text3);white-space:nowrap}
+.mt-kt{flex:1;font-size:0.58rem;color:var(--text3);text-align:center}
+.sp-foot{font-size:0.68rem;color:var(--text3);padding:6px 0 0}
+.mt-hd{font-size:0.68rem;color:var(--text3);padding:2px 0 6px}
+.mt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:7px}
+@media(max-width:1100px){.mt-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.mt-grid{grid-template-columns:repeat(2,1fr)}}
+.mt-hide{display:none}
+.mt-btn{display:block;width:100%;border:1px solid var(--border);background:var(--elevated);color:var(--text2);
+  border-radius:6px;padding:5px;font-size:0.72rem;cursor:pointer;font-family:inherit;margin-bottom:8px}
+.mt-btn:hover{color:var(--text);border-color:var(--text3)}
+.mt-rk{float:right;font-size:0.58rem;color:var(--text3);font-variant-numeric:tabular-nums}
+.mt-lhd{font-size:0.6rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin:4px 0 4px}
+.mt-list{display:grid;grid-template-columns:repeat(3,1fr);gap:2px 14px;margin-bottom:6px}
+@media(max-width:1100px){.mt-list{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.mt-list{grid-template-columns:1fr}}
+.mt-li{display:flex;align-items:baseline;gap:8px;padding:3px 6px;border-radius:4px;cursor:pointer;font-size:0.74rem}
+.mt-li:hover{background:var(--elevated)}
+.mt-li .r{width:38px;flex:0 0 38px;color:var(--text3);font-size:0.6rem;font-variant-numeric:tabular-nums}
+.mt-li .n{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mt-li .s{margin-left:auto}
+.mt-li .s{color:var(--text3);font-size:0.62rem;white-space:nowrap}
+.mt-li .g{width:34px;text-align:right;color:var(--text2);font-variant-numeric:tabular-nums;font-size:0.7rem}
+.z0{font-family:Consolas,"DejaVu Sans Mono","Liberation Mono",monospace;font-feature-settings:"zero" 1}
+.mt-c{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 9px;cursor:pointer;transition:border-color .12s}
+.mt-c:hover{border-color:var(--text3)}
+.mt-n{font-size:0.76rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mt-s{font-size:0.58rem;color:var(--text3);margin-bottom:5px}
+.mt-tl{display:flex;gap:2px}
+.mt-tl i{flex:1;height:7px;background:var(--elevated);border:1px solid var(--border);border-radius:1px}
+.mt-tl i.on{background:var(--accent);border-color:var(--accent);opacity:.85}
+.mt-g{font-size:0.6rem;color:var(--text3);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mt-s{font-variant-numeric:tabular-nums}
+.mt-tl i{cursor:help}
+.tr-wrap{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin:8px 14px}
+.tr-rounds{display:flex;align-items:flex-end;gap:4px;padding:26px 12px 8px;height:160px;position:relative}
+.tr-avg{position:absolute;left:12px;right:12px;border-top:1px dashed var(--text2);opacity:.8}
+.tr-avgl{position:absolute;right:12px;top:6px;font-size:0.55rem;font-weight:600;color:var(--text2);letter-spacing:.03em}
+.tr-rounds .rb{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;cursor:pointer;min-width:0}
+.tr-rounds .rb .sc{font-size:0.52rem;color:var(--text3);text-align:center;padding-bottom:3px;position:relative;z-index:2}
+.tr-rounds .rb .sc span{background:var(--surface);padding:0 3px;border-radius:2px}
+.tr-rounds .rb .barw{background:var(--text3);opacity:.45;border-radius:2px 2px 0 0}
+.tr-rounds .rb.W .barw{background:var(--win);opacity:.5}
+.tr-rounds .rb.L .barw{background:var(--loss);opacity:.4}
+.tr-rounds .rb.D .barw{background:var(--draw);opacity:.45}
+.tr-rounds .rb:hover .barw{opacity:1}
+.tr-rounds .rb .lb{font-size:0.52rem;color:var(--text3);text-align:center;padding-top:4px;white-space:nowrap;overflow:hidden}
+.tr-mgn{display:flex;gap:4px;padding:16px 12px 12px;height:84px;position:relative;border-top:1px solid var(--border)}
+.tr-ml{position:absolute;left:12px;right:12px;top:calc(16px + (100% - 28px)/2);border-top:1px solid var(--border)}
+.tr-mttl{position:absolute;right:12px;top:2px;font-size:0.55rem;font-weight:600;color:var(--text2);letter-spacing:.03em}
+.tr-mgn .mc{flex:1;position:relative;min-width:0}
+.tr-mgn .mb{position:absolute;left:0;right:0}
+.tr-mgn .mb.p{bottom:50%;background:var(--win);opacity:.55;border-radius:2px 2px 0 0}
+.tr-mgn .mb.n{top:50%;background:var(--loss);opacity:.45;border-radius:0 0 2px 2px}
+.tr-mgn .mv{position:absolute;left:0;right:0;text-align:center;font-size:0.54rem;font-variant-numeric:tabular-nums;color:var(--text3)}
+.av-hd{font-size:0.68rem;color:var(--text3);padding:2px 0 6px}
+.av-grid{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;overflow-x:auto}
+.av-rhd{display:flex;gap:2px;padding:0 0 4px 150px;font-size:0.5rem;color:var(--text3)}
+.av-rhd span{width:17px;flex:0 0 17px;text-align:center}
+.av-r{display:flex;align-items:center;gap:2px;margin-bottom:3px}
+.av-r .n{width:150px;flex:0 0 150px;font-size:0.68rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.av-r .n:hover{color:var(--accent)}
+.av-r .c{width:17px;flex:0 0 17px;height:15px;border-radius:2px;background:var(--elevated)}
+.av-r .c.on{background:var(--accent);opacity:.85}
+.av-r .c.out{background:transparent;border:1px solid var(--border)}
+.av-r .tot{margin-left:7px;font-size:0.64rem;color:var(--text3);font-variant-numeric:tabular-nums}
+
 .rtbl{width:auto;max-width:100%;border-collapse:collapse;table-layout:fixed}
 /* ⚠️ A NAME COLUMN IS A FIXED WIDTH, NOT A SHARE OF THE VIEWPORT. It was 34% and
    then 30%: on a 1600px screen that is ~480px of empty space between the name and
@@ -533,6 +669,207 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .ocol-span{flex:0 0 158px}
 .rtbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-right:2px}
 .rtbl{min-width:520px}
+
+/* ── Head-to-head ─────────────────────────────────────────────────────────── */
+.h2h-open{margin:6px 0 0;padding:3px 8px;font-size:0.72rem;border:1px solid var(--border);
+  background:var(--surface2,transparent);color:var(--text1);border-radius:4px;cursor:pointer}
+.h2h-open:hover{border-color:var(--accent);color:var(--accent)}
+.h2h-pick{padding:10px 12px;border-bottom:1px solid var(--border)}
+.h2h-pick input{width:100%;padding:8px 10px;font-size:0.9rem;border:1px solid var(--border);
+  border-radius:6px;background:var(--surface);color:var(--text1)}
+.h2h-res{margin-top:6px;max-height:260px;overflow:auto}
+.h2h-sec{border-bottom:1px solid var(--border)}
+.h2h-sec-h{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer;font-weight:600}
+.h2h-sec-h:hover{background:var(--surface2,rgba(127,127,127,0.06))}
+.h2h-n{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--text2)}
+.h2h-sec-b{padding:0 12px 10px}
+.h2h-row{padding:7px 0;border-top:1px solid var(--border);font-size:0.84rem}
+.h2h-row .h2h-when{color:var(--text2);font-size:0.76rem}
+.h2h-warn{padding:10px 12px;font-size:0.8rem;color:var(--warn,#c47f00);
+  border-top:1px solid var(--border)}
+.h2h-none{padding:10px 12px;color:var(--text2);font-size:0.85rem}
+
+/* ── Movement map (v1.29) ───────────────────────────────────────────────── */
+/* ── CAREER CARDS (v1.31) ──────────────────────────────────────────────────
+   One card per period (season, calendar year, or a custom date window), hero
+   number leading, the whole career drawn as bars behind it. Season totals come
+   from the PlayHQ-credited registration stats; year and range totals are summed
+   from the dated per-game lines in the season game files. */
+.car-wrap{margin:10px 0 2px}
+.car-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 8px;padding:8px;background:var(--surface);border:1px solid var(--border);border-radius:6px}
+.car-bar .lbl{color:var(--text3);font-size:0.65rem;text-transform:uppercase;letter-spacing:.05em;margin:0 2px 0 10px}
+.car-bar .lbl:first-child{margin-left:0}
+.car-bar button{border:1px solid var(--border);background:var(--elevated);color:var(--text2);border-radius:5px;cursor:pointer;font-size:0.74rem;padding:5px 9px;font-family:inherit}
+.car-bar button:hover{color:var(--text);border-color:var(--text3)}
+.car-bar button.on{color:var(--accent);border-color:var(--accent);background:var(--accent-dim)}
+.car-rgwrap{display:none}
+.car-rgwrap.on{display:inline-flex;align-items:center}
+.car-rg{display:none;align-items:center;gap:8px;margin-left:10px;padding-left:10px;border-left:1px solid var(--border)}
+.car-rg.on{display:inline-flex}
+.car-rg label{color:var(--text3);font-size:0.65rem;text-transform:uppercase;letter-spacing:.05em;display:inline-flex;align-items:center;gap:5px}
+.car-rg input{background:var(--elevated);border:1px solid var(--border);color:var(--text);border-radius:5px;padding:4px 6px;font:inherit;font-size:0.74rem;color-scheme:dark}
+.car-rg input:focus{outline:none;border-color:var(--accent)}
+/* One row, scrolled sideways. Wrapping was tried and rejected: the row is the
+   point — it is the career in order. What was wrong was the scrollbar, a 4px
+   system hairline that could barely be seen let alone grabbed. So: a thick
+   styled bar that is always visible, the wheel scrolls the row without holding
+   anything down, and arrows at each end for a card-by-card nudge. */
+.car-scroll{position:relative}
+.car-strip{display:flex;align-items:stretch;gap:10px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 4px;scroll-behavior:smooth;overscroll-behavior-x:contain}
+.car-strip::-webkit-scrollbar{height:12px}
+.car-strip::-webkit-scrollbar-track{background:var(--elevated);border-radius:6px}
+.car-strip::-webkit-scrollbar-thumb{background:var(--text3);border-radius:6px;border:2px solid var(--elevated)}
+.car-strip::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+.car-strip{scrollbar-width:auto;scrollbar-color:var(--text3) var(--elevated)}
+.car-card{flex:0 0 186px}
+.car-nav{position:absolute;top:0;bottom:16px;width:30px;display:none;align-items:center;justify-content:center;
+  background:var(--bg);border:1px solid var(--border);color:var(--text2);cursor:pointer;font-size:0.9rem;z-index:3;
+  border-radius:6px;opacity:.92}
+.car-nav:hover{color:var(--accent);border-color:var(--accent)}
+.car-nav.show{display:flex}
+.car-nav.l{left:-2px}.car-nav.r{right:-2px}
+.car-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;align-self:stretch}
+.car-card.open{border-color:var(--accent)}
+.car-card.open .car-nm{color:var(--accent)}
+.car-card.rng{border-color:var(--draw)}
+.car-card.rng .car-nm{color:var(--draw)}
+.car-ch{padding:8px 10px 0}
+.car-nm{font-weight:600;font-size:0.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.car-mt{color:var(--text3);font-size:0.67rem;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.car-hero{padding:6px 10px 2px;display:flex;align-items:baseline;gap:7px}
+.car-big{font-size:2.3rem;line-height:1;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.car-unit{font-size:0.64rem;color:var(--text3);text-transform:uppercase;letter-spacing:.07em}
+.car-delta{margin-left:auto;font-size:0.7rem;font-weight:600;font-variant-numeric:tabular-nums}
+.car-up{color:var(--win)}.car-dn{color:var(--loss)}.car-flat{color:var(--text3)}
+.car-spark{height:20px;margin:13px 10px 0;display:flex;align-items:flex-end;gap:3px;position:relative}
+.car-spark i{flex:1;background:var(--text3);border-radius:1px;opacity:.5}
+.car-spark i.me{background:var(--accent);opacity:1}
+.car-avg{position:absolute;left:0;right:0;border-top:1px dashed var(--text2);opacity:.75;pointer-events:none}
+.car-avgl{position:absolute;left:0;top:-13px;font-size:0.5rem;font-weight:600;color:var(--text2);letter-spacing:.03em;white-space:nowrap;pointer-events:none}
+.car-mini{display:flex;flex-wrap:wrap;padding:7px 6px 7px;border-top:1px solid var(--border);margin-top:7px}
+.car-mini .c{flex:1 0 33.33%;text-align:center;padding:3px 0}
+.car-mini .v{font-size:0.8rem;font-variant-numeric:tabular-nums}
+.car-mini .l{font-size:0.54rem;color:var(--text3);text-transform:uppercase;letter-spacing:.04em}
+.car-wl{padding:5px 10px;border-top:1px solid var(--border);font-size:0.68rem;font-variant-numeric:tabular-nums;color:var(--text3)}
+.car-wl b{font-weight:600}
+.car-teams{border-top:1px solid var(--border);padding:6px 10px 7px;margin-top:auto}
+.car-teams.car-cut .car-tlist .car-t:nth-child(n+5){display:none}
+.car-teams.car-cut.open .car-tlist .car-t{display:flex}
+.car-more{display:block;width:100%;margin-top:4px;border:1px solid var(--border);background:transparent;color:var(--text3);
+  border-radius:4px;cursor:pointer;font-size:0.64rem;padding:3px 0;font-family:inherit}
+.car-more:hover{color:var(--accent);border-color:var(--accent)}
+.car-t{font-size:0.7rem;color:var(--text2);display:flex;gap:6px;align-items:baseline;padding:1px 0;cursor:pointer}
+.car-t:hover .car-tn em{color:var(--accent)}
+.car-gp{flex:0 0 auto;min-width:17px;text-align:right;color:var(--text3);font-variant-numeric:tabular-nums;font-size:0.68rem}
+.car-tn{flex:1;min-width:0;overflow:hidden}
+.car-tn em{display:block;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* The grade line was one nowrap line, so "Saturday U12 Boys B / Division 2" cut
+   off at the card edge with empty card below it. It wraps to two lines now and
+   only clips past that. */
+.car-tn i{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-style:normal;
+  color:var(--text3);font-size:0.62rem;line-height:1.2;white-space:normal;overflow:hidden;overflow-wrap:anywhere}
+.car-gr{font-weight:600;color:var(--accent);font-size:0.62rem;opacity:.85}
+.car-tn i.car-gb{color:var(--accent);opacity:.85;font-weight:600}
+.car-tp{font-weight:600;color:var(--text3);font-variant-numeric:tabular-nums}
+/* ── TEAM CARDS (v1.51) ────────────────────────────────────────────────────
+   The roster as one chart plus a card per player, in the same language as the
+   career cards on a player profile. Every figure comes from the team-stats file
+   the view already loads; the career totals come from the player files
+   hydrateCareers already fetches, so neither mode costs a request this view was
+   not already making. */
+.tc-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 14px 8px;padding:8px;background:var(--surface);border:1px solid var(--border);border-radius:6px}
+.tc-bar .lbl{color:var(--text3);font-size:0.65rem;text-transform:uppercase;letter-spacing:.05em;margin:0 2px 0 10px}
+.tc-bar .lbl:first-child{margin-left:0}
+.tc-bar button{border:1px solid var(--border);background:var(--elevated);color:var(--text2);border-radius:5px;cursor:pointer;font-size:0.74rem;padding:5px 9px;font-family:inherit}
+.tc-bar button:hover{color:var(--text);border-color:var(--text3)}
+.tc-bar button.on{color:var(--accent);border-color:var(--accent);background:var(--accent-dim)}
+.tc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(186px,1fr));gap:10px;align-items:stretch;padding:0 14px 12px}
+.tc-chart{grid-column:span 2;grid-row:span 2;background:var(--surface);border:1px solid var(--border);border-radius:8px;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.tc-chd{padding:8px 10px;border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:8px}
+.tc-chd b{font-size:0.82rem}
+.tc-chd span{color:var(--text3);font-size:0.67rem;margin-left:auto;font-variant-numeric:tabular-nums}
+.tc-chb{padding:21px 10px 9px;position:relative;flex:1}
+.tc-cr{display:flex;align-items:center;gap:7px;height:19px;cursor:pointer}
+.tc-cr .n{width:88px;flex:0 0 88px;font-size:0.68rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tc-cr .t{flex:1;min-width:0;height:9px;background:var(--elevated);border-radius:2px;overflow:hidden}
+.tc-cr .t i{display:block;height:100%;background:var(--text3);opacity:.6;border-radius:2px}
+.tc-cr .v{width:40px;text-align:right;font-size:0.68rem;color:var(--text3);font-variant-numeric:tabular-nums}
+.tc-cr:hover .n{color:var(--text)}
+.tc-cr.on .n{color:var(--accent);font-weight:600}
+.tc-cr.on .t i{background:var(--accent);opacity:1}
+.tc-cr.on .v{color:var(--accent)}
+.tc-avg{position:absolute;top:19px;bottom:9px;border-left:1px dashed var(--text2);opacity:.6;pointer-events:none}
+.tc-avg b{position:absolute;top:-15px;left:3px;font-size:0.5rem;font-weight:600;color:var(--text2);background:var(--surface);padding:0 2px;letter-spacing:.03em;white-space:nowrap}
+.tc-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;min-width:0}
+.tc-card.on{border-color:var(--accent)}
+.tc-card.sum{border-color:var(--text3);cursor:default}
+.tc-card.sum .tc-big{color:var(--accent)}
+.tc-h{padding:8px 10px 0;display:flex;align-items:baseline;gap:6px}
+.tc-nm{font-weight:600;font-size:0.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;cursor:pointer}
+.tc-nm:hover{color:var(--accent)}
+.tc-card.sum .tc-nm{cursor:default}
+.tc-card.sum .tc-nm:hover{color:var(--text)}
+.tc-rk{font-size:0.6rem;color:var(--text3);font-variant-numeric:tabular-nums}
+.tc-mt{color:var(--text3);font-size:0.67rem;padding:0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tc-hero{padding:5px 10px 2px;display:flex;align-items:baseline;gap:7px}
+.tc-big{font-size:2.1rem;line-height:1;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.tc-unit{font-size:0.62rem;color:var(--text3);text-transform:uppercase;letter-spacing:.07em}
+.tc-shr{margin-left:auto;font-size:0.68rem;color:var(--text3);font-variant-numeric:tabular-nums}
+.tc-mini{display:flex;flex-wrap:wrap;padding:7px 6px;border-top:1px solid var(--border);margin-top:auto}
+.tc-mini .c{flex:1 0 33.33%;text-align:center;padding:3px 0}
+.tc-mini .v{font-size:0.8rem;font-variant-numeric:tabular-nums}
+.tc-mini .l{font-size:0.54rem;color:var(--text3);text-transform:uppercase;letter-spacing:.04em}
+@media(max-width:560px){.tc-chart{grid-column:1/-1;grid-row:auto}}
+.car-gwrap{border:1px solid var(--accent);border-radius:8px;background:var(--surface);margin:0 2px 10px}
+.car-gh{display:flex;align-items:baseline;gap:8px;padding:8px 10px;border-bottom:1px solid var(--border)}
+.car-gh b{font-size:0.82rem}
+.car-gh span{color:var(--text3);font-size:0.67rem;margin-left:auto}
+.car-gx{border:1px solid var(--border);background:var(--elevated);color:var(--text2);border-radius:5px;cursor:pointer;font-size:0.7rem;padding:3px 9px;font-family:inherit}
+.car-gx:hover{color:var(--text);border-color:var(--text3)}
+.car-gb{padding:21px 10px 6px;position:relative}
+.car-gr{display:flex;align-items:center;gap:7px;height:20px;cursor:pointer}
+.car-gn{width:150px;flex:0 0 150px;min-width:0;overflow:hidden;line-height:1.05}
+.car-gn em{display:block;font-style:normal;font-size:0.68rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.car-gn i{display:block;font-style:normal;font-size:0.56rem;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.car-gres{flex:0 0 13px;font-size:0.62rem;font-weight:700;text-align:center}
+.car-gres.rW{color:var(--win)}.car-gres.rL{color:var(--loss)}.car-gres.rD{color:var(--draw)}.car-gres.rU{color:var(--text3)}
+.car-gt{flex:1;min-width:0;height:9px;background:var(--elevated);border-radius:2px;overflow:hidden}
+.car-gt i{display:block;height:100%;background:var(--text3);opacity:.6;border-radius:2px}
+.car-gr:hover .car-gt i{background:var(--accent);opacity:1}
+.car-gr:hover .car-gn em{color:var(--text)}
+.car-gv{width:38px;text-align:right;font-size:0.68rem;color:var(--text3);font-variant-numeric:tabular-nums}
+.car-gavg{position:absolute;top:19px;bottom:6px;border-left:1px dashed var(--text2);opacity:.6;pointer-events:none}
+.car-gavg b{position:absolute;top:-15px;left:3px;font-size:0.5rem;font-weight:600;color:var(--text2);letter-spacing:.03em;white-space:nowrap}
+.car-gspark{height:16px;margin:11px 0 3px;display:flex;align-items:flex-end;gap:3px;position:relative}
+.car-gspark i{flex:1;background:var(--text3);border-radius:1px;opacity:.5}
+.car-gspark i.me{background:var(--accent);opacity:1}
+.car-gsavg{position:absolute;left:0;right:0;border-top:1px dashed var(--text2);opacity:.7;pointer-events:none}
+.car-gsl{position:absolute;left:0;top:-12px;font-size:0.48rem;font-weight:600;color:var(--text2);letter-spacing:.03em;white-space:nowrap;pointer-events:none}
+.car-gcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;padding:10px}
+.car-gc{background:var(--elevated);border:1px solid var(--border);border-radius:6px;padding:6px 8px;cursor:pointer;min-width:0}
+.car-gc:hover{border-color:var(--accent)}
+.car-gch{display:flex;align-items:baseline;gap:6px}
+.car-gch .nm{flex:1;min-width:0;font-size:0.72rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.car-gcm{color:var(--text3);font-size:0.58rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.car-gcv{display:flex;align-items:baseline;gap:5px;margin:3px 0 4px}
+.car-gcv b{font-size:1.3rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.car-gcv span{font-size:0.56rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
+.car-gcv i{margin-left:auto;font-style:normal;font-size:0.6rem;font-weight:600;color:var(--text3);font-variant-numeric:tabular-nums}
+.car-gcv i.up{color:var(--win)}.car-gcv i.dn{color:var(--loss)}
+.car-gcg{display:flex;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:4px}
+.car-gcg .c{flex:1 0 33.33%;text-align:center;padding:2px 0}
+.car-gcg .v{font-size:0.72rem;font-variant-numeric:tabular-nums}
+.car-gcg .l{font-size:0.5rem;color:var(--text3);text-transform:uppercase;letter-spacing:.04em}
+.car-card{cursor:pointer}
+.car-card.open{border-color:var(--accent)}
+.car-msg{grid-column:1/-1;padding:10px;color:var(--text2);font-size:0.78rem;line-height:1.5;max-width:70ch}
+.car-build{display:none;margin:0 0 8px;padding:6px 10px;border:1px solid var(--border);border-left:3px solid var(--draw);
+  border-radius:5px;background:var(--surface);color:var(--text2);font-size:0.74rem}
+.car-build.on{display:block}
+.car-build .r{display:flex;align-items:center;gap:10px;margin-top:7px}
+.car-go{border:1px solid var(--border);background:var(--elevated);color:var(--text);border-radius:5px;cursor:pointer;font-size:0.74rem;padding:5px 10px;font-family:inherit}
+.car-go:hover{border-color:var(--accent);color:var(--accent)}
+.car-go[disabled]{opacity:.5;cursor:default}
 </style>
 </head>
 <body>
@@ -542,7 +879,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
       <span class="help-dot" onclick="openHelp()" title="What the numbers mean">?</span>
-      <span class="rail-ver">v1.25</span>
+      <span class="rail-ver">v1.79</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -589,6 +926,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div id="view-team" class="hidden"></div>
     <div id="view-venue" class="hidden"></div>
     <div id="view-opp" class="hidden"></div>
+    <div id="view-h2h" class="hidden"></div>
     <div id="view-club" class="hidden"></div>
     <div id="view-leaders" class="hidden">
       <div id="lb-header" style="position:sticky;top:0;background:var(--surface);z-index:5;border-bottom:1px solid var(--border)">
@@ -856,7 +1194,37 @@ async function loadAliasPrefixMap(shard, len){
   }
   _aliasMaps[k]=map; return map;
 }
+/* Resolve ONLY from shard maps already in memory. Every miss in resolveToFullUuid
+   fetches that shard's whole player index and its alias file — two files per
+   shard, up to 256 shards. The opponent walk calls it once per unresolved
+   opposing player across a whole career, so a long career quietly pulled
+   hundreds of index files and took over a minute. The fallback it provides only
+   matters when a game-side id's 13-prefix differs from the roster key's, which
+   the prefix match a line earlier already covers for everyone else — so where
+   the map is not already loaded, this returns null and the id is skipped rather
+   than paying a file for it. */
+function resolveCachedUuid(id){
+  if(!id)return null;
+  const shard=String(id).slice(0,2).toLowerCase();
+  const len=isFullUuid(id)?TRUNC_LEN:String(id).length;
+  const k=shard+':'+len;
+  const idx=_idxMaps[k];
+  if(idx){const r=idx.get(isFullUuid(id)?String(id).slice(0,TRUNC_LEN):id);if(typeof r==='string')return r;}
+  const am=_aliasMaps[k];
+  if(am){const a=am.get(isFullUuid(id)?String(id).slice(0,TRUNC_LEN):id);if(typeof a==='string')return a;}
+  return null;
+}
+/* Memoised. The opponent walk calls this once per opposing player per game —
+   for a long career that is thousands of calls, each one an await that yields
+   even when every shard map is already cached. Same answer, one lookup. */
+const UUID_MEMO=new Map();
 async function resolveToFullUuid(id){
+  if(id!=null&&UUID_MEMO.has(id))return UUID_MEMO.get(id);
+  const _r=await resolveToFullUuidRaw(id);
+  if(id!=null)UUID_MEMO.set(id,_r);
+  return _r;
+}
+async function resolveToFullUuidRaw(id){
   if(isFullUuid(id)){
     const shard=id.slice(0,2).toLowerCase();
     const idx=await loadShardPrefixMap(shard,TRUNC_LEN);
@@ -904,7 +1272,16 @@ function renderMode(g){
   // complement and stays correct whichever runs first. The ~142 genuinely
   // scoreless ones still render 'legacy', which is the honest answer for them.
   if(g.legacy && typeof g.hs!=='number')return'legacy';
-  if(typeof g.hs==='number')return'normal';return'unknown';
+  if(typeof g.hs==='number')return'normal';
+  // ⚠️ A FIXTURE THAT HAS NOT BEEN PLAYED YET IS NOT 'unknown'. Every test above
+  // is a flag or a score, and an upcoming game carries neither — so it fell to
+  // 'unknown', whose only rendering is "No data available." That is what the
+  // venue grid showed for every current and future game: the cell knows both
+  // teams, the time and the court, and clicking it produced an empty sheet.
+  // Placed AFTER the legacy test deliberately, so nothing that renders today
+  // changes — this only catches what was already falling through.
+  if(g.st==='UPCOMING'||g.st==='PRE_GAME')return'upcoming';
+  return'unknown';
 }
 function gameCtx(g,tid){
   if(g.h){
@@ -1216,6 +1593,7 @@ function hashFor(type,d){
   if(type==='venue')  return `v=${e(d.vid)}` + (d.vname?`&vn=${e(d.vname)}`:'');
   if(type==='opp')    return `o=${e(d.oppTid)}&s=${e(d.sid)}` + (d.fromUuid?`&f=${e(d.fromUuid)}`:'');
   if(type==='teamopp')return `mo=${e(d.myTid)}&o=${e(d.oppTid)}&s=${e(d.sid)}`;
+  if(type==='h2h')    return `h=${e(d.a)}` + (d.b?`&h2=${e(d.b)}`:'');
   if(type==='club')   return `c=${e(d.cid)}` + (d.cname?`&cn=${e(d.cname)}`:'') + (d.week?`&w=${e(d.week)}`:'');
   return '';
 }
@@ -1237,6 +1615,7 @@ function applyHash(){
   if(q.p)       { loadPlayer(q.p,false); return true; }
   if(q.t&&q.s)  { loadTeam(q.t,q.s,false); return true; }
   if(q.v)       { loadVenue(q.v,q.vn||'',undefined,false); return true; }
+  if(q.h)       { openH2H(q.h,q.h2||null,false); return true; }
   if(q.c)       { loadClub(q.c,q.cn||'',q.w||null,false); return true; }
   if(q.mo&&q.o&&q.s){ openTeamOpp(q.mo,q.o,q.s,false,false); return true; }
   if(q.o&&q.s)  { openOpp(q.o,q.s,q.f,false); return true; }
@@ -1282,7 +1661,7 @@ function selectShare(){
 
 /* ── Navigation / history ── */
 function showV(id){
-  ['view-home','view-player','view-team','view-venue','view-opp','view-club','view-leaders'].forEach(v=>el(v).classList.toggle('hidden',v!==id));
+  ['view-home','view-player','view-team','view-venue','view-opp','view-h2h','view-club','view-leaders'].forEach(v=>el(v).classList.toggle('hidden',v!==id));
   // Scroll main to top on every view change
   const m=el('main');if(m)m.scrollTop=0;
   // Shown on every view INCLUDING home — home is a link worth sharing, it is just
@@ -1337,6 +1716,8 @@ window.addEventListener('popstate',e=>{
     loadVenue(e.state.vid,e.state.vname,undefined,false);
   }else if(type==='opp'){
     openOpp(e.state.oppTid,e.state.sid,e.state.fromUuid,false);
+  }else if(type==='h2h'){
+    openH2H(e.state.a,e.state.b||null,false);
   }else if(type==='club'){
     loadClub(e.state.cid,e.state.cname,e.state.week,false);
   }else if(type==='teamopp'){
@@ -1345,6 +1726,256 @@ window.addEventListener('popstate',e=>{
 });
 
 /* ── Boot ── */
+
+/* ── HEAD-TO-HEAD: two players, every time their paths crossed ───────────────
+   Answers "have these two ever played together or against each other" without a
+   new index, a build step or an API call. Everything it needs is already on the
+   two player files:
+     p.games[]    every gid the player appears in, written by build-player-games
+                  from the game-sheet p[] arrays
+     p.gameTids   gid -> the tid they played FOR in that game
+     p.seasons[]  regs carrying tid / gid(grade) / tn / gn
+   So the whole question is an intersection of two games[] arrays plus a tid
+   comparison, and the only fetches are the season game files needed to name and
+   date the shared fixtures — which S.games already caches.
+
+   ⚠️ WHY NOT resolveOppGames. That function answers a different question and
+   answers it by FILTERING: it keeps a game only when the two tids differ AND
+   both sit on opposite sides of the fixture, and it `continue`s past every other
+   case — no season file, game missing, no tid recorded, tids that do not match
+   the fixture. For "which opponents has this player met" a silent drop is
+   tolerable. For "have these two ever met" it is not: a dropped game is a
+   WRONG ANSWER to the question actually asked. Everything here is classified
+   into one of four buckets or reported as UNRESOLVED with its reason, and the
+   unresolved count is rendered where it cannot be missed.
+
+   The four tiers, narrowest first:
+     1 OPPOSITION  shared gid, tids differ, both on the fixture's two sides
+     2 TOGETHER    shared gid, same tid
+     3 SQUAD       registered to the same (sid,tid) but never on a sheet together
+     4 GRADE       same (sid,grade), different teams, no shared fixture
+   3 and 4 are weaker claims than 1 and 2 and are labelled as such: "same squad"
+   is not "played together", and the UI must not let them read as the same thing. */
+
+function h2hSeasonMap(p){
+  // sid -> { sn, tids:Map(tid->tn), grades:Map(gradeId->{gn,tn,tid}) }
+  const m=new Map();
+  for(const sn of (p&&p.seasons)||[]){
+    if(!sn.sid)continue;
+    let e=m.get(sn.sid);
+    if(!e){e={sn:sn.sn||sn.sid,tids:new Map(),grades:new Map()};m.set(sn.sid,e);}
+    for(const r of (sn.regs||[])){
+      if(r.tid&&!e.tids.has(r.tid))e.tids.set(r.tid,r.tn||'');
+      if(r.gid&&!e.grades.has(r.gid))e.grades.set(r.gid,{gn:r.gn||'',tn:r.tn||'',tid:r.tid||null});
+    }
+  }
+  return m;
+}
+
+/* gid -> sid for a set of gids. Checks what S.games already holds, then loads
+   only the season files the two players actually played in. Seasons from BOTH
+   players are searched: resolveOppGames searches only the viewing player's, which
+   cannot place a game held under a season the other player alone registered for. */
+async function h2hMapGids(gidSet,players){
+  const gidSid={};
+  for(const[sid,gf]of Object.entries(S.games||{})){
+    for(const gid of Object.keys((gf&&gf.games)||{}))if(gidSet.has(gid))gidSid[gid]=sid;
+  }
+  let missing=[...gidSet].filter(g=>!gidSid[g]);
+  if(!missing.length)return gidSid;
+  const sids=[...new Set(players.flatMap(p=>((p&&p.seasons)||[]).map(sn=>sn.sid)).filter(Boolean))];
+  for(const sid of sids){
+    if(!missing.length)break;
+    if(!S.games[sid])S.games[sid]=await sgj('games/bv',sid)||{games:{}};
+    const all=(S.games[sid]&&S.games[sid].games)||{};
+    for(const gid of missing)if(all[gid])gidSid[gid]=sid;
+    missing=missing.filter(g=>!gidSid[g]);
+  }
+  return gidSid;
+}
+
+async function computeH2H(A,B){
+  const ga=new Set((A&&A.games)||[]), gb=new Set((B&&B.games)||[]);
+  const shared=[...ga].filter(g=>gb.has(g));
+  const gidSid=await h2hMapGids(new Set(shared),[A,B]);
+
+  const against=[],together=[],unresolved=[];
+  for(const gid of shared){
+    const sid=gidSid[gid];
+    if(!sid){unresolved.push({gid,why:'no season file held for this game'});continue;}
+    const g=S.games[sid]&&S.games[sid].games&&S.games[sid].games[gid];
+    if(!g){unresolved.push({gid,sid,why:'game id not present in its season file'});continue;}
+    const tA=getTidForGame(A,sid,gid), tB=getTidForGame(B,sid,gid);
+    if(!tA||!tB){
+      unresolved.push({gid,sid,g,why:'no team recorded for '+((!tA?A:B).name||'one of them')+' in this game'});
+      continue;
+    }
+    if(tA===tB){together.push({gid,sid,g,tA,tB});continue;}
+    const H=hTid(g),Aw=aTid(g);
+    if((H===tA&&Aw===tB)||(Aw===tA&&H===tB)){against.push({gid,sid,g,tA,tB});continue;}
+    // Both hold a tid for this game and the tids differ, but they are not the
+    // fixture's two sides. getTidForGame falls back to the season's first tid
+    // when gameTids is absent, so this is most often that fallback being wrong
+    // rather than a data fault — either way it is NOT evidence they met.
+    unresolved.push({gid,sid,g,why:'their recorded teams are not the two sides of this fixture'});
+  }
+  const byDate=(x,y)=>String((y.g&&y.g.d)||'').localeCompare(String((x.g&&x.g.d)||''));
+  against.sort(byDate); together.sort(byDate);
+
+  // Tiers 3 and 4, from registrations rather than game sheets.
+  const ma=h2hSeasonMap(A), mb=h2hSeasonMap(B);
+  const togetherKeys=new Set(together.map(x=>x.sid+':'+x.tA));
+  const againstSids=new Set(against.map(x=>x.sid));
+  const squad=[],grade=[];
+  for(const[sid,ea]of ma){
+    const eb=mb.get(sid); if(!eb)continue;
+    // Same team, but no fixture where they were BOTH on that team's sheet.
+    const sameTids=[...ea.tids.keys()].filter(t=>eb.tids.has(t)&&!togetherKeys.has(sid+':'+t));
+    if(sameTids.length){
+      squad.push({sid,sn:ea.sn,teams:sameTids.map(t=>ea.tids.get(t)||eb.tids.get(t)||('#'+String(t).slice(0,8)))});
+    }
+    // Same grade, different teams, and no fixture against each other that season.
+    if(!againstSids.has(sid)){
+      const g2=[...ea.grades.keys()].filter(gid=>eb.grades.has(gid)
+        && ea.grades.get(gid).tid && eb.grades.get(gid).tid
+        && ea.grades.get(gid).tid!==eb.grades.get(gid).tid);
+      if(g2.length){
+        grade.push({sid,sn:ea.sn,grades:g2.map(gid=>({
+          gn:ea.grades.get(gid).gn||'',aTn:ea.grades.get(gid).tn||'',bTn:eb.grades.get(gid).tn||''}))});
+      }
+    }
+  }
+  return {against,together,squad,grade,unresolved,sharedCount:shared.length};
+}
+
+/* ── Rendering ───────────────────────────────────────────────────────────── */
+
+/* Fields come from gameCtx/resLetter/storedPts, the helpers the season and
+   opposition views already render from — NOT from hand-picked g.* keys. A game
+   object uses g.h/g.a (+hs/as/hn/an) once played and g.t1/g.t2 (+t1n/t2n) while
+   it is only a fixture, and gameCtx is what knows the difference.
+
+   Rows are deliberately NOT clickable, for now. They could call openSheet(gid,sid)
+   — the real box-score opener, nine call sites — and that is the obvious follow-up;
+   they are left inert until someone decides a head-to-head row SHOULD open the box
+   score, rather than that being assumed here.
+   (openGameId, despite the name, resolves a PLAYER uuid and loads a player.) */
+function h2hGameRow(x,A,B){
+  const g=x.g||{};
+  const ctx=gameCtx(g,x.tA);                 // always A's perspective
+  const score=(ctx.myS!=null&&ctx.oppS!=null)?(ctx.myS+'–'+ctx.oppS):'';
+  const res=resLetter(ctx.myS,ctx.oppS);
+  const resCol=res==='W'?'var(--win)':res==='L'?'var(--loss)':'var(--text2)';
+  const pa=storedPts(g,A.uuid), pb=storedPts(g,B.uuid);
+  const lines=[];
+  if(pa!=null)lines.push(esc(firstName(A))+' '+pa);
+  if(pb!=null)lines.push(esc(firstName(B))+' '+pb);
+  const fc=finalClass(g.rn);
+  const sub=[ctx.oppN?('v '+ctx.oppN):'',lines.join(' · ')].filter(Boolean).join(' · ');
+  return `<div class="h2h-row">
+    <div>${esc(String(g.d||'').slice(0,10))}${g.gn?' · '+esc(g.gn):''}${score?' · <strong>'+esc(score)+'</strong>':''}`
+    + (res?` <span style="color:${resCol}">${res}</span>`:'')
+    + (fc?` · <span style="color:gold;font-size:0.7rem">${esc(g.rn)}</span>`:'')
+    + `</div><div class="h2h-when">${sub}</div></div>`;
+}
+function firstName(p){
+  const n=(p&&p.name)||'';
+  return n.split(' ').filter(Boolean)[0]||n||'?';
+}
+
+function h2hSection(id,title,n,bodyHtml,note){
+  if(!n)return `<div class="h2h-sec"><div class="h2h-sec-h" style="cursor:default;opacity:0.65">${esc(title)}<span class="h2h-n">0</span></div></div>`;
+  return `<div class="h2h-sec">
+    <div class="h2h-sec-h" onclick="var b=document.getElementById('${id}');if(b)b.classList.toggle('hidden')">${esc(title)}<span class="h2h-n">${n}</span></div>
+    <div class="h2h-sec-b" id="${id}">${note?'<div class="h2h-when" style="padding:6px 0">'+esc(note)+'</div>':''}${bodyHtml}</div>
+  </div>`;
+}
+
+function renderH2H(A,B,r){
+  const ve=el('view-h2h'); if(!ve)return;
+  const nameA=displayName(A,A.uuid), nameB=displayName(B,B.uuid);
+  let h=`<div class="vhdr"><button class="vback" onclick="history.back()">←</button>
+    <div style="flex:1;min-width:0"><div class="vtitle">${esc(nameA)} ↔ ${esc(nameB)}</div>
+    <div class="vsub">${r.sharedCount} shared game${r.sharedCount===1?'':'s'} on file</div></div></div>`;
+
+  const met=r.against.length+r.together.length;
+  if(!met&&!r.squad.length&&!r.grade.length){
+    h+=`<div class="h2h-none">No recorded connection between these two — no shared fixture, no shared team, no shared grade.</div>`;
+  }
+
+  h+=h2hSection('h2h-a','Played against each other',r.against.length,
+      r.against.map(x=>h2hGameRow(x,A,B)).join(''));
+  h+=h2hSection('h2h-t','Played on the same team',r.together.length,
+      r.together.map(x=>h2hGameRow(x,A,B)).join(''));
+  h+=h2hSection('h2h-s','Same squad, never on a sheet together',r.squad.length,
+      r.squad.map(x=>`<div class="h2h-row"><div>${esc(x.teams.join(', '))}</div><div class="h2h-when">${esc(x.sn)}</div></div>`).join(''),
+      'Registered to the same team that season but never named in the same fixture — not the same thing as playing together.');
+  h+=h2hSection('h2h-g','Same grade, never met',r.grade.length,
+      r.grade.map(x=>x.grades.map(gg=>`<div class="h2h-row"><div>${esc(gg.gn||'—')}</div><div class="h2h-when">${esc(x.sn)} · ${esc(gg.aTn||'?')} v ${esc(gg.bTn||'?')}</div></div>`).join('')).join(''),
+      'Same grade and season, different teams, and no fixture between them on file.');
+
+  // ⚠️ NEVER SILENT. A shared game we could not classify is not an absence of a
+  // meeting, and the count must be visible next to the answer it qualifies.
+  if(r.unresolved.length){
+    const by={};
+    for(const u of r.unresolved)by[u.why]=(by[u.why]||0)+1;
+    h+=`<div class="h2h-warn">⚠ ${r.unresolved.length} shared game${r.unresolved.length===1?'':'s'} could not be classified and ${r.unresolved.length===1?'is':'are'} NOT counted above:<br>`
+      + Object.entries(by).map(([w,n])=>`&nbsp;&nbsp;${n} × ${esc(w)}`).join('<br>')+`</div>`;
+  }
+  ve.innerHTML=h;
+}
+
+/* ── Entry point and the second-player picker ────────────────────────────── */
+
+async function openH2H(a,b,push=true){
+  if(push)navigate('h2h',{a,b:b||''});
+  showV('view-h2h');
+  const ve=el('view-h2h');
+  ve.innerHTML='<div class="load-row">Loading…</div>';
+  const A=await loadPlayerFile(a);
+  if(!A){ve.innerHTML=`<div class="vhdr"><button class="vback" onclick="history.back()">←</button><div><div class="vtitle">Compare</div><div class="vsub">No data for ${esc(t13(a))}</div></div></div>`;return;}
+  if(!b){h2hPicker(A);return;}
+  const B=await loadPlayerFile(b);
+  if(!B){h2hPicker(A,`No data for ${t13(b)} — pick another player.`);return;}
+  ve.innerHTML='<div class="load-row">Comparing…</div>';
+  const r=await computeH2H(A,B);
+  renderH2H(A,B,r);
+}
+
+function h2hPicker(A,msg){
+  const ve=el('view-h2h');
+  ve.innerHTML=`<div class="vhdr"><button class="vback" onclick="history.back()">←</button>
+    <div style="flex:1;min-width:0"><div class="vtitle">${esc(displayName(A,A.uuid))} ↔ ?</div>
+    <div class="vsub">Search for the second player</div></div></div>
+    <div class="h2h-pick">${msg?'<div class="h2h-when" style="padding-bottom:6px">'+esc(msg)+'</div>':''}
+    <input id="h2h-q" type="search" placeholder="Player name…" autocomplete="off">
+    <div class="h2h-res" id="h2h-res"></div></div>`;
+  const inp=document.getElementById('h2h-q');
+  if(!inp)return;
+  inp.addEventListener('input',()=>h2hSearch(A.uuid,inp.value.trim()));
+  inp.focus();
+}
+
+/* Shard selection is the SAME fold as the main player search (and as
+   build-search-index.js). Kept identical deliberately: a second, drifting copy of
+   the shard rule is how accented and apostrophe names stopped being findable the
+   first time. */
+async function h2hSearch(fromUuid,q){
+  const re=document.getElementById('h2h-res'); if(!re)return;
+  if(q.length<2){re.innerHTML='';return;}
+  const _fold=q.normalize('NFKC').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z]/g,'');
+  const sh=_fold.length>=2?_fold.slice(0,2):(_fold+'_').slice(0,2);
+  if(!S.shards[sh]){const d=await gj(BASE+'/search/players/'+sh+'.json');S.shards[sh]=d||{};}
+  const hits=[];const seen=new Set();
+  for(const[k,arr]of Object.entries(S.shards[sh])){
+    if(!tokenMatch(k,q))continue;
+    for(const e of arr){if(e.id!==fromUuid&&!seen.has(e.id)){seen.add(e.id);hits.push({k,...e});}}
+  }
+  if(!hits.length){re.innerHTML='<div class="ri-empty">No players found</div>';return;}
+  re.innerHTML=hits.slice(0,40).map(h=>`<div class="ri" data-u="${esc(h.id)}"><div class="ri-name">${esc(h.k)}</div><div class="ri-sub">${esc(h.c||'—')} · ${esc(h.t||'')}</div></div>`).join('');
+  re.querySelectorAll('.ri').forEach(rw=>rw.addEventListener('click',()=>openH2H(fromUuid,rw.dataset.u)));
+}
+
 async function boot(){
   history.replaceState({type:'home'},'');
   const[idx,venues]=await Promise.all([gj(BASE+'/data/sports-index.json'),gj(BASE+'/data/venue-index.json')]);
@@ -1428,9 +2059,14 @@ function recEntry(e,rank,cat){
   return`<div class="rec-entry" ${click}><div class="rec-rank">${rank}</div><div class="rec-val">${val}</div><div><div class="rec-detail">${detail}</div><div class="rec-sub">${sub}</div></div></div>`;
 }
 async function openRecordGame(sid,gameKey){
-  if(!S.games[sid])S.games[sid]=await sgj('games/bv',sid);
-  const g=S.games[sid]?.[gameKey];
-  if(g)openGame(gameKey,g,null,sid);
+  // WAS A SILENT NO-OP. It read `S.games[sid]?.[gameKey]` — flat — while a season
+  // file is {games:{...}}, so g was ALWAYS undefined (the only flat read left in
+  // this file, against eleven nested ones). `if(g)` then swallowed it, and the
+  // dead four-arg call below it was never even reached. Clicking a record did
+  // nothing at all and logged nothing.
+  // openSheet loads the season file itself and renders "Game not found." when the
+  // id really is absent, so there is deliberately no guard here to swallow one.
+  openSheet(gameKey,sid);
 }
 
 /* ── Player search ── */
@@ -1573,9 +2209,9 @@ function renderFinalsPanel(cs,cols){
   const rec=(f.wins||f.losses||f.draws)?`${f.wins?`<span style="color:var(--win)">${f.wins}W</span>`:''}${f.losses?`<span style="color:var(--loss)">${f.losses}L</span>`:''}${f.draws?`<span style="color:var(--draw)">${f.draws}D</span>`:''}`:'\u2014';
   const recCell=`<div class="cstat"><div class="csv" style="font-size:0.75rem;display:flex;gap:4px;justify-content:center;align-items:baseline;white-space:nowrap;font-variant-numeric:tabular-nums">${rec}</div><div class="csl">${(f.wins+f.losses)>0?Math.round(100*f.wins/(f.wins+f.losses))+'%':''}</div></div>`;
   const partial=bg>0&&bg<f.gp?`scoring from ${bg} of ${f.gp} finals with box scores`:'';
-  return `<div class="sec-lbl" style="margin-top:2px">Finals</div><div class="cstats">
+  return `<div class="sec-lbl fin-lbl" style="margin-top:2px" onclick="toggleFinals(this)"><span class="chev fin-chev">\u25b6</span> Finals</div><div class="cstats fin-strip">
     ${cell(f.gp,'GP')}${cell(box(f.pts),'PTS','fsv-pts')}${cell(ppg,'PPG','fsv-ppg')}${cell(box(f.threePt||0),'3PT','fsv-3pt')}${cell(box(f.fouls||0),'F','fsv-f')}${cols.fo?blank:''}${cols.rec?recCell:''}${cols.fin?blank:''}${cols.gf?blank:''}${cols.gfw?blank:''}${cols.fssn?blank:''}
-  </div><div id="fs-note" style="padding:2px 2px 0;font-size:0.62rem;color:var(--text3)">${partial}</div>`;
+  </div><div id="fs-note" class="fin-note" style="padding:2px 2px 0;font-size:0.62rem;color:var(--text3)">${partial}</div>`;
 }
 
 // Finals SCORING is hydrated at runtime, not stored. Box lines live in the spectator
@@ -1584,6 +2220,12 @@ function renderFinalsPanel(cs,cols){
 // onto the player; this fetches exactly those games (5-ish per player, cached in
 // S.boxes and shared with the game sheet) and sums the player's own lines. Same
 // zero-data-cost pattern as the 0.65/0.66 opposition views.
+function toggleFinals(lbl){
+  const open=lbl.classList.toggle('open');
+  let n=lbl.nextElementSibling;
+  if(n&&n.classList.contains('fin-strip')){n.classList.toggle('open',open);n=n.nextElementSibling;}
+  if(n&&n.classList.contains('fin-note'))n.classList.toggle('open',open);
+}
 async function hydrateFinals(uuid,f){
   const gids=f&&f.gids;
   if(!gids||!gids.length)return;
@@ -1780,6 +2422,21 @@ function buildClubTotals(groups,maps,names,p,types,keys){
 /* A private profile publishes no statistics, so every GP cell is an em dash
    rather than 0 — the same rule OFF() applies to the career strip. The club,
    season and team counts are still real and still shown. */
+/* The eight columns a club row carries, in the same order and the same cell
+   count as the season rows below, so every number on the page lines up. */
+function clubHdrCells(o,gpFallback){
+  if(!o)return '';
+  const ppg=o.gp?(o.pts/o.gp).toFixed(1):'\u2014';
+  const pc=(o.w+o.l+o.d)>0?Math.round(o.w/(o.w+o.l+o.d)*100)+'%':'';
+  const wld=(o.w||o.l||o.d)
+    ? `${o.w?`<span style="color:var(--win)">${o.w}W</span>`:''}${o.l?` <span style="color:var(--loss)">${o.l}L</span>`:''}${o.d?` <span style="color:var(--draw)">${o.d}D</span>`:''}`
+    : '<span style="color:var(--text3)">\u2014</span>';
+  return [[o.gp||gpFallback||0,'GP'],[ppg,'PPG'],[o.pts,'PTS'],[o.fg,'FG'],[o.ft,'FT'],[o.tp,'3PT'],[o.f,'F']]
+    .map(([v,l])=>statCell(v,l,false,null)).join('')
+   + `<div style="flex:1;text-align:center;padding:6px 4px;min-width:0;overflow:hidden">
+        <div style="font-size:0.75rem;font-weight:700;display:flex;gap:3px;justify-content:center;white-space:nowrap;font-variant-numeric:tabular-nums">${wld}</div>
+        <div style="font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;margin-top:1px">${pc}</div></div>`;
+}
 function renderClubTotals(t,priv){
   if(!t.rows.length) return '';
   let h='<div class="sec-lbl">Clubs</div>';
@@ -1795,9 +2452,12 @@ function renderClubTotals(t,priv){
     // footnote, and stays outside the GP figure.
     const extra=(!priv&&r.ours)?`<span class="pclub-x" title="Held here, credited to no club by PlayHQ">+${esc(r.ours)} here</span>`:'';
     const tag=r.assoc?'<span class="pclub-tag">association</span>':'';
-    h+=`<span class="pclub-n">${esc(r.n)}${tag}</span>`
-     + `<span class="pclub-gp">${esc(gp)} GP</span>${extra}`
-     + `<span class="pclub-s">${esc(sub)}</span></div>`;
+    const st=(t.stats&&t.stats[r.id])||null;
+    const cells=priv?'':clubHdrCells(st,r.gp);
+    h+=`<div class="pclub-tl"><span class="pclub-n">${esc(r.n)}</span>`
+     + `<div class="pclub-ts">${tag}${tag?' \u00b7 ':''}${esc(sub)}${extra?' ':''}${extra}</div></div>`
+     + (cells?`<div class="pclub-cells">${cells}</div>`:`<span class="pclub-gp">${esc(gp)} GP</span><span class="pclub-s">${esc(sub)}</span>`)
+     + `</div>`;
     // Sub-row: the total above INCLUDES these, and this says where they came from
     // and on what basis. Folded games are never invisible inside a club total.
     if(!priv&&r.folded&&r.folded.length){
@@ -1817,6 +2477,60 @@ function renderClubTotals(t,priv){
 /* Async, like hydrateFinals: renderPlayer is synchronous and must not wait on a
    network round trip to paint the career strip. Bails if the user has navigated
    to another player while the maps were in flight. */
+/* The player's own record at each club, built from the registrations rather
+   than from the club bucket, so it uses exactly the figures the season cards
+   use: per-stat MAX across siblings sharing a tid (T20), summed across tids. */
+function clubRegStats(groups,maps,p,types,keys,names){
+  const out={};
+  for(const{sn,tid,regs}of groups||[]){
+    const sid=sn&&sn.sid; if(!sid||!tid)continue;
+    // Same resolution as buildClubTotals, fold and all. Without it this panel
+    // totalled 21 GP under a row reading 26: a tournament registration is mapped
+    // to the tournament ORGANISATION, and only the name-match fold puts it under
+    // the club. Two totals on one row that disagree is worse than either absent.
+    let cid=((maps||{})[sid]||{})[tid]; if(!cid)continue;
+    let foldedFrom=null;
+    if((types||{})[cid]==='ASSOCIATION'){
+      let hit=null;
+      for(const r of regs){ hit=inferClubFromName(r&&r.tn,keys||[]); if(hit) break; }
+      if(hit&&hit.id!==cid){ foldedFrom=(names||{})[cid]||cid; cid=hit.id; }
+    }
+    const st=regs.reduce((a,r)=>{const q=r.stats||{};return{
+      gp:Math.max(a.gp||0,q.gp||0),pts:Math.max(a.pts||0,q.pts||0),fg:Math.max(a.fg||0,q.fg||0),
+      ft:Math.max(a.ft||0,q.ft||0),tp:Math.max(a.tp||0,q.threePt||0),f:Math.max(a.f||0,q.fouls||0)};},{});
+    const w=regs[0]&&regs[0].stats||{};
+    const gp=st.gp||gamesForGroup(p,regs);
+    if(!out[cid])out[cid]={gp:0,pts:0,fg:0,ft:0,tp:0,f:0,w:0,l:0,d:0,teams:[]};
+    const o=out[cid];
+    o.gp+=gp;o.pts+=st.pts;o.fg+=st.fg;o.ft+=st.ft;o.tp+=st.tp;o.f+=st.f;
+    o.w+=w.wins||0;o.l+=w.losses||0;o.d+=w.draws||0;
+    o.teams.push({sid,tid,tn:(regs[regs.length-1]||{}).tn||tid,season:sn.sn||sid,comp:carComp(sid),
+      compFull:carCompFull(sid),grade:abbreviateGrades([...new Set(regs.map(r=>r.gn).filter(Boolean))]),foldedFrom,
+      gp,pts:st.pts,fg:st.fg,ft:st.ft,tp:st.tp,f:st.f,w:w.wins||0,l:w.losses||0,d:w.draws||0});
+  }
+  // Chronological, not by points. groups arrives from groupRegs in
+  // sortSeasonsDesc order, so preserving insertion order gives newest first —
+  // the same direction as the season history below.
+  return out;
+}
+function clubExpandHtml(o){
+  const wl=t=>(t.w||t.l||t.d)
+    ? `${t.w?`<span style="color:var(--win)">${t.w}W</span>`:''}${t.l?` <span style="color:var(--loss)">${t.l}L</span>`:''}${t.d?` <span style="color:var(--draw)">${t.d}D</span>`:''}`
+    : '<span style="color:var(--text3)">\u2014</span>';
+  const cells=t=>{const ppg=t.gp?(t.pts/t.gp).toFixed(1):'\u2014';
+    const pc=(t.w+t.l+t.d)>0?Math.round(t.w/(t.w+t.l+t.d)*100)+'%':'';
+    return [[t.gp,'GP'],[ppg,'PPG'],[t.pts,'PTS'],[t.fg,'FG'],[t.ft,'FT'],[t.tp,'3PT'],[t.f,'F']]
+      .map(([v,l])=>statCell(v,l,false,null)).join('')
+     + `<div style="flex:1;text-align:center;padding:6px 4px;min-width:0;overflow:hidden">
+          <div style="font-size:0.75rem;font-weight:700;display:flex;gap:3px;justify-content:center;white-space:nowrap;font-variant-numeric:tabular-nums">${wl(t)}</div>
+          <div style="font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;margin-top:1px">${pc}</div></div>`;};
+  return o.teams.map(t=>`<div class="pclub-treg" title="${esc([t.tn,t.grade,t.compFull,t.season].filter(Boolean).join(' \u00b7 '))}">
+      <div class="pclub-tl">${esc(t.tn)}${t.grade?` <b class="car-gr">${esc(t.grade)}</b>`:''}${
+        t.foldedFrom?` <span class="pclub-fold" title="PlayHQ attributed this team to ${esc(t.foldedFrom)}; matched to this club by team name">via ${esc(carTidy(t.foldedFrom))}</span>`:''}
+      <div class="pclub-ts">${esc([t.season,t.comp].filter(Boolean).join(' \u00b7 '))}</div></div>
+      <div class="pclub-cells">${cells(t)}</div></div>`).join('');
+}
+
 async function hydrateClubs(p,groups){
   const uuid=p.uuid;
   if(!document.getElementById('pclub-'+uuid)) return;
@@ -1827,13 +2541,1165 @@ async function hydrateClubs(p,groups){
   if(S.playerUuid!==uuid) return;
   const host=document.getElementById('pclub-'+uuid);
   if(!host) return;
-  host.innerHTML=renderClubTotals(buildClubTotals(groups,maps,names,p,S.clubTypes,S.clubKeys),isPrivate(p));
+  const perClub=clubRegStats(groups,maps,p,S.clubTypes,S.clubKeys,names);
+  const totals=buildClubTotals(groups,maps,names,p,S.clubTypes,S.clubKeys);
+  totals.stats=perClub;
+  host.innerHTML=renderClubTotals(totals,isPrivate(p));
   // Listener, not an inline onclick: esc() does not escape an apostrophe, and
   // "St Mary's" inside onclick="loadClub('...')" would end the JS string.
-  host.querySelectorAll('.pclub-row[data-cid]').forEach(r=>r.addEventListener('click',()=>{
-    loadClub(r.dataset.cid,r.dataset.cn,null);
-    if(window.innerWidth<=768) el('rail').classList.add('mob-hide');
+  // Clicking a club used to leave the profile for that club's fixture view,
+  // which answers a different question than the one the row asks. It now opens
+  // the player's own record at that club in place: a totals strip and a line per
+  // registration. The arrow still goes to the club.
+  host.querySelectorAll('.pclub-row[data-cid]').forEach(r=>{
+    const cid=r.dataset.cid, st=perClub[cid];
+    if(!st||!st.teams.length)return;
+    const nameEl=r.querySelector('.pclub-n');
+    if(nameEl&&!nameEl.querySelector('.pclub-link')){
+      const tag=nameEl.querySelector('.pclub-tag');
+      const txt=document.createElement('span');
+      txt.className='pclub-link';
+      txt.title='Open '+r.dataset.cn+' in Clubs';
+      txt.textContent=r.dataset.cn;
+      nameEl.textContent='';
+      nameEl.appendChild(txt);
+      if(tag)nameEl.appendChild(tag);
+      txt.addEventListener('click',e=>{
+        e.stopPropagation();
+        loadClub(cid,r.dataset.cn,null);
+        if(window.innerWidth<=768) el('rail').classList.add('mob-hide');
+      });
+    }
+    const box=document.createElement('div');
+    box.className='pclub-exp';
+    r.after(box);
+    r.addEventListener('click',()=>{
+      const open=box.classList.toggle('open');
+      r.classList.toggle('open',open);
+      if(open&&!box.dataset.built){
+        box.innerHTML=clubExpandHtml(st);
+        box.dataset.built='1';
+      }
+    });
+  });
+}
+
+
+/* ── CAREER CARDS (v1.30) ─────────────────────────────────────────────────────
+   Replaces the v1.29 movement map, which drew the wrong thing.
+   v1.31: season cards keyed on the season PERIOD not the sid; static settings
+   bar (the flyout rebuilt itself on every click); open-ended date windows.
+
+   One card per period. The hero number leads, the career is drawn as bars behind
+   it with the player's own average marked, and the teams that made up the period
+   are listed at the foot of every card.
+
+   THREE GROUPINGS, TWO DATA SOURCES — the distinction matters:
+
+   * Season      from the PlayHQ-credited registration stats already in the
+                 player file. Free, instant, and identical to the figures on the
+                 season cards below. Several registrations under one tid are a
+                 regrade, so per-stat MAX, never a sum (T20); different tids in
+                 one season are genuinely different teams and DO sum.
+
+   * Year/Range  summed from the dated per-game lines in games/bv/{sid}.json
+                 (g.hp / g.ap, read by storedStats). Exact, not apportioned — a
+                 summer season straddling 1 January splits on the real dates.
+                 Costs one season game file per season played; they are fetched
+                 in the background as soon as a profile opens, and cached in
+                 S.games alongside everything else that reads them.
+
+   Games PlayHQ credits where the player is on neither team sheet (`c` games)
+   carry no stored line. They are counted and reported on the card rather than
+   silently dropped — a year total that quietly omits games is worse than none. */
+
+const CAR={};
+function carSt(uuid){
+  if(!CAR[uuid])CAR[uuid]={hero:'pts',meas:'T',mode:'S',order:'N',bars:true,range:false,
+    a:'',b:'',rows:null,loading:false,missing:[],unlined:0,p:null};
+  return CAR[uuid];
+}
+const CAR_K=['pts','fg','ft','tp','f'];
+/* Every counting stat changes meaning per game, not just points, so "per game"
+   is a measure applied to whatever the hero is — not a hero of its own. PPG is
+   what PTS becomes under it, which is why PPG is no longer in the hero list. */
+const CAR_LBL={pts:'PTS',fg:'FG',ft:'FT',tp:'3PT',f:'F'};
+const CAR_PG ={pts:'PPG',fg:'FG/PG',ft:'FT/PG',tp:'3PT/PG',f:'F/PG'};
+function carLbl(k,meas){return (meas==='G'?CAR_PG:CAR_LBL)[k]||String(k).toUpperCase();}
+function carFmtV(v,meas){return meas==='G'?(+v).toFixed(1):v;}
+const CAR_BARS=16;            // most bars a card draws; see carCard
+const CAR_TEAMS=4;            // team lines shown before a card needs expanding
+function carSum(ts,k){return ts.reduce((a,t)=>a+(t[k]||0),0);}
+function carFmtD(d){const p=String(d||'').split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0].slice(2)}`:String(d||'');}
+
+/* Season totals from registrations.
+
+   Grouped by season NAME, not sid. One season period routinely carries several
+   season ids — a domestic comp, a rep comp and a tournament all run inside
+   "Summer 2026/27" and each is its own sid. Keying on sid produced three cards
+   all headed Summer 2026/27, which is three answers to one question. The period
+   is the unit here; the sids inside it become its teams. */
+function carSeasonGroups(p){
+  const out=[],seen=new Map();
+  for(const{sn,tid,regs}of groupRegs(p.seasons||[])){
+    const st=regs.reduce((a,r)=>{const s=r.stats||{};const o={
+      gp:Math.max(a.gp||0,s.gp||0),pts:Math.max(a.pts||0,s.pts||0),
+      fg:Math.max(a.fg||0,s.fg||0),ft:Math.max(a.ft||0,s.ft||0),
+      threePt:Math.max(a.threePt||0,s.threePt||0),fouls:Math.max(a.fouls||0,s.fouls||0)};
+      // Absent is not zero. A competition that does not record foul-outs must
+      // not read as nobody fouling out, so the key only exists where a number did.
+      if(typeof s.foulOuts==='number'&&isFinite(s.foulOuts))o.fo=Math.max(a.fo||0,s.foulOuts);
+      else if('fo' in a)o.fo=a.fo;
+      return o;},{});
+    const wld=regs[0]&&regs[0].stats||{};
+    const key=sn.sn||sn.sid;
+    if(!seen.has(key)){const grp={key,name:key,sids:[],teams:[]};seen.set(key,grp);out.push(grp);}
+    const grp=seen.get(key);
+    if(grp.sids.indexOf(sn.sid)<0)grp.sids.push(sn.sid);
+    grp.teams.push({tid,sid:sn.sid,tn:(regs[regs.length-1]||{}).tn||tid,season:sn.sn||sn.sid,comp:carComp(sn.sid),
+      compFull:carCompFull(sn.sid),gradeFull:abbreviateGrades([...new Set(regs.map(r=>r.gn).filter(Boolean))]),
+      gp:st.gp||gamesForGroup(p,regs),pts:st.pts||0,fg:st.fg||0,ft:st.ft||0,tp:st.threePt||0,f:st.fouls||0,
+      w:wld.wins||0,l:wld.losses||0,d:wld.draws||0,...(('fo' in st)?{fo:st.fo}:{})});
+  }
+  // "U13 Boys BRES" next to "U13 MMB08" is the age group said twice. Strip the
+  // prefix every grade in the period shares, exactly as the season card does
+  // with gradeAbbrev, so what is left is the part that differs: BRES, DR / D.
+  for(const g of out){
+    const all=[...new Set(g.teams.map(t=>t.gradeFull).filter(Boolean))];
+    for(const t of g.teams)t.grade=t.gradeFull?gradeAbbrev(t.gradeFull,all):'';
+  }
+  out.reverse();                       // groupRegs is newest-first; chronological here
+  const cst=CAR[p.uuid];
+  if(cst&&cst.rows)for(const g of out){   // real date span once the game lines are in
+    const mine=cst.rows.filter(r=>g.sids.indexOf(r.sid)>=0);
+    const ds=mine.map(r=>r.date).sort();
+    if(ds.length){g.from=ds[0];g.to=ds[ds.length-1];}
+    if(mine.length){
+      g.zeroN=mine.filter(r=>!(r.pts||0)).length;
+      g.linesN=mine.length;                 // the games the count is OF, which
+    }                                        // is not always the credited GP
+  }
+  return out;
+}
+
+/* Everything else is a slice of the dated game lines. */
+function carRow(g,gid,sid,ps,info,uuid){
+  const tid=carTid(gid,g,sid,info);
+  const ctx=tid?gameCtx(g,tid):null;
+  return{date:String(g.d).slice(0,10),gid,sid,tid,
+    tn:(info.map[tid]&&info.map[tid].tn)||teamNameFromGame(g,tid)||'Unknown team',
+    comp:(info.map[tid]&&info.map[tid].comp)||carComp(sid),
+    compFull:(info.map[tid]&&info.map[tid].compFull)||carCompFull(sid),
+    grade:(info.map[tid]&&info.map[tid].grade)||'',
+    season:(info.map[tid]&&info.map[tid].season)||((S.idx&&S.idx.seasons&&S.idx.seasons[sid]&&S.idx.seasons[sid].name)||sid),
+    pts:ps.pts||0,fg:(ps.pt2||0)+(ps.pt3||0),ft:ps.pt1||0,tp:ps.pt3||0,f:ps.fouls||0,
+    opp:(ctx&&ctx.oppN)||'',rn:g.rn||'',vn:g.vn||'',ct:g.ct||'',t:g.t||'',
+    sc:(ctx&&ctx.myS!=null&&ctx.oppS!=null)?`${ctx.myS}\u2013${ctx.oppS}`:'',
+    res:ctx?resLetter(ctx.myS,ctx.oppS):null};
+}
+
+/* Box scores, one request per game, through the same Worker and the same
+   S.boxes cache the game rows use — so a game fetched here is free when the
+   season below is expanded, and the other way round.
+
+   This exists because the season game files turned out NOT to carry hp/ap for
+   this dataset: every credited game needs its box score. That is one request
+   per game, not one per season, so it is an explicit action with a count on it
+   rather than something that happens quietly when a profile opens. */
+async function carBuild(uuid,subset){
+  const st=carSt(uuid),p=st.p;
+  if(!p||st.building)return;
+  const pend=subset||st.pend||[];
+  if(!pend.length)return;
+  st.building=true;st.cancel=false;
+  const info=carInfo(p);
+  const prog=el('carprog-'+uuid);
+  let done=0,got=0;
+  const CONC=6;
+  const show=()=>{if(prog)prog.textContent=`Reading box scores\u2026 ${done} of ${pend.length}`;};
+  show();
+  const queue=pend.slice();
+  await Promise.all(Array.from({length:Math.min(CONC,queue.length)},async()=>{
+    while(queue.length&&!st.cancel){
+      const item=queue.shift();
+      const bs=await fetchBox(item.gid);
+      done++;if(done%5===0)show();
+      if(!bs)continue;
+      const mine=[...(bs.h||[]),...(bs.a||[])].find(x=>matchP(x.profileID,uuid));
+      if(!mine)continue;
+      st.rows.push(carRow(item.g,item.gid,item.sid,mine,info,uuid));
+      got++;
+    }
   }));
+  st.rows.sort((a,b)=>a.date.localeCompare(b.date));
+  const taken=new Set(pend.map(x=>x.gid));
+  st.pend=(st.pend||[]).filter(x=>!taken.has(x.gid)).concat(st.cancel?queue:[]);
+  st.unlined=(Array.isArray(p.games)?p.games.length:0)-st.rows.length;
+  st.building=false;
+  if(prog)prog.textContent='';
+  carDraw(uuid);
+}
+function carScroll(uuid,dir){
+  const s=el('carstrip-'+uuid); if(!s)return;
+  s.scrollLeft+=dir*(196*Math.max(1,Math.floor(s.clientWidth/196)-1));
+}
+function carNav(uuid){
+  const s=el('carstrip-'+uuid),L=el('carL-'+uuid),R=el('carR-'+uuid);
+  if(!s||!L||!R)return;
+  const over=s.scrollWidth-s.clientWidth>4;
+  L.classList.toggle('show',over&&s.scrollLeft>2);
+  R.classList.toggle('show',over&&s.scrollLeft<s.scrollWidth-s.clientWidth-2);
+}
+function carWheel(uuid){
+  const s=el('carstrip-'+uuid); if(!s||s.dataset.wheel)return;
+  s.dataset.wheel='1';
+  s.addEventListener('wheel',e=>{
+    if(Math.abs(e.deltaY)<=Math.abs(e.deltaX))return;      // a real sideways gesture: leave it
+    if(s.scrollWidth-s.clientWidth<=4)return;              // nothing to scroll: let the page have it
+    const at=(e.deltaY<0&&s.scrollLeft<=0)||(e.deltaY>0&&s.scrollLeft>=s.scrollWidth-s.clientWidth-1);
+    if(at)return;                                          // at the end: hand the page back
+    e.preventDefault(); s.scrollLeft+=e.deltaY;
+  },{passive:false});
+  s.addEventListener('scroll',()=>carNav(uuid),{passive:true});
+}
+function carCancel(uuid){const st=carSt(uuid);st.cancel=true;}
+
+function carAgg(rows){
+  const m=new Map();
+  for(const r of rows){
+    const k=r.tid||('?'+r.season);
+    if(!m.has(k))m.set(k,{tid:r.tid,sid:r.sid,tn:r.tn,season:r.season,comp:r.comp,compFull:r.compFull,grade:r.grade,gp:0,pts:0,fg:0,ft:0,tp:0,f:0,w:0,l:0,d:0,zero:0});
+    const t=m.get(k);t.gp++;CAR_K.forEach(x=>t[x]+=r[x]||0);
+    if(!(r.pts||0))t.zero++;
+    if(r.res==='W')t.w++;else if(r.res==='L')t.l++;else if(r.res==='D')t.d++;
+  }
+  return[...m.values()].sort((a,b)=>b.pts-a.pts);
+}
+function carYearGroups(rows){
+  const m=new Map();
+  for(const r of rows){const y=r.date.slice(0,4);if(!m.has(y))m.set(y,[]);m.get(y).push(r);}
+  return[...m.entries()].sort((a,b)=>a[0].localeCompare(b[0]))
+    .map(([y,rs])=>({name:y,from:rs[0].date,to:rs[rs.length-1].date,teams:carAgg(rs)}));
+}
+function carRangeGroup(rows,a,b,label){
+  const rs=rows.filter(r=>r.date>=a&&r.date<=b);
+  if(!rs.length)return null;
+  return{name:label||(carFmtD(a)+' – '+carFmtD(b)),from:a,to:b,range:true,n:rs.length,teams:carAgg(rs)};
+}
+
+
+/* One season game file per season played. Cached in S.games like every other
+   reader of these files, so a season already opened costs nothing. */
+/* The competition and association behind a season id. There is no PlayHQ field
+   that says "this is a tournament" — the nearest published signal is a team's
+   organisation.type (CLUB vs ASSOCIATION, captured as `ty` on the club index),
+   and that marks teams entered under a host organisation rather than seasons.
+   But the competition NAME answers the question on sight: "Nunawading Spectres
+   Tournament 2026" against "Kilsyth Junior Domestic". So show it and infer
+   nothing. */
+function carComp(sid){
+  const si=(S.idx&&S.idx.seasons&&S.idx.seasons[sid])||null;
+  if(!si)return '';
+  return carShort((si.compName||'').trim(),(si.orgName||'').trim());
+}
+/* "Junior Domestic - Saturday Competition (GEBC) - Melbourne East Basketball
+   Association (MEBA)" is three lines of a 186px card to say two things. An
+   organisation that publishes its own acronym in brackets gets used as that
+   acronym; the words every basketball competition carries are dropped; and the
+   association is suppressed when the competition name already contains it. The
+   full string stays on the row's title attribute, so nothing is lost. */
+const CAR_FILLER=/\s*\b(competition|basketball association(?: inc\.?)?|basketball club|basketball|association)\b/gi;
+function carAcro(x){
+  const m=String(x||'').match(/\(([A-Z][A-Za-z0-9&]{1,9})\)\s*$/);
+  return m?m[1]:null;
+}
+function carTidy(x){
+  return String(x||'').replace(/\([^)]*\)/g,' ').replace(CAR_FILLER,' ')
+    .replace(/\s{2,}/g,' ').replace(/[\s.,\u2013\u2014-]+$/,'').trim();
+}
+/* The acronym rule is for the ORGANISATION only. Applied to the competition it
+   threw away the half that distinguishes it: "Junior Domestic - Saturday
+   Competition (GEBC)" became "GEBC", which says who runs it and not which
+   competition it is. */
+function carShort(comp,org){
+  const c=carTidy(comp), o=carAcro(org)||carTidy(org);
+  if(!c)return o;
+  if(!o||c.toLowerCase().includes(o.toLowerCase()))return c;
+  return c+' \u00b7 '+o;
+}
+function carCompFull(sid){
+  const si=(S.idx&&S.idx.seasons&&S.idx.seasons[sid])||null;
+  if(!si)return '';
+  const c=(si.compName||'').trim(), o=(si.orgName||'').trim();
+  return (!c)?o:(!o||c.toLowerCase().includes(o.toLowerCase()))?c:(c+' \u2014 '+o);
+}
+/* `u` entries are "gid|sid|tid" for games played with NO registration — the
+   fill-in case. Their tid belongs to a team this player never joined, so it is
+   recorded separately from `mine`: it resolves the game's team without
+   pretending the player was on that team's books. */
+function carUnreg(p){
+  const bySid={},tidOf={};
+  for(const e of (Array.isArray(p&&p.u)?p.u:[])){
+    const[gid,sid,tid]=String(e).split('|');
+    if(!gid||!sid)continue;
+    (bySid[sid]=bySid[sid]||new Set()).add(gid);
+    if(tid)tidOf[gid]=tid;
+  }
+  return{bySid,tidOf};
+}
+function carInfo(p){
+  const map={},tids=(p&&p.gameTids)||{},bySid={},mine=new Set();
+  const un=carUnreg(p);
+  for(const sn of p.seasons||[])for(const r of sn.regs||[]){
+    if(!r.tid)continue;
+    map[r.tid]={tn:r.tn||r.tid,season:sn.sn||sn.sid,sid:sn.sid,comp:carComp(sn.sid),compFull:carCompFull(sn.sid),grade:r.gn||''};
+    mine.add(r.tid);
+    (bySid[sn.sid]=bySid[sn.sid]||new Set()).add(r.tid);
+  }
+  return{map,tids,bySid,mine,un};
+}
+
+/* Which of this player's teams played this game.
+
+   gameTids is the first answer and the best one, but it does not cover every
+   gid — and an unresolved tid is not a cosmetic problem: it costs the team
+   name AND the result, because gameCtx needs the tid to know which score was
+   theirs. That is what produced a wall of "Unknown team" and 0W 0L.
+
+   So: gameTids, then whichever side of the fixture is a team this player is
+   registered to, then the season's own registration when it holds exactly one.
+   Only past all three is the team genuinely unknown. */
+function teamNameFromGame(g,tid){
+  if(!tid)return null;
+  if(g.h===tid)return g.hn||null;
+  if(g.a===tid)return g.an||null;
+  if(g.t1===tid)return g.t1n||null;
+  if(g.t2===tid)return g.t2n||null;
+  return null;
+}
+function carTid(gid,g,sid,info){
+  const t=info.tids[gid];
+  if(t&&info.map[t])return t;
+  // A fill-in carries its team in `u`; gameTids does not hold it.
+  const ut=info.un&&info.un.tidOf[gid];
+  if(ut)return ut;
+  const h=hTid(g),a=aTid(g);
+  if(h&&info.mine.has(h))return h;
+  if(a&&info.mine.has(a))return a;
+  const only=info.bySid[sid];
+  if(only&&only.size===1)return[...only][0];
+  return t||null;
+}
+const SEASON_INFLIGHT={};
+async function loadSeasonGames(sids,onDone){
+  const need=[...new Set(sids.filter(Boolean))].filter(sid=>!S.games[sid]);
+  let done=0;
+  if(onDone)onDone(0,need.length);
+  for(let i=0;i<need.length;i+=6){
+    await Promise.all(need.slice(i,i+6).map(async sid=>{
+      if(!SEASON_INFLIGHT[sid])SEASON_INFLIGHT[sid]=sgj('games/bv',sid).then(d=>{
+        if(d)S.games[sid]=d; delete SEASON_INFLIGHT[sid]; return d;
+      }).catch(()=>{delete SEASON_INFLIGHT[sid];return null;});
+      await SEASON_INFLIGHT[sid];
+      done++;
+    }));
+    if(onDone)onDone(done,need.length);
+  }
+  return need.length;
+}
+
+async function carLoadRows(p){
+  const uuid=p.uuid,st=carSt(uuid);
+  if(st.rows||st.loading)return;
+  st.loading=true;
+  const info=carInfo(p);
+  // ⚠️ WAS seasons[] only. games[] holds every credited game, including ones
+  // played as a fill-in for a team this player never registered with — those
+  // seasons are NOT in seasons[], so their game files were never fetched and
+  // every such game was written off as "in no season file held". The season is
+  // named in `u`, which renderUnreg has used since 2026-08-21; the game lines
+  // just were not asking for it. On a long career that is most of the shortfall.
+  const sids=[...new Set([...(p.seasons||[]).map(s=>s.sid),
+                          ...Object.keys(info.un.bySid)].filter(Boolean))];
+  const credited=Array.isArray(p.games)?p.games:[];
+  const rows=[],missing=[],seen=new Set();
+  let noDate=0,noLine=0,notInFile=0;
+  const pend=[];
+  // Six at a time, not one after another. A twenty-season career fetched
+  // sequentially is twenty round trips of a season-sized file before anything
+  // appears — "Reading season game files..." and then nothing for ages. The
+  // clubs panel already fetches its maps this way (PCLUB_FETCH_BATCH).
+  await loadSeasonGames(sids,(done,total)=>{
+    const e=el('carstrip-'+uuid);
+    if(e&&total&&!st.rows)e.innerHTML=`<div class="car-msg">Reading season game files\u2026 ${done} of ${total}</div>`;
+  });
+  // ⚠️ games[] IS NOT THE WHOLE ANSWER, AND IT IS REBUILT ONLY ONCE A WEEK.
+  // build-player-games.js is the only writer of player.games[] (the fold's merge
+  // union aside), and its only SCHEDULED run is the player-games job in
+  // weekly-indexes.yml — cron '0 2 * * 0', Sunday. A game played during the week
+  // is written to games/bv by that night's crawl and its box score is live within
+  // a day, but its id is not in games[] until the following Sunday. The season
+  // card reads the registration stats the matrix refreshes NIGHTLY, so it counted
+  // that game; the year card only ever summed games[], so it did not — for up to
+  // seven days. Measured 2026-11-22: MMB08 69 PTS on the season card against 62
+  // on the year card, with a 7-point game played that week.
+  //
+  // Everything needed to close it is already in hand: loadSeasonGames above has
+  // just put every relevant games/bv file into S.games. So games[] is the CREDITED
+  // list, and it is unioned with every game in those files this player is actually
+  // in. The predicate is the one hydrateDiff already applies to the `c` list for
+  // the same reason — roster membership OR a stored box line — and matchP is
+  // alias-aware across both stored id lengths (T37), with playerIdSet WeakMap-
+  // cached, so this costs a Set lookup per roster id, not a rebuild per call.
+  //
+  // It can only ADD: every gid in games[] stays in `mine` untouched. A game PlayHQ
+  // credits that no season file we hold contains is still out of reach — nothing
+  // client-side can find a game that is not on disk.
+  const have=new Set(credited), rosterOnly=[];
+  for(const sid of sids){
+    const gf0=S.games[sid]&&S.games[sid].games;
+    if(!gf0)continue;
+    for(const gid in gf0){
+      if(have.has(gid))continue;
+      const g0=gf0[gid];
+      if(!g0||!g0.d)continue;
+      const inIt=(Array.isArray(g0.p)?g0.p:[]).some(e=>matchP(typeof e==='string'?e:(e&&e.id),uuid))
+                 ||!!storedStats(g0,uuid);
+      if(inIt){have.add(gid);rosterOnly.push(gid);}
+    }
+  }
+  const mine=credited.concat(rosterOnly);
+  for(const sid of sids){
+    const gf=S.games[sid]&&S.games[sid].games;
+    if(!gf){missing.push((S.idx&&S.idx.seasons&&S.idx.seasons[sid]&&S.idx.seasons[sid].name)||sid);continue;}
+    for(const gid of mine){
+      if(seen.has(gid))continue;
+      const g=gf[gid];
+      if(!g){notInFile++;continue;}
+      if(!g.d){noDate++;seen.add(gid);continue;}
+      const ps=storedStats(g,uuid);
+      if(!ps){noLine++;seen.add(gid);pend.push({gid,sid,g});continue;}
+      seen.add(gid);
+      rows.push(carRow(g,gid,sid,ps,info,uuid));
+    }
+  }
+  rows.sort((a,b)=>a.date.localeCompare(b.date));
+  st.rows=rows;st.missing=missing;st.unlined=mine.length-rows.length;st.pend=pend;st.loading=false;
+  st.scan={seasons:sids.length,filesRead:sids.length-missing.length,credited:credited.length,rosterOnly:rosterOnly.length,considered:mine.length,
+           found:rows.length,noDate:noDate,noLine:noLine,
+           notInAnyFile:mine.filter(g=>!seen.has(g)).length};
+  if(el('carstrip-'+uuid))carDraw(uuid);
+}
+
+/* ── view ──────────────────────────────────────────────────────────────────
+   The settings bar is built ONCE and never re-rendered. The first cut drew it
+   inside the same innerHTML as the cards, so every click rebuilt the control
+   that had just been clicked: the flyout shut, and a half-typed date was wiped
+   on the change event. Only the strip, the hint and the button states update. */
+function carSet(u,k,v){const s=carSt(u);s[k]=v;carDraw(u);}
+function carFlag(u,k){const s=carSt(u);s[k]=!s[k];carDraw(u);}
+function carDate(u,which,v){const s=carSt(u);s[which]=v;carDraw(u);}
+function carToday(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);}
+function carHeroVal(g,hero,meas){
+  const tot=carSum(g.teams,hero),gp=carSum(g.teams,'gp');
+  return meas==='G'?(gp?+(tot/gp).toFixed(1):0):tot;
+}
+/* Totals carry GP because the other five are sums over it. Per game does not:
+   every figure on the card is already divided by it, and the header says how
+   many games the period holds. */
+/* Like the team cards, the extras are decided once for the whole strip and
+   passed in, so every card carries the same cells and the row stays in line. */
+/* 0PT is always offered alongside FO, even before the game lines exist. FO
+   comes from the registration totals and is there the moment a profile opens;
+   0PT has to be counted from box scores, which only the Games tab pays for. A
+   column that appears later looks like a different card — so the cell is there
+   from the start holding an em dash, and fills in when the lines are read. */
+function carExtras(groups){
+  const out=[];
+  if(groups.some(g=>g.teams.some(t=>'fo' in t)))out.push('fo');
+  if(groups.length)out.push('zero');
+  return out;
+}
+function carZero(g){
+  if(g.zeroN!=null)return g.zeroN;
+  if(g.teams.some(t=>t.zero!=null))return g.teams.reduce((a,t)=>a+(t.zero||0),0);
+  return null;
+}
+function carMini(g,hero,meas,extras){
+  const dash='\u2014';
+  const gp=carSum(g.teams,'gp');
+  const v=k=>meas==='G'?(gp?(carSum(g.teams,k)/gp).toFixed(1):dash):carSum(g.teams,k);
+  const cells=(meas==='G'?[]:[[gp,'GP']])
+    .concat(['pts','f','ft','fg','tp'].map(k=>[v(k),carLbl(k,meas)]));
+  for(const k of (extras||[])){
+    if(k==='fo'){
+      const has=g.teams.some(t=>'fo' in t);
+      cells.push([has?v('fo'):dash, meas==='G'?'FO/PG':'FO']);
+    } else {
+      const z=carZero(g);
+      cells.push([z==null?dash:(meas==='G'?(gp?(z/gp).toFixed(1):dash):z), meas==='G'?'0PT/PG':'0PT',
+                  z==null?'Counted from the game lines \u2014 open the Games tab to read them':
+                          (g.linesN&&g.linesN!==gp?('of '+g.linesN+' game lines read'):'')]);
+    }
+  }
+  return cells.map(([x,l,t])=>`<div class="c"${t?` title="${esc(t)}"`:''}><div class="v">${x}</div><div class="l">${labelHTML(l)}</div></div>`).join('');
+}
+function carCard(g,ctx){
+  const{chron,vals,avg,mx,hero,meas,cur,first}=ctx;
+  const i=chron.indexOf(g);
+  const v=g.range?carHeroVal(g,hero,meas):vals[i];
+  // No cap. A blanket "drop anything over 200%" was meant to mute early-career
+  // noise and instead hid the real jumps, which are the interesting part. Only a
+  // zero baseline suppresses it, because that division has no answer.
+  const dpc=(!g.range&&avg)?Math.round((v-avg)/avg*100):null;
+  const dcl=dpc===null?'car-flat':dpc>2?'car-up':dpc<-2?'car-dn':'car-flat';
+  const w=carSum(g.teams,'w'),l=carSum(g.teams,'l'),d=carSum(g.teams,'d');
+  // The card header names the competition when there is only one team, so the
+  // line under the team name would say it twice. Give that line to the grade
+  // instead, and drop the chip beside the name that would then repeat it.
+  const headComp=!g.range&&g.teams.length===1&&!!g.teams[0].comp;
+  const gradeBelow=!ctx.showSeason&&headComp;
+  // At most CAR_BARS bars, centred on this card and spread evenly either side
+  // until it runs out of career or out of room. Twenty-odd seasons drawn in a
+  // 166px strip is a picket fence; the neighbourhood is what carries meaning.
+  // Bars run in the same direction as the cards. Reading right-to-left on a
+  // newest-first row and left-to-right on an oldest-first one was two
+  // chronologies on one screen.
+  let ord=chron.map((_,j)=>j);
+  if(ctx.rev)ord.reverse();
+  if(ord.length>CAR_BARS){
+    const at=g.range?Math.round((ord.length-1)/2):ord.indexOf(i);
+    const lo=Math.max(0,Math.min(ord.length-CAR_BARS,at-Math.floor(CAR_BARS/2)));
+    ord=ord.slice(lo,lo+CAR_BARS);
+  }
+  const bars=ctx.bars?`<div class="car-spark"><div class="car-avg" style="bottom:${Math.round(avg/mx*100)}%"></div>${first?`<span class="car-avgl">avg ${meas==='G'?avg.toFixed(1):Math.round(avg)}</span>`:''}${
+    ord.map(j=>{const c=chron[j];return `<i class="${g.range?((c.from&&c.to&&c.from<=g.to&&c.to>=g.from)?'me':''):(j===i?'me':'')}" style="height:${Math.max(8,Math.round(vals[j]/mx*100))}%"></i>`;}).join('')}</div>`:'';
+  return`<div class="car-card${g.range?' rng':''}${ctx.drill===g.name?' open':''}"
+     onclick="carDrill('${esc(ctx.uuid)}','${esc(g.name)}')" title="Show this period game by game">
+    <div class="car-ch"><div class="car-nm">${esc(g.name)}</div>
+      <div class="car-mt" title="${esc(g.teams.length===1?(g.teams[0].compFull||''):'')}">${g.range?`${g.n} game${g.n===1?'':'s'} · `:''}${(!g.range&&g.teams.length===1&&g.teams[0].comp)?esc(g.teams[0].comp):`${g.teams.length} team${g.teams.length===1?'':'s'}`}</div></div>
+    <div class="car-hero"><div class="car-big">${carFmtV(v,meas)}</div><div class="car-unit">${esc(carLbl(hero,meas).toLowerCase())}</div>
+      ${dpc===null?'':`<div class="car-delta ${dcl}">${dpc>0?'+':''}${dpc}%</div>`}</div>
+    ${bars}
+    <div class="car-mini">${carMini(g,hero,meas,ctx.extras)}</div>
+    <div class="car-wl"><b style="color:var(--win)">${w}W</b> <b style="color:var(--loss)">${l}L</b>${d?` <b style="color:var(--draw)">${d}D</b>`:''}${(w||l)?` · ${Math.round(w/(w+l)*100)}%`:''}</div>
+    <div class="car-teams${g.teams.length>CAR_TEAMS?' car-cut':''}" onclick="event.stopPropagation()">
+      <div class="car-tlist">${g.teams.map(t=>{const sub=ctx.showSeason?t.season:(gradeBelow?t.grade:t.comp);return `<div class="car-t"${t.tid&&t.sid?` onclick="loadTeam('${esc(t.tid)}','${esc(t.sid)}')"`:''}>
+        <span class="car-gp">${t.gp}</span>
+        <span class="car-tn" title="${esc([t.tn,t.grade,t.compFull||t.comp,t.season].filter(Boolean).join(' \u00b7 '))}"><em>${esc(t.tn)}${
+          (t.grade&&!gradeBelow)?` <b class="car-gr">${esc(t.grade)}</b>`:''}</em>${
+          sub?`<i${gradeBelow?' class="car-gb"':''}>${esc(sub)}</i>`:''}</span>
+        <span class="car-tp">${meas==='G'?(t.gp?((t[hero]||0)/t.gp).toFixed(1):'\u2014'):(t[hero]||0)}</span></div>`;}).join('')}</div>
+      ${g.teams.length>CAR_TEAMS?`<button class="car-more" data-n="${g.teams.length-CAR_TEAMS}" onclick="carMore(this)">+${g.teams.length-CAR_TEAMS} more</button>`:''}
+    </div>
+  </div>`;
+}
+
+/* A window with one end open: a start alone runs to today, an end alone runs
+   back to the first game. The empty field stays empty — filling it in would be
+   this code inventing a date the user did not choose. */
+function carWindow(st){
+  if(!st.a&&!st.b)return null;
+  const a=st.a||'0000-01-01', b=st.b||carToday();
+  if(a>b)return{err:'Start date is after the end date.'};
+  const label=st.a&&st.b?carFmtD(st.a)+' – '+carFmtD(st.b)
+            :st.a?'From '+carFmtD(st.a)
+            :'Up to '+carFmtD(st.b);
+  return{a,b,label};
+}
+
+/* Why the game-line scan came back with nothing. A blank panel that says
+   "no seasons" when the player plainly has seasons is the silent-failure case:
+   name the stage that produced zero so it can be fixed rather than guessed. */
+function carWhyEmpty(st,p){
+  const n=st.scan||{};
+  if(!p||!Array.isArray(p.games)||!p.games.length)
+    return{msg:'This profile holds no game list, so year and range totals cannot be built from it. Season totals still work.'};
+  if(n.filesRead===0)
+    return{msg:'None of the '+n.seasons+' season game files loaded'+(st.missing.length?' ('+st.missing.join(', ')+')':'')+'.'};
+  const pend=(st.pend||[]).length;
+  if(pend)return{msg:'',build:pend};
+  const bits=[n.credited+' credited games'];
+  if(n.notInAnyFile)bits.push(n.notInAnyFile+' not present in any season file held');
+  if(n.noDate)bits.push(n.noDate+' with no date');
+  if(st.missing.length)bits.push(st.missing.length+' season file(s) failed: '+st.missing.join(', '));
+  return{msg:'No dated game lines found \u2014 '+bits.join(', ')+'.'};
+}
+/* A thirteen-team year ran the card down the page and left every other card in
+   the row short. The list stops at CAR_TEAMS and says how many it is holding
+   back; the cards stay one height until you ask one of them to grow. */
+function carMore(btn){
+  const box=btn.parentElement, open=box.classList.toggle('open');
+  btn.textContent=open?'Show fewer':('+'+btn.dataset.n+' more');
+}
+/* ── GAME DRILL-DOWN (v1.60) ──────────────────────────────────────────────
+   Clicking a period card draws its games as one full-width chart below the
+   strip — not a second row of cards. A game has no teams to list and one number
+   to show, so a card per game is mostly empty space, while eighteen bars in one
+   block answer the question the season total cannot: whether 11.2 a game is
+   eleven every week or two 25s and a row of fours.
+
+   The lines come from the same box scores Calendar year uses and the same
+   S.boxes cache the season game rows fill, so a season already looked at costs
+   nothing, and one looked at here is free afterwards. */
+function carGamesOf(st,g){
+  const rows=st.rows||[];
+  if(g.sids&&g.sids.length)return rows.filter(r=>g.sids.indexOf(r.sid)>=0);
+  if(g.from&&g.to)return rows.filter(r=>r.date>=g.from&&r.date<=g.to);
+  return [];
+}
+function carPendOf(st,g){
+  const pend=st.pend||[];
+  if(g.sids&&g.sids.length)return pend.filter(x=>g.sids.indexOf(x.sid)>=0);
+  if(g.from&&g.to)return pend.filter(x=>{const d=String((x.g&&x.g.d)||'').slice(0,10);return d>=g.from&&d<=g.to;});
+  return [];
+}
+async function carDrill(uuid,name){
+  const st=carSt(uuid);
+  st.drill=(st.drill===name)?null:name;
+  carDraw(uuid);
+  if(!st.drill)return;
+  const g=(st.groups||[]).find(x=>x.name===name);
+  if(!g)return;
+  st.drilling=true; carDraw(uuid);
+  if(!st.rows&&st.p){ await carLoadRows(st.p); carDraw(uuid); }
+  const g2=(st.groups||[]).find(x=>x.name===name)||g;
+  const pend=carPendOf(st,g2);
+  if(pend.length)await carBuild(uuid,pend);
+  st.drilling=false;
+  if(el('carstrip-'+uuid))carDraw(uuid);
+}
+function carGameChart(uuid,g,hero){
+  const st=carSt(uuid);
+  const games=carGamesOf(st,g).slice().sort((a,b)=>a.date.localeCompare(b.date));
+  const head=`<div class="car-gh"><b>${esc(g.name)} \u00b7 game by game</b>
+    <span>${games.length} game${games.length===1?'':'s'}</span>
+    <button class="car-gx" onclick="carDrill('${esc(uuid)}','${esc(g.name)}')">Close</button></div>`;
+  if(!games.length)return `<div class="car-gwrap">${head}<div class="car-msg">${
+    (st.building||st.drilling||st.loading)?'Reading game lines\u2026':'No game lines held for this period.'}</div></div>`;
+  const stat=CAR_K.indexOf(hero)>=0?hero:'pts';
+  const vals=games.map(r=>r[stat]||0);
+  const mx=Math.max(...vals,1);
+  const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+  const unit=CAR_LBL[stat]||stat.toUpperCase();
+  return `<div class="car-gwrap">${head}
+    <div class="car-gcards">${games.map(r=>{
+      const cells=[[r.pts,'PTS'],[r.fg,'FG'],[r.ft,'FT'],[r.tp,'3PT'],[r.f,'F'],[r.sc||'\u2014','SCORE']];
+      const v=r[stat]||0;
+      const d=avg?Math.round((v-avg)/avg*100):null;
+      const me=games.indexOf(r);
+      return `<div class="car-gc" onclick="openSheet('${esc(r.gid)}','${esc(r.sid)}')">
+        <div class="car-gch"><span class="nm">${esc(r.opp||'\u2014')}</span><span class="car-gres r${r.res||'U'}">${esc(r.res||'\u00b7')}</span></div>
+        <div class="car-gcm">${esc([r.rn,carFmtD(r.date)].filter(Boolean).join(' \u00b7 '))}</div>
+        <div class="car-gcv"><b>${v}</b><span>${esc(unit)}</span>${
+          d===null?'':`<i class="${d>0?'up':d<0?'dn':''}">${d>0?'+':''}${d}%</i>`}</div>
+        <div class="car-gspark"><div class="car-gsavg" style="bottom:${Math.round(avg/mx*100)}%"></div>${
+          me===0?`<span class="car-gsl">avg ${avg.toFixed(1)}</span>`:''}${
+          (()=>{let lo=0,hi=vals.length;
+            if(vals.length>CAR_BARS){lo=Math.max(0,Math.min(vals.length-CAR_BARS,me-Math.floor(CAR_BARS/2)));hi=lo+CAR_BARS;}
+            return vals.slice(lo,hi).map((x,k)=>`<i class="${(lo+k)===me?'me':''}" style="height:${Math.max(8,Math.round(x/mx*100))}%"></i>`).join('');})()}</div>
+        <div class="car-gcg">${cells.map(([x,l])=>`<div class="c"><div class="v">${esc(String(x))}</div><div class="l">${l}</div></div>`).join('')}</div>
+      </div>`;}).join('')}</div></div>`;
+}
+
+function carDraw(uuid){
+  const st=carSt(uuid), p=st.p;
+  const strip=el('carstrip-'+uuid), hintEl=el('carhint-'+uuid), noteEl=el('carnote-'+uuid), bar=el('carbar-'+uuid);
+  if(!strip)return;
+  if(bar){
+    bar.querySelectorAll('button[data-k]').forEach(btn=>{
+      const k=btn.dataset.k, v=btn.dataset.v;
+      btn.classList.toggle('on', v===undefined?!!st[k]:st[k]===v);
+    });
+    const yr=st.mode==='Y';
+    const rgw=el('carrgw-'+uuid); if(rgw)rgw.classList.toggle('on',yr);
+    const rg=el('carrg-'+uuid); if(rg)rg.classList.toggle('on',yr&&!!st.range);
+  }
+  const rangeOn=st.range&&st.mode==='Y';   // a date window is a slice of game lines
+  const needRows=st.mode==='Y';
+  if(needRows&&!st.rows){
+    strip.innerHTML=`<div class="car-msg">${st.loading?'Reading season game files…':'Season game files not loaded.'}</div>`;
+    if(hintEl)hintEl.textContent='';
+    if(noteEl)noteEl.innerHTML='';
+    if(!st.loading&&p)carLoadRows(p);
+    return;
+  }
+  // A registration with no games played is not a period in a career — a team
+  // entered for next season renders a card of zeros and a -100% against the
+  // season before it. Dropped from the cards; the season history below still
+  // lists it, which is where an upcoming registration belongs.
+  const base=(st.mode==='Y'?carYearGroups(st.rows||[]):carSeasonGroups(p||{seasons:[]}))
+    .filter(g=>carSum(g.teams,'gp')>0);
+  if(!base.length){
+    const why=needRows?carWhyEmpty(st,p):{msg:'No seasons on this profile.'};
+    strip.innerHTML=`<div class="car-msg">${esc(why.msg)}</div>`;
+    const bEl0=el('carbuild-'+uuid);
+    if(bEl0){
+      bEl0.classList.toggle('on',!!why.build);
+      bEl0.innerHTML=why.build?`<span id="carprog-${esc(uuid)}">Reading ${why.build} box score${why.build===1?'':'s'}\u2026</span>`:'';
+      if(why.build&&!st.building)carBuild(uuid);
+    }
+    if(hintEl)hintEl.textContent='';if(noteEl)noteEl.textContent='';
+    return;}
+
+  const chron=base.slice(), hero=st.hero, meas=st.meas||'T';
+  const vals=chron.map(g=>carHeroVal(g,hero,meas));
+  const mx=Math.max(...vals,1);
+  const avg=vals.reduce((a,b)=>a+b,0)/Math.max(1,vals.length);
+  const list=st.order==='N'?chron.slice().reverse():chron.slice();
+  const cur=st.order==='N'?list[0]:list[list.length-1];
+
+  let hint='';
+  if(rangeOn){
+    const win=carWindow(st);
+    if(!win)hint='Enter a start date, an end date, or both.';
+    else if(win.err)hint=win.err;
+    else{
+      const rg=carRangeGroup(st.rows||[],win.a,win.b,win.label);
+      if(rg)list.unshift(rg);else hint='No games in that window.';
+    }
+  }
+  // Year totals built from an incomplete set are a silent wrong answer, so the
+  // offer to finish them sits above the cards whenever games are still missing —
+  // not only when nothing rendered at all.
+  // Calendar year reads the box scores it needs as soon as it is selected. The
+  // first build asked first, with a count and a button; the count is not a
+  // decision anyone wants to make twice, so now it just says what it is doing.
+  const bEl=el('carbuild-'+uuid), pend=(st.pend||[]).length;
+  if(bEl){
+    const busy=needRows&&(pend>0||st.building);
+    bEl.classList.toggle('on',busy);
+    bEl.innerHTML=busy?`<span id="carprog-${esc(uuid)}">Reading ${pend} box score${pend===1?'':'s'}\u2026</span>`:'';
+    if(needRows&&pend>0&&!st.building)carBuild(uuid);
+  }
+  const ctx={chron,vals,avg,mx,hero,meas,cur,uuid,extras:carExtras(chron),drill:st.drill,bars:st.bars,rev:st.order==='N',showSeason:st.mode!=='S'};
+  st.groups=list.slice();
+  const lead=list.find(g=>!g.range);          // leftmost period card carries the avg label
+  strip.innerHTML=list.map(g=>carCard(g,{...ctx,first:lead===g})).join('');
+  carWheel(uuid);carNav(uuid);
+  const dEl=el('cardrill-'+uuid);
+  if(dEl){
+    const dg=st.drill?list.find(x=>x.name===st.drill):null;
+    dEl.innerHTML=dg?carGameChart(uuid,dg,hero):'';   // one game IS one game: the measure has no meaning here
+  }
+  if(hintEl)hintEl.textContent=hint;
+
+  // Nothing about the fetch belongs on screen. A game whose box score held no
+  // line for this player is already counted in the season figures; a season file
+  // that would not load is a fault for the console, not a caption under a chart.
+  if(noteEl)noteEl.textContent='';
+  hydrateHighs(uuid);   // the highs read the same rows; fill them in as they land
+  if(needRows&&st.missing.length&&!st._warned){
+    st._warned=1;
+    console.warn('[career] season game files did not load for '+(p&&p.uuid)+':',st.missing.join(', '),
+      '\u2014 sgj returned null from both origins, so either games/bv/{sid}.json does not exist for these seasons or both fetches failed.');
+  }
+}
+
+function hydrateCareer(p){
+  const uuid=p.uuid,host=el('pmove-'+uuid);if(!host)return;
+  carSt(uuid).p=p;
+  if(!(p.seasons||[]).length){host.innerHTML='';return;}
+  const u=esc(uuid);
+  const b=(k,v,label)=>`<button data-k="${k}"${v===undefined?'':` data-v="${v}"`} onclick="${v===undefined?`carFlag('${u}','${k}')`:`carSet('${u}','${k}','${v}')`}">${label}</button>`;
+  host.innerHTML=`<div class="slist"><div class="sec-lbl">Career</div>
+    <div class="car-wrap">
+      <div class="car-bar" id="carbar-${u}">
+        <span class="lbl">Hero</span>${CAR_K.map(k=>b('hero',k,CAR_LBL[k])).join('')}
+        <span class="lbl">Measure</span>${b('meas','T','Totals')}${b('meas','G','Per game')}
+        <span class="lbl">Group by</span>${b('mode','S','Season')}${b('mode','Y','Calendar year')}
+        <span class="lbl">Order</span>${b('order','N','Newest first')}${b('order','O','Oldest first')}
+        <span class="lbl">Show</span>${b('bars',undefined,'Career bars')}
+        <span class="car-rgwrap" id="carrgw-${u}">${b('range',undefined,'Custom range')}</span>
+        <span class="car-rg" id="carrg-${u}">
+          <label>From <input type="date" onchange="carDate('${u}','a',this.value)"></label>
+          <label>To <input type="date" onchange="carDate('${u}','b',this.value)"></label>
+        </span>
+      </div>
+      <div class="car-hint" id="carhint-${u}"></div>
+      <div class="car-build" id="carbuild-${u}"></div>
+      <div class="car-scroll">
+        <button class="car-nav l" id="carL-${u}" onclick="carScroll('${u}',-1)">‹</button>
+        <div class="car-strip" id="carstrip-${u}"></div>
+        <button class="car-nav r" id="carR-${u}" onclick="carScroll('${u}',1)">›</button>
+      </div>
+      <div id="cardrill-${u}"></div>
+      <div class="car-hint" id="carnote-${u}"></div>
+    </div></div>`;
+  carDraw(uuid);
+  carWheel(uuid);
+  setTimeout(()=>carNav(uuid),0);
+}
+
+
+/* ── DRAG TO PAN (v1.78) ──────────────────────────────────────────────────
+   The career strip, the game cards and the availability grid all scroll
+   sideways inside a page that scrolls down, which on a trackpad means fighting
+   the page to move them. One delegated handler gives every one of them a hand
+   grab; nothing has to be re-bound when a panel is redrawn, which happens on
+   every settings click.
+
+   A drag must not also count as a click — these panels are made of clickable
+   cards — so once the pointer has actually moved, the next click is swallowed
+   in the capture phase. */
+const PAN_SEL='.car-strip,.car-gcards,.av-grid,.ptwrap,.tc-grid,.hi-grid,.mt-grid';
+function panScrollable(el){
+  for(let n=el;n&&n!==document.body;n=n.parentElement){
+    if(n.matches&&n.matches(PAN_SEL)&&
+       (n.scrollWidth-n.clientWidth>4||n.scrollHeight-n.clientHeight>4))return n;
+  }
+  return null;
+}
+(function initDragPan(){
+  let el=null,sx=0,sy=0,l0=0,t0=0,moved=false;
+  document.addEventListener('pointerover',e=>{
+    const t=panScrollable(e.target);
+    if(t&&!t.style.cursor)t.style.cursor='grab';
+  });
+  document.addEventListener('pointerdown',e=>{
+    if(e.button!==0)return;
+    if(/^(INPUT|SELECT|TEXTAREA|BUTTON)$/.test((e.target||{}).tagName||''))return;
+    el=panScrollable(e.target);
+    if(!el)return;
+    moved=false;sx=e.clientX;sy=e.clientY;l0=el.scrollLeft;t0=el.scrollTop;
+  });
+  document.addEventListener('pointermove',e=>{
+    if(!el)return;
+    const dx=e.clientX-sx,dy=e.clientY-sy;
+    if(!moved&&Math.hypot(dx,dy)<5)return;
+    if(!moved){
+      moved=true;el.style.cursor='grabbing';
+      // scroll-behavior:smooth on the career strip fights a drag
+      el.dataset.panSb=el.style.scrollBehavior||'';el.style.scrollBehavior='auto';
+      el.setPointerCapture&&el.setPointerCapture(e.pointerId);
+    }
+    el.scrollLeft=l0-dx;el.scrollTop=t0-dy;
+    e.preventDefault();
+  },{passive:false});
+  const end=()=>{
+    if(!el)return;
+    const e2=el;el=null;
+    e2.style.cursor='grab';e2.style.scrollBehavior=e2.dataset.panSb||'';
+    if(moved){
+      const stop=ev=>{ev.stopPropagation();ev.preventDefault();};
+      document.addEventListener('click',stop,{capture:true,once:true});
+      setTimeout(()=>document.removeEventListener('click',stop,{capture:true}),0);
+    }
+  };
+  document.addEventListener('pointerup',end);
+  document.addEventListener('pointercancel',end);
+})();
+
+/* ── GAME-LINE PANELS (v1.68) ─────────────────────────────────────────────────
+   Career highs, venue/day splits and team-mate continuity all read the SAME
+   game lines the career cards build (carLoadRows + carBuild), so the first of
+   them to be opened pays for the fetch and the rest are free. None of them
+   stores anything new: the lines live in CAR[uuid].rows and S.boxes exactly as
+   the Calendar-year mode and the drill-down left them. */
+async function carRowsReady(uuid,onProg){
+  const st=carSt(uuid),p=st.p;
+  if(!p)return null;
+  if(!st.rows&&!st.loading)await carLoadRows(p);
+  else while(st.loading)await new Promise(r=>setTimeout(r,120));
+  if((st.pend||[]).length){
+    if(onProg)onProg(st.pend.length);
+    await carBuild(uuid);
+  }
+  return st.rows||[];
+}
+function panelBusy(host,msg){
+  if(host)host.innerHTML=`<div style="font-size:0.8rem;color:var(--text3);padding:8px 0">${esc(msg)}</div>`;
+}
+
+/* ── CAREER HIGHS ──────────────────────────────────────────────────────────
+   The best single game for each stat. A sum over lines that are already held,
+   so this never fetches on its own: it fills in the moment the lines exist for
+   any other reason, and offers the fetch when they do not. */
+const HIGH_K=[['pts','Points'],['fg','Field goals'],['ft','Free throws'],['tp','Three-pointers'],['f','Fouls']];
+/* PlayHQ publishes foul-outs as a SEASON AND CAREER total only: a box-score line
+   carries number, name, PTS, 2PT, 3PT, FT and fouls, and nothing that says the
+   player fouled out of THAT game. So this tile is the career figure, marked as
+   such, and sits apart from the single-game highs beside it. Deriving it from
+   "fouls >= 5" would be this app inventing a rule PlayHQ did not apply. */
+function careerFouledOut(p){
+  // ⚠️ NOT sports.Basketball.foulOuts. On these files that career field is not a
+  // number — rendering it gave "[object Object]" — which is also why the header
+  // row's FO cell, gated on `> 0`, never appeared for anyone. The registration
+  // stats DO carry a plain number, so the career figure is summed from them with
+  // the same rule as everything else here: MAX across sibling registrations of
+  // one team (a regrade repeats the season block, T20), summed across teams.
+  const byTid=new Map();
+  let any=false;
+  for(const s of (p&&p.seasons)||[]){
+    for(const r of (s.regs||[])){
+      const v=r&&r.stats&&r.stats.foulOuts;
+      if(typeof v!=='number'||!isFinite(v))continue;
+      any=true;
+      const k=(s.sid||'')+'|'+(r.tid||'');
+      byTid.set(k,Math.max(byTid.get(k)||0,v));
+    }
+  }
+  if(!any)return null;
+  let t=0; for(const v of byTid.values())t+=v;
+  return t;
+}
+function foTile(p){
+  const fo=careerFouledOut(p);
+  if(fo===null)return '';          // the competition does not record them at all
+  const gp=(p&&p.games&&p.games.length)||0;
+  // Every other tile is one game, so this one has to say it is not. "career"
+  // alone does that; the source was noise nothing else carries.
+  return `<div class="hi-t hi-q"><div class="hi-k">Foul-outs</div><div class="hi-v">${fo}</div>
+    <div class="hi-w">career total</div><div class="hi-d">${
+      fo&&gp?('one every '+Math.round(gp/fo)+' games'):'\u2014'}</div></div>`;
+}
+function highsHtml(rows){
+  const tiles=HIGH_K.map(([k,label])=>{
+    let best=null;
+    for(const r of rows){const v=r[k]||0;if(!best||v>best[k])best=r;}
+    if(!best||!(best[k]||0))return '';
+    return `<div class="hi-t" onclick="openSheet('${esc(best.gid)}','${esc(best.sid)}')" title="Open this game">
+      <div class="hi-k">${esc(label)}</div>
+      <div class="hi-v">${best[k]}</div>
+      <div class="hi-w">${esc(best.opp||best.tn||'')}</div>
+      <div class="hi-d">${esc([best.rn,carFmtD(best.date)].filter(Boolean).join(' · '))}</div></div>`;
+  }).filter(Boolean).join('');
+  const zero=rows.filter(r=>!(r.pts||0)).length;
+  return tiles+(zero?`<div class="hi-t hi-q"><div class="hi-k">${labelHTML('0PT games')}</div>
+    <div class="hi-v">${zero}</div><div class="hi-w">of ${rows.length}</div><div class="hi-d">—</div></div>`:'');
+}
+/* A high is only ever the best of the lines actually READ, and that is fewer
+   than the games PlayHQ credits. Leaving the two numbers to differ silently is
+   the failure this app exists to avoid, so the shortfall is named and broken
+   down rather than left for someone to notice in a screenshot. */
+function highsGap(st,rows){
+  const n=st.scan||{};
+  const credited=n.credited||0;
+  if(!credited||rows.length>=credited)return '';
+  const missing=credited-rows.length;
+  const bits=[];
+  if(n.notInAnyFile)bits.push(n.notInAnyFile+' in no season file held');
+  if(n.noDate)bits.push(n.noDate+' with no date');
+  const rest=missing-(n.notInAnyFile||0)-(n.noDate||0);
+  if(rest>0)bits.push(rest+' whose box score names no line for this player');
+  if((st.missing||[]).length)bits.push((st.missing||[]).length+' season file(s) that would not load');
+  return `<div class="hi-note" title="${esc(bits.join(' · '))}">${rows.length} of ${credited} game lines</div>`;
+}
+function hydrateHighs(uuid){
+  const host=el('phigh-'+uuid); if(!host)return;
+  const st=carSt(uuid), rows=st.rows||[], pend=(st.pend||[]).length;
+  if(!rows.length&&!pend){
+    host.innerHTML=`<div class="slist"><div class="sec-lbl">Career highs</div>
+      <div class="sp-wait">Reading game lines…</div></div>`;
+    return;
+  }
+  const body=rows.length?`<div class="hi-grid">${highsHtml(rows)+foTile(st.p)}</div>`
+    :`<div class="sp-wait">Reading game lines…</div>`;
+  const part=pend?`<div class="hi-note">${rows.length} of ${rows.length+pend} game lines read…</div>`
+             :highsGap(st,rows);
+  host.innerHTML=`<div class="slist"><div class="sec-lbl">Career highs</div>${body}${part}</div>`;
+}
+async function buildHighs(uuid,btn){
+  if(btn)btn.disabled=true;
+  const host=el('phigh-'+uuid);
+  panelBusy(host&&host.querySelector('.slist'),'Reading game lines…');
+  await carRowsReady(uuid);
+  hydrateHighs(uuid);
+}
+
+/* ── VENUE AND DAY SPLITS ──────────────────────────────────────────────────
+   Every game carries vn (venue), ct (court) and t (time); nothing in the app
+   used them for a player. Rows with no venue are counted separately rather than
+   bundled into an "Unknown" bar, because an unnamed venue is a gap in the data,
+   not a place someone played. */
+function splitBand(t){
+  const h=parseInt(String(t||'').slice(0,2));
+  if(isNaN(h))return['',''];
+  if(h<12)return['morning',h];
+  if(h<16)return['midday',h];
+  return['evening',h];
+}
+const SPLIT_HEAD=`<div class="sp-r sp-h"><span class="n"></span><span class="t"></span><span class="g">GP</span><span class="v">PPG</span></div>`;
+function splitRows(groups,unit){
+  const list=[...groups.values()].filter(g=>g.gp).sort((a,b)=>(b.pts/b.gp)-(a.pts/a.gp));
+  if(!list.length)return '<div class="sp-none">No lines carry this field.</div>';
+  const mx=Math.max(...list.map(g=>g.pts/g.gp),0.1);
+  const tot=list.reduce((a,g)=>({gp:a.gp+g.gp,pts:a.pts+g.pts}),{gp:0,pts:0});
+  return SPLIT_HEAD+list.map(g=>{const v=g.pts/g.gp;
+    return `<div class="sp-r${v===mx?' b':''}"><span class="n">${esc(g.label)} <i>${esc(g.sub)}</i></span>
+      <span class="t"><i style="width:${Math.max(2,Math.round(v/mx*100))}%"></i></span>
+      <span class="g">${g.gp}</span><span class="v">${v.toFixed(1)}</span></div>`;}).join('')
+    +`<div class="sp-r sp-t"><span class="n">${list.length} ${list.length===1?'entry':'entries'}</span><span class="t"></span>
+      <span class="g">${tot.gp}</span><span class="v">${tot.gp?(tot.pts/tot.gp).toFixed(1):'\u2014'}</span></div>`;
+}
+async function buildSplits(uuid,btn){
+  const host=el('splits-'+uuid); if(!host)return;
+  if(btn)btn.disabled=true;
+  panelBusy(host,'Reading game lines…');
+  const rows=await carRowsReady(uuid)||[];
+  if(btn)btn.disabled=false;
+  if(!rows.length){panelBusy(host,'No game lines could be read for this player.');return;}
+  const ven=new Map(), day=new Map();
+  let noVen=0,noTime=0;
+  const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  for(const r of rows){
+    if(r.vn){
+      if(!ven.has(r.vn))ven.set(r.vn,{label:r.vn,sub:'',gp:0,pts:0,ct:new Map()});
+      const o=ven.get(r.vn);o.gp++;o.pts+=r.pts||0;
+      if(r.ct)o.ct.set(r.ct,(o.ct.get(r.ct)||0)+1);
+    } else noVen++;
+    const p=String(r.date).split('-');
+    const dow=p.length===3?DAYS[dayOfWeek(+p[0],+p[1],+p[2])]:'';
+    const[band]=splitBand(r.t);
+    if(dow&&band){
+      const k=dow+' '+band;
+      if(!day.has(k))day.set(k,{label:dow+' '+band,sub:'',gp:0,pts:0,ts:new Map()});
+      const o=day.get(k);o.gp++;o.pts+=r.pts||0;
+      if(r.t)o.ts.set(r.t,(o.ts.get(r.t)||0)+1);
+    } else noTime++;
+  }
+  const modal=m=>{let b='',n=0;for(const[k,v]of m)if(v>n){n=v;b=k;}return b;};
+  for(const o of ven.values())o.sub=o.ct.size?('usually '+modal(o.ct)):'';
+  for(const o of day.values())o.sub=o.ts.size?modal(o.ts):'';
+  const foot=[];
+  if(noVen)foot.push(noVen+' game'+(noVen===1?'':'s')+' name no venue');
+  if(noTime)foot.push(noTime+' carry no time');
+  host.innerHTML=`<div class="sp-hd">By venue <span>PPG · ${rows.length} games read</span></div>
+    <div class="sp-list">${splitRows(ven)}</div>
+    <div class="sp-hd" style="margin-top:10px">By day and time <span>PPG</span></div>
+    <div class="sp-list">${splitRows(day)}</div>
+    ${foot.length?`<div class="sp-foot">${esc(foot.join(' · '))}.</div>`:''}`;
+}
+
+/* ── TEAM-MATE CONTINUITY ──────────────────────────────────────────────────
+   The team sheet is the roster block in team-stats/bv/{sid}.json, one file per
+   season played — the same files buildOppStats already loads, so a player whose
+   opponents have been computed pays nothing here.
+
+   g.p[] names every player in a GAME, both sides, with no marker saying which.
+   So the roster decides who is a team-mate and g.p decides which games they were
+   actually there for: a season spent in the same squad is not continuity if one
+   of them missed half of it. hp/ap are not used — this dataset does not carry
+   them, which is why the career cards fetch box scores one game at a time. */
+async function buildMates(uuid,btn){
+  const host=el('mates-'+uuid); if(!host)return;
+  const p=carSt(uuid).p||S.players[uuid];
+  if(!p){panelBusy(host,'This profile is not loaded.');return;}
+  if(btn)btn.disabled=true;
+  const sids=[...new Set((p.seasons||[]).map(s=>s.sid).filter(Boolean))];
+  panelBusy(host,'Reading team sheets\u2026');
+  await loadSeasonGames(sids,(d,t)=>{if(t)panelBusy(host,`Reading season game files\u2026 ${d} of ${t}`);});
+  let done=0;
+  for(let i=0;i<sids.length;i+=6){
+    await Promise.all(sids.slice(i,i+6).map(async sid=>{
+      if(!S.teamStats[sid])S.teamStats[sid]=await sgj('team-stats/bv',sid)||{};
+      done++;
+    }));
+    panelBusy(host,`Reading team sheets\u2026 ${done} of ${sids.length}`);
+  }
+  // Periods, not seasons: two registrations inside one season period are one
+  // column on the strip, exactly as the career cards group them. Ordered oldest
+  // to newest — p.seasons is in no order at all, which drew the strip as a
+  // shuffled row of cells with no reading direction.
+  const periods=[], pOf={};
+  for(const s of sortSeasonsDesc(p.seasons||[]).slice().reverse()){
+    const k=s.sn||s.sid;
+    if(periods.indexOf(k)<0)periods.push(k);
+    if(s.sid)pOf[s.sid]=periods.indexOf(k);
+  }
+  const tnOf={};
+  for(const s of (p.seasons||[]))for(const r of (s.regs||[]))if(r.tid&&r.tn)tnOf[r.tid]=r.tn;
+  const mineGames=new Set(Array.isArray(p.games)?p.games:[]);
+  const tally=new Map();
+  let rosters=0;
+  for(const sid of sids){
+    const ts=S.teamStats[sid]||{};
+    const myTids=getTidsForSeason(p,sid)||[];
+    const mates=new Map();                       // t13 -> name, for THIS season
+    for(const tid of myTids){
+      const r=ts[tid]&&ts[tid].roster; if(!r)continue;
+      rosters++;
+      // The team name as THIS player's own registration spells it, falling back
+      // to the team-stats meta. "3 seasons together" says nothing about which
+      // side of which club, which is the first thing anyone asks of it.
+      const tn=(tnOf[tid]||((ts[tid]&&ts[tid].meta&&ts[tid].meta.name)||''));
+      for(const[k,v]of Object.entries(r)){
+        if(gameIdMatchesPlayer(k,p))continue;
+        mates.set(t13(k),{id:k,name:(v&&v.name)||'',tn});
+      }
+    }
+    if(!mates.size)continue;
+    const per=pOf[sid];
+    for(const[k,m]of mates){
+      if(!tally.has(k))tally.set(k,{id:m.id,name:m.name,g:0,per:new Set(),tn:{}});
+      const o=tally.get(k);
+      if(!o.name&&m.name)o.name=m.name;
+      if(per!=null){o.per.add(per); if(m.tn)o.tn[per]=m.tn;}
+    }
+    const gf=(S.games[sid]&&S.games[sid].games)||{};
+    for(const gid of mineGames){
+      const g=gf[gid]; if(!g||!Array.isArray(g.p))continue;
+      for(const e of g.p){
+        const pid=typeof e==='string'?e:(e&&e.id);
+        if(!pid)continue;
+        const k=t13(pid);
+        const o=tally.get(k);
+        if(o&&mates.has(k))o.g++;
+      }
+    }
+  }
+  if(btn)btn.disabled=false;
+  if(!rosters){
+    panelBusy(host,'No team sheets could be read for this player\u2019s seasons.');
+    return;
+  }
+  // No top-N. The first cut kept 24, which on a 400-game career silently threw
+  // away most of the answer — and a list that stops at an arbitrary number is
+  // worse than a long one, because nothing on screen says it stopped.
+  const all=[...tally.values()].sort((a,b)=>b.g-a.g||b.per.size-a.per.size);
+  const list=all.filter(o=>o.g>0);
+  const noShared=all.length-list.length;
+  if(!list.length){
+    panelBusy(host,`Read ${rosters} team sheet${rosters===1?'':'s'}, but none of their players appear in this player\u2019s games.`);
+    return;
+  }
+  const span=o=>{const k=[...o.per].sort((a,b)=>a-b);
+    if(!k.length)return '';
+    return k.length===1?periods[k[0]]:periods[k[0]]+' \u2013 '+periods[k[k.length-1]];};
+  // Cards are for the people this player actually keeps playing with — more
+  // than one season. One season together is a squad-mate, not a nucleus, and a
+  // hundred of those as cards buries the handful that matter; they go in a list
+  // underneath. The rank is on the card because the order is games alongside
+  // and nothing else on the card says so.
+  const core=list.filter(o=>o.per.size>1);
+  const rest=list.filter(o=>o.per.size<=1);
+  const card=(o,i)=>`<div class="mt-c" onclick="loadPlayer('${esc(o.id)}')" title="Open this player">
+      <div class="mt-rk">#${i+1}</div>
+      <div class="mt-n">${esc(displayName({name:o.name},o.id))}</div>
+      <div class="mt-s">${o.g} game${o.g===1?'':'s'} alongside</div>
+      <div class="mt-tl">${periods.map((nm,j)=>`<i class="${o.per.has(j)?'on':''}" title="${
+        esc(o.per.has(j)?(nm+(o.tn[j]?' \u00b7 '+o.tn[j]:'')):(nm+' \u00b7 not together'))}"></i>`).join('')}</div>
+      <div class="mt-g">${esc(span(o))}</div></div>`;
+  const PER_ROW=5, ROWS=3, SHOWN=PER_ROW*ROWS;
+  const first=core.slice(0,SHOWN), more=core.slice(SHOWN);
+  host.innerHTML=`<div class="mt-hd">${list.length} team-mate${list.length===1?'':'s'} \u00b7 ${rosters} team sheet${rosters===1?'':'s'} \u00b7 ${periods.length} season${periods.length===1?'':'s'}${
+    noShared?` \u00b7 ${noShared} more on a squad list with no game recorded alongside`:''}</div>
+    ${core.length?`<div class="mt-key"><span class="mt-ke">${esc(periods[0]||'')}</span>
+      <span class="mt-kt">${core.length} played more than one season with this player \u00b7 one cell per season, oldest to newest, filled where they shared a team</span>
+      <span class="mt-ke">${esc(periods[periods.length-1]||'')}</span></div>
+    <div class="mt-grid">${first.map((o,i)=>card(o,list.indexOf(o))).join('')}</div>
+    ${more.length?`<div class="mt-grid mt-hide" id="mtmore-${esc(uuid)}">${more.map(o=>card(o,list.indexOf(o))).join('')}</div>
+      <button class="mt-btn" data-n="${more.length}" onclick="matesMore(this,'mtmore-${esc(uuid)}')">Show ${more.length} more</button>`:''}`:''}
+    ${rest.length?(()=>{
+      const li=o=>`<div class="mt-li" onclick="loadPlayer('${esc(o.id)}')" title="Open this player">
+        <span class="r">#${list.indexOf(o)+1}</span><span class="n">${esc(displayName({name:o.name},o.id))}</span>
+        <span class="s">${esc(span(o))}</span><span class="g">${o.g}</span></div>`;
+      const LIST_SHOWN=12;
+      const a=rest.slice(0,LIST_SHOWN), z=rest.slice(LIST_SHOWN);
+      return `<div class="mt-lhd">One season together \u00b7 ${rest.length}</div>
+        <div class="mt-list">${a.map(li).join('')}</div>
+        ${z.length?`<div class="mt-list mt-hide" id="mtrest-${esc(uuid)}">${z.map(li).join('')}</div>
+          <button class="mt-btn" data-n="${z.length}" onclick="matesMore(this,'mtrest-${esc(uuid)}')">Show ${z.length} more</button>`:''}`;})():''}`;
 }
 
 function renderPlayer(p){
@@ -1857,6 +3723,7 @@ function renderPlayer(p){
     <div class="vsub">${esc([p.gender,club].filter(Boolean).join(' \u00b7 '))}</div>
     <div class="vuuid" title="Click to copy" onclick="navigator.clipboard&&navigator.clipboard.writeText('${esc(uuid)}')">${esc(uuid)}</div>
     ${isPrivate(p)?'':`<a class="phq-lnk" href="https://www.playhq.com/public/profile/${esc(uuid)}/statistics" target="_blank" rel="noopener" style="display:inline-flex;margin:4px 0 0;padding:3px 8px;font-size:0.72rem">View on PlayHQ \u2197</a>`}
+    <button class="h2h-open" onclick="openH2H('${esc(uuid)}',null)">\u2194 Compare with\u2026</button>
     </div></div>`;
   // A PRIVATE profile publishes no statistics, so every OFFICIAL cell shows an em
   // dash rather than 0 (decision 2026-08-21). A zero is a claim that they played
@@ -1927,9 +3794,61 @@ function renderPlayer(p){
     }
     h+='</div>';
   }
-  h+=`<div class="pclub-wrap" id="pclub-${esc(uuid)}"></div>`;
+  /* ── TABS (v1.68) ─────────────────────────────────────────────────────────
+     Four panes, using the same vtabs/vtab/tpane classes the team view has had
+     since v1.0, so the two views read as one app. The header, the career stat
+     row and the recorded-appearances line stay ABOVE the bar: they identify the
+     player, and a tab that could hide who you are looking at is not a tab. */
+  const pt=(id,label,on)=>`<button class="vtab${on?' on':''}" onclick="switchPTab(this,'pp${id}-${esc(uuid)}','${esc(uuid)}','${id}')">${label}</button>`;
+  h+=`<div class="vtabs">${pt('S','Season',1)}${pt('L','Games')}${pt('O','Opponents')}${pt('R','Clubs')}</div>`;
+  h+=`<div class="tpane on" id="ppS-${esc(uuid)}">`;
+  h+=`<div class="pmove-wrap" id="pmove-${esc(uuid)}"></div>`;
   h+='<div class="slist"><div class="sec-lbl">Season history</div>';
+  // ── PERIOD TOTALS (v1.31) ────────────────────────────────────────────────
+  // groups is one entry per (sid,tid). One season period often holds several
+  // sids, so three cards all headed "Summer 2026/27" is three answers to one
+  // question. Total them under one header; single-registration periods are
+  // untouched. Per-group stats use the same MAX-across-siblings rule as the
+  // card below (T20) and are then SUMMED across different tids.
+  const periodOf=g=>g.sn.sn||g.sn.sid;
+  const gst=groups.map(({regs})=>{
+    const st=regs.reduce((a,r)=>{const q=r.stats||{};return{
+      gp:Math.max(a.gp||0,q.gp||0),pts:Math.max(a.pts||0,q.pts||0),fg:Math.max(a.fg||0,q.fg||0),
+      ft:Math.max(a.ft||0,q.ft||0),threePt:Math.max(a.threePt||0,q.threePt||0),
+      fouls:Math.max(a.fouls||0,q.fouls||0)};},{});
+    const w=regs[0]&&regs[0].stats||{};
+    return{st,w:w.wins||0,l:w.losses||0,d:w.draws||0};
+  });
+  const periods=new Map();
+  groups.forEach((g,i)=>{
+    const k=periodOf(g);
+    if(!periods.has(k))periods.set(k,{n:0,first:i,gp:0,pts:0,fg:0,ft:0,tp:0,f:0,w:0,l:0,d:0});
+    const t=periods.get(k),x=gst[i];
+    t.n++;t.gp+=x.st.gp||gamesForGroup(p,g.regs);t.pts+=x.st.pts||0;t.fg+=x.st.fg||0;
+    t.ft+=x.st.ft||0;t.tp+=x.st.threePt||0;t.f+=x.st.fouls||0;t.w+=x.w;t.l+=x.l;t.d+=x.d;
+  });
   groups.forEach(({sn,tid,regs},gi)=>{
+    const pk=periodOf({sn}),pt=periods.get(pk);
+    if(pt&&pt.n>1&&pt.first===gi){
+      const pppg=pt.gp?(pt.pts/pt.gp).toFixed(1):'\u2014';
+      const ppc=(pt.w+pt.l+pt.d)>0?Math.round(pt.w/(pt.w+pt.l+pt.d)*100)+'%':'';
+      // EIGHT cells, because the season rows beneath render eight. `.cstat` is
+      // flex:1, so alignment IS cell-count parity (same rule as the finals row
+      // against the career strip) \u2014 a seven-cell header drifts further out of
+      // line with every column.
+      const pwld=(pt.w||pt.l||pt.d)
+        ? `${pt.w?`<span style="color:var(--win)">${pt.w}W</span>`:''}${pt.l?`<span style="color:var(--loss)">${pt.l}L</span>`:''}${pt.d?`<span style="color:var(--draw)">${pt.d}D</span>`:''}`
+        : '<span style="color:var(--text3)">\u2014</span>';
+      h+=`<div class="sp-hdr"><div class="sp-info"><div class="sp-n">${esc(pk)}</div>
+        <div class="sp-s">${pt.n} teams</div></div>
+        <div class="sp-cells">${[[pt.gp,'GP'],[pppg,'PPG'],[pt.pts,'PTS'],[pt.fg,'FG'],[pt.ft,'FT'],[pt.tp,'3PT'],[pt.f,'F']]
+          .map(([v,l])=>statCell(v,l,false,null)).join('')}
+          <div style="flex:1;text-align:center;padding:6px 4px;min-width:0;overflow:hidden">
+            <div style="font-size:0.75rem;font-weight:700;display:flex;gap:3px;justify-content:center;white-space:nowrap;font-variant-numeric:tabular-nums">${pwld}</div>
+            <div style="font-size:0.58rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;margin-top:1px">${ppc}</div>
+          </div></div></div>`;
+    }
+    const inPeriod=pt&&pt.n>1;
     // Use last reg as team link target (most stable).
     const primary=regs[regs.length-1];
     // Sibling regs sharing a tid carry IDENTICAL season-cumulative stat blocks (the
@@ -1983,13 +3902,13 @@ function renderPlayer(p){
     // Locked marker keys on locked ONLY — never archivedAt: where a season is
     // SERVED from must stay invisible in the interface.
     const sLocked=S.idx?.seasons?.[sn.sid]?.locked===true;
-    h+=`<div class="sc">
+    h+=`<div class="sc${inPeriod?' sp-mem':''}">
       <div class="sc-hdr" data-cid="${esc(cid)}" data-si="${gi}" onclick="toggleGames(this)">
         <div class="sc-info" class="sc-info">
           <div style="display:flex;align-items:flex-start;gap:5px">
             <span class="chev" style="flex-shrink:0;margin-top:3px">\u25b6</span>
             <div style="min-width:0">
-              <div class="sc-name${sLocked?' sc-name-locked':''}">${esc(sn.sn)} \u00b7 ${esc(primary.tn||sn.club)}${medal}${sLocked?' <span class="sc-lock-pill">LOCKED</span>':''}</div>
+              <div class="sc-name${sLocked?' sc-name-locked':''}">${inPeriod?'':esc(sn.sn)+' \u00b7 '}${esc(primary.tn||sn.club)}${medal}${sLocked?' <span class="sc-lock-pill">LOCKED</span>':''}</div>
               <div>${teamLink}</div>
             </div>
           </div>
@@ -2000,15 +3919,41 @@ function renderPlayer(p){
     </div>`;
   });
   h+='</div>';
+  h+='</div>';                                   // ── end Season pane
+
+  // ── Splits ───────────────────────────────────────────────────────────────
+  h+=`<div class="tpane" id="ppL-${esc(uuid)}">
+    <div class="phigh-wrap" id="phigh-${esc(uuid)}"></div>
+    <div class="slist"><div class="sec-lbl">Venue and day</div>
+      <div id="splits-${esc(uuid)}"><div class="sp-wait">Reading game lines…</div></div>
+    </div></div>`;
+
+  // ── Opponents ────────────────────────────────────────────────────────────
+  // Team-mates first: it reads one file per season and is on screen in a second,
+  // where the head-to-head walk takes twenty or more. The fast panel leading means
+  // the tab is never blank while the slow one works.
+  h+=`<div class="tpane" id="ppO-${esc(uuid)}">
+    <div class="slist"><div class="sec-lbl">Team-mates</div>
+      <div id="mates-${esc(uuid)}"><div class="sp-wait">Reading team sheets…</div></div></div>
+    <div class="slist"><div class="sec-lbl">Opponent stats</div>
+      <div id="opp-stats-${esc(uuid)}"><div class="sp-wait">Waiting for the team sheets…</div></div></div>
+    </div>`;
+
+  // ── Registrations ────────────────────────────────────────────────────────
+  h+=`<div class="tpane" id="ppR-${esc(uuid)}">`;
+  h+=`<div class="pclub-wrap" id="pclub-${esc(uuid)}"></div>`;
   h+=renderUnreg(p);
   h+=renderDiff(p);
   h+=renderGradeSnapshot(p.seasons||[]);
-  h+=`<div class="slist"><div class="sec-lbl" style="display:flex;align-items:center;justify-content:space-between">Opponent stats <button class="rbtn" style="border:0.5px solid var(--border-strong);padding:3px 10px;border-radius:var(--radius);color:var(--text-primary);font-size:0.72rem" onclick="buildOppStats('${esc(uuid)}',this)">Compute ↗</button></div><div id="opp-stats-${esc(uuid)}"><div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Click Compute to analyse head-to-head records.</div></div></div>`;
+  h+='</div>';
   ve.innerHTML=h;
   // Store groups on element for toggleGames
   ve._groups=groups;
   if(cs.finalsStats)hydrateFinals(uuid,cs.finalsStats);
   hydrateClubs(p,groups);
+  hydrateDiff(p);
+  hydrateCareer(p);
+  hydrateHighs(uuid);
 }
 
 /* ── UNREGISTERED APPEARANCES ─────────────────────────────────────────────────
@@ -2099,6 +4044,48 @@ function renderDiff(p){
   </div>`;
 }
 
+/* `cs.c` is a snapshot: the games PlayHQ credited that we held no record of AT
+   THE LAST STATS FETCH. The crawler keeps running after that, so a game listed
+   here is routinely captured days later and now sits in its season card as an
+   ordinary row — while this panel still announces that we have no record of it.
+   Every player showing exactly one is that: the most recent round, credited
+   before the crawl caught up.
+
+   So re-check the list against what we actually hold now. The season files are
+   already in S.games for any profile that has opened, so this usually costs
+   nothing. A gid we now hold is dropped; if every one resolves, the panel goes
+   entirely rather than standing there contradicting the card below it. */
+async function hydrateDiff(p){
+  const sec=el('diff-sec'); if(!sec||!p)return;
+  const sport=Object.keys(p.sports||{})[0]||'Basketball';
+  const c=((p.sports||{})[sport]||{}).c;
+  if(!Array.isArray(c)||!c.length)return;
+  const uuid=p.uuid, want=new Set(c), held=new Set();
+  await loadSeasonGames((p.seasons||[]).map(sn=>sn.sid));
+  for(const sn of p.seasons||[]){
+    if(!want.size)break;
+    const sid=sn.sid; if(!sid)continue;
+    const gf=(S.games[sid]||{}).games||{};
+    for(const gid of [...want]){
+      const g=gf[gid]; if(!g)continue;
+      const inIt=(g.p||[]).some(x=>matchP(x.id,uuid))||!!storedStats(g,uuid);
+      if(inIt){held.add(gid);want.delete(gid);}
+    }
+  }
+  if(!held.size)return;
+  if(S.playerUuid!==uuid)return;
+  const left=c.filter(g=>!held.has(g));
+  if(!left.length){sec.remove();return;}
+  const pill=sec.querySelector('.unreg-pill'); if(pill)pill.textContent=left.length;
+  const hdr=sec.querySelector('.diff-hdr');
+  if(hdr){
+    const cnt=hdr.lastElementChild;
+    if(cnt)cnt.textContent=`${left.length} game${left.length===1?'':'s'}`;
+  }
+  sec._cLeft=left;
+  const body=el('df-c-g'); if(body){body.innerHTML='';delete body.dataset.loaded;}
+}
+
 async function toggleDiff(hdr){
   const open=hdr.classList.toggle('open');
   const cid=hdr.dataset.cid, kind=hdr.dataset.kind;
@@ -2109,7 +4096,9 @@ async function toggleDiff(hdr){
   const p=S.players[uuid]||{};
   const sport=Object.keys(p.sports||{})[0]||'Basketball';
   const cs=p.sports?.[sport]||{};
-  const ids=Array.isArray(cs[kind])?cs[kind]:[];
+  const sec=el('diff-sec');
+  const ids=(kind==='c'&&sec&&Array.isArray(sec._cLeft))?sec._cLeft
+           :(Array.isArray(cs[kind])?cs[kind]:[]);
   if(!ids.length){ge.innerHTML='<div class="load-row">Nothing to show.</div>';ge.dataset.loaded='1';return;}
   ge.innerHTML='<div class="load-row">Loading games\u2026</div>';
   // Resolve gid -> sid across the player's own seasons. Stops early once every id
@@ -2538,7 +4527,15 @@ const CAREER_PENDING = '<span style="color:var(--text3)">…</span>';
 function careerOf(pf){
   const bk = pf && pf.sports && pf.sports.Basketball;
   if(!bk) return null;
-  return { gp:bk.gp||0, pts:bk.pts||0, fg:bk.fg||0, ft:bk.ft||0, threePt:bk.threePt||0, fouls:bk.fouls||0 };
+  // foulOuts rides along: the team view already holds this file for the career
+  // rows, so the figure costs nothing. It is summed from the REGISTRATION stats,
+  // not read from bk.foulOuts — that career field is not a number on these files.
+  // Absent is not zero: a competition that does not record foul-outs must not
+  // read as nobody ever fouling out, so the key is omitted and no column shows.
+  const o={ gp:bk.gp||0, pts:bk.pts||0, fg:bk.fg||0, ft:bk.ft||0, threePt:bk.threePt||0, fouls:bk.fouls||0 };
+  const fo=careerFouledOut(pf);
+  if(fo!==null)o.foulOuts=fo;
+  return o;
 }
 async function playerFile(key){
   if(S.players[key]) return S.players[key];
@@ -2579,6 +4576,170 @@ function hydrateCareers(keys){
   }
 }
 
+/* ── TEAM CARDS (v1.51) ───────────────────────────────────────────────────── */
+const TC={};
+function tcSt(key){
+  if(!TC[key])TC[key]={hero:'pts',per:'S',meas:'T',order:'H',chart:true,sel:null,roster:[],fixtures:[],zeroDone:0,foDone:0};
+  return TC[key];
+}
+const TC_STATS=[['gp','GP','games'],['pts','PTS','points'],['fg','FG','field goals'],
+                ['ft','FT','free throws'],['threePt','3PT','three-pointers'],['fouls','F','fouls']];
+/* Per game is a measure over whatever the hero is, so PPG left the hero list:
+   it is PTS with the measure on. GP has no per-game form and ignores it. */
+/* 0PT, not SCORELESS. Basketball has no stat-sheet term for a scoreless game —
+   "goose egg" is commentary, not a label — and 0PT reads the same way as the
+   3PT and FT already in the grid. The count is of GAMES, so the per-game form
+   stays a count-over-games rate and keeps the same name. */
+const TC_PG={pts:'PPG',fg:'FG/PG',ft:'FT/PG',threePt:'3PT/PG',fouls:'F/PG',gp:'GP',foulOuts:'FO/PG',zero:'0PT/PG'};
+const TC_EXTRA={foulOuts:['foulOuts','FO','foul-outs'],zero:['zero','0PT','scoreless games']};
+/* A stat is offered only where the rows in the CURRENT scope actually carry it:
+   PlayHQ does not publish foul-outs for every competition, and a column of
+   zeros is a claim that nobody ever fouled out. */
+function tcHas(rows,per,k){
+  return rows.some(r=>{const q=per==='C'?r.car:r.sea;return q&&(k in q);});
+}
+function tcStats(rows,per){
+  const out=TC_STATS.slice();
+  for(const k of tcExtras(rows,per))out.push(TC_EXTRA[k]);
+  return out;
+}
+/* The keys at least one row in this scope carries. One list for the hero bar,
+   the cards and the squad total, so all three agree. */
+function tcExtras(rows,per){
+  return Object.keys(TC_EXTRA).filter(k=>tcHas(rows,per,k));
+}
+/* GP ignores the measure — games per game is not a thing — so it must not pick
+   up the decimal the measure gives everything else. */
+function tcFmt(v,meas,k){return (meas==='G'&&k!=='gp')?(+v).toFixed(1):v;}
+function tcLbl(k,meas){
+  if(meas==='G')return TC_PG[k]||String(k).toUpperCase();
+  return (TC_STATS.concat(Object.values(TC_EXTRA)).find(s=>s[0]===k)||[])[1]||String(k).toUpperCase();
+}
+/* A roster line and a career block carry the same stat names, so one accessor
+   serves both modes. The per-game value is derived, never stored. */
+function tcVal(r,k,per,meas){
+  const q=per==='C'?r.car:r.sea;
+  if(!q)return 0;
+  const v=q[k]||0;
+  if(meas!=='G'||k==='gp')return v;
+  return q.gp?+(v/q.gp).toFixed(1):0;
+}
+function tcSet(key,k,v){const s=tcSt(key);s[k]=v;tcDraw(key);}
+function tcFlag(key,k){const s=tcSt(key);s[k]=!s[k];tcDraw(key);}
+function tcPick(key,uuid){const s=tcSt(key);s.sel=(s.sel===uuid?null:uuid);tcDraw(key);}
+
+/* ⚠️ `extras` is decided ONCE for the whole squad and passed in — it must never
+   be derived from the card's own q. Doing that gave one player an FO cell and
+   the next none, because the season leaderboard carries the field for some
+   entries and not others, and a card with seven cells does not line up with the
+   six beside it. Every card now shows the same cells; a player the data has no
+   figure for shows an em dash, which is the honest answer and also the one that
+   keeps the grid straight. */
+function tcCells(q,meas,extras){
+  const dash='\u2014';
+  const v=k=>{
+    if(!(k in q))return dash;
+    return meas==='G'?(q.gp?((q[k]||0)/q.gp).toFixed(1):dash):(q[k]||0);
+  };
+  const cells=meas==='G'
+    ? ['pts','fouls','ft','fg','threePt'].map(k=>[v(k),tcLbl(k,'G')])
+    : [[q.pts||0,'PTS'],[q.gp?((q.pts||0)/q.gp).toFixed(1):dash,'PPG'],[q.fouls||0,'F'],[q.ft||0,'FT'],[q.fg||0,'FG'],[q.threePt||0,'3PT']];
+  for(const k of (extras||[]))cells.push([v(k),tcLbl(k,meas)]);
+  return cells.map(([x,l])=>`<div class="c"><div class="v">${x}</div><div class="l">${labelHTML(l)}</div></div>`).join('');
+}
+/* A slashed zero for 0PT only. The app's own face has no `zero` OpenType
+   feature to switch on, and changing the interface font to get one is a large
+   change for one glyph — so just that character borrows a mono face that slashes
+   it by default. Everything else keeps the font it had. */
+function labelHTML(l){
+  return String(l).replace(/^0/,'<span class="z0">0</span>');
+}
+
+function tcDraw(key){
+  const host=el('tc-'+key); if(!host)return;
+  const st=tcSt(key), hero=st.hero, per=st.per, meas=st.meas||'T';
+  const lbl=tcLbl(hero,meas);
+  const word=(TC_STATS.find(s=>s[0]===hero)||[])[2]||'';
+  const on=c=>c?' on':'';
+  const b=(k,v,t)=>`<button class="${(v===undefined?st[k]:st[k]===v)?'on':''}" onclick="${v===undefined?`tcFlag('${key}','${k}')`:`tcSet('${key}','${k}','${v}')`}">${t}</button>`;
+  const bar=`<div class="tc-bar">
+    <span class="lbl">Hero stat</span>${tcStats(st.roster||[],per).map(([k])=>b('hero',k,tcLbl(k,meas))).join('')}
+    <span class="lbl">Scope</span>${b('per','S','This season')}${b('per','C','Career')}
+    <span class="lbl">Measure</span>${b('meas','T','Totals')}${b('meas','G','Per game')}
+    <span class="lbl">Order</span>${b('order','H','By '+lbl)}${b('order','N','By name')}
+    <span class="lbl">Show</span>${b('chart',undefined,'Squad chart')}</div>`;
+
+  const tbl=el('tc-table-'+key);
+  if(tbl)tbl.classList.remove('hidden');
+
+  // Career mode needs the player files; they are already being fetched for the
+  // table's career rows, so this only waits, it never adds a request.
+  const rows=st.roster.filter(r=>per!=='C'||r.car);
+  if(!rows.length){
+    host.innerHTML=bar+`<div class="tc-bar" style="background:none;border:0;color:var(--text2);font-size:0.78rem">${
+      per==='C'?'Reading career totals…':'No roster data.'}</div>`;
+    return;
+  }
+  const extras=tcExtras(rows,per);
+  const ranked=rows.slice().sort((a,c)=>tcVal(c,hero,per,meas)-tcVal(a,hero,per,meas));
+  const vals=ranked.map(r=>tcVal(r,hero,per,meas));
+  const mx=Math.max(...vals,1);
+  const avgv=vals.reduce((a,c)=>a+c,0)/Math.max(1,vals.length);
+  const list=st.order==='H'?ranked:rows.slice().sort((a,c)=>String(a.name).localeCompare(String(c.name)));
+  // A share is of a total, so PPG gets none: averages do not sum.
+  // GP's denominator is the team's games, and that exists only for a season.
+  // Careers span different teams and seasons, so there is nothing to be a share
+  // OF: "218 of 218 team games, 100%" was the longest career on the roster
+  // being compared against itself.
+  const teamGames=per==='S'?rows.reduce((a,r)=>Math.max(a,tcVal(r,'gp','S','T')),0):0;
+  const teamHero=meas==='G'?0:(hero==='gp'?teamGames:rows.reduce((a,r)=>a+tcVal(r,hero,per,'T'),0));
+
+  const chart=st.chart?`<div class="tc-chart">
+    <div class="tc-chd"><b>Squad · ${esc(lbl)}</b><span>${rows.length} player${rows.length===1?'':'s'}</span></div>
+    <div class="tc-chb"><div class="tc-avg" style="left:calc(105px + (100% - 162px)*${(avgv/mx).toFixed(4)})"><b>avg ${(meas==='G'&&hero!=='gp')?avgv.toFixed(1):Math.round(avgv)}</b></div>
+      ${list.map(r=>{const v=tcVal(r,hero,per,meas);return `<div class="tc-cr${st.sel===r.uuid?' on':''}" onclick="tcPick('${esc(key)}','${esc(r.uuid)}')">
+        <span class="n">${esc(r.name)}</span><span class="t"><i style="width:${Math.max(2,Math.round(v/mx*100))}%"></i></span>
+        <span class="v">${tcFmt(v,meas,hero)}</span></div>`;}).join('')}
+    </div></div>`:'';
+
+  const tot=rows.map(r=>per==='C'?r.car:r.sea).reduce((a,q)=>{
+    const o={gp:per==='S'?Math.max(a.gp,q.gp||0):a.gp+(q.gp||0),pts:a.pts+(q.pts||0),
+      fg:a.fg+(q.fg||0),ft:a.ft+(q.ft||0),threePt:a.threePt+(q.threePt||0),fouls:a.fouls+(q.fouls||0)};
+    for(const k of extras)if(k in q)o[k]=(a[k]||0)+(q[k]||0);else if(k in a)o[k]=a[k];
+    return o;},
+    {gp:0,pts:0,fg:0,ft:0,threePt:0,fouls:0});
+  const totHero=(meas==='G'&&hero!=='gp')?(tot.gp?((tot[hero]||0)/tot.gp).toFixed(1):'\u2014'):(tot[hero]||0);
+  const summary=`<div class="tc-card sum">
+    <div class="tc-h"><div class="tc-nm">Squad total</div></div>
+    <div class="tc-mt">${rows.length} players · ${tot.gp} ${per==='S'?'games':'appearances'}${per==='C'?' · career':''}</div>
+    <div class="tc-hero"><div class="tc-big">${totHero}</div><div class="tc-unit">${esc(meas==='G'?('team '+lbl.toLowerCase()):lbl)}</div></div>
+    <div class="tc-mini">${tcCells(tot,meas,extras).replace('>PPG<','>TEAM PPG<')}</div></div>`;
+
+  host.innerHTML=bar+`<div class="tc-grid">${chart}${summary}${list.map(r=>{
+    const i=ranked.indexOf(r), v=tcVal(r,hero,per,meas), q=per==='C'?r.car:r.sea;
+    const share=teamHero?Math.round(tcVal(r,hero,per,'T')/teamHero*100):0;
+    return `<div class="tc-card${st.sel===r.uuid?' on':''}" onclick="tcPick('${esc(key)}','${esc(r.uuid)}')">
+      <div class="tc-h"><div class="tc-nm" title="Open ${esc(r.name)}" onclick="event.stopPropagation();loadPlayer('${esc(r.uuid)}')">${esc(r.name)}</div>
+        <div class="tc-rk">#${i+1}/${ranked.length}</div></div>
+      <div class="tc-mt">${(hero==='gp'&&teamGames)?`of ${teamGames} team game${teamGames===1?'':'s'}`:`${q.gp||0} game${(q.gp||0)===1?'':'s'}`}${per==='C'?' · career':''}</div>
+      <div class="tc-hero"><div class="tc-big">${tcFmt(v,meas,hero)}</div><div class="tc-unit">${labelHTML(esc(lbl))}</div>
+        ${share?`<div class="tc-shr" title="${share}% of the squad's ${esc(word)}">${share}%</div>`:''}</div>
+      <div class="tc-mini">${tcCells(q,meas,extras)}</div></div>`;}).join('')}</div>`;
+}
+
+/* Career blocks land asynchronously; repaint when they do, but only while this
+   team is still on screen. */
+function tcHydrate(key,uuids){
+  for(const uuid of uuids){
+    playerFile(uuid).then(()=>{
+      const st=TC[key]; if(!st)return;
+      const row=st.roster.find(r=>r.uuid===uuid); if(!row)return;
+      row.car=careerOf(S.players[uuid])||null;
+      if(el('tc-'+key))tcDraw(key);
+    }).catch(()=>{});
+  }
+}
+
 function renderTeam(td,tid,sid){
   const ve=el('view-team');
   const meta=td.meta||{};
@@ -2593,7 +4754,9 @@ function renderTeam(td,tid,sid){
     <button class="vtab on" onclick="switchTTab(this,'r${tesc}','f${tesc}')">Roster</button>
     <button class="vtab" onclick="switchTTab(this,'f${tesc}','r${tesc}')">Fixtures</button>
   </div>
-  <div id="r${tesc}" class="tpane on">`;
+  <div id="r${tesc}" class="tpane on">
+    <div id="tc-${tesc}"></div>
+    <div id="tc-table-${tesc}"><div class="tc-tlbl">Full table · season and career</div>`;
   if(!roster.length){h+='<div class="empty">No roster data</div>';}
   else{
     const sortBy=(col)=>{
@@ -2633,7 +4796,10 @@ function renderTeam(td,tid,sid){
     for(const[uuid,pr]of roster){ h+=rosterRows(uuid,pr); }
     h+=`</tbody></table>`;
   }
-  h+=`</div><div id="f${tesc}" class="tpane">`;
+  h+=`<div class="slist" id="tc-avail-${tesc}"><div class="sec-lbl">Who played which round</div>
+    <div class="av-body"><div class="av-msg">Reading the season game file…</div></div></div>`;
+  h+=`</div></div><div id="f${tesc}" class="tpane">`;
+  h+=`<div id="tc-rounds-${tesc}"></div>`;
   if(!fixtures.length){h+='<div class="empty">No fixture data</div>';}
   else{
     const priors=fixturePriors(td,tid);
@@ -2653,6 +4819,26 @@ function renderTeam(td,tid,sid){
   ve.innerHTML=h;
   // Career lines fill in after paint — the season rows are already on screen.
   hydrateCareers(Object.keys(td.roster||{}));
+  // The cards read the same roster and the same career blocks, so they add no
+  // request of their own: tcHydrate waits on playerFile's cache, which
+  // hydrateCareers has already warmed.
+  {
+    const key=tesc, stc=tcSt(key);
+    stc.sel=null;
+    stc.zeroDone=0;
+    stc.foDone=0;
+    stc.fixtures=(td.fixtures||[]).map(f=>Object.assign({},f,{sid}));
+    stc.roster=Object.entries(td.roster||{}).map(([uuid,pr])=>({
+      uuid, name:pr.name||('#'+String(uuid).slice(0,8)),
+      sea:{gp:pr.gp||0,pts:pr.pts||0,fg:pr.fg||0,ft:pr.ft||0,threePt:pr.threePt||0,fouls:pr.fouls||0},
+      car:careerOf(S.players[uuid])||null}));
+    tcDraw(key);
+    tcHydrate(key,stc.roster.map(r=>r.uuid));
+    tcRounds(key,stc.fixtures);
+    tcAvail(key,tid,sid,null);
+    tcFoulOuts(key,tid,sid);
+    tcGameLines(key,tid,sid);
+  }
   ve.querySelectorAll('.frow').forEach(r=>r.addEventListener('click',()=>{
     const sid2=r.dataset.sid;
     const gid2=r.dataset.gid;
@@ -2674,6 +4860,195 @@ function renderTeam(td,tid,sid){
       else if(g2){openSheet(gid2,sid2);}
     })();
   }));
+}
+/* ── ROUND BY ROUND (v1.68) ────────────────────────────────────────────────
+   The fixtures are already on the page with their scores and results, and
+   nothing drew the team's own season. Height is the team's score; the lane
+   underneath is the margin, which is what separates a 70-20 from a 50-45 —
+   both of which the score bars alone draw as wins. */
+function tcScores(f){
+  const m=String(f.score||'').match(/(\d+)\D+(\d+)/);
+  if(!m)return null;
+  let us=+m[1],them=+m[2];
+  // The score string's order is not guaranteed to be ours-first, but the result
+  // letter is authoritative: trust it over the string rather than silently
+  // drawing a win as a loss.
+  if(f.result==='W'&&us<them||f.result==='L'&&us>them){const t=us;us=them;them=t;}
+  return{us,them};
+}
+function tcRounds(key,fixtures){
+  const host=el('tc-rounds-'+key); if(!host)return;
+  const played=fixtures.map(f=>({f,s:tcScores(f)})).filter(x=>x.s);
+  if(played.length<2){host.innerHTML='';return;}
+  const vals=played.map(x=>x.s.us);
+  const mx=Math.max(...vals,1), av=vals.reduce((a,b)=>a+b,0)/vals.length;
+  const mmx=Math.max(...played.map(x=>Math.abs(x.s.us-x.s.them)),1);
+  const bars=played.map(({f,s})=>{
+    const cl=s.us>s.them?'W':s.us<s.them?'L':'D';
+    return `<div class="rb ${cl}" title="${esc([f.rn,f.oppName].filter(Boolean).join(' \u00b7 '))} \u00b7 ${s.us}\u2013${s.them}"
+       onclick="openSheet('${esc(f.gameId)}','${esc(f.sid||'')}')">
+      <div class="sc"><span>${s.us}</span></div>
+      <div class="barw" style="height:${Math.max(4,Math.round(s.us/mx*100))}%"></div>
+      <div class="lb">${esc(String(f.rn||'').replace(/^Round\s*/i,''))}</div></div>`;}).join('');
+  const lane=played.map(({f,s})=>{
+    const m=s.us-s.them, hp=Math.round(Math.abs(m)/mmx*34);
+    return `<div class="mc" title="${esc(f.oppName||'')} \u00b7 ${m>0?'+':''}${m}">
+      <div class="mb ${m>=0?'p':'n'}" style="height:${hp}%"></div>
+      <div class="mv" style="${m>=0?'bottom':'top'}:calc(50% + ${hp}%);${m>=0?'padding-bottom':'padding-top'}:2px">${m>0?'+':''}${m}</div></div>`;}).join('');
+  host.innerHTML=`<div class="tr-wrap">
+    <div class="tr-rounds"><span class="tr-avgl">avg ${av.toFixed(1)}</span>
+      <div class="tr-avg" style="bottom:${26+Math.round(av/mx*(160-26-18))}px"></div>${bars}</div>
+    <div class="tr-mgn"><div class="tr-ml"></div><span class="tr-mttl">margin</span>${lane}</div></div>`;
+}
+
+/* ── WHO PLAYED WHICH ROUND ────────────────────────────────────────────────
+   One season game file, then g.p[] against the roster. A filled cell is a name
+   on that game's sheet; an outlined one is a game the squad played without
+   them. Rows a player could not have been part of are not distinguished from
+   ones they missed, because the data does not say which. */
+async function tcAvail(key,tid,sid,btn){
+  const host=el('tc-avail-'+key); if(!host)return;
+  const box=host.querySelector('.av-body')||host;
+  if(btn)btn.disabled=true;
+  box.innerHTML='<div class="av-msg">Reading the season game file\u2026</div>';
+  if(!S.games[sid])S.games[sid]=await sgj('games/bv',sid)||{games:{}};
+  const gf=(S.games[sid]&&S.games[sid].games)||{};
+  const st=tcSt(key);
+  const fx=(st.fixtures||[]).filter(f=>f.result&&f.gameId&&gf[f.gameId]);
+  if(btn)btn.disabled=false;
+  if(!fx.length){box.innerHTML='<div class="av-msg">The season game file holds none of this team\u2019s played fixtures.</div>';return;}
+  const roster=st.roster||[];
+  const present=fx.map(f=>{
+    const g=gf[f.gameId];
+    const ids=new Set((Array.isArray(g.p)?g.p:[]).map(e=>t13(typeof e==='string'?e:(e&&e.id))).filter(Boolean));
+    return ids;
+  });
+  const any=present.some(s=>s.size);
+  if(!any){box.innerHTML='<div class="av-msg">These game records carry no team sheet, so who played cannot be read from them.</div>';return;}
+  const rows=roster.map(r=>{
+    const k=t13(r.uuid);
+    const cells=present.map(s=>s.has(k));
+    return{name:r.name,uuid:r.uuid,cells,n:cells.filter(Boolean).length};
+  }).sort((a,b)=>b.n-a.n);
+  box.innerHTML=`<div class="av-hd">${rows.length} player${rows.length===1?'':'s'} \u00b7 ${fx.length} game${fx.length===1?'':'s'}</div>
+    <div class="av-grid">
+      <div class="av-rhd">${fx.map(f=>`<span title="${esc(f.oppName||'')}">${esc(String(f.rn||'').replace(/^Round\s*/i,''))}</span>`).join('')}</div>
+      ${rows.map(r=>`<div class="av-r"><span class="n" onclick="loadPlayer('${esc(r.uuid)}')" title="Open ${esc(r.name)}">${esc(r.name)}</span>${
+        r.cells.map((c,i)=>`<span class="c ${c?'on':'out'}" title="${esc(fx[i].oppName||'')} \u00b7 ${c?'played':'did not play'}"></span>`).join('')}
+        <span class="tot">${r.n}/${fx.length}</span></div>`).join('')}
+    </div>`;
+}
+
+function matesMore(btn,id){
+  const box=el(id); if(!box)return;
+  const open=box.classList.toggle('mt-hide')===false;
+  btn.textContent=open?'Show fewer':('Show '+btn.dataset.n+' more');
+}
+
+/* ── SEASON FOUL-OUTS (v1.71) ──────────────────────────────────────────────
+   The Top tab's season leaderboard, leaderboard/season/{sid}.json, is keyed
+   `trunc13(uuid)|tid` and carries a PLAIN NUMBER foulOuts per player — the same
+   figure the FO leaderboard ranks on. One file for the whole team, cached in
+   S.lbRaw where the Top tab also looks, so opening both costs one fetch between
+   them. This is why the season FO column exists at all: the team roster block
+   does not carry the field. */
+async function tcFoulOuts(key,tid,sid){
+  const st=TC[key]; if(!st||st.foDone)return;
+  st.foDone=1;
+  if(!S.lbRaw)S.lbRaw={};
+  if(!S.lbRaw[sid]){
+    const raw=await sgj('leaderboard/season',sid);
+    S.lbRaw[sid]=(raw&&raw.players)||{};
+  }
+  const pm=S.lbRaw[sid]||{};
+  const want=new Map((st.roster||[]).map(r=>[t13(r.uuid),r]));
+  let any=false;
+  for(const[k,m]of Object.entries(pm)){
+    const r=want.get(t13(k.split('|')[0]));
+    if(!r)continue;
+    const v=m&&m.foulOuts;
+    if(typeof v!=='number'||!isFinite(v))continue;
+    any=true;
+    r.sea.foulOuts=Math.max(r.sea.foulOuts||0,v);
+  }
+  if(any&&el('tc-'+key))tcDraw(key);
+}
+
+/* ── SCORELESS GAMES (v1.70) ───────────────────────────────────────────────
+   PlayHQ publishes no scoreless count, so it is derived: a box-score line with
+   zero points, for a player named on that game's sheet. One request per PLAYED
+   GAME — not per player — because one box score carries both full teams. A
+   season is 14-20 games against a career's 100+, which is why this runs on
+   opening a team where the player view makes the equivalent wait for a tab.
+
+   A player's zero is only counted for games they were actually in: a name
+   missing from the sheet is an absence, and counting it as a scoreless game
+   would punish the injured.
+
+   Foul-outs are NOT derived here. A box line carries number, name, PTS, 2PT,
+   3PT, FT and fouls — nothing saying the player fouled out of that game. The FO
+   figures in this view come from PlayHQ's own season and career totals. */
+async function tcGameLines(key,tid,sid){
+  const st=TC[key]; if(!st||st.zeroDone)return;
+  st.zeroDone=1;
+  const fx=(st.fixtures||[]).filter(f=>f.result&&f.gameId);
+  if(!fx.length)return;
+  const byKey=new Map((st.roster||[]).map(r=>[t13(r.uuid),r]));
+  const zero=new Map(), seen=new Map();
+  const queue=fx.slice();
+  let read=0;
+  await Promise.all(Array.from({length:Math.min(6,queue.length)},async()=>{
+    while(queue.length){
+      const f=queue.shift();
+      const bs=await fetchBox(f.gameId);
+      if(!bs)continue;
+      read++;
+      for(const line of [...(bs.h||[]),...(bs.a||[])]){
+        const k=t13(line&&line.profileID);
+        if(!k||!byKey.has(k))continue;                 // other team, or not on this roster
+        seen.set(k,(seen.get(k)||0)+1);
+        if(!(line.pts||0))zero.set(k,(zero.get(k)||0)+1);
+      }
+    }
+  }));
+  if(!read||!seen.size)return;                          // nothing read: offer nothing
+  for(const[k,r]of byKey){
+    if(!seen.has(k))continue;                           // never appeared in a box score
+    r.sea.zero=zero.get(k)||0;
+  }
+  if(el('tc-'+key))tcDraw(key);
+}
+
+/* The player view's panes, unlike the team view's two, are addressed by id and
+   the bar is built from one list, so one handler turns the others off rather
+   than naming the pane to hide. */
+function switchPTab(btn,showId,uuid,which){
+  const bar=btn.parentElement;
+  bar.querySelectorAll('.vtab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const host=bar.parentElement;
+  host.querySelectorAll(':scope > .tpane').forEach(p=>p.classList.toggle('on',p.id===showId));
+  pTabLoad(uuid,which);
+}
+/* A pane fills itself the first time it is opened. Nothing here runs when the
+   profile loads: these panels read one file per season, and the highs and the
+   splits read one BOX SCORE PER GAME, which is not a cost to pay for a player
+   somebody only wanted the season cards of. Opening the tab is the consent.
+   Once loaded it stays loaded, so coming back is instant. */
+const PTAB_DONE={};
+function pTabLoad(uuid,which){
+  if(!uuid||!which)return;
+  const k=uuid+'|'+which;
+  if(PTAB_DONE[k])return;
+  PTAB_DONE[k]=1;
+  if(which==='L'){
+    (async()=>{ hydrateHighs(uuid); await buildSplits(uuid,null); hydrateHighs(uuid); })();
+  } else if(which==='O'){
+    // Sequential, not parallel: the team sheets the mates panel loads are the
+    // same files buildOppStats then walks, so running them in order costs
+    // nothing extra and puts something on screen while the slow one works.
+    (async()=>{ await buildMates(uuid,null); await buildOppStats(uuid,null); })();
+  }
 }
 function switchTTab(btn,showId,hideId){
   btn.closest('.vtabs').querySelectorAll('.vtab').forEach(b=>b.classList.toggle('on',b===btn));
@@ -3523,8 +5898,26 @@ function renderSheet(g,gid,sid,con){
     case'legacy':
       h+=`<div style="padding:7px 14px"><span class="bdg bLG">\u2b1c Historical</span></div>`;
       h+=`<div class="gmode-blk"><div class="gmode-msg">${t1n?esc(t1n)+' vs '+esc(t2n||'?'):'Teams unknown'}${g.d?`<br><span style="color:var(--text3)">${esc(fmtD(g.d))}</span>`:''}</div></div>`;break;
+    case'upcoming':{
+      // Surrogate pair, not \u1f5d3 — \uXXXX takes exactly four hex digits, so the
+      // five-digit form parses as \u1f5d followed by a literal '3' and renders a
+      // CJK glyph. Every other badge in this file uses the pair form.
+      const lbl=g.st==='PRE_GAME'?'\u23f1 About to start':'\ud83d\uddd3 Upcoming';
+      h+=`<div style="padding:7px 14px"><span class="bdg bPO">${esc(lbl)}</span></div>`;
+      // sb() renders both team names as links through to their team views, which
+      // is the whole point of being able to click the fixture: look at both sides.
+      h+=sb(null,null,t1n||'Team 1',t2n||'Team 2',t1mine,t2mine,'vs');
+      break;}
     default:
-      h+=`<div class="gmode-blk"><div class="gmode-msg">No data available.</div></div>`;
+      // Only a genuine dead end when we do not even know who is playing. When the
+      // names are there, show the matchup — a sheet that names both teams and
+      // links to them beats "No data available." on identical information.
+      if(t1n||t2n){
+        h+=sb(null,null,t1n||'Team 1',t2n||'Team 2',t1mine,t2mine,'vs');
+        h+=`<div class="gmode-blk"><div class="gmode-msg">No result recorded for this fixture.</div></div>`;
+      }else{
+        h+=`<div class="gmode-blk"><div class="gmode-msg">No data available.</div></div>`;
+      }
   }
   if(g.noVenue&&!g.vn)h+=`<div style="padding:3px 14px 6px"><span class="bdg bNV">No venue</span></div>`;
   con.innerHTML=h;
@@ -3817,7 +6210,7 @@ function toggleOppGames(row,games,oppName){
     const score=ctx.myS!=null?`${ctx.myS}–${ctx.oppS}`:'';
     const res=resLetter(ctx.myS,ctx.oppS);
     const fc=finalClass(g.rn);
-    gh+=`<div class="opp-game-row" onclick="openGame('${esc(gid)}',${JSON.stringify(g)},null,'${esc(sid)}')">${esc(g.d?.slice(0,10)||'')} · ${esc(g.gn||'')} · ${esc(score)} <span style="color:${res==='W'?'var(--win)':res==='L'?'var(--loss)':'var(--text2)'}">${res}</span>${fc?` · <span style="color:gold;font-size:0.7rem">${esc(g.rn)}</span>`:''}</div>`;
+    gh+=`<div class="opp-game-row" onclick="openSheet('${esc(gid)}','${esc(sid)}')">${esc(g.d?.slice(0,10)||'')} · ${esc(g.gn||'')} · ${esc(score)} <span style="color:${res==='W'?'var(--win)':res==='L'?'var(--loss)':'var(--text2)'}">${res}</span>${fc?` · <span style="color:gold;font-size:0.7rem">${esc(g.rn)}</span>`:''}</div>`;
   }
   gh+='</div>';
   row.insertAdjacentHTML('beforeend',gh);
@@ -4060,7 +6453,6 @@ function toggleTeamOppDetail(row, result, myUuid) {
         <span class="opp-game-score">${esc(score)}</span>
         <span class="opp-game-res" style="color:${resColor}">${res}</span>
         <span class="opp-game-stats" id="${statsSpanId}">${myStr?`Me: ${myStr}`:''}${myStr&&oppStr?' · ':''}${oppStr?`Them: ${oppStr}`:''}${!myStr&&!oppStr?'Loading…':''}</span>`;
-      gameRow.onclick = () => openGame(gid, g, null, sid);
 
       // Fetch box score and update stats span if not already in game file
       if (!myStr && !oppStr) {
@@ -4355,7 +6747,7 @@ function buildGameRow(gid, sid, g, myUuid2, oppUuid2) {
     <span class="opp-game-score" style="flex-shrink:0">${esc(score2)}</span>
     <span class="opp-game-res" style="color:${resColor2};flex-shrink:0">${res2}</span>
     <span class="opp-game-stats" id="${statsId2}" style="flex-shrink:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Loading\u2026</span>`;
-  row2.onclick = () => openGame(gid, g, null, sid);
+  row2.onclick = () => openSheet(gid, sid);
   fetchBox(gid).then(bs => {
     const sp = document.getElementById(statsId2);
     if (!sp) return;
@@ -4372,23 +6764,36 @@ function buildGameRow(gid, sid, g, myUuid2, oppUuid2) {
 async function buildOppStats(uuid, btn) {
   const container = document.getElementById('opp-stats-' + uuid);
   if (!container) return;
-  btn.disabled = true;
-  btn.textContent = 'Computing…';
+  if(btn){btn.disabled = true; btn.textContent = 'Computing…';}
   container.innerHTML = '<div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Loading game data…</div>';
 
   const player = S.players[uuid];
-  if (!player) { container.innerHTML = '<div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Player data not available.</div>'; btn.disabled=false; return; }
+  if (!player) { container.innerHTML = '<div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Player data not available.</div>'; if(btn)btn.disabled=false; return; }
 
   // Load all season game files and team-stats (needed to classify g.p[] players by side)
+  //
+  // ⚠️ 2026-11-20 — WAS a sequential `for (const sid of sids) { await …; await …; }`,
+  // i.e. TWO round trips per season one after another. Eleven seasons is 22
+  // serial fetches before the first opponent is counted, which is the twenty-odd
+  // seconds of blank panel. Six at a time, both files together, same requests.
   const sids = [...new Set((player.seasons || []).map(s => s.sid).filter(Boolean))];
-  for (const sid of sids) {
-    if (!S.games[sid])     S.games[sid]     = await sgj('games/bv', sid)     || { games: {} };
-    if (!S.teamStats[sid]) S.teamStats[sid]  = await sgj('team-stats/bv', sid) || {};
+  await loadSeasonGames(sids,(d,t)=>{
+    if(t&&container)container.innerHTML='<div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Reading season game files\u2026 '+d+' of '+t+'</div>';
+  });
+  const needTs=sids.filter(sid=>!S.teamStats[sid]);
+  for(let i=0;i<needTs.length;i+=6){
+    await Promise.all(needTs.slice(i,i+6).map(async sid=>{
+      S.teamStats[sid]=await sgj('team-stats/bv',sid)||{};
+    }));
+    if(container)container.innerHTML='<div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Reading team sheets\u2026 '+Math.min(i+6,needTs.length)+' of '+needTs.length+'</div>';
   }
+  if(container)container.innerHTML='<div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Matching opponents\u2026</div>';
 
   // For each game the player was in, tally opponents and results
   // g.p[] entries have {id} (UUID string); hp/ap entries have {profileID}
   const oppRecord = {}; // oppUuid → {w, l, d}
+  let skippedIds = 0;     // game-side ids no loaded index could place
+  const oppNames = {};    // uuid -> name, straight off the opposing team sheet
   const playerGames = new Set(player.games || []);
 
   for (const sid of sids) {
@@ -4424,8 +6829,9 @@ async function buildOppStats(uuid, btn) {
       let oppUuids = [];
       if (oppSide.length) {
         for (const bp of oppSide) {
-          const cu = await canonGameId(bp.profileID, oppRosterKeys);
-          if (cu) oppUuids.push(cu);
+          const k2=t13(bp.profileID);
+          const hit=oppRosterKeys.find(uu=>t13(uu)===k2) || resolveCachedUuid(bp.profileID);
+          if (hit) oppUuids.push(hit); else skippedIds++;
         }
       } else if (g.p?.length) {
         for (const entry of g.p) {
@@ -4435,15 +6841,25 @@ async function buildOppStats(uuid, btn) {
           if (myRosterKeys.some(uu => t13(uu) === k)) continue;   // teammate
           const oppKey = oppRosterKeys.find(uu => t13(uu) === k);
           if (oppKey) { oppUuids.push(oppKey); continue; }
-          const r = await resolveToFullUuid(pid);                     // diverged / unknown
+          const r = resolveCachedUuid(pid);           // cached maps only; see resolveCachedUuid
           if (r && oppRosterSet.has(r)) oppUuids.push(r);
+          else if (!r) skippedIds++;
         }
       } else {
         continue;
       }
 
+      const oppRosterBlock = (S.teamStats[sid]||{})[otherTid]?.roster || {};
       for (const oppUuid of oppUuids) {
         if (!oppUuid || oppUuid === uuid) continue;
+        // The name is in the roster block this loop already read. Fetching a
+        // player file per opponent for it cost one request each, and every miss
+        // then pulled that shard's whole index and alias file — a 220 kB pair
+        // per shard. That is the 550 requests; none of them were needed.
+        if (!(oppUuid in oppNames)) {
+          const nm = oppRosterBlock[oppUuid]?.name;
+          if (nm) oppNames[oppUuid] = nm;
+        }
         if (!oppRecord[oppUuid]) oppRecord[oppUuid] = { w: 0, l: 0, d: 0, games: [] };
         if (res === 'W') oppRecord[oppUuid].w++;
         else if (res === 'L') oppRecord[oppUuid].l++;
@@ -4463,7 +6879,7 @@ async function buildOppStats(uuid, btn) {
 
   if (!entries.length) {
     container.innerHTML = '<div style="font-size:0.8rem;color:var(--text3);padding:8px 0">Not enough scored games vs same opponent (need ≥2).</div>';
-    btn.textContent = 'Compute ↗'; btn.disabled = false;
+    if(btn){btn.textContent = 'Compute ↗'; btn.disabled = false;}
     return;
   }
 
@@ -4515,7 +6931,7 @@ async function buildOppStats(uuid, btn) {
   </div>`;
 
   container.innerHTML = h;
-  btn.textContent = 'Refresh \u2197'; btn.disabled = false;
+  if(btn){btn.textContent = 'Refresh \u2197'; btn.disabled = false;}
 
   // Wire search dropdown
   document.getElementById(searchId)?.addEventListener('change', function() {
@@ -4534,27 +6950,34 @@ async function buildOppStats(uuid, btn) {
   const allEntries = [...entries];
   let loaded = 0;
 
-  for (const e of allEntries) {
-    nameMap[e.oppUuid] = null; // placeholder
+  // Only the ones the team sheets could not name are fetched. On a long career
+  // that is a handful instead of every opponent.
+  for (const e of allEntries) nameMap[e.oppUuid] = oppNames[e.oppUuid] || null;
+  for (const [u2, nm] of Object.entries(oppNames)) {
+    if (nm) document.querySelectorAll('#oppn-' + u2).forEach(el => { el.textContent = nm; });
+  }
+  const rebuildSelect = () => {
+    const sel = document.getElementById(searchId);
+    if (!sel) return;
+    const sorted = allEntries
+      .map(e => ({ ...e, name: nameMap[e.oppUuid] || ('#' + e.oppUuid.slice(0,8)) }))
+      .sort((a,b) => a.name.localeCompare(b.name));
+    sel.innerHTML = '<option value="">Select an opponent\u2026</option>' +
+      sorted.map(e => {
+        const pct = e.total > 0 ? Math.round(e.w/e.total*100)+'%' : '';
+        return `<option value="${esc(e.oppUuid)}">${esc(e.name)} \u2014 ${e.w}W ${e.l}L${e.d?` ${e.d}D`:''} ${pct}</option>`;
+      }).join('');
+  };
+  const needName = allEntries.filter(e => !nameMap[e.oppUuid]);
+  rebuildSelect();                       // every name the team sheets gave, now
+  for (const e of needName) {
     loadPlayerFile(e.oppUuid).then(opp => {
       const name = opp?.name || null;
       nameMap[e.oppUuid] = name;
       // Update inline spans in best/worst rows
       if (name) document.querySelectorAll('#oppn-' + e.oppUuid).forEach(el => { el.textContent = name; });
       loaded++;
-      if (loaded === allEntries.length) {
-        // Rebuild dropdown with all names
-        const sel = document.getElementById(searchId);
-        if (!sel) return;
-        const sorted = allEntries
-          .map(e => ({ ...e, name: nameMap[e.oppUuid] || ('#' + e.oppUuid.slice(0,8)) }))
-          .sort((a,b) => a.name.localeCompare(b.name));
-        sel.innerHTML = '<option value="">Select an opponent\u2026</option>' +
-          sorted.map(e => {
-            const pct = e.total > 0 ? Math.round(e.w/e.total*100)+'%' : '';
-            return `<option value="${esc(e.oppUuid)}">${esc(e.name)} \u2014 ${e.w}W ${e.l}L${e.d?` ${e.d}D`:''} ${pct}</option>`;
-          }).join('');
-      }
+      if (loaded === needName.length) rebuildSelect();
     });
   }
 }
