@@ -613,7 +613,7 @@ function findSameDayGradeConflicts(games) {
     for (const tid of sideIds(g)) {
       const key = `${tid}|${g.d}`;
       if (!byTeamDay.has(key)) byTeamDay.set(key, new Map());
-      byTeamDay.get(key).set(g.gid, id);
+      byTeamDay.get(key).set(g.gid, { id, gn: g.gn || null, played: isPlayedGame(g) });
     }
   }
   const conflicts = [];
@@ -624,7 +624,16 @@ function findSameDayGradeConflicts(games) {
       tid:   key.slice(0, bar),
       date:  key.slice(bar + 1),
       grades: [...gidMap.keys()],
-      gameIds: [...gidMap.values()],
+      gameIds: [...gidMap.values()].map(v => v.id),
+      // The grade NAME, not just the id. Without it the report is 113 lines of
+      // hex that say nothing about WHICH grades collide — and whether one side
+      // is a grading pool is the first question anyone asks of this output.
+      gradeNames: [...gidMap.values()].map(v => v.gn || null),
+      // Whether each side was actually played. A team genuinely cannot play two
+      // games on one day, but two PLAYED games mean something different from one
+      // played and one not: the second is residue, the first is a data problem
+      // upstream. Reported rather than judged.
+      played: [...gidMap.values()].map(v => !!v.played),
     });
   }
   return conflicts;
