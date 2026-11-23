@@ -1187,7 +1187,7 @@ async function main() {
     noRounds: 0, currentIsLast: 0, nothingToFetch: 0, baselineFree: 0,
     movedNotDeleted: 0, gradesUnaccounted: 0, capWarnings: 0, archived: 0, resurrected: 0,
     roundsQueued: 0, gradesFullRescanned: 0, wavesExhausted: 0, sameDayConflicts: 0, sameDayNameConflicts: 0,
-    deadGrades: 0, deadGradeGames: 0,
+    staleGrades: 0, staleGames: 0, staleSuperseded: 0,
     roundsFetched: 0, roundsFailed: 0, suspectEmpty: 0,
     deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
     listChanged: 0, seasonsRegraded: 0, newGradesSwept: 0,
@@ -1874,31 +1874,34 @@ async function main() {
         console.log('  Invariant OK: no team NAME collides across grades on one day under two team ids.');
       }
 
-      // ── DEAD GRADES ──────────────────────────────────────────────────────
-      // A published fixture in which nothing has ever been played, holding games
-      // whose dates have passed. PlayHQ still serves them, so this is NOT a
-      // deletion candidate list — it is the population that inflates "still to
-      // play", shows PENDING on a date that is long gone, and makes the grading
-      // flow draw moves that never happened.
+      // ── STALE FIXTURES PER GRADE ─────────────────────────────────────────
+      // Past-dated, never played, never withdrawn. PlayHQ still serves them, so
+      // this is NOT a deletion candidate list. `superseded` counts those whose
+      // team has a PLAYED game in another grade that same day — the overlap with
+      // the same-day conflicts above, and the strongest evidence a fixture was
+      // replaced rather than postponed.
       for (const sid of seasonsToCheck) {
         const gfD = loadGameFile(sid);
-        const dead = RR.findDeadGrades(gfD.games, { today: TODAY_ISO });
-        if (!dead.length) continue;
-        refresh.deadGrades += dead.length;
-        for (const d of dead) {
-          refresh.deadGradeGames += d.games;
-          const pct = d.teams ? Math.round((d.teamsAlsoElsewhere / d.teams) * 100) : 0;
-          console.log(`  ☠ DEAD GRADE: sid=${sid} gid=${d.gid}${d.gn ? ` "${d.gn}"` : ''}`
-                    + ` — ${d.games} game(s), 0 ever played, ${d.pastGames} dated in the past`
-                    + ` (${d.firstDate} → ${d.lastDate})`);
-          console.log(`             ${d.teamsAlsoElsewhere} of ${d.teams} team(s) (${pct}%) have PLAYED games in another grade`
-                    + `${pct >= 80 ? '  → almost certainly an abandoned grading pool' : ''}`);
+        const stale = RR.findStaleFixtureGrades(gfD.games, { today: TODAY_ISO });
+        if (!stale.length) continue;
+        for (const d of stale) {
+          refresh.staleGrades++;
+          refresh.staleGames += d.stale;
+          refresh.staleSuperseded += d.withPlayedElsewhere;
+          const pct = d.total ? Math.round((d.stale / d.total) * 100) : 0;
+          console.log(`  ◌ STALE FIXTURES: sid=${sid} gid=${d.gid}${d.gn ? ` "${d.gn}"` : ''}`
+                    + ` — ${d.stale} of ${d.total} game(s) past-dated and never played (${pct}%),`
+                    + ` ${d.played} played, ${d.withPlayedElsewhere} superseded by a game in another grade`
+                    + ` (${d.firstStale} → ${d.lastStale})`);
+          for (const e of d.examples) {
+            console.log(`             ${e.d} ${e.rn ? `"${e.rn}" ` : ''}${e.superseded ? '[SUPERSEDED] ' : ''}${gcUrl(e.id)}`);
+          }
         }
       }
-      if (refresh.deadGrades) {
-        console.log(`::warning::nightly-crawl refresh: ${refresh.deadGrades} grade(s) holding ${refresh.deadGradeGames} game(s)`
-                  + ` have never had a single game played while holding past-dated fixtures.`
-                  + ` PlayHQ still serves them, so they are NOT deletion candidates.`);
+      if (refresh.staleGames) {
+        console.log(`::warning::nightly-crawl refresh: ${refresh.staleGames} past-dated unplayed game(s) across`
+                  + ` ${refresh.staleGrades} grade(s); ${refresh.staleSuperseded} have the team playing elsewhere`
+                  + ` that day. PlayHQ still serves them all, so they are NOT deletion candidates.`);
       }
     }
 
@@ -2464,7 +2467,8 @@ async function main() {
             + `${refresh.wavesExhausted ? `  ⚠ EXPANSION DID NOT SETTLE: ${refresh.wavesExhausted} round(s) left` : ''}`);
   console.log(`  Refresh invariant: ${refresh.sameDayConflicts} team-day(s) holding two grades on one date`
             + `  ${refresh.sameDayNameConflicts} same-name-day(s) across two team ids`
-            + `\n  Refresh dead grades: ${refresh.deadGrades} grade(s), ${refresh.deadGradeGames} game(s) never played`
+            + `\n  Refresh stale fixtures: ${refresh.staleGames} past-dated unplayed game(s) across ${refresh.staleGrades} grade(s)`
+            + `, ${refresh.staleSuperseded} superseded by a game elsewhere that day`
             + `${refresh.sameDayConflicts || refresh.sameDayNameConflicts ? '  ⚠ regrade cleanup incomplete' : ''}`);
   console.log(`  Refresh deletions: ${refresh.deleted}  kept-because-played: ${refresh.keptPlayed}`
             + `  suspect-empty rounds: ${refresh.suspectEmpty}  unscopeable (no rn): ${refresh.noRoundSkipped}`);
