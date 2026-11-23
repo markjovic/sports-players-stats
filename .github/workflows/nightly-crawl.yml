@@ -218,6 +218,27 @@ jobs:
 
   team-stats:
     needs: crawl
+    # ⚠ DIAGNOSTIC DISPATCHES DO NOT RUN THE CHAIN — ADDED 2026-11-23.
+    #
+    # `refresh_dry_run` tells Phase 2R not to delete. It was never a nightly-wide
+    # dry run, and nothing gated the downstream jobs, so a 3-minute diagnostic
+    # dispatch pulled team-stats, win-loss, team-index, venue-lookup,
+    # player-games and the matrix behind it — half an hour of waiting to read a
+    # log line.
+    #
+    # ⚠ WRITTEN IN THE ROBUST FORM ON PURPOSE (T3). The removed `dry_run` input
+    # was declared `type: boolean` and compared with `!= 'true'`; GitHub coerces
+    # a mismatched comparison to numbers, 'true' becomes NaN, nothing equals NaN,
+    # and so every "gated" job ran regardless. That switch lied for five months.
+    # `inputs.x == true || inputs.x == 'true'` is true for BOTH the boolean and
+    # the string, and on a `schedule` event `inputs` is empty, so the scheduled
+    # run is unaffected and the chain runs as always.
+    #
+    # The crawl still writes: field updates, box scores and cleared statsChecked
+    # flags are committed on a dry run. Skipping the chain means those are
+    # consumed by the next scheduled run instead of this one. That is safe
+    # because statsChecked is a persistent flag, not a queue that drains.
+    if: ${{ !(inputs.refresh_dry_run == true || inputs.refresh_dry_run == 'true') }}
     runs-on: ubuntu-latest
     # ⚠️ RAISED 60 -> 240 on 2026-09-09. IT MUST STAY ABOVE THE PUSH RETRY BUDGET (T55).
     # build-team-stats.js's gitCommit is the house loop: 60 attempts with 1-91s random
@@ -253,6 +274,27 @@ jobs:
 
   team-index:
     needs: crawl
+    # ⚠ DIAGNOSTIC DISPATCHES DO NOT RUN THE CHAIN — ADDED 2026-11-23.
+    #
+    # `refresh_dry_run` tells Phase 2R not to delete. It was never a nightly-wide
+    # dry run, and nothing gated the downstream jobs, so a 3-minute diagnostic
+    # dispatch pulled team-stats, win-loss, team-index, venue-lookup,
+    # player-games and the matrix behind it — half an hour of waiting to read a
+    # log line.
+    #
+    # ⚠ WRITTEN IN THE ROBUST FORM ON PURPOSE (T3). The removed `dry_run` input
+    # was declared `type: boolean` and compared with `!= 'true'`; GitHub coerces
+    # a mismatched comparison to numbers, 'true' becomes NaN, nothing equals NaN,
+    # and so every "gated" job ran regardless. That switch lied for five months.
+    # `inputs.x == true || inputs.x == 'true'` is true for BOTH the boolean and
+    # the string, and on a `schedule` event `inputs` is empty, so the scheduled
+    # run is unaffected and the chain runs as always.
+    #
+    # The crawl still writes: field updates, box scores and cleared statsChecked
+    # flags are committed on a dry run. Skipping the chain means those are
+    # consumed by the next scheduled run instead of this one. That is safe
+    # because statsChecked is a persistent flag, not a queue that drains.
+    if: ${{ !(inputs.refresh_dry_run == true || inputs.refresh_dry_run == 'true') }}
     runs-on: ubuntu-latest
     # ⚠️ RAISED 15 -> 150 on 2026-09-08. IT MUST STAY ABOVE THE PUSH RETRY BUDGET.
     # update-team-index.js had no push retry and a try/catch that printed the error
@@ -288,6 +330,27 @@ jobs:
 
   venue-lookup:
     needs: crawl
+    # ⚠ DIAGNOSTIC DISPATCHES DO NOT RUN THE CHAIN — ADDED 2026-11-23.
+    #
+    # `refresh_dry_run` tells Phase 2R not to delete. It was never a nightly-wide
+    # dry run, and nothing gated the downstream jobs, so a 3-minute diagnostic
+    # dispatch pulled team-stats, win-loss, team-index, venue-lookup,
+    # player-games and the matrix behind it — half an hour of waiting to read a
+    # log line.
+    #
+    # ⚠ WRITTEN IN THE ROBUST FORM ON PURPOSE (T3). The removed `dry_run` input
+    # was declared `type: boolean` and compared with `!= 'true'`; GitHub coerces
+    # a mismatched comparison to numbers, 'true' becomes NaN, nothing equals NaN,
+    # and so every "gated" job ran regardless. That switch lied for five months.
+    # `inputs.x == true || inputs.x == 'true'` is true for BOTH the boolean and
+    # the string, and on a `schedule` event `inputs` is empty, so the scheduled
+    # run is unaffected and the chain runs as always.
+    #
+    # The crawl still writes: field updates, box scores and cleared statsChecked
+    # flags are committed on a dry run. Skipping the chain means those are
+    # consumed by the next scheduled run instead of this one. That is safe
+    # because statsChecked is a persistent flag, not a queue that drains.
+    if: ${{ !(inputs.refresh_dry_run == true || inputs.refresh_dry_run == 'true') }}
     runs-on: ubuntu-latest
     # ⚠️ RAISED 30 -> 180 on 2026-09-09, BECAUSE THE SCRIPT CHANGED (T55).
     # 30 was correct for the loop update-venue-lookup.js used to have: 10 attempts with
@@ -354,8 +417,12 @@ jobs:
     # only a still-RUNNING one should delay it.
     needs: [crawl, team-stats, win-loss, player-games]
     runs-on: ubuntu-latest
+    # The dry-run gate is folded into this condition rather than added as a
+    # second `if:` — a job takes ONE. See the note on team-stats for why the
+    # robust form is required (T3).
     if: |
       always() &&
+      !(inputs.refresh_dry_run == true || inputs.refresh_dry_run == 'true') &&
       (needs.crawl.outputs.new_players != '0' || needs.crawl.outputs.stats_rechecks != '0')
     steps:
       - uses: actions/checkout@v4
@@ -439,6 +506,27 @@ jobs:
 
   win-loss:
     needs: crawl
+    # ⚠ DIAGNOSTIC DISPATCHES DO NOT RUN THE CHAIN — ADDED 2026-11-23.
+    #
+    # `refresh_dry_run` tells Phase 2R not to delete. It was never a nightly-wide
+    # dry run, and nothing gated the downstream jobs, so a 3-minute diagnostic
+    # dispatch pulled team-stats, win-loss, team-index, venue-lookup,
+    # player-games and the matrix behind it — half an hour of waiting to read a
+    # log line.
+    #
+    # ⚠ WRITTEN IN THE ROBUST FORM ON PURPOSE (T3). The removed `dry_run` input
+    # was declared `type: boolean` and compared with `!= 'true'`; GitHub coerces
+    # a mismatched comparison to numbers, 'true' becomes NaN, nothing equals NaN,
+    # and so every "gated" job ran regardless. That switch lied for five months.
+    # `inputs.x == true || inputs.x == 'true'` is true for BOTH the boolean and
+    # the string, and on a `schedule` event `inputs` is empty, so the scheduled
+    # run is unaffected and the chain runs as always.
+    #
+    # The crawl still writes: field updates, box scores and cleared statsChecked
+    # flags are committed on a dry run. Skipping the chain means those are
+    # consumed by the next scheduled run instead of this one. That is safe
+    # because statsChecked is a persistent flag, not a queue that drains.
+    if: ${{ !(inputs.refresh_dry_run == true || inputs.refresh_dry_run == 'true') }}
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -511,6 +599,27 @@ jobs:
     # weekly-indexes already runs this exact script on, green, every Sunday.
     needs: [crawl, team-stats, win-loss]
     runs-on: ubuntu-latest
+    # ⚠ DIAGNOSTIC DISPATCHES DO NOT RUN THE CHAIN — ADDED 2026-11-23.
+    #
+    # `refresh_dry_run` tells Phase 2R not to delete. It was never a nightly-wide
+    # dry run, and nothing gated the downstream jobs, so a 3-minute diagnostic
+    # dispatch pulled team-stats, win-loss, team-index, venue-lookup,
+    # player-games and the matrix behind it — half an hour of waiting to read a
+    # log line.
+    #
+    # ⚠ WRITTEN IN THE ROBUST FORM ON PURPOSE (T3). The removed `dry_run` input
+    # was declared `type: boolean` and compared with `!= 'true'`; GitHub coerces
+    # a mismatched comparison to numbers, 'true' becomes NaN, nothing equals NaN,
+    # and so every "gated" job ran regardless. That switch lied for five months.
+    # `inputs.x == true || inputs.x == 'true'` is true for BOTH the boolean and
+    # the string, and on a `schedule` event `inputs` is empty, so the scheduled
+    # run is unaffected and the chain runs as always.
+    #
+    # The crawl still writes: field updates, box scores and cleared statsChecked
+    # flags are committed on a dry run. Skipping the chain means those are
+    # consumed by the next scheduled run instead of this one. That is safe
+    # because statsChecked is a persistent flag, not a queue that drains.
+    if: ${{ !(inputs.refresh_dry_run == true || inputs.refresh_dry_run == 'true') }}
     # 120 is a BACKSTOP ABOVE a self-bounding loop, not a budget for it (T55). The
     # measured work is ~4 minutes; the script's own push retry is 60 attempts of
     # 1-91s jitter, with every git call carrying its own 10-minute timeout and a
@@ -538,8 +647,11 @@ jobs:
   retrigger:
     needs: crawl
     runs-on: ubuntu-latest
+    # Gated on the dry run too: a diagnostic dispatch that leaves games remaining
+    # would otherwise re-dispatch the whole nightly, repeatedly (T3 form).
     if: |
       always() &&
+      !(inputs.refresh_dry_run == true || inputs.refresh_dry_run == 'true') &&
       needs.crawl.outputs.games_remaining != '0' &&
       needs.crawl.outputs.games_remaining != ''
     steps:
@@ -630,8 +742,11 @@ jobs:
     # waiters into the one-waiter queue (trap T19). When the matrix IS triggered,
     # the matrix terminal dispatches the chain instead — one chain, two entry
     # points, never both on the same night.
+    # Gated on the dry run too — this job DISPATCHES other workflows, which is the
+    # most expensive thing a diagnostic run could set off (T3 form).
     if: |
       always() &&
+      !(inputs.refresh_dry_run == true || inputs.refresh_dry_run == 'true') &&
       needs.crawl.outputs.games_remaining == '0' &&
       needs.crawl.outputs.new_players == '0' &&
       needs.crawl.outputs.stats_rechecks == '0'
