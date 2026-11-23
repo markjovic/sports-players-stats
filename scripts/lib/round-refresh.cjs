@@ -757,6 +757,81 @@ function findStaleFixtureGrades(games, { today, minStale = 1 } = {}) {
   return out.sort((a, b) => b.stale - a.stale);
 }
 
+// ─── THE `sup` FLAG: a fixture superseded by a regrade ───────────────────────
+//
+// WHAT IT MARKS. A game that is past-dated, was never played, is still served by
+// PlayHQ, and whose team has a PLAYED game in a DIFFERENT grade on that same
+// date. That is a fixture the association replaced when it regraded the team and
+// never withdrew. 52 of them in season 3d25b666 on 2026-11-24, all U11.
+//
+// WHY IT IS A FLAG AND NOT A DELETION. PlayHQ still serves these games, and rule
+// 1 is that PlayHQ is canonical. Deleting them would be inventing a withdrawal
+// the source never made. But left unmarked they inflate "still to play", render
+// as UPCOMING on a date months gone, and make the grading flow draw moves nobody
+// made. Mark's call, 2026-11-24: the marker lives in the DATA, so `team-stats`,
+// the fixture card, the grading panel and the season card all read one field
+// instead of each re-deriving the same rule.
+//
+// ⚠⚠ IT IS DERIVED, SO IT MUST BE RECOMPUTED AND CLEARED ON EVERY RUN.
+//
+// This returns BOTH what to set and what to clear, and the caller must apply
+// both. A flag that is only ever set is a flag that outlives its condition:
+//   · the game is finally played      → it has a score, no longer superseded
+//   · PlayHQ withdraws it             → Phase 2R deletes it, flag goes with it
+//   · the OTHER game is deleted       → the team no longer played elsewhere that
+//                                       day, so this fixture is just unplayed
+//   · the association restores it      → nothing supersedes it any more
+// And `applyRoundFixtures` spreads `...existing` before overlaying new values,
+// so a `sup` already on disk SURVIVES a refetch. Set-only would make a wrong
+// flag permanent and invisible. Clearing is not an optimisation here, it is the
+// difference between a derived field and a lie.
+//
+// The value is the game id that superseded it — not `true`. A bare boolean says
+// "this is wrong" and leaves nobody able to check it; the id makes every flag
+// auditable against PlayHQ's own game centre in one click.
+function computeSupersededFlags(games, { today } = {}) {
+  const cutoff = today || new Date().toISOString().slice(0, 10);
+
+  // `${tid}|${date}` → the id of a game that team PLAYED that day.
+  const playedTeamDay = new Map();
+  for (const id of Object.keys(games || {})) {
+    const g = games[id];
+    if (!g || !g.d || !isPlayedGame(g)) continue;
+    for (const tid of sideIds(g)) {
+      if (!playedTeamDay.has(`${tid}|${g.d}`)) playedTeamDay.set(`${tid}|${g.d}`, id);
+    }
+  }
+
+  const set = new Map();     // gameId → superseding gameId
+  const clear = [];          // gameId
+  for (const id of Object.keys(games || {})) {
+    const g = games[id];
+    if (!g) continue;
+    const had = Object.prototype.hasOwnProperty.call(g, 'sup');
+
+    let supersededBy = null;
+    if (g.d && g.gid && !isPlayedGame(g) && g.d < cutoff) {
+      for (const tid of sideIds(g)) {
+        const other = playedTeamDay.get(`${tid}|${g.d}`);
+        // ⚠ The played game must be in a DIFFERENT grade. Two games for one team
+        //   on one day inside the SAME grade is a double-header or a fixture
+        //   error, not a regrade, and is not this flag's business.
+        if (other && other !== id && games[other] && games[other].gid !== g.gid) {
+          supersededBy = other;
+          break;
+        }
+      }
+    }
+
+    if (supersededBy) {
+      if (!had || g.sup !== supersededBy) set.set(id, supersededBy);
+    } else if (had) {
+      clear.push(id);
+    }
+  }
+  return { set, clear };
+}
+
 module.exports = {
   FINGERPRINT_REL,
   MAX_FINGERPRINT_BYTES,
@@ -776,6 +851,7 @@ module.exports = {
   findSameDayGradeConflicts,
   findSameDayNameConflicts,
   findStaleFixtureGrades,
+  computeSupersededFlags,
   computeRoundDeletions,
   assessGradeCoverage,
   withholdLiveElsewhere,
