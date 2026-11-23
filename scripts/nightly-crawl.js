@@ -109,6 +109,10 @@ const BASELINE_PER_RUN   = Math.max(0, parseInt(ARGS['baseline-grades-per-run'] 
 // Caps ABORT the deletion pass; they never trim it. A trimmed deletion list is a
 // half-applied change nobody reviewed. On abort nothing is deleted, no
 // fingerprint is written, and the full would-have-deleted list is printed.
+const CONFLICT_PRINT_CAP = Math.max(0, parseInt(ARGS['conflict-print-cap'] || '40', 10));
+// One clock reading for the whole run. Two calls either side of midnight would
+// classify the same grade differently in one log.
+const TODAY_ISO = new Date().toISOString().slice(0, 10);
 const MAX_DELETES_RUN    = Math.max(0, parseInt(ARGS['max-deletes'] || '500', 10));
 const MAX_DELETES_SEASON = Math.max(0, parseInt(ARGS['max-deletes-per-season'] || '100', 10));
 // A cap breach is a REFUSAL, not a crash, and by default it does not fail the
@@ -1182,7 +1186,8 @@ async function main() {
     gradesConsidered: 0, baselined: 0, incremental: 0, baselineDeferred: 0,
     noRounds: 0, currentIsLast: 0, nothingToFetch: 0, baselineFree: 0,
     movedNotDeleted: 0, gradesUnaccounted: 0, capWarnings: 0, archived: 0, resurrected: 0,
-    roundsQueued: 0, gradesFullRescanned: 0, wavesExhausted: 0, sameDayConflicts: 0,
+    roundsQueued: 0, gradesFullRescanned: 0, wavesExhausted: 0, sameDayConflicts: 0, sameDayNameConflicts: 0,
+    deadGrades: 0, deadGradeGames: 0,
     roundsFetched: 0, roundsFailed: 0, suspectEmpty: 0,
     deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
     listChanged: 0, seasonsRegraded: 0, newGradesSwept: 0,
@@ -1797,7 +1802,7 @@ async function main() {
       // fired: 40 lines printed, 73 dropped, and nothing said so. A truncation
       // that does not announce itself is the same class of fault as a swallowed
       // error.
-      const PRINT_CAP = 40;
+      const PRINT_CAP = CONFLICT_PRINT_CAP;   // --conflict-print-cap
       let printed = 0;
       // Which grades collide, across the whole run — this is the part worth
       // reading when the list is long. A gid appearing on one side of dozens of
@@ -1833,6 +1838,67 @@ async function main() {
                   + ` two or more grades on the same date — a regrade that has not finished cleaning up.`);
       } else {
         console.log('  Invariant OK: no team holds fixtures in two grades on the same day.');
+      }
+
+      // ── THE SAME QUESTION, ASKED OF NAMES ────────────────────────────────
+      // A regrade applied as a NEW TEAM ENTRY gives the two fixtures different
+      // tids, and the pass above — which keys on tid — cannot see it at all.
+      // Kept as its own list and its own counter: a name match across two tids is
+      // weaker evidence than an id match and must not be read as the same thing.
+      let namePrinted = 0;
+      for (const sid of seasonsToCheck) {
+        const gfN = loadGameFile(sid);
+        const nc  = RR.findSameDayNameConflicts(gfN.games);
+        if (!nc.length) continue;
+        refresh.sameDayNameConflicts += nc.length;
+        for (const c of nc) {
+          if (namePrinted >= PRINT_CAP) continue;
+          namePrinted++;
+          const sides = c.grades.map((g, i) =>
+            `${g}${c.gradeNames[i] ? ` "${c.gradeNames[i]}"` : ''} tid=${c.tids[i] || '∅'}`
+            + `${c.played[i] ? ' [PLAYED]' : ' [unplayed]'}`);
+          console.log(`  ⚠ SAME NAME, TWO GRADES, ONE DAY (different tids — regrade made as a new team entry):`);
+          console.log(`             sid=${sid} "${c.name}" date=${c.date}`);
+          console.log(`             ${sides.join('  +  ')}`);
+          for (const id of c.gameIds) console.log(`             ${gcUrl(id)}`);
+        }
+      }
+      if (refresh.sameDayNameConflicts) {
+        if (refresh.sameDayNameConflicts > namePrinted) {
+          console.log(`  … ${namePrinted} of ${refresh.sameDayNameConflicts} name conflict(s) printed;`
+                    + ` ${refresh.sameDayNameConflicts - namePrinted} not shown.`);
+        }
+        console.log(`::warning::nightly-crawl refresh: ${refresh.sameDayNameConflicts} team-name-day(s) collide across`
+                  + ` grades under DIFFERENT team ids — a regrade applied as a new team entry.`);
+      } else {
+        console.log('  Invariant OK: no team NAME collides across grades on one day under two team ids.');
+      }
+
+      // ── DEAD GRADES ──────────────────────────────────────────────────────
+      // A published fixture in which nothing has ever been played, holding games
+      // whose dates have passed. PlayHQ still serves them, so this is NOT a
+      // deletion candidate list — it is the population that inflates "still to
+      // play", shows PENDING on a date that is long gone, and makes the grading
+      // flow draw moves that never happened.
+      for (const sid of seasonsToCheck) {
+        const gfD = loadGameFile(sid);
+        const dead = RR.findDeadGrades(gfD.games, { today: TODAY_ISO });
+        if (!dead.length) continue;
+        refresh.deadGrades += dead.length;
+        for (const d of dead) {
+          refresh.deadGradeGames += d.games;
+          const pct = d.teams ? Math.round((d.teamsAlsoElsewhere / d.teams) * 100) : 0;
+          console.log(`  ☠ DEAD GRADE: sid=${sid} gid=${d.gid}${d.gn ? ` "${d.gn}"` : ''}`
+                    + ` — ${d.games} game(s), 0 ever played, ${d.pastGames} dated in the past`
+                    + ` (${d.firstDate} → ${d.lastDate})`);
+          console.log(`             ${d.teamsAlsoElsewhere} of ${d.teams} team(s) (${pct}%) have PLAYED games in another grade`
+                    + `${pct >= 80 ? '  → almost certainly an abandoned grading pool' : ''}`);
+        }
+      }
+      if (refresh.deadGrades) {
+        console.log(`::warning::nightly-crawl refresh: ${refresh.deadGrades} grade(s) holding ${refresh.deadGradeGames} game(s)`
+                  + ` have never had a single game played while holding past-dated fixtures.`
+                  + ` PlayHQ still serves them, so they are NOT deletion candidates.`);
       }
     }
 
@@ -2397,7 +2463,9 @@ async function main() {
             + ` (reported, no longer blocking deletions)`
             + `${refresh.wavesExhausted ? `  ⚠ EXPANSION DID NOT SETTLE: ${refresh.wavesExhausted} round(s) left` : ''}`);
   console.log(`  Refresh invariant: ${refresh.sameDayConflicts} team-day(s) holding two grades on one date`
-            + `${refresh.sameDayConflicts ? '  ⚠ regrade cleanup incomplete' : ''}`);
+            + `  ${refresh.sameDayNameConflicts} same-name-day(s) across two team ids`
+            + `\n  Refresh dead grades: ${refresh.deadGrades} grade(s), ${refresh.deadGradeGames} game(s) never played`
+            + `${refresh.sameDayConflicts || refresh.sameDayNameConflicts ? '  ⚠ regrade cleanup incomplete' : ''}`);
   console.log(`  Refresh deletions: ${refresh.deleted}  kept-because-played: ${refresh.keptPlayed}`
             + `  suspect-empty rounds: ${refresh.suspectEmpty}  unscopeable (no rn): ${refresh.noRoundSkipped}`);
   if (refresh.baselineDeferred) console.log(`  Baseline backlog:  ${refresh.baselineDeferred} grade(s) waiting for a later run`);
