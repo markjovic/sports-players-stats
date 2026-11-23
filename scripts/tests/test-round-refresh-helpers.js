@@ -209,5 +209,62 @@ t('sideIds: prefers h over t1 when both present', RR.sideIds({h:'E1',t1:'E9',a:'
       return e.set.size === 0 && e.clear.length === 0; })());
 }
 
+// ─── THE 52-vs-47 BUG: one index, one rule, order-independent ──────────────
+{
+  const T = '2026-11-24';
+
+  // ⚠ THE ORDER-DEPENDENT MISS. Team M1 has TWO played games on 13 Nov: one in
+  // the SAME grade as the stale fixture, one in a different grade. The old code
+  // kept whichever Object.keys() yielded first; if that was the same-grade one,
+  // no flag was written at all. Key order is insertion order here, so `pSame`
+  // first reproduces the miss exactly.
+  const twoPlayed = {
+    stale:{d:'2026-11-13',gid:'AR',h:'M1',a:'V2',st:'UPCOMING'},
+    pSame:{d:'2026-11-13',gid:'AR',h:'M1',a:'X1',hs:10,as:12,st:'FINAL'},
+    pDiff:{d:'2026-11-13',gid:'A', h:'M1',a:'H1',hs:39,as:42,st:'FINAL'},
+  };
+  let r = RR.computeSupersededFlags(twoPlayed, { today: T });
+  t('52v47: finds the different-grade game past a same-grade one', r.set.get('stale') === 'pDiff');
+
+  // and with the keys the other way round — must be identical
+  const flipped = { stale:twoPlayed.stale, pDiff:twoPlayed.pDiff, pSame:twoPlayed.pSame };
+  t('52v47: key order does not change the answer',
+    RR.computeSupersededFlags(flipped, { today: T }).set.get('stale') === 'pDiff');
+
+  // ── THE TWO NUMBERS MUST AGREE. A double-header: the only played game that
+  // day is in the SAME grade, so it is neither superseded nor flagged.
+  const sameOnly = {
+    s2:{d:'2026-11-13',gid:'AR',h:'T1',a:'T2',st:'UPCOMING'},
+    p2:{d:'2026-11-13',gid:'AR',h:'T1',a:'T3',hs:5,as:6,st:'FINAL'},
+  };
+  t('52v47: same-grade only -> no flag', RR.computeSupersededFlags(sameOnly, { today: T }).set.size === 0);
+  const sg = RR.findStaleFixtureGrades(sameOnly, { today: T }).find(x => x.gid === 'AR');
+  t('52v47: same-grade only -> report does NOT call it superseded', sg && sg.withPlayedElsewhere === 0);
+  t('52v47: but it IS still counted stale', sg && sg.stale === 1);
+
+  // ── The invariant the two numbers now satisfy, over a mixed file.
+  const mixed = { ...twoPlayed, ...sameOnly,
+    s3:{d:'2026-10-30',gid:'BR',h:'Q1',a:'Q2',st:'UPCOMING'},
+    p3:{d:'2026-10-30',gid:'B', h:'Q1',a:'Q3',forfeit:true},
+    wash:{d:'2026-10-09',gid:'BR',h:'Z1',a:'Z2',st:'PENDING'},
+  };
+  const reportTotal = RR.findStaleFixtureGrades(mixed, { today: T })
+    .reduce((n, x) => n + x.withPlayedElsewhere, 0);
+  const flagTotal = RR.computeSupersededFlags(mixed, { today: T }).set.size;
+  t('52v47: report superseded count === flags written', reportTotal === flagTotal);
+  t('52v47: and it is 2 here, not 3', flagTotal === 2);
+  t('52v47: the washout is stale but not superseded',
+    RR.findStaleFixtureGrades(mixed, { today: T }).reduce((n, x) => n + x.stale, 0) === 4);
+
+  // shared helpers behave
+  const idx = RR.playedGamesByTeamDay(twoPlayed);
+  t('52v47: index keeps every played game for a team-day', idx.get('M1|2026-11-13').length === 2);
+  t('52v47: findSupersedingGame returns null for a played game',
+    RR.findSupersedingGame(twoPlayed, twoPlayed.pDiff, idx, T) === null);
+  t('52v47: findSupersedingGame returns null for a future game',
+    RR.findSupersedingGame({ f:{d:'2027-05-01',gid:'AR',h:'M1'} },
+      { d:'2027-05-01', gid:'AR', h:'M1' }, idx, T) === null);
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail?1:0);
