@@ -1182,6 +1182,7 @@ async function main() {
     gradesConsidered: 0, baselined: 0, incremental: 0, baselineDeferred: 0,
     noRounds: 0, currentIsLast: 0, nothingToFetch: 0, baselineFree: 0,
     movedNotDeleted: 0, gradesUnaccounted: 0, capWarnings: 0, archived: 0, resurrected: 0,
+    roundsQueued: 0, gradesFullRescanned: 0, wavesExhausted: 0, sameDayConflicts: 0,
     roundsFetched: 0, roundsFailed: 0, suspectEmpty: 0,
     deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
     listChanged: 0, seasonsRegraded: 0, newGradesSwept: 0,
@@ -1192,7 +1193,8 @@ async function main() {
   if (NO_ROUND_REFRESH) {
     console.log('\nPhase 2R — per-grade fixture refresh: DISABLED (--no-round-refresh)\n');
   } else {
-    console.log(`\nPhase 2R — per-grade fixture refresh (${REFRESH_AHEAD} round(s) ahead)…`);
+    console.log(`\nPhase 2R — per-grade fixture refresh`
+              + ` (${REFRESH_AHEAD} round(s) ahead for DISCOVERY; any change triggers a full grade rescan + expansion)…`);
     if (REFRESH_DRY_RUN) console.log('  ⚠ --refresh-dry-run: fetches and reports, deletes nothing, writes no fingerprint');
 
     // A corrupt fingerprint file THROWS rather than being treated as absent —
@@ -1291,8 +1293,75 @@ async function main() {
     // never deleted anything.
     const roundResults = new Map(p2RoundIds);   // `${gid}|${roundName}` → {ids, answered}
 
-    if (fetchItems.length) {
-      const p2r = await runPaced(fetchItems, async ({ w, f }) => {
+    // ── WAVE SCAN: change detected → full grade → expand until quiet ─────────
+    //
+    // "we are looking for any changes in fixtures, and when we find one we scan
+    // all of them for that grade and expand until we find the boundary of the
+    // changes." — Mark, 2026-11-23. The forward window is DISCOVERY ONLY now.
+    //
+    // ⚠ WHY THE COVERAGE GATE IS GONE RATHER THAN RELAXED. Deletions can only
+    // arise in a grade whose fixtures changed — if every fetched round's id set
+    // matches the fingerprint, the grade holds the same games and there is
+    // nothing to delete. And any changed grade is FULLY rescanned here before
+    // the deletion decision runs. So full coverage is now guaranteed exactly
+    // where it matters, by construction, instead of being asserted after a
+    // partial look and used to refuse the work. The old gate withheld 26 grades
+    // and 251 games on 2026-11-23, all of them residue PlayHQ had already
+    // dropped, and left a team holding two fixtures in two grades on one day.
+    const fetchedByGrade = new Map();              // gid → Set(roundName)
+    const noteFetched = (gid, rn) => {
+      if (!fetchedByGrade.has(gid)) fetchedByGrade.set(gid, new Set());
+      fetchedByGrade.get(gid).add(rn);
+    };
+    for (const key of roundResults.keys()) {       // seed with Phase 2's own fetches
+      const bar = key.indexOf('|');
+      if (bar > 0) noteFetched(key.slice(0, bar), key.slice(bar + 1));
+    }
+
+    const workByGid = new Map(work.map(w => [w.grade.gradeId, w]));
+
+    // Team → grades we hold games for it in. Built from the stored games already
+    // loaded for planning, so expansion costs no extra read and no extra call.
+    // A grade holding no stored games has nothing to delete, so its absence here
+    // cannot hide work.
+    const gradesOfTeam = new Map();
+    for (const w of work) {
+      for (const arr of w.byRound.values()) {
+        for (const e of arr) {
+          const g = (e && e.g) || {};
+          for (const k of ['hTid', 'aTid', 't1', 't2']) {
+            const tid = g[k];
+            if (typeof tid !== 'string' || !tid) continue;
+            if (!gradesOfTeam.has(tid)) gradesOfTeam.set(tid, new Set());
+            gradesOfTeam.get(tid).add(w.grade.gradeId);
+          }
+        }
+      }
+    }
+
+    const fullRescanned   = new Set();   // gid — already queued for a full scan
+    const seenChanged     = new Set();   // `gid|roundName` — already expanded from
+    const unfetchable     = new Map();   // gid → [roundName] that cannot be fetched at all
+    // A runaway here would be an expansion loop, not a deletion loop. The round
+    // list bounds each grade and the grade list bounds the season, so this cap
+    // exists to turn a logic error into a loud stop rather than a 6-hour job.
+    const MAX_WAVES = 8;
+
+    let queue = fetchItems;
+    let wave  = 0;
+
+    while (queue.length) {
+      wave++;
+      if (wave > MAX_WAVES) {
+        console.log(`::warning::nightly-crawl refresh: expansion did not settle in ${MAX_WAVES} waves —`
+                  + ` ${queue.length} round(s) left unfetched. Deletions proceed only for grades`
+                  + ` actually scanned; nothing is deleted on the strength of a round we never asked for.`);
+        refresh.wavesExhausted = queue.length;
+        break;
+      }
+      if (wave > 1) console.log(`  wave ${wave}: ${queue.length} round(s) queued from detected changes`);
+
+      const p2r = await runPaced(queue, async ({ w, f }) => {
         const { kind, data } = await gqlMain('discoverFixtureByRound', Q_FIXTURE_BY_ROUND, { roundID: f.roundId });
         if (kind !== 'ok') return kind;                    // blocked/transient → requeue
         const { needsSpectator, forfeitGameIds } = applyRoundFixtures(
@@ -1310,11 +1379,82 @@ async function main() {
           // believed to be wrong because nothing in the log said "bye".
           byes: ((data && data.discoverFixtureByRound && data.discoverFixtureByRound.byes) || []).length,
         });
+        noteFetched(w.grade.gradeId, f.roundName);
         return 'ok';
       }, { conc: CONCURRENCY_FIXTURES, burst: PACE_BURST, rest: PACE_REST, label: 'P2R refresh' });
-      console.log(`  ${fetchItems.length} rounds done — ok=${p2r.counts.ok} empty=${p2r.counts.empty}`
+      console.log(`  wave ${wave}: ${queue.length} rounds done — ok=${p2r.counts.ok} empty=${p2r.counts.empty}`
                 + ` blocked=${p2r.counts.blocked} transient=${p2r.counts.transient} dropped=${p2r.counts.dropped}`
                 + ` remaining=${p2r.remaining}`);
+      refresh.roundsQueued += queue.length;
+
+      // ── DETECT, THEN EXPAND ────────────────────────────────────────────────
+      //
+      // Detection runs over EVERY grade each wave, not only the ones just
+      // fetched: a grade whose rounds were fetched in wave 1 can be shown to
+      // have changed only once those results are in, and a grade pulled in by
+      // expansion changes the picture for the grade that pulled it.
+      //
+      // `seenChanged` is keyed on (gid, round) so the same change is never
+      // expanded from twice — that, not the wave cap, is what makes this
+      // terminate: there are finitely many (grade, round) pairs and each can
+      // contribute to expansion once.
+      const expandTeams = new Set();
+      const markFull    = new Set();
+
+      for (const w of work) {
+        const gid = w.grade.gradeId;
+        const ch  = RR.detectGradeChange({
+          stored: w.stored, gid, roundResults, roundListHash: w.plan.roundListHash,
+        });
+        if (!ch.changed) continue;
+
+        const fresh = ch.rounds.filter(rn => !seenChanged.has(`${gid}|${rn}`));
+        for (const rn of ch.rounds) seenChanged.add(`${gid}|${rn}`);
+
+        if (!fullRescanned.has(gid)) markFull.add(gid);
+
+        // The teams whose games changed are the thread to follow. A regrade
+        // takes a team's games OUT of this grade and creates them in another,
+        // so the stored games in the changed rounds name exactly who moved.
+        if (fresh.length) {
+          for (const tid of RR.teamsInRounds({ byRound: w.byRound, roundNames: fresh })) expandTeams.add(tid);
+        }
+      }
+
+      for (const tid of expandTeams) {
+        for (const gid of (gradesOfTeam.get(tid) || [])) {
+          if (workByGid.has(gid) && !fullRescanned.has(gid)) markFull.add(gid);
+        }
+      }
+
+      const next = [];
+      for (const gid of markFull) {
+        fullRescanned.add(gid);
+        const w  = workByGid.get(gid);
+        if (!w) continue;
+        const pf = RR.planGradeFull({ grade: w.grade, fetchedRoundNames: fetchedByGrade.get(gid) || new Set() });
+        // ⚠ NAMED, NOT DROPPED. A round with no id — or a duplicate id — cannot
+        // be fetched, and the previous planner discarded it silently inside
+        // `add()`. That silence is what made the 26 withheld grades
+        // undiagnosable from a log: the round was named as unaccounted for, and
+        // nothing said it had never been asked for in the first place.
+        if (pf.unfetchable.length) unfetchable.set(gid, pf.unfetchable);
+        for (const f of pf.fetch) next.push({ w, f });
+      }
+      refresh.gradesFullRescanned = fullRescanned.size;
+      queue = next;
+    }
+
+    if (unfetchable.size) {
+      let shown = 0;
+      console.log(`  ⚠ ${unfetchable.size} grade(s) hold round(s) that CANNOT be fetched (no round id, or a duplicate id).`
+                + ` PlayHQ is asked by round id, so these rounds can never be checked:`);
+      for (const [gid, names] of unfetchable) {
+        if (shown++ >= 20) { console.log(`      … and ${unfetchable.size - 20} more grade(s)`); break; }
+        console.log(`      grade ${gid}: ${names.join(', ')}`);
+      }
+      console.log(`::warning::nightly-crawl refresh: ${unfetchable.size} grade(s) hold unfetchable rounds`
+                + ` — see the list above. Games in those rounds are never deletion candidates.`);
     }
 
     // ── Decide deletions, per grade, all-or-nothing ──────────────────────────
@@ -1342,12 +1482,21 @@ async function main() {
       // instead of sliding out of the ahead-window and never being re-asked.
       let gradeClean = true;
 
-      // The current round comes from Phase 2's fetch rather than a second one.
-      const judged = w.plan.fetch.slice();
-      const curr = (w.grade.rounds || []).find(r => r && r.current);
-      if (curr && roundResults.has(`${gid}|${curr.name}`) && !judged.some(f => f.roundName === curr.name)) {
-        judged.unshift({ roundId: null, roundName: curr.name, reason: 'current (reusing Phase 2)' });
-      }
+      // ⚠ JUDGE EVERY ROUND ACTUALLY FETCHED, NOT THE ORIGINAL PLAN.
+      //
+      // This read `w.plan.fetch.slice()` and was wrong the moment the wave scan
+      // existed: the full rescan fetches the rest of the grade in a later wave
+      // and those rounds are NOT in `plan.fetch`, so their results would have
+      // been fetched, paid for, and then never examined — the residue in Rounds
+      // 11-16 would have survived the very pass built to remove it, silently.
+      // Caught by a fixture, not by reading. `fetchedByGrade` is the record of
+      // what was actually asked, across every wave, and includes Phase 2's
+      // current-round fetch because the map is seeded from `roundResults`.
+      const judged = [...(fetchedByGrade.get(gid) || new Set())].map((rn) => {
+        const r = (w.grade.rounds || []).find(x => x && x.name === rn);
+        const planned = w.plan.fetch.find(f => f.roundName === rn);
+        return { roundId: (r && r.id) || null, roundName: rn, reason: planned ? planned.reason : 'wave' };
+      });
 
       // RULE 5, half one: everything PlayHQ returned anywhere in this grade. A
       // game that came back under ANY round is alive, whatever round it is now
@@ -1362,49 +1511,16 @@ async function main() {
         for (const id of got.ids) aliveGradeWide.add(id);
       }
 
-      // RULE 5, half two: can we account for every round this grade holds
-      // unplayed games in? If not, a game moved out of the fetch window is
-      // indistinguishable from one that is gone, and we delete nothing.
+      // Coverage is now an ASSERTION, not a gate — see the wave-scan note in the
+      // fetch section. It still governs whether the ROUND-LIST hash is written:
+      // a grade with a round we could not account for keeps `listChanged` true,
+      // so it is fully rescanned again next run instead of settling into a
+      // partial view. That is the self-healing behaviour for a grade holding an
+      // unfetchable round, and it is bounded by how few such grades there are.
       const cov = RR.assessGradeCoverage({ rounds: w.grade.rounds, byRound: w.byRound, fetchedRoundNames: fetchedNames });
       if (!cov.fullyAccounted) {
         refresh.gradesUnaccounted++;
         gradeClean = false;
-
-        // ── DIAGNOSTIC, 2026-11-23. LOG ONLY — changes no decision. ──────────
-        //
-        // WHY: 26 grades withheld every deletion on the first full repo-wide run,
-        // all naming far-out rounds they hold unplayed games in. `planGrade` calls
-        // `addHeldUnplayed()` uncapped in BOTH modes, so a round we hold unplayed
-        // games in is supposed to be fetched wherever it sits. These were not.
-        // The withheld line names the round but not WHY it went unfetched, so the
-        // cause cannot be told apart from the log as it stands:
-        //
-        //   planned=no  + id=<missing>  → `add()` drops any round with no `r.id`
-        //   planned=no  + id=<present>  → the plan itself is skipping it
-        //   planned=yes                 → planned but no result landed, i.e. the
-        //                                 fetch never answered and was not counted
-        //
-        // Bounded by `gradesUnaccounted`, which is the summary's
-        // "grades withheld for incomplete coverage" — 26 last run — so this is at
-        // most 26 blocks. It vanishes entirely when coverage is fixed.
-        //
-        // That counter also explains the 26-vs-18 gap: 26 grades were unaccounted,
-        // but only 18 of them held deletion candidates, and the WITHHELD line only
-        // fires when there is something to withhold. The two numbers never
-        // contradicted each other.
-        const plannedNames = new Set(w.plan.fetch.map(f => f.roundName));
-        const roundById    = new Map((w.grade.rounds || []).filter(r => r && r.name).map(r => [r.name, r]));
-        const diag = cov.unaccounted.map((rn) => {
-          const r = roundById.get(rn);
-          return `"${rn}" planned=${plannedNames.has(rn) ? 'yes' : 'NO'}`
-               + ` id=${r ? (r.id || '<MISSING>') : '<NOT-IN-ROUND-LIST>'}`
-               + ` current=${r && r.current ? 'yes' : 'no'}`
-               + ` held=${(w.byRound.get(rn) || []).length}`;
-        });
-        console.log(`  · COVERAGE DIAG sid=${sid} gid=${gid} unaccounted=${cov.unaccounted.length}`
-                  + ` planned=${w.plan.fetch.length} fetched=${fetchedNames.size} mode=${w.plan.mode}`);
-        for (const line of diag.slice(0, 20)) console.log(`      ${line}`);
-        if (diag.length > 20) console.log(`      … and ${diag.length - 20} more`);
       }
 
       for (const f of judged) {
@@ -1443,12 +1559,24 @@ async function main() {
           console.log(`  ↷ MOVED, not deleted: grade ${gid} game ${e.gameId} was in "${f.roundName}"`
                     + ` and PlayHQ returned it under another round of the same grade.`);
         }
-        if (cov.fullyAccounted) {
-          for (const e of live.deletable) gradeDeletes.push({ sid, gid, rn: f.roundName, gameId: e.gameId });
-        } else if (live.deletable.length) {
-          console.log(`  ⚠ grade ${gid}: ${live.deletable.length} candidate(s) in "${f.roundName}" WITHHELD —`
-                    + ` round(s) ${cov.unaccounted.slice(0, 6).join(', ')}${cov.unaccounted.length > 6 ? ', …' : ''}`
-                    + ` hold unplayed games and were not fetched, so a moved game cannot be told from a withdrawn one.`);
+        // PLAYHQ IS CANONICAL. The round was fetched, the fetch succeeded, the
+        // game is unplayed and it came back under no round of this grade. It is
+        // gone. No cross-round gate stands between that and the deletion any
+        // more — see the wave-scan note above for why coverage is now a
+        // property of the scan rather than a condition checked after it.
+        for (const e of live.deletable) gradeDeletes.push({ sid, gid, rn: f.roundName, gameId: e.gameId });
+
+        // Kept as an ASSERTION, never as a gate. If a grade yields deletions
+        // while a live round holding unplayed games went unfetched, the wave
+        // scan did not do its job and that is a defect to be seen, not a reason
+        // to abandon the deletions. Printed with the reason the round was
+        // missed, which the old gate never said.
+        if (!cov.fullyAccounted && live.deletable.length) {
+          const uf = unfetchable.get(gid) || [];
+          const why = cov.unaccounted.map(rn => `${rn}${uf.includes(rn) ? ' (UNFETCHABLE)' : ''}`);
+          console.log(`  ⚠ grade ${gid}: deleting ${live.deletable.length} game(s) from "${f.roundName}"`
+                    + ` while round(s) ${why.slice(0, 6).join(', ')}${why.length > 6 ? ', …' : ''}`
+                    + ` hold unplayed games and were not fetched. Expansion should have covered them.`);
         }
         roundHashes[f.roundName] = RR.hashIdSet(got.ids);
       }
@@ -1470,9 +1598,11 @@ async function main() {
           console.log(`  ↷ MOVED, not deleted: grade ${gid} game ${e.gameId} was in withdrawn round "${rn}"`
                     + ` and PlayHQ returned it under a live round of the same grade.`);
         }
-        if (cov.fullyAccounted) {
-          for (const e of liveV.deletable) gradeDeletes.push({ sid, gid, rn, gameId: e.gameId });
-        }
+        // A round PlayHQ has withdrawn from the list entirely. The round list
+        // came from a gradeRounds call that succeeded, which satisfies rule 1
+        // without a fixture fetch. Gated on coverage until 2026-11-23; PlayHQ is
+        // canonical and the wave scan covers the grade, so it no longer is.
+        for (const e of liveV.deletable) gradeDeletes.push({ sid, gid, rn, gameId: e.gameId });
         delete roundHashes[rn];
         console.log(`  round withdrawn: grade ${gid} "${rn}" — ${d.deletable.length} unplayed game(s) to remove,`
                   + ` ${d.keptPlayed} played game(s) kept`);
@@ -1644,6 +1774,46 @@ async function main() {
                   + ` — restore with restore-withdrawn-games.js`);
       }
       console.log(`  Deletions applied: ${refresh.deleted}`);
+    }
+
+    // ── THE INVARIANT: one team, one grade, one day ──────────────────────────
+    //
+    // A team holding fixtures in two different grades on the same DATE is wrong
+    // on its face. It is what a half-applied regrade leaves behind, and it is
+    // the state the old coverage gate permitted while reporting itself healthy —
+    // B13 Maroondah Magic 1 carried two Round 6 fixtures dated 13 Nov 2026, one
+    // in Friday U13 Boys AR and one in Friday U13 Boys A, and nothing in the run
+    // said so. Checked directly rather than inferred from deletion arithmetic,
+    // because an invariant that is only ever implied is an invariant nobody can
+    // see break.
+    //
+    // Reported, never acted on. Which of the two fixtures is the real one is a
+    // question for PlayHQ, and the scan above is what answers it; this says the
+    // cleanup has not finished.
+    {
+      const seasonsToCheck = new Set(work.map(w => w.grade.seasonId).filter(Boolean));
+      let shown = 0;
+      for (const sid of seasonsToCheck) {
+        const gfC = loadGameFile(sid);
+        const conflicts = RR.findSameDayGradeConflicts(gfC.games);
+        if (!conflicts.length) continue;
+        refresh.sameDayConflicts += conflicts.length;
+        for (const c of conflicts) {
+          if (shown++ >= 40) continue;
+          console.log(`  ⚠ TWO GRADES ONE DAY: sid=${sid} team=${c.tid} date=${c.date}`
+                    + ` grades=${c.grades.join(' + ')} games=${c.gameIds.join(' ')}`);
+          for (const id of c.gameIds) console.log(`             ${gcUrl(id)}`);
+        }
+      }
+      if (refresh.sameDayConflicts) {
+        if (refresh.sameDayConflicts > shown) {
+          console.log(`  … and ${refresh.sameDayConflicts - shown} more same-day conflict(s) not printed`);
+        }
+        console.log(`::warning::nightly-crawl refresh: ${refresh.sameDayConflicts} team-day(s) hold fixtures in`
+                  + ` two or more grades on the same date — a regrade that has not finished cleaning up.`);
+      } else {
+        console.log('  Invariant OK: no team holds fixtures in two grades on the same day.');
+      }
     }
 
     // ── A changed round list may mean the SEASON was regraded ────────────────
@@ -2201,7 +2371,13 @@ async function main() {
   console.log(`  Refresh archived:  ${refresh.archived} game(s) written to data/withdrawn-games/ before deletion`
             + `${refresh.capWarnings ? `  (advisory cap exceeded ${refresh.capWarnings}x — proceeded)` : ''}`);
   console.log(`  Refresh moved-not-deleted: ${refresh.movedNotDeleted}`
-            + `  grades withheld for incomplete coverage: ${refresh.gradesUnaccounted}`);
+            + `  grades fully rescanned on change: ${refresh.gradesFullRescanned}`
+            + `  rounds fetched: ${refresh.roundsQueued}`);
+  console.log(`  Refresh coverage gaps: ${refresh.gradesUnaccounted} grade(s) had a live unplayed round left unfetched`
+            + ` (reported, no longer blocking deletions)`
+            + `${refresh.wavesExhausted ? `  ⚠ EXPANSION DID NOT SETTLE: ${refresh.wavesExhausted} round(s) left` : ''}`);
+  console.log(`  Refresh invariant: ${refresh.sameDayConflicts} team-day(s) holding two grades on one date`
+            + `${refresh.sameDayConflicts ? '  ⚠ regrade cleanup incomplete' : ''}`);
   console.log(`  Refresh deletions: ${refresh.deleted}  kept-because-played: ${refresh.keptPlayed}`
             + `  suspect-empty rounds: ${refresh.suspectEmpty}  unscopeable (no rn): ${refresh.noRoundSkipped}`);
   if (refresh.baselineDeferred) console.log(`  Baseline backlog:  ${refresh.baselineDeferred} grade(s) waiting for a later run`);
