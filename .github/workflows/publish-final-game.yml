@@ -113,14 +113,20 @@ jobs:
         with:
           fetch-depth: 1
           filter: blob:none
+          # ⚠ LEADING SLASHES ARE DELIBERATE. Without one, git reads a non-cone
+          # pattern as matching at ANY depth rather than naming a single file, and
+          # says so: "pass a leading slash before paths such as ... (see NON-CONE
+          # PROBLEMS in the git-sparse-checkout manual)". Measured 2026-11-23: the
+          # unanchored form happened to resolve correctly, but four warnings on
+          # every run is how a step's warnings stop being read.
           sparse-checkout: |
-            scripts/publish-final-game.js
-            scripts/lib
-            data/sports-index.json
-            data/forfeit-games.json
-            games/bv/${{ inputs.season }}.json
-            players/indexes
-            players/aliases
+            /scripts/publish-final-game.js
+            /scripts/lib
+            /data/sports-index.json
+            /data/forfeit-games.json
+            /games/bv/${{ inputs.season }}.json
+            /players/indexes
+            /players/aliases
           sparse-checkout-cone-mode: false
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -207,17 +213,20 @@ jobs:
             SHARDS="${TEST_SHARDS}"
             echo "⚠ no shards from this round — using test_shards='${TEST_SHARDS}' to exercise the sparse-checkout path. NO DATA IS AFFECTED: these files are checked out and then not written to."
           fi
-          PATTERNS=( scripts/publish-final-game.js scripts/lib
-                     data/sports-index.json data/forfeit-games.json
-                     "games/bv/${IN_SEASON}.json"
-                     players/indexes players/aliases )
+          # The SAME patterns as the checkout above, leading slashes included —
+          # this re-sets the whole list, so any drift between the two silently
+          # changes what is checked out.
+          PATTERNS=( /scripts/publish-final-game.js /scripts/lib
+                     /data/sports-index.json /data/forfeit-games.json
+                     "/games/bv/${IN_SEASON}.json"
+                     /players/indexes /players/aliases )
           n=0
           for sh in ${SHARDS}; do
             # Two hex characters and nothing else. A shard name is derived from a
             # uuid, so anything else means the state file is not what it claims and
             # the pattern must not reach git.
             case "${sh}" in
-              [0-9a-f][0-9a-f]) PATTERNS+=( "players/${sh}" ); n=$((n+1)) ;;
+              [0-9a-f][0-9a-f]) PATTERNS+=( "/players/${sh}" ); n=$((n+1)) ;;
               *) echo "::error::refusing shard name '${sh}' — expected two hex characters"; exit 1 ;;
             esac
           done
