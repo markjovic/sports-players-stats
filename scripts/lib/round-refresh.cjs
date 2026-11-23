@@ -639,6 +639,127 @@ function findSameDayGradeConflicts(games) {
   return conflicts;
 }
 
+// THE SAME CONFLICT, KEYED ON TEAM NAME INSTEAD OF TEAM ID.
+//
+// ⚠ WHY A SECOND PASS IS NEEDED AND THE FIRST ONE IS NOT ENOUGH.
+// `findSameDayGradeConflicts` keys on the team ID, so it can only see a team
+// that kept its identity across a regrade. PlayHQ sometimes applies a regrade by
+// creating a NEW TEAM ENTRY in the destination grade — `claude/fixture-watch.md`
+// records exactly this ("the regrade was made as a NEW team entry, so the real
+// fixture is under a different tid"). When that happens the old grade's fixture
+// and the new grade's fixture carry DIFFERENT tids, the id-keyed pass sees two
+// unrelated teams, and the collision is structurally invisible to it.
+//
+// Names are the only thing the two identities share. `applyRoundFixtures` writes
+// `hn`/`an` beside `h`/`a`, so the name is on every game without another call.
+//
+// Reported SEPARATELY and never merged into the id-keyed list: a name match with
+// differing tids is a weaker claim than an id match, and conflating a strong
+// signal with a weak one is how a report stops being trusted. Only rows whose
+// tids genuinely differ are returned — anything the id pass already caught is
+// excluded, so the two lists never double-count.
+function findSameDayNameConflicts(games) {
+  const byNameDay = new Map();                       // `${name}|${d}` → Map(gid → {...})
+  for (const id of Object.keys(games || {})) {
+    const g = games[id];
+    if (!g || !g.d || !g.gid) continue;
+    const pairs = [[g.hn, (g.h ?? g.t1) || null], [g.an, (g.a ?? g.t2) || null]];
+    for (const [name, tid] of pairs) {
+      if (typeof name !== 'string' || !name) continue;
+      const key = `${name}|${g.d}`;
+      if (!byNameDay.has(key)) byNameDay.set(key, new Map());
+      byNameDay.get(key).set(g.gid, { id, tid, gn: g.gn || null, played: isPlayedGame(g) });
+    }
+  }
+  const conflicts = [];
+  for (const [key, gidMap] of byNameDay) {
+    if (gidMap.size < 2) continue;
+    const rows = [...gidMap.values()];
+    const tids = new Set(rows.map(r => r.tid).filter(Boolean));
+    if (tids.size < 2) continue;                     // same tid → the id pass owns this one
+    const bar = key.lastIndexOf('|');
+    conflicts.push({
+      name:       key.slice(0, bar),
+      date:       key.slice(bar + 1),
+      grades:     [...gidMap.keys()],
+      gradeNames: rows.map(r => r.gn),
+      gameIds:    rows.map(r => r.id),
+      tids:       rows.map(r => r.tid),
+      played:     rows.map(r => r.played),
+    });
+  }
+  return conflicts;
+}
+
+// ─── DEAD GRADES: a published fixture nobody ever played ─────────────────────
+//
+// WHAT THIS IS FOR. Friday U11 Boys AR in season 3d25b666 is a complete,
+// live, published fixture in which NOT ONE GAME HAS EVER BEEN PLAYED. Every game
+// is PENDING with TBC time and venue, across rounds dated 9 Oct to 6 Nov 2026 and
+// beyond, while the same teams carry real results — real scores, real courts — in
+// Friday U11 Boys B, C and A on those exact dates. The association published a
+// grading fixture, allocated the teams out of it, and never withdrew it.
+//
+// PlayHQ still serves every one of those games, so Phase 2R will never delete
+// them and is right not to: rule 1 is "PlayHQ is canonical", and PlayHQ says they
+// exist. This is therefore NOT a deletion problem and must not be turned into
+// one. It is reported so that the thing polluting fixture counts, "still to play"
+// totals and the grading-flow diagram has a name and a number.
+//
+// THE TEST, AND WHY IT IS THIS ONE. A grade is dead when it holds a game dated in
+// the PAST and NOT ONE game in it has ever been played. A grade published for a
+// future season also has every game unplayed, which is why the past-date term is
+// required; and a real grade with a past round has results, which is why zero
+// played games is damning rather than merely odd.
+//
+// `teamsAlsoElsewhere` is the corroboration, not the test — the count of this
+// grade's teams that hold a PLAYED game in some other grade. A dead grading pool
+// scores near 100%. A genuinely washed-out round scores 0% and is left alone.
+function findDeadGrades(games, { today } = {}) {
+  const cutoff = today || new Date().toISOString().slice(0, 10);
+  const byGrade = new Map();                         // gid → {gn, total, played, dates, teams}
+  const playedTeamGrades = new Map();                // tid → Set(gid) where it PLAYED
+  for (const id of Object.keys(games || {})) {
+    const g = games[id];
+    if (!g || !g.gid) continue;
+    if (!byGrade.has(g.gid)) {
+      byGrade.set(g.gid, { gid: g.gid, gn: g.gn || null, total: 0, played: 0, dates: [], teams: new Set() });
+    }
+    const e = byGrade.get(g.gid);
+    e.total++;
+    if (g.gn && !e.gn) e.gn = g.gn;
+    if (g.d) e.dates.push(g.d);
+    const played = isPlayedGame(g);
+    if (played) e.played++;
+    for (const tid of sideIds(g)) {
+      e.teams.add(tid);
+      if (played) {
+        if (!playedTeamGrades.has(tid)) playedTeamGrades.set(tid, new Set());
+        playedTeamGrades.get(tid).add(g.gid);
+      }
+    }
+  }
+  const dead = [];
+  for (const e of byGrade.values()) {
+    if (e.played > 0) continue;                      // somebody played: not dead
+    if (!e.dates.length) continue;                   // undated: cannot judge, say nothing
+    const dates = e.dates.slice().sort();
+    if (!(dates[0] < cutoff)) continue;              // entirely in the future: a normal new fixture
+    let elsewhere = 0;
+    for (const tid of e.teams) {
+      const gs = playedTeamGrades.get(tid);
+      if (gs && [...gs].some(x => x !== e.gid)) elsewhere++;
+    }
+    dead.push({
+      gid: e.gid, gn: e.gn, games: e.total, teams: e.teams.size,
+      firstDate: dates[0], lastDate: dates[dates.length - 1],
+      pastGames: dates.filter(d => d < cutoff).length,
+      teamsAlsoElsewhere: elsewhere,
+    });
+  }
+  return dead.sort((a, b) => b.games - a.games);
+}
+
 module.exports = {
   FINGERPRINT_REL,
   MAX_FINGERPRINT_BYTES,
@@ -656,6 +777,8 @@ module.exports = {
   sideIds,
   teamsInRounds,
   findSameDayGradeConflicts,
+  findSameDayNameConflicts,
+  findDeadGrades,
   computeRoundDeletions,
   assessGradeCoverage,
   withholdLiveElsewhere,
