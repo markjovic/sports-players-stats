@@ -142,5 +142,72 @@ t('sideIds: prefers h over t1 when both present', RR.sideIds({h:'E1',t1:'E9',a:'
     RR.findStaleFixtureGrades({ u:{gid:'U',h:'T',st:'PENDING'} }, { today: TODAY }).length === 0);
 }
 
+// ─── computeSupersededFlags: set AND clear, every run ──────────────────────
+{
+  const T = '2026-11-24';
+  const base = {
+    // superseded: past, unplayed, team M1 played in grade A that day
+    s1:{d:'2026-11-13',gid:'AR',h:'M1',a:'V2',st:'UPCOMING'},
+    p1:{d:'2026-11-13',gid:'A', h:'M1',a:'H1',hs:39,as:42,st:'FINAL'},
+    // washout: past, unplayed, nobody played anywhere that day
+    w1:{d:'2026-10-30',gid:'AR',h:'WAV',a:'EB1',st:'PENDING'},
+    // future and unplayed
+    f1:{d:'2027-02-05',gid:'AR',h:'M1',a:'V2',st:'UPCOMING'},
+    // played game itself
+    p2:{d:'2026-11-20',gid:'A', h:'M1',a:'V1',hs:46,as:52,st:'FINAL'},
+  };
+  let r = RR.computeSupersededFlags(base, { today: T });
+  t('sup: flags the superseded fixture', r.set.get('s1') === 'p1');
+  t('sup: only one flag set', r.set.size === 1);
+  t('sup: washout not flagged', !r.set.has('w1'));
+  t('sup: future game not flagged', !r.set.has('f1'));
+  t('sup: played game not flagged', !r.set.has('p2'));
+  t('sup: nothing to clear on a clean file', r.clear.length === 0);
+
+  // SAME grade on one day is a double-header, not a regrade
+  t('sup: same-grade pair not flagged', RR.computeSupersededFlags({
+      x1:{d:'2026-11-13',gid:'A',h:'M1',a:'V2',st:'UPCOMING'},
+      x2:{d:'2026-11-13',gid:'A',h:'M1',a:'H1',hs:1,as:2,st:'FINAL'} }, { today: T }).set.size === 0);
+
+  // ── CLEARING. Each of these had a flag that is no longer true.
+  const withFlag = (extra) => ({ ...base, s1:{ ...base.s1, sup:'p1' }, ...extra });
+
+  t('sup: idempotent when already correct',
+    RR.computeSupersededFlags(withFlag({}), { today: T }).set.size === 0);
+  t('sup: idempotent leaves it alone, does not clear',
+    RR.computeSupersededFlags(withFlag({}), { today: T }).clear.length === 0);
+
+  let c = RR.computeSupersededFlags(withFlag({ s1:{ ...base.s1, sup:'p1', hs:20, as:18, st:'FINAL' } }), { today: T });
+  t('sup: CLEARED once the game is played', c.clear.includes('s1'));
+
+  const noOther = withFlag({}); delete noOther.p1;
+  t('sup: CLEARED when the superseding game is gone',
+    RR.computeSupersededFlags(noOther, { today: T }).clear.includes('s1'));
+
+  t('sup: CLEARED when the flag points at the wrong game',
+    RR.computeSupersededFlags(withFlag({ s1:{ ...base.s1, sup:'WRONG' } }), { today: T }).set.get('s1') === 'p1');
+
+  // A flag on a future game must go — dates move, the flag must not be sticky
+  t('sup: CLEARED on a game whose date is still ahead',
+    RR.computeSupersededFlags({ ...base, f1:{ ...base.f1, sup:'p1' } }, { today: T }).clear.includes('f1'));
+
+  // The whole point: applyRoundFixtures spreads ...existing, so a stale flag survives a refetch
+  t('sup: a stale flag IS detected for clearing, not ignored',
+    RR.computeSupersededFlags({ z1:{d:'2026-11-13',gid:'AR',h:'M1',a:'V2',st:'UPCOMING',sup:'gone'} },
+      { today: T }).clear.includes('z1'));
+
+  t('sup: away side matches too', RR.computeSupersededFlags({
+      a1:{d:'2026-11-13',gid:'AR',a:'TA',h:'ZZ',st:'UPCOMING'},
+      a2:{d:'2026-11-13',gid:'A', a:'TA',h:'YY',hs:5,as:6,st:'FINAL'} }, { today: T }).set.size === 1);
+  t('sup: t1/t2 shape matches too', RR.computeSupersededFlags({
+      b1:{d:'2026-11-13',gid:'AR',t1:'TB',t2:'ZZ',st:'UPCOMING'},
+      b2:{d:'2026-11-13',gid:'A', t1:'TB',t2:'YY',hs:5,as:6,st:'FINAL'} }, { today: T }).set.size === 1);
+  t('sup: undated game ignored',
+    RR.computeSupersededFlags({ u1:{gid:'AR',h:'M1',st:'UPCOMING'} }, { today: T }).set.size === 0);
+  t('sup: empty file -> nothing', (() => {
+      const e = RR.computeSupersededFlags({}, { today: T });
+      return e.set.size === 0 && e.clear.length === 0; })());
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail?1:0);

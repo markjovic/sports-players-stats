@@ -1187,7 +1187,7 @@ async function main() {
     noRounds: 0, currentIsLast: 0, nothingToFetch: 0, baselineFree: 0,
     movedNotDeleted: 0, gradesUnaccounted: 0, capWarnings: 0, archived: 0, resurrected: 0,
     roundsQueued: 0, gradesFullRescanned: 0, wavesExhausted: 0, sameDayConflicts: 0, sameDayNameConflicts: 0,
-    staleGrades: 0, staleGames: 0, staleSuperseded: 0,
+    staleGrades: 0, staleGames: 0, staleSuperseded: 0, supSet: 0, supClear: 0,
     roundsFetched: 0, roundsFailed: 0, suspectEmpty: 0,
     deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
     listChanged: 0, seasonsRegraded: 0, newGradesSwept: 0,
@@ -1903,6 +1903,43 @@ async function main() {
                   + ` ${refresh.staleGrades} grade(s); ${refresh.staleSuperseded} have the team playing elsewhere`
                   + ` that day. PlayHQ still serves them all, so they are NOT deletion candidates.`);
       }
+
+      // ── WRITE THE `sup` FLAG ─────────────────────────────────────────────
+      //
+      // A superseded fixture is marked, never deleted: PlayHQ still serves it and
+      // PlayHQ is canonical. Mark's call, 2026-11-24 — the marker lives in the
+      // DATA so team-stats, the fixture card, the grading panel and the season
+      // card read one field instead of each re-deriving the rule.
+      //
+      // ⚠ BOTH HALVES ARE APPLIED. `computeSupersededFlags` returns what to set
+      // AND what to clear, and skipping the clear would be worse than not having
+      // the flag at all: `applyRoundFixtures` spreads `...existing` before
+      // overlaying, so a `sup` on disk survives every refetch. A set-only flag
+      // would persist after the game was finally played, or after the game that
+      // superseded it was itself deleted, with nothing in any log saying so.
+      //
+      // Runs in the dry run too — EXCEPT the write. The counts are the point of a
+      // dry run; the file change is not.
+      if (!REFRESH_DRY_RUN && !DRY_RUN) {
+        for (const sid of seasonsToCheck) {
+          const gfS = loadGameFile(sid);
+          const { set, clear } = RR.computeSupersededFlags(gfS.games, { today: TODAY_ISO });
+          if (!set.size && !clear.length) continue;
+          for (const [id, by] of set) gfS.games[id].sup = by;
+          for (const id of clear) delete gfS.games[id].sup;
+          markGameDirty(sid);
+          refresh.supSet   += set.size;
+          refresh.supClear += clear.length;
+          refreshStatePaths.push(`games/bv/${sid}.json`);
+        }
+        if (refresh.supSet || refresh.supClear) {
+          console.log(`  ⚑ superseded flags: ${refresh.supSet} set, ${refresh.supClear} cleared`
+                    + ` — past-dated, never played, team played in another grade that day.`
+                    + ` The value is the game id that superseded it.`);
+        }
+      } else if (refresh.staleSuperseded) {
+        console.log(`  [dry-run] would set/clear the sup flag on up to ${refresh.staleSuperseded} game(s) — no write made.`);
+      }
     }
 
     // ── A changed round list may mean the SEASON was regraded ────────────────
@@ -2469,6 +2506,7 @@ async function main() {
             + `  ${refresh.sameDayNameConflicts} same-name-day(s) across two team ids`
             + `\n  Refresh stale fixtures: ${refresh.staleGames} past-dated unplayed game(s) across ${refresh.staleGrades} grade(s)`
             + `, ${refresh.staleSuperseded} superseded by a game elsewhere that day`
+            + `\n  Refresh sup flags: ${refresh.supSet} set, ${refresh.supClear} cleared`
             + `${refresh.sameDayConflicts || refresh.sameDayNameConflicts ? '  ⚠ regrade cleanup incomplete' : ''}`);
   console.log(`  Refresh deletions: ${refresh.deleted}  kept-because-played: ${refresh.keptPlayed}`
             + `  suspect-empty rounds: ${refresh.suspectEmpty}  unscopeable (no rn): ${refresh.noRoundSkipped}`);
