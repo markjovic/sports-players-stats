@@ -15,10 +15,14 @@ name: Probe Regrade Shape
 on:
   workflow_dispatch:
     inputs:
+      find:
+        description: 'Search season names for this text (e.g. kilsyth). Leave seasons blank to search only.'
+        required: false
+        default: ''
       seasons:
         description: 'Comma-separated season ids or unique prefixes'
-        required: true
-        default: '1ae60211,aacc7335,7ccb2e98'
+        required: false
+        default: ''
       samples:
         description: 'Full sample game records to print per season'
         required: false
@@ -54,12 +58,14 @@ jobs:
 
       - name: Run probe
         env:
+          FIND: ${{ inputs.find }}
           SEASONS: ${{ inputs.seasons }}
           SAMPLES: ${{ inputs.samples }}
           EXAMPLES: ${{ inputs.examples }}
         run: |
           set -o pipefail
           node scripts/probe-regrade-shape.js \
+            --find="${FIND}" \
             --seasons="${SEASONS}" \
             --samples="${SAMPLES:-3}" \
             --examples="${EXAMPLES:-8}"
