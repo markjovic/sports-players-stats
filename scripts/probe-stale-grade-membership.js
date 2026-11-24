@@ -59,6 +59,23 @@ const TODAY    = arg('today', new Date().toISOString().slice(0, 10));
 // escalating backoff (~4 minutes) before giving up, which is right for the
 // nightly and looks like a hang in a diagnostic.
 const NO_PLAYHQ = args.includes('--no-playhq');
+// ⚠ --null-control=N : the control for the NULL answer. ADDED 2026-11-25.
+// The 2026-11-24 run returned `discoverGrade is NULL` for the two grades holding
+// 13 of the 15 suspects. That looks like a strong signal — PlayHQ does not know
+// the grade id, so the fixtures we hold in it are residue of a grade that no
+// longer exists under that id — and it is UNINTERPRETABLE on its own, for the
+// same reason ladder absence was: nobody has measured whether a healthy,
+// currently-played grade can also return NULL.
+//
+// This pass measures that, from TWO independent endpoints:
+//   (a) DiscoverSeason — one call, returns PlayHQ's own grade list for the
+//       season. Its control is built in: the grades that DO match.
+//   (b) DiscoverGrade on up to N grades that are unambiguously live (a game was
+//       PLAYED in them within --live-days). Same endpoint that returned NULL,
+//       so it tests that endpoint rather than a different one.
+// A NULL from any live grade kills the signal. 0 disables the pass entirely.
+const NULL_CONTROL = Math.max(0, Number(arg('null-control', '0')) || 0);
+const LIVE_DAYS    = Math.max(1, Number(arg('live-days', '14')) || 14);
 const GAMES_DIR = path.join(ROOT, 'games', 'bv');
 
 if (!SEASON) { console.error('--season=<sid> is required'); process.exit(2); }
@@ -304,6 +321,23 @@ function loadGames(sid) {
   catch (e) { console.error(`games/bv/${sid}.json did not parse: ${e.message}`); process.exit(2); }
 }
 
+// PlayHQ's own grade list for a season. Q_SEASON is already defined above,
+// copied verbatim from discover-fixtures.js with the rest of the query set.
+// This is the SECOND endpoint: if it omits a grade that DiscoverGrade called
+// NULL, two independently-served answers agree, and the grades it does list are
+// the control for that reading.
+async function seasonGradeIds(sid) {
+  const r = await gql('DiscoverSeason', Q_SEASON, { id: sid });
+  if (r.err) return { err: r.err };
+  const s = r.data && r.data.discoverSeason;
+  if (!s) return { err: 'discoverSeason is NULL — PlayHQ does not know this season id' };
+  const ids = new Map();
+  for (const g of (Array.isArray(s.grades) ? s.grades : [])) {
+    if (g && g.id) ids.set(String(g.id), g.name || null);
+  }
+  return { name: s.name || null, ids };
+}
+
 async function ladderTeams(gid) {
   const r = await gql('DiscoverGrade', Q_GRADE_TEAMS, { id: gid });
   if (r.err) return { err: r.err };
@@ -318,9 +352,121 @@ async function ladderTeams(gid) {
   return { name: g.name || null, pools: pools.length, ids };
 }
 
+// ─── the --null-control pass ─────────────────────────────────────────────────
+//
+// ⚠⚠ THE CONTROL IS THE POINT HERE TOO. `discoverGrade is NULL` LOOKS like a
+// strong grade-level signal. It is worth nothing until somebody has shown that a
+// grade being played in right now does not also return it. That is all this
+// does. It asks two endpoints, and neither answer is an inference about shape.
+async function nullControlPass(sid, byGrade, lastPlayed, interesting, nullGrades, probedGids) {
+  console.log('\n' + '═'.repeat(78));
+  console.log('  --null-control — IS `discoverGrade is NULL` A SIGNAL, OR IS IT NOISE?');
+  console.log('─'.repeat(78));
+  if (!nullGrades.length) {
+    console.log('  No grade answered NULL above, so this pass has no subject. What follows is a');
+    console.log('  baseline reading only.');
+  } else {
+    const sS = nullGrades.reduce((a, x) => a + x.suspects, 0);
+    const gS = nullGrades.reduce((a, x) => a + x.total, 0);
+    console.log(`  ${nullGrades.length} grade(s) answered NULL above — ${sS} suspect(s), ${gS} game(s) on file:`);
+    for (const g of nullGrades) {
+      console.log(`     ${g.gid}${g.gn ? ` "${g.gn}"` : ''}  ${g.total} game(s), ${g.suspects} suspect(s)`);
+    }
+  }
+
+  // (a) A SECOND, INDEPENDENT ENDPOINT. Its control is built in: the grades it
+  //     DOES list. If it omits exactly the grades DiscoverGrade called NULL and
+  //     lists all the rest, two separately-served answers agree.
+  console.log('\n  (a) DiscoverSeason — PlayHQ\'s own grade list for this season (ONE call)');
+  const S = await seasonGradeIds(sid);
+  let seasonVerdict = null;
+  if (S.err) {
+    console.log(`      ERROR: ${S.err}`);
+    console.log('      The season list could not be read, so it says nothing either way.');
+  } else {
+    const ours    = [...byGrade.keys()];
+    const missing = ours.filter(g => !S.ids.has(g));
+    const extra   = [...S.ids.keys()].filter(g => !byGrade.has(g));
+    console.log(`      season=${JSON.stringify(S.name)}  PlayHQ lists ${S.ids.size} grade(s); we hold ${ours.length}`);
+    console.log(`      we hold but PlayHQ does NOT list : ${missing.length}`);
+    for (const g of missing.slice(0, 20)) {
+      const e = byGrade.get(g);
+      const isNull = nullGrades.some(x => x.gid === g);
+      console.log(`         ${g}${e && e.gn ? ` "${e.gn}"` : ''}${isNull ? '   ← answered NULL above' : ''}`);
+    }
+    if (missing.length > 20) console.log(`         … and ${missing.length - 20} more (printing capped at 20)`);
+    console.log(`      PlayHQ lists but we do NOT hold : ${extra.length}`);
+    if (nullGrades.length) {
+      const nullAbsent = nullGrades.filter(g => !S.ids.has(g.gid)).length;
+      const nullListed = nullGrades.length - nullAbsent;
+      console.log(`      of the ${nullGrades.length} NULL grade(s): ${nullAbsent} absent from the season list, ${nullListed} still listed`);
+      seasonVerdict = (nullListed === 0 && nullAbsent > 0) ? 'agree' : 'disagree';
+    }
+  }
+
+  // (b) THE SAME ENDPOINT THAT RETURNED NULL, on grades that are unambiguously
+  //     live. A grade a suspect MOVED TO is probed first — it is both live and
+  //     directly relevant.
+  console.log(`\n  (b) DiscoverGrade on up to ${NULL_CONTROL} grade(s) that are unambiguously LIVE`);
+  const cutoff = new Date(Date.parse(TODAY + 'T00:00:00Z') - LIVE_DAYS * 86400000).toISOString().slice(0, 10);
+  const destGids = new Set();
+  for (const e of interesting) {
+    for (const t of e.suspects) { const lp = lastPlayed.get(t); if (lp) destGids.add(lp.gid); }
+  }
+  const liveAll = [...byGrade.entries()]
+    .filter(([gid, e]) => e.lastPlayedHere && e.lastPlayedHere >= cutoff && !probedGids.has(gid))
+    .sort((a, b) => {
+      const ad = destGids.has(a[0]) ? 0 : 1, bd = destGids.has(b[0]) ? 0 : 1;
+      if (ad !== bd) return ad - bd;
+      if (a[1].lastPlayedHere !== b[1].lastPlayedHere) return a[1].lastPlayedHere < b[1].lastPlayedHere ? 1 : -1;
+      return a[0] < b[0] ? -1 : 1;   // stated arbitrary tie-break, not chronology
+    });
+  console.log(`      grades with a PLAYED game on or after ${cutoff}, not already probed : ${liveAll.length}`);
+  console.log(`      of those, grades a suspect MOVED TO (probed first) : ${liveAll.filter(([g]) => destGids.has(g)).length}`);
+  const sample = liveAll.slice(0, NULL_CONTROL);
+  let okN = 0, nullN = 0, errN = 0;
+  for (const [gid, e] of sample) {
+    const L = await ladderTeams(gid);
+    const tag = destGids.has(gid) ? 'DEST' : 'live';
+    const head = `      ${tag} ${gid}${e.gn ? ` "${e.gn}"` : ''}  last played ${e.lastPlayedHere}`;
+    if (L.err) {
+      if (L.err.indexOf('discoverGrade is NULL') === 0) { nullN++; console.log(`${head}  → NULL  ⚠`); }
+      else { errN++; console.log(`${head}  → ERROR: ${L.err}`); }
+    } else { okN++; console.log(`${head}  → ok, ${L.ids.size} team(s) listed`); }
+  }
+  if (!sample.length) console.log('      (no live grade was available to sample)');
+
+  console.log('\n  HOW TO READ THIS — and do not read it any other way:');
+  if (nullN > 0) {
+    console.log(`   · ${nullN} LIVE grade(s) ALSO answered NULL. NULL is NOT a membership signal — a`);
+    console.log('     grade being played in right now returns it too. Nothing may be built on it.');
+  } else if (!sample.length) {
+    console.log('   · DiscoverGrade has no control here, because no live grade was sampled.');
+    console.log('     Nothing is concluded from NULL.');
+  } else if (errN) {
+    console.log(`   · ${okN} live grade(s) answered normally and NONE answered NULL, but ${errN} could`);
+    console.log('     not be read at all. The sample is weakened — say so before building on it.');
+  } else {
+    console.log(`   · ${okN} of ${okN} live grade(s) answered normally and NONE answered NULL. On this`);
+    console.log('     endpoint, NULL does not happen to a grade that is being played in.');
+  }
+  if (seasonVerdict === 'agree') {
+    console.log('   · DiscoverSeason omits every NULL grade and lists the rest. Two independently-');
+    console.log('     served answers agree, and the grades it lists are that reading\'s control.');
+  } else if (seasonVerdict === 'disagree') {
+    console.log('   · DiscoverSeason STILL LISTS a grade that DiscoverGrade called NULL. The two');
+    console.log('     endpoints disagree, so NULL is not a safe grade-level test.');
+  }
+  console.log('  Nothing was written. No flag, no deletion, no commit.');
+}
+
 (async () => {
   console.log('probe-stale-grade-membership [READ-ONLY] — no writes, no git, no deletions');
   console.log(`  season: ${SEASON}   today: ${TODAY}   grades examined: up to ${MAXG}`);
+  if (NULL_CONTROL) {
+    console.log(`  --null-control=${NULL_CONTROL}  --live-days=${LIVE_DAYS}`
+              + (NO_PLAYHQ ? '   ⚠ IGNORED: --no-playhq contacts nothing' : ''));
+  }
   console.log('─'.repeat(78));
 
   const games = loadGames(SEASON);
@@ -332,11 +478,14 @@ async function ladderTeams(gid) {
   for (const id of Object.keys(games)) {
     const g = games[id];
     if (!g || !g.gid) continue;
-    if (!byGrade.has(g.gid)) byGrade.set(g.gid, { gn: g.gn || null, future: new Set(), control: new Set(), total: 0 });
+    if (!byGrade.has(g.gid)) byGrade.set(g.gid, { gn: g.gn || null, future: new Set(), control: new Set(), total: 0, lastPlayedHere: null });
     const e = byGrade.get(g.gid);
     if (g.gn && !e.gn) e.gn = g.gn;
     e.total++;
     const played = isPlayedGame(g);
+    // Most recent PLAYED date in this grade — the test for "this grade is live
+    // right now", used only by the --null-control pass.
+    if (played && g.d && (!e.lastPlayedHere || g.d > e.lastPlayedHere)) e.lastPlayedHere = g.d;
     for (const tid of sideIds(g)) {
       if (!played && g.d && g.d >= TODAY) e.future.add(tid);
       if (played && g.d) {
@@ -374,6 +523,8 @@ async function ladderTeams(gid) {
   }
 
   let ctlPresent = 0, ctlTotal = 0, susPresent = 0, susTotal = 0, errs = 0;
+  const nullGrades = [];   // grades DiscoverGrade answered NULL for — the --null-control subjects
+  const probedGids = new Set();
 
   if (!NO_PLAYHQ) {
     console.log(`\n  Contacting PlayHQ for ${Math.min(interesting.length, MAXG)} grade ladder(s) —`
@@ -395,7 +546,17 @@ async function ladderTeams(gid) {
       continue;
     }
     const L = await ladderTeams(e.gid);
-    if (L.err) { errs++; console.log(`   PlayHQ ladder → ERROR: ${L.err}`); continue; }
+    probedGids.add(e.gid);
+    if (L.err) {
+      errs++;
+      console.log(`   PlayHQ ladder → ERROR: ${L.err}`);
+      // Recorded, not interpreted. The --null-control pass is what decides
+      // whether NULL means anything at all.
+      if (L.err.indexOf('discoverGrade is NULL') === 0) {
+        nullGrades.push({ gid: e.gid, gn: e.gn, total: e.total, suspects: e.suspects.length });
+      }
+      continue;
+    }
     console.log(`   PlayHQ ladder → name=${JSON.stringify(L.name)}  pools=${L.pools}  teams listed=${L.ids.size}`);
     if (!L.ids.size) {
       console.log('   ⚠ The ladder lists NO teams. Nothing can be concluded from absence here —');
@@ -447,5 +608,10 @@ async function ladderTeams(gid) {
   console.log('                    and a rule may be built on it.');
   console.log('   · CONTROL high AND SUSPECT high → PlayHQ still lists these teams in that grade.');
   console.log('                    There is no signal; the fixtures are not stale in PlayHQ\'s view.');
-  console.log('  Nothing was written. No flag, no deletion, no commit.');
+
+  if (NULL_CONTROL > 0) {
+    await nullControlPass(SEASON, byGrade, lastPlayed, interesting, nullGrades, probedGids);
+  } else {
+    console.log('  Nothing was written. No flag, no deletion, no commit.');
+  }
 })().catch(e => { console.error('FATAL:', e.message, '\n', e.stack); process.exit(1); });
