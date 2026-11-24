@@ -92,6 +92,11 @@ const TEAM_STATS_SV = 2;
 const RUN = {
   supGames: 0, supEntries: 0, supBad: 0, supPlayed: 0,
   gradeFromPlayed: 0, gradeFromUnplayed: 0, gradeFromReg: 0, gradeNone: 0, gradeTies: 0,
+  // An ungraded team is a legitimate outcome (no played game, no single-grade
+  // registration) AND the shape a bug would take, so the count alone cannot be
+  // checked by anyone. The ids can be. Capped so a repo-wide run cannot print a
+  // wall, and the cap is stated in the line itself rather than truncating quietly.
+  gradeNoneIds: [],
 };
 
 const GAMES_DIR      = path.join(ROOT, 'games', 'bv');
@@ -542,6 +547,7 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
       RUN.gradeFromReg++;
     } else {
       RUN.gradeNone++;
+      if (RUN.gradeNoneIds.length < 40) RUN.gradeNoneIds.push(`${sid}/${tid}`);
     }
   }
 
@@ -662,7 +668,12 @@ async function main() {
   console.log('  grade from a PLAYED game     : ' + RUN.gradeFromPlayed);
   console.log('  grade from an UNPLAYED one   : ' + RUN.gradeFromUnplayed + '   (no played game yet; sup fixtures excluded)');
   console.log('  grade from a registration    : ' + RUN.gradeFromReg);
-  console.log('  grade not known              : ' + RUN.gradeNone);
+  console.log('  grade not known              : ' + RUN.gradeNone +
+    (RUN.gradeNone ? '   (no played game and no single-grade registration)' : ''));
+  if (RUN.gradeNoneIds.length) {
+    console.log('    sid/tid: ' + RUN.gradeNoneIds.join(' ') +
+      (RUN.gradeNone > RUN.gradeNoneIds.length ? ` … and ${RUN.gradeNone - RUN.gradeNoneIds.length} more (printing is capped at 40)` : ''));
+  }
   console.log('  same date AND time ties      : ' + RUN.gradeTies + '   (broken on game id, deterministically)');
   gitCommit(`build-team-stats: complete — ${written} files for ${processed} seasons`, ['team-stats/']);
 
