@@ -720,24 +720,66 @@ function playedGamesByTeamDay(games) {
   return byTeamDay;
 }
 
-// The game that superseded this fixture, or null. ONE definition:
-//   · this game is unplayed and dated in the past
-//   · one of its teams has a PLAYED game on that same date
-//   · in a DIFFERENT grade — same-grade is a double-header or a fixture error,
-//     not a regrade, and is not this rule's business
-// Returns the FIRST qualifying different-grade game, searched over all of them
-// rather than over whichever one an index happened to keep.
-function findSupersedingGame(games, g, index, cutoff) {
+// The game that superseded this fixture, or null. TWO causes, and the caller
+// can tell them apart — `{ id, reason }`, reason being 'grade' or 'round'.
+//
+// Both require the same three things of the stale fixture: unplayed, dated in
+// the past, and one of its teams has a PLAYED game on that same date.
+//
+//   reason 'grade' — the played game is in a DIFFERENT grade. This is the
+//     regrade signal and it is the original rule.
+//
+//   reason 'round' — ADDED 2026-11-24. The played game is in the SAME grade AND
+//     carries the SAME non-empty round name. A team plays ONE game per round per
+//     grade, so two fixtures for one team in one grade and one round, where one
+//     of them was played, is a DUPLICATE of that played game.
+//     ⚠ Seen on screen, not theorised: B11 Spirit Magic 1 holds Round 4 against
+//     B11 E.Bees 3 on 30 Oct TWICE, both in Friday U11 Boys D — one won 34-3 and
+//     one still UPCOMING. The old same-grade exclusion let it through, and the
+//     retired display pass used to hide it by inference.
+//     ⚠⚠ THE ROUND NAME IS WHAT MAKES THIS SAFE. A genuine double-header or a
+//     tournament day is two games in DIFFERENT rounds, so it is not caught. Both
+//     round names must be present and equal: an absent `rn` can never match,
+//     because a game with no `rn` cannot be scoped to a round at all.
+//
+// PRECEDENCE IS EXPLICIT: a different-grade match is searched for across every
+// side and every candidate FIRST, and only then the same-round case. Otherwise
+// which cause was reported would depend on team order, which is the kind of
+// order-dependence that produced the 47-vs-52 miss.
+function supersedingGameFor(games, g, index, cutoff) {
   if (!g || !g.d || !g.gid) return null;
   if (isPlayedGame(g)) return null;
   if (!(g.d < cutoff)) return null;
-  for (const tid of sideIds(g)) {
+
+  const sides = sideIds(g);
+
+  // Pass 1 — a PLAYED game in a different grade that day: a regrade.
+  for (const tid of sides) {
     for (const other of (index.get(`${tid}|${g.d}`) || [])) {
       const o = games[other];
-      if (o && o.gid !== g.gid) return other;
+      if (o && o.gid !== g.gid) return { id: other, reason: 'grade' };
+    }
+  }
+
+  // Pass 2 — same grade, same round, one of the pair played: a duplicate.
+  const rn = typeof g.rn === 'string' ? g.rn.trim() : '';
+  if (!rn) return null;
+  for (const tid of sides) {
+    for (const other of (index.get(`${tid}|${g.d}`) || [])) {
+      const o = games[other];
+      if (!o || o.gid !== g.gid) continue;
+      const orn = typeof o.rn === 'string' ? o.rn.trim() : '';
+      if (orn && orn === rn) return { id: other, reason: 'round' };
     }
   }
   return null;
+}
+
+// The original contract, unchanged: the id alone, or null. ONE implementation
+// underneath, so the id and the reason can never disagree.
+function findSupersedingGame(games, g, index, cutoff) {
+  const hit = supersedingGameFor(games, g, index, cutoff);
+  return hit ? hit.id : null;
 }
 
 // ─── STALE FIXTURES, PER GRADE ───────────────────────────────────────────────
@@ -773,7 +815,7 @@ function findStaleFixtureGrades(games, { today, minStale = 1 } = {}) {
     if (!byGrade.has(g.gid)) {
       byGrade.set(g.gid, {
         gid: g.gid, gn: g.gn || null, total: 0, played: 0,
-        stale: 0, withPlayedElsewhere: 0, staleDates: [], examples: [],
+        stale: 0, withPlayedElsewhere: 0, withSameRoundPlayed: 0, staleDates: [], examples: [],
       });
     }
     const e = byGrade.get(g.gid);
@@ -786,9 +828,14 @@ function findStaleFixtureGrades(games, { today, minStale = 1 } = {}) {
     // ⚠ The SAME rule the flag uses, not a looser one. This counted any played
     // game that day, same grade included, and so reported 52 where the flag
     // wrote 47. Mislabelling five double-headers as superseded regrades.
-    const elsewhere = findSupersedingGame(games, g, index, cutoff) !== null;
-    if (elsewhere) e.withPlayedElsewhere++;
-    if (e.examples.length < 3) e.examples.push({ id, d: g.d, rn: g.rn || null, superseded: elsewhere });
+    // ⚠ withPlayedElsewhere KEEPS ITS ORIGINAL MEANING — different grade only.
+    // The same-round duplicates added on 2026-11-24 are counted separately, so
+    // a number that has been reported for weeks does not silently change what it
+    // means. Both are flagged; only the reason differs.
+    const hit = supersedingGameFor(games, g, index, cutoff);
+    if (hit && hit.reason === 'grade') e.withPlayedElsewhere++;
+    if (hit && hit.reason === 'round') e.withSameRoundPlayed++;
+    if (e.examples.length < 3) e.examples.push({ id, d: g.d, rn: g.rn || null, superseded: !!hit, reason: hit ? hit.reason : null });
   }
   const out = [];
   for (const e of byGrade.values()) {
@@ -797,6 +844,7 @@ function findStaleFixtureGrades(games, { today, minStale = 1 } = {}) {
     out.push({
       gid: e.gid, gn: e.gn, total: e.total, played: e.played, stale: e.stale,
       withPlayedElsewhere: e.withPlayedElsewhere,
+      withSameRoundPlayed: e.withSameRoundPlayed,
       firstStale: dates[0], lastStale: dates[dates.length - 1],
       examples: e.examples,
     });
@@ -843,20 +891,27 @@ function computeSupersededFlags(games, { today } = {}) {
 
   const set = new Map();     // gameId → superseding gameId
   const clear = [];          // gameId
+  // Two causes, counted separately and RETURNED, so the caller can print them.
+  // A count that is accumulated and never shown is the same defect as a counter
+  // that only ever increments. `flagged` counts every flag that STANDS this run,
+  // not only the ones newly written, because `set` excludes the already-correct.
+  const reasons = { grade: 0, round: 0 };
   for (const id of Object.keys(games || {})) {
     const g = games[id];
     if (!g) continue;
     const had = Object.prototype.hasOwnProperty.call(g, 'sup');
 
-    const supersededBy = findSupersedingGame(games, g, index, cutoff);
+    const hit = supersedingGameFor(games, g, index, cutoff);
+    const supersededBy = hit ? hit.id : null;
 
     if (supersededBy) {
+      reasons[hit.reason]++;
       if (!had || g.sup !== supersededBy) set.set(id, supersededBy);
     } else if (had) {
       clear.push(id);
     }
   }
-  return { set, clear };
+  return { set, clear, reasons };
 }
 
 module.exports = {
@@ -876,6 +931,7 @@ module.exports = {
   sideIds,
   teamsInRounds,
   findSameDayGradeConflicts,
+  supersedingGameFor,
   findSameDayNameConflicts,
   findStaleFixtureGrades,
   playedGamesByTeamDay,
