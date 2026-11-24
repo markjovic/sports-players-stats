@@ -389,18 +389,52 @@ async function nullControlPass(sid, byGrade, lastPlayed, interesting, nullGrades
     const extra   = [...S.ids.keys()].filter(g => !byGrade.has(g));
     console.log(`      season=${JSON.stringify(S.name)}  PlayHQ lists ${S.ids.size} grade(s); we hold ${ours.length}`);
     console.log(`      we hold but PlayHQ does NOT list : ${missing.length}`);
+    // ⚠ A grade can be missing from the season list WITHOUT having been probed —
+    // it only reaches the main loop if it holds suspects. Probe the rest here so
+    // every candidate has BOTH endpoints behind it, and print the local split so
+    // the size of any rule is a measurement rather than the game count.
+    let budget = NULL_CONTROL;
+    // Counted over EVERY missing grade, not just the ones the main loop happened
+    // to probe — a grade reaches that loop only if it holds suspects, so a
+    // verdict counted from `nullGrades` alone silently under-reports.
+    let corrob = 0, disagree = 0, unread = 0;
     for (const g of missing.slice(0, 20)) {
       const e = byGrade.get(g);
-      const isNull = nullGrades.some(x => x.gid === g);
-      console.log(`         ${g}${e && e.gn ? ` "${e.gn}"` : ''}${isNull ? '   ← answered NULL above' : ''}`);
+      let tag;
+      if (nullGrades.some(x => x.gid === g)) { corrob++; tag = '   ← NULL on DiscoverGrade (probed above)'; }
+      else if (probedGids.has(g)) { disagree++; tag = '   ← but DiscoverGrade ANSWERED for it — the two endpoints DISAGREE'; }
+      else if (budget > 0) {
+        budget--;
+        const L2 = await ladderTeams(g);
+        probedGids.add(g);
+        if (L2.err && L2.err.indexOf('discoverGrade is NULL') === 0) { corrob++; tag = '   ← NULL on DiscoverGrade too (probed here)'; }
+        else if (L2.err) { unread++; tag = `   ← DiscoverGrade could not be read: ${L2.err}`; }
+        else { disagree++; tag = `   ← but DiscoverGrade ANSWERED for it (${L2.ids.size} team(s)) — the two endpoints DISAGREE`; }
+      } else { unread++; tag = '   ← NOT probed on DiscoverGrade (--null-control budget spent)'; }
+      console.log(`         ${g}${e && e.gn ? ` "${e.gn}"` : ''}${tag}`);
+      if (e) {
+        const un = e.unplayedFuture + e.unplayedPast + e.unplayedUndated;
+        console.log(`             ${e.total} game(s): ${e.played} PLAYED (real history — not residue),`
+                  + ` ${un} unplayed`);
+        console.log(`             of the unplayed: ${e.unplayedFuture} dated today or later,`
+                  + ` ${e.unplayedPast} past-dated, ${e.unplayedUndated} undated`);
+        console.log(`             teams holding an unplayed fixture here: ${e.unplayedTids.size}`);
+      }
     }
     if (missing.length > 20) console.log(`         … and ${missing.length - 20} more (printing capped at 20)`);
     console.log(`      PlayHQ lists but we do NOT hold : ${extra.length}`);
-    if (nullGrades.length) {
-      const nullAbsent = nullGrades.filter(g => !S.ids.has(g.gid)).length;
-      const nullListed = nullGrades.length - nullAbsent;
-      console.log(`      of the ${nullGrades.length} NULL grade(s): ${nullAbsent} absent from the season list, ${nullListed} still listed`);
-      seasonVerdict = (nullListed === 0 && nullAbsent > 0) ? 'agree' : 'disagree';
+    const nullListedAnyway = nullGrades.filter(g => S.ids.has(g.gid)).length;
+    if (nullListedAnyway) disagree += nullListedAnyway;
+    if (missing.length > 20) unread += missing.length - 20;
+    if (corrob || disagree || unread || nullGrades.length) {
+      console.log(`      dead-grade candidates, counted over ALL ${missing.length} missing grade(s):`);
+      console.log(`         ${corrob} confirmed by BOTH endpoints (absent from the season list AND NULL on DiscoverGrade)`);
+      console.log(`         ${disagree} where the two endpoints DISAGREE`);
+      console.log(`         ${unread} not read on DiscoverGrade, so not confirmed either way`);
+      if (nullListedAnyway) {
+        console.log(`         ⚠ ${nullListedAnyway} grade(s) answered NULL yet ARE in the season list`);
+      }
+      seasonVerdict = (corrob > 0 && disagree === 0) ? 'agree' : (disagree > 0 ? 'disagree' : null);
     }
   }
 
@@ -451,11 +485,17 @@ async function nullControlPass(sid, byGrade, lastPlayed, interesting, nullGrades
     console.log('     endpoint, NULL does not happen to a grade that is being played in.');
   }
   if (seasonVerdict === 'agree') {
-    console.log('   · DiscoverSeason omits every NULL grade and lists the rest. Two independently-');
-    console.log('     served answers agree, and the grades it lists are that reading\'s control.');
+    console.log('   · DiscoverSeason and DiscoverGrade agree on every candidate they both answered');
+    console.log('     for, and the grades the season list DOES carry are that reading\'s');
+    console.log('     control. That is a measurement, not an inference about shape.');
   } else if (seasonVerdict === 'disagree') {
-    console.log('   · DiscoverSeason STILL LISTS a grade that DiscoverGrade called NULL. The two');
-    console.log('     endpoints disagree, so NULL is not a safe grade-level test.');
+    // ⚠ Do NOT name a direction here. A disagreement is EITHER a grade the season
+    // list omits that DiscoverGrade answers for, OR one it lists that
+    // DiscoverGrade calls NULL, and the counter cannot tell you which. The
+    // per-grade tags above say it exactly; this line must not guess.
+    console.log('   · The two endpoints DISAGREE on at least one candidate — see the per-grade');
+    console.log('     tags above for which, and in which direction. A grade-level test is not');
+    console.log('     safe while they disagree.');
   }
   console.log('  Nothing was written. No flag, no deletion, no commit.');
 }
@@ -478,7 +518,7 @@ async function nullControlPass(sid, byGrade, lastPlayed, interesting, nullGrades
   for (const id of Object.keys(games)) {
     const g = games[id];
     if (!g || !g.gid) continue;
-    if (!byGrade.has(g.gid)) byGrade.set(g.gid, { gn: g.gn || null, future: new Set(), control: new Set(), total: 0, lastPlayedHere: null });
+    if (!byGrade.has(g.gid)) byGrade.set(g.gid, { gn: g.gn || null, future: new Set(), control: new Set(), total: 0, lastPlayedHere: null, played: 0, unplayedFuture: 0, unplayedPast: 0, unplayedUndated: 0, unplayedTids: new Set() });
     const e = byGrade.get(g.gid);
     if (g.gn && !e.gn) e.gn = g.gn;
     e.total++;
@@ -486,6 +526,16 @@ async function nullControlPass(sid, byGrade, lastPlayed, interesting, nullGrades
     // Most recent PLAYED date in this grade — the test for "this grade is live
     // right now", used only by the --null-control pass.
     if (played && g.d && (!e.lastPlayedHere || g.d > e.lastPlayedHere)) e.lastPlayedHere = g.d;
+    // The split that sizes any dead-grade rule. A PLAYED game in a dead grade is
+    // real history and is not residue; only the unplayed fixtures are. Counted
+    // locally — this costs no API call and is right whatever PlayHQ says.
+    if (played) e.played++;
+    else {
+      if (!g.d) e.unplayedUndated++;
+      else if (g.d >= TODAY) e.unplayedFuture++;
+      else e.unplayedPast++;
+      for (const tid of sideIds(g)) e.unplayedTids.add(tid);
+    }
     for (const tid of sideIds(g)) {
       if (!played && g.d && g.d >= TODAY) e.future.add(tid);
       if (played && g.d) {
