@@ -808,8 +808,23 @@ function gitCommitPush(message) {
       execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_MAXBUF });
     } catch (e) {
       if (attempt === MAX_ATTEMPTS) throw e;
+      // ⚠ 2026-11-24 — THIS BRANCH PRINTED NOTHING BUT "fetch failed". The push branch
+      // below prints git's real error and fails fast on anything that is not contention;
+      // this one retried BLIND, so a fetch failing for an unchanging reason (auth, a bad
+      // remote, a full disk, or the 10-minute timeout) burned up to 60 attempts and ~46
+      // minutes of sleep WHILE HOLDING THE data-write LOCK, with no line anywhere saying
+      // why. Observed 2026-11-24 on a weekly sweep: five identical lines, no reason, and
+      // every other workflow queued behind it.
+      // The reason is now printed, and a timeout is named as a STALL rather than being
+      // indistinguishable from a refusal (T104's wording).
+      // ⚠ The control flow is DELIBERATELY unchanged. Failing fast here needs a
+      // transient/fatal classifier, and that cannot be exercised without stubbing
+      // PlayHQ — an untested change to the lock-holding push path is a worse trade than
+      // a loop that now says what is wrong.
+      const detail  = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n').slice(0, 2).join(' / ');
+      const stalled = e.killed === true || e.signal === 'SIGTERM' || /ETIMEDOUT/i.test(String(e.code || ''));
       const waitSec = 1 + Math.floor(Math.random() * 91);
-      console.log(`  fetch failed (attempt ${attempt}/${MAX_ATTEMPTS}), retrying in ${waitSec}s`);
+      console.log(`  fetch ${stalled ? `STALLED past ${GIT_TIMEOUT_MS / 60000} min and was killed` : 'failed'} (attempt ${attempt}/${MAX_ATTEMPTS}), retrying in ${waitSec}s — git said: ${detail || '(no output)'}`);
       try { execFileSync('sleep', [String(waitSec)], { stdio: 'pipe', timeout: (waitSec + 30) * 1000 }); } catch (_) {}
       continue;
     }
