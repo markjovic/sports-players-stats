@@ -24,6 +24,16 @@ name: Probe Stale Grade Membership
 # which unambiguously belong. If the control teams are absent too, the ladder is
 # not a membership signal and nothing may be built on it.
 #
+# ⚠⚠ 2026-11-25 — WHY THE SWEEP CLASSIFIES RATHER THAN COUNTS.
+# The 2026-11-24 run found 3 grades in 3d25b666 absent from DiscoverSeason. Two
+# were regrade residue. The third, fb2c151b "Friday U13 Boys E", was 12 games ALL
+# PLAYED and 0 unplayed — a COMPLETED grade PlayHQ has dropped from the season
+# list. Competitions hide completed grading rounds, and showing them is a major
+# reason StatTrack exists; the copy held here may be the only one. So absence
+# from DiscoverSeason is NOT evidence of staleness, and the sweep separates the
+# two classes on a LOCAL fact (does the grade hold any unplayed game) that no
+# endpoint can get wrong. seasons=all is read-only and holds no lock.
+#
 # ⚠ 2026-11-25 — THE 2026-11-24 RESULT, and why null_control exists.
 # Control 10/10 in both grades that had one, so the ladder IS a membership signal.
 # But BOTH interpretable suspects were LISTED: PlayHQ still has them in the old
@@ -45,8 +55,18 @@ on:
   workflow_dispatch:
     inputs:
       season:
-        description: 'Season id to probe (required)'
-        required: true
+        description: 'Season id to probe. Leave blank when using seasons=all'
+        required: false
+        type: string
+      seasons:
+        description: 'SWEEP: all, or a comma-separated list of season ids. One DiscoverSeason call each. Overrides season'
+        required: false
+        default: ''
+        type: string
+      sleep_ms:
+        description: 'Sweep pacing — ms between seasons'
+        required: false
+        default: '250'
         type: string
       grades:
         description: 'How many grades to read the ladder for (one API call each)'
@@ -88,9 +108,12 @@ jobs:
           IN_NOPHQ:  ${{ inputs.no_playhq }}
           IN_NULLC:  ${{ inputs.null_control }}
           IN_LIVED:  ${{ inputs.live_days }}
+          IN_SEASONS: ${{ inputs.seasons }}
+          IN_SLEEP:   ${{ inputs.sleep_ms }}
         run: |
           set -euo pipefail
           ARGS=( "--season=$IN_SEASON" "--grades=${IN_GRADES:-8}" )
+          if [ -n "${IN_SEASONS:-}" ]; then ARGS+=( "--seasons=$IN_SEASONS" "--sleep-ms=${IN_SLEEP:-250}" ); fi
           ARGS+=( "--null-control=${IN_NULLC:-0}" "--live-days=${IN_LIVED:-14}" )
           # T3 form: true for BOTH the boolean and the string shape.
           if [ "$IN_NOPHQ" = "true" ]; then ARGS+=( --no-playhq ); fi
