@@ -192,10 +192,20 @@ function makeStallTracker(maxStalls) {
   return {
     get max() { return max; },
     get consecutive() { return consecutive; },
-    /** Call on EVERY attempt outcome. kind: 'stall' | 'contention' | 'fatal' | 'ok'. */
+    /**
+     * Call on EVERY attempt outcome. kind: 'stall' | 'contention' | 'fatal' | 'ok'.
+     *
+     * ⚠ ONLY 'ok' RESETS. This matches discover-fixtures.js, whose comment reads
+     * "a fetch that ANSWERS ends the stall run, however it answered" — and which
+     * sets the counter to 0 in the SUCCESS path, not in the catch. A non-stall
+     * FAILURE therefore leaves the count standing, which its own test pins:
+     * stall/fail/stall/fail/stall gives up on the third stall. Resetting on
+     * contention would let a repository alternating between stalls and rejections
+     * retry for ever, which is the case the cap exists for.
+     */
     note(kind) {
       if (kind === 'stall') consecutive++;
-      else consecutive = 0;
+      else if (kind === 'ok') consecutive = 0;
       return {
         kind,
         consecutive,
