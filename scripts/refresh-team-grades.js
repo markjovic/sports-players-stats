@@ -26,6 +26,27 @@
 // Games do have dates. The most recent game a team actually played is the only
 // non-arbitrary answer to "what grade is this team in now".
 //
+// ⚠ T105, 2026-11-24 — THE CODE DID NOT DO WHAT THE PARAGRAPH ABOVE SAYS. It took
+// the latest DATED game carrying `gn`, played or not, and `d > prev.d` is strict
+// so two games on one date were resolved by whichever key Object.keys() yielded
+// first: stable, therefore never self-contradicting, and arbitrary, therefore
+// never right on purpose. A `sup` fixture - past-dated, unplayed, the one the
+// association replaced when it regraded the team - could therefore hand a team
+// back the grade it had just been moved out of, in the field StatTrack renders
+// as the team search subtitle.
+//
+// It now reads, in order:
+//   · tier 1, a PLAYED game (isPlayedGame, the same predicate the nightly uses)
+//   · tier 2, an unplayed fixture NOT flagged `sup` - a team between allocation
+//     and its first game has nothing else, and that case is real
+//   · and a `sup` fixture never, at any tier
+// Within a tier: date, then time, then game id. The id is not chronology; it is
+// an explicit, stated arbitrary tie-break so the answer is identical in every run
+// and in every reader. Ties are counted and printed, not absorbed.
+//
+// A doc comment asserting "actually played" over code with no played test is
+// worse than no comment, because it is read instead of the code.
+//
 // COVERAGE IS PARTIAL AND THAT IS STATED, NOT HIDDEN
 // ──────────────────────────────────────────────────
 // Only some games carry `gn`. Measured 2026-09-10 on games/bv/26df4252.json: 428 of
@@ -54,6 +75,10 @@
 const fs   = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+// ONE PREDICATE AND ONE SIDE READER, NOT A SECOND COPY OF EITHER (T103/T105).
+// `sideIds` is the only correct way to read a game's two team ids - `g.h ?? g.t1`,
+// `g.a ?? g.t2`. `hTid`/`aTid` do not exist as fields in games/bv.
+const { isPlayedGame, sideIds } = require('./lib/round-refresh.cjs');
 
 const ROOT       = path.join(__dirname, '..');
 const TEAM_INDEX = path.join(ROOT, 'data', 'team-index.json');
@@ -124,6 +149,7 @@ function main() {
   // sid -> Map(tid -> { gn, d })  the LATEST-dated graded game for that team.
   const latest = new Map();
   let filesRead = 0, filesMissing = 0, gamesSeen = 0, gamesGraded = 0;
+  let gamesSup = 0, gamesPlayed = 0, gamesUnplayed = 0, ties = 0;
 
   for (const sid of wanted) {
     const file = path.join(GAMES_DIR, `${sid}.json`);
@@ -133,16 +159,29 @@ function main() {
     filesRead++;
 
     const m = new Map();
-    for (const g of Object.values(gf.games || {})) {
+    // Object.ENTRIES, not values: the game id is the stated tie-break and the old
+    // loop did not have it in hand.
+    for (const [gkey, g] of Object.entries(gf.games || {})) {
       gamesSeen++;
       if (!g.gn) continue;                       // only a graded game can answer this
       gamesGraded++;
-      const d = g.d || '';
-      // T34: a game carries h/a OR t1/t2, never both. Read both pairs, always.
-      for (const tid of [g.h || g.t1, g.a || g.t2]) {
-        if (!tid) continue;
+      // A superseded fixture is never a grade source - see T105 above.
+      if (g.sup) { gamesSup++; continue; }
+      const tier = isPlayedGame(g) ? 1 : 2;
+      if (tier === 1) gamesPlayed++; else gamesUnplayed++;
+      const cur = { gn: g.gn, d: g.d || '', t: g.t || '', key: gkey, tier };
+      // T34/T103: sideIds reads h/a OR t1/t2. Never re-derive it here.
+      for (const tid of sideIds(g)) {
         const prev = m.get(tid);
-        if (!prev || d > prev.d) m.set(tid, { gn: g.gn, d });
+        if (!prev) { m.set(tid, cur); continue; }
+        // A played game always beats an unplayed fixture, whatever the dates say.
+        if (cur.tier !== prev.tier) { if (cur.tier < prev.tier) m.set(tid, cur); continue; }
+        if (!cur.d) continue;                       // undated never displaces dated
+        if (!prev.d) { m.set(tid, cur); continue; }
+        if (cur.d !== prev.d) { if (cur.d > prev.d) m.set(tid, cur); continue; }
+        if (cur.t !== prev.t) { if (cur.t > prev.t) m.set(tid, cur); continue; }
+        ties++;
+        if (cur.key > prev.key) m.set(tid, cur);
       }
     }
     latest.set(sid, m);
@@ -150,6 +189,10 @@ function main() {
 
   console.log(`  games files read      : ${filesRead}   (missing/unreadable ${filesMissing})`);
   console.log(`  games scanned         : ${gamesSeen}   of which carry a grade name: ${gamesGraded}`);
+  console.log(`  graded and PLAYED     : ${gamesPlayed}   ← tier 1, the only non-arbitrary answer`);
+  console.log(`  graded and unplayed   : ${gamesUnplayed}   ← tier 2, used only where a team has no played game`);
+  console.log(`  superseded (sup)      : ${gamesSup}   ← never a grade source, at any tier`);
+  console.log(`  same date AND time    : ${ties}   ← resolved on game id, deterministically`);
 
   let updated = 0, alreadyRight = 0, unreachable = 0, skipped = 0;
   const changes = [];
@@ -196,7 +239,7 @@ function main() {
   if (!updated) { log('nothing to update.'); return; }
   if (DRY_RUN) { log('dry run — team-index.json not written.'); return; }
   fs.writeFileSync(TEAM_INDEX, JSON.stringify(teamIndex));
-  gitCommit(`refresh-team-grades: ${updated} team grade(s) set from the most recent game`, [TEAM_REL]);
+  gitCommit(`refresh-team-grades: ${updated} team grade(s) set from the most recent played game`, [TEAM_REL]);
   log('StatTrack team search reads this as its subtitle (index.html L1640).');
 }
 

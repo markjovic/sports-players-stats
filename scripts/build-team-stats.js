@@ -37,6 +37,15 @@ const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
 const { truncateUuid, resolveToFullUuid, TRUNC_LEN } = require('./lib/uuid-prefix.cjs');
+// ONE PREDICATE, NOT A SECOND COPY. isPlayedGame is the same function the nightly
+// uses to decide what may be deleted and what may be flagged `sup`. Its bias is
+// stated where it lives: an unrecognised shape returns TRUE. For a deletion that
+// means "refuse to delete"; for this reader it means an odd row can still set a
+// grade, which is also the safe direction here - the alternative is dropping a
+// real game and carrying a stale grade forward. A `sup` fixture is not an odd
+// row: no score, no FINAL, no forfeit, no spc/dg, no p[], so isPlayedGame
+// returns false for it. That is asserted every run (RUN.supPlayed).
+const { isPlayedGame } = require('./lib/round-refresh.cjs');
 
 const ROOT    = path.join(__dirname, '..');
 const ARGS    = Object.fromEntries(
@@ -62,6 +71,28 @@ const TARGET_SID  = ARGS.season || null;
 // rebuilt season with no gradeable team, which is a different fact from an absent
 // key and is treated as DONE, correctly.
 const RESUME      = !!ARGS.resume;
+
+// ── team-stats schema version ────────────────────────────────────────────────
+// Written to every team's meta as `sv`. It exists so --resume can tell a season
+// rebuilt since the CURRENT schema from one rebuilt since any older schema.
+//
+// ⚠ WHY THE OLD MARKER HAD TO GO. --resume used `'grade' in meta`, which was an
+// exact marker for the 2026-10-05 change and became a LIE the moment a second
+// schema change landed: every file written since October satisfies it, so a
+// resumed run would have skipped every season and no season would ever have
+// gained `sup`. A marker that cannot distinguish the change it is guarding is
+// worse than none, because it reports "skipped" and looks like progress.
+// Bump this on any future change to what a team or a fixture carries.
+const TEAM_STATS_SV = 2;
+
+// Run-level counters. Printed in the summary, not accumulated silently.
+// supGames/supEntries are two counts of one concept and MUST hold 1:2 (a flagged
+// game writes one entry per side) wherever both sides' teams exist - stated and
+// checked rather than assumed equal.
+const RUN = {
+  supGames: 0, supEntries: 0, supBad: 0, supPlayed: 0,
+  gradeFromPlayed: 0, gradeFromUnplayed: 0, gradeFromReg: 0, gradeNone: 0, gradeTies: 0,
+};
 
 const GAMES_DIR      = path.join(ROOT, 'games', 'bv');
 const INDEX_DIR      = path.join(ROOT, 'players', 'indexes');
@@ -272,21 +303,33 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
   // 159 MB and the Pages artifact has a hard ceiling, so a ~20-byte grade name
   // on every fixture of 2.3M games is a cost with no reader.
   const latestGrade = {};
-  function noteGrade(tid, date, gid, gn) {
+  function noteGrade(tid, date, gid, gn, t, key, tier) {
     if (!tid || !gid) return;
     const prev = latestGrade[tid];
     // An undated game is a fallback only — it can never displace a dated one,
     // and the first one seen wins among themselves. Nothing orders them.
-    if (!date) { if (!prev) latestGrade[tid] = { date: null, gid, gn: gn || '' }; return; }
-    if (prev && prev.date && prev.date >= date) return;
-    latestGrade[tid] = { date, gid, gn: gn || '' };
+    const cur = { tier, date: date || null, t: t || '', key: key || '', gid, gn: gn || '' };
+    if (!prev) { latestGrade[tid] = cur; return; }
+    // A PLAYED game (tier 1) always beats an unplayed fixture (tier 2), whatever
+    // the dates say. A plan does not correct a fact.
+    if (cur.tier !== prev.tier) { if (cur.tier < prev.tier) latestGrade[tid] = cur; return; }
+    // Within a tier: date, then time, then game id. An undated game can never
+    // displace a dated one.
+    if (!cur.date) return;
+    if (!prev.date) { latestGrade[tid] = cur; return; }
+    if (cur.date !== prev.date) { if (cur.date > prev.date) latestGrade[tid] = cur; return; }
+    if (cur.t !== prev.t) { if (cur.t > prev.t) latestGrade[tid] = cur; return; }
+    // Same tier, same date, same time. The id decides - arbitrary, but stated
+    // and identical in every run and every reader, which key order was not.
+    RUN.gradeTies++;
+    if (cur.key > prev.key) latestGrade[tid] = cur;
   }
 
   // Helper — ensure team entry exists
   function ensureTeam(tid, tn, club) {
     if (!teams[tid]) {
       teams[tid] = {
-        meta:     { name: tn || tid, club: club || '', gid: '', grade: '' },
+        meta:     { name: tn || tid, club: club || '', gid: '', grade: '', sv: TEAM_STATS_SV },
         roster:   {},
         fixtures: [],
       };
@@ -340,13 +383,40 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
 
     const status = game.st || null;
 
+    // `sup` - the game id of the fixture that superseded this one, written by
+    // nightly-crawl.js. Carried onto the fixture entry ONLY when present, so an
+    // absent key means "not superseded" and nothing is spent on the 99.9% of
+    // fixtures that are fine. It needs no clearing pass: this builder rewrites
+    // each season file whole from games/bv (fs.writeFileSync of a freshly built
+    // object), so a flag that has been cleared upstream is simply not written.
+    // The only way a stale flag could survive is the --resume skip, which is
+    // what TEAM_STATS_SV now guards.
+    let sup = null;
+    if (Object.prototype.hasOwnProperty.call(game, 'sup')) {
+      if (typeof game.sup === 'string' && game.sup) { sup = game.sup; RUN.supGames++; }
+      else { RUN.supBad++; }   // present but not a game id - a fault, reported
+    }
+    const played = isPlayedGame(game);
+    // INVARIANT: a superseded fixture is by definition unplayed. If this ever
+    // trips, `sup` and isPlayedGame disagree and one of them is wrong.
+    if (sup && played) RUN.supPlayed++;
+
     // Build fixture entry for each team
     const date  = game.d  || null;
     const rn    = game.rn || null;
 
     // nightly-crawl.js writes gid/gn onto every game it stores (L798-799).
-    noteGrade(hid, date, game.gid, game.gn);
-    noteGrade(aid, date, game.gid, game.gn);
+    // ⚠ T105 — "the latest game" means the latest PLAYED game, and a superseded
+    // fixture is never a grade source at all. A `sup` game is past-dated and
+    // unplayed: before this, on its own date it could hand the team the grade it
+    // had just been moved OUT of. Unplayed non-sup fixtures are still allowed to
+    // answer, one tier down, because a team between allocation and its first game
+    // has nothing else - that is the pre-season case and it has not changed.
+    if (!sup) {
+      const tier = played ? 1 : 2;
+      noteGrade(hid, date, game.gid, game.gn, game.t, gameId, tier);
+      noteGrade(aid, date, game.gid, game.gn, game.t, gameId, tier);
+    }
 
     if (hid && aid) {
       // Home team fixture
@@ -367,7 +437,9 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
           result,
           score,
           st: status,
+          ...(sup ? { sup } : {}),
         });
+        if (sup) RUN.supEntries++;
       }
 
       // Away team fixture
@@ -388,7 +460,9 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
           result,
           score,
           st: status,
+          ...(sup ? { sup } : {}),
         });
+        if (sup) RUN.supEntries++;
       }
     }
 
@@ -457,6 +531,7 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
     if (g) {
       teamData.meta.gid   = g.gid;
       teamData.meta.grade = g.gn || '';
+      if (g.tier === 1) RUN.gradeFromPlayed++; else RUN.gradeFromUnplayed++;
       continue;
     }
     const reg = regTeamMap ? regTeamMap.get(`${sid}|${tid}`) : null;
@@ -464,6 +539,9 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
       const [gid, gn] = [...reg.grades.entries()][0];
       teamData.meta.gid   = gid;
       teamData.meta.grade = gn || '';
+      RUN.gradeFromReg++;
+    } else {
+      RUN.gradeNone++;
     }
   }
 
@@ -483,13 +561,16 @@ function buildSeasonTeamStats(sid, seasonMeta, sidTidPlayerMap, regTeamMap) {
 // ~2,900 files, so this costs seconds against a rebuild that costs hours.
 // Anything unreadable, absent or empty returns FALSE: a season that cannot prove
 // it has been rebuilt must be rebuilt.
-function seasonAlreadyGraded(sid) {
+function seasonAlreadyCurrent(sid) {
   const f = path.join(TEAM_STATS_DIR, `${sid}.json`);
   if (!fs.existsSync(f)) return false;
   try {
     const existing = JSON.parse(fs.readFileSync(f, 'utf8'));
     const first = Object.values(existing)[0];
-    return !!(first && first.meta && Object.prototype.hasOwnProperty.call(first.meta, 'grade'));
+    // ⚠ NOT `'grade' in meta` any more - see TEAM_STATS_SV. The test is the
+    // schema version, so a season written under an older schema is rebuilt
+    // instead of being reported as skipped.
+    return !!(first && first.meta && Number(first.meta.sv) >= TEAM_STATS_SV);
   } catch (_) { return false; }
 }
 
@@ -498,7 +579,7 @@ async function main() {
   console.log('build-team-stats.js');
   if (ACTIVE_ONLY) console.log('  Mode: active seasons only');
   if (TARGET_SID)  console.log(`  Season: ${TARGET_SID}`);
-  if (RESUME)      console.log('  Resume: skipping seasons whose team-stats already carry grades');
+  if (RESUME)      console.log(`  Resume: skipping seasons whose team-stats are already at schema v${TEAM_STATS_SV}`);
   if (DRY_RUN)     console.log('  ⚠  DRY RUN — no writes or commits');
   console.log('─'.repeat(50));
 
@@ -530,7 +611,7 @@ async function main() {
 
   let skipped = 0;
   for (const season of seasons) {
-    if (RESUME && seasonAlreadyGraded(season.id)) {
+    if (RESUME && seasonAlreadyCurrent(season.id)) {
       processed++; skipped++;
       if (processed % 25 === 0 || processed === seasons.length)
         process.stdout.write(`  ${processed}/${seasons.length} seasons  ${written} written  ${skipped} skipped\r`);
@@ -560,7 +641,29 @@ async function main() {
   }
 
   console.log(`\n  ${processed}/${seasons.length} seasons processed  ${written} files written` +
-              (RESUME ? `  ${skipped} skipped (already carried grades)` : ''));
+              (RESUME ? `  ${skipped} skipped (already at schema v${TEAM_STATS_SV})` : ''));
+
+  // ── sup and grade report ──────────────────────────────────────────────────
+  // Printed every run, including a dry run. A count that is only ever accumulated
+  // and never shown is the same defect as a counter that only increments.
+  console.log('');
+  console.log('  sup: flagged games read      : ' + RUN.supGames);
+  console.log('  sup: fixture entries written : ' + RUN.supEntries + '   (two per flagged game, one per side)');
+  if (RUN.supGames) {
+    const expected = RUN.supGames * 2;
+    console.log('  sup: 1:2 check               : ' + (RUN.supEntries === expected
+      ? 'OK (' + RUN.supEntries + ' of ' + expected + ')'
+      : 'DIFFERS - ' + RUN.supEntries + ' of ' + expected + '; ' + (expected - RUN.supEntries) +
+        ' side(s) had no team entry in this season. Not necessarily a fault, but say why before accepting it.'));
+  }
+  if (RUN.supBad)    console.log('  ⚠ sup present but not a game id : ' + RUN.supBad + ' game(s) - the writer is wrong, not this reader');
+  if (RUN.supPlayed) console.log('  ⚠⚠ INVARIANT BROKEN: games flagged sup that isPlayedGame calls PLAYED : ' + RUN.supPlayed);
+  if (!RUN.supPlayed) console.log('  sup: invariant               : OK (no flagged game reads as played)');
+  console.log('  grade from a PLAYED game     : ' + RUN.gradeFromPlayed);
+  console.log('  grade from an UNPLAYED one   : ' + RUN.gradeFromUnplayed + '   (no played game yet; sup fixtures excluded)');
+  console.log('  grade from a registration    : ' + RUN.gradeFromReg);
+  console.log('  grade not known              : ' + RUN.gradeNone);
+  console.log('  same date AND time ties      : ' + RUN.gradeTies + '   (broken on game id, deterministically)');
   gitCommit(`build-team-stats: complete — ${written} files for ${processed} seasons`, ['team-stats/']);
 
   const elapsed = Math.round((Date.now() - startTime) / 1000);
