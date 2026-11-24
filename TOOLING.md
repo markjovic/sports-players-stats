@@ -155,7 +155,7 @@ from a report a live script still reads.
 - `test-api.js`
 - `scripts/tests/make-sup-fixtures.js`            — regenerates the `sup` fixtures FROM the real builder
 - `scripts/tests/render-test-sup-consumers.js`    — 31 Chromium assertions on the four `sup` consumers in index.html (needs Playwright; SKIPS without it)
-- `scripts/tests/test-emit-apply.js`             — 55 assertions on the --emit/--apply split, including one end-to-end sweep with the fetch transport stubbed; the rest run the real `--apply` command and cover every refusal (wrong progress key, tenant, version, absent or unparseable changeset)
+- `scripts/tests/test-emit-apply.js`             — 64 assertions on the --emit/--apply split, including one end-to-end sweep with the fetch transport stubbed; the rest run the real `--apply` command and cover every refusal (wrong progress key, tenant, version, absent or unparseable changeset)
 - `scripts/tests/test-flush-merge.js`            — 63 assertions on the re-read-and-merge flush: another writer's changes between read and flush survive, a game that became played is left as history, existing-wins, and a corrupt or shapeless file is refused rather than overwritten (runs the real `applyGame`/`flushGameFiles`)
 - `scripts/tests/test-git-stall-cap.js`           — 24 assertions on the consecutive-stall cap in discover-fixtures' push-retry loop (runs the real `gitCommitPush`; `git` and `sleep` stubbed on PATH, no PlayHQ); ⚠ POSIX-only — the stubs are `#!/bin/sh`, so it SKIPS on win32 rather than reporting a false red (`GIT_STALL_CAP_FORCE=1` runs it anyway)
 - `scripts/tests/test-refresh-team-grades-t105.js` — 15 assertions on the played-game grade rule (runs the real script)
