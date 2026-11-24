@@ -199,6 +199,48 @@ globalThis.fetch = async (url, opts) => {
   ok(commits().includes('Fixture discovery complete'), '0q and it committed');
 }
 
+// ── 0b · THE CHECKPOINT. A GitHub-hosted job is killed at 6 hours and the sweep has
+// been taking 5h 50m-5h 55m, so emitting only at the end would hand over nothing when
+// it overruns. The changeset is rewritten every --emit-every seasons, atomically.
+{
+  const t = tree({ games: { games: {} } });
+  fs.writeFileSync(path.join(t.root, 'stub-fetch.js'), FETCH_STUB);
+  fs.writeFileSync(path.join(t.root, 'data', 'sports-index.json'), JSON.stringify({
+    seasons: { SEASON1: { id: 'SEASON1', name: 'Summer 2026/27', fullName: 'Test BA Junior Domestic',
+                          locked: false, grades: [{ id: 'GR1', name: 'U12 Boys A' }] } },
+  }));
+  const csFile = path.join(t.root, 'cs.json');
+  const r = spawnSync(process.execPath,
+    ['--require', path.join(t.root, 'stub-fetch.js'),
+     path.join(t.root, 'scripts', 'discover-fixtures.js'), '--current-only',
+     '--emit-every=1', `--emit=${csFile}`],
+    { cwd: t.root, encoding: 'utf8', timeout: 60000,
+      env: { ...process.env, PATH: `${path.join(t.root, 'stub')}:${process.env.PATH}`, DF_T_DIR: path.join(t.root, 'state') } });
+  const out = (r.stdout || '') + (r.stderr || '');
+  eq(r.status, 0, '0r exit 0', out.slice(-300));
+  ok(/changeset checkpointed/.test(out), '0s a checkpoint was written mid-sweep, before the end');
+  ok(!fs.existsSync(`${csFile}.tmp`), '0t the write-then-rename left no .tmp behind');
+  const cs = JSON.parse(fs.readFileSync(csFile, 'utf8'));
+  eq(cs.completed, true, '0u the final write marks the run complete');
+  eq(cs.gameCount, 1, '0v and carries the game');
+  ok(/Fixture discovery complete/.test(cs.message), '0w with the completed message');
+}
+
+// 0c · A changeset left behind by a sweep that never finished is a PARTIAL one: it
+//      applies, it saves the checkpoint rather than clearing it, and it says so.
+{
+  const t = tree({ games: { games: {} }, changeset: baseCS({
+    completed: false, progressDone: ['s1', 's2', 's3'],
+    message: 'Fixture discovery (PARTIAL - sweep did not finish): 140 seasons, 900 new games',
+  }) });
+  const r = apply(t);
+  eq(r.code, 0, '0x a partial changeset applies');
+  eq(r.commits, 'Fixture discovery (PARTIAL - sweep did not finish): 140 seasons, 900 new games',
+     '0y and the commit message says the sweep did not finish');
+  eq(JSON.stringify(JSON.parse(r.file('discover-fixtures-progress-active-current.json')).done),
+     '["s1","s2","s3"]', '0z the checkpoint is saved so the next run resumes');
+}
+
 // 1 · The happy path, including a game another writer added after the sweep read it.
 {
   const t = tree({ games: { games: {
