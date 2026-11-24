@@ -5,9 +5,14 @@ name: Build Team Stats
 # season and has a 360-minute cap with no progress file. That absence is
 # deliberate — build-finals-stats' progress file reached 110.14 MB, crossed
 # GitHub's hard 100 MB limit and killed a full run (T22), and it was removed
-# rather than resized. `--resume` uses the output as the record instead: a team
-# carrying a `grade` key has been rebuilt since 2026-10-05, so the season is
-# skipped. Tick it on any re-run; leave it unticked for the first pass.
+# rather than resized. `--resume` uses the output as the record instead.
+#
+# 2026-11-24 - THE MARKER IS NOW THE SCHEMA VERSION, meta.sv, not `'grade' in
+# meta`. The old marker was exact for the 2026-10-05 change and became a lie for
+# every change after it: every file written since October satisfies it, so a
+# resumed run would have skipped every season and none would ever have gained the
+# `sup` flag - while printing "skipped" and looking like progress. Tick resume on
+# a re-run; leave it unticked for the first pass after any schema change.
 #
 # 2026-09-13 — NOW BUILDS TEAMS THAT HAVE NO GAMES YET.
 # buildSeasonTeamStats used to return null outright when a season had no game
@@ -36,7 +41,7 @@ on:
         required: false
         type: string
       resume:
-        description: 'Skip seasons whose team-stats already carry grades. Tick this when re-running after a timeout — there is no progress file by design, the output IS the record.'
+        description: 'Skip seasons whose team-stats are already at the current schema version (meta.sv). Tick this when re-running after a timeout — there is no progress file by design, the output IS the record.'
         required: false
         default: false
         type: boolean
@@ -55,7 +60,20 @@ on:
 # was previously written under the data-write lock only when built inside
 # nightly-crawl.yml — this standalone had no lock, so the matrix-terminal dispatch
 # (added 2026-07-21) could have raced the nightly's own team-stats job on the
-# same files. cancel-in-progress stays false: queued, never killed.
+# same files.
+#
+# ⚠ 2026-11-24 - "cancel-in-progress stays false: queued, never killed" USED TO BE
+# WRITTEN HERE AND IT IS NOT TRUE. GitHub keeps at most ONE PENDING RUN per
+# concurrency group: a new entrant CANCELS the previously pending one.
+# cancel-in-progress: false protects only the run that is actually executing.
+# Observed: Build Team Stats #35 took the pending slot at 15:07 and was cancelled
+# 2m57s later by Discover Org Seasons #85, which Discover fixtures #63 then
+# evicted in turn. Sixty workflows share this group and three of them are daily
+# crons, so A MANUAL DISPATCH ONLY SURVIVES IF THE GROUP IS EMPTY WHEN IT STARTS.
+# Daily entrants, UTC: nightly-crawl 15:00, discover-org-seasons 19:00,
+# lock-quiet-seasons 20:30. Dispatch outside 15:00-20:30 UTC and the only thing
+# that can evict you is another manual run.
+# The same wrong comment is in refresh-rosters.yml and overnight-chain.yml.
 concurrency:
   group: data-write
   cancel-in-progress: false
