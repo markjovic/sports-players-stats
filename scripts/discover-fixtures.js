@@ -715,8 +715,31 @@ function clearProgress() {
 //
 // maxBuffer as well: the default is 1 MB, and git output across this repo can
 // exceed it — the same class of silent failure, free to close while here.
-const GIT_TIMEOUT_MS = 10 * 60 * 1000;
+// DF_GIT_TIMEOUT_MS exists so scripts/tests/test-git-stall-cap.js can exercise the
+// REAL timeout branch in under two seconds instead of ten minutes. Nothing in the
+// workflows sets it; absent, this is exactly the 10 minutes it has always been.
+const GIT_TIMEOUT_MS = parseInt(process.env.DF_GIT_TIMEOUT_MS || String(10 * 60 * 1000), 10);
 const GIT_MAXBUF     = 512 * 1024 * 1024;
+
+// ⚠️ 2026-11-24 — A STALLED FETCH IS NOT CONTENTION AND MUST NOT BURN 60 ATTEMPTS.
+// Measured on run 45326672826: `git fetch origin main` was killed at the 10-minute
+// timeout six times in a row, each retry sleeping 1-91s, and the run held the
+// data-write lock for 68 minutes having done 12 minutes of actual sweeping. Left
+// alone it would have spent ~11 hours there; `timeout-minutes: 360` would have cut
+// it at six. Every other workflow queues behind that, and the one in the pending
+// slot is cancelled by the next arrival.
+//
+// Contention is still retried 60 times — that is what the loop is for, and a
+// rejected push genuinely does clear. A STALL is different: it is the same call
+// failing the same way with nothing to clear, and `e.killed` identifies it exactly,
+// so it needs no transient/fatal classifier and no PlayHQ stub to test.
+// The counter is CONSECUTIVE: any fetch that answers resets it, so a slow repo that
+// recovers is unaffected and only an unbroken run of stalls gives up.
+// Giving up THROWS, which fails the run red and releases the lock. Work already
+// pushed stays pushed; seasons swept since the last successful push are redone next
+// run, because the progress file travels with the commit that did not happen.
+// --max-fetch-stalls=0 restores the pre-2026-11-24 behaviour exactly.
+const MAX_FETCH_STALLS = parseInt(ARGS['max-fetch-stalls'] === undefined ? '3' : ARGS['max-fetch-stalls'], 10);
 
 function gitCommitPush(message) {
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
@@ -801,13 +824,14 @@ function gitCommitPush(message) {
   // hook rejection) fails fast with git's real error instead of being buried
   // under 60 identical lines.
   const MAX_ATTEMPTS = 60;
+  let consecutiveStalls = 0;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try { execFileSync('git', ['merge', '--abort'], { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_MAXBUF }); } catch (_) { /* none in progress */ }
 
     try {
       execFileSync('git', ['fetch', 'origin', 'main'], { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_MAXBUF });
+      consecutiveStalls = 0;          // a fetch that ANSWERS ends the stall run, however it answered
     } catch (e) {
-      if (attempt === MAX_ATTEMPTS) throw e;
       // ⚠ 2026-11-24 — THIS BRANCH PRINTED NOTHING BUT "fetch failed". The push branch
       // below prints git's real error and fails fast on anything that is not contention;
       // this one retried BLIND, so a fetch failing for an unchanging reason (auth, a bad
@@ -823,8 +847,19 @@ function gitCommitPush(message) {
       // a loop that now says what is wrong.
       const detail  = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n').slice(0, 2).join(' / ');
       const stalled = e.killed === true || e.signal === 'SIGTERM' || /ETIMEDOUT/i.test(String(e.code || ''));
+      // Only an unbroken RUN of stalls gives up. A plain failure neither counts
+      // toward the cap nor clears it: it is not the thing being bounded, and
+      // treating it as a reset would let stall/fail/stall/fail run for ever.
+      if (stalled) consecutiveStalls++;
+      if (stalled && MAX_FETCH_STALLS > 0 && consecutiveStalls >= MAX_FETCH_STALLS) {
+        throw new Error(`gitCommitPush: git fetch STALLED past ${GIT_TIMEOUT_MS / 60000} min on `
+          + `${consecutiveStalls} consecutive attempts with no fetch answering in between — `
+          + `refusing to hold the data-write lock for a further ${MAX_ATTEMPTS - attempt} attempt(s) `
+          + `("${message}"). Last git output: ${detail || '(no output)'}`);
+      }
+      if (attempt === MAX_ATTEMPTS) throw e;
       const waitSec = 1 + Math.floor(Math.random() * 91);
-      console.log(`  fetch ${stalled ? `STALLED past ${GIT_TIMEOUT_MS / 60000} min and was killed` : 'failed'} (attempt ${attempt}/${MAX_ATTEMPTS}), retrying in ${waitSec}s — git said: ${detail || '(no output)'}`);
+      console.log(`  fetch ${stalled ? `STALLED past ${GIT_TIMEOUT_MS / 60000} min and was killed (stall ${consecutiveStalls}/${MAX_FETCH_STALLS || '∞'})` : 'failed'} (attempt ${attempt}/${MAX_ATTEMPTS}), retrying in ${waitSec}s — git said: ${detail || '(no output)'}`);
       try { execFileSync('sleep', [String(waitSec)], { stdio: 'pipe', timeout: (waitSec + 30) * 1000 }); } catch (_) {}
       continue;
     }
@@ -1366,4 +1401,13 @@ async function main() {
   }
 }
 
-main().catch(e => { console.error('\nFatal:', e.message); process.exit(1); });
+// Entry-point guard, 2026-11-24. `node scripts/discover-fixtures.js` is unchanged —
+// require.main is this module and main() runs. A require() of this file (only
+// scripts/tests/test-git-stall-cap.js does it) gets gitCommitPush WITHOUT starting a
+// sweep, so the retry loop is tested as it actually ships rather than re-implemented
+// in a fixture (T103).
+if (require.main === module) {
+  main().catch(e => { console.error('\nFatal:', e.message); process.exit(1); });
+}
+
+module.exports = { gitCommitPush };
