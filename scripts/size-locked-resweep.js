@@ -23,14 +23,15 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const GX = require('./lib/git-exec.cjs');   // T104: the git timeout lives in ONE place
 
 const ROOT = path.join(__dirname, '..');
 const REPORT = '/tmp/size-locked-resweep-report.json';
 
 function lsSidSet(dir) {
-  const out = execSync(`git ls-tree -r --name-only HEAD -- ${dir}`, {
-    cwd: ROOT, maxBuffer: 64 * 1024 * 1024,
-  }).toString();
+  // T104: see size-locked-backfill.js — local does not mean un-hangable.
+  const out = execSync(`git ls-tree -r --name-only HEAD -- ${dir}`,
+    GX.gitOpts(ROOT, { maxBuffer: 64 * 1024 * 1024 })).toString();
   const set = new Set();
   for (const line of out.split('\n')) {
     if (line.endsWith('.json')) set.add(path.basename(line, '.json'));

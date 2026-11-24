@@ -68,6 +68,7 @@
 const fs   = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const GX = require('./lib/git-exec.cjs');   // T104: the git timeout lives in ONE place
 
 const ROOT = path.join(__dirname, '..');
 const ARGS = Object.fromEntries(
@@ -266,7 +267,7 @@ function lastRunDays() {
 function lastCommitISO(relPath) {
   try {
     const out = execFileSync('git', ['log', '-1', '--format=%cI', '--', relPath],
-      { cwd: ROOT, stdio: 'pipe', maxBuffer: 32 * 1024 * 1024 }).toString().trim();
+      GX.gitOpts(ROOT, { maxBuffer: 32 * 1024 * 1024 })).toString().trim();
     return out || null;
   } catch (e) { return null; }
 }

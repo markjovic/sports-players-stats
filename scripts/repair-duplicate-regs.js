@@ -53,6 +53,7 @@
 const fs   = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const GX = require('./lib/git-exec.cjs');   // T104: the git timeout lives in ONE place
 
 const ROOT        = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
@@ -111,7 +112,13 @@ function mergeGroup(group) {
 }
 
 // ─── git (house pattern) ──────────────────────────────────────────────────────
-function git(a) { return execFileSync('git', a, { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'] }).toString(); }
+// T104: EVERY git operation in this file goes through this one wrapper, so the one
+// missing `timeout` here left the whole writer unguarded — a count of "1 untimed
+// call" understated it completely. gitOpts() carries the timeout and the 512 MB
+// maxBuffer; the stdio shape is this file's own and is preserved.
+function git(args) {
+  return execFileSync('git', args, GX.gitOpts(ROOT, { stdio: ['ignore', 'pipe', 'pipe'] })).toString();
+}
 function gitCommitPush(paths, message) {
   if (NO_GIT || DRY) return;
   // ── Staging ────────────────────────────────────────────────────────────────
@@ -154,26 +161,48 @@ function gitCommitPush(paths, message) {
   try { git([...IDENT, 'commit', '-q', '-m', message]); }
   catch (e) { throw new Error(`commit failed — ${((e.stderr && e.stderr.toString()) || e.message || '').trim()}`); }
   const MAX = 60;
+  const stalls = GX.makeStallTracker();   // T104: caps consecutive timeout kills
   for (let attempt = 1; attempt <= MAX; attempt++) {
     try { git(['merge', '--abort']); } catch {}
-    try { git(['fetch', 'origin', 'main']); }
+    try { git(['fetch', 'origin', 'main']); stalls.note('ok'); }
     catch (e) {
-      if (attempt === MAX) throw e;
-      const s = 1 + Math.floor(Math.random() * 91);
-      log(`fetch failed (${attempt}/${MAX}), retrying in ${s}s`);
-      try { execFileSync('sleep', [String(s)]); } catch {}
+      // T104: a timeout-killed child carries NO stderr, so it must be classified
+      // BEFORE anything reads git's output — otherwise it is filed as contention it
+      // never ran. A STALL is retryable but CAPPED: three in a row with no fetch
+      // answering in between is fatal, because 60 x 10 min would hold the data-write
+      // lock for ten hours and could not succeed. Measured on 2026-11-24: six.
+      const kind = GX.classifyGitError(e);
+      const st = stalls.note(kind);
+      if (kind === 'fatal') throw new Error(GX.fatalMessage('fetch', e));
+      if (st.exhausted) throw new Error(GX.stallExhaustedMessage('fetch', st));
+      if (attempt === MAX) throw new Error(GX.attemptsExhaustedMessage('fetch', MAX, e));
+      const s = GX.backoffSeconds(true);
+      log(GX.retryMessage('fetch', e, attempt, MAX, s, st).trim());
+      try { execFileSync('sleep', [String(s)], GX.sleepOpts(s)); } catch {}
       continue;
     }
+    // Deliberately NOT retried: a merge that fails or stalls is not contention, and
+    // retrying it 60 times over a wedged index achieves nothing. It throws — and the
+    // timeout in gitOpts means it throws in 10 minutes instead of hanging.
     git([...IDENT, 'merge', '-X', 'ours', 'FETCH_HEAD', '--no-edit', '--no-stat']);
     try { git(['push', 'origin', 'HEAD:main']); log(`pushed on attempt ${attempt}`); return; }
     catch (e) {
+      const kind = GX.classifyGitError(e);
+      const st = stalls.note(kind);
+      if (kind === 'stall') {
+        if (st.exhausted) throw new Error(GX.stallExhaustedMessage('push', st));
+        const s = GX.backoffSeconds(true);
+        log(GX.retryMessage('push', e, attempt, MAX, s, st).trim());
+        try { execFileSync('sleep', [String(s)], GX.sleepOpts(s)); } catch {}
+        continue;
+      }
       const d = ((e.stderr && e.stderr.toString()) || e.message || '').trim();
       const contention = /non-fast-forward|fetch first|\[rejected\]|failed to push some refs|cannot lock ref/i.test(d);
       if (!contention) { console.error(`  push failed — NOT contention:\n${d}`); throw e; }
       if (attempt === MAX) { console.error(`  push rejected after ${MAX}:\n${d}`); throw e; }
       const s = 1 + Math.floor(Math.random() * 91);
       log(`push ${attempt}/${MAX} rejected, re-syncing in ${s}s`);
-      try { execFileSync('sleep', [String(s)]); } catch {}
+      try { execFileSync('sleep', [String(s)], GX.sleepOpts(s)); } catch {}
     }
   }
   throw new Error(`exhausted ${MAX} push attempts`);

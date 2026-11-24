@@ -50,6 +50,7 @@
 const fs   = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const GX = require('./lib/git-exec.cjs');   // T104: the git timeout lives in ONE place
 
 const ROOT        = path.join(__dirname, '..');
 const PLAYERS_DIR = path.join(ROOT, 'players');
@@ -196,7 +197,7 @@ if (!APPLY) {
   // nothing — which discarded a complete 30,426-game run once already.
   let staged = 0;
   for (const r of wrote) {
-    try { execSync(`git add -- "players/${r.holderPath}"`, { cwd: ROOT, stdio: 'pipe' }); staged++; }
+    try { execSync(`git add -- "players/${r.holderPath}"`, GX.gitOpts(ROOT)); staged++; }
     catch (e) { console.log(`  ⚠ could not stage players/${r.holderPath}: ${e.message}`); }
   }
   console.log(`  staged ${staged}/${wrote.length} file(s)`);

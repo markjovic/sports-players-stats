@@ -183,6 +183,76 @@ function collectObjectConstants(src) {
   return out;
 }
 
+
+// ── The shared helper (T104) ─────────────────────────────────────────────────
+// Pass 1 onward, most guarded calls pass `GX.gitOpts(ROOT)` rather than an object
+// literal. That is neither a `timeout:` nor a resolvable constant, so without this
+// the sweep would measure as ZERO progress — every fixed call would still read
+// UNTIMED, and the obvious "fix" (trust anything called gitOpts) would make the
+// tool blind to a helper that stopped setting a timeout.
+//
+// So provenance is VERIFIED, not assumed: the helper's own source is parsed, and
+// only a factory that demonstrably sets `timeout:` counts. If lib/git-exec.cjs is
+// missing or its gitOpts stops setting one, every call through it reverts to
+// UNTIMED and this tool says so.
+
+const HELPER_REL = path.join('lib', 'git-exec.cjs');
+
+/** Names of option factories in the helper that provably set a timeout. */
+function verifiedHelperFactories(dir) {
+  const fp = path.join(dir, HELPER_REL);
+  let src;
+  try { src = fs.readFileSync(fp, 'utf8'); } catch (e) { return { ok: false, factories: new Set(), why: `${HELPER_REL} unreadable: ${e.code || e.message}` }; }
+  const factories = new Set();
+  const re = /\bfunction\s+([A-Za-z_$][\w$]*)\s*\(/g;
+  let m;
+  while ((m = re.exec(src))) {
+    const open = src.indexOf('{', m.index);
+    if (open < 0) continue;
+    const close = matchBrace(src, open);
+    if (close < 0) continue;
+    const body = src.slice(open, close + 1);
+    if (/\btimeout\s*:/.test(body)) factories.add(m[1]);
+  }
+  return { ok: true, factories, why: '' };
+}
+
+/**
+ * The local names through which this file reaches the helper.
+ * Handles `const GX = require('./lib/git-exec.cjs')` and
+ * `const { gitOpts } = require('./lib/git-exec.cjs')`.
+ */
+function helperBindings(src) {
+  const ns = new Set();
+  const direct = new Set();
+  const reNs = /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*require\(\s*['"][^'"]*lib\/git-exec\.cjs['"]\s*\)/g;
+  let m;
+  while ((m = reNs.exec(src))) ns.add(m[1]);
+  const reDe = /\b(?:const|let|var)\s*\{([^}]*)\}\s*=\s*require\(\s*['"][^'"]*lib\/git-exec\.cjs['"]\s*\)/g;
+  while ((m = reDe.exec(src))) {
+    for (const part of m[1].split(',')) {
+      const t = part.split(':').pop().trim();
+      if (t) direct.add(t);
+    }
+  }
+  return { ns, direct };
+}
+
+/** Does this options expression come from a verified helper factory? */
+function viaVerifiedHelper(text, bindings, factories) {
+  const t = text.trim();
+  for (const n of bindings.ns) {
+    for (const f of factories) {
+      if (new RegExp('\\b' + n + '\\s*\\.\\s*' + f + '\\s*\\(').test(t)) return true;
+    }
+  }
+  for (const f of bindings.direct) {
+    if (!factories.has(f)) continue;
+    if (new RegExp('\\b' + f + '\\s*\\(').test(t)) return true;
+  }
+  return false;
+}
+
 const IDENT = /[A-Za-z_$][\w$]*/g;
 
 /**
@@ -254,9 +324,10 @@ function lineOf(src, index) {
 
 // ── Audit ────────────────────────────────────────────────────────────────────
 
-function auditFile(fp) {
+function auditFile(fp, helper) {
   const src = fs.readFileSync(fp, 'utf8');
   const consts = collectObjectConstants(src);
+  const bindings = helperBindings(src);
   const calls = [];
   const mask = codeMask(src);
   const re = /\bexec(?:File)?Sync\s*\(/g;
@@ -277,7 +348,8 @@ function auditFile(fp) {
       calls.push({ line, git: true, verdict: 'untimed', note: 'no options argument at all' });
       continue;
     }
-    const verdict = optionsCarryTimeout(opts, consts);
+    let verdict = optionsCarryTimeout(opts, consts);
+    if (verdict !== 'timed' && viaVerifiedHelper(opts, bindings, helper.factories)) verdict = 'timed';
     calls.push({
       line,
       git: true,
@@ -316,12 +388,14 @@ function main() {
     process.exit(2);
   }
 
-  const rows = files.map(f => auditFile(path.join(DIR, f))).filter(r => r.total > 0 || r.unparsed > 0);
+  const helper = verifiedHelperFactories(DIR);
+  const rows = files.map(f => auditFile(path.join(DIR, f), helper)).filter(r => r.total > 0 || r.unparsed > 0);
   const sum = k => rows.reduce((a, r) => a + r[k], 0);
   const bad = rows.filter(r => r.untimed > 0 || r.unresolved > 0 || r.unparsed > 0);
 
   const summary = {
     dir: DIR,
+    helper: helper.ok ? `${HELPER_REL}: ${[...helper.factories].sort().join(', ') || 'NO factory sets a timeout'}` : helper.why,
     filesScanned: files.length,
     filesWithGitCalls: rows.length,
     gitCalls: sum('total'),
@@ -339,6 +413,7 @@ function main() {
   } else {
     console.log('');
     console.log(`audit-git-timeouts — ${DIR}`);
+    console.log(`  shared helper          : ${summary.helper}`);
     console.log(`  files scanned          : ${summary.filesScanned}`);
     console.log(`  files with git calls   : ${summary.filesWithGitCalls}`);
     console.log(`  git calls              : ${summary.gitCalls}`);

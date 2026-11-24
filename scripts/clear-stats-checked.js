@@ -16,25 +16,71 @@
 const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
+const GX = require('./lib/git-exec.cjs');   // T104: the git timeout lives in ONE place
 
 const ROOT          = path.join(__dirname, '..');
 const PLAYERS_DIR   = path.join(ROOT, 'players');
 const FIX_CORRUPT = process.argv.includes('--fix-corrupt-names');
 const SEASON_RE     = /^(Winter|Summer|Spring|Autumn|Fall)\s+\d{4}/i;
 
+// ─── git (house pattern) ──────────────────────────────────────────────────────
+// REWRITTEN 2026-11-24 (T104). Two faults beyond the missing timeout:
+//
+//   1. COMMIT AFTER MERGE. The old order was fetch → merge → commit → push, and the
+//      comment claimed merging first made the push succeed. It does the opposite:
+//      merging over UNCOMMITTED changes fails outright the moment a concurrent push
+//      touches the same files, which on this repo is most nights. Commit first.
+//   2. NO push retry at all. One contended push lost the whole run's work on a
+//      repository with many writers on one branch.
+//
+// The single `players/` pathspec is kept deliberately: the per-path rule exists so
+// one unmatched path cannot silently discard the valid paths beside it, and with one
+// pathspec there is nothing beside it to discard. `--no-stat` added to the merge so
+// the per-file "Auto-merging …" lines can never approach maxBuffer (T26).
 function gitCommit(message) {
-  // Stage player files only — avoids staging unrelated changes
-  execSync('git add players/', { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
+  execSync('git add -- players/', GX.gitOpts(ROOT));
   // --shortstat avoids ENOBUFS from large diff output
-  const staged = execSync('git diff --staged --shortstat',
-    { stdio: 'pipe', cwd: ROOT, maxBuffer: 10 * 1024 * 1024 }).toString().trim();
+  const staged = execSync('git diff --staged --shortstat', GX.gitOpts(ROOT)).toString().trim();
   if (!staged) { console.log('  Nothing to commit.'); return; }
-  // Merge before committing so push succeeds even if other commits landed during the run
-  execSync('git fetch origin main',                  { stdio: 'pipe', cwd: ROOT });
-  execSync('git merge -X ours FETCH_HEAD --no-edit', { stdio: 'pipe', cwd: ROOT });
-  execSync(`git commit -m "${message}"`,             { stdio: 'pipe', cwd: ROOT });
-  execSync('git push origin main',                   { stdio: 'pipe', cwd: ROOT });
-  console.log(`  ✓ ${message}`);
+  console.log(`  staging: ${staged}`);
+  try { execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, GX.gitOpts(ROOT)); }
+  catch (e) {
+    if (GX.isNothingToCommit(e)) { console.log('  Nothing to commit.'); return; }
+    throw new Error(`commit failed — ${GX.gitSaid(e) || e.message}`);
+  }
+  const MAX = GX.MAX_ATTEMPTS;
+  const stalls = GX.makeStallTracker();
+  for (let attempt = 1; attempt <= MAX; attempt++) {
+    try { execSync('git merge --abort', GX.gitOpts(ROOT)); } catch (_) { /* none in progress */ }
+    try { execSync('git fetch origin main', GX.gitOpts(ROOT)); stalls.note('ok'); }
+    catch (e) {
+      const kind = GX.classifyGitError(e);
+      const st = stalls.note(kind);
+      if (kind === 'fatal') throw new Error(GX.fatalMessage('fetch', e));
+      if (st.exhausted) throw new Error(GX.stallExhaustedMessage('fetch', st));
+      if (attempt === MAX) throw new Error(GX.attemptsExhaustedMessage('fetch', MAX, e));
+      const s = GX.backoffSeconds(true);
+      console.log(GX.retryMessage('fetch', e, attempt, MAX, s, st));
+      try { execSync(`sleep ${s}`, GX.sleepOpts(s)); } catch (_) {}
+      continue;
+    }
+    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', GX.gitOpts(ROOT));
+    try {
+      execSync('git push origin main', GX.gitOpts(ROOT));
+      console.log(`  \u2713 ${message} (attempt ${attempt})`);
+      return;
+    } catch (e) {
+      const kind = GX.classifyGitError(e);
+      const st = stalls.note(kind);
+      if (kind === 'fatal') throw new Error(GX.fatalMessage('push', e));
+      if (st.exhausted) throw new Error(GX.stallExhaustedMessage('push', st));
+      if (attempt === MAX) throw new Error(GX.attemptsExhaustedMessage('push', MAX, e));
+      const s = GX.backoffSeconds(true);
+      console.log(GX.retryMessage('push', e, attempt, MAX, s, st));
+      try { execSync(`sleep ${s}`, GX.sleepOpts(s)); } catch (_) {}
+    }
+  }
+  throw new Error(`exhausted ${MAX} push attempts`);
 }
 
 async function main() {

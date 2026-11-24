@@ -24,6 +24,7 @@
 const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
+const GX = require('./lib/git-exec.cjs');   // T104: the git timeout lives in ONE place
 
 const ROOT        = path.join(__dirname, '..');
 const PLAYERS_IDX = path.join(ROOT, 'players', 'indexes');
@@ -34,20 +35,83 @@ const LEN = lenArg ? parseInt(lenArg.split('=')[1], 10) : 10;
 
 function isFullUuid(id) { return typeof id === 'string' && id.length === FULL_LEN; }
 
+// ─── git (house pattern) ──────────────────────────────────────────────────────
+// REWRITTEN 2026-11-24 (T104). This function previously had THREE faults beyond the
+// missing timeout, and they compounded:
+//
+//   1. `git add ${dirs.join(' ')}` — a COMBINED add. `git add` is atomic across
+//      pathspecs, so one unmatched path stages NOTHING, including the valid paths
+//      beside it. That is the 2026-07-19 failure exactly: 30,426 games fetched,
+//      zero committed, job green.
+//   2. NO push retry at all, on a repository where every other writer retries with
+//      jitter and every push must merge the others' commits.
+//   3. The catch PRINTED AND RETURNED. A lost push left the job GREEN with the work
+//      discarded — the swallow that has now been closed three separate times.
+//
+// ⚠ EXPECT A NEW RED WHERE THERE WAS GREEN if this has been quietly losing pushes.
+// That is the fix working, not a regression.
 function gitCommit(message, dirs) {
-  try {
-    execSync(`git add ${dirs.join(' ')}`, { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
-    const staged = execSync('git diff --staged --shortstat',
-      { stdio: 'pipe', cwd: ROOT, maxBuffer: 10 * 1024 * 1024 }).toString().trim();
-    if (!staged) { console.log('  Nothing to commit.'); return; }
-    execSync(`git commit -q -m "${message}"`, { stdio: 'pipe', cwd: ROOT });
-    execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
-    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
-    execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
-    console.log(`  Committed: ${message}`);
-  } catch (e) {
-    console.error('  git error:', e.stderr?.toString().slice(0, 300) || e.message.slice(0, 300));
+  let addFailures = 0;
+  for (const d of dirs) {
+    try { execSync(`git add -- ${d}`, GX.gitOpts(ROOT)); }
+    catch (e) {
+      addFailures++;
+      console.error(`  \u26a0 git add failed for "${d}": ${GX.gitSaid(e, 160) || e.message.slice(0, 160)}`);
+    }
   }
+  const staged = (() => {
+    try { return execSync('git diff --staged --shortstat', GX.gitOpts(ROOT)).toString().trim(); }
+    catch (_) { return ''; }
+  })();
+  if (!staged) {
+    // "nothing to commit" is legitimate — but not when an add failed, because then
+    // "nothing staged" is a symptom, not a result.
+    if (addFailures) throw new Error(`nothing staged and ${addFailures} path(s) failed to stage — refusing to report a clean no-op`);
+    console.log('  Nothing to commit.');
+    return;
+  }
+  console.log(`  staging: ${staged}`);
+  // Commit BEFORE fetch/merge: merging over uncommitted changes fails outright when
+  // concurrent pushes touch the same files.
+  try { execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, GX.gitOpts(ROOT)); }
+  catch (e) {
+    if (GX.isNothingToCommit(e)) { console.log('  Nothing to commit.'); return; }
+    throw new Error(`commit failed — ${GX.gitSaid(e) || e.message}`);
+  }
+  const MAX = GX.MAX_ATTEMPTS;
+  const stalls = GX.makeStallTracker();
+  for (let attempt = 1; attempt <= MAX; attempt++) {
+    try { execSync('git merge --abort', GX.gitOpts(ROOT)); } catch (_) { /* none in progress */ }
+    try { execSync('git fetch origin main', GX.gitOpts(ROOT)); stalls.note('ok'); }
+    catch (e) {
+      const kind = GX.classifyGitError(e);
+      const st = stalls.note(kind);
+      if (kind === 'fatal') throw new Error(GX.fatalMessage('fetch', e));
+      if (st.exhausted) throw new Error(GX.stallExhaustedMessage('fetch', st));
+      if (attempt === MAX) throw new Error(GX.attemptsExhaustedMessage('fetch', MAX, e));
+      const s = GX.backoffSeconds(true);
+      console.log(GX.retryMessage('fetch', e, attempt, MAX, s, st));
+      try { execSync(`sleep ${s}`, GX.sleepOpts(s)); } catch (_) {}
+      continue;
+    }
+    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', GX.gitOpts(ROOT));
+    try {
+      execSync('git push origin main', GX.gitOpts(ROOT));
+      console.log(`  \u2714 committed (attempt ${attempt}): ${message}`);
+      return;
+    } catch (e) {
+      const kind = GX.classifyGitError(e);
+      const st = stalls.note(kind);
+      if (kind === 'fatal') throw new Error(GX.fatalMessage('push', e));
+      if (st.exhausted) throw new Error(GX.stallExhaustedMessage('push', st));
+      if (attempt === MAX) throw new Error(GX.attemptsExhaustedMessage('push', MAX, e));
+      const s = GX.backoffSeconds(true);
+      console.log(GX.retryMessage('push', e, attempt, MAX, s, st));
+      try { execSync(`sleep ${s}`, GX.sleepOpts(s)); } catch (_) {}
+    }
+  }
+  // THROW on exhaustion. A run that pushed nothing must not exit 0.
+  throw new Error(`exhausted ${MAX} push attempts`);
 }
 
 function main() {

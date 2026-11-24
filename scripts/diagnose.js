@@ -15,6 +15,7 @@
 const fs           = require('fs');
 const path         = require('path');
 const { execSync } = require('child_process');
+const GX = require('./lib/git-exec.cjs');   // T104: the git timeout lives in ONE place
 
 const ROOT      = path.join(__dirname, '..');
 const GAMES_DIR = path.join(ROOT, 'games', 'bv');
@@ -244,7 +245,7 @@ function modeStats(uuid) {
 function modeHidden() {
   const log = execSync(
     'git log --oneline --grep="reclassified as hidden" -5',
-    { cwd: ROOT, stdio: 'pipe' }
+    GX.gitOpts(ROOT)
   ).toString().trim();
 
   if (!log) { console.log('No recent reclassification commits found.'); return; }
@@ -256,7 +257,7 @@ function modeHidden() {
 
   const diff = execSync(
     `git show --name-only --format="" ${commitHash}`,
-    { cwd: ROOT, stdio: 'pipe' }
+    GX.gitOpts(ROOT)
   ).toString().trim();
 
   const changedFiles = diff.split('\n').map(f => f.trim()).filter(f => f.startsWith('games/bv/'));
@@ -277,13 +278,13 @@ function modeHidden() {
     let before = { games: {} }, after;
     try {
       before = JSON.parse(execSync(`git show ${commitHash}^:${filePath}`,
-        { cwd: ROOT, stdio: 'pipe', maxBuffer: 500 * 1024 * 1024 }).toString());
+        GX.gitOpts(ROOT)).toString());
     } catch (e) {
       console.log(`  [before] read failed: ${e.message.slice(0, 80)}`);
     }
     try {
       after = JSON.parse(execSync(`git show ${commitHash}:${filePath}`,
-        { cwd: ROOT, stdio: 'pipe', maxBuffer: 500 * 1024 * 1024 }).toString());
+        GX.gitOpts(ROOT)).toString());
     } catch (e) {
       console.log(`  [after] read failed: ${e.message.slice(0, 80)}`);
       continue;
