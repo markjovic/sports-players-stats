@@ -107,6 +107,18 @@ const INDEX_FILE     = path.join(ROOT, 'data', 'sports-index.json');
 
 const COMMIT_EVERY = 50;
 
+// ── T104 APPLIED HERE 2026-11-24 ─────────────────────────────────────────────
+// Every git call below had maxBuffer and NO TIMEOUT, and the push loop's retry
+// branch printed NOTHING. So a stalled fetch or push sat forever - not 46
+// minutes, FOREVER - silent, holding the data-write lock until the job's
+// 360-minute cap, with the last line on screen being "staging: N files changed".
+// Observed exactly that on 2026-11-24.
+// T104 was fixed in nightly-crawl.js and never swept across the copies of this
+// same house pattern. 63 scripts in scripts/ still carry git calls with no
+// timeout; this is one of them.
+const GIT_TIMEOUT_MS = 10 * 60 * 1000;
+const GIT_MAXBUF     = 512 * 1024 * 1024;
+
 function gitCommit(message, dirs) {
   // House pattern, copied from build-finals-stats.js / build-win-loss.js.
   // 2026-07-28: replaced this script's own 10-attempt/linear-backoff version —
@@ -125,16 +137,16 @@ function gitCommit(message, dirs) {
   try {
     for (const dir of dirs) {
       try {
-        execSync(`git add ${dir}`, { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
+        execSync(`git add ${dir}`, { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_MAXBUF });
       } catch (e) {
         console.error(`  staging miss (skipped): ${dir} — ${e.stderr?.toString().slice(0, 120) || e.message.slice(0, 120)}`);
       }
     }
     const staged = execSync('git diff --staged --shortstat',
-      { stdio: 'pipe', cwd: ROOT, maxBuffer: 10 * 1024 * 1024 }).toString().trim();
+      { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS, maxBuffer: 10 * 1024 * 1024 }).toString().trim();
     if (!staged) { console.log('  nothing to commit'); return; }
     console.log(`  staging: ${staged}`);
-    execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT });
+    execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS });
   } catch (e) {
     // ⚠️ 2026-09-09: this used to print and RETURN. The push loop below throws on
     // exhaustion, but a failure to STAGE or COMMIT exited zero — so a run could print
@@ -144,20 +156,25 @@ function gitCommit(message, dirs) {
     throw new Error(`git stage/commit failed: ${detail}`);
   }
   for (let attempt = 1; attempt <= 60; attempt++) {
-    try { execSync('git merge --abort', { stdio: 'pipe', cwd: ROOT }); } catch (_) { /* none in progress */ }
+    try { execSync('git merge --abort', { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS }); } catch (_) { /* none in progress */ }
     try {
-      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
-      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
-      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
-      console.log(`  ✔ committed: ${message}`);
+      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_MAXBUF });
+      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_MAXBUF });
+      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT, timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_MAXBUF });
+      console.log(`  ✔ committed: ${message} (attempt ${attempt})`);
       return;
     } catch (e) {
       if (attempt === 60) {
         console.error('  git push failed after 60 attempts:', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
         throw e;
       }
+      // ⚠ THIS BRANCH USED TO PRINT NOTHING. Sixty silent attempts is
+      // indistinguishable from a hang, which is exactly how this presented.
+      const detail  = ((e.stderr && e.stderr.toString()) || e.message || '').trim().split('\n').slice(0, 2).join(' / ');
+      const stalled = e.killed === true || e.signal === 'SIGTERM' || /ETIMEDOUT/i.test(String(e.code || ''));
       const s = 1 + Math.floor(Math.random() * 91);
-      execSync(`sleep ${s}`, { stdio: 'pipe', cwd: ROOT });
+      console.log(`  git ${stalled ? `STALLED past ${GIT_TIMEOUT_MS / 60000} min and was killed` : 'failed'} (attempt ${attempt}/60), retrying in ${s}s — git said: ${detail || '(no output)'}`);
+      execSync(`sleep ${s}`, { stdio: 'pipe', cwd: ROOT, timeout: (s + 30) * 1000 });
     }
   }
 }
