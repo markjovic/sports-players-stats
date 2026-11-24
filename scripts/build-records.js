@@ -46,6 +46,9 @@ import { fileURLToPath } from 'url';
 // instances" of full-length uuids — the number just was not connected to this code.
 // resolveToFullUuid is the same alias-aware resolver build-player-games.js uses.
 import { resolveToFullUuid } from './lib/uuid-prefix.cjs';
+// T104: the git timeout, the 512 MB maxBuffer and the stall vocabulary live in
+// ONE place. Default import because git-exec.cjs is CommonJS and this file is ESM.
+import GX from './lib/git-exec.cjs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 
@@ -84,7 +87,7 @@ function gitCommit(message, paths) {
   let staged = 0;
   for (const p of paths) {
     try {
-      execSync(`git add -- ${p}`, { cwd: ROOT, stdio: 'pipe' });
+      execSync(`git add -- ${p}`, GX.gitOpts(ROOT));
       staged++;
     } catch (e) {
       // Absent AND untracked (or ignored) — skip this path only.
@@ -98,7 +101,7 @@ function gitCommit(message, paths) {
 
   // --shortstat, never --stat: --stat prints a per-file line and scales with
   // file count (ENOBUFS risk on a repo this size).
-  const diff = execSync('git diff --staged --shortstat', { cwd: ROOT, stdio: 'pipe' }).toString().trim();
+  const diff = execSync('git diff --staged --shortstat', GX.gitOpts(ROOT)).toString().trim();
   if (!diff) {
     // Legitimate: a derived file that is already correct is rewritten
     // byte-identically and therefore has nothing to commit.
@@ -109,27 +112,57 @@ function gitCommit(message, paths) {
 
   // COMMIT BEFORE MERGE — merging over uncommitted changes fails outright when
   // concurrent pushes touch the same files.
-  execSync(`git commit -q -m "${message}"`, { cwd: ROOT, stdio: 'pipe' });
+  execSync(`git commit -q -m "${message}"`, GX.gitOpts(ROOT));
 
+  // T104 — fetch, merge and push were one try block. That could not name which
+  // operation failed, so a 10-minute STALL in fetch and a lost race on push produced
+  // the same line. They are split here, as nightly-crawl.js and discover-fixtures.js
+  // already do, because "report a STALL separately from contention" is not possible
+  // otherwise. The merge is deliberately NOT retried: a merge that fails is not
+  // contention, and retrying it over a wedged index achieves nothing.
+  const stalls = GX.makeStallTracker();   // caps CONSECUTIVE timeout kills at 3
   for (let attempt = 1; attempt <= PUSH_ATTEMPTS; attempt++) {
     // Clear any wedged MERGE_HEAD before each attempt; a no-op when not mid-merge.
-    try { execSync('git merge --abort', { cwd: ROOT, stdio: 'pipe' }); } catch {}
+    try { execSync('git merge --abort', GX.gitOpts(ROOT)); } catch {}
+
     try {
-      execSync('git fetch origin main', { cwd: ROOT, stdio: 'pipe' });
-      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { cwd: ROOT, stdio: 'pipe' });
-      execSync('git push origin main', { cwd: ROOT, stdio: 'pipe' });
+      execSync('git fetch origin main', GX.gitOpts(ROOT));
+      stalls.note('ok');
+    } catch (e) {
+      // Classify BEFORE reading stderr: a timeout-killed child carries none, so it
+      // would otherwise be filed as contention it never ran.
+      const kind = GX.classifyGitError(e);
+      const st = stalls.note(kind);
+      if (kind === 'fatal') throw new Error(GX.fatalMessage('fetch', e));
+      if (st.exhausted) throw new Error(GX.stallExhaustedMessage('fetch', st));
+      if (attempt === PUSH_ATTEMPTS) throw new Error(GX.attemptsExhaustedMessage('fetch', PUSH_ATTEMPTS, e));
+      const wait = GX.backoffSeconds(true);
+      console.log(GX.retryMessage('fetch', e, attempt, PUSH_ATTEMPTS, wait, st));
+      try { execSync(`sleep ${wait}`, GX.sleepOpts(wait)); } catch {}
+      continue;
+    }
+
+    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', GX.gitOpts(ROOT));
+
+    try {
+      execSync('git push origin main', GX.gitOpts(ROOT));
       console.log(`  ✔ ${message}${attempt > 1 ? ` (push attempt ${attempt})` : ''}`);
       return;
     } catch (e) {
-      if (attempt === PUSH_ATTEMPTS) {
-        throw new Error(`push failed after ${PUSH_ATTEMPTS} attempts: ${e.message.split('\n')[0]}`);
-      }
+      const kind = GX.classifyGitError(e);
+      const st = stalls.note(kind);
+      if (kind === 'fatal') throw new Error(GX.fatalMessage('push', e));
+      if (st.exhausted) throw new Error(GX.stallExhaustedMessage('push', st));
+      if (attempt === PUSH_ATTEMPTS) throw new Error(GX.attemptsExhaustedMessage('push', PUSH_ATTEMPTS, e));
       // Pure random jitter, not linear/exponential — decorrelates concurrent writers.
-      const wait = 1 + Math.floor(Math.random() * 91);
-      console.log(`  … push attempt ${attempt} failed, retrying in ${wait}s`);
-      try { execSync(`sleep ${wait}`, { stdio: 'pipe' }); } catch {}
+      const wait = GX.backoffSeconds(true);
+      console.log(GX.retryMessage('push', e, attempt, PUSH_ATTEMPTS, wait, st));
+      try { execSync(`sleep ${wait}`, GX.sleepOpts(wait)); } catch {}
     }
   }
+  // Unreachable: every exit above throws or returns. Kept so a future edit that
+  // removes a throw cannot fall out of the loop reporting success.
+  throw new Error(`push failed after ${PUSH_ATTEMPTS} attempts (loop fell through)`);
 }
 
 function insertTop(arr, entry, sortKey = 'v') {

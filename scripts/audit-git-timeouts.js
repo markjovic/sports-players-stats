@@ -219,20 +219,40 @@ function verifiedHelperFactories(dir) {
 
 /**
  * The local names through which this file reaches the helper.
- * Handles `const GX = require('./lib/git-exec.cjs')` and
- * `const { gitOpts } = require('./lib/git-exec.cjs')`.
+ *
+ * Handles BOTH module systems, because this repository has both:
+ *   const GX = require('./lib/git-exec.cjs')        CJS namespace
+ *   const { gitOpts } = require('./lib/git-exec.cjs')   CJS destructured
+ *   import GX from './lib/git-exec.cjs'             ESM default (build-records.js)
+ *   import * as GX from './lib/git-exec.cjs'        ESM namespace
+ *   import { gitOpts } from './lib/git-exec.cjs'    ESM named
+ *
+ * ⚠ The first version read `require` only. build-records.js is ESM, so the first
+ * swept builder measured as ZERO progress — the second time this tool under-reported
+ * the sweep it is checking. Both failures were caught by comparing the count after a
+ * single file instead of after a batch; a tool that must track the fix it measures
+ * will keep needing that check, so keep making it.
  */
 function helperBindings(src) {
   const ns = new Set();
   const direct = new Set();
-  const reNs = /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*require\(\s*['"][^'"]*lib\/git-exec\.cjs['"]\s*\)/g;
+  const HELPER = "['\"][^'\"]*lib\\/git-exec\\.cjs['\"]";
   let m;
-  while ((m = reNs.exec(src))) ns.add(m[1]);
-  const reDe = /\b(?:const|let|var)\s*\{([^}]*)\}\s*=\s*require\(\s*['"][^'"]*lib\/git-exec\.cjs['"]\s*\)/g;
-  while ((m = reDe.exec(src))) {
-    for (const part of m[1].split(',')) {
-      const t = part.split(':').pop().trim();
-      if (t) direct.add(t);
+
+  const reReqNs = new RegExp('\\b(?:const|let|var)\\s+([A-Za-z_$][\\w$]*)\\s*=\\s*require\\(\\s*' + HELPER + '\\s*\\)', 'g');
+  while ((m = reReqNs.exec(src))) ns.add(m[1]);
+
+  const reImpNs = new RegExp('\\bimport\\s+(?:\\*\\s+as\\s+)?([A-Za-z_$][\\w$]*)\\s*(?:,\\s*\\{[^}]*\\}\\s*)?from\\s*' + HELPER, 'g');
+  while ((m = reImpNs.exec(src))) ns.add(m[1]);
+
+  const reReqDe = new RegExp('\\b(?:const|let|var)\\s*\\{([^}]*)\\}\\s*=\\s*require\\(\\s*' + HELPER + '\\s*\\)', 'g');
+  const reImpDe = new RegExp('\\bimport\\s*(?:[A-Za-z_$][\\w$]*\\s*,\\s*)?\\{([^}]*)\\}\\s*from\\s*' + HELPER, 'g');
+  for (const re of [reReqDe, reImpDe]) {
+    while ((m = re.exec(src))) {
+      for (const part of m[1].split(',')) {
+        const t = part.split(/\sas\s|:/).pop().trim();
+        if (t) direct.add(t);
+      }
     }
   }
   return { ns, direct };

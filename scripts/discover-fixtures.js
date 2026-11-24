@@ -82,6 +82,19 @@ const EMIT_PATH  = typeof ARGS.emit  === 'string' ? ARGS.emit  : null;
 const APPLY_PATH = typeof ARGS.apply === 'string' ? ARGS.apply : null;
 const CHANGESET_V = 1;
 
+// ⚠️ THE SWEEP RUNS WITHIN MINUTES OF A HARD CEILING AND THE CHANGESET WAS
+// ALL-OR-NOTHING. A GitHub-hosted job is killed at 6 hours and cannot be given more;
+// the 2026-11-10 sweep took 5h 50m and the 2026-11-22 one 5h 55m. Before the split,
+// a killed run had still committed its progress every 10 seasons and the next run
+// resumed. Emitting only at the end threw that away: a sweep killed at 5h 59m would
+// have handed over NOTHING and lost six hours of reads.
+// So the changeset is checkpointed on the same cadence the commits used to be, by
+// overwriting it in place. `if: always()` on the upload step carries whatever exists
+// when the job is killed, `completed: false` makes the apply job SAVE the checkpoint
+// instead of clearing it, and the next run resumes from there.
+// --emit-every=0 writes only at the end (the pre-2026-11-24 behaviour).
+const EMIT_EVERY = parseInt(ARGS['emit-every'] === undefined ? '10' : ARGS['emit-every'], 10);
+
 if (ARGS.emit === true || ARGS.apply === true) {
   console.error('--emit and --apply take a file path: --emit=/path/to/changeset.json');
   process.exit(1);
@@ -1254,11 +1267,22 @@ function writeStaleGrades(staleGradeSeasons, scannedSeasonIds, seasonsProcessed)
 
 // ─── --emit / --apply ────────────────────────────────────────────────────────
 
-function writeChangeset(file, cs) {
+function writeChangeset(file, cs, opts) {
   const dir = path.dirname(file);
   if (dir && dir !== '.' && !fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(file, JSON.stringify(cs));
+  // Write-then-rename: a checkpoint overwrites the file the upload step will take, and
+  // a job killed PART WAY THROUGH that write would hand over a truncated changeset.
+  // The apply job would refuse it (it will not parse), but refusing is a lost run —
+  // rename is atomic, so what is on disk is always a whole changeset.
+  const tmp = `${file}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(cs));
+  fs.renameSync(tmp, file);
   const bytes = fs.statSync(file).size;
+  if (opts && opts.brief) {
+    console.log(`  📦 changeset checkpointed — ${Object.keys(cs.seasons).length} season file(s), `
+      + `${cs.gameCount} game entr(ies), ${bytes.toLocaleString()} bytes, ${cs.progressDone.length} season(s) done`);
+    return;
+  }
   console.log(`\n  📦 changeset written: ${file}`);
   console.log(`     ${Object.keys(cs.seasons).length} season file(s), ${cs.gameCount} game entr(ies), ${cs.venues.length} venue/court pair(s), ${bytes.toLocaleString()} bytes`);
   console.log(`     progress: ${cs.completed ? 'run COMPLETED — the apply job clears the checkpoint' : `${cs.progressDone.length} season(s) done — the apply job saves the checkpoint`}`);
@@ -1378,6 +1402,37 @@ async function main() {
   // repository-wide and merges against it: a season this run did not look at
   // keeps whatever a previous run recorded. See the write block at the bottom.
   const scannedSeasonIds = new Set();
+
+  // The changeset as it stands RIGHT NOW. `stillTransient` cannot be read from here —
+  // it is declared below with `let` and runPass is called in its initialiser, so it is
+  // in the temporal dead zone — which is why the transient ids are a parameter.
+  function snapshotChangeset(transientIds, completed) {
+    const seasonsOut = {}; let gameCount = 0;
+    for (const [sid, m] of _pendingFixtures) {
+      const o = {};
+      // JSON.stringify drops undefined, which is exactly the contract: the changeset
+      // carries the fields PlayHQ ANSWERED and no others.
+      for (const [gameId, fresh] of m) { o[gameId] = fresh; gameCount++; }
+      seasonsOut[sid] = o;
+    }
+    return {
+      v: CHANGESET_V, tenant: TENANT, mode: MODE, scope: scopeLabel(),
+      startedAt: new Date(RUN_T0).toISOString(), finishedAt: new Date().toISOString(),
+      message: `Fixture discovery ${completed ? 'complete' : '(PARTIAL — sweep did not finish)'}: `
+             + `${seasonsProcessed} seasons, ${totalAdded.toLocaleString()} new games`,
+      seasons: seasonsOut, gameCount,
+      venues: _pendingVenues,
+      progressDone: [...doneSeasonsSet],
+      completed,
+      zeroTeam: zeroTeamSeasons,
+      staleGrades: staleGradeSeasons,
+      scanned: [...scannedSeasonIds],
+      transient: transientIds,
+      totals: { seasons: seasonsProcessed, teams: totalTeams, added: totalAdded,
+                updated: totalUpdated, refusedTeams: totalRefusedTeams,
+                blocks: _blockEvents, refused403: _refused403, gaveUp: _gaveUp },
+    };
+  }
 
   // Sweep one season. Returns 'ok' | 'zero-team' | 'transient'.
   // TRANSIENT means every enumeration call for the season returned null — that is an API
@@ -1505,12 +1560,19 @@ async function main() {
       doneSeasonsSet.add(season.id);
       saveProgress(doneSeasonsSet);
 
-      if (sinceLastCommit >= 10) {
-        const gf = flushGameFiles();
-        const vf = flushVenueShards();
-        if (!DRY_RUN) { try { const { flushLookupShards } = require('./team-lookup-utils'); flushLookupShards(); } catch (e) {} }
-        console.log(`\n  💾 Flushed ${gf} game files, ${vf} venue shards — committing...`);
-        gitCommitPush(`Fixture discovery: ${seasonsProcessed} seasons, +${totalAdded} games`);
+      const every = EMIT_PATH ? EMIT_EVERY : 10;
+      if (every > 0 && sinceLastCommit >= every) {
+        if (EMIT_PATH) {
+          // No flush, no commit — just make sure what has been found so far is on
+          // disk where `if: always()` can upload it if this job is killed.
+          writeChangeset(EMIT_PATH, snapshotChangeset([], false), { brief: true });
+        } else {
+          const gf = flushGameFiles();
+          const vf = flushVenueShards();
+          if (!DRY_RUN) { try { const { flushLookupShards } = require('./team-lookup-utils'); flushLookupShards(); } catch (e) {} }
+          console.log(`\n  💾 Flushed ${gf} game files, ${vf} venue shards — committing...`);
+          gitCommitPush(`Fixture discovery: ${seasonsProcessed} seasons, +${totalAdded} games`);
+        }
         sinceLastCommit = 0;
       }
     }
@@ -1626,30 +1688,7 @@ async function main() {
   const message = `Fixture discovery complete: ${seasonsProcessed} seasons, ${totalAdded.toLocaleString()} new games`;
 
   if (EMIT_PATH) {
-    const seasonsOut = {}; let gameCount = 0;
-    for (const [sid, m] of _pendingFixtures) {
-      const o = {};
-      // JSON.stringify drops undefined, which is exactly the contract: the changeset
-      // carries the fields PlayHQ ANSWERED and no others.
-      for (const [gameId, fresh] of m) { o[gameId] = fresh; gameCount++; }
-      seasonsOut[sid] = o;
-    }
-    writeChangeset(EMIT_PATH, {
-      v: CHANGESET_V, tenant: TENANT, mode: MODE, scope: scopeLabel(),
-      startedAt: new Date(RUN_T0).toISOString(), finishedAt: new Date().toISOString(),
-      message,
-      seasons: seasonsOut, gameCount,
-      venues: _pendingVenues,
-      progressDone: [...doneSeasonsSet],
-      completed: stillTransient.length === 0,
-      zeroTeam: zeroTeamSeasons,
-      staleGrades: staleGradeSeasons,
-      scanned: [...scannedSeasonIds],
-      transient: stillTransient.map(x => x.id),
-      totals: { seasons: seasonsProcessed, teams: totalTeams, added: totalAdded,
-                updated: totalUpdated, refusedTeams: totalRefusedTeams,
-                blocks: _blockEvents, refused403: _refused403, gaveUp: _gaveUp },
-    });
+    writeChangeset(EMIT_PATH, snapshotChangeset(stillTransient.map(x => x.id), stillTransient.length === 0));
   } else {
     clearProgress();
     gitCommitPush(message);
