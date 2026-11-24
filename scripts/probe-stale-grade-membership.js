@@ -76,9 +76,29 @@ const NO_PLAYHQ = args.includes('--no-playhq');
 // A NULL from any live grade kills the signal. 0 disables the pass entirely.
 const NULL_CONTROL = Math.max(0, Number(arg('null-control', '0')) || 0);
 const LIVE_DAYS    = Math.max(1, Number(arg('live-days', '14')) || 14);
+// ⚠ --seasons=all | a,b,c : THE SWEEP. ADDED 2026-11-25, and it exists because
+// of a correction from Mark, not a finding of mine.
+//
+// The 2026-11-24 run found 3 grades in 3d25b666 absent from DiscoverSeason. Two
+// were regrade residue. The third, fb2c151b "Friday U13 Boys E", was 12 games,
+// ALL PLAYED, 0 unplayed — a COMPLETED grade that PlayHQ has dropped from the
+// season list. Competitions hide completed grading rounds, and showing them is a
+// major reason StatTrack exists. "Absent from DiscoverSeason" therefore does NOT
+// mean "regraded away"; it means PlayHQ will not serve this grade again, and the
+// data we hold may be the only copy.
+//
+// So the sweep classifies every dead grade by a LOCAL fact that cannot be got
+// wrong by an endpoint:
+//   COMPLETED-HIDDEN — 0 unplayed games. Pure played history. ⚠ NEVER TOUCH.
+//   RESIDUE          — holds unplayed fixtures. Only these can be stale.
+// One DiscoverSeason call per season. A season whose call FAILS is counted and
+// named, never folded in with the clean ones.
+const SWEEP_RAW = arg('seasons', '');
+const SWEEP     = SWEEP_RAW ? SWEEP_RAW.split(',').map(s => s.trim()).filter(Boolean) : [];
+const SLEEP_MS  = Math.max(0, Number(arg('sleep-ms', '250')) || 0);
 const GAMES_DIR = path.join(ROOT, 'games', 'bv');
 
-if (!SEASON) { console.error('--season=<sid> is required'); process.exit(2); }
+if (!SEASON && !SWEEP.length) { console.error('--season=<sid> is required (or --seasons=all)'); process.exit(2); }
 
 // sideIds and isPlayedGame come from the shared lib — one predicate, never a
 // second copy (T103/T105).
@@ -352,6 +372,150 @@ async function ladderTeams(gid) {
   return { name: g.name || null, pools: pools.length, ids };
 }
 
+// ONE definition of the per-grade arithmetic, used by BOTH the single-season
+// path and the sweep. Two copies of this would be the 47-vs-52 defect again.
+function buildByGrade(games) {
+  const byGrade = new Map();                 // gid -> grade entry
+  const lastPlayed = new Map();              // tid -> { d, t, key, gid }
+  for (const id of Object.keys(games)) {
+    const g = games[id];
+    if (!g || !g.gid) continue;
+    if (!byGrade.has(g.gid)) byGrade.set(g.gid, { gn: g.gn || null, future: new Set(), control: new Set(), total: 0, lastPlayedHere: null, played: 0, unplayedFuture: 0, unplayedPast: 0, unplayedUndated: 0, unplayedTids: new Set() });
+    const e = byGrade.get(g.gid);
+    if (g.gn && !e.gn) e.gn = g.gn;
+    e.total++;
+    const played = isPlayedGame(g);
+    // Most recent PLAYED date in this grade — the test for "this grade is live
+    // right now", used only by the --null-control pass.
+    if (played && g.d && (!e.lastPlayedHere || g.d > e.lastPlayedHere)) e.lastPlayedHere = g.d;
+    // The split that sizes any dead-grade rule. A PLAYED game in a dead grade is
+    // real history and is not residue; only the unplayed fixtures are. Counted
+    // locally — this costs no API call and is right whatever PlayHQ says.
+    if (played) e.played++;
+    else {
+      if (!g.d) e.unplayedUndated++;
+      else if (g.d >= TODAY) e.unplayedFuture++;
+      else e.unplayedPast++;
+      for (const tid of sideIds(g)) e.unplayedTids.add(tid);
+    }
+    for (const tid of sideIds(g)) {
+      if (!played && g.d && g.d >= TODAY) e.future.add(tid);
+      if (played && g.d) {
+        const prev = lastPlayed.get(tid);
+        const cur = { d: g.d, t: g.t || '', key: id, gid: g.gid };
+        if (!prev || cur.d > prev.d || (cur.d === prev.d && cur.t > prev.t) || (cur.d === prev.d && cur.t === prev.t && cur.key > prev.key)) {
+          lastPlayed.set(tid, cur);
+        }
+      }
+    }
+  }
+  for (const [tid, lp] of lastPlayed) {
+    const e = byGrade.get(lp.gid);
+    if (e) e.control.add(tid);
+  }
+  return { byGrade, lastPlayed };
+}
+
+// ─── the sweep ───────────────────────────────────────────────────────────────
+//
+// ⚠⚠ THE CLASSIFICATION IS THE POINT, NOT THE COUNT. A grade absent from
+// DiscoverSeason is one of two completely different things, and only a LOCAL
+// fact separates them:
+//
+//   COMPLETED-HIDDEN — the grade holds NO unplayed game. It is finished history
+//                      that PlayHQ has stopped serving. Competitions do this to
+//                      completed grading rounds. Showing them is a reason
+//                      StatTrack exists, and the copy we hold may be the only
+//                      one. NOTHING may ever be built that touches these.
+//   RESIDUE          — the grade holds unplayed fixtures. Only these can be
+//                      stale, and only these are category 2.
+//
+// The split is computed from games/bv, so no endpoint can get it wrong. A season
+// whose DiscoverSeason call FAILS is counted and named separately — a failed
+// read is not a season with no dead grades, and must never be added to one.
+async function sweepSeasons(list) {
+  console.log('\n' + '═'.repeat(78));
+  console.log(`  SWEEP — dead grades across ${list.length} season(s), ONE DiscoverSeason call each`);
+  console.log('─'.repeat(78));
+  console.log('  COMPLETED-HIDDEN = 0 unplayed games. Finished history PlayHQ no longer serves.');
+  console.log('                     ⚠ This is the data StatTrack exists to keep. Never touch it.');
+  console.log('  RESIDUE          = holds unplayed fixtures. Only these are category 2.');
+  console.log(`  pacing: ${SLEEP_MS}ms between seasons`);
+
+  let okN = 0, gradesHeld = 0;
+  const failed = [];
+  const withDead = [];
+  let chC = 0, chPlayed = 0, resC = 0, resUnplayed = 0, resFuture = 0;
+  const resTeams = new Set();
+
+  for (let i = 0; i < list.length; i++) {
+    const sid = list[i];
+    if (i && SLEEP_MS) await sleep(SLEEP_MS);
+    if (i && i % 50 === 0) console.log(`  … ${i} of ${list.length} season(s) scanned`);
+    let games;
+    try { games = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, `${sid}.json`), 'utf8')).games || {}; }
+    catch (e) { failed.push({ sid, err: 'local read: ' + e.message }); continue; }
+    const { byGrade } = buildByGrade(games);
+    const S = await seasonGradeIds(sid);
+    if (S.err) { failed.push({ sid, err: S.err }); continue; }
+    okN++; gradesHeld += byGrade.size;
+    const dead = [];
+    for (const [gid, e] of byGrade) {
+      if (S.ids.has(gid)) continue;
+      const un = e.unplayedFuture + e.unplayedPast + e.unplayedUndated;
+      const cls = un === 0 ? 'COMPLETED-HIDDEN' : 'RESIDUE';
+      if (cls === 'COMPLETED-HIDDEN') { chC++; chPlayed += e.played; }
+      else {
+        resC++; resUnplayed += un; resFuture += e.unplayedFuture;
+        for (const t of e.unplayedTids) resTeams.add(sid + ':' + t);
+      }
+      dead.push({ gid, gn: e.gn, cls, e, un });
+    }
+    if (dead.length) withDead.push({ sid, name: S.name, held: byGrade.size, listed: S.ids.size, dead });
+  }
+
+  const CAP = 40;
+  for (const s of withDead.slice(0, CAP)) {
+    console.log(`\n  SEASON ${s.sid} ${JSON.stringify(s.name)}  held ${s.held}, PlayHQ lists ${s.listed}, dead ${s.dead.length}`);
+    for (const d of s.dead) {
+      if (d.cls === 'COMPLETED-HIDDEN') {
+        console.log(`     ${d.gid}${d.gn ? ` "${d.gn}"` : ''}  COMPLETED-HIDDEN  ${d.e.total} game(s), all played   ⚠ never touch`);
+      } else {
+        console.log(`     ${d.gid}${d.gn ? ` "${d.gn}"` : ''}  RESIDUE  ${d.e.total} game(s): ${d.e.played} played,`
+                  + ` ${d.un} unplayed (${d.e.unplayedFuture} future-dated), ${d.e.unplayedTids.size} team(s)`);
+      }
+    }
+  }
+  if (withDead.length > CAP) console.log(`\n  … and ${withDead.length - CAP} further season(s) with dead grades (printing capped at ${CAP})`);
+
+  console.log('\n' + '═'.repeat(78));
+  console.log(`  seasons scanned OK : ${okN} of ${list.length}`);
+  if (failed.length) {
+    console.log(`  ⚠ seasons that could NOT be read : ${failed.length} — these are NOT seasons with no`);
+    console.log('    dead grades, and are counted in nothing below:');
+    for (const f of failed.slice(0, 20)) console.log(`       ${f.sid} : ${f.err}`);
+    if (failed.length > 20) console.log(`       … and ${failed.length - 20} more (printing capped at 20)`);
+  }
+  console.log(`  grades held across the ${okN} season(s) read : ${gradesHeld}`);
+  console.log(`  seasons holding at least one dead grade : ${withDead.length}`);
+  console.log(`  dead grades : ${chC + resC}`);
+  console.log(`     COMPLETED-HIDDEN : ${chC}  holding ${chPlayed} PLAYED game(s)`);
+  console.log(`     RESIDUE          : ${resC}  holding ${resUnplayed} unplayed (${resFuture} future-dated)`
+            + ` across ${resTeams.size} team-slot(s)`);
+  console.log('');
+  console.log('  HOW TO READ THIS — and do not read it any other way:');
+  console.log(`   · The ${chPlayed} PLAYED game(s) in COMPLETED-HIDDEN grades are finished history that`);
+  console.log('     PlayHQ will not serve again. Absence from the season list is NOT evidence that');
+  console.log('     anything is stale — it is the hiding behaviour, and the copy here may be the');
+  console.log('     only one. Any rule that acts on absence alone would destroy them.');
+  console.log(`   · Only the ${resUnplayed} unplayed fixture(s) in RESIDUE grades are category 2, and the`);
+  console.log('     split that separates them is local, not an endpoint answer.');
+  console.log('   · A dead grade is NOT refetchable: the nightly cannot fetch a grade PlayHQ does');
+  console.log('     not know, and a deletion comes only from a fetch that succeeded, so nothing in');
+  console.log('     either class can change by itself again.');
+  console.log('  Nothing was written. No flag, no deletion, no commit.');
+}
+
 // ─── the --null-control pass ─────────────────────────────────────────────────
 //
 // ⚠⚠ THE CONTROL IS THE POINT HERE TOO. `discoverGrade is NULL` LOOKS like a
@@ -509,48 +673,23 @@ async function nullControlPass(sid, byGrade, lastPlayed, interesting, nullGrades
   }
   console.log('─'.repeat(78));
 
-  const games = loadGames(SEASON);
+  if (SWEEP.length) {
+    let list = SWEEP;
+    if (SWEEP.length === 1 && SWEEP[0] === 'all') {
+      list = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.slice(0, -5)).sort();
+      console.log(`  --seasons=all → ${list.length} season file(s) in games/bv`);
+    }
+    if (NO_PLAYHQ) {
+      console.log('  ⚠ --no-playhq with --seasons contacts nothing, so no grade can be classified.');
+      console.log('  Nothing was written. No flag, no deletion, no commit.');
+      return;
+    }
+    await sweepSeasons(list);
+    return;
+  }
 
-  // Per grade: teams holding a FUTURE unplayed fixture (the suspects), and teams
-  // whose LAST PLAYED game is in this grade (the control).
-  const byGrade = new Map();                 // gid -> { gn, future:Set, lastPlayedHere:Set }
-  const lastPlayed = new Map();              // tid -> { d, t, key, gid }
-  for (const id of Object.keys(games)) {
-    const g = games[id];
-    if (!g || !g.gid) continue;
-    if (!byGrade.has(g.gid)) byGrade.set(g.gid, { gn: g.gn || null, future: new Set(), control: new Set(), total: 0, lastPlayedHere: null, played: 0, unplayedFuture: 0, unplayedPast: 0, unplayedUndated: 0, unplayedTids: new Set() });
-    const e = byGrade.get(g.gid);
-    if (g.gn && !e.gn) e.gn = g.gn;
-    e.total++;
-    const played = isPlayedGame(g);
-    // Most recent PLAYED date in this grade — the test for "this grade is live
-    // right now", used only by the --null-control pass.
-    if (played && g.d && (!e.lastPlayedHere || g.d > e.lastPlayedHere)) e.lastPlayedHere = g.d;
-    // The split that sizes any dead-grade rule. A PLAYED game in a dead grade is
-    // real history and is not residue; only the unplayed fixtures are. Counted
-    // locally — this costs no API call and is right whatever PlayHQ says.
-    if (played) e.played++;
-    else {
-      if (!g.d) e.unplayedUndated++;
-      else if (g.d >= TODAY) e.unplayedFuture++;
-      else e.unplayedPast++;
-      for (const tid of sideIds(g)) e.unplayedTids.add(tid);
-    }
-    for (const tid of sideIds(g)) {
-      if (!played && g.d && g.d >= TODAY) e.future.add(tid);
-      if (played && g.d) {
-        const prev = lastPlayed.get(tid);
-        const cur = { d: g.d, t: g.t || '', key: id, gid: g.gid };
-        if (!prev || cur.d > prev.d || (cur.d === prev.d && cur.t > prev.t) || (cur.d === prev.d && cur.t === prev.t && cur.key > prev.key)) {
-          lastPlayed.set(tid, cur);
-        }
-      }
-    }
-  }
-  for (const [tid, lp] of lastPlayed) {
-    const e = byGrade.get(lp.gid);
-    if (e) e.control.add(tid);
-  }
+  const games = loadGames(SEASON);
+  const { byGrade, lastPlayed } = buildByGrade(games);
 
   // A grade is interesting when it holds future fixtures for a team whose LAST
   // PLAYED game was in a DIFFERENT grade. That is the category-2 population.
