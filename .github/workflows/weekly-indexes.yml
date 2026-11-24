@@ -1,6 +1,37 @@
 # .github/workflows/weekly-indexes.yml
 name: Weekly Indexes
 
+# ⚠️ 2026-11-24 — THE WORKFLOW-LEVEL `data-write` BLOCK IS GONE, ON PURPOSE.
+#
+# It held the lock from the first job to the last: 09:23 → 16:05 on 2026-11-22,
+# 6h 42m, of which the fixture sweep alone was ~5h 55m and the four build jobs ~47m.
+# A workflow-level group is ONE acquisition for the whole run (the T19 shape), which
+# is why this was built that way — but it also means six hours of PlayHQ reads that
+# touch nothing hold the lock the whole time, and every other writer queues behind
+# them. Measured 2026-11-24 on the sibling workflow: the commit half needs the lock
+# for 6m 32s, and 6m 13s of that is `actions/checkout`.
+#
+# So the sweep now runs with NO lock and emits a changeset, and each job that
+# actually writes takes `data-write` at JOB level and releases it when it finishes.
+#
+# ⚠️ THE TRADE, STATED. Four acquisitions instead of one. Between one job releasing
+# and the next asking, another workflow can take the lock, and GitHub keeps only ONE
+# pending run per group — so a build job can be evicted mid-chain where previously
+# the whole run held one slot. The gaps are seconds and the `needs:` guards below
+# stop a cancelled job from being treated as a successful one, so the failure is a
+# chain that stops and is re-runnable, not a partial write that looks complete. It is
+# a real new failure mode and it is the price of not holding the lock for six hours.
+#
+# ⚠️ Replaying a changeset hours after it was read is only safe because
+# `flushGameFiles` re-reads each season file and merges per game id, and the
+# changeset carries the fields PlayHQ ANSWERED rather than whole rows. See the note
+# at `_pendingFixtures` in discover-fixtures.js, and scripts/tests/test-flush-merge.js
+# and test-emit-apply.js.
+#
+# ⚠️ Directive 13 / T27: every input now reaches bash through `env:`. They used to be
+# interpolated straight into `run:`, which splices the dispatcher's text into the
+# script the runner executes.
+
 on:
   schedule:
     - cron: '0 2 * * 0'   # 12:00 AEST Sunday (02:00 UTC Sunday)
@@ -17,23 +48,18 @@ on:
         default: '20'
         type: string
 
-concurrency:
-  group: data-write
-  cancel-in-progress: false
-
 permissions:
   contents: write
   actions: write   # fold-backstop job uses `gh workflow run`
 
 jobs:
-  discover-fixtures:
+  # ── Phase 1 · READ. No lock. ────────────────────────────────────────────────
+  fixtures-sweep:
     # Fetches the FULL round list — including FUTURE fixtures — for active seasons
     # via discoverTeamFixture. nightly-crawl only fetches the current + previous
     # rounds, so without this nothing ever ingests future fixtures and StatTrack can
     # only show ~1-2 weeks ahead. Runs FIRST (the build jobs below `needs` it) so
-    # this run's indexes build on the refreshed game data. discover-fixtures.js now
-    # uses the proven fetch + merge -X ours + 60-attempt push, so it's safe under
-    # contention too.
+    # this run's indexes build on the refreshed game data.
     # NO setup-node — this job fetches api.playhq.com; setup-node changes the
     # runner's outbound fingerprint and causes CloudFront 403s.
     #
@@ -42,18 +68,85 @@ jobs:
     # "TeamFixture: HTTP 403" from team 240 onward, retried four times each at five
     # seconds, for every remaining team.
     #
-    # The cause is not a block, a fingerprint or an IP range — it is a REQUEST BUDGET
-    # on the session cookie, measured at roughly 290 calls (clean to team 280, 403;
-    # recovered; clean again to 580, 403). discover-fixtures.js now rotates the
-    # session proactively at 250 calls, which is granted instantly, where a refresh
-    # requested AFTER the 403 sits inside a penalty window and costs two minutes of
-    # backoff.
+    # The cause is not a block, a fingerprint or an IP range — it is a per-IP request
+    # RATE. Measured 2026-11-24 across 387 blocks in two full runs: the WAF admits
+    # roughly 200 requests then refuses for 90s, every cycle, median 108s apart.
+    # discover-fixtures.js rotates the session proactively, which does not prevent
+    # this and occasionally causes it — a refused bootstrap raised 14 of 191 blocks on
+    # 2026-11-10. 250 is tuned for ~20 calls in flight; at 40 the overshoot is twice
+    # as large. Raising this needs a measurement, not an assumption.
     #
-    # 250 is tuned for ~20 calls in flight. At 40 the overshoot is twice as large and
-    # more of them land past the line, which is the condition that produced the
-    # four-hour run. Raising this needs a measurement, not an assumption.
+    # ⚠️ NOT in `data-write`. This job writes nothing to the tree and commits nothing.
+    # The group below only stops two sweeps of this workflow overlapping, which the
+    # workflow-level lock used to prevent as a side effect.
     runs-on: ubuntu-latest
     timeout-minutes: 360
+    concurrency:
+      group: weekly-indexes-sweep
+      cancel-in-progress: false
+    outputs:
+      changeset: ${{ steps.cs.outputs.found }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Discover fixtures (current seasons — full round list incl. future)
+        env:
+          IN_CONCURRENCY: ${{ inputs.fixtures_concurrency }}
+        run: |
+          set -euo pipefail
+          CS="$RUNNER_TEMP/weekly-fixture-changeset.json"
+          CONC="${IN_CONCURRENCY:-20}"
+          case "$CONC" in ''|*[!0-9]*) echo "::error::fixtures_concurrency must be a number"; exit 1;; esac
+          # --dry-run is deliberately NOT passed: in emit mode nothing is written or
+          # committed either way, and the apply job below is skipped on a dry run.
+          echo "args: --current-only --concurrency=$CONC --emit=$CS"
+          node scripts/discover-fixtures.js --current-only "--concurrency=$CONC" "--emit=$CS"
+
+      # A changeset that is not there must not look like one that is empty.
+      - name: Changeset present?
+        id: cs
+        if: always()
+        run: |
+          set -euo pipefail
+          if [ -f "$RUNNER_TEMP/weekly-fixture-changeset.json" ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            ls -l "$RUNNER_TEMP/weekly-fixture-changeset.json"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::no changeset was written — nothing to apply"
+          fi
+
+      # always(): a sweep that fails on unreachable seasons still found real games in
+      # the seasons it did reach, and those must reach the repository.
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.cs.outputs.found == 'true'
+        with:
+          name: weekly-fixture-changeset
+          path: ${{ runner.temp }}/weekly-fixture-changeset.json
+          if-no-files-found: error
+          retention-days: 7
+
+  # ── Phase 2 · WRITE. Each of these takes the lock and gives it back. ────────
+  apply-fixtures:
+    needs: [fixtures-sweep]
+    # ⚠️ THE MODE FLAGS MUST MATCH THE SWEEP'S. They decide the progress key, and the
+    # script REFUSES a changeset emitted under a different one rather than saving the
+    # wrong checkpoint.
+    if: >-
+      ${{ always()
+          && needs.fixtures-sweep.result != 'cancelled'
+          && needs.fixtures-sweep.result != 'skipped'
+          && needs.fixtures-sweep.outputs.changeset == 'true'
+          && !(inputs.dry_run == true || inputs.dry_run == 'true') }}
+    runs-on: ubuntu-latest
+    # Above the 60-attempt push-retry budget (T55), and far above the ~15s the apply
+    # itself took on 2026-11-24.
+    timeout-minutes: 150
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -63,17 +156,30 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-      - name: Discover fixtures (current seasons — full round list incl. future)
+      - uses: actions/download-artifact@v4
+        with:
+          name: weekly-fixture-changeset
+          path: ${{ runner.temp }}
+      - name: Apply and commit
         run: |
-          ARGS="--current-only --concurrency=${{ inputs.fixtures_concurrency || '20' }}"
-          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          node scripts/discover-fixtures.js $ARGS
+          set -euo pipefail
+          CS="$RUNNER_TEMP/weekly-fixture-changeset.json"
+          echo "args: --current-only --apply=$CS"
+          node scripts/discover-fixtures.js --current-only "--apply=$CS"
 
   team-stats:
-    needs: [discover-fixtures]
-    if: ${{ !cancelled() }}   # build even if fixture discovery failed — indexes fall back to existing games
+    # Was `needs: [discover-fixtures]`. Gating on apply-fixtures keeps the original
+    # ordering — this builds on the refreshed game data, not the pre-sweep data.
+    needs: [apply-fixtures]
+    # build even if fixture discovery failed OR was skipped — indexes fall back to
+    # existing games. `!cancelled()` is true for a skipped dependency, which is what
+    # makes a dry run and a changeset-less sweep both fall through correctly.
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     timeout-minutes: 360
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -84,56 +190,28 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - name: Build team stats
+        env:
+          IN_DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          ARGS="--active-only"
-          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          node scripts/build-team-stats.js $ARGS
-
-  player-games:
-    # 2026-08-13 — MOVED LAST, and this is the bug that cost 2026-08-13 entirely.
-    # build-player-games derives players' games[] ENTIRELY from p[] in games/bv, so
-    # it must run after everything that writes games/bv has finished. It previously
-    # ran in PARALLEL with discover-fixtures' 360-minute window and with the other
-    # two player-file writers, checking out its own snapshot at job start. Result:
-    # it derived from a partial view and reported 9,353 files updated, while the very
-    # same script run standalone afterwards updated 13,046 and correctly filled in a
-    # player who had 473 roster entries and a games[] of 30. Nothing was broken in
-    # the script, the resolver, the alias index or the game data — only the ordering.
-    # Anything added here that writes games/bv must be placed BEFORE this job.
-    needs: [team-stats, win-loss]
-    if: ${{ !cancelled() && needs.team-stats.result != 'cancelled' && needs.win-loss.result != 'cancelled' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          token: ${{ secrets.GITHUB_TOKEN }}
-      # NO actions/setup-node — repo-wide rule. Neither of these scripts fetches
-      # PlayHQ so it was harmless here, but it is one edit away from causing the
-      # CloudFront 403s documented for every other job, and the runner's
-      # preinstalled Node is what the rest of the pipeline uses.
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      - name: Build player games index
-        run: |
-          ARGS=""
-          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          node scripts/build-player-games.js $ARGS
+          set -euo pipefail
+          ARGS=(--active-only)
+          if [ "$IN_DRY_RUN" = "true" ]; then ARGS+=(--dry-run); fi
+          echo "args: ${ARGS[*]}"
+          node scripts/build-team-stats.js "${ARGS[@]}"
 
   win-loss:
     # 2026-08-13: serialised behind team-stats. These jobs all WRITE player files and
-    # all check out INDEPENDENTLY, and the workflow-level data-write group serialises
-    # this workflow against OTHER workflows — not its own jobs against each other
-    # (see the fold-diverged comment below, which says exactly that). Run in parallel
+    # all check out INDEPENDENTLY, and the data-write group serialises this workflow
+    # against OTHER workflows — not its own jobs against each other. Run in parallel
     # they each pushed with `merge -X ours`, i.e. "on conflict keep my copy", which is
-    # a lost-update path, not merely a staleness one.
+    # a lost-update path, not merely a staleness one. `needs` is what orders them.
     needs: [team-stats]
     if: ${{ !cancelled() && needs.team-stats.result != 'cancelled' }}
     runs-on: ubuntu-latest
     timeout-minutes: 360
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -149,6 +227,47 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - name: Build win-loss records (full)
         run: node scripts/build-win-loss.js
+
+  player-games:
+    # 2026-08-13 — MOVED LAST, and this is the bug that cost 2026-08-13 entirely.
+    # build-player-games derives players' games[] ENTIRELY from p[] in games/bv, so
+    # it must run after everything that writes games/bv has finished. It previously
+    # ran in PARALLEL with discover-fixtures' 360-minute window and with the other
+    # two player-file writers, checking out its own snapshot at job start. Result:
+    # it derived from a partial view and reported 9,353 files updated, while the very
+    # same script run standalone afterwards updated 13,046 and correctly filled in a
+    # player who had 473 roster entries and a games[] of 30. Nothing was broken in
+    # the script, the resolver, the alias index or the game data — only the ordering.
+    # Anything added here that writes games/bv must be placed BEFORE this job.
+    #
+    # ⚠️ 2026-11-24: the games/bv writer in this workflow is now `apply-fixtures`,
+    # which is two jobs above team-stats. The ordering is unchanged and still holds.
+    needs: [team-stats, win-loss]
+    if: ${{ !cancelled() && needs.team-stats.result != 'cancelled' && needs.win-loss.result != 'cancelled' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      # NO actions/setup-node — repo-wide rule.
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Build player games index
+        env:
+          IN_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          ARGS=()
+          if [ "$IN_DRY_RUN" = "true" ]; then ARGS+=(--dry-run); fi
+          echo "args: ${ARGS[@]+${ARGS[@]}}"
+          node scripts/build-player-games.js ${ARGS[@]+"${ARGS[@]}"}
 
   prune-credited:
     # Reconciles sports.Basketball.c and .x against games[], which build-player-games
@@ -173,8 +292,7 @@ jobs:
     # that sets it. actions/checkout with no ref pins to github.sha, frozen when the
     # run was triggered — so without it this job would read games[] as it stood
     # BEFORE player-games pushed, which is exactly the staleness it exists to fix,
-    # and it would silently prune almost nothing. See the note in player-games: the
-    # same question applies to that job's own view of discover-fixtures' pushes.
+    # and it would silently prune almost nothing.
     needs: [player-games]
     if: ${{ !cancelled() && needs.player-games.result != 'cancelled' }}
     runs-on: ubuntu-latest
@@ -183,6 +301,9 @@ jobs:
     # attempts of 1-91s jitter plus fetch/merge/push cycles each capped at 10 min by
     # the script's own git timeout. Same value as its sibling jobs.
     timeout-minutes: 360
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -196,14 +317,18 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
       - name: Prune credited snapshot
+        env:
+          IN_DRY_RUN: ${{ inputs.dry_run }}
         run: |
+          set -euo pipefail
           # The script is DRY RUN unless --apply is passed, so a dry run is the
           # absence of a flag rather than the presence of one. A schedule trigger
-          # receives no inputs (T27), so inputs.dry_run is empty there and this
+          # receives no inputs (T27), so IN_DRY_RUN is empty there and this
           # correctly resolves to --apply.
-          ARGS="--apply"
-          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS=""; fi
-          node --max-old-space-size=4096 scripts/prune-credited-snapshot.js $ARGS
+          ARGS=(--apply)
+          if [ "$IN_DRY_RUN" = "true" ]; then ARGS=(); fi
+          echo "args: ${ARGS[@]+${ARGS[@]}}"
+          node --max-old-space-size=4096 scripts/prune-credited-snapshot.js ${ARGS[@]+"${ARGS[@]}"}
 
   fold-diverged:
     # Backstop for the fold. The fetch-profile-stats matrix triggers the fold at
@@ -211,10 +336,10 @@ jobs:
     # separate dispatches — a single failed dispatch skips the fold for that cycle.
     # This weekly trigger sweeps up any diverged players that were missed. The fold
     # is idempotent (only touches apiId-bearing files), so a redundant run is a no-op.
-    # Gated behind the three player-writing jobs so it never races them on player
-    # files / the index (they share the workflow's data-write concurrency group, but
-    # within one workflow run jobs are otherwise parallel — `needs` serialises it).
-    needs: [player-games]   # 2026-08-13: player-games is now last in the chain, so this alone gates on all three
+    # Gated behind the player-writing jobs so it never races them — `needs` is what
+    # serialises it, not the lock. This job takes NO lock: it writes nothing and only
+    # dispatches a workflow that takes its own.
+    needs: [player-games]
     if: ${{ !cancelled() && inputs.dry_run != true }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -222,7 +347,8 @@ jobs:
       - name: Trigger fold of diverged players (apply)
         env:
           GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
+          GH_REPO:  ${{ github.repository }}
         run: |
           gh workflow run fold-diverged-players.yml \
-            --repo "${{ github.repository }}" \
+            --repo "$GH_REPO" \
             --field "mode=apply"
