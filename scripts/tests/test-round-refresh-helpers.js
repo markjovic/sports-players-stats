@@ -266,5 +266,78 @@ t('sideIds: prefers h over t1 when both present', RR.sideIds({h:'E1',t1:'E9',a:'
       { d:'2027-05-01', gid:'AR', h:'M1' }, idx, T) === null);
 }
 
+// ─── SAME-GRADE, SAME-ROUND DUPLICATES (added 2026-11-24) ───────────────────
+// The shape seen on B11 Spirit Magic 1's card: Round 4 v B11 E.Bees 3 on 30 Oct
+// TWICE, both in Friday U11 Boys D, one won 34-3 and one still UPCOMING. The
+// same-grade exclusion let it through; the round name is what identifies it.
+{
+  const T = '2026-11-24';
+  const dup = {
+    d1:{d:'2026-10-30',gid:'D',gn:'Friday U11 Boys D',rn:'Round 4',h:'SM1',a:'EB3',st:'UPCOMING'},
+    d2:{d:'2026-10-30',gid:'D',gn:'Friday U11 Boys D',rn:'Round 4',h:'SM1',a:'EB3',hs:34,as:3,st:'FINAL'},
+  };
+  let r = RR.computeSupersededFlags(dup, { today: T });
+  t('dup: same grade + same round + one played -> flagged', r.set.get('d1') === 'd2');
+  t('dup: only the unplayed one is flagged', r.set.size === 1);
+  t('dup: counted as reason round', r.reasons.round === 1 && r.reasons.grade === 0);
+
+  const idx = RR.playedGamesByTeamDay(dup);
+  t('dup: reason reported as round', RR.supersedingGameFor(dup, dup.d1, idx, T).reason === 'round');
+  t('dup: id-only wrapper agrees', RR.findSupersedingGame(dup, dup.d1, idx, T) === 'd2');
+
+  // ⚠ A TOURNAMENT DAY MUST NOT BE CAUGHT. Two games, one grade, one date,
+  // DIFFERENT rounds — the morning one played, the afternoon one not yet.
+  const tourney = {
+    t1:{d:'2026-10-30',gid:'D',rn:'Round 5',h:'SM1',a:'EB3',st:'UPCOMING'},
+    t2:{d:'2026-10-30',gid:'D',rn:'Round 4',h:'SM1',a:'WPS',hs:20,as:18,st:'FINAL'},
+  };
+  t('dup: different rounds same day NOT flagged', RR.computeSupersededFlags(tourney, { today: T }).set.size === 0);
+
+  // An absent round name can never match: a game with no rn cannot be scoped.
+  t('dup: no rn on the stale fixture -> not flagged', RR.computeSupersededFlags({
+      n1:{d:'2026-10-30',gid:'D',h:'SM1',a:'EB3',st:'UPCOMING'},
+      n2:{d:'2026-10-30',gid:'D',rn:'Round 4',h:'SM1',a:'EB3',hs:1,as:0,st:'FINAL'} }, { today: T }).set.size === 0);
+  t('dup: no rn on the played game -> not flagged', RR.computeSupersededFlags({
+      m1:{d:'2026-10-30',gid:'D',rn:'Round 4',h:'SM1',a:'EB3',st:'UPCOMING'},
+      m2:{d:'2026-10-30',gid:'D',h:'SM1',a:'EB3',hs:1,as:0,st:'FINAL'} }, { today: T }).set.size === 0);
+  t('dup: empty-string rn -> not flagged', RR.computeSupersededFlags({
+      e1:{d:'2026-10-30',gid:'D',rn:'',h:'SM1',a:'EB3',st:'UPCOMING'},
+      e2:{d:'2026-10-30',gid:'D',rn:'',h:'SM1',a:'EB3',hs:1,as:0,st:'FINAL'} }, { today: T }).set.size === 0);
+  t('dup: rn compared trimmed', RR.computeSupersededFlags({
+      w1:{d:'2026-10-30',gid:'D',rn:' Round 4 ',h:'SM1',a:'EB3',st:'UPCOMING'},
+      w2:{d:'2026-10-30',gid:'D',rn:'Round 4',h:'SM1',a:'EB3',hs:1,as:0,st:'FINAL'} }, { today: T }).set.size === 1);
+
+  // Both causes present: the regrade wins, and does so whatever the key order.
+  const both = {
+    s1:{d:'2026-11-13',gid:'D',rn:'Round 6',h:'SM1',a:'SEV2',st:'UPCOMING'},
+    pSame:{d:'2026-11-13',gid:'D',rn:'Round 6',h:'SM1',a:'EB3',hs:5,as:4,st:'FINAL'},
+    pDiff:{d:'2026-11-13',gid:'C',rn:'Round 6',h:'SM1',a:'WPS5',hs:46,as:29,st:'FINAL'},
+  };
+  t('dup: a different-grade match wins over a same-round one',
+    RR.computeSupersededFlags(both, { today: T }).set.get('s1') === 'pDiff');
+  const flipped = { s1:both.s1, pDiff:both.pDiff, pSame:both.pSame };
+  t('dup: precedence is order-independent',
+    RR.computeSupersededFlags(flipped, { today: T }).set.get('s1') === 'pDiff');
+  t('dup: and is counted as a grade cause, not a round one',
+    RR.computeSupersededFlags(both, { today: T }).reasons.grade === 1);
+
+  // The report keeps withPlayedElsewhere meaning DIFFERENT GRADE, and counts
+  // the duplicates separately, so a number reported for weeks does not change
+  // what it means.
+  const rep = RR.findStaleFixtureGrades(dup, { today: T }).find(x => x.gid === 'D');
+  t('dup: report counts it stale', rep && rep.stale === 1);
+  t('dup: report does NOT call it played-elsewhere', rep && rep.withPlayedElsewhere === 0);
+  t('dup: report counts it as same-round', rep && rep.withSameRoundPlayed === 1);
+  t('dup: example carries the reason', rep && rep.examples[0].reason === 'round');
+
+  // Clearing still applies to a round-cause flag.
+  const played = { d1:{ ...dup.d1, sup:'d2', hs:9, as:7, st:'FINAL' }, d2:dup.d2 };
+  t('dup: flag clears once the duplicate is itself played',
+    RR.computeSupersededFlags(played, { today: T }).clear.includes('d1'));
+  const gone = { d1:{ ...dup.d1, sup:'d2' } };
+  t('dup: flag clears when the played game is deleted',
+    RR.computeSupersededFlags(gone, { today: T }).clear.includes('d1'));
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail?1:0);
