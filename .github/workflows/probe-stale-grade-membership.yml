@@ -77,6 +77,16 @@ on:
         required: false
         default: '250'
         type: string
+      offset:
+        description: 'Sweep sharding — skip this many seasons (0 = start at the beginning)'
+        required: false
+        default: '0'
+        type: string
+      limit:
+        description: 'Sweep sharding — scan at most this many seasons (0 = no limit)'
+        required: false
+        default: '0'
+        type: string
       grades:
         description: 'How many grades to read the ladder for (one API call each)'
         required: false
@@ -104,7 +114,12 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # ⚠ 2026-11-25 — WAS 30, AND 30 KILLED A FULL SWEEP AT 1850 OF 3194 SEASONS.
+    # games/bv holds 3194 season files. At ~1s per season (250ms pacing plus
+    # ~720ms round trip, measured from that run) a whole sweep is ~50 minutes.
+    # This job takes NO lock and is in no concurrency group, so a long run blocks
+    # nothing — the only cost of a generous timeout is runner minutes.
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with:
@@ -120,6 +135,8 @@ jobs:
           IN_MODE:   ${{ inputs.mode }}
           IN_LIST:   ${{ inputs.season_list }}
           IN_SLEEP:  ${{ inputs.sleep_ms }}
+          IN_OFFSET: ${{ inputs.offset }}
+          IN_LIMIT:  ${{ inputs.limit }}
         run: |
           set -euo pipefail
           ARGS=( "--season=$IN_SEASON" "--grades=${IN_GRADES:-8}" )
@@ -137,12 +154,14 @@ jobs:
               ;;
             all-seasons)
               ARGS+=( "--seasons=all" "--sleep-ms=${IN_SLEEP:-250}" )
+              ARGS+=( "--offset=${IN_OFFSET:-0}" "--limit=${IN_LIMIT:-0}" )
               ;;
             season-list)
               if [ -z "${IN_LIST:-}" ]; then
                 echo "mode=season-list needs ids in the 'season_list' field." >&2; exit 2
               fi
               ARGS+=( "--seasons=$IN_LIST" "--sleep-ms=${IN_SLEEP:-250}" )
+              ARGS+=( "--offset=${IN_OFFSET:-0}" "--limit=${IN_LIMIT:-0}" )
               ;;
             *)
               echo "unknown mode: $IN_MODE" >&2; exit 2
