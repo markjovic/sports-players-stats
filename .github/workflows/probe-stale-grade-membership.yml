@@ -24,6 +24,18 @@ name: Probe Stale Grade Membership
 # which unambiguously belong. If the control teams are absent too, the ladder is
 # not a membership signal and nothing may be built on it.
 #
+# ⚠ 2026-11-25 — THE 2026-11-24 RESULT, and why null_control exists.
+# Control 10/10 in both grades that had one, so the ladder IS a membership signal.
+# But BOTH interpretable suspects were LISTED: PlayHQ still has them in the old
+# grade while serving the fixtures. Ladder absence is therefore not available as
+# a signal for them. 13 of the 15 suspects were in two grades that answered
+# `discoverGrade is NULL` — PlayHQ does not know the grade id at all, which is a
+# DIFFERENT answer from an empty ladder and from the August finding.
+# null_control measures whether NULL means anything, from two endpoints:
+# DiscoverSeason (one call, its control is the grades it does list) and
+# DiscoverGrade on N grades that are unambiguously live. A NULL from any live
+# grade kills it. Until that has been run, NULL is an observation, not evidence.
+#
 # --no-playhq does the LOCAL half only and contacts nothing: it reports how big
 # the population is without spending a PlayHQ run. Start there.
 #
@@ -46,6 +58,16 @@ on:
         required: false
         default: false
         type: boolean
+      null_control:
+        description: 'Control the NULL answer: probe N unambiguously LIVE grades (0 = off). Costs N+1 extra calls'
+        required: false
+        default: '0'
+        type: string
+      live_days:
+        description: 'A grade counts as LIVE if it has a PLAYED game within this many days'
+        required: false
+        default: '14'
+        type: string
 
 permissions:
   contents: read
@@ -64,9 +86,12 @@ jobs:
           IN_SEASON: ${{ inputs.season }}
           IN_GRADES: ${{ inputs.grades }}
           IN_NOPHQ:  ${{ inputs.no_playhq }}
+          IN_NULLC:  ${{ inputs.null_control }}
+          IN_LIVED:  ${{ inputs.live_days }}
         run: |
           set -euo pipefail
           ARGS=( "--season=$IN_SEASON" "--grades=${IN_GRADES:-8}" )
+          ARGS+=( "--null-control=${IN_NULLC:-0}" "--live-days=${IN_LIVED:-14}" )
           # T3 form: true for BOTH the boolean and the string shape.
           if [ "$IN_NOPHQ" = "true" ]; then ARGS+=( --no-playhq ); fi
           echo "args: ${ARGS[*]}"
