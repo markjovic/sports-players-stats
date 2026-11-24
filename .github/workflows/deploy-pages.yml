@@ -233,6 +233,24 @@ jobs:
           echo "::error::github-pages artifact never became visible to the Actions API after ~3.5 min — the upload step's own log will say whether it finalised."
           exit 1
 
+      # ⚠⚠ DO NOT "RE-RUN FAILED JOBS" ON THIS WORKFLOW. Measured 2026-11-24.
+      #
+      # A re-run re-executes the upload step, which puts a SECOND artifact named
+      # "github-pages" into the SAME run. deploy-pages then fails differently and
+      # permanently:
+      #
+      #   attempt 1:  Found 0 artifact(s)  — the metadata race described above
+      #   attempt 2:  Found 2 artifact(s)  — "Multiple artifacts named
+      #               github-pages were unexpectedly found ... Artifact count is 2"
+      #
+      # A third attempt makes it 3. The run cannot be recovered once this happens.
+      # THE RECOVERY IS A FRESH workflow_dispatch, which starts with no artifacts.
+      #
+      # ⚠ Note also what attempt 1 proved about the gate above: it reported
+      # "artifact visible to the API after 1 poll(s)" and deploy-pages STILL found
+      # 0. So REST visibility is not the precondition deploy-pages checks, and
+      # waiting longer on that endpoint will not fix it. Whatever the real fault
+      # is, the gate does not test for it.
       - name: Deploy to GitHub Pages
         id: deploy
         uses: actions/deploy-pages@v4

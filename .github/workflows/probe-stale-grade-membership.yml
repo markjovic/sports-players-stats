@@ -1,0 +1,73 @@
+# .github/workflows/probe-stale-grade-membership.yml
+name: Probe Stale Grade Membership
+
+# READ-ONLY. No writes, no commits, NO data-write lock — it cannot block anything.
+# One DiscoverGrade call per grade examined (default 8).
+#
+# THE QUESTION. The `sup` flag marks a stale fixture when the team has a PLAYED
+# game elsewhere that DAY, so it can never touch fixtures in the FUTURE. On
+# 2026-11-24 B11 Spirit Magic 1 had moved to BR by 20 Nov and still held grade-D
+# fixtures for Rounds 9-16 (Dec-Mar). Those inflate "still to play" and no
+# same-day rule can see them.
+#
+# The display pass that used to hide them inferred from shape — "last played grade
+# is BR, so the D fixtures are residue" — and was deleted on purpose. B11 Raptors
+# 1 shows why that is unsafe: B -> AR -> B, so leaving a grade does not mean not
+# returning.
+#
+# So this asks whether a NON-inferential signal exists: does PlayHQ drop a
+# regraded team from the old grade's LADDER while still serving its fixtures?
+#
+# ⚠ THE CONTROL IS THE POINT. "Absent" means nothing on its own — probe-grade-
+# ladder.js was written in August precisely because some grades return NO ladder
+# at all. So the probe also checks teams whose last PLAYED game is in that grade,
+# which unambiguously belong. If the control teams are absent too, the ladder is
+# not a membership signal and nothing may be built on it.
+#
+# --no-playhq does the LOCAL half only and contacts nothing: it reports how big
+# the population is without spending a PlayHQ run. Start there.
+#
+# NO actions/setup-node (this job fetches api.playhq.com — absolute rule).
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: 'Season id to probe (required)'
+        required: true
+        type: string
+      grades:
+        description: 'How many grades to read the ladder for (one API call each)'
+        required: false
+        default: '8'
+        type: string
+      no_playhq:
+        description: 'Local half only — report the population size and contact PlayHQ not at all'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Probe stale grade membership
+        env:
+          IN_SEASON: ${{ inputs.season }}
+          IN_GRADES: ${{ inputs.grades }}
+          IN_NOPHQ:  ${{ inputs.no_playhq }}
+        run: |
+          set -euo pipefail
+          ARGS=( "--season=$IN_SEASON" "--grades=${IN_GRADES:-8}" )
+          # T3 form: true for BOTH the boolean and the string shape.
+          if [ "$IN_NOPHQ" = "true" ]; then ARGS+=( --no-playhq ); fi
+          echo "args: ${ARGS[*]}"
+          node scripts/probe-stale-grade-membership.js "${ARGS[@]}"
