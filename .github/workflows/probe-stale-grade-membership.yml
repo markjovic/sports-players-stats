@@ -54,17 +54,26 @@ name: Probe Stale Grade Membership
 on:
   workflow_dispatch:
     inputs:
+      mode:
+        description: 'What to run'
+        required: true
+        default: one-season
+        type: choice
+        options:
+          - one-season
+          - all-seasons
+          - season-list
       season:
-        description: 'Season id to probe. Leave blank when using seasons=all'
+        description: 'mode=one-season : the season id to probe'
         required: false
         type: string
-      seasons:
-        description: 'SWEEP: all, or a comma-separated list of season ids. One DiscoverSeason call each. Overrides season'
+      season_list:
+        description: 'mode=season-list : comma-separated season ids'
         required: false
         default: ''
         type: string
       sleep_ms:
-        description: 'Sweep pacing — ms between seasons'
+        description: 'Sweep pacing — ms between seasons (sweep modes only)'
         required: false
         default: '250'
         type: string
@@ -108,12 +117,38 @@ jobs:
           IN_NOPHQ:  ${{ inputs.no_playhq }}
           IN_NULLC:  ${{ inputs.null_control }}
           IN_LIVED:  ${{ inputs.live_days }}
-          IN_SEASONS: ${{ inputs.seasons }}
-          IN_SLEEP:   ${{ inputs.sleep_ms }}
+          IN_MODE:   ${{ inputs.mode }}
+          IN_LIST:   ${{ inputs.season_list }}
+          IN_SLEEP:  ${{ inputs.sleep_ms }}
         run: |
           set -euo pipefail
           ARGS=( "--season=$IN_SEASON" "--grades=${IN_GRADES:-8}" )
-          if [ -n "${IN_SEASONS:-}" ]; then ARGS+=( "--seasons=$IN_SEASONS" "--sleep-ms=${IN_SLEEP:-250}" ); fi
+          # ⚠ The mode is a DROPDOWN, not a word typed into a blank field. The
+          # earlier form had `season` and `seasons` next to each other and the
+          # whole-repo sweep turned on only if you typed "all" into the second
+          # one — a blank field meant a silently different run. Every branch
+          # below either builds the args it names or FAILS LOUDLY; none of them
+          # falls through to a different mode.
+          case "${IN_MODE:-one-season}" in
+            one-season)
+              if [ -z "${IN_SEASON:-}" ]; then
+                echo "mode=one-season needs a season id in the 'season' field." >&2; exit 2
+              fi
+              ;;
+            all-seasons)
+              ARGS+=( "--seasons=all" "--sleep-ms=${IN_SLEEP:-250}" )
+              ;;
+            season-list)
+              if [ -z "${IN_LIST:-}" ]; then
+                echo "mode=season-list needs ids in the 'season_list' field." >&2; exit 2
+              fi
+              ARGS+=( "--seasons=$IN_LIST" "--sleep-ms=${IN_SLEEP:-250}" )
+              ;;
+            *)
+              echo "unknown mode: $IN_MODE" >&2; exit 2
+              ;;
+          esac
+          echo "mode: ${IN_MODE:-one-season}"
           ARGS+=( "--null-control=${IN_NULLC:-0}" "--live-days=${IN_LIVED:-14}" )
           # T3 form: true for BOTH the boolean and the string shape.
           if [ "$IN_NOPHQ" = "true" ]; then ARGS+=( --no-playhq ); fi
