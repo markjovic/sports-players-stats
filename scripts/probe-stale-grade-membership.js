@@ -96,6 +96,12 @@ const LIVE_DAYS    = Math.max(1, Number(arg('live-days', '14')) || 14);
 const SWEEP_RAW = arg('seasons', '');
 const SWEEP     = SWEEP_RAW ? SWEEP_RAW.split(',').map(s => s.trim()).filter(Boolean) : [];
 const SLEEP_MS  = Math.max(0, Number(arg('sleep-ms', '250')) || 0);
+// ⚠ --offset / --limit : shard the sweep. ADDED 2026-11-25 after a full sweep was
+// killed by the job's 30-minute timeout at 1850 of 3194 seasons. games/bv holds
+// 3194 season files, not the 480 quoted in the build-team-stats notes, which
+// count something else. At ~1s per season a whole sweep is ~50 minutes.
+const OFFSET    = Math.max(0, Number(arg('offset', '0')) || 0);
+const LIMIT     = Math.max(0, Number(arg('limit', '0')) || 0);   // 0 = no limit
 const GAMES_DIR = path.join(ROOT, 'games', 'bv');
 
 if (!SEASON && !SWEEP.length) { console.error('--season=<sid> is required (or --seasons=all)'); process.exit(2); }
@@ -442,6 +448,7 @@ async function sweepSeasons(list) {
   console.log('  RESIDUE          = holds unplayed fixtures. Only these are category 2.');
   console.log(`  pacing: ${SLEEP_MS}ms between seasons`);
 
+  const T0 = Date.now();
   let okN = 0, gradesHeld = 0;
   const failed = [];
   const withDead = [];
@@ -451,7 +458,19 @@ async function sweepSeasons(list) {
   for (let i = 0; i < list.length; i++) {
     const sid = list[i];
     if (i && SLEEP_MS) await sleep(SLEEP_MS);
-    if (i && i % 50 === 0) console.log(`  … ${i} of ${list.length} season(s) scanned`);
+    // ⚠ A RUNNING TALLY, NOT JUST A COUNTER. The first full sweep was killed by
+    // the job timeout at 1850 of 3194 and produced NOTHING, because every figure
+    // was held until the end. A killed run must still leave usable, and visibly
+    // partial, numbers behind.
+    if (i && i % 50 === 0) {
+      const el = (Date.now() - T0) / 1000;
+      const rate = i / el;
+      const left = (list.length - i) / (rate || 1);
+      console.log(`  … ${i} of ${list.length} scanned  ${el.toFixed(0)}s elapsed, ${rate.toFixed(2)}/s,`
+                + ` ~${(left / 60).toFixed(1)} min remaining`);
+      console.log(`      PARTIAL TALLY: ok ${okN}, unreadable ${failed.length}, seasons with dead grades ${withDead.length}`
+                + ` | COMPLETED-HIDDEN ${chC} (${chPlayed} played) | RESIDUE ${resC} (${resUnplayed} unplayed, ${resFuture} future)`);
+    }
     let games;
     try { games = JSON.parse(fs.readFileSync(path.join(GAMES_DIR, `${sid}.json`), 'utf8')).games || {}; }
     catch (e) { failed.push({ sid, err: 'local read: ' + e.message }); continue; }
@@ -474,6 +493,7 @@ async function sweepSeasons(list) {
     if (dead.length) withDead.push({ sid, name: S.name, held: byGrade.size, listed: S.ids.size, dead });
   }
 
+  console.log(`\n  sweep finished in ${((Date.now() - T0) / 1000 / 60).toFixed(1)} min — the totals below are COMPLETE`);
   const CAP = 40;
   for (const s of withDead.slice(0, CAP)) {
     console.log(`\n  SEASON ${s.sid} ${JSON.stringify(s.name)}  held ${s.held}, PlayHQ lists ${s.listed}, dead ${s.dead.length}`);
@@ -678,6 +698,14 @@ async function nullControlPass(sid, byGrade, lastPlayed, interesting, nullGrades
     if (SWEEP.length === 1 && SWEEP[0] === 'all') {
       list = fs.readdirSync(GAMES_DIR).filter(f => f.endsWith('.json')).map(f => f.slice(0, -5)).sort();
       console.log(`  --seasons=all → ${list.length} season file(s) in games/bv`);
+    }
+    // Sharding. The slice is stated in the output, so a sharded run can never be
+    // mistaken for a whole one.
+    const full = list.length;
+    if (OFFSET || LIMIT) {
+      list = list.slice(OFFSET, LIMIT ? OFFSET + LIMIT : undefined);
+      console.log(`  ⚠ SHARD: seasons ${OFFSET} to ${OFFSET + list.length - 1} of ${full}.`
+                + ` THIS IS A PART, NOT THE WHOLE — its totals cover ${list.length} season(s) only.`);
     }
     if (NO_PLAYHQ) {
       console.log('  ⚠ --no-playhq with --seasons contacts nothing, so no grade can be classified.');
