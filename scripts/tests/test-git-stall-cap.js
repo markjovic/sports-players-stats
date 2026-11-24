@@ -31,6 +31,28 @@ const { spawnSync } = require('child_process');
 
 const SRC = path.join(__dirname, '..');
 
+// ── Platform guard ────────────────────────────────────────────────────────────
+// The git and sleep stubs below are `#!/bin/sh` scripts placed on PATH, so this
+// suite is POSIX-only. Run on Windows it reported "6 passed, 18 failed" — a false
+// RED for an environment reason, which is exactly as misleading as a masked
+// failure. It now SKIPS and says why.
+//
+// ⚠ It does not skip silently and it does not pretend to pass: the exit code is 0
+// but the output states that nothing was asserted and where the suite must be run.
+// GIT_STALL_CAP_FORCE=1 runs it anyway, so a real failure can never hide behind the
+// platform check.
+if (process.platform === 'win32' && process.env.GIT_STALL_CAP_FORCE !== '1') {
+  console.log('test-git-stall-cap.js');
+  console.log('─'.repeat(60));
+  console.log('  SKIPPED on win32 — the git/sleep stubs are #!/bin/sh and cannot run here.');
+  console.log('  NOTHING WAS ASSERTED. Run it in the Actions runner, WSL, or any POSIX shell.');
+  console.log('  Set GIT_STALL_CAP_FORCE=1 to run it regardless and see the real errors.');
+  console.log('');
+  console.log('0 passed, 0 failed, 24 not run');
+  process.exit(0);
+}
+
+
 let pass = 0, fail = 0;
 const ok = (c, l, d) => { if (c) { pass++; console.log(`  ok   ${l}`); } else { fail++; console.log(`  FAIL ${l}${d !== undefined ? `  -> ${d}` : ''}`); } };
 const eq = (a, b, l) => ok(a === b, l, `got ${JSON.stringify(a)}, expected ${JSON.stringify(b)}`);
