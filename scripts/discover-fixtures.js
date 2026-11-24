@@ -65,6 +65,32 @@ const LOCKED_RESWEEP = !!ARGS['locked-resweep']; // §2.2: locked && !removed hi
 // if it ever needs to be isolated.
 const USE_SEASON_TEAMS = !ARGS['no-season-teams'];
 
+// ── THE SPLIT (2026-11-24) ───────────────────────────────────────────────────
+// The sweep holds the data-write lock for six hours and needs it for five minutes:
+// 83% of a run is a 90-second WAF pause and the commits themselves totalled 4.2 min
+// of 5h 50m on 2026-11-10. So the run is now two jobs.
+//
+//   --emit=<file>   do every PlayHQ read, write NOTHING to the tree and commit
+//                   nothing; record what was found to <file>. Takes no lock.
+//   --apply=<file>  take the lock, check out fresh, replay <file> onto the files
+//                   as they are NOW, and commit once.
+//
+// This is only safe because flushGameFiles re-reads and merges (see the note at
+// _pendingFixtures): the changeset carries the fields PlayHQ ANSWERED, never a
+// whole row, so replaying it an hour later cannot overwrite a fresher value.
+const EMIT_PATH  = typeof ARGS.emit  === 'string' ? ARGS.emit  : null;
+const APPLY_PATH = typeof ARGS.apply === 'string' ? ARGS.apply : null;
+const CHANGESET_V = 1;
+
+if (ARGS.emit === true || ARGS.apply === true) {
+  console.error('--emit and --apply take a file path: --emit=/path/to/changeset.json');
+  process.exit(1);
+}
+if (EMIT_PATH && APPLY_PATH) {
+  console.error('--emit and --apply are the two halves of one run; give one or the other');
+  process.exit(1);
+}
+
 if (LOCKED_RESWEEP && (ALL_SEASONS || CURRENT_ONLY || TARGET_SEASON)) {
   console.error('--locked-resweep is exclusive with --all-seasons / --current-only / --season');
   process.exit(1);
@@ -617,8 +643,19 @@ function loadVenueShard(venueId) {
   return _venueShards[prefix];
 }
 
+// While emitting there is no point loading the shards of a checkout that is about
+// to be thrown away — and the shards the apply job must merge into are the ones in
+// ITS checkout. So record the raw venue and court and replay storeVenue there.
+const _pendingVenues = [];
+const _seenVenueKeys = new Set();
+
 function storeVenue(venue, court) {
   if (!venue?.id) return;
+  if (EMIT_PATH) {
+    const k = `${venue.id}|${court?.id || ''}`;
+    if (!_seenVenueKeys.has(k)) { _seenVenueKeys.add(k); _pendingVenues.push({ venue, court: court || null }); }
+    return;
+  }
   const prefix = venue.id.slice(0, 2);
   const shard  = loadVenueShard(venue.id);
   if (!shard[venue.id]) {
@@ -638,6 +675,7 @@ function storeVenue(venue, court) {
 }
 
 function flushVenueShards() {
+  if (EMIT_PATH) return 0;
   if (DRY_RUN) return 0;
   if (!fs.existsSync(VENUE_DIR)) fs.mkdirSync(VENUE_DIR, { recursive: true });
   let count = 0;
@@ -696,6 +734,8 @@ function loadGameFile(seasonId) {
 // A game that became PLAYED on disk since this run read it is left alone — the same
 // rule applyGame applies, applied again at the only moment that can see the race.
 function flushGameFiles() {
+  // While emitting, the pending map IS the product: keep accumulating it.
+  if (EMIT_PATH) return 0;
   if (DRY_RUN) { _pendingFixtures.clear(); _dirtySeasons.clear(); return 0; }
   let count = 0;
   for (const seasonId of _dirtySeasons) {
@@ -748,7 +788,9 @@ function loadProgress() {
 }
 
 function saveProgress(done) {
-  if (DRY_RUN || TARGET_SEASON) return;   // single-season runs keep no checkpoint
+  // Emitting: the done set travels in the changeset and is written by the apply
+  // job, so the checkpoint lands with the commit it describes, as it always has.
+  if (DRY_RUN || TARGET_SEASON || EMIT_PATH) return;   // single-season runs keep no checkpoint
   fs.writeFileSync(PROGRESS_FILE, JSON.stringify({ mode: MODE, done: [...done], savedAt: new Date().toISOString() }));
 }
 
@@ -797,6 +839,7 @@ const GIT_MAXBUF     = 512 * 1024 * 1024;
 const MAX_FETCH_STALLS = parseInt(ARGS['max-fetch-stalls'] === undefined ? '3' : ARGS['max-fetch-stalls'], 10);
 
 function gitCommitPush(message) {
+  if (EMIT_PATH) { console.log(`  [emit] not committing here — the apply job does it: ${message}`); return; }
   if (DRY_RUN) { console.log(`  [dry-run] would commit: ${message}`); return; }
 
   // ── Per-path add (directive 9) ────────────────────────────────────────────
@@ -1155,7 +1198,126 @@ async function processTeam(teamId, seasonId) {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
+function scopeLabel() {
+  return TARGET_SEASON ? `single season ${TARGET_SEASON}`
+       : LOCKED_RESWEEP ? 'locked re-sweep'
+       : ALL_SEASONS ? 'all seasons'
+       : CURRENT_ONLY ? 'active, current only'
+       : 'active only';
+}
+
+// ⚠️ MERGE, NEVER REPLACE — 2026-10-12, after a --season=5e26f10f run overwrote this
+// file with its own one-season view: `count 12, seasonsScanned 188` became `count 0,
+// seasonsScanned 1`, and discover-seasons.js would next have read "nothing is stale"
+// for a repository it had scanned 1/188th of. A PARTIAL RUN MUST NOT CLEAR A
+// REPOSITORY-WIDE WORKLIST — the same rule build-club-index.js applies to
+// clubs/{clubId}.json, for the same reason.
+//
+// The merge is by season id: an entry for a season this run SCANNED is replaced by
+// this run's finding (and disappears when the season is no longer stale, which is how
+// entries retire); an entry for a season this run did not reach is carried through
+// untouched. An entry with no id cannot be matched either way, so it is KEPT —
+// dropping it would be a silent loss on a guess.
+//
+// Lifted out of main() 2026-11-24 so the apply job merges against the file in ITS
+// checkout using this code, not a second copy of it.
+function writeStaleGrades(staleGradeSeasons, scannedSeasonIds, seasonsProcessed) {
+  const STALE_FILE = path.join(ROOT, 'data', 'stale-grade-seasons.json');
+  let carried = [];
+  try {
+    const prev = JSON.parse(fs.readFileSync(STALE_FILE, 'utf8'));
+    if (prev && Array.isArray(prev.seasons)) {
+      carried = prev.seasons.filter(x => !(x && x.id && scannedSeasonIds.has(x.id)));
+    }
+  } catch (e) {
+    // No previous file, or an unreadable one. Starting fresh is correct for the first
+    // case and the only option in the second, but it must be VISIBLE rather than
+    // looking like a clean sweep that found nothing.
+    if (fs.existsSync(STALE_FILE)) {
+      console.log(`  ⚠ stale-grade-seasons.json could not be parsed (${e.message}) — writing this run's findings only; entries for seasons this run did not scan are LOST.`);
+    }
+  }
+  const mergedStale = carried.concat(staleGradeSeasons);
+  if (!fs.existsSync(path.dirname(STALE_FILE))) fs.mkdirSync(path.dirname(STALE_FILE), { recursive: true });
+  fs.writeFileSync(STALE_FILE, JSON.stringify({
+    generatedAt:    new Date().toISOString(),
+    // What this run covered, so a reader can tell a full sweep's verdict from a
+    // single season's. `seasonsScanned` alone said 1 and looked authoritative.
+    scope:          scopeLabel(),
+    seasonsScanned: seasonsProcessed,
+    carriedForward: carried.length,
+    count:          mergedStale.length,
+    seasons:        mergedStale,
+  }, null, 2));
+  console.log(`  stale-grade worklist: ${staleGradeSeasons.length} from this run + ${carried.length} carried forward = ${mergedStale.length}`);
+}
+
+// ─── --emit / --apply ────────────────────────────────────────────────────────
+
+function writeChangeset(file, cs) {
+  const dir = path.dirname(file);
+  if (dir && dir !== '.' && !fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(file, JSON.stringify(cs));
+  const bytes = fs.statSync(file).size;
+  console.log(`\n  📦 changeset written: ${file}`);
+  console.log(`     ${Object.keys(cs.seasons).length} season file(s), ${cs.gameCount} game entr(ies), ${cs.venues.length} venue/court pair(s), ${bytes.toLocaleString()} bytes`);
+  console.log(`     progress: ${cs.completed ? 'run COMPLETED — the apply job clears the checkpoint' : `${cs.progressDone.length} season(s) done — the apply job saves the checkpoint`}`);
+  console.log(`     NOTHING was written to the tree and nothing was committed. The apply job does both.`);
+}
+
+// Replay a changeset onto the checkout this job has, and commit once.
+// Every refusal is loud: a changeset that is missing, will not parse, was written by
+// a different version, for a different tenant, or under a different progress key is a
+// changeset that would write the wrong thing, and writing the wrong thing quietly is
+// the failure this whole split exists to avoid.
+function applyChangeset(file) {
+  console.log('=== discover-fixtures.js --apply ===');
+  console.log(`Changeset:   ${file}`);
+  if (!fs.existsSync(file)) throw new Error(`--apply: no changeset at ${file}`);
+  let cs;
+  try { cs = JSON.parse(fs.readFileSync(file, 'utf8')); }
+  catch (e) { throw new Error(`--apply: the changeset at ${file} will not parse (${e.message})`); }
+  if (cs.v !== CHANGESET_V) throw new Error(`--apply: changeset version ${cs.v} — this script writes and reads ${CHANGESET_V}`);
+  if (cs.tenant !== TENANT) throw new Error(`--apply: changeset tenant "${cs.tenant}" is not this run's "${TENANT}"`);
+  // The progress key decides WHICH checkpoint file is written. A changeset emitted by
+  // a --current-only sweep applied by a run without that flag would save the active
+  // sweep's done-set over the current-only one, and the next weekly run would skip
+  // seasons it never swept.
+  if (cs.mode !== MODE) {
+    throw new Error(`--apply: changeset progress-key "${cs.mode}" but this run's is "${MODE}" — the apply step must carry the same mode flags as the sweep`);
+  }
+  console.log(`Emitted:     ${cs.startedAt} → ${cs.finishedAt}  (progress-key ${cs.mode})`);
+  const t = cs.totals || {};
+  console.log(`Sweep found: ${t.seasons} season(s), ${(t.teams || 0).toLocaleString()} team call(s), ${(t.added || 0).toLocaleString()} new, ${(t.updated || 0).toLocaleString()} updated`);
+  if (t.refusedTeams) console.log(`::warning::${t.refusedTeams} team(s) were never read in the sweep — the totals are a lower bound`);
+
+  for (const [sid, games] of Object.entries(cs.seasons || {})) {
+    for (const [gameId, fresh] of Object.entries(games)) notePending(sid, gameId, fresh);
+    _dirtySeasons.add(sid);
+  }
+  const gf = flushGameFiles();
+  for (const v of (cs.venues || [])) storeVenue(v.venue, v.court);
+  const vf = flushVenueShards();
+  console.log(`\n  💾 ${gf} game file(s), ${vf} venue shard(s)`);
+
+  if (!DRY_RUN) {
+    if (cs.completed) clearProgress(); else saveProgress(new Set(cs.progressDone || []));
+    if ((cs.zeroTeam || []).length) {
+      fs.writeFileSync(path.join(ROOT, 'zero-team-seasons.json'), JSON.stringify(cs.zeroTeam, null, 2));
+    }
+    writeStaleGrades(cs.staleGrades || [], new Set(cs.scanned || []), t.seasons || 0);
+  }
+
+  gitCommitPush(cs.message || 'Fixture discovery (applied changeset)');
+
+  if ((cs.transient || []).length) {
+    console.error(`\n✗ the sweep left ${cs.transient.length} season(s) unreachable on every attempt — failing this job (the work above is committed).`);
+    process.exit(1);
+  }
+}
+
 async function main() {
+  if (APPLY_PATH) { applyChangeset(APPLY_PATH); return; }
   console.log('=== discover-fixtures.js ===');
   console.log(`Tenant:      ${TENANT}`);
   console.log(`Concurrency: ${CONCURRENCY}`);
@@ -1421,7 +1583,7 @@ async function main() {
   }
   console.log(`  Transient:     ${stillTransient.length} (null on every call, survived retry — run goes RED)`);
 
-  if (zeroTeamSeasons.length > 0 && !DRY_RUN) {
+  if (zeroTeamSeasons.length > 0 && !DRY_RUN && !EMIT_PATH) {
     fs.writeFileSync(path.join(ROOT, 'zero-team-seasons.json'), JSON.stringify(zeroTeamSeasons, null, 2));
   }
 
@@ -1459,42 +1621,39 @@ async function main() {
   // which is how entries retire); an entry for a season this run did not reach is
   // carried through untouched. An entry with no id cannot be matched either way,
   // so it is KEPT — dropping it would be a silent loss on a guess.
-  if (!DRY_RUN) {
-    const STALE_FILE = path.join(ROOT, 'data', 'stale-grade-seasons.json');
-    let carried = [];
-    try {
-      const prev = JSON.parse(fs.readFileSync(STALE_FILE, 'utf8'));
-      if (prev && Array.isArray(prev.seasons)) {
-        carried = prev.seasons.filter(x => !(x && x.id && scannedSeasonIds.has(x.id)));
-      }
-    } catch (e) {
-      // No previous file, or an unreadable one. Starting fresh is correct for the
-      // first case and the only option in the second, but it must be VISIBLE
-      // rather than looking like a clean sweep that found nothing.
-      if (fs.existsSync(STALE_FILE)) {
-        console.log(`  ⚠ stale-grade-seasons.json could not be parsed (${e.message}) — writing this run's findings only; entries for seasons this run did not scan are LOST.`);
-      }
-    }
-    const mergedStale = carried.concat(staleGradeSeasons);
-    fs.writeFileSync(STALE_FILE, JSON.stringify({
-      generatedAt:    new Date().toISOString(),
-      // What this run covered, so a reader can tell a full sweep's verdict from a
-      // single season's. `seasonsScanned` alone said 1 and looked authoritative.
-      scope:          TARGET_SEASON ? `single season ${TARGET_SEASON}`
-                    : LOCKED_RESWEEP ? 'locked re-sweep'
-                    : ALL_SEASONS ? 'all seasons'
-                    : CURRENT_ONLY ? 'active, current only'
-                    : 'active only',
-      seasonsScanned: seasonsProcessed,
-      carriedForward: carried.length,
-      count:          mergedStale.length,
-      seasons:        mergedStale,
-    }, null, 2));
-    console.log(`  stale-grade worklist: ${staleGradeSeasons.length} from this run + ${carried.length} carried forward = ${mergedStale.length}`);
-  }
+  if (!DRY_RUN && !EMIT_PATH) writeStaleGrades(staleGradeSeasons, scannedSeasonIds, seasonsProcessed);
 
-  clearProgress();
-  gitCommitPush(`Fixture discovery complete: ${seasonsProcessed} seasons, ${totalAdded.toLocaleString()} new games`);
+  const message = `Fixture discovery complete: ${seasonsProcessed} seasons, ${totalAdded.toLocaleString()} new games`;
+
+  if (EMIT_PATH) {
+    const seasonsOut = {}; let gameCount = 0;
+    for (const [sid, m] of _pendingFixtures) {
+      const o = {};
+      // JSON.stringify drops undefined, which is exactly the contract: the changeset
+      // carries the fields PlayHQ ANSWERED and no others.
+      for (const [gameId, fresh] of m) { o[gameId] = fresh; gameCount++; }
+      seasonsOut[sid] = o;
+    }
+    writeChangeset(EMIT_PATH, {
+      v: CHANGESET_V, tenant: TENANT, mode: MODE, scope: scopeLabel(),
+      startedAt: new Date(RUN_T0).toISOString(), finishedAt: new Date().toISOString(),
+      message,
+      seasons: seasonsOut, gameCount,
+      venues: _pendingVenues,
+      progressDone: [...doneSeasonsSet],
+      completed: stillTransient.length === 0,
+      zeroTeam: zeroTeamSeasons,
+      staleGrades: staleGradeSeasons,
+      scanned: [...scannedSeasonIds],
+      transient: stillTransient.map(x => x.id),
+      totals: { seasons: seasonsProcessed, teams: totalTeams, added: totalAdded,
+                updated: totalUpdated, refusedTeams: totalRefusedTeams,
+                blocks: _blockEvents, refused403: _refused403, gaveUp: _gaveUp },
+    });
+  } else {
+    clearProgress();
+    gitCommitPush(message);
+  }
 
   if (stillTransient.length) {
     console.error(`\n✗ ${stillTransient.length} season(s) unreachable on every attempt — failing the run (work above is committed).`);
@@ -1511,4 +1670,4 @@ if (require.main === module) {
   main().catch(e => { console.error('\nFatal:', e.message); process.exit(1); });
 }
 
-module.exports = { gitCommitPush, loadGameFile, flushGameFiles, applyGame, fixtureFields, mergeFixture };
+module.exports = { gitCommitPush, loadGameFile, flushGameFiles, applyGame, fixtureFields, mergeFixture, applyChangeset, writeStaleGrades, notePending };
