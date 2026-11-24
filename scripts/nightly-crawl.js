@@ -1223,7 +1223,7 @@ async function main() {
     deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
     listChanged: 0, seasonsRegraded: 0, newGradesSwept: 0,
     abortedBy: null,
-  staleSameRound: 0, supByGrade: 0, supByRound: 0,
+  staleSameRound: 0, supByGrade: 0, supByRound: 0, libFieldWarned: false,
 };
   const refreshStatePaths = [];
 
@@ -1920,7 +1920,18 @@ async function main() {
           refresh.staleGrades++;
           refresh.staleGames += d.stale;
           refresh.staleSuperseded += d.withPlayedElsewhere;
-          refresh.staleSameRound   += d.withSameRoundPlayed;
+          // ⚠ GUARDED ON PURPOSE. On 2026-11-24 this read `+= d.withSameRoundPlayed`
+          // against a round-refresh.cjs that predated the field, and the summary
+          // printed "NaN duplicate(s)". NaN is not a failure anyone has to read
+          // twice — but it is also not a diagnosis, so the mismatch is now named.
+          if (typeof d.withSameRoundPlayed === 'number') {
+            refresh.staleSameRound += d.withSameRoundPlayed;
+          } else if (!refresh.libFieldWarned) {
+            refresh.libFieldWarned = true;
+            console.log('  ⚠ scripts/lib/round-refresh.cjs is OLDER than this script:'
+                      + ' findStaleFixtureGrades returned no `withSameRoundPlayed`.'
+                      + ' Same-grade duplicate counts will read 0, not because there are none.');
+          }
           const pct = d.total ? Math.round((d.stale / d.total) * 100) : 0;
           console.log(`  ◌ STALE FIXTURES: sid=${sid} gid=${d.gid}${d.gn ? ` "${d.gn}"` : ''}`
                     + ` — ${d.stale} of ${d.total} game(s) past-dated and never played (${pct}%),`
@@ -1952,34 +1963,39 @@ async function main() {
       // would persist after the game was finally played, or after the game that
       // superseded it was itself deleted, with nothing in any log saying so.
       //
-      // Runs in the dry run too — EXCEPT the write. The counts are the point of a
-      // dry run; the file change is not.
-      if (!REFRESH_DRY_RUN && !DRY_RUN) {
-        for (const sid of seasonsToCheck) {
-          const gfS = loadGameFile(sid);
-          const { set, clear, reasons } = RR.computeSupersededFlags(gfS.games, { today: TODAY_ISO });
-          if (!set.size && !clear.length) continue;
-          for (const [id, by] of set) gfS.games[id].sup = by;
-          for (const id of clear) delete gfS.games[id].sup;
-          markGameDirty(sid);
-          refresh.supSet   += set.size;
-          refresh.supClear += clear.length;
-          // Every flag that STANDS this run, by cause — not only the newly
-          // written ones. Printed below; a counter that is never shown is the
-          // same defect as one that only ever increments.
-          refresh.supByGrade += reasons.grade;
-          refresh.supByRound += reasons.round;
-          refreshStatePaths.push(`games/bv/${sid}.json`);
-        }
-        if (refresh.supSet || refresh.supClear) {
-          console.log(`  ⚑ superseded flags: ${refresh.supSet} set, ${refresh.supClear} cleared`
-                    + `  (standing: ${refresh.supByGrade} regrade, ${refresh.supByRound} same-grade duplicate)`
-                    + ` — past-dated and never played, with a played game that day either in another`
-                    + ` grade (regrade) or in the SAME grade and round (a duplicate of it).`
-                    + ` The value is the game id that superseded it.`);
-        }
-      } else if (refresh.staleSuperseded) {
-        console.log(`  [dry-run] would set/clear the sup flag on up to ${refresh.staleSuperseded} game(s) — no write made.`);
+      // ⚠ 2026-11-24 — THE COMMENT ABOVE USED TO SIT OVER CODE THAT DID THE
+      // OPPOSITE. It said "runs in the dry run too, EXCEPT the write", and the
+      // whole block was then wrapped in `if (!REFRESH_DRY_RUN && !DRY_RUN)` — so
+      // a dry run computed NOTHING and printed a substitute number taken from the
+      // stale report (`staleSuperseded`, a different rule with a different
+      // count). The counts ARE the point of a dry run; measuring is what it is
+      // for. Compute always, write only when not dry.
+      for (const sid of seasonsToCheck) {
+        const gfS = loadGameFile(sid);
+        const { set, clear, reasons } = RR.computeSupersededFlags(gfS.games, { today: TODAY_ISO });
+        // Every flag that STANDS this run, by cause — not only the newly written
+        // ones, and counted even when nothing changes. A count that is never
+        // shown is the same defect as a counter that only ever increments.
+        refresh.supByGrade += reasons.grade;
+        refresh.supByRound += reasons.round;
+        if (!set.size && !clear.length) continue;
+        refresh.supSet   += set.size;
+        refresh.supClear += clear.length;
+        if (REFRESH_DRY_RUN || DRY_RUN) continue;   // measured above, not written
+        for (const [id, by] of set) gfS.games[id].sup = by;
+        for (const id of clear) delete gfS.games[id].sup;
+        markGameDirty(sid);
+        refreshStatePaths.push(`games/bv/${sid}.json`);
+      }
+      if (refresh.supSet || refresh.supClear || refresh.supByGrade || refresh.supByRound) {
+        console.log(`  ⚑ superseded flags: ${refresh.supSet} ${REFRESH_DRY_RUN || DRY_RUN ? 'would be set' : 'set'},`
+                  + ` ${refresh.supClear} ${REFRESH_DRY_RUN || DRY_RUN ? 'would be cleared' : 'cleared'}`
+                  + `  (standing: ${refresh.supByGrade} regrade, ${refresh.supByRound} same-grade duplicate`
+                  + `, ${refresh.supByGrade + refresh.supByRound} total)`
+                  + `${REFRESH_DRY_RUN || DRY_RUN ? '  [dry run — nothing written]' : ''}`
+                  + ` — past-dated and never played, with a played game that day either in another`
+                  + ` grade (regrade) or in the SAME grade and round (a duplicate of it).`
+                  + ` The value is the game id that superseded it.`);
       }
     }
 
