@@ -654,6 +654,24 @@ function flushVenueShards() {
 const _gameFileCache = {};
 const _dirtySeasons  = new Set();   // only season files with a real change get written
 
+// ⚠️ 2026-11-24 — WHAT THIS RUN FOUND, KEPT APART FROM WHAT IT READ.
+// `_gameFileCache` holds a season file as it was when the season was first
+// touched, which on a six-hour sweep is up to six hours old. flushGameFiles used
+// to write that object back WHOLE, so anything another writer had put in the file
+// meanwhile was overwritten — and `merge -X ours` in the push loop then made the
+// loss silent. It was safe only because the data-write lock guaranteed there was
+// no other writer, which is exactly the guarantee we want to stop needing.
+// So the PlayHQ-answered fields are recorded here per game, and the flush replays
+// them onto the file as it is ON DISK at that moment. seasonId -> Map(gameId -> fresh).
+const _pendingFixtures = new Map();
+function notePending(seasonId, gameId, fresh) {
+  let m = _pendingFixtures.get(seasonId);
+  if (!m) { m = new Map(); _pendingFixtures.set(seasonId, m); }
+  // A game is returned by BOTH its teams, so this is written twice per run with
+  // the same values. Last write wins, and they are the same write.
+  m.set(gameId, fresh);
+}
+
 function loadGameFile(seasonId) {
   if (_gameFileCache[seasonId]) return _gameFileCache[seasonId];
   if (!fs.existsSync(GAMES_DIR)) fs.mkdirSync(GAMES_DIR, { recursive: true });
@@ -667,15 +685,52 @@ function loadGameFile(seasonId) {
   return _gameFileCache[seasonId];
 }
 
+// RE-READ, MERGE, WRITE — never write back the cache. See the note at
+// _pendingFixtures. Three refusals, because a flush that quietly does the wrong
+// thing is worse than one that stops:
+//   · a file that exists and will not parse            -> THROW, do not overwrite
+//   · a file with no games object                      -> THROW, do not overwrite
+//   · a merge that would leave fewer games than it found -> THROW. This script only
+//     ever adds and updates; it has no deletion path, so a shrink means the merge
+//     is wrong, not that the data is.
+// A game that became PLAYED on disk since this run read it is left alone — the same
+// rule applyGame applies, applied again at the only moment that can see the race.
 function flushGameFiles() {
-  if (DRY_RUN) return 0;
+  if (DRY_RUN) { _pendingFixtures.clear(); _dirtySeasons.clear(); return 0; }
   let count = 0;
   for (const seasonId of _dirtySeasons) {
-    const sg = _gameFileCache[seasonId];
-    if (!sg) continue;
-    fs.writeFileSync(path.join(GAMES_DIR, `${seasonId}.json`), JSON.stringify(sg));
+    const pending = _pendingFixtures.get(seasonId);
+    if (!pending || pending.size === 0) continue;
+    const f = path.join(GAMES_DIR, `${seasonId}.json`);
+    let disk;
+    if (!fs.existsSync(f)) disk = { games: {} };
+    else {
+      try { disk = JSON.parse(fs.readFileSync(f, 'utf8')); }
+      catch (e) { throw new Error(`flushGameFiles: ${seasonId}.json exists but failed to parse (${e.message}) — refusing to overwrite it`); }
+    }
+    if (!disk || typeof disk !== 'object' || !disk.games || typeof disk.games !== 'object') {
+      throw new Error(`flushGameFiles: ${seasonId}.json holds no games object — refusing to overwrite it`);
+    }
+    const before = Object.keys(disk.games).length;
+    let played = 0;
+    for (const [gameId, fresh] of pending) {
+      const ex = disk.games[gameId];
+      if (ex && (ex.hs !== undefined || ex.as !== undefined
+                 || ex.st === 'FINAL' || ex.forfeit === true)) { played++; continue; }
+      disk.games[gameId] = mergeFixture(ex, fresh);
+    }
+    const after = Object.keys(disk.games).length;
+    if (after < before) {
+      throw new Error(`flushGameFiles: ${seasonId}.json would go from ${before} games to ${after} — this script only adds and updates. Refusing to write.`);
+    }
+    fs.writeFileSync(f, JSON.stringify(disk));
+    // The cache must now agree with disk, or the next team in this season would
+    // diff against a copy that no longer matches the file.
+    _gameFileCache[seasonId] = disk;
+    if (played) console.log(`    ↩ ${seasonId}: ${played} game(s) became played since they were read — left as history`);
     count++;
   }
+  _pendingFixtures.clear();
   _dirtySeasons.clear();
   return count;
 }
@@ -911,6 +966,119 @@ function diffEntry(existing, entry) {
   return changes;
 }
 
+// ─── The two halves of what used to be one `entry` literal ───────────────────
+// fixtureFields returns ONLY what PlayHQ answered: a field it did not answer is
+// `undefined` and is NOT filled in here from whichever copy of the row we happen
+// to be holding. mergeFixture does the filling, against whatever row it is given —
+// the cached one while the season is being swept, and the one read fresh from disk
+// at flush time. That separation is the whole point: the old literal baked the
+// fallbacks in at fetch time, so replaying it hours later would have written
+// six-hour-old values over fresher ones.
+//
+// Every one of the fifteen existing-wins rules the literal spelled out individually
+// is now the single rule in mergeFixture, and they are the same rule.
+function fixtureFields(game, round, roundGradeName) {
+  const court = game.allocation?.court;
+  const venue = court?.venue;
+  const dt    = game.allocation?.dateTimeList?.[0];
+  const hs    = parseScore(game.result?.home?.statistics);
+  const as    = parseScore(game.result?.away?.statistics);
+  return {
+    d:   dt?.date || game.dates?.[0] || undefined,
+    // BARE round name — matches nightly-crawl (line 570) and isFinal(rn) detection;
+    // a "Finals — " prefix here diverged from stored data and churned every finals game.
+    rn:  round?.name || undefined,
+    // ⚠️ 2026-10-12 — THE GRADE WAS FETCHED AND THROWN AWAY. `round.grade` carries
+    // id and name on every round of the TeamFixture response, and the only code that
+    // touched them was the dead storeLookupEntry block, which requires a
+    // `team-lookup-utils` module that is not in scripts/. nightly-crawl.js L798-799
+    // writes gid/gn on everything it stores, so a PLAYED game had a grade and an
+    // unplayed FIXTURE did not — which is why the club view could group results by
+    // age and not future games.
+    gid: round?.grade?.id || undefined,
+    gn:  roundGradeName || undefined,
+    h:   game.home?.id   || undefined,
+    hn:  game.home?.name || undefined,
+    a:   game.away?.id   || undefined,
+    an:  game.away?.name || undefined,
+    hs:  hs !== null ? hs : undefined,
+    as:  as !== null ? as : undefined,
+    vid: venue?.id   || undefined,
+    vn:  venue?.name || undefined,
+    ct:  court?.name || undefined,
+    t:   dt?.time ? dt.time.slice(0, 5) : undefined,
+    st:  game.status?.value || undefined,
+    // url omitted — PlayHQ game URL not used in StatTrack
+  };
+}
+
+// MERGE, never replace: nightly-crawl's player roster (`p`), the `spc` flag, `sup`
+// and anything else on the row survive, because only the fields this script owns
+// are overlaid and only where PlayHQ actually answered.
+// These six were written unconditionally by the old entry literal, null where
+// PlayHQ said nothing. A NEW row still gets them, so its shape — and, built in
+// TRACKED order, its key order — is byte-for-byte what the literal produced.
+const NEW_ROW_KEYS = new Set(['d', 'rn', 'h', 'hn', 'a', 'an']);
+
+function mergeFixture(existing, fresh) {
+  if (!existing) {
+    const row = {};
+    for (const k of TRACKED) {
+      if (fresh[k] !== undefined) row[k] = fresh[k];
+      else if (NEW_ROW_KEYS.has(k)) row[k] = null;
+    }
+    return row;
+  }
+  // On an EXISTING row a missing key STAYS missing. The old literal wrote
+  // `h: game.home?.id || existing?.h || null` unconditionally, so a stored row with
+  // no `h` gained `h: null` and diffEntry read undefined !== null as a change —
+  // rewriting and re-counting that game as "updated" on every run, for ever, with
+  // nothing having changed. That is the one deliberate behaviour change here.
+  const out = { ...existing };
+  for (const k of TRACKED) if (fresh[k] !== undefined) out[k] = fresh[k];
+  return out;
+}
+
+// ─── Apply one PlayHQ game to the in-memory season file ──────────────────────
+// Lifted out of processTeam 2026-11-24 so the apply rules — the played-game guard,
+// the merge, the change test, and the pending record the flush replays — are a
+// function that can be called without a PlayHQ stub. T103: the thing under test has
+// to be the shipped code, not a copy of it living in a fixture.
+// Returns { added, updated, changes }.
+function applyGame(sg, seasonId, game, round, roundGradeName) {
+  const existing = sg.games[game.id];
+  // A game with a recorded score (or FINAL/forfeit) is history: nightly-crawl
+  // captured its as-played teams/venue/time alongside the score, so a later PlayHQ
+  // edit must NOT rewrite it. Only unplayed fixtures and games not yet on file are
+  // managed here. This is also what keeps team-id swaps and archival
+  // "ZZ - … - W" renames off completed games.
+  if (existing && (existing.hs !== undefined || existing.as !== undefined
+                   || existing.st === 'FINAL' || existing.forfeit === true)) {
+    return { added: 0, updated: 0, changes: [] };
+  }
+
+  const court = game.allocation?.court;
+  const venue = court?.venue;
+  if (venue) storeVenue(venue, court);
+
+  const fresh  = fixtureFields(game, round, roundGradeName);
+  const merged = mergeFixture(existing, fresh);
+
+  if (!existing) {
+    sg.games[game.id] = merged;
+    _dirtySeasons.add(seasonId);
+    notePending(seasonId, game.id, fresh);
+    return { added: 1, updated: 0, changes: [] };
+  }
+
+  const changes = diffEntry(existing, merged);
+  if (!changes.length) return { added: 0, updated: 0, changes: [] };
+  sg.games[game.id] = merged;
+  _dirtySeasons.add(seasonId);
+  notePending(seasonId, game.id, fresh);
+  return { added: 0, updated: 1, changes };
+}
+
 function fmtVal(v) {
   if (v === undefined || v === null) return '∅';
   const s = String(v);
@@ -965,77 +1133,10 @@ async function processTeam(teamId, seasonId) {
     for (const game of (round.fixture?.games || [])) {
       if (!game?.id) continue;
 
-      const existing  = sg.games[game.id];
-      // A game with a recorded score (or FINAL/forfeit) is history: nightly-crawl
-      // captured its as-played teams/venue/time alongside the score, so a later
-      // PlayHQ edit must NOT rewrite it. Only manage unplayed fixtures (and games
-      // not yet on file). This is also what keeps team-id swaps and archival
-      // "ZZ - … - W" renames off completed games.
-      if (existing && (existing.hs !== undefined || existing.as !== undefined
-                       || existing.st === 'FINAL' || existing.forfeit === true)) continue;
-      const homeScore = parseScore(game.result?.home?.statistics);
-      const awayScore = parseScore(game.result?.away?.statistics);
-      const status    = game.status?.value || null;
-      const court     = game.allocation?.court;
-      const venue     = court?.venue;
-      const dt        = game.allocation?.dateTimeList?.[0];
-      const time      = dt?.time ? dt.time.slice(0, 5) : null;
-      const date      = dt?.date || game.dates?.[0] || existing?.d || null;
-      const url       = buildGameUrl(game.id, roundOrgName, roundCompName, roundSeasonName, roundGradeName);
-
-      if (venue) storeVenue(venue, court);
-
-      const entry = {
-        d:   date,
-        // 2026-10-13: was `rn: roundName` — the ONLY field in TRACKED without an
-        // existing-wins fallback, so a round that came back nameless would blank a
-        // stored one. Never observed; closed because the other fourteen are closed.
-        rn:  roundName || existing?.rn || null,
-                          // BARE round name — matches nightly-crawl (line 570) and
-                          // isFinal(rn) detection; a "Finals — " prefix here diverged
-                          // from stored data and churned every finals game.
-        // ⚠️ 2026-10-12 — THE GRADE WAS FETCHED AND THROWN AWAY. `round.grade`
-        // carries `id` and `name` on every round of the TeamFixture response, and
-        // the only code that touched them was the dead storeLookupEntry block
-        // below, which requires a `team-lookup-utils` module that does not exist in
-        // scripts/ and throws MODULE_NOT_FOUND into an empty catch on every game.
-        // nightly-crawl.js L798-799 writes `gid`/`gn` on everything it stores, so a
-        // PLAYED game had a grade and an unplayed FIXTURE did not — which is why
-        // StatTrack's club view could group results by age and not future games.
-        // Existing values win if PlayHQ answers with nothing, same as every other
-        // field here.
-        ...(round.grade?.id ? { gid: round.grade.id } : existing?.gid ? { gid: existing.gid } : {}),
-        ...(roundGradeName   ? { gn:  roundGradeName } : existing?.gn  ? { gn:  existing.gn  } : {}),
-        h:   game.home?.id   || existing?.h   || null,
-        hn:  game.home?.name || existing?.hn  || null,
-        a:   game.away?.id   || existing?.a   || null,
-        an:  game.away?.name || existing?.an  || null,
-        ...(homeScore !== null ? { hs: homeScore } : existing?.hs !== undefined ? { hs: existing.hs } : {}),
-        ...(awayScore !== null ? { as: awayScore } : existing?.as !== undefined ? { as: existing.as } : {}),
-        ...(venue?.id   ? { vid: venue.id }    : existing?.vid ? { vid: existing.vid } : {}),
-        ...(venue?.name ? { vn:  venue.name }  : existing?.vn  ? { vn:  existing.vn  } : {}),
-        ...(court?.name ? { ct:  court.name }  : existing?.ct  ? { ct:  existing.ct  } : {}),
-        ...(time        ? { t:   time }         : existing?.t   ? { t:   existing.t   } : {}),
-        // url omitted — PlayHQ game URL not used in StatTrack
-        ...(status      ? { st: status }        : existing?.st ? { st: existing.st } : {}),
-      };
-
-      if (!existing) {
-        sg.games[game.id] = entry;
-        added++;
-        _dirtySeasons.add(effectiveSeasonId);
-      } else {
-        // Only touch the game when a fixture field actually changed, and MERGE over
-        // the existing object so nightly-crawl's player roster (`p`) and `spc` flag
-        // (and anything else on it) survive — a blind replace would wipe them.
-        const changes = diffEntry(existing, entry);
-        if (changes.length) {
-          sg.games[game.id] = { ...existing, ...entry };
-          updated++;
-          _dirtySeasons.add(effectiveSeasonId);
-          updates.push({ gid: game.id, changes });
-        }
-      }
+      const r = applyGame(sg, effectiveSeasonId, game, round, roundGradeName);
+      if (r.added)   added++;
+      if (r.updated) { updated++; updates.push({ gid: game.id, changes: r.changes }); }
+      const status = game.status?.value || null;
 
       // Also store team logo in team-lookup
       try {
@@ -1410,4 +1511,4 @@ if (require.main === module) {
   main().catch(e => { console.error('\nFatal:', e.message); process.exit(1); });
 }
 
-module.exports = { gitCommitPush };
+module.exports = { gitCommitPush, loadGameFile, flushGameFiles, applyGame, fixtureFields, mergeFixture };

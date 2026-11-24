@@ -1223,7 +1223,8 @@ async function main() {
     deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
     listChanged: 0, seasonsRegraded: 0, newGradesSwept: 0,
     abortedBy: null,
-  };
+  staleSameRound: 0, supByGrade: 0, supByRound: 0,
+};
   const refreshStatePaths = [];
 
   if (NO_ROUND_REFRESH) {
@@ -1919,13 +1920,15 @@ async function main() {
           refresh.staleGrades++;
           refresh.staleGames += d.stale;
           refresh.staleSuperseded += d.withPlayedElsewhere;
+          refresh.staleSameRound   += d.withSameRoundPlayed;
           const pct = d.total ? Math.round((d.stale / d.total) * 100) : 0;
           console.log(`  ◌ STALE FIXTURES: sid=${sid} gid=${d.gid}${d.gn ? ` "${d.gn}"` : ''}`
                     + ` — ${d.stale} of ${d.total} game(s) past-dated and never played (${pct}%),`
                     + ` ${d.played} played, ${d.withPlayedElsewhere} superseded by a game in another grade`
+                    + `${d.withSameRoundPlayed ? `, ${d.withSameRoundPlayed} duplicate(s) of a played game in the SAME grade and round` : ''}`
                     + ` (${d.firstStale} → ${d.lastStale})`);
           for (const e of d.examples) {
-            console.log(`             ${e.d} ${e.rn ? `"${e.rn}" ` : ''}${e.superseded ? '[SUPERSEDED] ' : ''}${gcUrl(e.id)}`);
+            console.log(`             ${e.d} ${e.rn ? `"${e.rn}" ` : ''}${e.superseded ? `[SUPERSEDED: ${e.reason}] ` : ''}${gcUrl(e.id)}`);
           }
         }
       }
@@ -1954,18 +1957,25 @@ async function main() {
       if (!REFRESH_DRY_RUN && !DRY_RUN) {
         for (const sid of seasonsToCheck) {
           const gfS = loadGameFile(sid);
-          const { set, clear } = RR.computeSupersededFlags(gfS.games, { today: TODAY_ISO });
+          const { set, clear, reasons } = RR.computeSupersededFlags(gfS.games, { today: TODAY_ISO });
           if (!set.size && !clear.length) continue;
           for (const [id, by] of set) gfS.games[id].sup = by;
           for (const id of clear) delete gfS.games[id].sup;
           markGameDirty(sid);
           refresh.supSet   += set.size;
           refresh.supClear += clear.length;
+          // Every flag that STANDS this run, by cause — not only the newly
+          // written ones. Printed below; a counter that is never shown is the
+          // same defect as one that only ever increments.
+          refresh.supByGrade += reasons.grade;
+          refresh.supByRound += reasons.round;
           refreshStatePaths.push(`games/bv/${sid}.json`);
         }
         if (refresh.supSet || refresh.supClear) {
           console.log(`  ⚑ superseded flags: ${refresh.supSet} set, ${refresh.supClear} cleared`
-                    + ` — past-dated, never played, team played in another grade that day.`
+                    + `  (standing: ${refresh.supByGrade} regrade, ${refresh.supByRound} same-grade duplicate)`
+                    + ` — past-dated and never played, with a played game that day either in another`
+                    + ` grade (regrade) or in the SAME grade and round (a duplicate of it).`
                     + ` The value is the game id that superseded it.`);
         }
       } else if (refresh.staleSuperseded) {
@@ -2542,8 +2552,10 @@ async function main() {
             + `  ${refresh.sameDayNameConflicts} same-name-day(s) across two team ids`
             + `${refresh.sameDayConflicts || refresh.sameDayNameConflicts ? '  ⚠ regrade cleanup incomplete' : ''}`);
   console.log(`  Refresh stale fixtures: ${refresh.staleGames} past-dated unplayed game(s) across ${refresh.staleGrades} grade(s)`
-            + `, ${refresh.staleSuperseded} superseded by a game elsewhere that day`);
+            + `, ${refresh.staleSuperseded} superseded by a game elsewhere that day`
+            + `, ${refresh.staleSameRound} duplicate(s) of a played game in the same grade and round`);
   console.log(`  Refresh sup flags: ${refresh.supSet} set, ${refresh.supClear} cleared`
+            + `  (standing: ${refresh.supByGrade} regrade, ${refresh.supByRound} same-grade duplicate)`
             + `${REFRESH_DRY_RUN || DRY_RUN ? '  (dry run — no write)' : ''}`);
   console.log(`  Refresh deletions: ${refresh.deleted}  kept-because-played: ${refresh.keptPlayed}`
             + `  suspect-empty rounds: ${refresh.suspectEmpty}  unscopeable (no rn): ${refresh.noRoundSkipped}`);
