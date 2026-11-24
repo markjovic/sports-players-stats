@@ -25,6 +25,7 @@ from a report a live script still reads.
 - `audit-diff-fields.js`
 - `audit-removed-org-seasons.js`
 - `build-club-index.js`
+- `build-club-movement.js`
 - `build-finals-stats.js`
 - `build-leaderboards.js`
 - `build-player-games.js`
@@ -46,8 +47,30 @@ from a report a live script still reads.
 - `requeue-repointed-players.js`
 - `revert-alias-repoints.js`
 - `salvage-spectator-names.js`
+- `scripts/lib/git-exec.cjs`
+      Exports: `GIT_TIMEOUT_MS`, `GIT_MAXBUF`, `MAX_FETCH_STALLS`, `MAX_ATTEMPTS`, `gitOpts`,
+      `sleepOpts`, `backoffSeconds`, `isStall`, `gitSaid`, `classifyGitError`, `fatalReason`,
+      `isNothingToCommit`, `makeStallTracker`, `retryMessage`, `stallExhaustedMessage`,
+      `fatalMessage`, `attemptsExhaustedMessage`.
+      ⚠ The git timeout and the stall ceiling live HERE and nowhere else. A script that
+      spells either number itself is the defect this file exists to stop (T104).
+      ⚠ It runs NOTHING — no `child_process`, no exec, no side effects — so every predicate
+      is testable without a repository, a network or a git binary. Keep it that way.
+      ⚠ `classifyGitError` tests `isStall` FIRST: a timeout-killed child carries no stderr and
+      would otherwise be counted as contention it never ran.
 - `scripts/lib/namespace-resolve.cjs`
 - `scripts/lib/playhq-session.cjs`
+- `scripts/lib/round-refresh.cjs`
+      Exports: `sha12`, `hashRoundList`, `hashIdSet`, `isPlayedGame`, `loadFingerprints`,
+      `saveFingerprints`, `pruneFingerprints`, `groupStoredByRound`, `planGrade`, `planGradeFull`,
+      `detectGradeChange`, `computeRoundDeletions`, `assessGradeCoverage`, `withholdLiveElsewhere`,
+      `makeDeletionBudget`, `sideIds`, `teamsInRounds`, `findSameDayGradeConflicts`,
+      `findSameDayNameConflicts`, `findStaleFixtureGrades`, `playedGamesByTeamDay`,
+      `findSupersedingGame`, `computeSupersededFlags`.
+      ⚠ `sideIds(g)` is the ONLY correct way to read a game's two team ids — `g.h ?? g.t1`,
+      `g.a ?? g.t2`. `hTid`/`aTid` do not exist in `games/bv` (T103). Never re-derive it.
+      ⚠ `playedGamesByTeamDay` + `findSupersedingGame` are the single shared definition of
+      "superseded", used by BOTH the stale report and the `sup` flag so the two cannot drift.
 - `scripts/lib/uuid-prefix.cjs`
 - `seed-apiid-from-playhq-pairs.js`
 - `size-appearance-gaps.js`
@@ -62,10 +85,18 @@ from a report a live script still reads.
 ### 2.2 Kept scripts — on-demand tools, deliberately retained
 
 - `audit-aliases-against-playhq.js`
+- `audit-git-timeouts.js`
+      Parses every `exec(File)?Sync` call in `scripts/`, resolves named options constants, and
+      reports untimed git calls. `--strict` exits 1. Anything it cannot resolve is counted and
+      printed as `unresolved` / `unparsed`, never as guarded.
+      ⚠ Run this, not a grep. A line-level grep has produced a wrong count twice: 2026-08-20
+      (one options spelling) and 2026-11-24 (62/354 vs the real 24/98, because 36 scripts guard
+      through a shared constant no line test can see).
 - `audit-grade-coverage.js`
 - `audit-nonfinal-games.js`
 - `audit-pending-games-vs-playhq.js`
 - `audit-seasons-gaps.js`
+- `audit-team-fixtures.js`
 - `audit-tooling-inventory.js`
 - `audit-uuid-collisions.js`
 - `build-alias-worklist.js`
@@ -89,25 +120,31 @@ from a report a live script still reads.
 - `probe-alias-credits.js`
 - `probe-alias-names.js`
 - `probe-api-limits.js`
+- `probe-credited-snapshot.js`
 - `probe-my-aliases.js`
 - `probe-player.js`
+- `probe-regrade-shape.js`
 - `probe-selfalias-check.js`
 - `probe-shared-name-aliases.js`
 - `probe-squad-evidence.js`
 - `probe-unresolved-aliases.js`
 - `probe-verdict-conflict.js`
+- `prune-credited-snapshot.js`
 - `rebuild-player-index.js`
 - `recheck-forfeit-games.js`
 - `recheck-private-profiles.js`
+- `refresh-team-grades.js`
 - `repair-duplicate-regs.js`
 - `repair-forfeit-score.js`
 - `repair-legacy-flags.js`
+- `publish-final-game.js`
 - `repair-player.js`
 - `repair-players-batch.js`
 - `repair-reg-sibling-sync.js`
 - `repair-season-names.js`
 - `repoint-aliases.js`
 - `report-alias-index.js`
+- `restore-withdrawn-games.js`
 - `scan-complete-rounds.js`
 - `scan-roster-id-forms.js`
 - `seed-missing-profiles.js`
@@ -116,6 +153,18 @@ from a report a live script still reads.
 - `size-report.js`
 - `synthesize-missing-games.js`
 - `test-api.js`
+- `scripts/tests/make-sup-fixtures.js`            — regenerates the `sup` fixtures FROM the real builder
+- `scripts/tests/render-test-sup-consumers.js`    — 31 Chromium assertions on the four `sup` consumers in index.html (needs Playwright; SKIPS without it)
+- `scripts/tests/test-emit-apply.js`             — 55 assertions on the --emit/--apply split, including one end-to-end sweep with the fetch transport stubbed; the rest run the real `--apply` command and cover every refusal (wrong progress key, tenant, version, absent or unparseable changeset)
+- `scripts/tests/test-flush-merge.js`            — 63 assertions on the re-read-and-merge flush: another writer's changes between read and flush survive, a game that became played is left as history, existing-wins, and a corrupt or shapeless file is refused rather than overwritten (runs the real `applyGame`/`flushGameFiles`)
+- `scripts/tests/test-git-stall-cap.js`           — 24 assertions on the consecutive-stall cap in discover-fixtures' push-retry loop (runs the real `gitCommitPush`; `git` and `sleep` stubbed on PATH, no PlayHQ); ⚠ POSIX-only — the stubs are `#!/bin/sh`, so it SKIPS on win32 rather than reporting a false red (`GIT_STALL_CAP_FORCE=1` runs it anyway)
+- `scripts/tests/test-refresh-team-grades-t105.js` — 15 assertions on the played-game grade rule (runs the real script)
+- `scripts/tests/test-git-exec.js`                 — 70 assertions on `lib/git-exec.cjs`;
+      pure predicates, no repo, no network, no git binary needed
+- `scripts/tests/test-round-refresh-helpers.js`   — 86 assertions on the round-refresh lib
+- `scripts/tests/test-team-stats-sup.js`          — 26 assertions on sup propagation, T105 and the schema marker (runs the real builder)
+- `scripts/tests/test-superseded-wiring.js`       — 13 assertions running nightly-crawl's own apply loop
+- `scripts/tests/test-wave-scan.js`               — 17 assertions on the change→rescan→expand wave loop
 - `trace-player-game.js`
 - `verify-enrich.js`
 - `verify-p-redundancy.js`
@@ -187,8 +236,10 @@ kept out of that group are classified in 2.2.
 - `measure-credited-coverage.yml`
 - `nightly-crawl.yml`
 - `post-drain-chain.yml`
+- `publish-final-game.yml`
 - `rebuild-chain.yml`
 - `recheck-private-profiles.yml`
+- `restore-withdrawn-games.yml`
 - `requeue-repointed-players.yml`
 - `revert-alias-repoints.yml`
 - `size-locked-split.yml`
@@ -199,6 +250,7 @@ kept out of that group are classified in 2.2.
 ### 3.2 Build-trigger workflows
 
 - `build-club-index.yml`
+- `build-club-movement.yml`
 - `build-finals-stats.yml`
 - `build-leaderboards.yml`
 - `build-player-games.yml`
@@ -216,6 +268,7 @@ kept out of that group are classified in 2.2.
 - `audit-nonfinal-games.yml`
 - `audit-pending-games-vs-playhq.yml`
 - `audit-removed-org-seasons.yml`
+- `audit-team-fixtures.yml`
 - `audit-tooling-inventory.yml`
 - `audit-uuid-collisions.yml`
 - `build-alias-worklist.yml`
@@ -241,10 +294,13 @@ kept out of that group are classified in 2.2.
 - `measure-playhq-limits.yml`
 - `overnight-chain.yml`
 - `probe-api-limits.yml`
+- `probe-regrade-shape.yml`
 - `probe-squad-evidence.yml`
+- `prune-credited-snapshot.yml`
 - `rebuild-player-index.yml`
 - `recheck-forfeit-games.yml`
 - `refresh-rosters.yml`
+- `refresh-team-grades.yml`
 - `repair-forfeit-score.yml`
 - `repair-legacy-flags.yml`
 - `repair-season-names.yml`
@@ -338,3 +394,77 @@ each entry are recorded outside this repository.
 - `unresolved-prefix-diagnosis.json`
 - `uuid-collisions-len10.json`
 - `wrongly-keyed-census.json`
+
+
+---
+
+## 6 · Fields written into `games/bv/{sid}.json` by the nightly
+
+Beyond the fixture fields (`d`, `t`, `v`/`vid`/`vn`, `ct`, `rn`, `gid`, `gn`, `h`/`hn`, `a`/`an`,
+`hs`/`as`, `st`, `forfeit`/`fo`, `spc`, `p[]`):
+
+- **`sup`** — ADDED 2026-11-24. The **game id** of the fixture that superseded this one. Set when the
+  game is past-dated, never played, still served by PlayHQ, and one of its teams has a PLAYED game in
+  a **different** grade on that date. Written and **cleared** every run by
+  `computeSupersededFlags`; it is derived, and `applyRoundFixtures` spreads `...existing`, so a
+  set-only flag would survive every refetch and outlive its condition.
+  **CONSUMED since 2026-11-24.** The five consumers below read it; none of them re-derives the rule.
+  A superseded fixture is excluded from segments, bands, counts and “still to play”, and is SHOWN
+  greyed with a chip carrying the id of the game that replaced it — marked, not hidden, because
+  hiding it discards the id at the only place a person would use it and makes a superseded fixture
+  look identical to a deleted one.
+
+  The consumers, and what each now does:
+
+  | # | where | what it does |
+  |---|---|---|
+  | 1 | `grBuild` index.html → `grTeamCard` | grading panel — `sup` apps are split into `t.sups`, out of `t.apps`, so segments, bands and counts are clean by construction. **BOTH inference passes are retired**, not kept alongside the field. The team card shows them greyed, clickable through to the replacing game |
+  | 2 | club week view — `clubRowHTML` | greyed row, `↻ SUP` chip, `data-sup` carrying the replacing id; the click handler opens that game instead of a team-vs-team view flagged “upcoming” |
+  | 3 | `renderMode` → `renderSheet` | new `superseded` mode and its own `case`, tested AFTER the score tests so a scored game with a stale flag still renders its score |
+  | 4 | team card Fixtures tab + its click handler | `data-sup` from team-stats, greyed row, chip in place of the em dash, click opens the replacing game |
+  | 5 | `build-team-stats.js` | carries `sup` onto the fixture entry, **only when present**, so an absent key means “not superseded”. Two counts of one concept are printed and checked: flagged games and fixture entries, which must hold 1:2 |
+
+  ⚠ **`team-stats/bv/{sid}.json` now carries `sup` on the fixture entry.** The team card's fixture
+  list renders team-stats, not `games/bv`, so no UI-side skip could ever have reached it. It needs no
+  clearing pass: `build-team-stats.js` rewrites each season file whole from `games/bv`, so a flag
+  cleared upstream is simply not written. The one way a stale flag could have survived was the
+  `--resume` skip — see `meta.sv` below.
+
+  ⚠ **`meta.sv` — team-stats schema version, ADDED 2026-11-24, value `2`.** Written on every team.
+  `--resume` used to skip a season whose teams carried a `grade` key, which was an exact marker for
+  the 2026-10-05 change and a LIE for every change after it: every file written since October
+  satisfies it, so a resumed run would have skipped every season and no season would ever have gained
+  `sup`, while reporting “skipped” and looking like progress. The test is now the version. **Bump it
+  on any future change to what a team or a fixture carries.**
+
+  ⚠ **The player season card does NOT count unplayed games** — it unions by `p[]` or a stored box
+  line, so it is not a consumer. Earlier notes in this file and in `REPO_MANIFEST.md` claiming a
+  season-card “still to play” were **wrong**: the only “still to play” string in `index.html` is
+  L2723, in the grading panel's team card.
+
+  Readers that are safe by construction, because every one requires a PLAYED game: `h2hMapGids`
+  L1873, `openDiffGames` L4864, `toggleUnreg` L4992, `toggleGames` L5034, `tcAvail` L5668,
+  `tcFoulOuts`/`tcGameLines` L5748, `carLoadRows` L3654, `resolveOppGames` L6927; and the FINAL-gated
+  builders `build-win-loss`, `build-records`, `build-leaderboards`, `build-finals-stats`,
+  `build-player-games`, `discover-game-backfill`, `spectator-backfill`, `size-report`,
+  `publish-final-game`.
+
+  Report-only audits that still count a `sup` game as expected (nothing published, deliberately NOT
+  changed in this pass — none of those files was open): `scan-complete-rounds.js` L48–51/L106 (a `sup`
+  game sits in `LIVE_STATUS` as “expected” forever), `audit-nonfinal-games.js`,
+  `audit-pending-games-vs-playhq.js`, `size-locked-resweep.js` L76,
+  `audit-finished-unlocked-seasons.js`, `audit-grade-coverage.js`.
+
+  See `claude/fixture-refresh-and-withdrawals.md` §4.
+
+## 7 · `gitCommit` in `nightly-crawl.js`
+
+All seven `execFileSync` git calls carry `maxBuffer: 512 MB` **and `timeout: 10 min`** (added
+2026-11-24, T104 — they previously had no timeout, and a run hung silently for 70+ minutes inside one
+call while `timeout-minutes: 300` held the `data-write` lock).
+
+A timeout is **retryable, not fatal**, and is reported as a STALL separately from contention:
+`⚠ push STALLED past 10 min and was killed (attempt n/60) — retrying in Ns`.
+
+⚠ The 10-minute git timeout documented against T26/T35 is in `build-player-games.js`, **not** in
+`nightly-crawl.js`. Do not assume one script's guard covers another.

@@ -202,7 +202,7 @@ build-finals-stats, build-leaderboards, build-player-games, build-records (they 
 
 | Script | Purpose | Triggered by | Reads | Writes |
 |---|---|---|---|---|
-| `nightly-crawl.js` | Ingest new/changed games for active seasons; reclassify hidden; stub new players; flag stat-rechecks; **2026-07-21: `--rounds-forward=N|all` fetches future rounds (default 0); no-current-round grades fetch their first unsettled round** **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | nightly-crawl.yml (cron) | games/bv, data/sports-index.json, data/forfeit-games.json, players/indexes | games/bv/{sid}.json, players/{xx}/*, players/indexes/{xx}, `.nightly-status.json`, `needs-matrix-shards.json` |
+| `nightly-crawl.js` | Ingest new/changed games for active seasons; reclassify hidden; stub new players; flag stat-rechecks; **2026-07-21: `--rounds-forward=N|all` fetches future rounds (default 0); no-current-round grades fetch their first unsettled round** **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** **2026-11-22: Phase 2R, the per-grade fixture refresh.** Re-fetches the next `--refresh-rounds-ahead` (default 2) unplayed rounds of every active grade, reusing Phase 2's ids for the current round rather than asking twice, and DELETES stored UNPLAYED games a successful fetch did not return. First pass per grade is a baseline over every unplayed round, `--baseline-grades-per-run` (default 2000, measured: 750 grades cost 361 round fetches with blocked=0) at a time. The fingerprint prune runs ONLY on a full-repository run — a `--season` run must not clear a repository-wide record. **RULE 5 (2026-11-22, after the first live run):** a stored game is judged against the WHOLE GRADE, never one round. `groupStoredByRound` buckets by the `rn` held at PLAN time and `applyRoundFixtures` then rewrites `rn`, so a re-drawn or renamed round left every stored game in its old bucket and reading as withdrawn — proven on three games PlayHQ still held. A game may now be deleted only if its id appears in NO round fetched for that grade, AND the grade is fully accounted for (every live round holding unplayed games was fetched this run). Consequence by design: incremental runs rarely delete and the baseline, which fetches every unplayed round, does the removing. **`answered` (same day, after PlayHQ was checked):** `discoverFixtureByRound: null` is NOT an answer and is SUSPECT; `{games: []}` IS an answer and its stale unplayed games are deletable. Collapsing the two protected 103 MEBA rounds whose fixtures the association had published, regraded and withdrawn — PlayHQ's own page reads "Fixture has not yet been confirmed" with no games. **SHIPPED, REVERTED, RESTORED — all on 2026-11-23, and the round trip is the lesson.** Three games dated 2026-11-27 were deleted from grade fd985ec5 Round 8; a screenshot appeared to show the fixture still live, the rule was blamed and undone. The screenshot was StatTrack's own dark-themed team view, not PlayHQ. **PlayHQ shows Round 8 as a BYE** — and `Q_FIXTURE_BY_ROUND` requests `byes` and `games` as SEPARATE arrays while this code reads only `games`, so a bye round genuinely returns no games. The empty answer was a true answer and the stored fixture was pre-regrade residue. The rule is correct and is restored; the bye count is now carried into the log so an empty round names its own cause. ⚠ A screenshot is evidence only once you know which system produced it, and reversing a measured rule on one unverified image did more damage than shipping it. Deletion thresholds are ADVISORY (`--max-deletes` 500, `--max-deletes-per-season` 100): exceeding one warns and PROCEEDS, because volume is not evidence of error — a regrade withdrawing 400 fixtures is as legitimate as one withdrawing 4, while a bug deleting 50 wrong games would pass a cap of 100. Every deletion is archived in full to `data/withdrawn-games/{sid}.json` first and is restorable, which is what removed the case for a blocking cap. `--runaway-stop` (20000) is the only halt left, and it is a runaway stop rather than a review gate. **RESURRECTION DETECTOR:** an id already in the archive means a game this pass deleted has come back, which is the signature of two writers disagreeing about the same games — the likely other writer being `discover-fixtures.js` (weekly-indexes.yml), which resolves fixtures through `discoverTeamFixture` while this pass deletes on `discoverFixtureByRound`. The archive keeps `firstDeletedAt` and a `deletions` count, and the run raises a ::warning::. ⚠ OPEN: whether those two endpoints actually disagree has NOT been measured; this detector is how it will be found out. **Two corrections from the first live run (2026-11-23):** (1) a round BEFORE the current one holding an unplayed game was never fetched, so the coverage rule refused every deletion for that grade for ever — 197 grades withheld on night one, the guard blocking the cleanup it exists to protect. The rule is now SYMMETRIC and stated once: **if we hold an unplayed game in a round, we fetch that round, wherever it sits** (the current round excepted — Phase 2 supplies it). Fixing only the PAST side took 197 withheld grades to 26; the residual was the mirror image, a round BEYOND the `aheadN` window holding unplayed games, which a grade could never satisfy coverage for — and since a grade is incremental for ever after its baseline, that was a PERMANENT blind spot, not a one-off. `aheadN` now governs only rounds we hold NOTHING for, which is its real job: discovering fixtures that have appeared since. Cost is bounded by our own stale data and falls as it is cleaned. (2) A grade that plans NO fetch no longer spends baseline budget: 1,978 of 2,000 grades baselined on night one planned nothing, 1,972 of them sitting on their last round (seasons over but unlocked, `lock_after_months` 3), so 98.6% of the night's budget bought nothing and the backlog drained in name only. The shrink guard in `flushGameFiles` gained a narrow allowance — a season may lose at most what the refresh deliberately removed from it, tested as `shortfall > allowed` because the same run routinely adds games too. A genuinely changed round list re-resolves that season's grades via `discoverTeams` and sweeps any the index lacks, so a regraded team does not wait six days for discover-seasons; it records them on `data/stale-grade-seasons.json` and **does NOT write sports-index.json** — discover-seasons.js remains that file's only writer. `--no-round-refresh` restores the previous behaviour exactly. | nightly-crawl.yml (cron) | games/bv, data/sports-index.json, data/forfeit-games.json, players/indexes | games/bv/{sid}.json, players/{xx}/*, players/indexes/{xx}, `.nightly-status.json`, `needs-matrix-shards.json` |
 | `fetch-profile-stats.js` | Fetch career/season stats per player for one shard; alias-aware; writes records field; **populates `player.name` from `publicProfile` (account tenant) when the name is missing / a placeholder / a season string** **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | fetch-profile-stats-matrix.yml, fetch-profile-stats.yml, add-player.yml | players/indexes/{xx}, players/aliases/{xx}, players/{xx}/*, data/sports-index.json, scripts/lib/* | players/{xx}/*.json, players/aliases/{xx} (new aliases), shard-summary-{xx}.json |
 | `salvage-spectator-names.js` | ONE-TIME batched spectator-roster name salvage for placeholdered stragglers; `--plan` / `--shard=N` / `--reconcile`; per-game exhaustion — only confirms a placeholder when EVERY game was reached, never freezes on a transient miss **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | salvage-spectator-names.yml (dispatch) | players/{xx}/*, spectator.playhq.com | players/{xx}/*.json, players/indexes/{xx} (reconcile only) |
 | `fold-diverged-players.js` | Move apiId-bearing player files to their api-id path; relocate index entries. **2026-09-01: the MERGE keeper changed.** It kept whichever record held more `games[]` entries — a captured-side count deciding ownership of credited-side data, and inverted in the population it meets (stub median 69 games, real profile 1). It now keeps whichever record actually holds stats, drops `statsChecked` on a tie so the next matrix run settles it, and dispatches a targeted re-fetch for those players. Run #77 rescued **533 of 541 merges** | fold-diverged-players.yml (matrix terminal / manual) | players/**, players/indexes | players/{xx}/*, players/indexes/{xx} (moves), refetch-shards.json |
@@ -305,6 +305,12 @@ build-finals-stats, build-leaderboards, build-player-games, build-records (they 
 | `audit-aliases-against-playhq.js` | READ-ONLY. The alias test the project never had: pairs a spectator id with an api id from PlayHQ's OWN two records of one game (spectator box score + gameView), joined on name, or name plus jersey where a name repeats — never by elimination against our own players/ directory. Resumable. **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | games/bv, players/, PlayHQ | reports/alias-vs-playhq-audit.json (COMMITTED), progress file |
 | `audit-nonfinal-games.js` | READ-ONLY. Counts every game not in a terminal state (FINAL/CANCELLED/ABANDONED/FORFEIT — an allowlist, never a test for one non-terminal value), splits by whether the season is locked, then asks PlayHQ's canonical record about a sample of the frozen ones. 2026-09-10e spreads the sample across rounds. **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | games/bv, data/sports-index.json, PlayHQ | stdout + step summary |
 | `audit-pending-games-vs-playhq.js` | READ-ONLY. Answers the question the season-lifecycle design rests on: games we hold as PENDING in seasons PlayHQ calls COMPLETED — does PlayHQ still call them pending? 685 asked, 0 finished. **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | games/bv, data/sports-index.json, PlayHQ | stdout + step summary |
+| `audit-team-fixtures.js` | **NEW 2026-11-22 (stale-fixture work).** READ-ONLY, NO PlayHQ calls, NO writes, NO lock. Prints the exact stored state of one team: every game in `games/bv` with date, time, `rn`, `gid`/`gn`, opponent, venue, status and flags, then the three facts the deletion design turns on — how many grades the team's games span (the `meta.grade` fault, since build-team-stats takes the grade of the LATEST DATED GAME), how many unplayed games carry NO `rn` (unscopeable: games/bv stores no round id, only the round NAME, so those can never be deleted by a (gid, rn) scope), and the (gid, rn) round scopes themselves. Finally diffs `team-stats/bv/{sid}.json` against the game file in BOTH directions, which is how a stale team-stats shows itself. Exists as the BEFORE/AFTER of the stale-fixture fix because no Claude session can read this repo (T78). Accepts a tid prefix; an AMBIGUOUS prefix is reported and the run goes red, never resolved by guessing. An unparseable season file is NAMED and the run goes red — a failure to READ is never recorded as a finding of nothing. MAIN REPO ONLY: a locked season's games live in the archive repo, so its team reads as NOT FOUND and says so | audit-team-fixtures.yml (dispatch) | games/bv, team-stats/bv, data/sports-index.json | stdout only |
+| `scripts/lib/round-refresh.cjs` | **NEW 2026-11-22.** The decision half of the per-grade fixture refresh, and the only code in this repository that authorises a DELETION. Pure — no network, no writes, no git — so the deletion rules can be executed against constructed cases (a withdrawn game, a regrade, a vanished round, a refused fetch, an empty response, a played game PlayHQ stopped returning) without a PlayHQ session; 46 such cases are green. Owns `isPlayedGame`, which is deliberately over-inclusive (a score including 0, FINAL, forfeit, `spc`/`dg`, a non-empty `p[]`, or an unrecognised shape all mean UNDELETABLE), `planGrade` (baseline vs incremental, rounds ahead, new rounds, vanished rounds), `computeRoundDeletions` and the deletion budget. Also owns `data/round-fingerprints.json`: hashes rather than ids, because ids are ~17 MB and rising against ~2.5 MB bounded by ACTIVE grades (T22), with a 40 MB refusal rather than a push rejection | nightly-crawl.js | data/round-fingerprints.json | data/round-fingerprints.json |
+| `publish-final-game.js` | **NEW 2026-11-23.** FAST PUBLISH ON FINAL — the StatTrack half of the fixture-watch trigger. Does ONE round of ONE grade: `gradeRounds` to resolve the round NAME it was given to a round id, `discoverFixtureByRound` to write that round's games, spectator box scores for the FINAL ones, `statsChecked` cleared for the players in `p[]`, stubs for genuinely-new players, and the affected shards emitted so the matrix can be dispatched against them. ⚠ **THE BOX SCORE DOES NOT UPDATE A PROFILE.** `gp/pts/fg/ft/threePt/fouls` on a player page come from PlayHQ's own `publicProfileStatistics` via `fetch-profile-stats.js`, NOT from the `p[]` this writes; clearing `statsChecked` is the only reason this script touches player files at all, and the first scoping answer given for this work was wrong on exactly that point. ⚠ **IT DELETES NOTHING** — `applyRoundFixtures` only writes, and withdrawal stays Phase 2R's job inside nightly-crawl.js, deliberately unreachable from a dispatch that arrives from another repository. ⚠ Every PlayHQ-facing line, plus Phases 3, 3-cont and 4, is COPIED VERBATIM from `nightly-crawl.js` by a generator rather than hand-written, so the two cannot drift; the only edits to copied code are the commit-message prefix and the shards filename. `--season`, `--grade`, `--round` are ALL REQUIRED with no defaults (a missing value must stop the run, never widen it), and the script REFUSES if PlayHQ says the grade sits in a different season from the one dispatched — the workflow checks out exactly one season file and writing would otherwise put games where nobody looks. Writes `fast-publish-shards.json`, NOT `needs-matrix-shards.json`: that file is the nightly's own handoff and a mid-evening publish must not overwrite it. **A genuinely-new player's shard is added back after Phase 4** — `affectedShards` is only populated on the two `statsChecked` branches and a new player is `continue`d past both, so without this a player appearing for the first time tonight is stubbed with zeros and never fetched. ⚠ nightly-crawl.js HAS THE SAME GAP and it is NOT fixed there: on a nightly it only means a new player waits for the next full matrix sweep. W/L is NOT updated — `build-win-loss.js` has no season or team scope and opens with a pre-pass over every player file. 29 tests | publish-final-game.yml (dispatch, from markjovic/fixture-watch) | PlayHQ, games/bv, players/**, data/sports-index.json | games/bv/{sid}.json, players/**, data/forfeit-games.json, fast-publish-shards.json |
+| `restore-withdrawn-games.js` | **NEW 2026-11-22.** Puts back games Phase 2R deleted, from the FULL entries archived to `data/withdrawn-games/{sid}.json` before removal. Exists so the deletion caps could stop being a GATE: they aborted a run on volume, which fired on the normal case (MEBA regraded and withdrew several hundred games from one season) and would have missed a bug deleting fifty wrong ones. Volume is not evidence of error; the caps are advisory now and this is what makes deletion reversible rather than merely logged. DRY RUN BY DEFAULT, `--apply` required. A game already present in games/bv is NEVER overwritten — the live copy wins, because an older snapshot must not replace current data. An unparseable season file THROWS rather than being rebuilt from an archive that holds only deleted games. `--list`, `--season`, `--game`, `--since`, `--keep-archive` | restore-withdrawn-games.yml (dispatch) | data/withdrawn-games, games/bv | games/bv, data/withdrawn-games |
+| `data/round-fingerprints.json` | per ACTIVE grade, a hash of the round list (`rl`) and of each fetched round's game-id set (`r`). `rl` is written ONLY when every planned round of that grade succeeded — a grade with a refused or suspect round is stored `incomplete: true` WITHOUT `rl`, which keeps it unverified so the next run re-examines it instead of letting the round slide out of the ahead-window. Pruned every run to the active grade set | nightly-crawl.js (Phase 2R) | nightly-crawl.js |
+| `data/withdrawn-games/{sid}.json` | gameId → `{at, gid, rn, reason, entry}` where `entry` is the COMPLETE stored game object. Written by nightly-crawl Phase 2R immediately BEFORE a deletion, merged never replaced (a season can be cleaned on more than one night). In `data/` and not `reports/` deliberately: reports/ is gitignored, a plain `git add` on an ignored path matches nothing and exits ZERO, and the archive must be committed or it does not exist to anything (T94) | nightly-crawl.js | restore-withdrawn-games.js |
 | `census-wrongly-keyed-players.js` | Finds EVERY player file keyed on a non-api id — not the handful a game sample walks past — and recovers each one's real api id from PlayHQ. Emits the report `seed-apiid-from-playhq-pairs.js` consumes unchanged. Bootstrap hardened for 256-shard contention (two cookie queries, attempt×5000 backoff, per-request network catch, single-flight). **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | players/**, games/bv, PlayHQ | reports/wrongly-keyed-census.json |
 | `correct-wrong-aliases.js` | Repairs aliases the audit PROVED wrong, from the audit's own evidence only — the spectator/api pairing, never elimination. **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | reports/alias-vs-playhq-audit.json, players/, PlayHQ | players/aliases/{xx}, reports/alias-correction-log.json |
 | `verify-players-against-playhq.js` | READ-ONLY. The check that should have come first: compares a player's credited games and points at PlayHQ against what StatTrack holds, player by player. Writes and COMMITS one report; no data-write lock. **2026-10-05 (§6.62): moved to fetch() — the client was the key, §6.61** | players/**, PlayHQ spectator | reports/verify-players-against-playhq.json (COMMITTED) |
@@ -420,7 +426,7 @@ diagnostics is preserved in §6.7. There is no remaining "to delete" list — th
 ### 3.1 Live / scheduled — KEEP
 | Workflow | Trigger | Runs | Notes |
 |---|---|---|---|
-| `nightly-crawl.yml` | cron daily 15:00 UTC + dispatch | nightly-crawl.js + chains 6 downstream jobs | data-write lock; the heart. No setup-node in crawl (fetches PlayHQ). |
+| `nightly-crawl.yml` | cron daily 15:00 UTC + dispatch **2026-11-22:** seven refresh inputs added (`no_round_refresh`, `refresh_rounds_ahead`, `refresh_dry_run`, `baseline_grades_per_run` (default 2000), `max_deletes`, `max_deletes_per_season`, `fail_on_delete_cap`). They go through `env:` and are gated in bash, with every value resolved through an explicit fallback at its use site because a SCHEDULED run receives no inputs (T27) — an empty `--max-deletes=` would read as 0 and silently disable the cap. Non-numeric input refuses (T3), and the error goes to stderr because the check runs inside a command substitution. The status step reports deletions and whether the cap was hit into the job summary. | nightly-crawl.js + chains 6 downstream jobs | data-write lock; the heart. No setup-node in crawl (fetches PlayHQ). |
 | `weekly-indexes.yml` | cron Sun 02:00 UTC + dispatch | build-team-stats, build-player-games, build-win-loss(full) | ~~FIX: player-games safety-net step~~ — **DONE 2026-07-16 (§6.1); marker was stale, cleared 2026-07-29** |
 | `recheck-private-profiles.yml` | cron monthly + dispatch | recheck-private-profiles.js | — |
 | `fetch-profile-stats-matrix.yml` | dispatch (by nightly / add-player / self) | fetch-profile-stats.js × 256; terminal fold+rebuilds+**team-stats (2026-07-21)** | git-add fixed 07-16; stop-button fixed 2026-07-21 (apply/summary gates → `!cancelled()`) |
@@ -432,6 +438,9 @@ diagnostics is preserved in §6.7. There is no remaining "to delete" list — th
 | `measure-credited-coverage.yml` | dispatch | measure-credited-coverage.js | READ-ONLY; own concurrency group |
 | `audit-diff-fields.yml` | dispatch | audit-diff-fields.js | READ-ONLY; sparse checkout is correct here — one shard, ~1,600 files |
 | `audit-grade-coverage.yml` | dispatch | audit-grade-coverage.js | **NEW 2026-10-12 (§6.68).** READ-ONLY, `permissions: contents: read`, no lock. FULL checkout — it walks every file in games/bv, which is exactly the case where sparse costs more than it saves (contrast `probe-team-club-fields.yml`, one file, sparse+blobless). Inputs via `env:` and gated in bash (directive 13 / T27). timeout 60 min |
+| `audit-team-fixtures.yml` | dispatch | audit-team-fixtures.js | **NEW 2026-11-22.** READ-ONLY, `permissions: contents: read`, no lock. FULL checkout — without `sid` it walks every file in games/bv. Inputs via `env:` and gated in bash (directive 13 / T27); the tid guard refuses anything but hex, hyphens and commas and so fails toward doing less (T3). timeout 60 min |
+| `publish-final-game.yml` | dispatch (from markjovic/fixture-watch, PAT) | publish-final-game.js | **NEW 2026-11-23. THE ONLY WORKFLOW IN THIS REPO DISPATCHED FROM OUTSIDE IT**, and everything it may do is bounded by that: it writes games/ and players/ and nothing else, deletes nothing, and refuses a malformed dispatch rather than widening. Holds `data-write` (T25). ⚠ **BLOBLESS PARTIAL CLONE + A SECOND, NARROWER CHECKOUT.** MEASURED on run #1 (2026-11-23): `actions/checkout@v4` took **8m 15s of an 8m 22s job** for a script that ran in **3 seconds**. `du -sh` read .git 906M, **players 3.4G**, data 4.8M, games 920K — and a FULL tree on the same repo (the `probe` workflow) is 5m52s, so the original sparse set, which spared only `games/bv`, was costing MORE than no sparse set at all. The publish needs roughly TEN player files out of ~370,000 and cannot know which ten until the box scores are back, so the script now runs in two phases: `--phase=fetch` checks out `players/indexes` and `players/aliases` only, writes the round, pulls the box scores and emits `fetch_shards`; the workflow then re-sets the sparse patterns to add `players/{shard}` for exactly those shards; `--phase=players` does the rest. `filter: blob:none` makes the newly matched blobs arrive on demand. ⚠ `git sparse-checkout add` is CONE-MODE ONLY and this checkout is non-cone, so the whole pattern list is re-set with `set --no-cone`. ⚠ Shard names are validated as two hex characters before they reach git — a shard name is derived from a uuid, so anything else means the state file is not what it claims. The state file lives in `$RUNNER_TEMP`, never in the repo: it holds player ids and this is a public repository, and a path inside the repo would also collide with the nightly. **THE DECIDING TEST for the split is that a two-phase run leaves the working tree BYTE-IDENTICAL to a one-phase run** — it does, once `updatedAt` (wall-clock, written on every player file) is normalised, which was verified field by field rather than assumed. 15 tests on the split, 29 on the script. **RESULT, MEASURED the same day: checkout 8m 15s → 26s**, whole job ~31s (26s checkout, 3s fetch phase, 1s players phase). ⚠ THE SHARD-ADD STEP HAS STILL NOT RUN FOR REAL: outside a Friday evening every FINAL game already carries `spc`, so a test dispatch produces no box scores and no shards, and the step is skipped. It fails safe — a failure there aborts before anything is committed and the nightly picks the games up — but `test_shards` exists so the git mechanics can be exercised on demand against shards that are checked out and then ignored, rather than first running for real at 22:00 on a Friday. The round's own shards always win; `test_shards` is a fallback for a run that produced none, never an override. **EXERCISED 2026-11-23 with `test_shards="0a 11"`: `git sparse-checkout set --no-cone` succeeded and both shards came down. MEASURED TREE: .git 906M → **164M**, players 3.4G → **213M** (158M of which is `players/indexes`, which phase 1 needs whole because the spectator ids' shards are not known before the fetch), games 920K, data 4.8M — ~4.3G → ~383M.** ⚠ That run printed four `pass a leading slash before paths such as ... (see NON-CONE PROBLEMS in the git-sparse-checkout manual)` warnings: without a leading slash git reads a non-cone pattern as matching at ANY depth rather than naming one file. They resolved correctly anyway, but every pattern now carries a leading slash in BOTH the `actions/checkout` list and the `set --no-cone` re-set — and those two lists must stay identical, because the re-set replaces the whole list and any drift silently changes what is checked out. Dispatches `fetch-profile-stats-matrix.yml` with the targeted shard list via `WORKFLOW_PAT` and the verbatim `gh-dispatch.sh` retry helper (directive 14) — the matrix is DISPATCHED, never reimplemented, because reproducing its fan-out here would be a second unlocked writer of `players/`. ⚠ An empty or malformed shard list is REFUSED, never passed through: the matrix reads `[]` as ALL 256 SHARDS, and a fast publish that silently sweeps the database is worse than one that does nothing. ⚠ `build-team-stats.yml` is deliberately NOT dispatched — it READS `players/` while the matrix WRITES it in a run no lock here covers, which is the ordering race nightly-crawl.yml solved with `needs:`, and `needs:` cannot reach across two dispatched runs |
+| `restore-withdrawn-games.yml` | dispatch | restore-withdrawn-games.js | **NEW 2026-11-22.** Holds `data-write` — it writes games/bv, and push contention on this repo is path-agnostic (T25). `list` defaults TRUE and `apply` defaults FALSE, so the harmless action is the one you get by accident. Inputs via `env:`, gated in bash, ids validated before use (T3). timeout 150 min, above the push-retry budget (T55) |
 | `find-lost-stats-from-folds.yml` | dispatch | find-lost-stats-from-folds.js | data-write; report committed in BOTH modes |
 | `find-misrouted-appearances.yml` | dispatch | find-misrouted-appearances.js | data-write in apply mode; writes aliases |
 | `revert-alias-repoints.yml` | dispatch | revert-alias-repoints.js | data-write; sparse (aliases only) |
@@ -1612,6 +1621,17 @@ seasons graduate out 28 days after locking, automatically.
   land safe-side by construction: flags stay unset, the season keeps serving from active, the next
   nightly dispatch retries (candidacy IS the absence of the flag), and the status job goes RED so
   persistence can't rot silently. Graduation #1: green, full locked corpus.
+- **deploy-pages.yml gained an artifact-visibility gate (2026-11-23).** `deploy-pages@v4` was failing
+  intermittently — roughly 6 of 10 runs — with `No artifacts named "github-pages" were found`. The raw
+  log of run #445 shows the upload SUCCEEDING (788 MB, finalised, artifact id 14779716770, live download
+  URL) and the deploy querying the artifacts REST API **0.3 seconds later** and getting `Found 0
+  artifact(s)`. The endpoint had not caught up with the write; `deploy-pages` treats that first miss as
+  fatal, and its `error_count` input governs deployment-status polling rather than this metadata fetch,
+  so there is nothing to tune. A new step polls the SAME endpoint `deploy-pages` reads, every 5s for
+  ~3.5 min, and fails loudly if the artifact never appears. `actions: read` added for it.
+  ⚠ NOT the causes, each checked and discarded: artifact SIZE (788 MB is nowhere near a limit);
+  the upload-artifact VERSION (v4 is already in use — the error message's own advice is a red herring);
+  the tar step being truncated in the UI (that is `-v` listing ~500k files, normal).
 - **deploy-pages.yml** gained the archived-season strip (no-op at zero flags, ABORTS on structural
   failure — a wrong artifact must not publish silently). **StatTrack 0.74**: eleven per-season
   fetch sites routed through `sgj(dir,sid)`/`seasonBase(sid)` (the future-sharding choke point),
@@ -5774,6 +5794,316 @@ is exposed on the workflow, every cap below 20 is listed in full (truncating tha
 is what hid the shape on the first run), the `>=20` total is printed beside the under-20 total, and
 the low-cap offenders are clustered by season so a systematic fault is visible as one.
 
+### 215 is the number — and the floor had been added to one caller only (2026-10-19)
+
+`--min-cap=20` over 636,166 stored records: **215 impossible**, 0.034%. Every one at or above the
+floor lands on a top team score of exactly **20** — 156/20, 102/20, 101/20, 100/20, 78/20, 67/20
+five times, 53, 51, 48, 47, 44, 42, 41, 40 — with two outliers at 24. That is this corpus's forfeit
+convention, and it makes the whole class one story: a team forfeits, the official result is
+recorded 20-0, the opposition plays the scratch match anyway and the scorer enters the stat lines.
+`data/forfeit-games.json` catches some of them and, as §6.84 established for `0a99c2d7`, cannot
+catch the rest.
+
+The same run printed `25,694 of those sat behind a scoreline under --min-cap=20`. **And `--min-cap`
+existed only in the audit.** `fetch-profile-stats.js` had the impossible-line guard with no floor
+at all — and it DROPS the stat line rather than withholding a board row. The next fetch of each of
+those players would have deleted 25,694 real stat lines, with their points, games and career
+totals, on the authority of a game file saying the winning team scored 2.
+
+The floor now lives in `game-scores.cjs` as `MIN_TRUSTED_SCORE = 20`, so every caller inherits it;
+`audit-impossible-records.js` opts out with `minScore: 1` precisely because its job is to report the
+two populations separately. Raising the floor costs withheld rows; lowering it risks deletion, so
+it is deliberately not wired to a workflow input.
+
+Measured against a six-game fixture, default floor vs the audit's raw view:
+
+```
+game    default(20)   raw(1)        fetch-profile-stats verdict
+g0  0-0        null        null     68 pts -> line KEPT   (was: DROPPED)
+g2  2-0        null           2     43 pts -> line KEPT   (was: DROPPED)
+g18 18-9       null          18     30 pts -> line KEPT   (was: DROPPED)
+g20 20-0         20          20    102 pts -> LINE DROPPED
+g88 88-71        88          88     61 pts -> line KEPT
+```
+
+### The audit's report could not reach the tool it was built to feed
+
+`audit-impossible-records.yml` shipped at `contents: read` with an
+`upload-artifact` step, on the reasoning that an audit is read-only. But
+`populate-players.js --from-csv=` takes a **repo path**, so the CSV had to be downloaded from the
+run's artifacts and re-uploaded to `reports/` by hand to get from one workflow to the next. The
+output was correct and unusable.
+
+It commits the one file now. `reports/` already holds the output of
+`audit-uuid-collisions.js` and `audit-aliases-against-playhq.js`, so this is the existing
+convention, not a new privilege; `--no-commit` still produces the local file for a numbers-only
+run, and says plainly that the result is NOT on main rather than printing the usual "now run
+Populate Players" line at a path that does not exist.
+
+The commit discipline is copied from `update-team-index.js` L71-104, not from
+`audit-uuid-collisions.js`: the latter wraps add/commit/merge/push in a try/catch that prints and
+returns, so a failed push exits ZERO and the job shows green having written nothing. No
+concurrency lock, the same call as `update-team-index.yml` — one file nothing else writes, and
+`data-write` would put it behind the nightly and both sweeps where GitHub allows only one waiter
+(T19).
+
+Proven against a real bare remote: `staging: 1 file changed`, `✔ pushed (attempt 1)`, and the CSV
+readable from the remote's `main` — which is what the next workflow's checkout sees.
+
+### …and then the commit silently did nothing, under a success message
+
+First run of the committing version: 215 rows written, 8,506 bytes uploaded as the artifact, and
+
+```
+  Wrote reports/impossible-records.csv (215 rows)
+  staging: no changes — nothing to commit
+  Now run Populate Players with from_csv=reports/impossible-records.csv — it is committed.
+```
+
+**`reports/` is in the repo's `.gitignore`.** `git add -- reports/impossible-records.csv` on an
+ignored path matches nothing and **exits ZERO** — git does not treat "everything you named is
+ignored" as an error — so `--shortstat` came back empty, the function returned, and the next line
+told the operator to go and use a file that was not on main. Some files under `reports/` are
+tracked from before the rule, which is exactly why the directory looks committed and the ignore
+was not suspected.
+
+Two fixes, and the second matters more than the first:
+
+1. `git add -f` on that one path. Forcing past an ignore is a deliberate exception and it is
+   stated at the call site, not hidden.
+2. **An empty staging area now has to prove which event it is.** Identical content already on main
+   is a clean no-op; a path git is not tracking means the add did nothing and the report is
+   unreachable. The second case now THROWS, naming the ignore rule from `git check-ignore -v`. And
+   `gitCommit` returns a boolean — the "now run Populate Players" line is gated on an actual
+   commit instead of printing unconditionally.
+
+Proven against a bare remote with `reports/` ignored and a legacy tracked file inside it: run 1
+force-adds and pushes, the CSV is readable from the remote's `main`; run 2 reports
+`no changes — the committed CSV is already identical`. The not-tracked throw is a backstop that
+`-f` should now prevent, and is untested for that reason.
+
+### `rebuild` would have republished the contaminated data
+
+The dry run of the repair: 215 CSV rows → **186 players** (29 carry both a PTS and a 3PT record),
+`already pending: 0`, **125 shards affected**.
+
+125 is above `populate-players.js`'s `--inline-shard-limit=24`, so the script takes its handoff
+path: it clears `statsChecked`, writes `handoff=true`, prints "now dispatch Fetch Profile Stats
+(matrix)" and **exits 0 without fetching anything**. That is correct behaviour — 125 sequential
+shard runs do not fit in one job.
+
+But `populate-players.yml`'s rebuild step was gated on `rebuild && !dry_run` alone. Ticking
+`rebuild` on that run would have dispatched build-team-stats, build-search-index and Deploy Pages
+against player files whose values were **unchanged** — republishing the same contaminated records
+the repair exists to remove, under a green run, with the operator told it was done.
+
+The exit code said success and the step name said rebuild; neither described what happened. The
+gate now reads `steps.populate.outputs.handoff != 'true'`, and a second step fires on the
+complement to say the rebuild was deferred and name the two workflows to run instead — a silently
+skipped step reads as a completed one (T94). Gate matrix evaluated across rebuild × dry_run ×
+handoff: exactly one of the two steps fires in the live+rebuild cases, neither on a dry run.
+
+### The repair ran, and the step that announced it died on a quote I broke
+
+`populate-players` with the 215-row CSV: **186 named, 186 cleared, 0 missing, 125/125 shards
+fetched, 0 errors, 188 files committed and pushed.** The guard fired throughout, including on the
+originating game:
+
+```
+⚠ impossible stat line dropped: 102 PTS in game 0a99c2d7 (season 702b232f, highest team score 20)
+⚠ impossible stat line dropped: 100 PTS in game 0a99c2d7 (season 702b232f, highest team score 20)
+```
+
+It dropped many more lines than 215, correctly: the audit found players whose stored MAXIMUM was
+impossible, and the fetch re-checks every game in each of their careers. One player lost four.
+
+Then the rebuild step exited 2 on `unexpected EOF while looking for matching` a double quote.
+Line 168 had lost the closing quote of its final `echo`, because the edit that appended a step
+used a Python triple-quoted anchor whose text ended in a double quote — the closing triple-quote
+swallowed it, and the orphan landed at the end of the appended step. **The YAML was valid the whole
+time**: broken bash inside a block scalar is just a string. The three dispatches on the lines above
+had already fired, so the rebuild ran regardless and nothing was lost.
+
+The same mistake then recurred inside the edit writing THIS section, which contained a literal
+triple-quote of its own. Two for two, in two different host languages, within a minute.
+
+Every `run:` block in every workflow is now linted through `bash -n` (with GitHub expressions
+stubbed), not only parsed as YAML.
+
+### The last record was not an orphan, and "impossible" was never a safe word for it
+
+`bc5822b6` returns NULL from `discoverGame`, and I concluded the game was withdrawn and the record
+unverifiable. Mark's reading of our own StatTrack page settled it instead: **Apollo U18 Boys 3
+20 — 26 Wattle Glen Breakers U18.1 Boys, Round 2, 10 Feb, HIDDEN GRADE**, and Ruben Greer at
+**16 PTS** — 5 x 2PT + 6 x FT, which reconciles exactly. We hold the game and its box score.
+
+So there were always TWO records of this player-game in our own corpus:
+
+| source | value |
+|---|---|
+| `games/bv` box score (`hp`/`ap`, spectator endpoint) | **16** |
+| player file `maxGamePTS` (publicProfileStatistics) | **32** |
+
+Exactly 2x, in a game flagged HIDDEN GRADE. His question — *"how can you say it is impossible if
+we don't actually have the game to reference?"* — was the right one twice over: the verdict
+asserted our scoreline was right and the stat line wrong, with nothing to support that choice, and
+the second record that could have decided it was sitting unread.
+
+**HYPOTHESIS, NOT A FINDING: a regraded game appears twice in `publicProfileStatistics` and the two
+grade rows are summed into one `gameStatistics` entry.** `statValue` uses `.find()`, so the
+doubling is not ours. If it is right, it does not stop at `maxGamePTS`: `regStats` accumulates
+`pts`, `threePt` and `fouls` from the same lines, so every player in every regraded game would
+carry inflated SEASON AND CAREER totals — a far larger population than the 215, and invisible to a
+test that only flags values exceeding a team score.
+
+### The audit now reconciles three ways instead of judging one
+
+`makeLookup` gained an opt-in `box: true` indexing `hp`/`ap` as `profileID -> pts` (`p[]` is only a
+roster of truncated ids and carries no points). Every offender now carries a verdict:
+
+- **box AGREES with stored** — the player did score it; the SCORELINE is the bad half and the
+  repair belongs to the game file, not the player
+- **box < stored, exact integer multiple** — double-counting in the source
+- **box < stored, no clean ratio** — unexplained, needs a look
+- **no box** — genuinely unverifiable, and never again reported as impossible
+
+`--ratios` runs the same cross-check across every stored record, not only the ones that fail the
+team-score test, and prints the stored/box ratio distribution — which is the only way to size the
+regrade hypothesis, since an inflated value below its team score never gets flagged at all.
+
+Proven on a five-player fixture covering all four verdicts plus a legitimate record: the x2 and x3
+double-counts are identified as exact multiples, the box-agrees case is correctly reported as a
+scoreline fault, the no-box case is withheld, and the genuine 61 in an 88-71 is not flagged.
+
+### The first cross-check measured its own bug, and the hypothesis did not survive the second
+
+First `--ratios` run over 636,164 stored records:
+
+```
+  checked against a box score : 35,819
+  stored == box               : 17,911  (50.0%)
+  stored != box               : 17,908
+```
+
+**17,911 against 17,908 is not a property of the data.** `maxGameThreePt` — a COUNT of
+three-pointers — was being compared against the box score's points total, and that category is
+about half the stored records. The split was the category mix, reported as a finding. Two days
+after T96, and the same error: comparing unlike things because the container accepted both.
+
+Three corrections, all verified on a four-case fixture:
+
+1. The box index carries `pts` **and** `pt3`; each category is compared against its own field.
+   `maxGameThreePt` now reads 100% equal on the fixture, where before it could never match.
+2. `boxLine` is **alias-aware** via `resolveToFullUuid`. A player file's uuid and a box score's
+   `profileID` diverge under api-canonical migration — `fetch-profile-stats` logs
+   `recovered apiId -> …` when it hits one — so exact-match-only reported present players as
+   absent. Resolution is lazy (exact, then the player's resolved id, then this one game's entries),
+   and alias hits are counted separately. **Ruben Greer read `NO BOX` while Mark was looking at his
+   box score on screen**, which is what exposed it.
+3. Exact-multiple flagging is split at `box >= 10`. The first run's "evidence" was
+   `stored 4 / box 2`, `stored 8 / box 4`, `stored 6 / box 2` — small numbers land on whole
+   ratios constantly.
+
+**The regrade double-count hypothesis is NOT supported.** It was mine, built from Mark's
+observation that 32 is exactly twice 16; the observation was sound, the mechanism I inferred from
+it was not. The ratio histogram — which was the one clean part of that run, maxGamePTS only — is
+flat: the most common mismatch ratio occurred **7 times** across ~17,900 mismatches. A systematic
+multiplier would make x2 dominate. A scatter of exact multiples across thousands of distinct
+ratios is what chance looks like.
+
+### Second run, clean instrument: corpus-wide hypothesis dead, per-game one alive
+
+```
+  checked against a box score : 86,803   (50,984 matched only after alias resolution)
+  no box line for that player : 549,353
+  stored == box               : 77,068  (88.8%)
+      maxGamePTS      vs box pts: 56,735 checked, 50,403 equal (88.8%)
+      maxGameThreePt  vs box pt3: 30,068 checked, 26,665 equal (88.7%)
+```
+
+Two categories, two different fields, two independent comparisons, agreement to within 0.1 points
+— the instrument is sound now. 86,803 cross-checked against 35,819 before, and **59% of the
+matches needed alias resolution**, so the first run was blind to most of the box scores available
+to it.
+
+**The systematic-multiplier hypothesis is dead.** Of 6,332 `maxGamePTS` mismatches, x2 occurs 13
+times — 0.2%, against a flat tail of distinct ratios. A corpus-wide double-count would dominate.
+
+**But the six exact multiples above the magnitude floor are not scattered:**
+
+```
+ 44 / 22  x2  Patrick Adler     game a9e3b31c  season b331976c
+ 20 / 10  x2  Lucas Fuller      game a9e3b31c  season b331976c
+ 26 / 13  x2  Riley orourke     game a9e3b31c  season b331976c
+ 26 / 13  x2  Harrison Selman   game cb6dc453  season b331976c
+ 32 / 16  x2  Ruben Greer       game bc5822b6  season 9dbb9dac
+ 51 / 17  x3  Isaiah Savea      game d35bffab  season bc2ab729
+```
+
+Three different players in **the same game**, each exactly twice their box line; four of six in one
+season. Chance does not cluster like that. The hypothesis survives rescoped: not every regraded
+game, but *particular* games duplicated in `publicProfileStatistics`.
+
+`--game=<gid> --season=<sid>` answers it directly — one game's whole box score beside each
+player's stored record, including players in the box with no record. If every player doubles, the
+fixture is duplicated; if only the three do, it is something else. Proven on a fixture where all
+three records in a game read x2 and a fourth player's max, drawn from a different game, is
+correctly excluded rather than counted as a mismatch.
+
+> **T99 — A RATE RULES OUT A UNIVERSAL CAUSE, NOT A LOCAL ONE.** 13 occurrences in 6,332 says no
+> mechanism touches everything; it says nothing about whether a mechanism touches something. Before
+> closing on a negative, group the exceptions by every key you have — game, season, source, day —
+> because a cause that fires rarely but completely looks identical to noise in the aggregate and
+> obvious the moment it is grouped.
+
+> **T98 — A RESULT THAT LANDS ON A ROUND NUMBER IS USUALLY MEASURING YOUR OWN CODE.** 50.0%,
+> exactly half, a count matching another count to three digits: real populations are lumpy, and a
+> clean split almost always traces to a structural feature of the measurement — two categories,
+> two code paths, a modulo. Before reporting a tidy number, find the mechanism that would produce
+> it; if the only mechanism you can find is in the instrument, it is in the instrument.
+
+> **T97 — WHEN TWO SOURCES DISAGREE, THE RATIO BETWEEN THEM IS THE DIAGNOSTIC.** A guard that
+> compares one value against a single reference can only say "these disagree", never which is
+> wrong, and it will quietly blame whichever side it was pointed at. Where a second independent
+> record exists — and here it was in the same repository, unread — reconcile against it first; an
+> exact small-integer multiple is a double-count, not an anomaly, and it names the mechanism. Check
+> for a second source before declaring anything unverifiable.
+
+> **T96 — VALIDATING THE CONTAINER FORMAT DOES NOT VALIDATE THE EMBEDDED LANGUAGE.** A workflow is
+> bash inside YAML inside an expression syntax, and every layer accepts the next layer's garbage as
+> an opaque string. `yaml.safe_load` passing means the file is YAML, not that the job will run —
+> and the same holds for JSON carrying SQL, HTML carrying JS, or a heredoc carrying anything. Lint
+> the inner language on its own terms, and be most suspicious when the edit that produced it was
+> itself written in a third language with its own quoting rules. A delimiter that appears in the
+> payload is the whole failure: check for it before writing, not after the job turns red.
+
+> **T95 — A STEP THAT HANDS OFF STILL EXITS ZERO, AND THE NEXT STEP CANNOT TELL.** "Did the
+> previous step do the work, or delegate it?" is invisible in an exit code, and a publish step
+> gated on the pipeline merely having *reached* it will ship whatever is currently on disk. A
+> producer that can delegate must say so in an output, and every consumer that publishes has to
+> read it. The larger the job, the more likely the delegating path is the one that runs — here it
+> was the normal path for any corpus-wide repair, not an edge case.
+
+> **T94 — A COMMAND THAT DOES NOTHING USUALLY SUCCEEDS.** `git add` on an ignored path, a glob
+> matching no files, a delete of something already gone: all exit zero. A pipeline step that
+> checks only the exit code cannot tell "done" from "declined", and whatever it prints next is
+> asserted on no evidence. Check the EFFECT — staged bytes, rows written, the file tracked — and
+> make the step's success message a function of that check, never of reaching the end of the
+> function.
+
+> **T93 — A REPORT THAT ONLY EXISTS AS A BUILD ARTIFACT CANNOT BE CONSUMED BY A WORKFLOW.**
+> "Read-only" is a statement about the data a job is auditing, not about where its own output
+> belongs. When one job produces a file another job reads by path, the producer has to put it on
+> the branch; an artifact is for a human to look at, and a handoff that needs a person to download
+> and re-upload is a broken pipe with a manual bypass.
+
+> **T92 — A SAFETY FLOOR ADDED WHERE THE PROBLEM WAS NOTICED IS NOT ADDED WHERE IT MATTERS.** The
+> floor was written into the read-only reporter, because that is where the bad output was visible;
+> the destructive consumer of the same predicate kept none of it and was 25,694 records from doing
+> real damage. When a check turns out to need a threshold, put the threshold in the shared
+> predicate and make the exception opt in, never the protection. The reporter is the one caller
+> that can afford to be wrong.
+
 > **T91 — A GUARD'S FALSE POSITIVES ARRIVE SORTED BY SEVERITY AND READ AS ITS BEST WORK.** The
 > 726 were ordered worst-first, so the real fabrications sat at the top and the scoreline artefacts
 > below — exactly the shape that invites reading the first screen and accepting the total. Always
@@ -5827,5 +6157,631 @@ Both existing inputs now reach bash through `env:`, and `dry_run` is exposed, wh
 
 ---
 
-**Highest trap number after this session: T91.** Before adding one, run
+## §6.85 — the calendar-year cards were a week behind, and games[] was the reason (2026-11-23)
+
+**The complaint.** On a player profile the per-season rows updated after a new game but the
+calendar-year rows did not. Measured specimen: MMB08 reading **69 PTS on the season card against
+62 on the year card**, with a 7-point game played that week. Nobody knew whether they caught up
+later or never did.
+
+**The mechanism, read out of the files rather than inferred.**
+
+* StatTrack's season card is built by `carSeasonGroups` (index.html L2642) from
+  `seasons[].regs[].stats` — PlayHQ-credited registration stats, refreshed NIGHTLY by the
+  fetch-profile-stats matrix.
+* The year card is built by `carYearGroups` (L2778) from `st.rows`, and `st.rows` comes from
+  `carLoadRows` (L2911), whose game loop is `for (const gid of mine)` where **`mine = p.games`**.
+* `player.games[]` has exactly **two writers** in the repository — `build-player-games.js` L385
+  and `fold-diverged-players.js` L194 (a union during an identity merge). Confirmed by grepping
+  every script for assignment to `.games`.
+* The only SCHEDULED run of `build-player-games.js` was the `player-games` job in
+  `weekly-indexes.yml`, `cron '0 2 * * 0'`. Every other caller is `workflow_dispatch`.
+
+So a game played during the week was in `games/bv` that night, its box score was live, the
+registration stats counted it — and its id did not enter `games[]` until the following Sunday.
+The year card could not see it. **They do catch up, on Sunday**, which is why nothing ever looked
+permanently broken.
+
+`deploy-pages.yml` already fires on `workflow_run` completion of "Weekly Indexes", so T23 was not
+in play.
+
+**`build-player-games.js` makes no API calls.** Its own header, line 5: *"sourced from p[] arrays
+in game files — no new files, no API."* Grepped for `fetch(`, `https.`, `playhq`, `graphql`,
+`spectator`: nothing. The weekly cadence was never about PlayHQ — it is about git. Phase 2 walks
+256 prefix dirs and commits every 8, about 32 fetch/merge/push cycles against a 6 GB repo on
+`players/`, the most contended path in it.
+
+**Measured, from dispatch runs #23–#30 (25 Aug – 6 Sep):** 9m19s to 11m29s end to end. On the run
+inspected: **checkout 5m01s, the script itself 4m07s**, every other step under 5 seconds. Half the
+wall time is cloning the repo. That is what makes a nightly run affordable.
+
+### Both halves of the fix
+
+**1. StatTrack no longer depends on the rebuild schedule (index.html v1.78 → v1.79).**
+`carLoadRows` now treats `games[]` as the CREDITED list and unions it with every game in the
+season files it has already loaded that this player is actually in. The predicate is the one
+`hydrateDiff` (L4035) already applies to the `c` list for the same reason — roster membership OR
+a stored box line — and `matchP` is alias-aware across both stored id lengths (T37) with
+`playerIdSet` WeakMap-cached. `loadSeasonGames` has already put those files in `S.games`, so this
+costs no request and no new index: +2,162 bytes raw, ~0.5% of the file.
+
+It can only ADD: every gid in `games[]` stays in `mine` untouched. `st.scan` now reports
+`credited`, `rosterOnly` and `considered` separately, because blending them would hide which
+half a number came from.
+
+Proven by EXECUTION, not by reading: the shipped bytes were extracted from the delivered
+`index.html` between their own anchors and driven through nine constructed cases — trunc-13 id,
+full 36-char id, bare string entry, no date, a different player, a stored box line with no `p[]`,
+a game with neither, a gid already credited, a second season — plus a season id deliberately
+absent from `S.games`. 9/9 on membership, no duplicates, credited-only gids preserved.
+
+**2. `games[]` is rebuilt nightly (`nightly-crawl.yml`, new `player-games` job).**
+`needs: [crawl, team-stats, win-loss]` — after the only writer of `games/bv` in this workflow
+(T29, the 2026-08-13 fault), and after the two other player-file writers, which push with
+`merge -X ours` and are therefore a lost-update path, not merely a stale one (T28).
+`ref: main` on the checkout (T21): without it the job rebuilds `games[]` from the tree as of the
+run trigger — yesterday's `games/bv` — and publishes a still-stale list every night while looking
+correct. `profile-stats-matrix` now carries `player-games` in its `needs`, because the dispatched
+matrix is a SEPARATE run that this workflow's `data-write` lock does not cover (T10) and its
+apply-and-commit writes `players/` too. Ordering, not locking — ~10 minutes of dispatch delay
+against the up-to-120 minutes `win-loss` already costs it.
+
+No `if:` gate: a night where the crawl wrote nothing is a no-op, and a gate would buy ten minutes
+at the price of another boolean-input expression to get wrong (T13, T27).
+
+**3. `build-player-games.yml` — two corrections found while reading it.**
+`actions/setup-node@v4` removed: the rule is per-JOB and this script never fetches PlayHQ, so it
+was harmless, but `weekly-indexes.yml` runs this exact script with no setup-node and has been
+green every Sunday, so pinning a second Node version bought nothing. And `concurrency: data-write`
+ADDED — **this workflow wrote `players/` and held no lock at all** (T25), so a manual dispatch
+landing while the nightly or the matrix was writing player files was a lost-update race.
+
+### What this does NOT fix
+
+Games PlayHQ credits where no season file we hold contains the game. Nothing client-side can find
+a game that is not on disk, and `build-player-games` can only write a gid the player resolved onto
+in `p[]`. Those stay out of the year totals while still counting in the season card's registration
+stats. The fix also starts counting games the player is rostered in that PlayHQ does not credit
+(the `x` population), so a year total can now EXCEED the matching season total for those players.
+That is correct, and it is a visible behaviour change.
+
+> **T100 — TWO VIEWS OF ONE NUMBER, REBUILT ON DIFFERENT SCHEDULES, DISAGREE WITHOUT EITHER ONE
+> LOOKING WRONG.** The season card and the year card both answer "how many points", from sources
+> refreshed a week apart. Neither is broken, neither logs anything, and the only symptom is two
+> figures on one screen that do not match — which reads as an arithmetic bug and is not one. When
+> a derived field (`games[]`) is rebuilt on a slower cycle than the field it is displayed beside,
+> that lag IS a correctness defect in every consumer that puts them side by side. Before adding a
+> second view of an existing figure, ask what writes each source and on what cron; if the answers
+> differ, either align them or make the slower one unnecessary. Here both were done.
+
+---
+
+### Phase 2R — the symmetric coverage rule, MEASURED (2026-11-23, season 3d25b666, 46 grades)
+
+The confirming run for the symmetric rule, dispatched against one season immediately after it
+shipped:
+
+```
+Refresh grades:    46 (0 baseline, 46 incremental)  rounds ok=260 failed=0
+Refresh deletions: 569  kept-because-played: 0  suspect-empty rounds: 0  unscopeable (no rn): 0
+Refresh moved-not-deleted: 0   grades withheld for incomplete coverage: 0
+Refresh archived:  569 game(s) written to data/withdrawn-games/  (advisory cap exceeded 13x - proceeded)
+shrink guard: 3d25b666 2402 -> 1833 games, 569 deliberate deletion(s) allowed
+Elapsed: 27s
+```
+
+**`grades withheld for incomplete coverage: 0`** — the number the fix existed to move, from 197
+(no fix) to 26 (past side only) to 0 (symmetric). The 26 residual were NOT a long tail; they were
+the mirror-image blind spot, and a grade sitting in one could never have been cleaned.
+
+What makes the 569 readable rather than alarming: `rounds ok=260 failed=0` (no 403, no transient,
+so no deletion rests on a failed fetch), `kept-because-played: 0` (every deleted game was unplayed
+by the over-inclusive predicate), `suspect-empty: 0` (every empty round was an ANSWER, not a null),
+`moved-not-deleted: 0` (nothing was re-drawn into another round of the same grade), and the
+per-round log now names its own cause — **"0 games and 0 bye(s)"**, the exact line whose absence
+caused the 2026-11-23 flip-flop. A bye round prints a non-zero bye count and is not touched.
+
+24% of the season's stored games went. That is the size of the backlog this grade of residue had
+been accumulating unchallenged, not the size of one night's change: the deleted rounds span
+Round 4 (2026-10-30) to Round 16 (2027-03-05), i.e. fixtures published before a regrade and
+withdrawn after it, which nothing in the repo had ever removed. The advisory cap fired 13 times and
+was ignored, by design.
+
+**VERIFIED AGAINST PLAYHQ (2026-11-23).** The deciding check was the PAST-round class — a date
+already gone with no score is the only case where "unplayed" could mean "played but unscored"
+rather than "withdrawn". Grade `a6e60200`, Round 7 (2026-11-20): PlayHQ's round listing holds four
+FINAL games and a bye, and NONE of its pairings match the three we deleted. All three deleted ids
+return **404** at the game centre — the ids are gone from PlayHQ outright, not re-homed into
+another grade. Three of 569 is a sample, not a proof over the whole run, but it is the class that
+could have lost real data and it came back clean.
+
+⚠ A DELETION NOBODY CAN LOOK UP IS A DELETION NOBODY CAN AUDIT. The log printed `game=<id>` and a
+pairing, which is enough to find a fixture in a round listing and NOT enough to ask PlayHQ whether
+the id still exists — so the first verification attempt checked the wrong thing. PlayHQ's game
+centre resolves on the game id alone and ignores the org/season/grade slugs (`/org/a/a/a/game-centre/<id>`,
+the construction already in `audit-nonfinal-games.js` and `build-alias-worklist.js`), so the link
+was always available from data already in hand. Both the live and the dry-run deletion lines now
+carry it.
+
+⚠ STILL NOT MEASURED: whether `discoverTeamFixture` (weekly, discover-fixtures.js) and
+`discoverFixtureByRound` (nightly, this pass) disagree about these same ids. The resurrection
+detector in `data/withdrawn-games/` is what will surface it; until an id comes back, the question
+is open, not answered.
+
+---
+
+### The fixture-watch → StatTrack trigger (2026-11-23)
+
+`markjovic/fixture-watch` has diffed `st` since its first version — `['st', 'status']` is in its
+`FIELDS` — so a game going UPCOMING → FINAL has always been a detected change there. It alerts on
+it already. What is new is that the same transition now DISPATCHES `publish-final-game.yml`.
+
+This does not reopen "scores are NOT watched". A score arriving is a score change; a game reaching
+FINAL is a STATUS change, and it happens once per game rather than once per score update.
+
+Three things make the trigger safe to accept from another repository:
+
+- **It cannot be a baseline.** `finalTransitions` is only reachable on the diff path, and a team's
+  first pass returns before it. Otherwise every past result in a fixture would dispatch the first
+  time a team is seen.
+- **The dispatch goes BEFORE the state write**, the same rule fixture-watch already applies to its
+  alerts. Writing first would baseline the FINAL, so a refused dispatch would never be retried and
+  the result would quietly never publish early. A failed dispatch holds that team's state back,
+  costs one re-ask, and turns the run RED.
+- **A round NAME is sent, never a round id.** The id is resolved inside StatTrack from
+  `gradeRounds`, so a cached or stale round id in fixture-watch cannot send the job at the wrong
+  round.
+
+Bulk is refused rather than trimmed: more than `maxRoundsPerPass` (6) rounds going FINAL in one
+pass dispatches NONE and reports it, because a block that large is a regrade or a backlog and the
+nightly already handles those correctly.
+
+⚠ DETECTION LAG IS UP TO TWO HOURS, NOT 30 MINUTES. A team with a complete fixture sits on
+fixture-watch's REDUCED cadence (`completeFixtureSlotsEvery`, 4 slots). "Immediately" means
+"within minutes of the watcher noticing", and the watcher may notice two hours late.
+
+---
+
+> **T101 — A FILE DELIVERY TOOL REPORTED SUCCESS AND SHIPPED THE PREVIOUS VERSION.** Twice on
+> 2026-11-23, `publish-final-game.js` and `.yml` were written to the staging path, committed to
+> Mark's folder, and the commit returned `written` — while the bytes on disk were the version from
+> the commit before. The file's mtime updated, so nothing looked stale. The cause is a read cache
+> on the staged path: the write had not propagated when the commit read it. It was caught only
+> because Mark asked "have these changed??" and the sizes were checked; one more minute and a
+> workflow calling `--phase=fetch` would have shipped against a script with no phases, and the
+> failure would have read as a bug in the new design rather than a stale file.
+>
+> **A success response from a delivery tool is not evidence the right bytes arrived.** Checksum
+> the destination after every commit. When a re-commit to the same path returns success and the
+> checksum still disagrees, write to a NEW staged filename — a path that cannot have been cached —
+> rather than retrying the same one.
+
+---
+
+**Highest trap number after this session: T100.** Before adding one, run
 `grep -oE "T[0-9]+ —" claude_context.md | grep -oE "[0-9]+" | sort -n | tail -1`.
+
+
+---
+
+### 6.x · 2026-11-23 (evening) — the coverage gate came out, and the scan became the guarantee
+
+**The gate was mine, not a requirement, and it blocked the feature it guarded.** Phase 2R shipped
+with `assessGradeCoverage` refusing every deletion in a grade unless every live round holding an
+unplayed game had been fetched that run. The stated justification was that a game vanishing from
+Round 6 might have MOVED to Round 14.
+
+Mark, 2026-11-23: *"and a coconut might become a lizard. neither of these is even remotely
+possible."* He is right. A rescheduled game moves by days, and rarely. It does not move two months
+down a junior season. And `withholdLiveElsewhere` already catches the real case — a game returned
+under any round of the grade is alive.
+
+**Measured cost of the guard:** 26 grades and 251 candidate games withheld on the first full
+repo-wide run, every one of them pre-regrade residue PlayHQ had already dropped. B13 Maroondah
+Magic 1 was left holding two Round 6 fixtures dated 13 Nov 2026 — one in Friday U13 Boys AR, one in
+Friday U13 Boys A — with nothing in the run saying so. **The guard permitted exactly the state it
+existed to prevent.**
+
+**THE REQUIREMENT, IN MARK'S WORDS.** *"we are looking for any changes in fixtures, and when we find
+one we scan all of them for that grade and expand until we find the boundary of the changes."* The
+forward window is now DISCOVERY ONLY — finding fixtures that have appeared since.
+
+**The wave scan.** Fetch the window → detect change per grade by comparing each fetched round's
+id-set hash against the fingerprint → any changed grade is queued for a FULL rescan → the teams
+whose games changed are followed into the grades they hold games in, which are queued too → repeat
+until a wave adds nothing.
+
+**Why coverage is no longer asserted after the fact.** Deletions can only arise in a grade whose
+fixtures changed — identical id sets mean identical games and nothing to delete — and any changed
+grade is fully rescanned before the deletion decision runs. Full coverage is therefore guaranteed
+exactly where it matters, *by construction*. `assessGradeCoverage` is kept as an assertion that
+prints when it is violated, and still governs whether the round-list hash is written, so a grade
+with an unresolvable round rescans every night instead of settling into a partial view.
+
+**Termination is structural, not the cap.** `seenChanged` is keyed on (gid, round), so a change is
+expanded from once. There are finitely many pairs. `MAX_WAVES = 8` turns a logic error into a loud
+stop, and is not the thing that makes it halt.
+
+**⚠ A ROUND WITH NO ID IS NOW NAMED, NOT DROPPED.** `planGrade`'s `add()` discarded any round
+without an `id`, and any round whose id duplicated one already seen, silently. That silence is why
+the 26 withheld grades could not be diagnosed from a log at all: the round was reported as
+unaccounted for, and nothing said it had never been asked for. `planGradeFull` returns those rounds
+in a separate `unfetchable` list and the run prints them with a `::warning::`.
+
+**⚠ T102 — A LATER WAVE'S RESULTS ARE WORTHLESS IF THE DECIDER STILL READS THE ORIGINAL PLAN.** The
+deletion loop built its round list from `w.plan.fetch`. With the wave scan in place that is the
+window only: every round fetched by a full rescan would have been requested, paid for, and then
+never examined, and the Rounds 11-16 residue would have survived the pass built to remove it —
+silently, with the run reporting success. Now built from `fetchedByGrade`, the record of what was
+actually asked across every wave. **Caught by a fixture, not by reading the diff.**
+
+**THE INVARIANT, CHECKED DIRECTLY.** `findSameDayGradeConflicts` reports any team holding fixtures
+in two or more grades on the same DATE, per season, after deletions are applied, with game-centre
+links. Reported, never acted on — which fixture is real is PlayHQ's answer, not ours. An invariant
+that is only ever implied is an invariant nobody can see break.
+
+**Tested, by execution:** 22 assertions on the new lib functions, and 17 on a fixture modelling the
+real shape — AR holding M1's residue in Rounds 4, 6-10 and 11-16, A holding the played Rounds 6-7
+and upcoming Round 8. It proves the scan settles in two waves, that A is pulled in by expansion
+rather than by its own change, that all 12 residue games are deleted while A loses nothing, that no
+played game is touched, that coverage ends up satisfied by construction, that the invariant fires
+before the cleanup and is clear after it, and that a grade which reports a change every wave still
+terminates. Two of those tests failed first time and found a real fixture bug (`{id}` vs
+`{gameId}`), which had been producing a false pass.
+
+**Not tested:** a live run. `node --check` clean on both files.
+
+**⚠ T103 — A FIXTURE BUILT FROM A DOC TESTS THE DOC, NOT THE DATA.** `teamsInRounds`,
+`findSameDayGradeConflicts` and the expansion index all read `hTid`/`aTid`. **Those keys do not
+exist in `games/bv`.** `applyRoundFixtures` writes `{ h, hn, a, an }`, with `t1`/`t2` on older rows;
+`hTid`/`aTid` was taken from `claude/regrade-flow.md` rather than from the writer. Consequences on
+the first dry run against season `3d25b666`: the invariant read zero team ids and printed
+`Invariant OK` as a **guaranteed false negative**, and team expansion expanded nothing — the 413
+wave-2 rounds came entirely from change detection. **All 39 tests passed**, because every fixture
+was built with the same wrong names. This is the second fixture-encodes-the-assumption failure in
+one session (the first being `{id}` vs `{gameId}`), and the pattern is the finding: a fixture
+written from the same belief as the code tests the belief, not the behaviour.
+
+Fixed with `sideIds(g)` — `g.h ?? g.t1`, `g.a ?? g.t2`, exactly as `build-player-games.js:197` does,
+which is this repo's canonical both-shapes read (T44). Five **regression guards** now assert that
+`sideIds` ignores `hTid`/`aTid` and that the invariant is blind to them, so reintroducing the wrong
+shape turns the suite red instead of turning a run quietly empty.
+
+**STILL UNEXPLAINED, DO NOT PAPER OVER IT:** the 2026-11-23 dry run of season `3d25b666` — the
+Maroondah Magic season, grade `81ef26d5` = Friday U13 Boys AR — reported `would delete 0` with
+`coverage gaps: 0` and 32 of 46 grades fully rescanned. StatTrack's own panel shows that team
+holding two Round 6 fixtures dated 13 Nov 2026. The invariant could not have reported the conflict
+in that run (T103), so the 0 is uninformative; the deletion count is not yet accounted for.
+
+**Files:** `scripts/lib/round-refresh.cjs` (md5 `14ad99fd4446081658f69fe4e5499c4e`),
+`scripts/nightly-crawl.js` (md5 `2f7e7e0797d2f77db995322be01ef249`, 125,520 bytes),
+`scripts/tests/test-round-refresh-helpers.js` (md5 `3183ae253da78f5236a9abf3deea92cf`, 29 assertions),
+`scripts/tests/test-wave-scan.js` (md5 `bc8003264844d79284c327831b129f2e`, 17 assertions).
+Backups `scripts/old/round-refresh.cjs.pre-expansion`, `scripts/old/nightly-crawl.js.pre-expansion`.
+
+
+### 6.x · 2026-11-23 — a diagnostic dispatch no longer drags the whole chain behind it
+
+**`refresh_dry_run` was never a nightly-wide dry run.** It tells Phase 2R not to delete and not to
+write a fingerprint. The crawl still fetches fixtures, writes field updates, box scores and cleared
+`statsChecked` flags, and commits them — so every downstream job had real work, and **nothing gated
+them**. A 3-minute diagnostic dispatch pulled team-stats (8m18), win-loss (8m32), team-index (7m01),
+venue-lookup (6m23), player-games and the matrix behind it: half an hour of waiting to read one log
+line.
+
+**Why no gate existed.** The nightly-wide `dry_run` input was REMOVED on 2026-08-01 because it lied:
+declared `type: boolean`, compared with `!= 'true'`, and GitHub coerces a mismatched comparison to
+numbers — `true`→1, `false`→0, the string `'true'`→NaN. Nothing equals NaN, so `!=` was always true
+and every "gated" job ran regardless (**T3**). Removing it changed no runtime behaviour; it removed
+a switch that lied. Nothing replaced it.
+
+**Fixed by gating on `refresh_dry_run`, in the robust form, on all eight downstream jobs:**
+`!(inputs.refresh_dry_run == true || inputs.refresh_dry_run == 'true')`. True for both the boolean
+and the string shape, and on a `schedule` event `inputs` is empty so the property reads null, both
+comparisons are false, and the scheduled chain runs exactly as before. `profile-stats-matrix`,
+`retrigger` and `post-drain-chain` take it folded into their existing `if:` — a job takes ONE `if:`,
+and a second one would silently replace the first in YAML.
+
+`retrigger` and `post-drain-chain` matter most: the first re-dispatches the whole nightly when games
+remain, the second dispatches other workflows outright. A diagnostic run setting either off is the
+expensive failure.
+
+**Accepted consequence, stated:** a dry run's committed field updates and cleared flags are consumed
+by the next scheduled run rather than this one. Safe because `statsChecked` is a persistent flag,
+not a queue that drains.
+
+**Verified:** the file parses as YAML and all eight jobs carry the gate. **Not verified by execution**
+— the expression's behaviour on a real `schedule` event has not been observed.
+
+**File:** `.github/workflows/nightly-crawl.yml` (md5 `178451e913bfc86c528b8af6ca5a8799`).
+Backup `workflows/old/nightly-crawl.yml.pre-drygate`.
+
+
+### 6.x · 2026-11-24 — the `sup` flag: a superseded fixture is marked, never deleted
+
+**NEW FIELD IN `games/bv/{sid}.json`: `sup`.** Its value is the GAME ID that superseded this fixture,
+not `true`. A bare boolean asserts "this is wrong" and leaves nobody able to check it; the id makes
+every flag auditable against PlayHQ's own game centre in one click.
+
+**What it marks.** Past-dated, never played, still served by PlayHQ, and the team has a PLAYED game in
+a DIFFERENT grade on that same date — a fixture the association replaced when it regraded the team and
+never withdrew. 52 of them in season `3d25b666` on 2026-11-24, all U11, across AR, BR, D and DR.
+
+**Why a flag and not a deletion.** PlayHQ still serves these games and rule 1 is that PlayHQ is
+canonical, so deleting them would invent a withdrawal the source never made. Unmarked, they inflate
+"still to play", render as UPCOMING on a date months gone, and make the grading flow draw moves nobody
+made. **Mark chose the data over the UI**, 2026-11-24, so `team-stats`, the fixture card, the club
+week view and the grading panel read one field instead of each re-deriving the rule.
+
+⚠ The “still to play” counter named above is the **grading panel's** (index.html L2723), not the
+player season card's. The season card does not count unplayed games at all. See the 2026-11-24
+consumer-inventory entry at the end of this file.
+
+**⚠⚠ IT IS DERIVED, SO IT IS RECOMPUTED AND CLEARED EVERY RUN, AND BOTH HALVES ARE APPLIED.**
+`computeSupersededFlags` returns `{ set, clear }` and the caller applies both. This is not an
+optimisation, it is the difference between a derived field and a lie: **`applyRoundFixtures` spreads
+`...existing` before overlaying new values, so a `sup` already on disk SURVIVES every refetch.**
+Set-only would leave a flag standing after the game was finally played, after the superseding game was
+itself deleted, or after the association restored the fixture — permanently, with nothing in any log
+saying so. The shipped test simulates exactly that refetch and asserts the clear.
+
+**The same-grade exclusion.** Two games for one team on one day inside the SAME grade is a
+double-header or a fixture error, not a regrade, and is not this flag's business.
+
+**Played includes forfeits and roster-only games.** `isPlayedGame` already counts `forfeit`, `spc`,
+`dg` and a non-empty `p[]`, and all three supersede — tested, because a forfeit in the real grade is
+exactly as much evidence that the stale fixture was replaced as a score is.
+
+**No game is created or deleted**, so the shrink guard cannot fire on this path. Asserted in the test.
+
+**Does not write in a dry run.** The counts are the point of `--refresh-dry-run`; the file change is
+not. It prints what it would have done instead.
+
+**Tested:** 75 assertions in `test-round-refresh-helpers.js` (16 of them on this function, covering
+set, clear-when-played, clear-when-superseder-deleted, clear-when-pointing-at-the-wrong-game,
+clear-on-a-future-date, same-grade exclusion, both side-key shapes, idempotence), plus
+`test-superseded-wiring.js` — **13 assertions that run the crawl's exact apply loop** over realistic
+entries including a forfeit and a roster-only game, then simulate the refetch hazard and assert the
+flag clears.
+
+**Not tested: a live run.** `node --check` clean.
+
+**Files:** `scripts/lib/round-refresh.cjs` (md5 `a4853dc0a6855c010f1463a2206c1747`),
+`scripts/nightly-crawl.js` (md5 `70c5862c4b5d12e99b7a8f1b8ec91fc8`),
+`scripts/tests/test-round-refresh-helpers.js` (md5 `d14aad8ad275d787cb4c2db563aad383`),
+`scripts/tests/test-superseded-wiring.js` (md5 `e685beb1141e4a3be88020f1e3a53c9f`).
+Backup `scripts/old/round-refresh.cjs.pre-sup`.
+
+**CONSUMERS NOT YET UPDATED.** Writing the field changes nothing on the site by itself. The measured
+inventory — and the correction to the claim above — is in the 2026-11-24 consumer-inventory entry at
+the end of this file.
+
+
+### 6.x · 2026-11-24 — 52 vs 47: two numbers for one concept, and an order-dependent miss
+
+**The first live `sup` write set 47 flags where the stale report said 52 superseded.** Two numbers for
+the same concept, printed three lines apart. Both were wrong in different directions.
+
+**Cause 1 — the report's rule was looser than the flag's.** `findStaleFixtureGrades` counted
+`withPlayedElsewhere` as *any* played game for that team that day, same grade included.
+`computeSupersededFlags` required a **different** grade. Five double-headers were therefore reported
+as superseded regrades. A same-grade pair on one day is a double-header or a fixture error, not a
+regrade.
+
+**Cause 2 — ⚠ THE FLAG'S LOOKUP WAS ORDER-DEPENDENT, AND SILENTLY SO.** It stored ONE played game per
+team-day:
+
+```js
+if (!playedTeamDay.has(`${tid}|${g.d}`)) playedTeamDay.set(`${tid}|${g.d}`, id);
+```
+
+A team with two played games that day kept whichever `Object.keys()` yielded first. If that one was in
+the SAME grade as the stale fixture, the different-grade game that genuinely superseded it was never
+examined and **no flag was written** — a miss decided by key order, with nothing in any log saying so.
+This cannot be caught by re-running; the same file yields the same order.
+
+**Fixed by giving both callers one index and one predicate.** `playedGamesByTeamDay` keeps **every**
+played game per team-day; `findSupersedingGame` is the single definition of the rule and searches all
+of them. The report and the flag now cannot drift, by construction rather than by agreement.
+
+**Tested:** 86 assertions, including the same fixture with its keys in both orders asserting an
+identical answer, a same-grade-only double-header asserting *stale yes, superseded no*, and an
+invariant over a mixed file asserting `report superseded count === flags written`.
+
+**The lesson, and it is the same one as T103:** the first live run is a measurement, and two
+independently-derived numbers for one concept are a test nobody wrote. 47 ≠ 52 was the only reason
+either bug was found — both suites were green.
+
+**Files:** `scripts/lib/round-refresh.cjs` (md5 below), `scripts/tests/test-round-refresh-helpers.js`.
+Backup `scripts/old/round-refresh.cjs.pre-supfix`. **The 47 flags written on 2026-11-24 are a
+PARTIAL, order-dependent set and must be rewritten by a re-run.**
+
+
+### 6.x · 2026-11-24 — Workstream A verified on a live run, and a 70-minute hang that could not be seen
+
+**VERIFIED, season `3d25b666`, live (not dry):**
+
+| | |
+|---|---|
+| `Refresh sup flags` | **0 set, 0 cleared** — idempotent; the 47 on disk are the set the unified rule wants |
+| `Refresh stale fixtures` | 55 past-dated unplayed, **47 superseded** — agrees with the flag count, by construction |
+| `grades fully rescanned on change` | **0**, rounds fetched **128** |
+| commit | pushed on attempt 1, elapsed **14s** |
+
+**THE STEADY STATE IS NOW DEMONSTRATED, NOT CLAIMED.** The wave scan collapsed to the discovery
+window: nothing changed, so nothing was rescanned. First night after a change is 736 rounds; every
+night after is 128. That claim was made on 2026-11-23 and had not been observed until this run.
+
+**⚠ T104 — A RETRY LOOP THAT PRINTS IS A DIAGNOSTIC; THE CALL IT WRAPS NEEDS A TIMEOUT.**
+A run printed `staging: 1 file changed` and then **nothing for 70+ minutes**. Every retry path in
+`gitCommit` prints, so silence proved it was not retrying — it was hung *inside* one git call. Every
+`execFileSync` there carried `maxBuffer` and **no `timeout`**, so a stalled fetch or push waits for
+ever, and `timeout-minutes: 300` on the crawl job meant it would have held the `data-write` lock for
+five hours before anything noticed.
+
+⚠ The 10-minute timeout claimed for these calls in earlier notes (T26/T35) is in
+`build-player-games.js`, NOT in `nightly-crawl.js`. The claim was repeated in conversation as though
+it covered both. It did not.
+
+**Fixed:** `GIT_TIMEOUT = 10 min` on all seven git calls in `gitCommit`. A timeout is **retryable, not
+fatal** — a hung connection is the transient case the loop exists for — and is reported as a STALL,
+counted and printed separately from contention so a log never conflates the two:
+`⚠ push STALLED past 10 min and was killed (attempt n/60) — retrying in Ns`.
+
+**Cancelling that run cost nothing**, and the reason is worth recording: the only staged change was
+the fingerprint file, whose content was identical to the committed copy apart from the per-entry
+`at: new Date().toISOString()`. **That file is rewritten and committed every night even when every
+round hash is unchanged** — one commit a night carrying no information, and the lock was being held
+for exactly that. Not urgent; logged.
+
+**File:** `scripts/nightly-crawl.js` (md5 `d235b6f023e050169fe6117376c9d8ab`).
+Backup `scripts/old/nightly-crawl.js.pre-gittimeout`.
+
+**NOT YET DONE:** this is one season. The repo-wide first pass is tonight's 01:00 cron, and it will be
+the expensive night — every grade whose fixtures changed gets a full rescan at once.
+
+
+### 6.x · 2026-11-24 — the `sup` consumer inventory, and two grade reads that take the latest DATED game
+
+Measured by reading the live code, not inferred. **Nothing reads `sup`**: grep across `scripts/` and
+`index.html` returns only the writer, its tests, and the `<sup>` tag in the StatTrack logo.
+
+**Three claims in this file and in `TOOLING.md` were WRONG and are corrected:**
+
+1. **There is no season-card “still to play”.** The only `still to play` string in `index.html` is
+   L2723, in the **grading panel's** team card. The player season card never counts unplayed games —
+   it unions by `p[]` or a stored box line. The four-consumer list that named it was wrong.
+2. **`hTid`/`aTid` at index.html L6572–73 are FUNCTIONS**, `g?.h ?? g?.t1`, not the phantom fields of
+   T103. They are **correct — do not “fix” them.** T103 is about field names in `games/bv`, and a
+   blanket search-and-replace on those two identifiers would break the file.
+3. The four-implementations framing understated it: the real set is five, and one of them is a build
+   script, not UI.
+
+**UI consumers that treat a `sup` fixture as a live upcoming game:** grading panel `grBuild` L2153 →
+L2217–2270 + L2723; club week view fetch L6229, row L6490–6530 (scoreless row in a past week);
+`openSheet` L6531 → `renderMode` L1362 → `case 'upcoming'` L6655 (“Upcoming” on a date months gone);
+fixture-row click L5602 (no `data-result`, so `isUpcoming=true`).
+
+**⚠ THE STRUCTURAL PART: `team-stats/bv/{sid}.json` CARRIES NO `sup`.** `build-team-stats.js`'s game
+loop (L325) skips only cancelled/abandoned/bye/hidden, so every `sup` fixture is pushed into BOTH
+teams' `fixtures[]` with `result: null`. **The team card's fixture list (L5560) renders team-stats,
+not `games/bv`**, so no UI-side skip reaches it. Either the flag is propagated into team-stats or the
+team card cross-references the game file — a UI-only fix cannot close this.
+
+**Safe by construction** (every one requires a PLAYED game): `h2hMapGids` 1873, `openDiffGames` 4864,
+`toggleUnreg` 4992, `toggleGames` 5034, `tcAvail` 5668, `tcFoulOuts`/`tcGameLines` 5748, `carLoadRows`
+3654, `resolveOppGames` 6927; and the FINAL-gated builders `build-win-loss`, `build-records`,
+`build-leaderboards`, `build-finals-stats`, `build-player-games`, `discover-game-backfill`,
+`spectator-backfill`, `size-report`, `publish-final-game`.
+
+**Report-only, nothing published:** `scan-complete-rounds.js` L48–51/106 (a `sup` game sits in
+`LIVE_STATUS` as “expected” forever), `audit-nonfinal-games.js`, `audit-pending-games-vs-playhq.js`,
+`size-locked-resweep.js` L76, `audit-finished-unlocked-seasons.js`, `audit-grade-coverage.js`.
+
+> **⚠⚠ T105 — “LATEST GAME” MEANS LATEST **PLAYED** GAME. A DATE SORT WITH NO PLAYED TEST, AND A
+> NON-STRICT OR FIRST-SEEN TIE-BREAK, IS THE 47/52 DEFECT WEARING A DIFFERENT HAT.**
+> Two grade-attribution reads take the latest **dated** game and are order-dependent on a tie —
+> exactly the shape that produced the 47-vs-52 miss, where `if (!map.has(key))` kept whichever
+> `Object.keys()` yielded first:
+>
+> * **`build-team-stats.js` `noteGrade` L275–283** — `if (prev && prev.date && prev.date >= date) return;`
+>   Equal dates keep whichever key was yielded first, and it sets `meta.gid` / `meta.grade`. On a
+>   `sup` date the winner can be **the superseded fixture itself**.
+> * **`refresh-team-grades.js` L136–146** — writes `grade` / `gradeFrom` onto `data/team-index.json`
+>   from the latest-dated game carrying `gn`, **with no played test**, while its own header says “the
+>   most recent game a team actually played”. `d > prev.d` is strict, so ties keep first-seen. This
+>   is the **team search subtitle**.
+>
+> `build-club-movement.js` inherits the first via team-stats `meta.grade` (L124); its ladder is
+> `st === 'FINAL'` only (L421), so the counts themselves are safe.
+>
+> **The fix is the same one that fixed 47/52: one index, one predicate, a deterministic tie-break.**
+> A doc comment asserting “actually played” over code with no played test is worse than no comment.
+
+**NOT YET DONE:** nothing in this entry is fixed. It is the inventory taken before any change.
+
+
+### 6.x · 2026-11-24 — the `sup` consumers: five readers, one field, both inference passes retired
+
+**The flag was written on 2026-11-24 and read by nothing. It is now read by all five consumers**
+(`claude/sup-consumer-worklist.md` is the plan this implements, and the inventory it rests on is
+`claude/fixture-refresh-and-withdrawals.md` §6.1).
+
+**Decision taken: MARK, DON'T HIDE.** A superseded fixture is excluded from segments, bands, counts
+and "still to play", and is SHOWN greyed with a `↻ SUP` chip. `sup` holds the GAME ID that replaced
+the fixture; hiding the row discards that id at the only place a person would use it, and makes a
+superseded fixture indistinguishable from a deleted one — two different facts about PlayHQ.
+
+**The chip opens the replacing game inside StatTrack (`openSheet(sup, sid)`), not PlayHQ.**
+`computeSupersededFlags` only ever looks inside one season's game map, so the replacing game is in the
+same file the page already holds. The worklist proposed a `playhq.com/.../game-centre/<id>` link with
+placeholder slugs; that URL shape has NOT been verified from here and a guessed external link is worse
+than an internal one that is known to resolve.
+
+#### What changed, by file
+
+| file | change |
+|---|---|
+| `scripts/build-team-stats.js` | `sup` carried onto the fixture entry, only when present. `noteGrade` rewritten for T105. `--resume` marker is now `meta.sv`. Run report prints sup and grade-source counters |
+| `scripts/refresh-team-grades.js` | T105: played-game tiering, `sup` never a grade source, deterministic tie-break, `sideIds` in place of a re-derived side read |
+| `index.html` | `renderMode` + a `superseded` sheet case; club week row; team card fixture row and its click handler; grading panel model and team card, **with both inference passes deleted** |
+| `workflows/build-team-stats.yml` | the `resume` input description and header no longer describe the old marker |
+| `scripts/tests/` | four new files (two suites, a fixture generator, a Chromium render test) |
+
+#### ⚠ `meta.sv` — the marker that had to change
+
+`--resume` skipped a season whose teams carried a `grade` key. That was exact for the 2026-10-05
+change and **a lie for every change after it**: every team-stats file written since October satisfies
+it, so a resumed run would have skipped every season, gained no `sup`, printed "N skipped" and looked
+like progress. The test is now `meta.sv >= TEAM_STATS_SV` (2). **Bump it on any future change to what
+a team or a fixture carries.** Cost: one small integer per team, on an artifact with a hard size
+ceiling — NOT measured against the real 159 MB tree.
+
+#### ⚠ T105 — and the regression it would have caused if written as the worklist described
+
+"Require a played game" taken literally would have **emptied `meta.grade` for every team whose season
+has fixtures but no results yet** — the whole pre-season case, which `build-team-stats.js` already
+handles deliberately. The rule shipped is three tiers, and the counts are printed so the shift is
+measurable rather than asserted:
+
+1. a PLAYED game (`isPlayedGame`, the nightly's own predicate — not a second copy)
+2. an unplayed fixture **not** flagged `sup`
+3. the registrations, and only when they name exactly one grade
+
+A `sup` fixture is excluded at every tier. Within a tier the order is date, then time, then game id —
+the id is **not** chronology, it is an explicit stated arbitrary tie-break so the answer is identical
+in every run and every reader, where `Object.keys()` order was stable and arbitrary. Ties are counted
+and printed.
+
+#### Two counts of one concept, printed and checked
+
+A flagged GAME writes TWO fixture entries, one per side. **The worklist's acceptance check 1 — "the
+count carried into team-stats must equal 47" — is wrong as written**; the relation is 1:2, and
+`build-team-stats.js` now prints both numbers and the check. Equally, the grading panel's
+`N superseded` is per team, so it will not equal a season's 47 either.
+
+#### Tested
+
+- `test-team-stats-sup.js` **26** assertions · `test-refresh-team-grades-t105.js` **15** assertions.
+  Both run the REAL script in a repository-shaped temp dir with `git` stubbed on PATH, because
+  `buildSeasonTeamStats` is not exported and a re-implementation would test the belief, not the
+  behaviour (T103).
+- `render-test-sup-consumers.js` **31** Chromium assertions, network stubbed, **zero console errors** —
+  and its fixtures are the real builder's output, regenerated by `make-sup-fixtures.js`, so the two
+  halves of the change are tested against each other rather than against two hand-written ideas.
+- Idempotence: team-stats rebuilt twice with no crawl between is byte-identical; the fixtures
+  regenerate byte-identical; `refresh-team-grades` run twice updates nothing; the tie resolves the
+  same way with the games in the opposite key order.
+- Clearing: `sup` removed upstream disappears from team-stats on the next build (asserted, not
+  assumed).
+
+**NOT tested: a live run on real data.** No season has been rebuilt, and the repo-wide figures have
+not been re-measured. `node --check` clean on every changed file; the workflow YAML parses.
+
+**Deliberately NOT changed:** the report-only audits that still treat a `sup` game as expected
+(`scan-complete-rounds.js` and the five others in TOOLING.md §6). None of those files was open, and
+nothing publishes from them.
+
+**Known and left alone:** `fixturePriors` still computes prior-meeting chips for a superseded row.
+The figures are correct — they are real previous meetings with that opponent — so suppressing them
+would be a judgement call outside this change.
