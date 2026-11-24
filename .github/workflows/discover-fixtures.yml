@@ -84,10 +84,15 @@ on:
         default: false
         type: boolean
       rate:
-        description: 'Minimum gap AND rolling-60s cap on requests, incl. cookie bootstraps. Blank = 600, the BEST MEASURED value on blocks-per-team (1 per 349 vs 1 per 235 with no gate at all; see REPO_MANIFEST §6.79). 0 disables the gate, which measurement says is the WORST option, not a safe one. Elapsed is ~90s x blocks, so blocks-per-team is the only figure worth comparing.'
+        description: 'Rolling-60s request cap, incl. cookie bootstraps. Blank = 600 and SETTLED — six configurations measured, see REPO_MANIFEST §6.80. 600 wins on blocks-per-team (1 per 349); 0 is worse (1 per 235), not safer. Do not tune this.'
         required: false
         default: ''
         type: string
+      pace:
+        description: 'Space requests evenly instead of only capping them. MEASURED WORSE TWICE (600 paced: 2 blocks by team 20). Off unless you are deliberately re-measuring it.'
+        required: false
+        default: false
+        type: boolean
       rotate_age_min:
         description: 'Rotate the session cookie at this age in minutes. TTL is ~30-40 min. Blank = 25. Replaces the old 250-CALL rotation, which measurement showed bought nothing.'
         required: false
@@ -118,18 +123,48 @@ on:
         default: false
         type: boolean
 
-concurrency:
-  group: data-write          # same lock as nightly-crawl / weekly-indexes — never write games/ at once
-  cancel-in-progress: false
+# ⚠️ 2026-11-24 — THE LOCK IS NOW HELD BY THE SECOND JOB ONLY.
+# Measured on the 2026-11-10 and 2026-11-22 runs: the sweep held `data-write` for
+# 5h 50m and 6h 42m and spent 4.2 and 5.1 minutes of that committing. 83% of each run
+# is a 90-second WAF pause. Reading PlayHQ needs no lock; only the commit does.
+#
+# So `sweep` takes NO concurrency group, does every PlayHQ read and writes nothing to
+# the tree, and hands a changeset to `commit`, which takes `data-write` and replays it
+# onto a FRESH checkout in about five minutes.
+#
+# ⚠️ THE WORKFLOW-LEVEL `concurrency:` BLOCK IS GONE ON PURPOSE. Putting it back puts
+# the lock around both jobs and undoes this entirely.
+#
+# ⚠️ Replaying hours later is only safe because `flushGameFiles` re-reads each season
+# file and merges per game id, and the changeset carries the fields PlayHQ ANSWERED
+# rather than whole rows. See the note at `_pendingFixtures` in the script, and
+# scripts/tests/test-flush-merge.js + test-emit-apply.js.
+#
+# ⚠️ weekly-indexes.yml STILL runs the same sweep inline under a workflow-level
+# data-write lock on Sundays, so half the weekly lock-hold is still there. It is not
+# split here because its later jobs read the game data this one writes.
 
 permissions:
   contents: write
   actions: write             # chain-stats job dispatches build-finals-stats.yml
 
 jobs:
-  discover-fixtures:
+  # ── Phase 1 · READ. No lock. ────────────────────────────────────────────────
+  sweep:
     runs-on: ubuntu-latest
     timeout-minutes: 360
+    # ⚠️ NOT data-write, and this is not the thing that was ruled out. The hazard with
+    # giving the SWEEP its own group would be using it in place of data-write for the
+    # WRITE path — two writers of games/ reconciled by `merge -X ours`, one side
+    # silently winning. The write still takes data-write, below. This group only stops
+    # two sweeps of this workflow running at once (a cron landing on a dispatch), which
+    # the workflow-level lock used to prevent as a side effect: two sweeps would both
+    # emit, and the second apply would write a checkpoint that went backwards.
+    concurrency:
+      group: discover-fixtures-sweep
+      cancel-in-progress: false
+    outputs:
+      changeset: ${{ steps.cs.outputs.found }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -137,13 +172,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       # NO setup-node — this job fetches api.playhq.com (discoverTeamFixture);
       # setup-node changes the runner's outbound fingerprint and causes CloudFront 403s.
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
       # Directive 13 / T27: inputs reach bash through env: ONLY. Interpolating
       # ${{ inputs.* }} into run: splices the dispatcher's text into the script
-      # the runner executes. These were interpolated until 2026-10-13.
+      # the runner executes.
       - name: Discover fixtures
         env:
           EVENT_NAME:      ${{ github.event_name }}
@@ -155,17 +186,19 @@ jobs:
           IN_SEASON:       ${{ inputs.season }}
           IN_CONCURRENCY:  ${{ inputs.concurrency }}
           IN_RATE:         ${{ inputs.rate }}
+          IN_PACE:         ${{ inputs.pace }}
           IN_ROTATE_AGE:   ${{ inputs.rotate_age_min }}
           IN_ROTATE_AFTER: ${{ inputs.rotate_after }}
           IN_BLOCK_PAUSE:  ${{ inputs.block_pause_sec }}
         run: |
           set -euo pipefail
+          CS="$RUNNER_TEMP/fixture-changeset.json"
           ARGS=()
           if [ "$EVENT_NAME" = "schedule" ]; then
             # Weekly cron: same arguments the nightly used to pass.
             ARGS=(--current-only)
             echo "Scheduled weekly sweep — args: ${ARGS[*]}"
-            node scripts/discover-fixtures.js "${ARGS[@]}"
+            node scripts/discover-fixtures.js "${ARGS[@]}" "--emit=$CS"
             exit 0
           fi
           # A dispatched value must look like a value, not a shell fragment.
@@ -181,6 +214,7 @@ jobs:
           add_flag "$IN_CURRENT_ONLY"     --current-only
           add_flag "$IN_LOCKED_RESWEEP"   --locked-resweep
           add_flag "$IN_NO_SEASON_TEAMS"  --no-season-teams
+          add_flag "$IN_PACE"             --pace
           add_val "$IN_SEASON"       --season
           add_val "$IN_CONCURRENCY"  --concurrency
           add_val "$IN_RATE"         --rate
@@ -189,15 +223,103 @@ jobs:
           add_val "$IN_BLOCK_PAUSE"  --block-pause-sec
           # An empty array under set -u: "${ARGS[@]+"${ARGS[@]}"}" expands to
           # NOTHING, while "${ARGS[@]-}" would pass one empty argument.
-          echo "args: ${ARGS[@]+${ARGS[@]}}"
-          node scripts/discover-fixtures.js ${ARGS[@]+"${ARGS[@]}"}
+          echo "args: ${ARGS[@]+${ARGS[@]}} --emit=$CS"
+          node scripts/discover-fixtures.js ${ARGS[@]+"${ARGS[@]}"} "--emit=$CS"
+
+      # A changeset that is not there must not look like one that is empty. The commit
+      # job is gated on this output, so a sweep that died before writing one skips the
+      # commit instead of failing inside a download step with a confusing error.
+      - name: Changeset present?
+        id: cs
+        if: always()
+        run: |
+          set -euo pipefail
+          if [ -f "$RUNNER_TEMP/fixture-changeset.json" ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            ls -l "$RUNNER_TEMP/fixture-changeset.json"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::no changeset was written — nothing to commit"
+          fi
+
+      # always(): a sweep that fails on unreachable seasons still found real games in
+      # the seasons it did reach, and those must reach the repository.
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.cs.outputs.found == 'true'
+        with:
+          name: fixture-changeset
+          path: ${{ runner.temp }}/fixture-changeset.json
+          if-no-files-found: error
+          retention-days: 7
+
+  # ── Phase 2 · WRITE. This is the only job that takes the lock. ──────────────
+  commit:
+    needs: sweep
+    runs-on: ubuntu-latest
+    # Above the 60-attempt push-retry budget (T55), and far above the ~5 minutes the
+    # apply itself takes.
+    timeout-minutes: 150
+    # JOB-level, so the sweep above runs outside it.
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
+    if: >-
+      ${{ always()
+          && needs.sweep.result != 'cancelled'
+          && needs.sweep.result != 'skipped'
+          && needs.sweep.outputs.changeset == 'true'
+          && !(inputs.dry_run == true || inputs.dry_run == 'true') }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - uses: actions/download-artifact@v4
+        with:
+          name: fixture-changeset
+          path: ${{ runner.temp }}
+      # ⚠️ THE MODE FLAGS MUST MATCH THE SWEEP'S. They decide the progress key, and the
+      # script REFUSES a changeset emitted under a different one rather than saving the
+      # wrong checkpoint — a scheduled sweep is --current-only, so this is too.
+      - name: Apply and commit
+        env:
+          EVENT_NAME:      ${{ github.event_name }}
+          IN_ALL_SEASONS:  ${{ inputs.all_seasons }}
+          IN_CURRENT_ONLY: ${{ inputs.current_only }}
+          IN_LOCKED_RESWEEP: ${{ inputs.locked_resweep }}
+          IN_SEASON:       ${{ inputs.season }}
+        run: |
+          set -euo pipefail
+          CS="$RUNNER_TEMP/fixture-changeset.json"
+          ARGS=()
+          if [ "$EVENT_NAME" = "schedule" ]; then
+            ARGS=(--current-only)
+          else
+            ok() { case "$1" in ''|*[!A-Za-z0-9._-]*) return 1;; *) return 0;; esac; }
+            add_flag() { if [ "$1" = "true" ]; then ARGS+=("$2"); fi; }
+            add_val() {
+              if [ -z "$1" ]; then return 0; fi
+              if ! ok "$1"; then echo "::error::$2 rejected — unexpected characters"; exit 1; fi
+              ARGS+=("$2=$1")
+            }
+            add_flag "$IN_ALL_SEASONS"    --all-seasons
+            add_flag "$IN_CURRENT_ONLY"   --current-only
+            add_flag "$IN_LOCKED_RESWEEP" --locked-resweep
+            add_val  "$IN_SEASON"         --season
+          fi
+          echo "args: ${ARGS[@]+${ARGS[@]}} --apply=$CS"
+          node scripts/discover-fixtures.js ${ARGS[@]+"${ARGS[@]}"} "--apply=$CS"
 
   # Weekly chain link (2026-07-21, §C7): fixtures sweep → finals → leaderboards.
   # Only fires when the weekly nightly-crawl dispatch passes chain_stats=true —
   # manual/historical fixture runs never trigger stat rebuilds. Default
-  # success-gating on `needs:` means a failed sweep never chains.
+  # success-gating on `needs:` means a failed sweep or a failed commit never chains.
   chain-stats:
-    needs: discover-fixtures
+    needs: commit
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'schedule' || inputs.chain_stats == true || inputs.chain_stats == 'true' }}
     steps:
