@@ -55,6 +55,9 @@ import path from 'path';
 import { execSync } from 'child_process';
 import { truncateUuid } from './lib/uuid-prefix.cjs';
 import { makeLookup } from './lib/game-scores.cjs';
+// T104: the git timeout, the 512 MB maxBuffer and the stall vocabulary live in
+// ONE place. Default import because git-exec.cjs is CommonJS and this file is ESM.
+import GX from './lib/git-exec.cjs';
 
 import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -106,40 +109,95 @@ function gitCommit(message, dirs) {
   // fetch). THROW on total push failure — a red job beats silently discarded
   // work.
   if (!dirs || !dirs.length) { console.error('  gitCommit: no paths given — refusing blanket add'); return; }
-  try {
-    for (const dir of dirs) {
-      try {
-        execSync(`git add ${dir}`, { stdio: 'pipe', cwd: ROOT, maxBuffer: 512 * 1024 * 1024 });
-      } catch (e) {
-        console.error(`  staging miss (skipped): ${dir} — ${e.stderr?.toString().slice(0, 120) || e.message.slice(0, 120)}`);
-      }
+  // T104 — ⚠ THE SWALLOW WAS HERE. The whole stage/commit block sat in one try whose
+  // catch printed a truncated stderr line and RETURNED. A failed commit therefore left
+  // the job GREEN with the work uncommitted, and the run reported success having
+  // written nothing. That is the defect closed three times before this and found a
+  // fourth time, in a chain builder. It now THROWS.
+  //
+  // `--` added to each add: without it a pathspec beginning with `-` is read as an
+  // option. Per-path staging is unchanged, and a genuine per-path miss is still
+  // skipped and logged rather than aborting the batch.
+  let addFailures = 0;
+  for (const dir of dirs) {
+    try { execSync(`git add -- ${dir}`, GX.gitOpts(ROOT)); }
+    catch (e) {
+      addFailures++;
+      console.error(`  staging miss (skipped): ${dir} — ${GX.gitSaid(e, 120) || e.message.slice(0, 120)}`);
     }
-    const staged = execSync('git diff --staged --shortstat',
-      { stdio: 'pipe', cwd: ROOT, maxBuffer: 10 * 1024 * 1024 }).toString().trim();
-    if (!staged) { console.log('  nothing to commit'); return; }
-    console.log(`  staging: ${staged}`);
-    execSync(`git commit -q -m "${message}"`, { stdio: 'pipe', cwd: ROOT });
-  } catch (e) {
-    console.error('  git error (stage/commit):', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
+  }
+  const staged = (() => {
+    try { return execSync('git diff --staged --shortstat', GX.gitOpts(ROOT)).toString().trim(); }
+    catch (_) { return ''; }
+  })();
+  if (!staged) {
+    // "nothing to commit" is legitimate — but not when an add failed, because then
+    // "nothing staged" is a symptom, not a result.
+    if (addFailures) throw new Error(`nothing staged and ${addFailures} path(s) failed to stage — refusing to report a clean no-op`);
+    console.log('  nothing to commit');
     return;
   }
-  for (let attempt = 1; attempt <= 60; attempt++) {
-    try { execSync('git merge --abort', { stdio: 'pipe', cwd: ROOT }); } catch (_) { /* none in progress */ }
+  console.log(`  staging: ${staged}`);
+  // COMMIT BEFORE MERGE — merging over uncommitted changes fails outright when
+  // concurrent pushes touch the same files.
+  try { execSync(`git commit -q -m "${message.replace(/"/g, "'")}"`, GX.gitOpts(ROOT)); }
+  catch (e) {
+    if (GX.isNothingToCommit(e)) { console.log('  nothing to commit'); return; }
+    throw new Error(`commit failed — ${GX.gitSaid(e) || e.message}`);
+  }
+  // T104 — two faults here besides the missing timeout:
+  //
+  //   1. fetch, merge and push were ONE try block, so a 10-minute STALL in fetch and a
+  //      lost race on push produced the same (absent) line. Split, as nightly-crawl.js
+  //      and discover-fixtures.js already have them.
+  //   2. ⚠ THE RETRY PRINTED NOTHING. It slept 1-91s and went round again in silence,
+  //      up to 60 times. Sixty silent attempts are indistinguishable from a hang —
+  //      which is exactly how the 2026-11-23 incident presented.
+  //
+  // The merge is deliberately NOT retried: a merge that fails is not contention, and
+  // retrying it over a wedged index achieves nothing.
+  const MAX = GX.MAX_ATTEMPTS;
+  const stalls = GX.makeStallTracker();   // caps CONSECUTIVE timeout kills at 3
+  for (let attempt = 1; attempt <= MAX; attempt++) {
+    try { execSync('git merge --abort', GX.gitOpts(ROOT)); } catch (_) { /* none in progress */ }
+
     try {
-      execSync('git fetch origin main',                            { stdio: 'pipe', cwd: ROOT });
-      execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', { stdio: 'pipe', cwd: ROOT });
-      execSync('git push origin main',                             { stdio: 'pipe', cwd: ROOT });
-      console.log(`  ✔ committed: ${message}`);
+      execSync('git fetch origin main', GX.gitOpts(ROOT));
+      stalls.note('ok');
+    } catch (e) {
+      // Classify BEFORE reading stderr: a timeout-killed child carries none, so it
+      // would otherwise be filed as contention it never ran.
+      const kind = GX.classifyGitError(e);
+      const st = stalls.note(kind);
+      if (kind === 'fatal') throw new Error(GX.fatalMessage('fetch', e));
+      if (st.exhausted) throw new Error(GX.stallExhaustedMessage('fetch', st));
+      if (attempt === MAX) throw new Error(GX.attemptsExhaustedMessage('fetch', MAX, e));
+      const s = GX.backoffSeconds(true);
+      console.log(GX.retryMessage('fetch', e, attempt, MAX, s, st));
+      try { execSync(`sleep ${s}`, GX.sleepOpts(s)); } catch (_) {}
+      continue;
+    }
+
+    execSync('git merge -X ours FETCH_HEAD --no-edit --no-stat', GX.gitOpts(ROOT));
+
+    try {
+      execSync('git push origin main', GX.gitOpts(ROOT));
+      console.log(`  ✔ committed: ${message}${attempt > 1 ? ` (push attempt ${attempt})` : ''}`);
       return;
     } catch (e) {
-      if (attempt === 60) {
-        console.error('  git push failed after 60 attempts:', e.stderr?.toString().slice(0, 200) || e.message.slice(0, 200));
-        throw e;
-      }
-      const s = 1 + Math.floor(Math.random() * 91);
-      execSync(`sleep ${s}`, { stdio: 'pipe', cwd: ROOT });
+      const kind = GX.classifyGitError(e);
+      const st = stalls.note(kind);
+      if (kind === 'fatal') throw new Error(GX.fatalMessage('push', e));
+      if (st.exhausted) throw new Error(GX.stallExhaustedMessage('push', st));
+      if (attempt === MAX) throw new Error(GX.attemptsExhaustedMessage('push', MAX, e));
+      const s = GX.backoffSeconds(true);
+      console.log(GX.retryMessage('push', e, attempt, MAX, s, st));
+      try { execSync(`sleep ${s}`, GX.sleepOpts(s)); } catch (_) {}
     }
   }
+  // Unreachable: every exit above throws or returns. There was NO throw here before,
+  // so an edit that removed one would have fallen out of the loop reporting success.
+  throw new Error(`push failed after ${MAX} attempts (loop fell through)`);
 }
 
 // ─── TopN heap ───────────────────────────────────────────────────────────────
