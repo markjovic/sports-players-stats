@@ -110,14 +110,24 @@ const eq = (a, b, l) => ok(a === b, l, `got ${JSON.stringify(a)}, expected ${JSO
   }, SID);
   ok(/2W 0L over 2 played/.test(card.rec), 'record counts only the two played games', card.rec);
   ok(/1 still to play/.test(card.rec), '"still to play" is 1 - the real future fixture, not 2', card.rec);
-  ok(/1 superseded, shown greyed and not counted/.test(card.rec), 'the superseded one is declared, not silently dropped', card.rec);
+  ok(/1 regraded, struck through above their replacements and not counted/.test(card.rec),
+     'the cancelled one is declared, not silently dropped', card.rec);
   eq(card.rows.length, 4, 'all four fixtures are rows - nothing hidden');
-  const supRow = card.rows.find(r => r.cells.some(c => c.includes('SUP')));
-  ok(!!supRow, 'the superseded fixture renders with a SUP chip');
-  ok(supRow && /sup-row/.test(supRow.cls), 'and carries the greyed row class');
+  const supIdx = card.rows.findIndex(r => r.cells.some(c => c.includes('RGRD')));
+  const supRow = supIdx < 0 ? null : card.rows[supIdx];
+  ok(!!supRow, 'the cancelled fixture renders with an RGRD chip');
+  ok(supRow && /\u2193 RGRD/.test(supRow.cells.join(' ')),
+     'and carries the down arrow, because its replacement IS in this list', supRow && supRow.cells.join(' '));
+  ok(supRow && /sup-row/.test(supRow.cls), 'and carries the greyed, struck-through row class');
   ok(supRow && /openSheet\('g_played'/.test(supRow.onclick), 'clicking it opens the game that REPLACED it', supRow && supRow.onclick);
-  const playedRow = card.rows.find(r => r.onclick.includes("openSheet('g_played'") && !r.cells.some(c => c.includes('SUP')));
+  const playedIdx = card.rows.findIndex(r => r.onclick.includes("openSheet('g_played'") && !r.cells.some(c => c.includes('RGRD')));
+  const playedRow = playedIdx < 0 ? null : card.rows[playedIdx];
   ok(!!playedRow, 'the played game still opens its own box score');
+  // \u2193 THE ORDERING IS THE POINT. The cancelled fixture must sit DIRECTLY above
+  // the game that replaced it, whatever the date sort would have done with two
+  // rows carrying the same date.
+  eq(playedIdx - supIdx, 1, 'the cancelled fixture is the row immediately ABOVE its replacement',
+     `sup at ${supIdx}, played at ${playedIdx}`);
 
   // ── renderMode and the game sheet ──────────────────────────────────────────
   const modes = await page.evaluate(() => ({
@@ -145,7 +155,10 @@ const eq = (a, b, l) => ok(a === b, l, `got ${JSON.stringify(a)}, expected ${JSO
     const mk = (gm, gid) => clubRowHTML({ g: gm, gid, sid: 'tst00001', hMine: true, aMine: false, hn: gm.hn, an: gm.an });
     return { sup: mk(g.games.g_sup, 'g_sup'), up: mk(g.games.g_future, 'g_future'), played: mk(g.games.g_played, 'g_played') };
   }, games);
-  ok(/bdg bSUP/.test(crow.sup) && /sup-row/.test(crow.sup), 'club week renders a superseded fixture greyed with the chip');
+  ok(/bdg bSUP/.test(crow.sup) && /sup-row/.test(crow.sup), 'club week renders a cancelled fixture greyed with the chip');
+  ok(/RGRD/.test(crow.sup), 'club week uses the RGRD label too');
+  ok(!/\u2193/.test(crow.sup),
+     'and NO down arrow - the club week view is one week across clubs, so the replacement is not reliably the next row');
   ok(/data-sup="g_played"/.test(crow.sup), 'and carries the replacing id for the click handler');
   ok(!/bSUP/.test(crow.up) && !/sup-row/.test(crow.up), 'a genuine future fixture is untouched');
   ok(/g-res rW/.test(crow.played), 'a played game still renders its result');
@@ -163,7 +176,12 @@ const eq = (a, b, l) => ok(a === b, l, `got ${JSON.stringify(a)}, expected ${JSO
   const fsup = fx.find(r => r.gid === 'g_sup');
   eq(fsup && fsup.sup, 'g_played', 'the superseded row carries data-sup from team-stats');
   ok(fsup && /sup-row/.test(fsup.cls), 'and the greyed class');
-  ok(fsup && /SUP/.test(fsup.txt), 'and shows the chip rather than an em dash');
+  ok(fsup && /RGRD/.test(fsup.txt), 'and shows the chip rather than an em dash');
+  const fsupIdx = fx.findIndex(r => r.gid === 'g_sup');
+  const fplayedIdx = fx.findIndex(r => r.gid === 'g_played');
+  eq(fplayedIdx - fsupIdx, 1, 'Fixtures tab also puts the cancelled row immediately above its replacement',
+     `sup at ${fsupIdx}, played at ${fplayedIdx}`);
+  ok(fsup && /\u2193 RGRD/.test(fsup.txt), 'and the down arrow, since the replacement is in this list');
   const ffut = fx.find(r => r.gid === 'g_future');
   ok(ffut && !ffut.sup && !/sup-row/.test(ffut.cls), 'the real future fixture is untouched');
 
