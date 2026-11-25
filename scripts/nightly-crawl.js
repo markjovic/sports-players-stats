@@ -36,6 +36,7 @@ const { truncateUuid, resolveToFullUuid, TRUNC_LEN } = require('./lib/uuid-prefi
 // network, no writes, no git — it decides, this file applies. See the header of
 // scripts/lib/round-refresh.cjs for the four deletion rules it enforces.
 const RR = require('./lib/round-refresh.cjs');
+const DG = require('./lib/dead-grades.cjs');   // dead-grade recorder (stage 1)
 
 // ─── Identity alias for brand-new players (api-canonical, 2026-07-16) ─────────
 // Every player file key must have an alias entry (trunc13(key) -> key), or the
@@ -313,7 +314,7 @@ async function refreshSession() {
           const detail = blocked
             ? `CLOUDFRONT-BLOCK (${(rawText || '').length}b HTML)`
             : (rawText || '').slice(0, 160).replace(/\s+/g, ' ');
-          console.log(`  \u26a0 session attempt ${attempt} ${body.operationName}: HTTP ${status}, NO set-cookie, body: ${detail || '(empty)'}`);
+          console.log(`  ⚠ session attempt ${attempt} ${body.operationName}: HTTP ${status}, NO set-cookie, body: ${detail || '(empty)'}`);
           continue;
         }
         const arr = (Array.isArray(rawCookies) ? rawCookies : [rawCookies])
@@ -1028,7 +1029,10 @@ async function main() {
   const gradeEntries = [];
   for (const season of seasons) {
     for (const grade of (season.grades || [])) {
-      if (grade.id) gradeEntries.push({ gradeId: grade.id });
+      // sid and name carried so a grade PlayHQ denies knowing can be recorded with
+      // enough context for a person to read. Phase 1 is the only place in the
+      // nightly that asks about every active grade.
+      if (grade.id) gradeEntries.push({ gradeId: grade.id, sid: season.id || null, gname: grade.name || null });
     }
   }
   console.log(`Active grades:  ${gradeEntries.length}\n`);
@@ -1039,11 +1043,22 @@ async function main() {
   console.log('Phase 1/4 — Grade rounds…');
   const gradeRoundResults = [];
 
-  const p1 = await runPaced(gradeEntries, async ({ gradeId }) => {
+  // Dead-grade observations. Phase 1 already SEPARATED the three outcomes — it
+  // just threw the grade ids away and kept only p1.counts. See recordDeadGrades.
+  const gradeObs = { gone: new Map(), alive: new Set(), noAnswer: 0 };
+
+  const p1 = await runPaced(gradeEntries, async ({ gradeId, sid, gname }) => {
     const { kind, data } = await gqlMain('gradeRounds', Q_GRADE_ROUNDS, { gradeID: gradeId });
-    if (kind !== 'ok') return kind;                  // blocked/transient -> requeue; empty -> counted
+    // ⚠ THREE OUTCOMES, NOT TWO, AND THEY MUST NEVER BE COLLAPSED.
+    //   blocked / transient      → NO ANSWER. Recorded as nothing, requeued.
+    //   discoverGrade === null   → an ANSWER: PlayHQ does not know this grade id.
+    //   a grade object           → alive, and that clears any standing record.
+    // Conflating the first two is what wrote 80 seasons to removed:true off a
+    // CloudFront block on 2026-09-07.
+    if (kind !== 'ok') { gradeObs.noAnswer++; return kind; }   // blocked/transient -> requeue; empty -> counted
     const g = data && data.discoverGrade;
-    if (!g) return 'empty';                           // genuine: grade has no data
+    if (!g) { gradeObs.gone.set(gradeId, { sid, gname }); return 'empty'; }   // PlayHQ denies knowing it
+    gradeObs.alive.add(gradeId);
     gradeRoundResults.push({
       gradeId:    g.id,
       gradeName:  g.name  || '',
@@ -1777,7 +1792,7 @@ async function main() {
         const prior = arch[d.gameId];
         if (prior) {
           refresh.resurrected++;
-          console.log(`  \u26a0 RESURRECTED: ${d.gameId} was deleted ${String(prior.firstDeletedAt || prior.at).slice(0, 19)}`
+          console.log(`  ⚠ RESURRECTED: ${d.gameId} was deleted ${String(prior.firstDeletedAt || prior.at).slice(0, 19)}`
                     + ` and has come back \u2014 something re-added it. Deleting again.`);
         }
         arch[d.gameId] = {
@@ -2500,6 +2515,25 @@ async function main() {
     `nightly-crawl: ${statsCleared} statsChecked cleared, ${stubbed} new players stubbed`,
     ['players/', 'needs-matrix-shards.json']
   );
+
+  // ── Dead grades — RECORD ONLY (stage 1). Nothing consumes this file. ──────
+  // Outside the Phase 2R block on purpose: the observations come from Phase 1,
+  // which runs even with --no-round-refresh.
+  if (DRY_RUN) {
+    console.log(`\n  Dead grades: DRY RUN — ${gradeObs.gone.size} grade(s) denied by PlayHQ,`
+              + ` ${gradeObs.alive.size} alive, ${gradeObs.noAnswer} with NO ANSWER. Nothing written.`);
+  } else if (gradeObs.gone.size || gradeObs.alive.size) {
+    const dg = DG.recordDeadGrades(ROOT, gradeObs);
+    if (dg.written) refreshStatePaths.push('data/dead-grades.json');
+    console.log(`\n  Dead grades: ${dg.added} new, ${dg.confirmed} confirmed again,`
+              + ` ${dg.resurrected} cleared by a live answer — ${dg.total} on record`
+              + `${dg.written ? '' : ' (unchanged, not rewritten)'}.`);
+    console.log(`    ${gradeObs.noAnswer} grade call(s) got NO ANSWER and were recorded as nothing.`);
+    console.log(`    RECORD ONLY — no game is flagged, hidden or deleted by this.`);
+  } else {
+    console.log(`\n  Dead grades: Phase 1 produced no usable grade answers`
+              + ` (${gradeObs.noAnswer} with no answer) — nothing recorded, nothing cleared.`);
+  }
 
   // The refresh's own state files. Committed here rather than inside Phase 2R so
   // the fingerprints land in the same run as the game deletions they describe —
