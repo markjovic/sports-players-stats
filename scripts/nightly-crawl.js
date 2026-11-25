@@ -2519,9 +2519,16 @@ async function main() {
   // ── Dead grades — RECORD ONLY (stage 1). Nothing consumes this file. ──────
   // Outside the Phase 2R block on purpose: the observations come from Phase 1,
   // which runs even with --no-round-refresh.
-  if (DRY_RUN) {
-    console.log(`\n  Dead grades: DRY RUN — ${gradeObs.gone.size} grade(s) denied by PlayHQ,`
-              + ` ${gradeObs.alive.size} alive, ${gradeObs.noAnswer} with NO ANSWER. Nothing written.`);
+  // ⚠ BOTH dry-run flags suppress the write, not just --dry-run. data/dead-grades.json
+  // is a STATE FILE of exactly the kind --refresh-dry-run exists to withhold ("writes
+  // no fingerprint"), and --refresh-dry-run is the only one the workflow exposes as an
+  // input — so guarding on DRY_RUN alone would have meant the one dry run reachable
+  // from the dispatch form wrote and COMMITTED a state file while calling itself dry.
+  if (DRY_RUN || REFRESH_DRY_RUN) {
+    const which = [DRY_RUN ? '--dry-run' : null, REFRESH_DRY_RUN ? '--refresh-dry-run' : null]
+      .filter(Boolean).join(' + ');
+    console.log(`\n  Dead grades: DRY RUN (${which}) — ${gradeObs.gone.size} grade(s) denied by PlayHQ,`
+              + ` ${gradeObs.alive.size} alive, ${gradeObs.noAnswer} with NO ANSWER. Nothing written, nothing committed.`);
   } else if (gradeObs.gone.size || gradeObs.alive.size) {
     const dg = DG.recordDeadGrades(ROOT, gradeObs);
     if (dg.written) refreshStatePaths.push('data/dead-grades.json');
