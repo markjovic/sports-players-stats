@@ -244,6 +244,19 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .bFF{background:rgba(244,67,54,0.2);color:var(--c-forfeit)}
 .bCX{background:rgba(121,85,72,0.3);color:#bcaaa4}
 .bNV{background:rgba(85,85,85,0.2);color:var(--text3)}
+/* A superseded fixture is SHOWN, greyed, never hidden. `sup` carries the id of the
+   game that replaced it, and the row is the only place that id is any use to a
+   person. Hiding it would also make a superseded fixture look identical to a
+   DELETED one, and those are two different facts about PlayHQ. */
+.bSUP{background:rgba(85,85,85,0.25);color:var(--text3);cursor:pointer}
+.bSUP:hover{color:var(--text1)}
+.sup-row{opacity:0.5}
+.sup-row:hover{opacity:0.85}
+/* A cancelled fixture is struck through. The chip is exempt — striking its own
+   label through makes it unreadable at this opacity. */
+.sup-row td:not(.gr-res){text-decoration:line-through}
+.frow.sup-row,.crow.sup-row{text-decoration:line-through}
+.frow.sup-row .bdg,.crow.sup-row .bdg{text-decoration:none}
 
 .vtabs{display:flex;border-bottom:2px solid var(--border);padding:0 14px;gap:0}
 .vtab{padding:9px 14px;font-size:0.83rem;font-weight:500;color:var(--text2);border-bottom:2px solid transparent;margin-bottom:-2px;transition:color 0.12s,border-color 0.12s;cursor:pointer}
@@ -600,6 +613,74 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .lb-stat:hover:not(.on){background:var(--elevated);color:var(--text)}
 .lb-row{display:grid;grid-template-columns:2rem 1fr auto;gap:6px;padding:9px 14px;border-bottom:1px solid var(--border);align-items:center;cursor:pointer;transition:background 0.1s}
 .lb-row:hover{background:var(--elevated)}
+/* -- Grading flow -- */
+.gr-warn{margin:8px;padding:8px 10px;border-radius:6px;background:rgba(255,180,0,0.10);color:#ffcc66;font-size:0.72rem;line-height:1.45}
+.gr-head{padding:14px 16px;border-bottom:1px solid var(--border)}
+.gr-title{font-size:1.15rem;font-weight:700;letter-spacing:-0.4px;margin-top:6px}
+.gr-sub{font-size:0.76rem;color:var(--text2);margin-top:3px}
+.gr-note{font-size:0.68rem;color:var(--text3);margin-top:6px;line-height:1.45}
+.gr-ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.gr-tsel{max-width:300px}
+.gr-selbtn{background:var(--accent-dim);color:var(--accent)}
+.gr-wrap{display:flex;align-items:flex-start;max-height:62vh;overflow-y:auto}
+.gr-gutter{flex:0 0 118px;position:sticky;left:0;z-index:2;background:var(--surface);border-right:1px solid var(--border)}
+.gr-grow{display:flex;align-items:center;justify-content:flex-end;padding:0 10px;font-size:0.72rem;color:var(--text2);cursor:pointer;text-align:right;line-height:1.2}
+.gr-grow span{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.gr-grow:hover{color:var(--text)}
+.gr-grow.sel{color:var(--accent);font-weight:700}
+.gr-scroll{overflow-x:auto;padding:0 10px 10px}
+.gr-svg{display:block}
+.gr-colh{fill:var(--text);font-size:11px;font-weight:700}
+.gr-cols{fill:var(--text3);font-size:9px}
+.gr-box{cursor:pointer}
+.gr-box rect{fill:var(--elevated);stroke:var(--border);transition:fill 0.12s,stroke 0.12s}
+.gr-box:hover rect{stroke:var(--accent)}
+.gr-box.sel rect{fill:var(--accent-dim);stroke:var(--accent)}
+.gr-box.hot rect{fill:var(--accent);stroke:var(--accent)}
+.gr-box.fut rect{fill:none;stroke-dasharray:3 3;stroke:var(--text3)}
+.gr-boxn{fill:var(--text2);font-size:10px;font-weight:700;pointer-events:none}
+.gr-boxn.out{fill:var(--text3);font-size:9px}
+.gr-selin{fill:var(--accent);opacity:0.8;pointer-events:none}
+.gr-rib{fill:var(--accent);fill-opacity:0.20;stroke:none;cursor:pointer;transition:fill-opacity 0.12s}
+.gr-rib:hover{fill-opacity:0.55}
+.gr-rib.stay{fill:var(--text3);fill-opacity:0.22}
+.gr-rib.stay:hover{fill-opacity:0.45}
+.gr-rib.fut{fill:var(--text3);fill-opacity:0.10}
+.gr-rib.insel{fill:var(--accent);fill-opacity:0.45}
+.gr-rib.hot{fill:var(--accent);fill-opacity:0.85}
+.gr-colh.fut{fill:var(--text3)}
+.gr-tr.insel .gr-tn{color:var(--accent)}
+.gr-box.hot .gr-boxn{fill:#000}
+.gr-tcard{padding:14px 16px;border-top:2px solid var(--border)}
+.gr-path{font-size:0.8rem;margin:4px 0 2px;line-height:1.6}
+.gr-pf{color:var(--text3);font-style:italic}
+.gr-pd{color:var(--text3);font-size:0.68rem}
+.gr-alt{font-size:0.68rem;color:var(--text3);margin:2px 0 4px;font-family:ui-monospace,monospace}
+.gr-rec{font-size:0.74rem;color:var(--text2);margin-bottom:8px}
+.gr-tablewrap{overflow:auto}
+.gr-table{width:100%;border-collapse:collapse;font-size:0.74rem}
+.gr-table th{text-align:left;color:var(--text3);font-weight:600;font-size:0.66rem;text-transform:uppercase;letter-spacing:0.04em;padding:4px 7px;border-bottom:1px solid var(--border);white-space:nowrap}
+.gr-table td{padding:4px 7px;border-bottom:1px solid var(--border);white-space:nowrap}
+.gr-d,.gr-r{color:var(--text2)}
+.gr-sc{font-variant-numeric:tabular-nums}
+.gr-res{font-weight:700;text-align:center}
+.gr-res.w{color:#4ade80}.gr-res.l{color:#f87171}.gr-res.d{color:var(--text2)}.gr-res.p{color:var(--text3);font-weight:500;font-size:0.65rem}
+.gr-g{color:var(--text2);font-size:0.7rem}
+.gr-gmv{color:var(--text);border-bottom:1px dotted var(--text3);cursor:help}
+.gr-trow{cursor:pointer}
+.gr-trow:hover td{background:var(--elevated)}
+.gr-tlink{cursor:pointer}
+.gr-tlink:hover{color:var(--accent)}
+#gr-tip{position:fixed;z-index:60;max-width:330px;padding:8px 10px;border-radius:7px;background:var(--surface);border:1px solid var(--border);box-shadow:0 6px 22px rgba(0,0,0,0.5);font-size:0.72rem;line-height:1.5;pointer-events:none;opacity:0;transition:opacity 0.1s}
+#gr-tip.on{opacity:1}
+.gr-tiph{font-weight:700;color:var(--accent);margin-bottom:4px}
+.gr-tr{display:flex;justify-content:space-between;gap:12px}
+.gr-tr.hot{color:var(--accent)}
+.gr-tn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gr-tv{color:var(--text2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.gr-tipm{color:var(--text3)}
+.gr-scope{padding:7px 12px;font-size:0.7rem;color:var(--text3);border-bottom:1px solid var(--border)}
+.gr-scope a{color:var(--accent);cursor:pointer}
 .rec-card{padding:14px 16px;border-bottom:2px solid var(--border);margin-bottom:8px}
 .rec-title{font-size:0.72rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
 .rec-entry{display:flex;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.1s}
@@ -879,7 +960,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
       <span class="help-dot" onclick="openHelp()" title="What the numbers mean">?</span>
-      <span class="rail-ver">v1.79</span>
+      <span class="rail-ver">v1.91</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -887,6 +968,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
       <button class="stab" data-tab="venues">Venues</button>
       <button class="stab" data-tab="clubs">Clubs</button>
       <button class="stab" data-tab="leaders">Top</button>
+      <button class="stab" data-tab="grading">Grading</button>
     </div>
     <div id="pnl-players" class="panel">
       <div class="swrap-hdr"><span>Player name</span><button class="rbtn" onclick="resetPlayer()">✕ Clear</button></div>
@@ -918,6 +1000,15 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
       <div id="res-cl" class="sresults"></div>
     </div>
     <div id="pnl-leaders" class="panel hidden"></div>
+    <div id="pnl-grading" class="panel hidden">
+      <div class="swrap-hdr"><span>Grading flow</span><button class="rbtn" onclick="grReset()">✕ Clear</button></div>
+      <div class="swrap"><input id="q-gtm" class="sinput" placeholder="Search a team to find its competition…" autocomplete="off" spellcheck="false"></div>
+      <div class="sseason sfilters">
+        <select id="q-gsn" class="sselect" onchange="grBuildComps()"><option value="">… or pick a season</option></select>
+        <select id="q-gcp" class="sselect" disabled onchange="grPickComp()"><option value="">Competition — select a season</option></select>
+      </div>
+      <div id="res-gr" class="sresults"></div>
+    </div>
   </div>
 
   <div id="main">
@@ -928,6 +1019,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div id="view-opp" class="hidden"></div>
     <div id="view-h2h" class="hidden"></div>
     <div id="view-club" class="hidden"></div>
+    <div id="view-grading" class="hidden"></div>
     <div id="view-leaders" class="hidden">
       <div id="lb-header" style="position:sticky;top:0;background:var(--surface);z-index:5;border-bottom:1px solid var(--border)">
         <div class="lb-top-nav">
@@ -1280,6 +1372,11 @@ function renderMode(g){
   // teams, the time and the court, and clicking it produced an empty sheet.
   // Placed AFTER the legacy test deliberately, so nothing that renders today
   // changes — this only catches what was already falling through.
+  // ⚠️ A SUPERSEDED FIXTURE IS NOT UPCOMING. `sup` holds the id of the game that
+  // replaced it after a regrade (written nightly; see TOOLING.md §6). Tested AFTER
+  // the score tests deliberately: if a game ever carries both a score and a stale
+  // flag, the score is the honest answer and the flag is the thing that is wrong.
+  if(typeof g.sup==='string'&&g.sup)return'superseded';
   if(g.st==='UPCOMING'||g.st==='PRE_GAME')return'upcoming';
   return'unknown';
 }
@@ -1594,6 +1691,7 @@ function hashFor(type,d){
   if(type==='opp')    return `o=${e(d.oppTid)}&s=${e(d.sid)}` + (d.fromUuid?`&f=${e(d.fromUuid)}`:'');
   if(type==='teamopp')return `mo=${e(d.myTid)}&o=${e(d.oppTid)}&s=${e(d.sid)}`;
   if(type==='h2h')    return `h=${e(d.a)}` + (d.b?`&h2=${e(d.b)}`:'');
+  if(type==='grading')return `gs=${e(d.sid)}&gk=${e(d.key)}`;
   if(type==='club')   return `c=${e(d.cid)}` + (d.cname?`&cn=${e(d.cname)}`:'') + (d.week?`&w=${e(d.week)}`:'');
   return '';
 }
@@ -1617,6 +1715,7 @@ function applyHash(){
   if(q.v)       { loadVenue(q.v,q.vn||'',undefined,false); return true; }
   if(q.h)       { openH2H(q.h,q.h2||null,false); return true; }
   if(q.c)       { loadClub(q.c,q.cn||'',q.w||null,false); return true; }
+  if(q.gs&&q.gk){ grBuild(q.gs).then(()=>grOpen(q.gs,q.gk,false)); return true; }
   if(q.mo&&q.o&&q.s){ openTeamOpp(q.mo,q.o,q.s,false,false); return true; }
   if(q.o&&q.s)  { openOpp(q.o,q.s,q.f,false); return true; }
   return false;
@@ -1661,7 +1760,7 @@ function selectShare(){
 
 /* ── Navigation / history ── */
 function showV(id){
-  ['view-home','view-player','view-team','view-venue','view-opp','view-h2h','view-club','view-leaders'].forEach(v=>el(v).classList.toggle('hidden',v!==id));
+  ['view-home','view-player','view-team','view-venue','view-opp','view-h2h','view-club','view-leaders','view-grading'].forEach(v=>el(v).classList.toggle('hidden',v!==id));
   // Scroll main to top on every view change
   const m=el('main');if(m)m.scrollTop=0;
   // Shown on every view INCLUDING home — home is a link worth sharing, it is just
@@ -1718,6 +1817,9 @@ window.addEventListener('popstate',e=>{
     openOpp(e.state.oppTid,e.state.sid,e.state.fromUuid,false);
   }else if(type==='h2h'){
     openH2H(e.state.a,e.state.b||null,false);
+  }else if(type==='grading'){
+    if(GR[e.state.sid])grOpen(e.state.sid,e.state.key,false);
+    else grBuild(e.state.sid).then(()=>grOpen(e.state.sid,e.state.key,false));
   }else if(type==='club'){
     loadClub(e.state.cid,e.state.cname,e.state.week,false);
   }else if(type==='teamopp'){
@@ -1976,6 +2078,679 @@ async function h2hSearch(fromUuid,q){
   re.querySelectorAll('.ri').forEach(rw=>rw.addEventListener('click',()=>openH2H(fromUuid,rw.dataset.u)));
 }
 
+/* ══ GRADING / REGRADE FLOW ══════════════════════════════════════════════════
+   Where teams moved between grades during a season. Grades are ROWS with a
+   sticky name gutter; each column is a week in which something changed, and a
+   box is a plain block whose HEIGHT is how many teams were in that grade then.
+
+   THE CHRONOLOGY COMES FROM GAMES AND NOTHING ELSE. A registration carries no
+   date and reg array order says nothing (T57), so the only record of "which
+   grade was this team in, when" is each game's own gid plus its date. A move is
+   where two consecutive GAMES differ in grade, dated at the later one.
+   ⚠️ A team that played two grades in one week really did play two grades that
+   week. That is data, not an anomaly to collapse (Mark, 2026-11-23).
+
+   UNPLAYED FIXTURES COUNT. A team whose next scheduled game is in a new grade
+   has been regraded, and that shows before the game is played. Those boxes and
+   ribbons are drawn dashed, and an unplayed game never enters a W/L tally.
+
+   ⚠️ NO STRENGTH ORDER, ANYWHERE. Rows are sorted by grade NAME for stable
+   layout only. Nothing says one grade is above another, nothing is labelled
+   "up" or "down", no quality-weighted record is computed. Which wins were
+   better is the viewer's judgement. Do not add a rank or a weighted record.
+
+   Measured on Kilsyth Junior Domestic Winter 2026 (8ff9f39e), 2026-11-23:
+   6,790 games, 96.1% carrying a gid, zero grading grades, 792 teams of which
+   385 (48.6%) change grade across 13 change-weeks — 2 to 7 per age group.
+   EDJBA and CBL carry a gid on grading and finals ONLY, so a move inside their
+   regular season cannot be seen; the panel says so rather than drawing it.
+*/
+
+const GR = {};            // sid -> computed model
+let GRSEL  = null;        // selected GRADE (gid) — filters to teams ever in it
+let GRTEAM = null;        // highlighted team (tid) — highlights, never filters
+let GRCUR  = null;        // {sid, key}
+
+function grNorm(s){ return String(s??'').replace(/\s+/g,' ').trim(); }
+
+/* Monday of the week containing a YYYY-MM-DD, built from parts — never
+   new Date(string), per the house rule. */
+function grWeek(ymd){
+  const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(ymd||''));
+  if(!m)return '';
+  const t=Date.UTC(+m[1],+m[2]-1,+m[3]);
+  return new Date(t-((new Date(t).getUTCDay()+6)%7)*86400000).toISOString().slice(0,10);
+}
+function grShift(ymd,days){
+  const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(ymd||''));
+  if(!m)return ymd;
+  return new Date(Date.UTC(+m[1],+m[2]-1,+m[3])+days*86400000).toISOString().slice(0,10);
+}
+function grDayLabel(ymd){
+  const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(ymd||''));
+  if(!m)return ymd||'';
+  const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${+m[3]} ${M[+m[2]-1]}`;
+}
+
+/* Grade names read "Saturday U15 Boys C", "Wednesday U12 Girls BRES". The DAY
+   is part of the grade's identity — a panel keyed on age alone would merge
+   Saturday U9 Boys with Tuesday U9 Girls. */
+const GR_DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+function grParse(name){
+  const s=grNorm(name);
+  let day=null;
+  for(const d of GR_DAYS){ if(new RegExp('\\b'+d+'\\b','i').test(s)){ day=d; break; } }
+  let age=null, m=/\b(?:u|under\s*)(\d{1,2})\b/i.exec(s);
+  if(m) age='U'+Number(m[1]);                  // U09 and U9 are ONE age group
+  else { m=/\b(\d{1,2})u\b/i.exec(s); if(m) age='U'+Number(m[1]); }
+  let gender=null;
+  if(/\bgirls?\b|\bwomen'?s?\b/i.test(s)) gender='Girls';
+  else if(/\bboys?\b|\bmen'?s?\b/i.test(s)) gender='Boys';
+  else if(/\bmixed\b/i.test(s)) gender='Mixed';
+  return {day,age,gender,name:s};
+}
+const grKey   = p => [p.day||'~',p.age||'~',p.gender||'~'].join('|');
+const grLabel = p => [p.day,p.age,p.gender].filter(Boolean).join(' ') || 'Ungrouped';
+
+/* The grade name minus its day/age/gender prefix — that prefix is the panel
+   heading, so repeating it in every row label wastes the gutter. The full name
+   is still the row's tooltip. */
+function grShort(name){
+  let s=grNorm(name);
+  for(const d of GR_DAYS) s=s.replace(new RegExp('\\b'+d+'\\b','ig'),'');
+  s=s.replace(/\b(?:u|under\s*)\d{1,2}\b/ig,'').replace(/\b\d{1,2}u\b/ig,'');
+  s=s.replace(/\b(boys?|girls?|mens?|womens?|mixed|open)\b/ig,'');
+  s=grNorm(s);
+  return s||grNorm(name);
+}
+
+/* ── Model ─────────────────────────────────────────────────────────────────*/
+const grPlayed = a => a.st==='FINAL' && Number.isFinite(Number(a.my)) && Number.isFinite(Number(a.their));
+
+async function grBuild(sid){
+  if(GR[sid]) return GR[sid];
+  // team-index is AWAITED, not fired off: the model is cached after this, so a
+  // name resolved before the index arrives would be wrong for the whole session.
+  const [gf,ts]=await Promise.all([sgj('games/bv',sid),sgj('team-stats/bv',sid),loadTeamIdx()]);
+  const games=(gf&&gf.games)||{};
+
+  // The game carries `gn` right beside `gid`, so that is the first source.
+  // sports-index grades[] goes stale; team-stats meta.grade is a third.
+  const idxGrades=new Map();
+  for(const gr of (S.idx?.seasons?.[sid]?.grades||[])) if(gr&&gr.id) idxGrades.set(gr.id,gr.name);
+  const tsGrade=new Map(), tName=new Map(), tAlt=new Map();
+  const noteName=(tid,nm,src)=>{
+    if(!tid||!nm) return;
+    if(!tAlt.has(tid)) tAlt.set(tid,new Map());
+    if(!tAlt.get(tid).has(nm)) tAlt.get(tid).set(nm,src);
+  };
+  for(const [tid,rec] of Object.entries(ts||{})){
+    const meta=rec&&rec.meta; if(!meta)continue;
+    if(meta.name){ tName.set(tid,meta.name); noteName(tid,meta.name,'team-stats'); }
+    if(meta.gid&&meta.grade&&!tsGrade.has(meta.gid)) tsGrade.set(meta.gid,meta.grade);
+  }
+  // data/team-index.json is the MAINTAINED team name — update-team-index.js
+  // corrects it, and a game record can carry a grade-prefixed PlayHQ form
+  // instead ("U13 Boys MRM1" for Maroondah Magic 1). Only used if the index is
+  // already loaded; this never forces a fetch of a 368k-team file.
+  const seasonName=S.idx?.seasons?.[sid]?.name;
+  for(const t of ((S.teamIdx||{})[seasonName]||[])){
+    if(!t||!t.id||!t.n||t.sid!==sid) continue;
+    noteName(t.id,t.n,'team-index');
+    tName.set(t.id,t.n);
+  }
+  const gradeOf=(gid,gn)=> grNorm(gn) || idxGrades.get(gid) || tsGrade.get(gid) || null;
+
+  const byTeam=new Map();
+  let total=0, noGid=0; const unnamed=new Set();
+  for(const [gkey,g] of Object.entries(games)){
+    total++;
+    if(!g||!g.gid){ noGid++; continue; }
+    const nm=gradeOf(g.gid,g.gn);
+    if(!nm) unnamed.add(g.gid);
+    const h=hTid(g), a=aTid(g);           // T44: h/a OR t1/t2, never both
+    const [hn,an]=teamNames(g);
+    noteName(h,hn,'game'); noteName(a,an,'game');
+    if(h&&hn&&!tName.has(h)) tName.set(h,hn);
+    if(a&&an&&!tName.has(a)) tName.set(a,an);
+    for(const side of [0,1]){
+      const tid=side?a:h, opp=side?h:a;
+      if(!tid) continue;
+      if(!byTeam.has(tid)) byTeam.set(tid,[]);
+      byTeam.get(tid).push({
+        gid:g.gid, grade:nm||('grade '+String(g.gid).slice(0,8)),
+        d:g.d||'', t:g.t||'', key:gkey, rn:g.rn||'', st:g.st||'',
+        opp, oppName:(side?hn:an)||'',
+        my:side?g.as:g.hs, their:side?g.hs:g.as, home:!side,
+        sup:(typeof g.sup==='string'&&g.sup)?g.sup:''
+      });
+    }
+  }
+
+  const teams=new Map();
+  for(const [tid,apps0] of byTeam.entries()){
+    let apps=apps0;
+    apps.sort((x,y)=>{ const A=x.d+' '+x.t, B=y.d+' '+y.t; return A<B?-1:A>B?1:0; });
+
+    /* ⚠️ SUPERSEDED FIXTURES ARE RECORDED IN THE DATA NOW, NOT INFERRED HERE.
+       `sup` on the game entry in games/bv holds the GAME ID of the fixture that
+       replaced this one: past-dated, never played, still served by PlayHQ, and one
+       of its teams has a PLAYED game in a DIFFERENT grade that day. Written and
+       cleared every run by nightly-crawl.js.
+       The two inference passes that used to stand here - keep the played game per
+       round, then drop old-grade residue when the remaining fixtures name both the
+       current grade and one the team has left - are RETIRED, not kept alongside it.
+       Leaving inference beside a recorded field is how a regression hides: the two
+       agree today, and the day they diverge nobody finds out.
+       Superseded fixtures are excluded from segments, bands, counts and "still to
+       play", and kept in `sups` so the team card can show them greyed with the id
+       of the game that replaced them. */
+    const sups=apps.filter(a=>a.sup);
+    apps=apps.filter(a=>!a.sup);
+    const superseded=sups.length;
+
+    /* ⚠️ A PLAYED GAME IS A FACT; AN UNPLAYED FIXTURE IS A PLAN, AND PLANS
+       CONTRADICT EACH OTHER. PlayHQ carries future fixtures for a regraded
+       team in BOTH its old and new grade — Maroondah Magic 1 (43878738) holds
+       two fixtures on 4 Dec, one in A and one in AR. Segmenting over every
+       fixture made the team flip grade week by week, and a stale AR fixture on
+       20 Nov dragged them out of A for the week of 16 Nov, where they had in
+       fact played in A (Mark, 2026-11-23).
+       So: segments come from PLAYED games. Unplayed fixtures add a scheduled
+       move only when they agree on one grade; when they disagree the grade is
+       unsettled, the last played grade carries forward, and the team card says
+       so rather than inventing a move. */
+    const playedApps=apps.filter(grPlayed), futureApps=apps.filter(a=>!grPlayed(a));
+    const runs=list=>{
+      const out=[];
+      for(const a of list){
+        const last=out[out.length-1];
+        if(last&&last.gid===a.gid){ last.apps.push(a); last.to=a.d; }
+        else out.push({gid:a.gid,grade:a.grade,from:a.d,fromWeek:grWeek(a.d),to:a.d,apps:[a],future:false});
+      }
+      return out;
+    };
+    let segs, conflict=null;
+    if(playedApps.length){
+      segs=runs(playedApps);
+      const lastGid=segs[segs.length-1].gid;
+      const futGids=[...new Set(futureApps.map(a=>a.gid))];
+      const other=futGids.filter(g=>g!==lastGid);
+      if(futGids.length===1&&other.length===1){
+        // every remaining fixture is in one NEW grade: an unambiguous plan
+        const first=futureApps.find(a=>a.gid===other[0]);
+        segs.push({gid:first.gid,grade:first.grade,from:first.d,fromWeek:grWeek(first.d),
+                   to:futureApps[futureApps.length-1].d,
+                   apps:futureApps.filter(a=>a.gid===first.gid),future:true});
+      }else if(other.length){
+        conflict=futGids.map(g=>(futureApps.find(a=>a.gid===g)||{}).grade).filter(Boolean);
+      }
+    }else{
+      // season not started for this team — every fixture is a plan
+      segs=runs(apps); for(const sg of segs) sg.future=true;
+    }
+    const hops=[];
+    for(let i=1;i<segs.length;i++)
+      hops.push({week:segs[i].fromWeek,date:segs[i].from,from:segs[i-1].gid,to:segs[i].gid,future:segs[i].future});
+    teams.set(tid,{tid,name:tName.get(tid)||tid,apps,sups,segs,hops,conflict,superseded,
+                   alt:[...(tAlt.get(tid)||new Map()).entries()],
+                   gids:new Set(segs.map(s=>s.gid))});
+  }
+
+  const groups=new Map();
+  for(const t of teams.values()){
+    if(!t.segs.length) continue;
+    // ⚠️ Group on the day/age/gender the team plays MOST, weighted by games —
+    // not on its first game. One make-up fixture in another grade's slot would
+    // otherwise file the whole team under a different panel, where it reads as
+    // a team missing from the grade it actually plays in.
+    const tally=new Map();
+    for(const sg of t.segs){
+      const kk=grKey(grParse(sg.grade));
+      tally.set(kk,(tally.get(kk)||0)+sg.apps.length);
+    }
+    const k=[...tally.entries()].sort((a,b)=>b[1]-a[1]||String(a[0]).localeCompare(String(b[0])))[0][0];
+    const p=grParse(t.segs.find(sg=>grKey(grParse(sg.grade))===k).grade);
+    if(!groups.has(k)) groups.set(k,{key:k,label:grLabel(p),teams:[],weeks:new Set(),movers:0});
+    const G=groups.get(k);
+    G.teams.push(t);
+    if(t.hops.length) G.movers++;
+    for(const h of t.hops) G.weeks.add(h.week);
+  }
+  for(const G of groups.values()) G.weekList=[...G.weeks].sort();
+
+  GR[sid]={sid,total,noGid,gidCoverage:total?(total-noGid)/total:0,unnamed:[...unnamed],teams,
+           groups:[...groups.values()].sort((a,b)=>b.movers-a.movers||a.label.localeCompare(b.label))};
+  return GR[sid];
+}
+
+/* Compared on WEEK, not date: a hop dated Sat 16 May sits in week Mon 11 May,
+   so a date comparison would report the old grade in the hop's own column. */
+function grGradeAtWeek(t,week){
+  let cur=t.segs[0]||null;
+  for(const s of t.segs){ if(s.fromWeek<=week) cur=s; else break; }
+  return cur;
+}
+
+/* The record a team has built up IN THAT GRADE, to the end of a column. Only
+   played games count — a scheduled fixture is not a result. */
+function grCum(t,gid,upto){
+  let p=0,w=0,l=0,d=0;
+  for(const a of t.apps){
+    if(a.gid!==gid || a.d>upto || !grPlayed(a)) continue;
+    const my=Number(a.my), th=Number(a.their);
+    p++; if(my>th)w++; else if(my<th)l++; else d++;
+  }
+  return {p,w,l,d,pct:p?Math.round(((w+d/2)/p)*100):null};
+}
+
+/* ── Rail: search first, pickers as the fallback ───────────────────────────*/
+function buildGradingPicker(){
+  if(!S.idx) return;
+  const sel=el('q-gsn'); if(!sel||sel.dataset.built) return;
+  const nm=new Map();
+  for(const s of Object.values(S.idx.seasons)){
+    if(!nm.has(s.name)) nm.set(s.name,{name:s.name,active:false});
+    if(!s.locked) nm.get(s.name).active=true;
+  }
+  const sorted=[...nm.values()].sort((a,b)=>{
+    if(a.active!==b.active) return a.active?-1:1;
+    const ya=a.name.match(/\d{4}/)?.[0]||'0', yb=b.name.match(/\d{4}/)?.[0]||'0';
+    return parseInt(yb)-parseInt(ya);
+  });
+  sel.innerHTML='<option value="">Select season…</option>'+
+    sorted.map(s=>`<option value="${esc(s.name)}">${esc(s.name)}${s.active?' ●':' 🔒'}</option>`).join('');
+  sel.dataset.built='1';
+}
+
+/* Season names are not memorable, so the way in is a TEAM name. team-index
+   carries {id,n,sid,comp} per season, which gives season AND competition in one
+   hit — no guessing which "Winter 2026" is the right one. */
+async function grSearchTeams(){
+  const q=(el('q-gtm').value||'').trim(), box=el('res-gr');
+  if(q.length<3){ box.innerHTML=q.length?'<div class="ri-empty">Keep typing…</div>':''; return; }
+  // ⚠️ The season/competition selects FILTER this search. They used to be
+  // ignored entirely, so picking "Summer 2026/27" and then typing returned
+  // Winter 2026 teams — two controls writing to one panel, neither aware of
+  // the other (Mark, 2026-11-23).
+  const fSeason=el('q-gsn').value||null, fSid=el('q-gcp').value||null;
+  box.innerHTML='<div class="load-row">Searching teams…</div>';
+  await loadTeamIdx();
+  const hits=[];
+  outer:
+  for(const [season,list] of Object.entries(S.teamIdx||{})){
+    if(fSeason && season!==fSeason) continue;
+    for(const t of list){
+      if(!t||!t.n) continue;
+      if(fSid && t.sid!==fSid) continue;
+      if(!tokenMatch(t.n,q)) continue;
+      const sn=S.idx?.seasons?.[t.sid];
+      hits.push({tid:t.id,name:t.n,sid:t.sid,season,
+                 comp:(sn&&(sn.compName||sn.fullName))||t.comp||season,
+                 org:(sn&&sn.orgName)||'', active:sn?!sn.locked:false});
+      if(hits.length>400) break outer;
+    }
+  }
+  const scope=fSid?`in ${esc(el('q-gcp').selectedOptions[0]?.textContent||'this competition')}`
+            :fSeason?`in ${esc(fSeason)}`:'across all seasons';
+  const hdr=`<div class="gr-scope">Searching ${scope}${fSeason?' — <a onclick="grClearScope()">search everything</a>':''}</div>`;
+  if(!hits.length){ box.innerHTML=hdr+'<div class="ri-empty">No team matches that.</div>'; return; }
+  hits.sort((a,b)=> a.active!==b.active ? (a.active?-1:1) : String(b.season).localeCompare(String(a.season)));
+  box.innerHTML=hdr+hits.slice(0,40).map(h=>{
+    const comp=h.org&&!String(h.comp).toLowerCase().includes(String(h.org).toLowerCase())?`${h.comp} — ${h.org}`:h.comp;
+    return `<div class="ri" onclick="grFromTeam('${esc(h.sid)}','${esc(h.tid)}')">
+      <div class="ri-name">${esc(h.name)}</div>
+      <div class="ri-sub">${esc(h.season)} · ${esc(comp)}</div></div>`;
+  }).join('')+(hits.length>40?`<div class="ri-empty">${hits.length-40} more — keep typing to narrow</div>`:'');
+}
+
+/* One panel, one owner. Typing searches; an empty box falls back to the
+   competition's age-group list. Every control routes through here so the two
+   can never disagree about what the panel is showing. */
+function grRefreshPanel(){
+  const q=(el('q-gtm').value||'').trim();
+  if(q.length>=3) return grSearchTeams();
+  const sid=el('q-gcp').value;
+  if(sid) return grPickComp();
+  el('res-gr').innerHTML='';
+}
+function grClearScope(){ el('q-gsn').value=''; grBuildComps(); }
+
+/* Straight from a searched team to its own age group, with it highlighted. */
+async function grFromTeam(sid,tid){
+  el('res-gr').innerHTML='<div class="load-row">Reading the season…</div>';
+  const M=await grBuild(sid);
+  if(!M.teams.get(tid)){ el('res-gr').innerHTML='<div class="ri-empty">That team has no games in this season’s data.</div>'; return; }
+  const G=M.groups.find(g=>g.teams.some(x=>x.tid===tid));
+  if(!G){ el('res-gr').innerHTML='<div class="ri-empty">That team could not be placed in an age group.</div>'; return; }
+  grListGroups(sid,M);
+  grOpen(sid,G.key);
+  GRTEAM=tid; grRender(); grTeamCard(tid);
+}
+
+function grBuildComps(){
+  const name=el('q-gsn').value, cp=el('q-gcp');
+  if(!name){
+    cp.innerHTML='<option value="">Competition — select a season</option>'; cp.disabled=true;
+    grRefreshPanel(); return;
+  }
+  const rows=[];
+  for(const s of Object.values(S.idx.seasons)){
+    if(s.name!==name||s.removed) continue;
+    const comp=s.compName||s.fullName||s.name, org=s.orgName||'';
+    rows.push({sid:s.id,label:(org&&!comp.toLowerCase().includes(org.toLowerCase()))?`${comp} — ${org}`:comp});
+  }
+  rows.sort((a,b)=>a.label.localeCompare(b.label));
+  cp.innerHTML='<option value="">Competition…</option>'+rows.map(r=>`<option value="${esc(r.sid)}">${esc(r.label)}</option>`).join('');
+  cp.disabled=!rows.length;
+  grRefreshPanel();
+}
+
+async function grPickComp(){
+  const sid=el('q-gcp').value, box=el('res-gr');
+  if((el('q-gtm').value||'').trim().length>=3) return grSearchTeams();
+  if(!sid){ box.innerHTML=''; return; }
+  box.innerHTML='<div class="load-row">Reading the season…</div>';
+  grListGroups(sid,await grBuild(sid));
+}
+
+function grListGroups(sid,M){
+  const box=el('res-gr');
+  if(!M.teams.size){ box.innerHTML='<div class="ri-empty">No games held for this competition.</div>'; return; }
+  let h='';
+  if(M.gidCoverage<0.9){
+    h+=`<div class="gr-warn">Grade recorded on ${(M.gidCoverage*100).toFixed(0)}% of games</div>`;
+  }
+  h+=M.groups.map(G=>`<div class="ri" onclick="grOpen('${esc(sid)}','${esc(G.key)}')">
+      <div class="ri-name">${esc(G.label)}</div>
+      <div class="ri-sub">${G.teams.length} teams · ${G.movers} changed grade · ${G.weekList.length} change week${G.weekList.length===1?'':'s'}</div>
+    </div>`).join('');
+  box.innerHTML=h;
+}
+
+function grReset(){
+  el('q-gtm').value=''; el('q-gsn').value='';
+  el('q-gcp').innerHTML='<option value="">Competition — select a season</option>'; el('q-gcp').disabled=true;
+  el('res-gr').innerHTML=''; GRSEL=null; GRTEAM=null;
+}
+
+/* ── View ──────────────────────────────────────────────────────────────────*/
+function grOpen(sid,key,push=true){
+  GRCUR={sid,key}; GRSEL=null; GRTEAM=null;
+  if(push) navigate('grading',{sid,key});
+  showV('view-grading');
+  if(window.innerWidth<=768) el('rail').classList.add('mob-hide');
+  grRender();
+}
+
+function grModel(){
+  if(!GRCUR) return null;
+  const M=GR[GRCUR.sid]; if(!M) return null;
+  const G=M.groups.find(g=>g.key===GRCUR.key); if(!G) return null;
+  // ⚠️ SELECTING A GRADE HIGHLIGHTS, IT DOES NOT FILTER. It used to drop every
+  // team not in the chosen grade and then count the survivors, so each box
+  // reported its selected cohort rather than the grade's real membership —
+  // "3 teams" where fourteen were playing (Mark, 2026-11-23). Every box, every
+  // ribbon and every tooltip is built from the FULL group; the selection is a
+  // marked subset drawn inside them.
+  const teams=G.teams;
+  const selSet=GRSEL?new Set(G.teams.filter(t=>t.gids.has(GRSEL)).map(t=>t.tid)):null;
+  const cols=['start',...G.weekList];
+  const colEnd=cols.map((c,i)=> i+1<cols.length?grShift(cols[i+1],-1):'9999-12-31');
+  const at=new Map();
+  for(const t of teams) at.set(t.tid,cols.map((c,i)=> i===0?t.segs[0]:grGradeAtWeek(t,c)));
+  return {M,G,teams,selSet,cols,colEnd,at};
+}
+
+function grRender(){
+  const v=el('view-grading'); if(!v||!GRCUR) return;
+  const D=grModel();
+  if(!D){ v.innerHTML='<div class="ri-empty">That age group is no longer in the data.</div>'; return; }
+  const {M,G,teams,selSet,cols,colEnd,at}=D;
+  const season=S.idx?.seasons?.[GRCUR.sid];
+
+  const cell=new Map(), flows=new Map();
+  for(const t of teams){
+    cols.forEach((c,i)=>{ const s=at.get(t.tid)[i]; if(!s)return;
+      const k=i+'|'+s.gid; if(!cell.has(k))cell.set(k,[]); cell.get(k).push(t); });
+    for(let i=1;i<cols.length;i++){
+      const a=at.get(t.tid)[i-1], b=at.get(t.tid)[i];
+      if(!a||!b) continue;
+      // Teams that STAY get a band too — without one the picture does not
+      // account for everyone between two columns (Mark, 2026-11-23).
+      const k=i+'|'+a.gid+'|'+b.gid; if(!flows.has(k))flows.set(k,[]); flows.get(k).push(t);
+    }
+  }
+
+  // A column is in the future when not one game in that week has been played.
+  // This is a property of the COLUMN, not of a team's segment.
+  const colFuture=cols.map((c,i)=>{
+    if(i===0) return false;
+    return !teams.some(t=>t.apps.some(a=>grWeek(a.d)===c && grPlayed(a)));
+  });
+
+  const gradeNames=new Map();
+  for(const t of teams) for(const s of t.segs) gradeNames.set(s.gid,s.grade);
+  const rows=[...gradeNames.entries()].sort((a,b)=>String(a[1]).localeCompare(String(b[1]),undefined,{numeric:true}));
+  const rowIdx=new Map(rows.map(([gid],i)=>[gid,i]));
+
+  // Narrow columns; a box's HEIGHT is how many teams are in it.
+  const COLW=46, GAP=96, PADL=10, PADT=46, UNIT=9, ROWPAD=14;
+  const rowH=rows.map(([gid])=>{
+    let max=0; for(let i=0;i<cols.length;i++) max=Math.max(max,(cell.get(i+'|'+gid)||[]).length);
+    return Math.max(24,max*UNIT+ROWPAD);
+  });
+  const rowY=[]; let y=PADT;
+  for(let i=0;i<rows.length;i++){ rowY.push(y); y+=rowH[i]+10; }
+  const W=PADL+cols.length*COLW+(cols.length-1)*GAP+PADL, H=y+14;
+  const colX=i=>PADL+i*(COLW+GAP);
+  const nAt=(i,gid)=>(cell.get(i+'|'+gid)||[]).length;
+  const boxH=n=>n*UNIT;        // exactly one UNIT per team — bands stack to fill
+  const boxY=(r,n)=>rowY[r]+(rowH[r]-boxH(n))/2;
+
+  // Links are STACKED inside their source and target boxes, in row order, so
+  // the bands leaving a box add up to exactly its height. Centre-to-centre
+  // ribbons overlapped as soon as a box had more than one destination.
+  const links=[...flows.entries()].map(([k,list])=>{const[i,from,to]=k.split('|');return{k,i:+i,from,to,list};})
+    .filter(L=>rowIdx.has(L.from)&&rowIdx.has(L.to))
+    .sort((a,b)=> a.i-b.i || rowIdx.get(a.from)-rowIdx.get(b.from) || rowIdx.get(a.to)-rowIdx.get(b.to));
+  const srcUsed=new Map(), tgtUsed=new Map();
+  for(const L of links){
+    const sk=(L.i-1)+'|'+L.from, tk=L.i+'|'+L.to, w=L.list.length*UNIT;
+    const so=srcUsed.get(sk)||0, to=tgtUsed.get(tk)||0;
+    L.w=w;
+    L.y1=boxY(rowIdx.get(L.from),nAt(L.i-1,L.from))+so+w/2;
+    L.y2=boxY(rowIdx.get(L.to),  nAt(L.i,L.to))    +to+w/2;
+    srcUsed.set(sk,so+w); tgtUsed.set(tk,to+w);
+  }
+
+  let svg=`<svg class="gr-svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
+  // Filled ribbons, not thick strokes. A 70px stroke with round caps reads as
+  // clipart at an angle; a sankey band is the AREA between two curves.
+  for(const L of links.slice().sort((a,b)=>(a.from===a.to?0:1)-(b.from===b.to?0:1))){
+    const stay=L.from===L.to;
+    const fut=colFuture[L.i];
+    const hot=GRTEAM&&L.list.some(t=>t.tid===GRTEAM);
+    const insel=selSet&&L.list.some(t=>selSet.has(t.tid));
+    const x1=colX(L.i-1)+COLW, x2=colX(L.i), mid=(x1+x2)/2;
+    const a1=L.y1-L.w/2, b1=L.y1+L.w/2, a2=L.y2-L.w/2, b2=L.y2+L.w/2;
+    const d=`M${x1},${a1} C${mid},${a1} ${mid},${a2} ${x2},${a2}`+
+            ` L${x2},${b2} C${mid},${b2} ${mid},${b1} ${x1},${b1} Z`;
+    svg+=`<path class="gr-rib${stay?' stay':''}${fut?' fut':''}${insel?' insel':''}${hot?' hot':''}" d="${d}"
+          onmouseenter="grTip(event,'flow','${esc(L.k)}')" onmouseleave="grTipHide()"
+          onclick="grPickGrade('${esc(L.to)}')"></path>`;
+  }
+  cols.forEach((c,i)=>{
+    svg+=`<text class="gr-colh${colFuture[i]?' fut':''}" x="${colX(i)+COLW/2}" y="20" text-anchor="middle">${i===0?'Start':esc(grDayLabel(c))}</text>`+
+         `<text class="gr-cols" x="${colX(i)+COLW/2}" y="33" text-anchor="middle">${i===0?'first game':(colFuture[i]?'scheduled':'week of')}</text>`;
+  });
+  rows.forEach(([gid,name],r)=>{
+    for(let i=0;i<cols.length;i++){
+      const list=cell.get(i+'|'+gid)||[]; if(!list.length) continue;
+      const future=colFuture[i];
+      const hot=GRTEAM&&list.some(t=>t.tid===GRTEAM);
+      const nSel=selSet?list.filter(t=>selSet.has(t.tid)).length:0;
+      const h=boxH(list.length), yy=boxY(r,list.length);
+      // The number is ALWAYS drawn. It used to be suppressed under 15px, so a
+      // one- or two-team box rendered as a blank bar with no label at all.
+      const label=selSet?`${nSel}/${list.length}`:String(list.length);
+      const inside=h>=13&&label.length<=4;
+      svg+=`<g class="gr-box${GRSEL===gid?' sel':''}${future?' fut':''}${hot?' hot':''}"
+             onmouseenter="grTip(event,'cell','${i}|${esc(gid)}')" onmouseleave="grTipHide()"
+             onclick="grPickGrade('${esc(gid)}')"><title>${esc(name)}</title>`+
+           `<rect x="${colX(i)}" y="${yy}" width="${COLW}" height="${h}" rx="3"></rect>`+
+           (nSel?`<rect class="gr-selin" x="${colX(i)}" y="${yy+h-boxH(nSel)}" width="${COLW}" height="${boxH(nSel)}" rx="3"></rect>`:'')+
+           (inside?`<text class="gr-boxn" x="${colX(i)+COLW/2}" y="${yy+h/2+4}" text-anchor="middle">${label}</text>`
+                  :`<text class="gr-boxn out" x="${colX(i)+COLW+5}" y="${yy+h/2+4}">${label}</text>`)+
+           `</g>`;
+    }
+  });
+  svg+='</svg>';
+
+  const gutter=`<div class="gr-gutter"><div style="height:${PADT}px"></div>`+
+    rows.map(([gid,name],r)=>`<div class="gr-grow${GRSEL===gid?' sel':''}" style="height:${rowH[r]}px;margin-bottom:10px"
+        title="${esc(name)}" onclick="grPickGrade('${esc(gid)}')"><span>${esc(grShort(name))}</span></div>`).join('')+`</div>`;
+
+  const movers=G.teams.filter(t=>t.hops.length).length;
+  const selName=GRSEL?gradeNames.get(GRSEL):null;
+  const teamOpts=G.teams.slice().sort((a,b)=>a.name.localeCompare(b.name))
+    .map(t=>`<option value="${esc(t.tid)}"${GRTEAM===t.tid?' selected':''}>${esc(t.name)}${t.hops.length?` (${t.hops.length} move${t.hops.length===1?'':'s'})`:''}</option>`).join('');
+
+  v.innerHTML=`<div class="gr-head">
+      <button class="rbtn" onclick="goHome()">‹ Home</button>
+      <div class="gr-title">${esc(G.label)}</div>
+      <div class="gr-sub">${esc(season?(season.fullName||season.name):'')} · ${G.teams.length} teams · ${movers} changed grade · ${G.weekList.length} change week${G.weekList.length===1?'':'s'}</div>
+      <div class="gr-ctl">
+        <select class="sselect gr-tsel" onchange="grSelectTeam(this.value)">
+          <option value="">Highlight a team…</option>${teamOpts}
+        </select>
+        ${GRSEL?`<button class="rbtn gr-selbtn" onclick="grPickGrade('${esc(GRSEL)}')">✕ ${esc(selName||'grade')} · ${selSet?selSet.size:0} team${(selSet?selSet.size:0)===1?'':'s'} marked</button>`:''}
+      </div>
+      <div class="gr-note">Dashed = not yet played. Click a grade to mark its teams.</div>
+    </div>
+    <div class="gr-wrap">${gutter}<div class="gr-scroll">${svg}</div></div>
+    <div id="gr-team"></div>`;
+}
+
+function grSelectTeam(tid){
+  GRTEAM=tid||null;
+  grRender();
+  if(GRTEAM) grTeamCard(GRTEAM); else el('gr-team').innerHTML='';
+}
+
+/* ── Tooltip: who is here, and what they have done IN THIS GRADE so far ────*/
+function grTipList(kind,k){
+  const D=grModel(); if(!D) return {list:[],gid:null,upto:'9999-12-31'};
+  if(kind==='cell'){
+    const [i,gid]=k.split('|');
+    return {list:D.teams.filter(t=>{const s=D.at.get(t.tid)[+i];return s&&s.gid===gid;}),gid,upto:D.colEnd[+i],sel:D.selSet};
+  }
+  const [iS,from,to]=k.split('|'); const i=+iS;
+  return {list:D.teams.filter(t=>{const a=D.at.get(t.tid)[i-1],b=D.at.get(t.tid)[i];return a&&b&&a.gid===from&&b.gid===to;}),
+          gid:to,upto:D.colEnd[i],sel:D.selSet};
+}
+function grTip(ev,kind,k){
+  const {list,gid,upto,sel}=grTipList(kind,k);
+  if(!list.length) return;
+  // Selected teams sort to the top, but nobody is left out — the tooltip is
+  // the grade's real membership at that point.
+  const ordered=sel?[...list].sort((a,b)=>(sel.has(b.tid)?1:0)-(sel.has(a.tid)?1:0)):list;
+  const rows=ordered.slice(0,26).map(t=>{
+    const c=grCum(t,gid,upto);
+    const rec=c.p?`${c.p} · ${c.w}-${c.l}${c.d?'-'+c.d:''} · ${c.pct}%`:'<span class="gr-tipm">no games yet</span>';
+    return `<div class="gr-tr${GRTEAM===t.tid?' hot':''}${sel&&sel.has(t.tid)?' insel':''}"><span class="gr-tn">${esc(t.name)}</span><span class="gr-tv">${rec}</span></div>`;
+  }).join('');
+  const tip=el('gr-tip');
+  const nSel=sel?list.filter(t=>sel.has(t.tid)).length:0;
+  const verb=kind==='flow'?(k.split('|')[1]===k.split('|')[2]?'stayed':'moved here'):'';
+  tip.innerHTML=`<div class="gr-tiph">${list.length} team${list.length===1?'':'s'}${verb?' '+verb:''} · record in this grade${sel?` · ${nSel} marked`:''}</div>`+rows+
+    (ordered.length>26?`<div class="gr-tipm">… and ${ordered.length-26} more</div>`:'');
+  tip.classList.add('on');
+  const r=tip.getBoundingClientRect();
+  tip.style.left=Math.min(ev.clientX+14,window.innerWidth-r.width-10)+'px';
+  tip.style.top=Math.min(ev.clientY+14,window.innerHeight-r.height-10)+'px';
+}
+function grTipHide(){ el('gr-tip').classList.remove('on'); }
+
+/* Click selects the grade; clicking the same one again clears it. */
+function grPickGrade(gid){ GRSEL=(GRSEL===gid)?null:gid; grTipHide(); grRender(); if(GRTEAM) grTeamCard(GRTEAM); }
+
+/* ── One team: results, and where each opponent sat then and now ───────────*/
+/* ⚠️ A CANCELLED FIXTURE IS LISTED DIRECTLY ABOVE THE GAME THAT REPLACED IT.
+   Both carry the same DATE, so sorting by date alone puts them either way round,
+   and the ↓ on the chip becomes a lie the moment the replacement sorts first.
+   The replacing game always has this team as a side — that is how `sup` was
+   derived — so it is always somewhere in the same list, just not always next.
+   A row whose replacement is NOT in the list is returned in `orphans` and keeps
+   its date position, so it can be drawn WITHOUT the arrow rather than pointing
+   at whatever happens to follow it. ONE implementation, two callers. */
+function supOrder(list, idOf, supOf){
+  const keep=list.filter(x=>!supOf(x)), sups=list.filter(x=>supOf(x));
+  const at=new Map(); keep.forEach((x,i)=>at.set(String(idOf(x)),i));
+  const before=new Map(), orphans=new Set();
+  for(const sp of sups){
+    const i=at.get(String(supOf(sp)));
+    if(i===undefined){ orphans.add(sp); continue; }
+    if(!before.has(i)) before.set(i,[]);
+    before.get(i).push(sp);
+  }
+  const out=[];
+  for(let i=0;i<keep.length;i++){ for(const sp of (before.get(i)||[])) out.push(sp); out.push(keep[i]); }
+  const stamp=r=>String((r.d||r.date||'')+' '+(r.t||''));
+  for(const sp of orphans){
+    const k=out.findIndex(r=>stamp(r)>stamp(sp));
+    out.splice(k<0?out.length:k,0,sp);
+  }
+  return { rows: out, orphans };
+}
+
+function grTeamCard(tid){
+  const M=GR[GRCUR.sid], t=M.teams.get(tid), box=el('gr-team');
+  if(!t){ box.innerHTML=''; return; }
+  const finalOf=o=>{ const x=M.teams.get(o); return x&&x.segs.length?x.segs[x.segs.length-1].grade:null; };
+  const atOf=(o,week)=>{ const x=M.teams.get(o); if(!x)return null; const s=grGradeAtWeek(x,week); return s?s.grade:null; };
+  let w=0,l=0,d=0;
+  // Superseded fixtures are OUT of t.apps, so every count above and every band is
+  // clean by construction. They are shown here, greyed, because the flag carries
+  // the id of the game that replaced it and this row is where that is useful.
+  const ord=supOrder(t.apps.concat(t.sups||[]).sort((x,y)=>{const A=x.d+' '+x.t,B=y.d+' '+y.t;return A<B?-1:A>B?1:0;}),
+                     a=>a.key, a=>a.sup);
+  const shown=ord.rows;
+  const rows=shown.map(a=>{
+    const my=Number(a.my), th=Number(a.their);
+    const isSup=!!a.sup;
+    let res='',cls='';
+    if(grPlayed(a)){ if(my>th){res='W';cls='w';w++;} else if(my<th){res='L';cls='l';l++;} else {res='D';cls='d';d++;} }
+    // ↓ means "the game that replaced this one is the next row". With no
+    // replacement in this list there is nothing to point at, so no arrow.
+    else if(isSup){ res=ord.orphans.has(a)?'RGRD':'\u2193 RGRD'; cls='p'; }
+    else { res=esc(a.st||'TBP'); cls='p'; }
+    const wk=grWeek(a.d), oppThen=atOf(a.opp,wk), oppNow=finalOf(a.opp);
+    const moved=oppThen&&oppNow&&oppThen!==oppNow;
+    const open=grPlayed(a)?` class="gr-trow" onclick="openSheet('${esc(a.key)}','${esc(GRCUR.sid)}')"`
+             :isSup?` class="gr-trow sup-row" onclick="openSheet('${esc(a.sup)}','${esc(GRCUR.sid)}')" title="${ord.orphans.has(a)?'Cancelled by a regrade \u2014 click to open the game played instead':'Cancelled by a regrade \u2014 the game played instead is the next row; click to open it'}"`
+             :'';
+    return `<tr${open}><td class="gr-d">${esc(grDayLabel(a.d))}</td><td class="gr-r">${esc(a.rn)}</td>
+      <td>${esc(a.oppName||a.opp||'')}</td>
+      <td class="gr-sc">${grPlayed(a)?`${my}–${th}`:'–'}</td>
+      <td class="gr-res ${cls}">${res}</td><td class="gr-g">${esc(a.grade||'')}</td>
+      <td class="gr-g">${esc(oppThen||'–')}</td>
+      <td class="gr-g${moved?' gr-gmv':''}"${moved?` title="Was ${esc(oppThen)} when you played them"`:''}>${esc(oppNow||'–')}</td></tr>`;
+  }).join('');
+  const path=t.segs.map(s=>`<span class="${s.future?'gr-pf':''}">${esc(s.grade)}</span> <span class="gr-pd">(${esc(grDayLabel(s.from))}${s.future?', scheduled':''})</span>`).join(' → ');
+  const played=w+l+d;
+  box.innerHTML=`<div class="gr-tcard">
+    <div class="rec-title gr-tlink" onclick="loadTeam('${esc(t.tid)}','${esc(GRCUR.sid)}')" title="Open this team">${esc(t.name)} ›</div>
+    <div class="gr-path">${path}</div>
+    <div class="gr-rec">${w}W ${l}L${d?` ${d}D`:''} over ${played} played${t.apps.length>played?` · ${t.apps.length-played} still to play`:''}${t.superseded?` · ${t.superseded} regraded, struck through above their replacements and not counted`:''}</div>
+    <div class="gr-tablewrap"><table class="gr-table">
+      <thead><tr><th>Date</th><th>Round</th><th>Opponent</th><th>Score</th><th></th><th>Our grade</th><th>Their grade then</th><th>Their grade now</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>
+    <div class="gr-note">Underlined = that opponent moved grade afterwards.</div>
+  </div>`;
+}
+
 async function boot(){
   history.replaceState({type:'home'},'');
   const[idx,venues]=await Promise.all([gj(BASE+'/data/sports-index.json'),gj(BASE+'/data/venue-index.json')]);
@@ -1984,6 +2759,7 @@ async function boot(){
   buildVenueList();
   buildVenueSeasonPicker();
   buildLBSeasonPicker();
+  buildGradingPicker();
   // A shared link arrives as a hash; restore that view now the indexes are in.
   try{ applyHash(); }catch(e){ showV('view-home'); }
 }
@@ -1991,8 +2767,9 @@ async function boot(){
 /* ── Tabs ── */
 function switchTab(tab){
   document.querySelectorAll('.stab').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
-  ['players','teams','venues','clubs','leaders'].forEach(t=>el('pnl-'+t).classList.toggle('hidden',t!==tab));
+  ['players','teams','venues','clubs','leaders','grading'].forEach(t=>el('pnl-'+t).classList.toggle('hidden',t!==tab));
   if(tab==='clubs')  buildClubList();
+  if(tab==='grading'){buildGradingPicker();loadTeamIdx();}
   if(tab==='leaders'){showV('view-leaders');loadLB();}
 }
 function switchFromTop(tab){
@@ -4803,13 +5580,20 @@ function renderTeam(td,tid,sid){
   if(!fixtures.length){h+='<div class="empty">No fixture data</div>';}
   else{
     const priors=fixturePriors(td,tid);
-    h+=fixtures.map(f=>{
+    const ford=supOrder(fixtures, f=>f.gameId, f=>(typeof f.sup==='string'&&f.sup)?f.sup:null);
+    h+=ford.rows.map(f=>{
       const res=f.result;
       const fc=finalClass(f.rn);
-      const resH=res?`<div class="g-res r${res}">${res}</div>`:`<div class="g-res rU">\u2014</div>`;
+      // team-stats carries `sup` on the fixture entry (build-team-stats.js). The
+      // team card renders team-stats, not games/bv, which is why the flag had to
+      // be propagated into the build rather than skipped in the UI.
+      const sup=(typeof f.sup==='string'&&f.sup)?f.sup:null;
+      const resH=res?`<div class="g-res r${res}">${res}</div>`
+                :sup?`<div class="g-res rU"><span class="bdg bSUP" title="${ford.orphans.has(f)?'Cancelled by a regrade \u2014 opens the game played instead':'Cancelled by a regrade \u2014 the game played instead is the next row'}">${ford.orphans.has(f)?'RGRD':'\u2193 RGRD'}</span></div>`
+                :`<div class="g-res rU">\u2014</div>`;
       const pr=priors.get(f.gameId);
       const prH=pr&&pr.n?`<div class="fh2h" style="font-size:0.62rem;color:var(--text3);font-variant-numeric:tabular-nums;white-space:nowrap">vs this team this season: ${wldChips(pr)}</div>`:'';
-      return`<div class="frow${fc?' '+fc:''}" data-gid="${esc(f.gameId)}" data-sid="${esc(sid)}"${f.result?' data-result="'+esc(f.result)+'"':''} >
+      return`<div class="frow${fc?' '+fc:''}${sup?' sup-row':''}" data-gid="${esc(f.gameId)}" data-sid="${esc(sid)}"${f.result?' data-result="'+esc(f.result)+'"':''}${sup?' data-sup="'+esc(sup)+'"':''} >
         <div><div class="frn">${esc(f.rn||'')}</div></div>
         <div><div class="fopp">${esc(f.oppName||'\u2014')}</div><div class="fdt">${esc(fmtD(f.date||''))}</div>${prH}</div>
         <div class="fsc">${esc(f.score||'')}</div>${resH}</div>`;
@@ -4843,6 +5627,9 @@ function renderTeam(td,tid,sid){
     const sid2=r.dataset.sid;
     const gid2=r.dataset.gid;
     if(r.dataset.result){openSheet(gid2,sid2);return;}
+    // Superseded: open the game that replaced it. It was never played, so the
+    // team-opp view would have opened on "Upcoming" for a date months gone.
+    if(r.dataset.sup){openSheet(r.dataset.sup,sid2);return;}
     // Upcoming — open team opp view; need team IDs from game file
     (async()=>{
       if(!S.games[sid2]){const d=await sgj('games/bv',sid2);S.games[sid2]=d||{games:{}};}
@@ -5569,6 +6356,9 @@ async function renderClubWeek(){
     // Same behaviour as the team Fixtures tab: a played game opens the box
     // score, an unplayed one opens the team-vs-team view.
     if(row.dataset.played === '1'){ openSheet(gid, sid); return; }
+    // A superseded fixture opens the game that REPLACED it, not a team-vs-team
+    // view flagged "upcoming" for a date in the past.
+    if(row.dataset.sup){ openSheet(row.dataset.sup, sid); return; }
     const g = S.games[sid]?.games?.[gid];
     const hh = hTid(g), aa = aTid(g);
     if(g && hh && aa){
@@ -5748,7 +6538,13 @@ function clubRowHTML(r){
 
   const score = played && mine !== null && theirs !== null ? `${mine}-${theirs}` : '';
   // An intra-club game has no "us" and "them", so a W/L badge would be a lie.
-  const resH  = both ? '<div class="g-res rU">—</div>'
+  // A superseded fixture is not a pending game. Rendering it as one is what made a
+  // week months gone still look like it had games to come.
+  const sup   = (typeof g.sup === 'string' && g.sup) ? g.sup : null;
+  // No arrow here on purpose: the club week view is one week across clubs, not a
+  // single team's fixture list, so the replacing game is NOT reliably the next row.
+  const resH  = sup  ? '<div class="g-res rU"><span class="bdg bSUP" title="Cancelled by a regrade — opens the game played instead">RGRD</span></div>'
+              : both ? '<div class="g-res rU">—</div>'
               : res  ? `<div class="g-res r${res}">${res}</div>`
                      : `<div class="g-res rU">${esc(g.st === 'UPCOMING' || g.st === 'PRE_GAME' ? '—' : (g.st || '—'))}</div>`;
 
@@ -5757,9 +6553,9 @@ function clubRowHTML(r){
      own column on a wide screen and they wrap to a second line on a phone, rather
      than one run-on string ellipsised into uselessness. */
   const det = [g.rn || '', g.vn || '', g.ct || ''];
-  const cls  = [finalClass(g.rn), both ? 'cmine2' : ''].filter(Boolean).join(' ');
+  const cls  = [finalClass(g.rn), both ? 'cmine2' : '', sup ? 'sup-row' : ''].filter(Boolean).join(' ');
 
-  return `<div class="crow${cls ? ' ' + cls : ''}" data-gid="${esc(r.gid)}" data-sid="${esc(r.sid)}" data-played="${played ? 1 : 0}" data-mytid="${esc(myTid)}">
+  return `<div class="crow${cls ? ' ' + cls : ''}" data-gid="${esc(r.gid)}" data-sid="${esc(r.sid)}" data-played="${played ? 1 : 0}"${sup ? ` data-sup="${esc(sup)}"` : ''} data-mytid="${esc(myTid)}">
     <div class="cmain">
       <span class="cteam">${esc(myName || '—')}</span><span class="copp">${both ? 'v ' : (myIsHome ? 'v ' : '@ ')}${esc(oppName || '—')}</span>${both ? '<span class="cboth">(club v club)</span>' : ''}
     </div>
@@ -5898,6 +6694,11 @@ function renderSheet(g,gid,sid,con){
     case'legacy':
       h+=`<div style="padding:7px 14px"><span class="bdg bLG">\u2b1c Historical</span></div>`;
       h+=`<div class="gmode-blk"><div class="gmode-msg">${t1n?esc(t1n)+' vs '+esc(t2n||'?'):'Teams unknown'}${g.d?`<br><span style="color:var(--text3)">${esc(fmtD(g.d))}</span>`:''}</div></div>`;break;
+    case'superseded':{
+      h+=`<div style="padding:7px 14px"><span class="bdg bSUP" onclick="openSheet('${esc(g.sup)}','${esc(sid)}')" title="Open the game that replaced this fixture">\u21bb Regraded</span></div>`;
+      h+=sb(null,null,t1n||'Team 1',t2n||'Team 2',t1mine,t2mine,'vs');
+      h+=`<div class="gmode-blk"><div class="gmode-msg">Replaced after a regrade and never played. PlayHQ still lists it.</div></div>`;
+      break;}
     case'upcoming':{
       // Surrogate pair, not \u1f5d3 — \uXXXX takes exactly four hex digits, so the
       // five-digit form parses as \u1f5d followed by a literal '3' and renders a
@@ -6692,6 +7493,7 @@ function renderLB(allEntries,data){
 }
 /* ── Events ── */
 document.querySelectorAll('.stab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+el('q-gtm').addEventListener('input',debounce(grSearchTeams,260));
 el('q-pl').addEventListener('input',debounce(e=>searchPlayers(e.target.value.trim()),250));
 el('q-pl').addEventListener('focus',()=>{if(!el('q-pl').value.trim())showRecent('players',el('res-pl'),v=>{el('q-pl').value=v;searchPlayers(v);});});
 el('q-sn').addEventListener('change',()=>{buildCompPicker();searchTeams(el('q-tm').value.trim());});
@@ -7023,5 +7825,6 @@ async function toggleOppStatGames(oppUuid, myUuid) {
     </div>
   </div>
 </div>
+<div id="gr-tip"></div>
 </body>
 </html>
