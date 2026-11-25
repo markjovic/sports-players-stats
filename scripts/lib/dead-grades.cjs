@@ -6,6 +6,7 @@
 'use strict';
 const fs   = require('fs');
 const path = require('path');
+const { isPlayedGame } = require('./round-refresh.cjs');   // ONE predicate, never a copy
 
 // ─── dead grades — RECORD ONLY ───────────────────────────────────────────────
 //
@@ -94,4 +95,52 @@ function recordDeadGrades(root, obs) {
   return { added, confirmed, resurrected, total: grades.length, written: true, parseFailed };
 }
 
-module.exports = { recordDeadGrades };
+// ─── the residue of a grade PlayHQ has DELETED ─────────────────────────
+//
+// STAGE 2, 2026-11-25. These are the fixtures NOTHING ELSE CAN REACH.
+//
+// When a team is regraded, PlayHQ moves it to the new grade and stops serving
+// the old fixtures, and the withdrawal pass deletes them — but only while PlayHQ
+// will still ANSWER about the old grade. When the grade itself is deleted every
+// round fetch for it fails, and a failed fetch deletes nothing. That rule is
+// right: a network failure and a real deletion look identical from one failed
+// call. The consequence is that these fixtures survive for ever and inflate
+// "still to play". B11 Spirit Magic 1 carried nine of them into March.
+//
+// What makes acting on them safe is the distinction Phase 1 records: "PlayHQ
+// says this grade does not exist" is an ANSWER; "I could not reach PlayHQ" is
+// not. Only the first reaches dead-grades.json, and only after `minRuns`
+// consecutive answers — one sighting is not a fact.
+//
+// ⚠⚠ FUTURE-DATED UNPLAYED ONLY, AND THAT IS NOT A DETAIL.
+// Measured repo-wide 2026-11-25: 6,426 dead grades hold 93,945 PLAYED games.
+// They are completed grading rounds that competitions hide, and showing them is
+// a major reason StatTrack exists — the copy here may be the only one. So:
+//   · a PLAYED game is never a candidate, at any age;
+//   · a PAST-dated unplayed game is never a candidate either — that is the
+//     ragged tail of a finished competition, not a fixture anyone is waiting on;
+//   · only a FUTURE-dated unplayed fixture can be removed, and it is archived
+//     in full first, like every other deletion in this script.
+function deadGradeResidue({ games, sid, dead, today, minRuns }) {
+  const useable = new Map();
+  for (const e of (dead || [])) {
+    if (!e || !e.id) continue;
+    if ((e.runs || 0) < minRuns) continue;              // not confirmed often enough
+    if (e.sid && sid && String(e.sid) !== String(sid)) continue;
+    useable.set(String(e.id), e);
+  }
+  const residue = [];
+  const kept = { played: 0, pastOrUndated: 0 };
+  if (!useable.size) return { residue, kept, grades: 0 };
+  for (const gameId of Object.keys(games || {})) {
+    const g = games[gameId];
+    if (!g || !g.gid) continue;
+    if (!useable.has(String(g.gid))) continue;          // grade is alive, or not confirmed dead
+    if (isPlayedGame(g)) { kept.played++; continue; }   // history. never.
+    if (!g.d || String(g.d) < String(today)) { kept.pastOrUndated++; continue; }
+    residue.push({ gameId, gid: String(g.gid), rn: g.rn || null, d: g.d, gn: g.gn || null });
+  }
+  return { residue, kept, grades: useable.size };
+}
+
+module.exports = { recordDeadGrades, deadGradeResidue };
