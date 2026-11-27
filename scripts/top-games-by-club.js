@@ -13,10 +13,27 @@
 // through THAT, so a team whose name does not contain the club's name is still
 // counted and a team from another club that happens to share a word is not.
 //
-// ⚠️ GAMES COME FROM reg.stats.gp — THE ONLY PER-TEAM SOURCE THERE IS.
-// A player file also carries games[] (every gid they appear in, from
-// build-player-games.js), but that is a flat list of game ids with no team on
-// it, so it cannot be attributed to a club and is NOT a second opinion here.
+// ⚠⚠ TRAP T20 — NEVER SUM REGISTRATIONS. THIS SCRIPT DID, AND IT WAS WRONG.
+// index.html L3481, verbatim: "Several registrations under one tid are a
+// regrade, so per-stat MAX, never a sum (T20); different tids in one season are
+// genuinely different teams and DO sum." Sibling regs under one tid carry
+// IDENTICAL season-cumulative blocks by design, so summing them multiplies a
+// regraded player's season by the number of times they were regraded.
+// The first live run of this script reported Louis SQUIRE at 602 games for one
+// club against a PlayHQ career total of 275 — 2.2x, which is what that bug
+// looks like. Grouping is now (sid, tid) → MAX, summed across tids and seasons,
+// which is the same rule the season cards and the career grid already apply.
+//
+// ⚠ TWO NUMBERS FOR ONE CONCEPT, ON PURPOSE.
+//   credited  PlayHQ's own gp from the registration stats, T20-grouped.
+//   held      games WE hold for this club's teams, counted from games[] through
+//             gameTids ({gid: tid}) — derived from an entirely different part of
+//             the player file.
+// They measure different things and are not expected to be equal: `held` is
+// short where a game was never captured, and `credited` is short where PlayHQ
+// left a registration blank. But a `credited` that runs far AHEAD of `held` is
+// the signature of the double-count above, and that is now visible in every run
+// instead of needing someone to check a career total by hand.
 // Registrations with no gp are counted and reported separately rather than
 // being silently treated as zero — a missing stat and a genuine nought are
 // different facts.
@@ -120,35 +137,51 @@ if (COMP)  console.log(`  comp   : "${COMP}" (substring)`);
 if (!tidSeason.size) { console.error('\nNo teams left after filtering. Nothing to report.'); process.exit(2); }
 
 // ── walk the players ────────────────────────────────────────────────────────
-const tally = new Map();         // uuid -> { name, games, regs, noGp, seasons:Map(sid->games), teams:Set }
-let scanned = 0, unreadable = 0, matched = 0, regsNoGp = 0;
+const tally = new Map();   // uuid -> { name, games, held, regs, noGp, seasons:Map, teams:Set }
+let scanned = 0, unreadable = 0, matched = 0, regsNoGp = 0, siblingGroups = 0;
 
 function processFile(fp) {
   let d;
   try { d = JSON.parse(fs.readFileSync(fp, 'utf8')); }
   catch (_) { unreadable++; return; }
   if (!d || !Array.isArray(d.seasons)) return;
-  let hit = null;
+
+  // ⚠ T20: one entry per (sid, tid), holding the MAX gp of its siblings.
+  const groups = new Map();
+  const myTids = new Set();
   for (const season of d.seasons) {
     for (const reg of (season.regs || [])) {
       const tid = reg && reg.tid ? String(reg.tid) : '';
       if (!tid || !tidSeason.has(tid)) continue;
+      myTids.add(tid);
+      const key = season.sid + '|' + tid;
+      let g = groups.get(key);
+      if (!g) groups.set(key, g = { sid: season.sid, tid, gp: null, regs: 0, noGp: 0 });
+      g.regs++;
       const gp = (reg.stats && typeof reg.stats.gp === 'number') ? reg.stats.gp : null;
-      if (gp === null) { regsNoGp++; }
-      if (!hit) {
-        hit = tally.get(d.uuid);
-        if (!hit) tally.set(d.uuid, hit = { name: d.name || '(no name on file)', games: 0, regs: 0, noGp: 0, seasons: new Map(), teams: new Set() });
-      }
-      hit.regs++;
-      if (gp === null) hit.noGp++;
-      else {
-        hit.games += gp;
-        hit.seasons.set(season.sid, (hit.seasons.get(season.sid) || 0) + gp);
-      }
-      hit.teams.add(reg.tn || tid);
+      if (gp === null) { g.noGp++; regsNoGp++; }
+      else g.gp = Math.max(g.gp === null ? 0 : g.gp, gp);
     }
   }
-  if (hit) matched++;
+  if (!groups.size) return;
+  matched++;
+
+  let games = 0, regs = 0, noGp = 0;
+  const seasons = new Map(), teams = new Set();
+  for (const g of groups.values()) {
+    if (g.regs > 1) siblingGroups++;          // a regrade: the rows a sum would have doubled
+    regs += g.regs; noGp += g.noGp; teams.add(g.tid);
+    if (!seasons.has(g.sid)) seasons.set(g.sid, 0);
+    if (g.gp !== null) { games += g.gp; seasons.set(g.sid, seasons.get(g.sid) + g.gp); }
+  }
+
+  // The independent count: games on file whose team is one of this club's.
+  const gt = (d && d.gameTids) || {};
+  const mine = Array.isArray(d.games) ? d.games : [];
+  let held = 0;
+  for (const gid of mine) if (myTids.has(String(gt[gid]))) held++;
+
+  tally.set(d.uuid, { name: d.name || '(no name on file)', games, held, regs, noGp, seasons, teams });
 }
 function walk(dir) {
   if (!fs.existsSync(dir)) return;
@@ -168,6 +201,8 @@ console.log(`\n  players scanned : ${scanned.toLocaleString()}`);
 console.log(`  players matched : ${matched.toLocaleString()}`);
 if (unreadable) console.log(`  ⚠ unreadable player files: ${unreadable} — counted, not guessed at`);
 if (regsNoGp)   console.log(`  ⚠ registrations with NO gp stat: ${regsNoGp} — counted as unknown, NOT as zero`);
+console.log(`  regrade groups  : ${siblingGroups.toLocaleString()} (sid,tid) group(s) hold more than one registration`);
+console.log(`                    these are the rows a SUM would have double-counted — T20. MAX is used.`);
 if (!matched) { console.log('\nNo player holds a registration with one of this club\'s teams.'); process.exit(0); }
 
 // ── the table ───────────────────────────────────────────────────────────────
@@ -180,10 +215,14 @@ const ordered = [...tally.entries()]
 console.log(`\n${'═'.repeat(78)}`);
 console.log(`  MOST GAMES PLAYED — ${club.n}${COMP ? ` · comp contains "${COMP}"` : ''}${SINCE ? ` · since ${SINCE}` : ''}`);
 console.log(`${'─'.repeat(78)}`);
-console.log(`  ${'#'.padStart(3)}  ${'player'.padEnd(30)} ${'games'.padStart(6)} ${'seasons'.padStart(8)}  teams`);
+console.log(`  ${'#'.padStart(3)}  ${'player'.padEnd(30)} ${'credited'.padStart(8)} ${'held'.padStart(6)} ${'seasons'.padStart(8)} ${'teams'.padStart(6)}`);
 ordered.slice(0, TOP).forEach((p, i) => {
-  console.log(`  ${String(i + 1).padStart(3)}  ${p.name.slice(0, 30).padEnd(30)} ${String(p.games).padStart(6)} ${String(p.seasons.size).padStart(8)}  ${p.teams.size}`
-            + (p.noGp ? `   ⚠ ${p.noGp} reg(s) with no gp` : ''));
+  // A credited figure running far ahead of held is the T20 signature. Flagged per
+  // row so it cannot hide inside a total.
+  const odd = p.held > 0 && p.games > p.held * 1.5;
+  console.log(`  ${String(i + 1).padStart(3)}  ${p.name.slice(0, 30).padEnd(30)} ${String(p.games).padStart(8)} ${String(p.held).padStart(6)} ${String(p.seasons.size).padStart(8)} ${String(p.teams.size).padStart(6)}`
+            + (p.noGp ? `  ⚠ ${p.noGp} reg(s) no gp` : '')
+            + (odd ? `  ⚠ credited runs ahead of held` : ''));
 });
 if (ordered.length > TOP) console.log(`\n  … and ${ordered.length - TOP} more player(s) (--top=${ordered.length} for all)`);
 
@@ -194,6 +233,12 @@ for (const p of ordered.slice(0, 10)) {
     .map(([sid, g]) => `${sName(sid)} ${g}`).join(' · ');
   console.log(`    ${p.name.slice(0, 28).padEnd(28)} ${by}`);
 }
-const total = ordered.reduce((a, p) => a + p.games, 0);
-console.log(`\n  ${ordered.length} player(s), ${total.toLocaleString()} registration-game(s) in total across ${tidSeason.size} team(s).`);
-console.log('  Games are the sum of reg.stats.gp. Nothing was written.');
+const total     = ordered.reduce((a, p) => a + p.games, 0);
+const totalHeld = ordered.reduce((a, p) => a + p.held,  0);
+console.log(`\n  ${ordered.length} player(s) across ${tidSeason.size} team(s).`);
+console.log(`  credited (PlayHQ gp, T20-grouped) : ${total.toLocaleString()}`);
+console.log(`  held     (games on file for those teams) : ${totalHeld.toLocaleString()}`);
+console.log('  The two are not expected to match: held is short where a game was never');
+console.log('  captured, credited is short where PlayHQ left a registration blank. Credited');
+console.log('  running far AHEAD of held would mean the T20 grouping has failed.');
+console.log('  Nothing was written.');
