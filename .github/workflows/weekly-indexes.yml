@@ -330,6 +330,57 @@ jobs:
           echo "args: ${ARGS[@]+${ARGS[@]}}"
           node --max-old-space-size=4096 scripts/prune-credited-snapshot.js ${ARGS[@]+"${ARGS[@]}"}
 
+  club-index:
+    # ⚠️ PLACED AT THE TAIL OF THE CHAIN ON PURPOSE, not beside win-loss.
+    # Every writing job here takes `data-write` at JOB level, and GitHub keeps only
+    # ONE pending run per group — so two jobs of this workflow waiting on the group
+    # at the same moment can evict each other (the trade stated in the header). The
+    # existing chain is strictly sequential for that reason; hanging this off
+    # prune-credited keeps it that way. Nothing earlier in the chain reads
+    # clubs/*.json, so there is no ordering reason to run it sooner.
+    #
+    # ⚠️ --active-only, like team-stats above. A full run asks PlayHQ once per
+    # season at concurrency 1 across ~3,194 seasons. HOW LONG AN --active-only RUN
+    # TAKES HAS NEVER BEEN MEASURED — the 360 below is the house backstop, not an
+    # estimate of the work. Historical clubs already on disk are PRESERVED by
+    # --active-only, never deleted, so narrowing it loses nothing.
+    #
+    # WHY IT IS HERE AT ALL: clubs/{cid}.json and club-map/bv/{sid}.json are written
+    # by this script and nothing else, and until 2026-11-27 its workflow had no
+    # schedule and no other workflow invoked it — so club attribution was only ever
+    # as fresh as the last manual dispatch.
+    needs: [prune-credited]
+    if: ${{ !cancelled() && needs.prune-credited.result != 'cancelled' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      # ⚠️ NO actions/setup-node. This job DOES fetch api.playhq.com — the rule it
+      # would break is the one that matters most here, not a formality.
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Build club index (active seasons)
+        # Directive 13 / T27: inputs reach bash through env, never interpolated
+        # into `run:`. build-club-index.yml still interpolates them directly; that
+        # is its bug to fix, not a pattern to copy.
+        env:
+          IN_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          ARGS=(--active-only)
+          if [ "$IN_DRY_RUN" = "true" ]; then ARGS+=(--dry-run); fi
+          echo "args: ${ARGS[*]}"
+          node --max-old-space-size=8192 scripts/build-club-index.js "${ARGS[@]}"
+
   fold-diverged:
     # Backstop for the fold. The fetch-profile-stats matrix triggers the fold at
     # the tail of each cycle that drains to `stuck`, but that chain is a series of
