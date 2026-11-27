@@ -630,6 +630,66 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .gr-grow.sel{color:var(--accent);font-weight:700}
 .gr-scroll{overflow-x:auto;padding:0 10px 10px}
 .gr-svg{display:block}
+/* An age band header in the gutter, and its rule across the diagram. Drawn only
+   when a panel actually holds more than one age — a team moved up or down an
+   age bracket. One age, no furniture. */
+.gr-age{display:flex;align-items:flex-end;justify-content:flex-end;padding:0 10px 3px;
+  font-size:0.58rem;letter-spacing:0.09em;color:var(--text3);text-transform:uppercase;font-weight:700}
+.gr-agerule{stroke:var(--border);stroke-width:1;stroke-dasharray:4 4}
+/* Third heading line: how wide the column is and what is in it. */
+.gr-colm{fill:var(--text3);font-size:8px;opacity:0.85}
+/* Club leaders */
+.clb-bar{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px 4px}
+.clb-cat{padding:4px 11px;border-radius:6px;border:1px solid var(--border);background:transparent;
+  color:var(--text2);font-size:0.75rem;cursor:pointer}
+.clb-cat.on{color:var(--accent);border-color:var(--accent);font-weight:700}
+.clb-seabar{padding-top:2px}
+.clb-sea{max-width:22em}
+.clb-prog{padding:6px 12px;font-size:0.72rem;color:var(--text3)}
+/* Loading bar. Visible enough to be read at a glance, and it STAYS at 100% so
+   "provisional" and "complete" are distinguishable states rather than the
+   absence of a message. */
+.clb-load{padding:8px 12px 10px}
+.clb-load-hd{display:flex;align-items:baseline;gap:10px;font-size:0.74rem;color:var(--text2);margin-bottom:5px}
+.clb-load-hd b{color:var(--text1);font-variant-numeric:tabular-nums}
+.clb-load-pct{margin-left:auto;font-size:0.72rem;color:var(--text3);font-variant-numeric:tabular-nums}
+.clb-load-sub{margin-top:5px;font-size:0.68rem;color:var(--text3)}
+.clb-track{height:7px;border-radius:4px;background:var(--border);overflow:hidden}
+.clb-fill{height:100%;border-radius:4px;background:var(--accent);width:0;
+  transition:width 220ms ease-out}
+.clb-load.done .clb-load-hd{color:var(--text3)}
+.clb-load.done .clb-fill{opacity:0.45}
+.clb-load.bad .clb-load-hd{color:var(--loss)}
+.clb-load.bad .clb-fill{background:var(--loss);opacity:1}
+.clb-prog.warn{color:var(--loss)}
+.clb-wrap{overflow-x:auto;padding:0 12px}
+.clb-find{display:flex;align-items:center;gap:10px;padding:4px 12px 8px;flex-wrap:wrap}
+.clb-q{flex:1 1 16em;max-width:26em}
+.clb-fmsg{font-size:0.72rem;color:var(--text2)}
+/* The leading block is pinned and the remainder scrolls under it. Both tables
+   are table-layout:fixed over the same colgroup, so the columns line up
+   whatever the names do. */
+/* No position:sticky — the block is pinned by sitting OUTSIDE the scrolling
+   container, and sticky on top of that only let it overlap the row beneath when
+   the page itself scrolled. */
+.clb-pin{padding:0 12px;background:var(--surface)}
+.clb-scroll{padding:0 12px;max-height:52vh;overflow-y:auto}
+.clb-tbl{table-layout:fixed}
+.clb-hit td{background:rgba(0,200,160,0.14)}
+.clb-hit .clb-nm{color:var(--accent);font-weight:700}
+.clb-tbl{width:100%;border-collapse:collapse;font-size:0.8rem}
+.clb-tbl th{text-align:left;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;
+  color:var(--text3);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--border)}
+.clb-tbl td{padding:5px 8px;border-bottom:1px solid var(--border)}
+.clb-rk{color:var(--text3);width:2.5em;font-variant-numeric:tabular-nums}
+.clb-nm{cursor:pointer}
+.clb-nm:hover{color:var(--accent)}
+.clb-v{font-variant-numeric:tabular-nums;font-weight:700}
+.clb-s{font-variant-numeric:tabular-nums;color:var(--text3)}
+.clb-foot{padding:8px 12px 14px;font-size:0.7rem;color:var(--text3)}
+.clb-more{margin-left:6px;padding:2px 9px;border-radius:5px;border:1px solid var(--border);
+  background:transparent;color:var(--text2);font-size:0.7rem;cursor:pointer}
+.clb-more:hover{color:var(--accent);border-color:var(--accent)}
 .gr-colh{fill:var(--text);font-size:11px;font-weight:700}
 .gr-cols{fill:var(--text3);font-size:9px}
 .gr-box{cursor:pointer}
@@ -960,7 +1020,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
       <span class="help-dot" onclick="openHelp()" title="What the numbers mean">?</span>
-      <span class="rail-ver">v1.91</span>
+      <span class="rail-ver">v2.02</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -2532,18 +2592,48 @@ function grRender(){
 
   const gradeNames=new Map();
   for(const t of teams) for(const s of t.segs) gradeNames.set(s.gid,s.grade);
-  const rows=[...gradeNames.entries()].sort((a,b)=>String(a[1]).localeCompare(String(b[1]),undefined,{numeric:true}));
+  /* ⚠️ ROWS SORT BY AGE FIRST, HIGHEST AT THE TOP.
+     The old sort was alphabetical on the FULL grade name, so "Saturday U14 Boys
+     ARes" landed BELOW "Saturday U13 Boys D" purely because "U14" > "U13" as
+     text — a team promoted an entire age bracket appeared at the bottom of the
+     diagram, labelled "ARES", indistinguishable from a U13 A Reserve. The row
+     label comes from grShort(), which strips the age by design (it is normally
+     the panel heading), so nothing on screen said which age it was.
+     Rows are keyed on gid, so the two grades were never merged in the data —
+     this was a reading problem, not a counting one.
+     Within an age, gradeRank() gives the real order (A, ARES, B, BRES, C …)
+     rather than the alphabetical one, which put ARES after A1 and C before
+     BRES. An unknown level ranks 999 and falls to the foot of its own band. */
+  const homeAge=ageNum(String(G.key||'').split('|')[1]);
+  const ageNumOf=name=>{ const n=ageNum(grParse(name).age); return (n&&n!==999)?n:homeAge; };
+  const ageTxtOf=name=>grParse(name).age||String(G.key||'').split('|')[1]||'';
+  const rows=[...gradeNames.entries()].sort((a,b)=>
+    ageNumOf(b[1])-ageNumOf(a[1]) ||
+    gradeRank(grShort(a[1]))-gradeRank(grShort(b[1])) ||
+    String(a[1]).localeCompare(String(b[1]),undefined,{numeric:true}));
   const rowIdx=new Map(rows.map(([gid],i)=>[gid,i]));
+  const rowAge=rows.map(([,name])=>ageTxtOf(name));
+  const multiAge=new Set(rowAge).size>1;
+  const AGEH=multiAge?20:0;
+  const newBand=rows.map((r,i)=>multiAge&&(i===0||rowAge[i]!==rowAge[i-1]));
 
   // Narrow columns; a box's HEIGHT is how many teams are in it.
-  const COLW=46, GAP=96, PADL=10, PADT=46, UNIT=9, ROWPAD=14;
+  // PADT holds the column heading: date, the span it covers, and what is in it.
+  // The gutter's top spacer reads the same constant, so the two stay aligned.
+  const COLW=46, GAP=96, PADL=10, PADT=62, UNIT=9, ROWPAD=14;
   const rowH=rows.map(([gid])=>{
     let max=0; for(let i=0;i<cols.length;i++) max=Math.max(max,(cell.get(i+'|'+gid)||[]).length);
     return Math.max(24,max*UNIT+ROWPAD);
   });
+  // The band header occupies real height, counted here so the gutter's divs and
+  // the SVG's rows stay on the same y — they are two renderings of one layout.
   const rowY=[]; let y=PADT;
-  for(let i=0;i<rows.length;i++){ rowY.push(y); y+=rowH[i]+10; }
-  const W=PADL+cols.length*COLW+(cols.length-1)*GAP+PADL, H=y+14;
+  for(let i=0;i<rows.length;i++){ if(newBand[i]) y+=AGEH; rowY.push(y); y+=rowH[i]+10; }
+  /* ⚠️ The headings are wider than COLW and are centred, so the last column's
+     text overhangs the right edge. With PADL on both sides it was CLIPPED —
+     "scheduled" rendered as "schedule". PADR is the overhang allowance. */
+  const PADR=78;
+  const W=PADL+cols.length*COLW+(cols.length-1)*GAP+PADR, H=y+14;
   const colX=i=>PADL+i*(COLW+GAP);
   const nAt=(i,gid)=>(cell.get(i+'|'+gid)||[]).length;
   const boxH=n=>n*UNIT;        // exactly one UNIT per team — bands stack to fill
@@ -2581,9 +2671,48 @@ function grRender(){
           onmouseenter="grTip(event,'flow','${esc(L.k)}')" onmouseleave="grTipHide()"
           onclick="grPickGrade('${esc(L.to)}')"></path>`;
   }
+  /* ⚠️ A COLUMN IS A SPAN, NOT A DATE. The heading read "9 Nov · week of", which
+     says when the column STARTS and nothing about what it covers — and the last
+     column covers everything from its week to the end of the season, which may
+     be months. Each heading now carries the date range it actually spans and how
+     much is inside it, so a wide column cannot read as a single week.
+     Games are counted by DISTINCT game id: both sides of a fixture are teams in
+     this panel, so counting appearances would double every number. */
+  const ymdUTC=v=>{const m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(v||''));return m?Date.UTC(+m[1],+m[2]-1,+m[3]):null;};
+  let firstD='', lastD='';
+  for(const t of teams) for(const a of t.apps.concat(t.sups||[])){
+    if(!a.d) continue;
+    if(!firstD||a.d<firstD) firstD=a.d;
+    if(a.d>lastD) lastD=a.d;
+  }
+  /* ⚠️ cols[0] IS THE STRING 'start', NOT A DATE. It is a sentinel meaning "where
+     each team began", so it cannot be compared against a game date and cannot be
+     measured from: `a.d >= 'start'` is false for every real date, which reported
+     the Start column as holding 0 games. Its span begins at the FIRST GAME. */
+  const colFrom=cols.map((c,i)=> i===0?(firstD||c):c);
+  const colTo  =cols.map((c,i)=> i+1<cols.length?grShift(cols[i+1],-1):(lastD>colFrom[i]?lastD:colFrom[i]));
+  /* ⚠️ FLOOR, NOT ROUND. colTo is the INCLUSIVE LAST DAY of the span, not the
+     start of its final week. 26 Oct–1 Nov is six days and one week; rounding
+     6/7 to 1 and adding 1 called it two. */
+  const colWeeks=cols.map((c,i)=>{
+    const A=ymdUTC(colFrom[i]),B=ymdUTC(colTo[i]);
+    if(A===null||B===null||B<A) return 1;
+    return Math.max(1,Math.floor((B-A)/604800000)+1);
+  });
+  const colGames=cols.map((c,i)=>{
+    const seen=new Set();
+    for(const t of teams) for(const a of t.apps.concat(t.sups||[]))
+      if(a.d&&a.d>=colFrom[i]&&a.d<=colTo[i]) seen.add(a.key);
+    return seen.size;
+  });
   cols.forEach((c,i)=>{
-    svg+=`<text class="gr-colh${colFuture[i]?' fut':''}" x="${colX(i)+COLW/2}" y="20" text-anchor="middle">${i===0?'Start':esc(grDayLabel(c))}</text>`+
-         `<text class="gr-cols" x="${colX(i)+COLW/2}" y="33" text-anchor="middle">${i===0?'first game':(colFuture[i]?'scheduled':'week of')}</text>`;
+    const x=colX(i)+COLW/2;
+    const span=colTo[i]&&colTo[i]!==colFrom[i]?`${esc(grDayLabel(colFrom[i]))} \u2013 ${esc(grDayLabel(colTo[i]))}`:esc(grDayLabel(colFrom[i]));
+    const wk=`${colWeeks[i]} week${colWeeks[i]===1?'':'s'}`;
+    const gm=colFuture[i]?'scheduled':`${colGames[i]} game${colGames[i]===1?'':'s'}`;
+    svg+=`<text class="gr-colh${colFuture[i]?' fut':''}" x="${x}" y="20" text-anchor="middle">${i===0?'Start':esc(grDayLabel(c))}</text>`+
+         `<text class="gr-cols" x="${x}" y="33" text-anchor="middle">${span}</text>`+
+         `<text class="gr-colm" x="${x}" y="45" text-anchor="middle">${wk} \u00b7 ${gm}</text>`;
   });
   rows.forEach(([gid,name],r)=>{
     for(let i=0;i<cols.length;i++){
@@ -2606,10 +2735,22 @@ function grRender(){
            `</g>`;
     }
   });
+  // The boundary between two age brackets, carried across the whole diagram so
+  // the eye does not have to return to the gutter to find it. Not drawn above
+  // the first band — there is nothing above it to separate.
+  if(multiAge){
+    rows.forEach((_,i)=>{
+      if(!newBand[i]||i===0) return;
+      const yy=rowY[i]-AGEH/2-5;
+      svg+=`<line class="gr-agerule" x1="0" y1="${yy}" x2="${W}" y2="${yy}"></line>`;
+    });
+  }
   svg+='</svg>';
 
   const gutter=`<div class="gr-gutter"><div style="height:${PADT}px"></div>`+
-    rows.map(([gid,name],r)=>`<div class="gr-grow${GRSEL===gid?' sel':''}" style="height:${rowH[r]}px;margin-bottom:10px"
+    rows.map(([gid,name],r)=>
+      (newBand[r]?`<div class="gr-age" style="height:${AGEH}px">${esc(rowAge[r])}</div>`:'')+
+      `<div class="gr-grow${GRSEL===gid?' sel':''}" style="height:${rowH[r]}px;margin-bottom:10px"
         title="${esc(name)}" onclick="grPickGrade('${esc(gid)}')"><span>${esc(grShort(name))}</span></div>`).join('')+`</div>`;
 
   const movers=G.teams.filter(t=>t.hops.length).length;
@@ -2647,11 +2788,22 @@ function grTipList(kind,k){
     return {list:D.teams.filter(t=>{const s=D.at.get(t.tid)[+i];return s&&s.gid===gid;}),gid,upto:D.colEnd[+i],sel:D.selSet};
   }
   const [iS,from,to]=k.split('|'); const i=+iS;
+  /* ⚠️ A MOVE SHOWS THE RECORD IN THE GRADE BEING LEFT, NOT THE ONE BEING ENTERED.
+     This read `gid:to, upto:colEnd[i]` — the destination grade, cut off at the end
+     of the destination column. That column is frequently in the FUTURE, so
+     hovering a move into A showed "1 · 0-1 · 0%" built from a game that has not
+     been played, and for a wholly unplayed week it showed a record for a grade
+     the team has not yet played a minute in.
+     What makes a move legible is how the team FINISHED the grade it is leaving —
+     that is the result the move was made on. So a move reads `from`, up to the
+     end of the PREVIOUS column. A stay is not leaving anything, so it keeps the
+     later cutoff and shows more games rather than fewer. */
+  const moved=from!==to;
   return {list:D.teams.filter(t=>{const a=D.at.get(t.tid)[i-1],b=D.at.get(t.tid)[i];return a&&b&&a.gid===from&&b.gid===to;}),
-          gid:to,upto:D.colEnd[i],sel:D.selSet};
+          gid:moved?from:to, upto:moved?D.colEnd[i-1]:D.colEnd[i], sel:D.selSet, moved};
 }
 function grTip(ev,kind,k){
-  const {list,gid,upto,sel}=grTipList(kind,k);
+  const {list,gid,upto,sel,moved}=grTipList(kind,k);
   if(!list.length) return;
   // Selected teams sort to the top, but nobody is left out — the tooltip is
   // the grade's real membership at that point.
@@ -2664,7 +2816,9 @@ function grTip(ev,kind,k){
   const tip=el('gr-tip');
   const nSel=sel?list.filter(t=>sel.has(t.tid)).length:0;
   const verb=kind==='flow'?(k.split('|')[1]===k.split('|')[2]?'stayed':'moved here'):'';
-  tip.innerHTML=`<div class="gr-tiph">${list.length} team${list.length===1?'':'s'}${verb?' '+verb:''} · record in this grade${sel?` · ${nSel} marked`:''}</div>`+rows+
+  // Say WHICH grade the record is in. "record in this grade" beside a move was
+  // ambiguous even when it was the destination, and is wrong now it is not.
+  tip.innerHTML=`<div class="gr-tiph">${list.length} team${list.length===1?'':'s'}${verb?' '+verb:''} · record in ${moved?'the grade they left':'this grade'}${sel?` · ${nSel} marked`:''}</div>`+rows+
     (ordered.length>26?`<div class="gr-tipm">… and ${ordered.length-26} more</div>`:'');
   tip.classList.add('on');
   const r=tip.getBoundingClientRect();
@@ -6183,6 +6337,11 @@ function renderClubShell(){
   ve.innerHTML = `<div class="vhdr"><button class="vback" onclick="history.back()">←</button>
     <div><div class="vtitle">${esc(S.clubName || club.n || S.clubId)}</div>
     <div class="vsub">${nTeams.toLocaleString()} team${nTeams === 1 ? '' : 's'} across ${sids.length} season${sids.length === 1 ? '' : 's'}</div></div></div>
+  <div class="vtabs">
+    <button class="vtab on" onclick="switchTTab(this,'cw-pane','cl-pane')">Week</button>
+    <button class="vtab" onclick="switchTTab(this,'cl-pane','cw-pane');clubLeadersLoad()">Leaders</button>
+  </div>
+  <div id="cw-pane" class="tpane on">
   <div class="cweek-nav">
     <button onclick="shiftClubWeek(-1)">← Prev</button>
     <span class="cwk-lbl" id="cwk-lbl">${esc(clubWeekLabel(S.clubWeek))}</span>
@@ -6196,7 +6355,327 @@ function renderClubShell(){
       <button style="padding:3px 10px;border-radius:5px;border:1px solid var(--border);font-size:0.75rem;color:var(--text2)" onclick="jumpClubWeek('${esc(mkDate(new Date()))}')">This week</button>
     </span>
   </div>
-  <div id="cweek-body"></div>`;
+  <div id="cweek-body"></div>
+  </div>
+  <div id="cl-pane" class="tpane"><div id="club-lead"></div></div>`;
+}
+
+/* ── Club leaders ──────────────────────────────────────────────────────────
+   NO BUILD STEP AND NO NEW DATA. Both artifacts are already published and
+   already fetched elsewhere in this page:
+     clubs/{cid}.json          seasons → [tid]   (loadClub already has it)
+     team-stats/bv/{sid}.json  teams[tid].roster[truncUuid] =
+                               { name, gp, pts, fg, ft, threePt, fouls }
+   — the same file and the same roster the team card renders.
+
+   ⚠ IMMUNE TO T20 BY CONSTRUCTION. build-team-stats.js resolves ONE
+   registration per (sid, tid) through extractRegStats and never sums siblings,
+   so a roster entry cannot carry the regrade double-count that a naive sum over
+   players/ registrations produces. Summing roster entries across teams and
+   seasons is therefore correct.
+
+   ⚠ LOADED NEWEST FIRST, RENDERED AS IT ARRIVES. A club can span twenty-odd
+   seasons and team-stats files are the largest artifacts in the repo, so the
+   table paints after each season rather than after all of them, and says how
+   far through it is. A season that fails to load is COUNTED and named in the
+   footer — a short table and a complete one must not look alike. */
+/* ⚠ THE ROW COUNT IS BOUNDED ON PURPOSE AND "SHOW ALL" DOES NOT EXIST.
+   A club is not necessarily small: PlayHQ records a rep team as belonging to its
+   league, so VJBL alone owns 10,371 teams and a club like that has players in
+   the tens of thousands. Rendering every ranked row in one go would build a DOM
+   that size from a single click. The table opens at CLUB_TOP and grows by
+   CLUB_STEP per click, so no one render is ever larger than CLUB_STEP rows and
+   the cost is always something the person asked for. Neither number is a
+   measurement — do not treat them as one. */
+const CLUB_TOP   = 100;  // rows on first paint
+const CLUB_STEP  = 100;  // rows added per click, and the block the search jumps to
+const CLUB_STICK = 10;   // leading rows pinned above the scrolling remainder
+const CLUB_CATS = [['gp','Games'],['pts','Points'],['threePt','3-pointers'],['fouls','Fouls'],['fg','Field goals'],['ft','Free throws']];
+
+function clubSeasonStart(sid){
+  const se = S.idx?.seasons?.[sid];
+  return (se && (se.startDate || se.endDate)) ? String(se.startDate || se.endDate).slice(0,10) : '';
+}
+
+async function clubLeadersLoad(){
+  const cid = S.clubId, club = S.clubs[cid] || {};
+  if(S.clubLead && S.clubLead.cid === cid){ clubLeadersRender(); return; }
+  const sids = Object.keys(club.seasons || {})
+    .sort((a,b)=>String(clubSeasonStart(b)).localeCompare(String(clubSeasonStart(a))) || String(b).localeCompare(String(a)));
+  // sid:'' is ALL SEASONS and is the default — the all-time table is the point,
+  // the filter is a narrowing of it. `order` keeps the newest-first season list
+  // for the dropdown so it does not have to be re-derived on every render.
+  S.clubLead = { cid, rows:new Map(), done:0, total:sids.length, cat:'gp', per:false, failed:[], sid:'', order:sids, loaded:new Set(), show:CLUB_TOP, find:'', hit:null, findMsg:'' };
+  clubLeadersRender();
+  for(const sid of sids){
+    // A club viewed, left and reopened must not restart a half-finished load.
+    if(!S.clubLead || S.clubLead.cid !== cid) return;
+    // ⚠ 'team-stats/bv', not 'team-stats'. sgj() takes the whole directory and
+    // every other caller in this file passes the /bv. Without it each fetch 404s
+    // on both origins and every season reports as failed.
+    const ts = await sgj('team-stats/bv', sid);
+    if(!ts){ S.clubLead.failed.push(sid); }
+    else {
+      for(const tid of (club.seasons[sid] || [])){
+        const t = ts[tid]; if(!t || !t.roster) continue;
+        for(const [key, r] of Object.entries(t.roster)){
+          let a = S.clubLead.rows.get(key);
+          if(!a) S.clubLead.rows.set(key, a = { uuid:key, name:r.name || key, bySid:new Map() });
+          // Kept per season so the filter is a slice of the same numbers the
+          // all-time table shows, never a second aggregation that could drift.
+          let b = a.bySid.get(sid);
+          if(!b) a.bySid.set(sid, b = { gp:0, pts:0, threePt:0, fouls:0, fg:0, ft:0, teams:0 });
+          b.gp += r.gp || 0; b.pts += r.pts || 0; b.threePt += r.threePt || 0;
+          b.fouls += r.fouls || 0; b.fg += r.fg || 0; b.ft += r.ft || 0; b.teams++;
+          if(r.name && a.name === key) a.name = r.name;
+        }
+      }
+    }
+    S.clubLead.loaded.add(sid);
+    S.clubLead.done++;
+    clubLeadersRender();
+  }
+}
+
+/* The search is a STANDING query, not a one-off. Changing the category or the
+   per-game toggle re-sorts the whole ranking, so a player at #109 by games can
+   be #3,200 by points: keeping the highlight without re-running the search
+   would leave a marked row outside the rendered block and a message quoting a
+   rank that no longer exists. Every control that changes the ordering re-runs
+   it instead of merely re-rendering. */
+function clubLeadersRefind(){
+  const L = S.clubLead; if(!L) return;
+  if(L.find) clubLeadersFind(L.find); else clubLeadersRender();
+}
+function clubLeadersPick(cat){ if(S.clubLead){ S.clubLead.cat = cat; clubLeadersRefind(); } }
+function clubLeadersSeason(sid){
+  if(!S.clubLead) return;
+  S.clubLead.sid = sid || '';
+  S.clubLead.show = CLUB_TOP;          // a different population starts at the default
+  S.clubLead.hit = null; S.clubLead.findMsg = '';
+  clubLeadersRefind();                  // and the standing search is re-answered against it
+}
+function clubLeadersMore(){ if(S.clubLead){ S.clubLead.show += CLUB_STEP; clubLeadersRender(); } }
+function clubLeadersLess(){ if(S.clubLead){ S.clubLead.show = CLUB_TOP; S.clubLead.hit = null; clubLeadersRender(); } }
+
+/* ── Find a player in the ranking ───────────────────────────────────────
+   Searching a ranked list is not filtering it: the point is WHERE someone sits,
+   so the table is left whole and the row is scrolled to and marked. The rows
+   between here and them are rendered too — jumping to row 3,400 without the
+   3,399 above it would show a rank with nothing to read it against — so the
+   search expands to the CLUB_STEP block that contains them and no further.
+   ⚠ It searches the WHOLE ranking, not the rendered rows. Searching only what
+   is on screen would answer "not found" for anyone past the first block, which
+   is the opposite of what this is for. */
+function clubLeadersFind(q){
+  const L = S.clubLead; if(!L) return;
+  L.find = String(q || '').trim();
+  L.hit = null; L.findMsg = '';
+  if(!L.find){ clubLeadersRender(); return; }
+  const { ranked } = clubLeadersRanked(L);
+  /* ⚠ tokenMatch, not a substring. It is the page's own name matcher (L1257):
+     the normName v2 fold on BOTH operands — curly and straight apostrophes, the
+     dash family, accents — and then every whitespace-separated token must
+     appear. A raw toLowerCase().includes() missed "squire louis" for Louis
+     SQUIRE because the order differs, and missed O’Brien typed with a straight
+     apostrophe. The repo solved this at seven comparison sites in August; this
+     is the eighth and it uses the same function rather than a ninth copy. */
+  const hits = [];
+  for(let i = 0; i < ranked.length; i++) if(tokenMatch(String(ranked[i].name), L.find)) hits.push(i);
+  if(!hits.length){
+    /* ⚠ A MISS IS NOT NECESSARILY AN ABSENCE. Three different facts read the
+       same otherwise: not in this club at all; in the club but not in the season
+       being filtered to; or in a season whose file has not arrived yet. The
+       message names whichever of those is actually in play. */
+    const scopeBits = [];
+    if(L.sid){
+      const nm = (S.idx?.seasons?.[L.sid] && (S.idx.seasons[L.sid].name || S.idx.seasons[L.sid].fullName)) || L.sid;
+      scopeBits.push(`in ${esc(nm)}`);
+    }
+    if(L.done < L.total) scopeBits.push(`and only ${L.done} of ${L.total} season(s) have loaded — try again when it finishes`);
+    else if(!L.sid) scopeBits.push('across all seasons');
+    L.findMsg = `no one matching “${esc(L.find)}” ${scopeBits.join(' ')}`;
+    clubLeadersRender(); return;
+  }
+  const i = hits[0], rank = i + 1;
+  L.show = Math.max(L.show, Math.max(CLUB_TOP, Math.ceil(rank / CLUB_STEP) * CLUB_STEP));
+  L.hit = ranked[i].uuid;
+  L.findMsg = `${esc(ranked[i].name)} — #${rank.toLocaleString()} of ${ranked.length.toLocaleString()}`
+            + (hits.length > 1 ? ` · ${hits.length} names match, this is the highest` : '');
+  clubLeadersRender();
+  // After paint, not before: the row does not exist until the render that the
+  // expansion above triggered has run.
+  //
+  // ⚠ SCROLL THE LIST, NOT THE PAGE. scrollIntoView() moves every scrollable
+  // ancestor, so it dragged the whole club view up and took the heading, the
+  // category buttons and the search box off the top of the screen — searching
+  // from a box you can no longer see. Only the list container is moved, by the
+  // difference between the row and the container, so everything else stays put.
+  requestAnimationFrame(() => {
+    const wrap = document.querySelector('#club-lead .clb-scroll');
+    const row  = document.querySelector('#club-lead .clb-hit');
+    if(!wrap || !row || !wrap.contains(row)) return;   // a hit inside the pinned block needs no scroll
+    const r = row.getBoundingClientRect(), w = wrap.getBoundingClientRect();
+    wrap.scrollTop += (r.top - w.top) - (w.height / 2 - r.height / 2);
+  });
+}
+
+/* ONE ranking, used by the render and by the search. Two copies would be two
+   answers to "who is #347". */
+function clubLeadersRanked(L){
+  const cat = L.cat, per = L.per && cat !== 'gp', only = L.sid;
+  const all = [...L.rows.values()].map(r => {
+    const t = { uuid:r.uuid, name:r.name, gp:0, pts:0, threePt:0, fouls:0, fg:0, ft:0, seasons:0, teams:0 };
+    for(const [sid, b] of r.bySid){
+      if(only && sid !== only) continue;
+      t.gp += b.gp; t.pts += b.pts; t.threePt += b.threePt;
+      t.fouls += b.fouls; t.fg += b.fg; t.ft += b.ft;
+      t.teams += b.teams; t.seasons++;
+    }
+    return t;
+  }).filter(r => r.seasons > 0);
+  const ranked = all.filter(r => r.gp > 0);
+  const val = r => per ? (r.gp ? r[cat] / r.gp : 0) : r[cat];
+  ranked.sort((a,b)=> val(b)-val(a) || b.gp-a.gp || a.name.localeCompare(b.name) || a.uuid.localeCompare(b.uuid));
+  return { ranked, unranked: all.length - ranked.length, val, per, only, cat };
+}
+function clubLeadersPer(){ if(S.clubLead){ S.clubLead.per = !S.clubLead.per; clubLeadersRefind(); } }
+
+function clubLeadersRender(){
+  const host = el('club-lead'); if(!host) return;
+  const L = S.clubLead; if(!L){ host.innerHTML = ''; return; }
+  /* ⚠⚠ THIS FUNCTION REBUILDS THE SEARCH BOX, so it must put the person back
+     where they were. Replacing host.innerHTML destroys the input they are
+     typing into: focus went to the body and the field reset, so typing
+     "Lovelace" left "L" and the box went dead after one character. The search
+     now runs on Enter rather than per keystroke, which removes most of those
+     renders — but not all of them: Enter itself renders, clearing the box
+     renders, and changing category or season re-answers the standing search.
+     Focus and caret are carried across so none of those lose the cursor.
+     The feature was untestable by its own unit tests, which called
+     clubLeadersFind() directly and never typed a key. */
+  const q0 = host.querySelector('.clb-q');
+  const refocus = !!(q0 && document.activeElement === q0);
+  const caret = refocus ? q0.selectionStart : null;
+  const restore = () => {
+    if(!refocus) return;
+    const q1 = host.querySelector('.clb-q');
+    if(!q1) return;
+    q1.focus();
+    try { q1.setSelectionRange(caret, caret); } catch(_) {}
+  };
+  // ONE ranking, shared with the search — see clubLeadersRanked.
+  const { ranked, unranked, val, per, only, cat } = clubLeadersRanked(L);
+  const fmt = v => per ? (Math.round(v*10)/10).toFixed(1) : v.toLocaleString();
+  const catLabel = (CLUB_CATS.find(c=>c[0]===cat)||['','?'])[1];
+
+  const tabs = CLUB_CATS.map(([k,lbl])=>
+    `<button class="clb-cat${k===cat?' on':''}" onclick="clubLeadersPick('${k}')">${esc(lbl)}</button>`).join('');
+  const perBtn = cat === 'gp' ? '' :
+    `<button class="clb-cat${per?' on':''}" onclick="clubLeadersPer()" title="Per game instead of totals">per game</button>`;
+
+  /* Every season the club has is listed, not just the loaded ones — a season
+     missing from the list because it has not arrived yet would read as a season
+     the club never had. One still loading says so in its own label. */
+  const seasonOpts = ['<option value="">All seasons — all time</option>'].concat(
+    L.order.map(sid => {
+      const nm = (S.idx?.seasons?.[sid] && (S.idx.seasons[sid].name || S.idx.seasons[sid].fullName)) || sid;
+      const state = L.failed.includes(sid) ? ' \u2014 could not load' : (L.loaded.has(sid) ? '' : ' \u2014 loading\u2026');
+      return `<option value="${esc(sid)}"${L.sid === sid ? ' selected' : ''}>${esc(nm)}${state}</option>`;
+    })).join('');
+  const seasonSel = `<select class="sselect clb-sea" onchange="clubLeadersSeason(this.value)">${seasonOpts}</select>`;
+
+  /* ⚠ THE BAR STAYS AT 100% WHEN IT FINISHES, IT DOES NOT VANISH. While it is
+     filling, every figure on screen is provisional — the ranking covers only the
+     seasons that have arrived, and a long career in older seasons climbs as it
+     completes. "All N seasons loaded" is therefore not decoration: it is the
+     difference between a provisional table and a final one, and removing the
+     bar on completion would delete the only thing that says which you are
+     looking at. */
+  const pct = L.total ? Math.round((L.done / L.total) * 100) : 100;
+  const doneAll = L.done >= L.total;
+  /* ⚠ done counts ATTEMPTS, not successes — clubLeadersLoad increments it on a
+     failed season too, which is right, because otherwise one dead file leaves
+     the bar stuck short forever. So the finished state must not say "complete"
+     when something failed: it reaches 100%, turns red and says INCOMPLETE, and
+     the warn line underneath names the files. */
+  const bad = L.failed.length;
+  const prog = `<div class="clb-load${doneAll ? ' done' : ''}${doneAll && bad ? ' bad' : ''}">
+      <div class="clb-load-hd">
+        <span>${doneAll
+          ? (bad
+              ? `All ${L.total.toLocaleString()} season${L.total === 1 ? '' : 's'} attempted — ${bad} could not be loaded, so these totals are INCOMPLETE`
+              : `All ${L.total.toLocaleString()} season${L.total === 1 ? '' : 's'} loaded — these totals are complete`)
+          : `Loading seasons — <b>${L.done.toLocaleString()} of ${L.total.toLocaleString()}</b>, newest first`}</span>
+        <span class="clb-load-pct">${pct}%</span>
+      </div>
+      <div class="clb-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}">
+        <div class="clb-fill" style="width:${pct}%"></div>
+      </div>
+      ${doneAll ? '' : '<div class="clb-load-sub">The ranking covers the seasons loaded so far, so positions can still change.</div>'}
+    </div>`;
+  const fail = L.failed.length
+    ? `<div class="clb-prog warn">⚠ ${L.failed.length} season file(s) could not be loaded, so these totals are INCOMPLETE: ${L.failed.map(esc).join(', ')}</div>`
+    : '';
+
+  const scope = only
+    ? ((S.idx?.seasons?.[only] && (S.idx.seasons[only].name || S.idx.seasons[only].fullName)) || only)
+    : `all time, ${L.done} of ${L.total} season(s)`;
+  const shown = ranked.slice(0, Math.max(CLUB_TOP, L.show));
+  /* ⚠ Games is BOTH a category and the context column. Ranking by Games showed
+     the same number twice under two headings both reading GAMES. The context
+     column is dropped when it would repeat the value. */
+  const showGP = !(cat === 'gp' && !per);
+  const row = (r,i) =>
+    `<tr class="${L.hit === r.uuid ? 'clb-hit' : ''}"><td class="clb-rk">${i+1}</td>
+      <td class="clb-nm" onclick="loadPlayer('${esc(r.uuid)}')" title="Open ${esc(r.name)}">${esc(r.name)}</td>
+      <td class="clb-v">${fmt(val(r))}</td>
+      ${showGP ? `<td class="clb-s">${r.gp.toLocaleString()}</td>` : ''}
+      <td class="clb-s">${only ? r.teams : r.seasons}</td></tr>`;
+  /* ⚠ TWO TABLES, NOT ONE WITH STICKY ROWS. The leading block stays put while
+     the rest scrolls, and position:sticky on ten separate <tr> elements needs a
+     per-row offset that breaks the moment a name wraps to two lines. Two tables
+     sharing an identical <colgroup> under table-layout:fixed stay aligned by
+     construction, whatever the content does. */
+  const COLS = `<colgroup><col style="width:3.2em"><col><col style="width:7em">`
+             + (showGP ? `<col style="width:5em">` : '') + `<col style="width:5em"></colgroup>`;
+  const head = shown.slice(0, CLUB_STICK).map(row).join('');
+  const rest = shown.slice(CLUB_STICK).map((r,i)=>row(r, i + CLUB_STICK)).join('');
+
+  host.innerHTML = `<div class="clb-bar">${tabs}${perBtn}</div>
+    <div class="clb-bar clb-seabar">${seasonSel}</div>${prog}${fail}
+    <div class="clb-find">
+      <!-- ⚠ THE SEARCH RUNS ON ENTER, NOT ON EVERY KEYSTROKE. Finding a player
+           means ranking every player in the club — tens of thousands of rows for
+           a big one — and then rebuilding this whole panel, including the box
+           being typed into. Doing that per character made the field jump and
+           fight the typist even with the caret carried across. The only
+           exception is emptying the box, which clears the highlight at once:
+           that is one render, and a cleared box that still shows a highlight
+           reads as a stuck result. -->
+      <input class="sinput clb-q" type="search" placeholder="Find a player — press Enter" value="${esc(L.find || '')}"
+             onkeydown="if(event.key==='Enter'){ event.preventDefault(); clubLeadersFind(this.value); }"
+             oninput="if(!this.value) clubLeadersFind('');">
+      ${L.findMsg ? `<span class="clb-fmsg">${L.findMsg}</span>` : ''}
+    </div>
+    <div class="clb-pin"><table class="clb-tbl">${COLS}
+      <thead><tr><th></th><th>Player</th><th>${esc(catLabel)}${per?' /g':''}</th>${showGP?'<th>Games</th>':''}<th>${only?'Teams':'Seasons'}</th></tr></thead>
+      <tbody>${head || `<tr><td colspan="${showGP?5:4}" class="clb-prog">No ranked players yet.</td></tr>`}</tbody>
+    </table></div>
+    <div class="clb-scroll"><table class="clb-tbl">${COLS}<tbody>${rest}</tbody></table></div>
+    <div class="clb-foot">${ranked.length.toLocaleString()} ranked player(s) \u00b7 ${esc(scope)}`
+    + (ranked.length > shown.length || shown.length > CLUB_TOP
+        ? ` · showing ${shown.length.toLocaleString()} of ${ranked.length.toLocaleString()}`
+          + (ranked.length > shown.length
+              ? ` <button class="clb-more" onclick="clubLeadersMore()">Show ${Math.min(CLUB_STEP, ranked.length - shown.length).toLocaleString()} more</button>`
+              : '')
+          + (shown.length > CLUB_TOP
+              ? ` <button class="clb-more" onclick="clubLeadersLess()">Back to top ${CLUB_TOP}</button>`
+              : '')
+        : '')
+    + (unranked ? ` · ${unranked.toLocaleString()} held out with no games credited — a registration with no stats reads as 0 here and is NOT treated as a real nought` : '')
+    + `</div>`;
+  restore();
 }
 
 /* Stepping through weeks REPLACES the history entry rather than pushing one.
