@@ -1,0 +1,129 @@
+# .github/workflows/top-games-by-club.yml
+name: Top Games By Club
+
+# MOST GAMES PLAYED, FOR ONE CLUB. Offline — walks players/ only. No PlayHQ
+# calls, no writes, no commits, NO data-write lock, so it cannot queue or cancel
+# anything else.
+#
+# ⚠️ THE REAL CLUB, NOT THE ASSOCIATION. `club` elsewhere in this repo is
+# sports-index orgName — EDJBA, Camberwell — and build-leaderboards.js carries
+# that under the name `club` on every entry. This resolves through
+# clubs/{clubId}.json, written by build-club-index.js from PlayHQ's team
+# `organisation`, so a team whose name does not contain the club's name is still
+# counted and a same-word team from another club is not.
+#
+# ⚠️ STEP 1 IS list_clubs. Run it with a fragment of the name first, read the
+# ids, then run again naming the one you mean. A name that matches more than one
+# club is REFUSED rather than guessed at.
+
+on:
+  workflow_dispatch:
+    inputs:
+      list_clubs:
+        description: 'STEP 1 — DISCOVERY. A fragment of the club name. Lists every matching club with its id and type, then stops. Leave blank to run the leaderboard.'
+        required: false
+        default: ''
+        type: string
+      club_name:
+        description: 'Club NAME, substring, case-insensitive (e.g. Spirit Magic). Refused if it matches more than one club — use club_id then.'
+        required: false
+        default: ''
+        type: string
+      club_id:
+        description: 'Club ID, exact. Takes precedence over club_name.'
+        required: false
+        default: ''
+        type: string
+      top:
+        description: 'How many players to list (default 25).'
+        required: false
+        default: '25'
+        type: string
+      since:
+        description: 'Only seasons starting on/after this date, YYYY-MM-DD. Blank = every season the club has.'
+        required: false
+        default: ''
+        type: string
+      comp:
+        description: 'Only seasons whose competition name contains this (e.g. Junior Domestic). Blank = all competitions.'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  top-games:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      # players/ is the bulk; clubs/ resolves the team ids; data/ gives season
+      # names and competition names. Without data/ the report still runs but
+      # prints raw season ids and cannot filter by comp.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          sparse-checkout: |
+            players
+            clubs
+            scripts
+            data
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Directive 13 / T27: every input reaches bash through env:, never
+      # interpolated into run:.
+      - name: Top games by club
+        env:
+          IN_LIST:  ${{ inputs.list_clubs }}
+          IN_NAME:  ${{ inputs.club_name }}
+          IN_ID:    ${{ inputs.club_id }}
+          IN_TOP:   ${{ inputs.top }}
+          IN_SINCE: ${{ inputs.since }}
+          IN_COMP:  ${{ inputs.comp }}
+        run: |
+          set -euo pipefail
+          ARGS=()
+          # Club and competition names carry spaces and ampersands, so they are
+          # passed whole as one array element and never word-split. Quotes and
+          # shell metacharacters are refused outright.
+          safe() {
+            case "$1" in
+              *\"*|*\$*|*\`*|*\\*) echo "::error::$2 rejected — quotes and shell metacharacters are not accepted"; exit 1;;
+            esac
+          }
+          ok_ids() { case "$1" in ''|*[!A-Za-z0-9,._-]*) return 1;; *) return 0;; esac; }
+
+          if [ -n "${IN_LIST:-}" ]; then
+            safe "$IN_LIST" list_clubs
+            ARGS+=("--list-clubs=$IN_LIST")
+          elif [ -n "${IN_ID:-}" ]; then
+            ok_ids "$IN_ID" || { echo "::error::club_id rejected — unexpected characters"; exit 1; }
+            ARGS+=("--club=$IN_ID")
+          elif [ -n "${IN_NAME:-}" ]; then
+            safe "$IN_NAME" club_name
+            ARGS+=("--club-name=$IN_NAME")
+          else
+            echo "::error::give one of list_clubs, club_name or club_id. Nothing to do."
+            exit 2
+          fi
+
+          if [ -n "${IN_TOP:-}" ]; then
+            ok_ids "$IN_TOP" || { echo "::error::top rejected — unexpected characters"; exit 1; }
+            ARGS+=("--top=$IN_TOP")
+          fi
+          if [ -n "${IN_SINCE:-}" ]; then
+            ok_ids "$IN_SINCE" || { echo "::error::since rejected — unexpected characters"; exit 1; }
+            ARGS+=("--since=$IN_SINCE")
+          fi
+          if [ -n "${IN_COMP:-}" ]; then
+            safe "$IN_COMP" comp
+            ARGS+=("--comp=$IN_COMP")
+          fi
+
+          echo "args: ${ARGS[@]+${ARGS[@]}}"
+          node scripts/top-games-by-club.js ${ARGS[@]+"${ARGS[@]}"}
