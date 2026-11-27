@@ -94,6 +94,11 @@ const FORCE_RECHECK = !!ARGS['force-recheck'];       // ignore roundsComplete ma
 const NO_ROUND_REFRESH   = !!ARGS['no-round-refresh'];
 const REFRESH_AHEAD      = Math.max(0, parseInt(ARGS['refresh-rounds-ahead'] || '2', 10));
 const REFRESH_DRY_RUN    = !!ARGS['refresh-dry-run'];   // fetch and report, delete nothing
+// Stage 2 — removing fixtures left behind by a grade PlayHQ has deleted.
+// minRuns is how many CONSECUTIVE nights PlayHQ must have answered "no such
+// grade" before its residue may be removed. 1 would act on a single sighting.
+const NO_DEAD_GRADE_CLEAN = !!ARGS['no-dead-grade-cleanup'];
+const DEAD_GRADE_MIN_RUNS = Math.max(1, Number(ARGS['dead-grade-min-runs'] || 2) || 2);
 // Baselining every grade at once is ~5,000 grades x ~8 unplayed rounds of extra
 // requests on the first night. The paced pool would survive it, but a cost that
 // large belongs spread across nights rather than spent in one run that then has
@@ -1235,7 +1240,7 @@ async function main() {
     roundsQueued: 0, gradesFullRescanned: 0, wavesExhausted: 0, sameDayConflicts: 0, sameDayNameConflicts: 0,
     staleGrades: 0, staleGames: 0, staleSuperseded: 0, supSet: 0, supClear: 0,
     roundsFetched: 0, roundsFailed: 0, suspectEmpty: 0,
-    deleted: 0, keptPlayed: 0, noRoundSkipped: 0,
+    deleted: 0, keptPlayed: 0, noRoundSkipped: 0, deadGradeResidue: 0,
     listChanged: 0, seasonsRegraded: 0, newGradesSwept: 0,
     abortedBy: null,
   staleSameRound: 0, supByGrade: 0, supByRound: 0, libFieldWarned: false,
@@ -1731,6 +1736,74 @@ async function main() {
       });
     }
 
+    // ── Dead-grade residue — STAGE 2 ─────────────────────────────────────────
+    // The fixtures nothing else in this script can reach: their grade is gone, so
+    // every round fetch for it fails, and a failed fetch deletes nothing. See
+    // deadGradeResidue in lib/dead-grades.cjs for why that rule is right and why
+    // this is the only safe way around it.
+    if (NO_DEAD_GRADE_CLEAN) {
+      console.log('\n  Dead-grade cleanup: DISABLED (--no-dead-grade-cleanup)');
+    } else if (refresh.abortedBy) {
+      console.log('\n  Dead-grade cleanup: skipped — the refresh already aborted, and a run that'
+                + ' stopped itself must not start deleting on another route.');
+    } else {
+      let deadRecord = [];
+      try {
+        const j = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'dead-grades.json'), 'utf8'));
+        if (j && Array.isArray(j.grades)) deadRecord = j.grades;
+      } catch (e) {
+        // Absent is normal until Phase 1 has recorded a night. Say so — silence
+        // here would read as "no dead grades", which is a different fact.
+        console.log(`\n  Dead-grade cleanup: data/dead-grades.json not readable (${e.code || e.message})`
+                  + ` — nothing removed. Phase 1 writes it; it needs ${DEAD_GRADE_MIN_RUNS} run(s) before anything is acted on.`);
+      }
+      const confirmed = deadRecord.filter(e => e && (e.runs || 0) >= DEAD_GRADE_MIN_RUNS);
+      if (!deadRecord.length) { /* message already printed, or nothing recorded yet */ }
+      else if (!confirmed.length) {
+        console.log(`\n  Dead-grade cleanup: ${deadRecord.length} grade(s) on record, none yet seen`
+                  + ` ${DEAD_GRADE_MIN_RUNS} time(s) — nothing removed.`);
+      } else {
+        let found = 0, keptPlayed = 0, keptPast = 0, seasonsTouched = 0;
+        for (const season of seasons) {
+          const sid = season.id;
+          let gf; try { gf = loadGameFile(sid); } catch (_) { continue; }
+          if (!gf || !gf.games) continue;
+          const r = DG.deadGradeResidue({ games: gf.games, sid, dead: confirmed, today: TODAY_ISO, minRuns: DEAD_GRADE_MIN_RUNS });
+          keptPlayed += r.kept.played; keptPast += r.kept.pastOrUndated;
+          if (!r.residue.length) continue;
+          seasonsTouched++;
+          for (const x of r.residue) {
+            // ⚠ ABORT, NOT WARN. The ratio of history to residue is about 60:1,
+            // so a predicate bug here is silent and catastrophic. Re-check the
+            // two things that matter against the ACTUAL stored entry, not against
+            // what the selector believed.
+            const ent = gf.games[x.gameId];
+            if (!ent) continue;
+            if (RR.isPlayedGame(ent)) {
+              throw new Error(`dead-grade cleanup: ${x.gameId} in grade ${x.gid} is a PLAYED game and was selected for deletion. Nothing deleted. This is a predicate bug, not a data problem.`);
+            }
+            if (!ent.d || String(ent.d) < String(TODAY_ISO)) {
+              throw new Error(`dead-grade cleanup: ${x.gameId} in grade ${x.gid} is dated ${ent.d || '∅'}, not in the future, and was selected for deletion. Nothing deleted.`);
+            }
+            toDelete.push({ sid, gid: x.gid, rn: x.rn || '(grade removed at PlayHQ)', gameId: x.gameId,
+                            reason: 'grade-removed-at-playhq' });
+            found++;
+          }
+        }
+        refresh.deadGradeResidue = found;
+        console.log(`\n  Dead-grade cleanup: ${confirmed.length} grade(s) confirmed gone`
+                  + ` (seen \u2265${DEAD_GRADE_MIN_RUNS} run(s)) \u2014 ${found} future-dated unplayed fixture(s)`
+                  + ` queued for removal across ${seasonsTouched} season(s).`);
+        console.log(`    LEFT ALONE: ${keptPlayed} played game(s) and ${keptPast} past-dated/undated unplayed`
+                  + ` in those same grades. Played games in a dead grade are history PlayHQ will not serve again.`);
+        if (found && toDelete.length > RUNAWAY_STOP) {
+          refresh.abortedBy = `runaway stop: ${toDelete.length} deletions in one run exceeds --runaway-stop=${RUNAWAY_STOP}`;
+          console.log(`  \u26a0\u26a0 RUNAWAY STOP after dead-grade cleanup — ${refresh.abortedBy}`);
+          console.log('  NOTHING will be deleted this run.');
+        }
+      }
+    }
+
     // ── Apply ────────────────────────────────────────────────────────────────
     if (refresh.abortedBy) {
       console.log('  Deletions abandoned; field updates fetched above are kept, as they are the same');
@@ -1799,7 +1872,7 @@ async function main() {
           at: runAt,
           firstDeletedAt: (prior && (prior.firstDeletedAt || prior.at)) || runAt,
           deletions: ((prior && prior.deletions) || 0) + 1,
-          gid: d.gid, rn: d.rn, reason: 'withdrawn-at-playhq', entry,
+          gid: d.gid, rn: d.rn, reason: d.reason || 'withdrawn-at-playhq', entry,
         };
         refresh.archived++;
 
@@ -2614,6 +2687,7 @@ async function main() {
   console.log(`  Refresh sup flags: ${refresh.supSet} set, ${refresh.supClear} cleared`
             + `  (standing: ${refresh.supByGrade} regrade, ${refresh.supByRound} same-grade duplicate)`
             + `${REFRESH_DRY_RUN || DRY_RUN ? '  (dry run — no write)' : ''}`);
+  console.log(`  Dead-grade residue: ${refresh.deadGradeResidue} future-dated unplayed fixture(s) from grades PlayHQ has deleted`);
   console.log(`  Refresh deletions: ${refresh.deleted}  kept-because-played: ${refresh.keptPlayed}`
             + `  suspect-empty rounds: ${refresh.suspectEmpty}  unscopeable (no rn): ${refresh.noRoundSkipped}`);
   if (refresh.baselineDeferred) console.log(`  Baseline backlog:  ${refresh.baselineDeferred} grade(s) waiting for a later run`);
