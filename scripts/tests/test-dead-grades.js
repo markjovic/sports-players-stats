@@ -12,7 +12,7 @@ const os   = require('os');
 const path = require('path');
 const assert = require('assert');
 
-const { recordDeadGrades } = require('../lib/dead-grades.cjs');
+const { recordDeadGrades, deadGradeResidue } = require('../lib/dead-grades.cjs');
 
 let n = 0;
 function ok(what, fn) { fn(); n++; process.stdout.write(`  ok  ${what}\n`); }
@@ -152,6 +152,85 @@ r = recordDeadGrades(ROOT3, obs({}, [], 12));
 ok('no file and nothing observed writes nothing at all', () => {
   assert.strictEqual(r.written, true, 'first run with no prior file still establishes it');
   assert.strictEqual(r.total, 0);
+});
+
+// ── deadGradeResidue — STAGE 2 selection ────────────────────────────────────
+// ⚠ The ratio of history to residue in a dead grade is about 60:1 repo-wide, so
+// every one of these guards is load-bearing. A PLAYED game in a dead grade is a
+// completed grading round competitions hide, and it must never be selected.
+const TODAY = '2026-11-25';
+const dead1 = [{ id: 'DEAD', sid: 'S1', gn: 'Friday U11 Boys D', runs: 2 }];
+const mkGames = () => ({
+  future_dead:  { gid: 'DEAD', d: '2026-12-11', st: 'UPCOMING', h: 't1', a: 't2' },
+  future_dead2: { gid: 'DEAD', d: '2027-03-05', st: 'UPCOMING', h: 't1', a: 't3' },
+  past_dead:    { gid: 'DEAD', d: '2026-10-30', st: 'UPCOMING', h: 't1', a: 't4' },
+  undated_dead: { gid: 'DEAD',                  st: 'UPCOMING', h: 't1', a: 't5' },
+  played_dead:  { gid: 'DEAD', d: '2026-10-02', hs: 40, as: 30, st: 'FINAL', p: ['p1'], h: 't1', a: 't6' },
+  forfeit_dead: { gid: 'DEAD', d: '2026-10-09', forfeit: true, fo: 't1', h: 't1', a: 't7' },
+  future_live:  { gid: 'LIVE', d: '2026-12-11', st: 'UPCOMING', h: 't1', a: 't8' },
+});
+let r2 = deadGradeResidue({ games: mkGames(), sid: 'S1', dead: dead1, today: TODAY, minRuns: 2 });
+ok('selects ONLY future-dated unplayed games in the dead grade', () => {
+  assert.deepStrictEqual(r2.residue.map(x => x.gameId).sort(), ['future_dead', 'future_dead2']);
+});
+ok('a PLAYED game in a dead grade is never selected', () => {
+  assert.ok(!r2.residue.some(x => x.gameId === 'played_dead'), 'played game must not be selected');
+  assert.strictEqual(r2.kept.played, 2, 'a forfeit counts as played too');
+});
+ok('a past-dated or undated unplayed game is never selected', () => {
+  assert.ok(!r2.residue.some(x => /past|undated/.test(x.gameId)));
+  assert.strictEqual(r2.kept.pastOrUndated, 2);
+});
+ok('a game in a grade that is still alive is untouched', () => {
+  assert.ok(!r2.residue.some(x => x.gameId === 'future_live'));
+});
+ok('the selected rows carry the grade id and date for the deletion log', () => {
+  const x = r2.residue.find(y => y.gameId === 'future_dead');
+  assert.strictEqual(x.gid, 'DEAD');
+  assert.strictEqual(x.d, '2026-12-11');
+});
+
+// ── the minRuns gate ────────────────────────────────────────────────────────
+ok('a grade seen only once is NOT acted on at minRuns=2', () => {
+  const once = [{ id: 'DEAD', sid: 'S1', runs: 1 }];
+  const r = deadGradeResidue({ games: mkGames(), sid: 'S1', dead: once, today: TODAY, minRuns: 2 });
+  assert.strictEqual(r.residue.length, 0);
+  assert.strictEqual(r.grades, 0);
+});
+ok('the same grade IS acted on once it reaches minRuns', () => {
+  const twice = [{ id: 'DEAD', sid: 'S1', runs: 2 }];
+  const r = deadGradeResidue({ games: mkGames(), sid: 'S1', dead: twice, today: TODAY, minRuns: 2 });
+  assert.strictEqual(r.residue.length, 2);
+});
+ok('an entry with no runs at all is treated as zero, not as confirmed', () => {
+  const none = [{ id: 'DEAD', sid: 'S1' }];
+  assert.strictEqual(deadGradeResidue({ games: mkGames(), sid: 'S1', dead: none, today: TODAY, minRuns: 1 }).residue.length, 0);
+});
+
+// ── season scoping ──────────────────────────────────────────────────────────
+ok('a record for a DIFFERENT season does not reach this one', () => {
+  const other = [{ id: 'DEAD', sid: 'S_OTHER', runs: 9 }];
+  assert.strictEqual(deadGradeResidue({ games: mkGames(), sid: 'S1', dead: other, today: TODAY, minRuns: 2 }).residue.length, 0);
+});
+ok('a record with no sid applies to any season', () => {
+  const anysid = [{ id: 'DEAD', sid: null, runs: 2 }];
+  assert.strictEqual(deadGradeResidue({ games: mkGames(), sid: 'S1', dead: anysid, today: TODAY, minRuns: 2 }).residue.length, 2);
+});
+
+// ── empty and malformed inputs ──────────────────────────────────────────────
+ok('no record means nothing is selected and no grade is counted', () => {
+  const r = deadGradeResidue({ games: mkGames(), sid: 'S1', dead: [], today: TODAY, minRuns: 2 });
+  assert.strictEqual(r.residue.length, 0);
+  assert.strictEqual(r.grades, 0);
+});
+ok('a game with no gid is skipped rather than throwing', () => {
+  const g = mkGames(); g.nogid = { d: '2026-12-11', st: 'UPCOMING' };
+  assert.strictEqual(deadGradeResidue({ games: g, sid: 'S1', dead: dead1, today: TODAY, minRuns: 2 }).residue.length, 2);
+});
+ok('a game dated exactly today is selected - today is not the past', () => {
+  const g = mkGames(); g.today_dead = { gid: 'DEAD', d: TODAY, st: 'UPCOMING', h: 't1', a: 't9' };
+  const r = deadGradeResidue({ games: g, sid: 'S1', dead: dead1, today: TODAY, minRuns: 2 });
+  assert.ok(r.residue.some(x => x.gameId === 'today_dead'));
 });
 
 fs.rmSync(ROOT, { recursive: true, force: true });
