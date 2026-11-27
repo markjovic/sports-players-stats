@@ -651,7 +651,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
    absence of a message. */
 .clb-load{padding:8px 12px 10px}
 .clb-load-hd{display:flex;align-items:baseline;gap:10px;font-size:0.74rem;color:var(--text2);margin-bottom:5px}
-.clb-load-hd b{color:var(--text1);font-variant-numeric:tabular-nums}
+.clb-load-hd b{color:var(--text);font-variant-numeric:tabular-nums}
 .clb-load-pct{margin-left:auto;font-size:0.72rem;color:var(--text3);font-variant-numeric:tabular-nums}
 .clb-load-sub{margin-top:5px;font-size:0.68rem;color:var(--text3)}
 .clb-track{height:7px;border-radius:4px;background:var(--border);overflow:hidden}
@@ -664,6 +664,26 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 .clb-prog.warn{color:var(--loss)}
 .clb-wrap{overflow-x:auto;padding:0 12px}
 .clb-find{display:flex;align-items:center;gap:10px;padding:4px 12px 8px;flex-wrap:wrap}
+.clb-qwrap{position:relative;flex:0 1 320px;min-width:200px}
+.clb-qwrap .clb-q{width:100%}
+/* The dropdown overlays the table rather than pushing it down: a list that
+   reflows the whole panel on every keystroke is the jumping this replaced. */
+.clb-sug{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:60;
+  /* ⚠ MUST BE OPAQUE. This overlays the table. --bg2/--bg3/--text1 are used in
+     a dozen places in this file and are NOT defined in :root, so they resolve to
+     nothing — a background set from one is transparent and the rows underneath
+     read straight through the list. The real tokens are --bg, --surface,
+     --elevated, --border, --text, --text2, --text3. */
+  background:var(--elevated);border:1px solid var(--border);border-radius:8px;
+  box-shadow:0 10px 28px rgba(0,0,0,0.45);overflow:hidden;max-height:320px;overflow-y:auto}
+.clb-sug-row{display:flex;align-items:baseline;gap:10px;padding:7px 10px;cursor:pointer}
+.clb-sug-row + .clb-sug-row{border-top:1px solid var(--border)}
+.clb-sug-row:hover,.clb-sug-row.on{background:#343434}
+.clb-sug-row.on .clb-sug-nm{color:var(--accent)}
+.clb-sug-nm{font-size:0.82rem;color:var(--text)}
+.clb-sug-meta{margin-left:auto;font-size:0.7rem;color:var(--text3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.clb-sug-none{padding:8px 10px;font-size:0.72rem;color:var(--text3)}
+.clb-sug-more{padding:6px 10px;font-size:0.68rem;color:var(--text3);border-top:1px solid var(--border)}
 .clb-q{flex:1 1 16em;max-width:26em}
 .clb-fmsg{font-size:0.72rem;color:var(--text2)}
 /* The leading block is pinned and the remainder scrolls under it. Both tables
@@ -1020,7 +1040,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
       <span class="help-dot" onclick="openHelp()" title="What the numbers mean">?</span>
-      <span class="rail-ver">v2.02</span>
+      <span class="rail-ver">v2.03</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -6405,7 +6425,8 @@ async function clubLeadersLoad(){
   // sid:'' is ALL SEASONS and is the default — the all-time table is the point,
   // the filter is a narrowing of it. `order` keeps the newest-first season list
   // for the dropdown so it does not have to be re-derived on every render.
-  S.clubLead = { cid, rows:new Map(), done:0, total:sids.length, cat:'gp', per:false, failed:[], sid:'', order:sids, loaded:new Set(), show:CLUB_TOP, find:'', hit:null, findMsg:'' };
+  S.clubLead = { cid, rows:new Map(), done:0, total:sids.length, cat:'gp', per:false, failed:[], sid:'', order:sids, loaded:new Set(), show:CLUB_TOP, find:'', hit:null, findMsg:'',
+                 pick:null, pickName:'', sug:[], sugIdx:0, sugMore:0, sugOpen:false, cache:null };
   clubLeadersRender();
   for(const sid of sids){
     // A club viewed, left and reopened must not restart a half-finished load.
@@ -6445,7 +6466,14 @@ async function clubLeadersLoad(){
    it instead of merely re-rendering. */
 function clubLeadersRefind(){
   const L = S.clubLead; if(!L) return;
-  if(L.find) clubLeadersFind(L.find); else clubLeadersRender();
+  /* ⚠ RE-LOCATE THE PERSON, NOT THE TEXT. Changing category or season used to
+     re-run the text search, which silently re-answers the question: "Smith"
+     resolved to whichever Smith happened to rank highest under the NEW ordering,
+     so the highlight could hop between two different people while the box still
+     said Smith. A chosen player is an id, and it stays that id. */
+  if(L.pick) clubLeadersLocate();
+  else if(L.find) clubLeadersFind(L.find);
+  else clubLeadersRender();
 }
 function clubLeadersPick(cat){ if(S.clubLead){ S.clubLead.cat = cat; clubLeadersRefind(); } }
 function clubLeadersSeason(sid){
@@ -6467,41 +6495,130 @@ function clubLeadersLess(){ if(S.clubLead){ S.clubLead.show = CLUB_TOP; S.clubLe
    ⚠ It searches the WHOLE ranking, not the rendered rows. Searching only what
    is on screen would answer "not found" for anyone past the first block, which
    is the opposite of what this is for. */
-function clubLeadersFind(q){
+const CLUB_SUG = 12;        // suggestion rows offered at once
+
+/* ── WHY A LIST AND NOT A JUMP ─────────────────────────────────────────
+   The previous version took the typed text and jumped to the FIRST player it
+   matched, which is only ever right by luck. A club has several Smiths, two
+   players really can share a name, and a short query matches dozens — the
+   person typing is the only one who knows which one they meant, and the old
+   box never asked. Typing now narrows a list and nothing is selected until a
+   row is chosen, by click or by Enter on the highlighted row.
+   The expensive half (ranking, re-rendering the panel, scrolling the table)
+   happens ONCE, on selection. Typing only filters names against the memoised
+   ranking, so the box no longer fights the typist. */
+
+function missMsg(L){
+  /* ⚠ A MISS IS NOT NECESSARILY AN ABSENCE. Three different facts read the
+     same otherwise: not in this club at all; in the club but not in the season
+     being filtered to; or in a season whose file has not arrived yet. */
+  const bits = [];
+  if(L.sid){
+    const nm = (S.idx?.seasons?.[L.sid] && (S.idx.seasons[L.sid].name || S.idx.seasons[L.sid].fullName)) || L.sid;
+    bits.push(`in ${esc(nm)}`);
+  }
+  if(L.done < L.total) bits.push(`and only ${L.done} of ${L.total} season(s) have loaded \u2014 try again when it finishes`);
+  else if(!L.sid) bits.push('across all seasons');
+  return `no one matching \u201c${esc(L.find)}\u201d ${bits.join(' ')}`;
+}
+
+function clubLeadersSugHtml(L){
+  if(!L.sugOpen || !L.find) return '';
+  if(!L.sug.length) return `<div class="clb-sug"><div class="clb-sug-none">${missMsg(L)}</div></div>`;
+  return `<div class="clb-sug" role="listbox">`
+    + L.sug.map((x,i)=>
+        `<div class="clb-sug-row${i===L.sugIdx?' on':''}" role="option" aria-selected="${i===L.sugIdx}"
+              data-uuid="${esc(x.uuid)}"
+              onmousedown="event.preventDefault(); clubLeadersChoose('${esc(x.uuid)}')">
+           <span class="clb-sug-nm">${esc(x.name)}</span>
+           <span class="clb-sug-meta">#${x.rank.toLocaleString()} \u00b7 ${x.gp.toLocaleString()} game${x.gp===1?'':'s'}</span>
+         </div>`).join('')
+    + (L.sugMore ? `<div class="clb-sug-more">+${L.sugMore.toLocaleString()} more match \u2014 keep typing to narrow</div>` : '')
+    + `</div>`;
+}
+
+/* Paints ONLY the suggestion box. It must never call clubLeadersRender():
+   that would rebuild the input being typed into, which is the bug this whole
+   redesign exists to remove. */
+function clubLeadersSugPaint(){
+  const L = S.clubLead, box = el('clb-sug');
+  if(!L || !box) return;
+  box.innerHTML = clubLeadersSugHtml(L);
+}
+
+function clubLeadersSuggest(q){
   const L = S.clubLead; if(!L) return;
-  L.find = String(q || '').trim();
-  L.hit = null; L.findMsg = '';
-  if(!L.find){ clubLeadersRender(); return; }
+  const t = String(q || '').trim();
+  // Emptying the box clears the selection outright — a cleared box still
+  // showing a highlighted row reads as a stuck result.
+  if(!t){ clubLeadersFind(''); return; }
+  L.find = t; L.sug = []; L.sugIdx = 0; L.sugMore = 0; L.sugOpen = true;
   const { ranked } = clubLeadersRanked(L);
-  /* ⚠ tokenMatch, not a substring. It is the page's own name matcher (L1257):
-     the normName v2 fold on BOTH operands — curly and straight apostrophes, the
-     dash family, accents — and then every whitespace-separated token must
-     appear. A raw toLowerCase().includes() missed "squire louis" for Louis
-     SQUIRE because the order differs, and missed O’Brien typed with a straight
-     apostrophe. The repo solved this at seven comparison sites in August; this
-     is the eighth and it uses the same function rather than a ninth copy. */
-  const hits = [];
-  for(let i = 0; i < ranked.length; i++) if(tokenMatch(String(ranked[i].name), L.find)) hits.push(i);
-  if(!hits.length){
-    /* ⚠ A MISS IS NOT NECESSARILY AN ABSENCE. Three different facts read the
-       same otherwise: not in this club at all; in the club but not in the season
-       being filtered to; or in a season whose file has not arrived yet. The
-       message names whichever of those is actually in play. */
-    const scopeBits = [];
-    if(L.sid){
-      const nm = (S.idx?.seasons?.[L.sid] && (S.idx.seasons[L.sid].name || S.idx.seasons[L.sid].fullName)) || L.sid;
-      scopeBits.push(`in ${esc(nm)}`);
-    }
-    if(L.done < L.total) scopeBits.push(`and only ${L.done} of ${L.total} season(s) have loaded — try again when it finishes`);
-    else if(!L.sid) scopeBits.push('across all seasons');
-    L.findMsg = `no one matching “${esc(L.find)}” ${scopeBits.join(' ')}`;
+  let n = 0;
+  for(let i = 0; i < ranked.length; i++){
+    if(!tokenMatch(String(ranked[i].name), t)) continue;
+    n++;
+    if(L.sug.length < CLUB_SUG) L.sug.push({ uuid:ranked[i].uuid, name:ranked[i].name, gp:ranked[i].gp, rank:i+1 });
+  }
+  L.sugMore = Math.max(0, n - L.sug.length);
+  clubLeadersSugPaint();
+}
+
+function clubLeadersKey(ev, inp){
+  const L = S.clubLead; if(!L) return;
+  const k = ev.key;
+  if(k === 'ArrowDown' || k === 'ArrowUp'){
+    if(!L.sugOpen || !L.sug.length) return;
+    ev.preventDefault();
+    L.sugIdx = (L.sugIdx + (k === 'ArrowDown' ? 1 : L.sug.length - 1)) % L.sug.length;
+    clubLeadersSugPaint(); return;
+  }
+  if(k === 'Escape'){ L.sugOpen = false; clubLeadersSugPaint(); return; }
+  if(k === 'Enter'){
+    ev.preventDefault();
+    // Enter takes the highlighted row, which starts as the first one.
+    if(L.sugOpen && L.sug.length) clubLeadersChoose(L.sug[L.sugIdx].uuid);
+    else clubLeadersFind(inp ? inp.value : L.find);   // nothing offered: say so
+  }
+}
+
+function clubLeadersBlur(){
+  const L = S.clubLead; if(!L || !L.sugOpen) return;
+  // After the mousedown on a row has had its turn. The row uses mousedown with
+  // preventDefault precisely so the click is not lost to this.
+  setTimeout(() => { const M = S.clubLead; if(M){ M.sugOpen = false; clubLeadersSugPaint(); } }, 120);
+}
+
+function clubLeadersChoose(uuid){
+  const L = S.clubLead; if(!L) return;
+  const row = L.sug.find(x => x.uuid === String(uuid));
+  L.pick = String(uuid || '') || null;
+  if(row) L.pickName = row.name;
+  L.sugOpen = false; L.sug = []; L.sugIdx = 0; L.sugMore = 0;
+  clubLeadersLocate();
+}
+
+/* The one place that ranks, renders and scrolls. Everything that selects a
+   player ends here, so there is a single definition of what "found" means. */
+function clubLeadersLocate(extra){
+  const L = S.clubLead; if(!L) return;
+  L.hit = null; L.findMsg = '';
+  if(!L.pick){ clubLeadersRender(); return; }
+  const { ranked } = clubLeadersRanked(L);
+  const i = ranked.findIndex(r => r.uuid === L.pick);
+  if(i < 0){
+    // The player is real — they were chosen from this very list — but they are
+    // not in the ranking as it now stands. Say which scope dropped them.
+    L.findMsg = L.pickName
+      ? `${esc(L.pickName)} is not in this ranking ${L.sid ? '\u2014 no games in the season selected' : '\u2014 no games credited'}`
+      : missMsg(L);
     clubLeadersRender(); return;
   }
-  const i = hits[0], rank = i + 1;
+  const rank = i + 1;
   L.show = Math.max(L.show, Math.max(CLUB_TOP, Math.ceil(rank / CLUB_STEP) * CLUB_STEP));
   L.hit = ranked[i].uuid;
-  L.findMsg = `${esc(ranked[i].name)} — #${rank.toLocaleString()} of ${ranked.length.toLocaleString()}`
-            + (hits.length > 1 ? ` · ${hits.length} names match, this is the highest` : '');
+  L.findMsg = `${esc(ranked[i].name)} \u2014 #${rank.toLocaleString()} of ${ranked.length.toLocaleString()}`
+            + (extra ? ` \u00b7 ${extra}` : '');
   clubLeadersRender();
   // After paint, not before: the row does not exist until the render that the
   // expansion above triggered has run.
@@ -6520,9 +6637,45 @@ function clubLeadersFind(q){
   });
 }
 
+/* Kept as the text entry point: it resolves text to a player and then goes
+   through the same selection path. Used when Enter is pressed with nothing
+   offered, and by anything that searches by name rather than by choice. */
+function clubLeadersFind(q){
+  const L = S.clubLead; if(!L) return;
+  L.find = String(q || '').trim();
+  L.sug = []; L.sugIdx = 0; L.sugMore = 0; L.sugOpen = false;
+  if(!L.find){ L.pick = null; L.pickName = ''; L.hit = null; L.findMsg = ''; clubLeadersRender(); return; }
+  /* \u26a0 tokenMatch, not a substring. It is the page's own name matcher (L1257):
+     the normName v2 fold on BOTH operands \u2014 curly and straight apostrophes, the
+     dash family, accents \u2014 and then every whitespace-separated token must
+     appear. A raw toLowerCase().includes() missed "squire louis" for Louis
+     SQUIRE because the order differs, and missed O\u2019Brien typed with a straight
+     apostrophe. The repo solved this at seven comparison sites in August; this
+     is the eighth and it uses the same function rather than a ninth copy. */
+  const { ranked } = clubLeadersRanked(L);
+  let first = -1, n = 0;
+  for(let j = 0; j < ranked.length; j++){
+    if(!tokenMatch(String(ranked[j].name), L.find)) continue;
+    if(first < 0) first = j;
+    n++;
+  }
+  if(first < 0){ L.pick = null; L.pickName = ''; L.hit = null; L.findMsg = missMsg(L); clubLeadersRender(); return; }
+  L.pick = ranked[first].uuid; L.pickName = ranked[first].name;
+  clubLeadersLocate(n > 1 ? `${n} names match, this is the highest` : '');
+}
+
 /* ONE ranking, used by the render and by the search. Two copies would be two
    answers to "who is #347". */
 function clubLeadersRanked(L){
+  /* ⚠ MEMOISED, and it has to be. The suggestion list asks for this on every
+     keystroke, and ranking every player in the club per character is the exact
+     cost that made the old search unusable. The key holds everything that
+     changes the RESULT; `show`, `find`, `pick` and the suggestion state are
+     excluded because they only change what is drawn from it. Anything added to
+     this function that varies on something not in the key will return stale
+     rows — put it in the key. */
+  const ckey = `${L.cat}|${L.per?1:0}|${L.sid}|${L.done}|${L.rows.size}`;
+  if(L.cache && L.cache.key === ckey) return L.cache.out;
   const cat = L.cat, per = L.per && cat !== 'gp', only = L.sid;
   const all = [...L.rows.values()].map(r => {
     const t = { uuid:r.uuid, name:r.name, gp:0, pts:0, threePt:0, fouls:0, fg:0, ft:0, seasons:0, teams:0 };
@@ -6537,7 +6690,9 @@ function clubLeadersRanked(L){
   const ranked = all.filter(r => r.gp > 0);
   const val = r => per ? (r.gp ? r[cat] / r.gp : 0) : r[cat];
   ranked.sort((a,b)=> val(b)-val(a) || b.gp-a.gp || a.name.localeCompare(b.name) || a.uuid.localeCompare(b.uuid));
-  return { ranked, unranked: all.length - ranked.length, val, per, only, cat };
+  const out = { ranked, unranked: all.length - ranked.length, val, per, only, cat };
+  L.cache = { key: ckey, out };
+  return out;
 }
 function clubLeadersPer(){ if(S.clubLead){ S.clubLead.per = !S.clubLead.per; clubLeadersRefind(); } }
 
@@ -6645,17 +6800,19 @@ function clubLeadersRender(){
   host.innerHTML = `<div class="clb-bar">${tabs}${perBtn}</div>
     <div class="clb-bar clb-seabar">${seasonSel}</div>${prog}${fail}
     <div class="clb-find">
-      <!-- ⚠ THE SEARCH RUNS ON ENTER, NOT ON EVERY KEYSTROKE. Finding a player
-           means ranking every player in the club — tens of thousands of rows for
-           a big one — and then rebuilding this whole panel, including the box
-           being typed into. Doing that per character made the field jump and
-           fight the typist even with the caret carried across. The only
-           exception is emptying the box, which clears the highlight at once:
-           that is one render, and a cleared box that still shows a highlight
-           reads as a stuck result. -->
-      <input class="sinput clb-q" type="search" placeholder="Find a player — press Enter" value="${esc(L.find || '')}"
-             onkeydown="if(event.key==='Enter'){ event.preventDefault(); clubLeadersFind(this.value); }"
-             oninput="if(!this.value) clubLeadersFind('');">
+      <!-- ⚠ TYPING NARROWS A LIST; IT DOES NOT SELECT. clubLeadersSuggest paints
+           the dropdown ONLY — it never calls clubLeadersRender, so the field being
+           typed into is not rebuilt mid-word. Selection (click, or Enter on the
+           highlighted row) is the one action that ranks, renders and scrolls. -->
+      <div class="clb-qwrap">
+        <input class="sinput clb-q" type="search" autocomplete="off" role="combobox"
+               aria-autocomplete="list" aria-controls="clb-sug"
+               placeholder="Find a player…" value="${esc(L.find || '')}"
+               oninput="clubLeadersSuggest(this.value)"
+               onkeydown="clubLeadersKey(event, this)"
+               onblur="clubLeadersBlur()">
+        <div id="clb-sug"></div>
+      </div>
       ${L.findMsg ? `<span class="clb-fmsg">${L.findMsg}</span>` : ''}
     </div>
     <div class="clb-pin"><table class="clb-tbl">${COLS}
@@ -6676,6 +6833,7 @@ function clubLeadersRender(){
     + (unranked ? ` · ${unranked.toLocaleString()} held out with no games credited — a registration with no stats reads as 0 here and is NOT treated as a real nought` : '')
     + `</div>`;
   restore();
+  if(L.sugOpen) clubLeadersSugPaint();
 }
 
 /* Stepping through weeks REPLACES the history entry rather than pushing one.
