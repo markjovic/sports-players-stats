@@ -1040,7 +1040,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
       <span class="help-dot" onclick="openHelp()" title="What the numbers mean">?</span>
-      <span class="rail-ver">v2.03</span>
+      <span class="rail-ver">v2.04</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -8070,18 +8070,46 @@ async function loadLB(){
     const orgs=[...new Set(allEntries4filter.map(e=>e.org).filter(Boolean))].sort();
     const comps=[...new Set(allEntries4filter.map(e=>e.comp).filter(Boolean))].sort();
     const grades=[...new Set(allEntries4filter.map(e=>e.grade).filter(Boolean))].sort();
-    const ages=[...new Set(allEntries4filter.map(e=>e.age).filter(Boolean))].sort();
+    /* ⚠ `age` IS EMPTY IN THE PUBLISHED DATA. build-leaderboards.js writes
+       `age: reg.age || ''` and the registrations carry no age group, so every
+       entry has '' — the option list came out with nothing but "All ages" in it
+       and the filter could never match anything. The age is however sitting in
+       plain sight in the grade name ("Friday U17 Boys A"), and grParse already
+       extracts it for the grading diagram, folding U9 and U09 into one group.
+       All-time entries carry no grade, so the team name is the last resort —
+       that yields the most recent team's age group, which is the same thing the
+       builder says it intends by `age`.
+       Fixing the builder is still worth doing; this makes the filter work now,
+       without a rebuild, and keeps working if the builder is fixed later. */
+    const ages=[...new Set(allEntries4filter.map(lbAgeOf).filter(Boolean))]
+      .sort((a,b)=>ageNum(a)-ageNum(b)||String(a).localeCompare(String(b)));
     const genders=[...new Set(allEntries4filter.map(e=>e.gender).filter(Boolean))].sort();
     const oSel=el('lb-org'),cSel=el('lb-comp'),gSel=el('lb-grade'),aSel=el('lb-age'),gnSel=el('lb-gender');
     const oVal=oSel.value,cVal=cSel.value,gVal=gSel.value,aVal=aSel.value,gnVal=gnSel.value;
     oSel.innerHTML='<option value="">All orgs</option>'+orgs.map(o=>`<option value="${esc(o)}"${o===oVal?' selected':''}>${esc(o)}</option>`).join('');
     cSel.innerHTML='<option value="">All comps</option>'+comps.map(c=>`<option value="${esc(c)}"${c===cVal?' selected':''}>${esc(c)}</option>`).join('');
-    gSel.innerHTML='<option value="">All grades</option>'+grades.map(g=>`<option${g===gVal?' selected':''}>${esc(g)}</option>`).join('');
-    aSel.innerHTML='<option value="">All ages</option>'+ages.map(a=>`<option${a===aVal?' selected':''}>${esc(a)}</option>`).join('');
+    /* ⚠ AN <option> WITH NO value TAKES ITS VALUE FROM ITS TEXT — and the text
+       here is esc()'d, so a label containing & < > or " produced an option whose
+       value was the ESCAPED form while the filter compared against the raw one,
+       and it silently never matched. org/comp/gender already set value
+       explicitly; these two did not. The grade select happened to recover
+       because the cascade below rewrites it with values; age never did. */
+    gSel.innerHTML='<option value="">All grades</option>'+grades.map(g=>`<option value="${esc(g)}"${g===gVal?' selected':''}>${esc(g)}</option>`).join('');
+    aSel.innerHTML='<option value="">All ages</option>'+ages.map(a=>`<option value="${esc(a)}"${a===aVal?' selected':''}>${esc(a)}</option>`).join('');
     const genderLabel=g=>g==='Male'?'M':g==='Female'?'F':g==='Boys'?'Boys':g==='Girls'?'Girls':esc(g);
     gnSel.innerHTML='<option value="">All</option>'+genders.map(g=>`<option value="${esc(g)}"${g===gnVal?' selected':''}>${genderLabel(g)}</option>`).join('');
   }
   renderLB(entries,data);
+}
+/* The age group for a leaderboard entry. Published `age` first (so a fixed
+   builder wins automatically), then the grade name, then the team name. */
+function lbAgeOf(e){
+  if(!e) return '';
+  if(e.age) return e.age;
+  const g = e.grade ? grParse(e.grade).age : null;
+  if(g) return g;
+  const t = e.team ? grParse(e.team).age : null;
+  return t || '';
 }
 function renderLB(allEntries,data){
   const scope=el('lb-season')?.value||'all';
@@ -8090,7 +8118,7 @@ function renderLB(allEntries,data){
   const org=el('lb-org')?.value,comp=el('lb-comp')?.value,age=el('lb-age')?.value,gender=el('lb-gender')?.value;
   if(org)entries=entries.filter(e=>e.org===org);
   if(gender)entries=entries.filter(e=>e.gender===gender);
-  if(age)entries=entries.filter(e=>e.age===age);
+  if(age)entries=entries.filter(e=>lbAgeOf(e)===age);
   if(scope!=='all'){
     if(comp)entries=entries.filter(e=>e.comp===comp);
     // Cascade: rebuild grade options from age-filtered result
