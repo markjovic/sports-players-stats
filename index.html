@@ -639,6 +639,12 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
 /* Third heading line: how wide the column is and what is in it. */
 .gr-colm{fill:var(--text3);font-size:8px;opacity:0.85}
 /* Club leaders */
+/* Grand-total tiles at the head of the club Leaders pane. Uses the real
+   tokens only — --bg2, --bg3 and --text1 are NOT defined in :root and silently
+   do nothing wherever they appear (see the note at line ~676). */
+.clb-tot{padding:10px 12px 0}
+.clb-tot-hd{font-size:0.68rem;color:var(--text2);text-transform:uppercase;
+  letter-spacing:0.05em;margin-bottom:4px}
 .clb-bar{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px 4px}
 .clb-cat{padding:4px 11px;border-radius:6px;border:1px solid var(--border);background:transparent;
   color:var(--text2);font-size:0.75rem;cursor:pointer}
@@ -1040,7 +1046,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
       <span class="help-dot" onclick="openHelp()" title="What the numbers mean">?</span>
-      <span class="rail-ver">v2.05</span>
+      <span class="rail-ver">v2.06</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -1703,7 +1709,7 @@ const HELP=[
 const HELP_BY_ID=new Map(HELP.map(h=>[h.id,h]));
 /* Maps a stat column label to its entry, so statCell can mark every label in the
    app from one place rather than each template doing it. */
-const HELP_LABEL={'GP':'gp','PPG':'ppg','PTS':'pts','FG':'fg','FT':'ft','3PT':'3pt','F':'f'};
+const HELP_LABEL={'GP':'gp','PPG':'ppg','PTS':'pts','FG':'fg','FT':'ft','3PT':'3pt','F':'f','APPS':'apps'};
 
 /* ⚠️ A TIP IS A TAP TARGET, NOT JUST A title. Hover does not exist on a phone.
    Returns '' for an unknown id so a typo renders a plain element rather than
@@ -6715,7 +6721,25 @@ function clubLeadersRanked(L){
   const ranked = all.filter(r => r.gp > 0);
   const val = r => per ? (r.gp ? r[cat] / r.gp : 0) : r[cat];
   ranked.sort((a,b)=> val(b)-val(a) || b.gp-a.gp || a.name.localeCompare(b.name) || a.uuid.localeCompare(b.uuid));
-  const out = { ranked, unranked: all.length - ranked.length, val, per, only, cat };
+  /* ── GRAND TOTALS ──────────────────────────────────────────────────────
+     Summed over `all`, NOT over `ranked` and NOT over the rendered rows.
+     Three reasons, each a way this could have been wrong:
+       · `ranked` drops players with gp === 0, and a roster row can legitimately
+         carry stats with no games credited. Those points are the club's and must
+         appear in the club's total.
+       · the table renders at most CLUB_TOP + n·CLUB_STEP rows, so a total over
+         what is on screen would change when someone clicks "show more".
+       · it respects the season filter through the same `only` test the rows
+         above use, so the tiles are always a total OF the table's own scope.
+     Computed here rather than in the renderer so it shares this function's
+     memo key — it varies only on sid, done and rows.size, all of which are in
+     that key. */
+  const totals = { players: all.length, gp:0, pts:0, threePt:0, fouls:0, fg:0, ft:0 };
+  for(const r of all){
+    totals.gp += r.gp; totals.pts += r.pts; totals.threePt += r.threePt;
+    totals.fouls += r.fouls; totals.fg += r.fg; totals.ft += r.ft;
+  }
+  const out = { ranked, unranked: all.length - ranked.length, val, per, only, cat, totals };
   L.cache = { key: ckey, out };
   return out;
 }
@@ -6745,7 +6769,7 @@ function clubLeadersRender(){
     try { q1.setSelectionRange(caret, caret); } catch(_) {}
   };
   // ONE ranking, shared with the search — see clubLeadersRanked.
-  const { ranked, unranked, val, per, only, cat } = clubLeadersRanked(L);
+  const { ranked, unranked, val, per, only, cat, totals: T } = clubLeadersRanked(L);
   const fmt = v => per ? (Math.round(v*10)/10).toFixed(1) : v.toLocaleString();
   const catLabel = (CLUB_CATS.find(c=>c[0]===cat)||['','?'])[1];
 
@@ -6814,6 +6838,37 @@ function clubLeadersRender(){
     ? `<div class="clb-prog">↳ includes ${fGp.toLocaleString()} GP from ${fTeams.toLocaleString()} team${fTeams===1?'':'s'} matched by team name from ${[...fFrom].sort().map(esc).join(', ')}</div>`
     : '';
 
+  /* ── The grand-total tiles ─────────────────────────────────────────────
+     ⚠ APPS IS PLAYER APPEARANCES, NOT GAMES PLAYED. Every figure here is a sum
+     over per-player roster rows, so ten players in a fifteen-game season
+     contribute 150, not 15. The label is APPS and not GP for exactly that
+     reason — "GP" over the whole club reads as fixtures and would be wrong by
+     roughly the size of a roster. Mark's call, 2026-11-28: show the appearance
+     figure and label it so it cannot be misread.
+     ⚠ THE TILES MUST NOT LOOK FINAL WHILE THE TABLE IS STILL FILLING. They are
+     a total of the seasons LOADED, which is the same provisional set the bar
+     below describes, so they carry their own state line — and when a season
+     failed they say INCOMPLETE rather than quietly reporting a short total. */
+  const totCells = [
+    [T.players.toLocaleString(), 'PLAYERS'],
+    [T.gp.toLocaleString(),      'APPS'],
+    [T.pts.toLocaleString(),     'PTS'],
+    [T.threePt.toLocaleString(), '3PT'],
+    [T.fg.toLocaleString(),      'FG'],
+    [T.ft.toLocaleString(),      'FT'],
+    [T.fouls.toLocaleString(),   'F'],
+  ];
+  const totState = !doneAll
+    ? `<span style="color:var(--text3)">Provisional — ${L.done.toLocaleString()} of ${L.total.toLocaleString()} season(s) loaded</span>`
+    : (bad
+        ? `<span style="color:var(--loss)">INCOMPLETE — ${bad} season${bad===1?'':'s'} could not be loaded</span>`
+        : `<span style="color:var(--text3)">Complete</span>`);
+  const totals = `<div class="clb-tot">
+      <div class="clb-tot-hd">${only ? 'Season total' : 'Club total'} · ${totState}</div>
+      <div style="display:flex;flex-direction:row;border-top:1px solid #2e2e2e">${
+        totCells.map(([v,l],i)=>statCell(v,l,i===totCells.length-1,null)).join('')}</div>
+    </div>`;
+
   const scope = only
     ? ((S.idx?.seasons?.[only] && (S.idx.seasons[only].name || S.idx.seasons[only].fullName)) || only)
     : `all time, ${L.done} of ${L.total} season(s)`;
@@ -6838,7 +6893,8 @@ function clubLeadersRender(){
   const head = shown.slice(0, CLUB_STICK).map(row).join('');
   const rest = shown.slice(CLUB_STICK).map((r,i)=>row(r, i + CLUB_STICK)).join('');
 
-  host.innerHTML = `<div class="clb-bar">${tabs}${perBtn}</div>
+  host.innerHTML = `${totals}
+    <div class="clb-bar">${tabs}${perBtn}</div>
     <div class="clb-bar clb-seabar">${seasonSel}</div>${prog}${fail}${foldNote}
     <div class="clb-find">
       <!-- ⚠ TYPING NARROWS A LIST; IT DOES NOT SELECT. clubLeadersSuggest paints
