@@ -1,0 +1,92 @@
+# .github/workflows/fold-tournament-teams.yml
+name: Fold Tournament Teams
+
+# Folds teams PlayHQ attributed to an ASSOCIATION or a tournament into the club
+# whose name their TEAM NAME carries, writing a SEPARATE `tseasons` key on the
+# owning club's file. PlayHQ's own `seasons` key is never touched.
+# See claude/tournament-team-club-attribution.md and REPO_MANIFEST §6.86.
+#
+# ⚠️ THIS EXISTS SO THE FOLD CAN BE DRY-RUN ALONE. The same work also runs as the
+# `tournament-fold` job at the tail of weekly-indexes.yml, but dry-running it there
+# means dispatching the whole six-hour chain with dry_run=true. The first look at
+# what this fold would move must not cost that.
+#
+# ⚠️ THE SCOPE IS LARGE. Measured on the published index 2026-11-28: 178 of 866
+# organisations are typed ASSOCIATION and they hold 175,610 teams — 43% of the
+# estate, not the 10,220 held by tournament organisations alone. DRY RUN FIRST and
+# read the per-organisation table. dry_run defaults to TRUE for that reason.
+#
+# ⚠️ NO actions/setup-node — and no PlayHQ either. This job fetches nothing at all;
+# every input is already on disk.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run — report the fold, write and commit nothing. Leave TRUE until you have read the per-organisation table.'
+        required: false
+        default: true
+        type: boolean
+      season:
+        description: 'Optional single season id, to look at one competition in isolation.'
+        required: false
+        default: ''
+        type: string
+      org:
+        description: 'Optional single ASSOCIATION organisation id, to look at one source in isolation.'
+        required: false
+        default: ''
+        type: string
+      strict_missing:
+        description: 'Fail the run if any season has association-attributed teams but no readable team-stats file. Off by default — a missing file already deletes nothing and is reported.'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  fold:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    # ⚠️ A DRY RUN MUST NOT HOLD `data-write`. It writes nothing, and this job reads
+    # one team-stats file per season holding association-attributed teams — the
+    # largest artifacts in the repo — so holding the lock through that would block
+    # every real writer for an unmeasured length of time.
+    #
+    # ⚠️ This is the STRING form of the expression, in `group:`, which is its correct
+    # use. It is NOT the `(cond && 'true') || inputs.x` form the brief warns about —
+    # that warning is about `if:`, where the result is evaluated and `true == 'true'`
+    # coerces to `1 == NaN`.
+    concurrency:
+      group: ${{ (inputs.dry_run == true || inputs.dry_run == 'true') && 'fold-tournament-teams-dry' || 'data-write' }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Fold tournament teams into their clubs
+        # Directive 13 / T27: every input reaches bash through env, never
+        # interpolated into `run:`. build-club-index.yml still interpolates its
+        # inputs directly; that is its bug, not a pattern to copy.
+        env:
+          IN_DRY_RUN:        ${{ inputs.dry_run }}
+          IN_SEASON:         ${{ inputs.season }}
+          IN_ORG:            ${{ inputs.org }}
+          IN_STRICT_MISSING: ${{ inputs.strict_missing }}
+        run: |
+          set -euo pipefail
+          ARGS=()
+          if [ "$IN_DRY_RUN" = "true" ]; then ARGS+=(--dry-run); fi
+          if [ "$IN_STRICT_MISSING" = "true" ]; then ARGS+=(--strict-missing); fi
+          if [ -n "$IN_SEASON" ]; then ARGS+=("--season=$IN_SEASON"); fi
+          if [ -n "$IN_ORG" ]; then ARGS+=("--org=$IN_ORG"); fi
+          echo "args: ${ARGS[*]-none}"
+          node --max-old-space-size=8192 scripts/fold-tournament-teams.js ${ARGS[@]+"${ARGS[@]}"}

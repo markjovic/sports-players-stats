@@ -78,6 +78,11 @@ const path   = require('path');
 const crypto = require('crypto');
 const { execSync } = require('child_process');
 
+// The clubs/{clubId}.json merge lives in the lib so a test can EXECUTE it rather
+// than pattern-match this file. It is also what carries `tseasons` through —
+// see the warning on mergeClubIndexFile before changing anything here.
+const CF = require('./lib/club-fold.cjs');
+
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
 const has  = (f) => args.includes('--' + f);
@@ -478,12 +483,17 @@ async function main() {
   for (const c of clubs.values()) {
     const file = path.join(CLUBS_DIR, `${c.id}.json`);
     const existing = readJson(file, null);
-    const merged = existing && typeof existing === 'object' && existing.seasons && typeof existing.seasons === 'object'
-      ? { id: c.id, n: c.n || existing.n || '', ty: c.ty || existing.ty || '', seasons: { ...existing.seasons } }
-      : { id: c.id, n: c.n || '', ty: c.ty || '', seasons: {} };
     // Only the sids this run RESOLVED are replaced. Every other season this club
     // holds is carried through untouched — that is what makes --active-only safe.
-    for (const [sid, tids] of c.seasons) merged.seasons[sid] = [...tids].sort();
+    //
+    // ⚠️ 2026-11-28 — THIS USED TO BE AN INLINE OBJECT LITERAL OF EXACTLY
+    // { id, n, ty, seasons }, WHICH DROPPED `tseasons`. fold-tournament-teams.js
+    // writes `tseasons` into these same files, and this job runs weekly, so the
+    // fold was being erased every Sunday with no error and no log line. The merge
+    // now lives in scripts/lib/club-fold.cjs. ⚠️ The suite that asserts the
+    // passthrough is held in staging and is NOT in this repository, so nothing
+    // here will catch a regression — see the warning on mergeClubIndexFile.
+    const merged = CF.mergeClubIndexFile(existing, c);
     writeJson(file, merged);
     pendingPaths.add(`clubs/${c.id}.json`);
   }
