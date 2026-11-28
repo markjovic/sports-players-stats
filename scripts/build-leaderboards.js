@@ -55,6 +55,18 @@ import path from 'path';
 import { execSync } from 'child_process';
 import { truncateUuid } from './lib/uuid-prefix.cjs';
 import { makeLookup } from './lib/game-scores.cjs';
+// The age group carried in a grade or team name. ⚠️ Its rule is copied from
+// index.html's grParse and MUST stay identical — the page's lbAgeOf prefers the
+// PUBLISHED `age` and only falls back to parsing the name, so once this ships the
+// page takes this builder's answer. If the two rules disagree, a player's age
+// group changes the moment a file is rebuilt. See the lib header.
+import { leaderboardAge } from './lib/grade-age.cjs';
+
+// Age coverage, reported at the end. ⚠️ An age filter that silently holds nothing
+// is how this defect survived: `age` was '' on every entry ever written and no run
+// said so. If `resolved` collapses to 0 again, the run now states it loudly.
+const ageDerived = { season: 0, allTime: 0 };
+const ageEmpty   = { season: 0, allTime: 0 };
 // T104: the git timeout, the 512 MB maxBuffer and the stall vocabulary live in
 // ONE place. Default import because git-exec.cjs is CommonJS and this file is ESM.
 import GX from './lib/git-exec.cjs';
@@ -443,8 +455,18 @@ function pushAllTime(buckets, player, uuid) {
   const careerGfWins          = bball.gfWins          ?? 0;
   const careerFinalsPerSeason = bball.finalsPerSeason  ?? 0;
   const gender   = player.gender || '';
-  // Age: most recent reg's age group — best single value for a career-spanning player
-  const age      = lastReg?.age || '';
+  // Age: most recent reg's age group — best single value for a career-spanning player.
+  //
+  // ⚠️ 2026-11-28 — THIS WAS `lastReg?.age || ''`, AND PlayHQ'S REGISTRATIONS CARRY
+  // NO AGE GROUP, so every entry published an empty string and the Leaderboards
+  // age filter was built from an array of them. It had never worked. The age lives
+  // in the GRADE name ("Friday U17 Boys A"), so it is derived from there and then
+  // from the team name. `lastReg.gn` is available here exactly as in the per-season
+  // path below — the all-time ENTRY carries no grade, but the registration it is
+  // built from does, so this is a better answer than StatTrack v2.04's client-side
+  // patch, which had only the team name to work with.
+  const age      = leaderboardAge(lastReg?.age, lastReg?.gn, lastReg?.tn);
+  if (age) ageDerived.allTime++; else ageEmpty.allTime++;
   const base = { uuid: truncateUuid(uuid), name, club, team, org, sport: 'Basketball', gp: bball.gp,
     foulOuts: careerFoulOuts, foulOutsPG: careerFoulOutsPG,
     threePtPG: careerThreePtPG, foulsPG: careerFoulsPG,
@@ -562,9 +584,13 @@ function pushSeason(players, player, sid, uuid) {
       // Every raw field needed to derive all 17 SEASON_CATS client-side, so the
       // per-category {id,v} arrays below are no longer written at all — this
       // players map is now the ONLY thing a season file contains besides it.
+      // ⚠️ See the note on the all-time `age` above: reg.age is empty on every
+      // registration PlayHQ serves, so the age comes from the grade name.
+      const seasonAge = leaderboardAge(reg.age, reg.gn, reg.tn);
+      if (seasonAge) ageDerived.season++; else ageEmpty.season++;
       const playerEntry = {
         n: name, team: reg.tn || '', org, comp,
-        grade: reg.gn || '', age: reg.age || '', gender: gender || '',
+        grade: reg.gn || '', age: seasonAge, gender: gender || '',
         gp, foulOuts, foulOutsPG, threePtPG, foulsPG, finals, gfApps, gfWins,
         pts: stats.pts, threePt: stats.threePt, fouls: stats.fouls,
         wins: stats.wins, losses: stats.losses, draws: stats.draws,
@@ -745,3 +771,14 @@ console.log(`  Mode                     : ${ACTIVE_ONLY ? 'ACTIVE ONLY' : 'FULL'
 console.log(`  Players scanned (pass 1) : ${playerCount}`);
 console.log(`  Per-season files written : ${seasonFilesWritten}`);
 console.log(`  Per-season files skipped : ${seasonFilesSkipped} (no player history)`);
+const agePct = (n, d) => d ? (100 * n / d).toFixed(1) + '%' : 'n/a';
+const ageSeasonTot  = ageDerived.season  + ageEmpty.season;
+const ageAllTimeTot = ageDerived.allTime + ageEmpty.allTime;
+console.log(`  Age group resolved       : ${ageDerived.season} of ${ageSeasonTot} season entries (${agePct(ageDerived.season, ageSeasonTot)})`
+          + `, ${ageDerived.allTime} of ${ageAllTimeTot} all-time (${agePct(ageDerived.allTime, ageAllTimeTot)})`);
+// ⚠️ ZERO IS THE OLD BUG RETURNING. Before 2026-11-28 every entry's age was '' and
+// nothing said so, so the Leaderboards age filter held one option and nobody knew.
+if (ageSeasonTot && !ageDerived.season) {
+  console.log('  ⚠ NOT ONE season entry resolved an age group — the Leaderboards age filter will be');
+  console.log('    empty. Check scripts/lib/grade-age.cjs against index.html grParse before trusting this run.');
+}
