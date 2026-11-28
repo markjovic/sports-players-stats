@@ -381,6 +381,61 @@ jobs:
           echo "args: ${ARGS[*]}"
           node --max-old-space-size=8192 scripts/build-club-index.js "${ARGS[@]}"
 
+  tournament-fold:
+    # Folds tournament/association-entered teams into their owning club, so Club
+    # Leaders stops disagreeing with the player card. OFFLINE — reads
+    # data/club-index.json, clubs/*.json and team-stats/bv/*.json and fetches
+    # nothing. See claude/tournament-team-club-attribution.md.
+    #
+    # ⚠️ needs: [club-index], NOT beside it. This job READS the `ty` field and the
+    # `seasons` lists that club-index writes, so running them in parallel would
+    # fold against last week's attribution. It also keeps the chain strictly
+    # sequential, which is what stops two jobs of this workflow sitting in the
+    # `data-write` queue at once and evicting each other — the trade stated in the
+    # header. There IS still a gap between club-index releasing the lock and this
+    # job taking it, in which another workflow can take it; the `needs` guard means
+    # that shows up as a chain that stops and is re-runnable, not a partial write.
+    #
+    # ⚠️ IT TAKES `data-write`. It writes clubs/*.json. The fold-diverged job below
+    # takes no lock because it only dispatches another workflow; this one is not
+    # that shape and must not copy it.
+    #
+    # ⚠️ NO actions/setup-node — not because this job fetches PlayHQ (it does not),
+    # but because nothing here needs a specific node and the runner default is what
+    # every other job in this chain uses.
+    #
+    # ⚠️ HOW LONG THIS TAKES HAS NEVER BEEN MEASURED. It reads one team-stats file
+    # per season that holds association-attributed teams, and those are the largest
+    # artifacts in the repo. The 360 below is the house backstop, not an estimate.
+    needs: [club-index]
+    if: ${{ !cancelled() && needs.club-index.result != 'cancelled' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    concurrency:
+      group: data-write
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Fold tournament teams into their clubs
+        # Directive 13 / T27: inputs reach bash through env, never interpolated
+        # into `run:`.
+        env:
+          IN_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          ARGS=()
+          if [ "$IN_DRY_RUN" = "true" ]; then ARGS+=(--dry-run); fi
+          echo "args: ${ARGS[*]-none}"
+          node --max-old-space-size=8192 scripts/fold-tournament-teams.js ${ARGS[@]+"${ARGS[@]}"}
+
   fold-diverged:
     # Backstop for the fold. The fetch-profile-stats matrix triggers the fold at
     # the tail of each cycle that drains to `stuck`, but that chain is a series of

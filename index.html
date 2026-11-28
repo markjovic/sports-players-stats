@@ -1040,7 +1040,7 @@ button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}
     <div class="rail-hd">
       <div class="rail-logo">StatTrack<sup>BV</sup></div>
       <span class="help-dot" onclick="openHelp()" title="What the numbers mean">?</span>
-      <span class="rail-ver">v2.04</span>
+      <span class="rail-ver">v2.05</span>
     </div>
     <div class="stabs">
       <button class="stab on" data-tab="players">Players</button>
@@ -6420,12 +6420,24 @@ function clubSeasonStart(sid){
 async function clubLeadersLoad(){
   const cid = S.clubId, club = S.clubs[cid] || {};
   if(S.clubLead && S.clubLead.cid === cid){ clubLeadersRender(); return; }
-  const sids = Object.keys(club.seasons || {})
+  /* ⚠ UNION, NOT club.seasons ALONE. `seasons` is PlayHQ's own attribution;
+     `tseasons` is the build-time fold written by scripts/fold-tournament-teams.js
+     for teams PlayHQ attributed to an ASSOCIATION or a tournament rather than to
+     the club whose players they are. A club can appear ONLY in tseasons for a
+     given season — Spirit Magic holds no PlayHQ entry at all for the Nunawading
+     tournament season — so reading club.seasons alone drops that season whole,
+     which is the defect this closes. PlayHQ's key is never written to. */
+  const tseas = club.tseasons || {};
+  const sids = [...new Set([...Object.keys(club.seasons || {}), ...Object.keys(tseas)])]
     .sort((a,b)=>String(clubSeasonStart(b)).localeCompare(String(clubSeasonStart(a))) || String(b).localeCompare(String(a)));
   // sid:'' is ALL SEASONS and is the default — the all-time table is the point,
   // the filter is a narrowing of it. `order` keeps the newest-first season list
   // for the dropdown so it does not have to be re-derived on every render.
-  S.clubLead = { cid, rows:new Map(), done:0, total:sids.length, cat:'gp', per:false, failed:[], sid:'', order:sids, loaded:new Set(), show:CLUB_TOP, find:'', hit:null, findMsg:'',
+  /* fold is keyed BY SEASON so the note under the table is correct under the
+     season filter too. A single global total would overstate the fold whenever
+     one season is selected, and a figure that is right only sometimes is worse
+     than none. */
+  S.clubLead = { cid, rows:new Map(), done:0, total:sids.length, cat:'gp', per:false, failed:[], sid:'', order:sids, loaded:new Set(), show:CLUB_TOP, find:'', hit:null, findMsg:'', fold:new Map(),
                  pick:null, pickName:'', sug:[], sugIdx:0, sugMore:0, sugOpen:false, cache:null };
   clubLeadersRender();
   for(const sid of sids){
@@ -6437,8 +6449,21 @@ async function clubLeadersLoad(){
     const ts = await sgj('team-stats/bv', sid);
     if(!ts){ S.clubLead.failed.push(sid); }
     else {
-      for(const tid of (club.seasons[sid] || [])){
+      /* Same union, one level down. A folded team's tid is NOT in
+         club.seasons[sid] — that is the whole point — so it has to come from
+         tseasons[sid]. new Set() because a tid could legitimately appear in both
+         if PlayHQ re-attributes a team between a fold and a club-index run, and
+         counting it twice would double that team's games. */
+      const foldedHere = tseas[sid] || {};
+      for(const tid of new Set([...(club.seasons[sid] || []), ...Object.keys(foldedHere)])){
         const t = ts[tid]; if(!t || !t.roster) continue;
+        const fm = foldedHere[tid];
+        if(fm){
+          let fe = S.clubLead.fold.get(sid);
+          if(!fe) S.clubLead.fold.set(sid, fe = { gp:0, teams:0, from:new Set() });
+          fe.teams++; fe.from.add(fm.fn || fm.from || '');
+          for(const r of Object.values(t.roster)) fe.gp += r.gp || 0;
+        }
         for(const [key, r] of Object.entries(t.roster)){
           let a = S.clubLead.rows.get(key);
           if(!a) S.clubLead.rows.set(key, a = { uuid:key, name:r.name || key, bySid:new Map() });
@@ -6773,6 +6798,22 @@ function clubLeadersRender(){
     ? `<div class="clb-prog warn">⚠ ${L.failed.length} season file(s) could not be loaded, so these totals are INCOMPLETE: ${L.failed.map(esc).join(', ')}</div>`
     : '';
 
+  /* ⚠ FOLDED GAMES ARE NEVER INVISIBLE INSIDE A TOTAL. The player card prints
+     its own "includes N GP matched by team name from <org>" and is NOT modified;
+     this is Club Leaders' equivalent, so the two views state the same fold in
+     the same terms. Scoped to the seasons actually in view — the selected one,
+     or every season LOADED so far — because the note describes these totals,
+     not the club's whole history. */
+  const foldScope = only ? [only] : [...L.loaded];
+  let fGp = 0, fTeams = 0; const fFrom = new Set();
+  for(const sid of foldScope){
+    const fe = L.fold.get(sid); if(!fe) continue;
+    fGp += fe.gp; fTeams += fe.teams; for(const x of fe.from) if(x) fFrom.add(x);
+  }
+  const foldNote = fTeams
+    ? `<div class="clb-prog">↳ includes ${fGp.toLocaleString()} GP from ${fTeams.toLocaleString()} team${fTeams===1?'':'s'} matched by team name from ${[...fFrom].sort().map(esc).join(', ')}</div>`
+    : '';
+
   const scope = only
     ? ((S.idx?.seasons?.[only] && (S.idx.seasons[only].name || S.idx.seasons[only].fullName)) || only)
     : `all time, ${L.done} of ${L.total} season(s)`;
@@ -6798,7 +6839,7 @@ function clubLeadersRender(){
   const rest = shown.slice(CLUB_STICK).map((r,i)=>row(r, i + CLUB_STICK)).join('');
 
   host.innerHTML = `<div class="clb-bar">${tabs}${perBtn}</div>
-    <div class="clb-bar clb-seabar">${seasonSel}</div>${prog}${fail}
+    <div class="clb-bar clb-seabar">${seasonSel}</div>${prog}${fail}${foldNote}
     <div class="clb-find">
       <!-- ⚠ TYPING NARROWS A LIST; IT DOES NOT SELECT. clubLeadersSuggest paints
            the dropdown ONLY — it never calls clubLeadersRender, so the field being
