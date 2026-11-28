@@ -996,6 +996,13 @@ function applyRoundFixtures(roundData, gradeId, gradeName, roundName, isCurrent 
 // NOT needs-matrix-shards.json. That file is the nightly's own handoff to the
 // matrix job, and a fast publish landing mid-evening must never overwrite what
 // the nightly left there.
+//
+// ⚠️ THIS FILE IS A LOCAL ARTIFACT AND IS NEVER COMMITTED (2026-11-28). It sits at
+// the repo root, outside this workflow's sparse-checkout definition, so `git add`
+// refuses it. Nothing reads it — the shard list reaches the matrix job through
+// GITHUB_OUTPUT. The writes below are kept so a local run can still inspect the
+// list; if you are tempted to add it back to a gitCommit path list, don't. Widening
+// the sparse checkout to accommodate it is also not the answer.
 const SHARDS_FILE_NAME = 'fast-publish-shards.json';
 
 async function main() {
@@ -1565,10 +1572,25 @@ async function main() {
     }
   }
 
-  // Final commit — remaining player + stub writes
+  // Final commit — remaining player + stub writes.
+  //
+  // ⚠️ 2026-11-28 — SHARDS_FILE_NAME IS DELIBERATELY NOT IN THIS LIST.
+  // `fast-publish-shards.json` sits at the repo ROOT, outside this workflow's
+  // sparse-checkout definition, so `git add` refused it on every run from the
+  // first production dispatch (#5, 2026-11-28 11:00) onward. The file is
+  // WRITE-ONLY — nothing in scripts/ or workflows/ reads it; the matrix job gets
+  // its shards through GITHUB_OUTPUT below — so committing it buys nothing.
+  //
+  // It was not merely noise. A sparse-checkout refusal does NOT match the
+  // "did not match any files" test above, so it counted as a HARD add failure;
+  // on any run where Phase 4 wrote no player changes, `staged` would be empty
+  // and gitCommit would THROW, failing a run that had done everything right.
+  //
+  // The fix is to stop committing the file, NOT to widen the sparse checkout —
+  // widening it would pull repo-root paths into a job that has no use for them.
   await gitCommit(
     `publish-final-game: ${statsCleared} statsChecked cleared, ${stubbed} new players stubbed`,
-    ['players/', SHARDS_FILE_NAME]
+    ['players/']
   );
 
   // ── Hand the shard list to the workflow ─────────────────────────────────────
