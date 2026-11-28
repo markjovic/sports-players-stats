@@ -61,6 +61,8 @@ from a report a live script still reads.
 - `scripts/lib/namespace-resolve.cjs`
 - `scripts/lib/playhq-session.cjs`
 - `scripts/lib/round-refresh.cjs`
+- `scripts/lib/club-fold.cjs`
+- `fold-tournament-teams.js`
       Exports: `sha12`, `hashRoundList`, `hashIdSet`, `isPlayedGame`, `loadFingerprints`,
       `saveFingerprints`, `pruneFingerprints`, `groupStoredByRound`, `planGrade`, `planGradeFull`,
       `detectGradeChange`, `computeRoundDeletions`, `assessGradeCoverage`, `withholdLiveElsewhere`,
@@ -127,6 +129,7 @@ from a report a live script still reads.
 - `probe-selfalias-check.js`
 - `probe-shared-name-aliases.js`
 - `probe-squad-evidence.js`
+- `probe-stale-grade-membership.js`
 - `probe-unresolved-aliases.js`
 - `probe-verdict-conflict.js`
 - `prune-credited-snapshot.js`
@@ -250,6 +253,7 @@ kept out of that group are classified in 2.2.
 ### 3.2 Build-trigger workflows
 
 - `build-club-index.yml`
+- `fold-tournament-teams.yml`
 - `build-club-movement.yml`
 - `build-finals-stats.yml`
 - `build-leaderboards.yml`
@@ -296,6 +300,7 @@ kept out of that group are classified in 2.2.
 - `probe-api-limits.yml`
 - `probe-regrade-shape.yml`
 - `probe-squad-evidence.yml`
+- `probe-stale-grade-membership.yml`
 - `prune-credited-snapshot.yml`
 - `rebuild-player-index.yml`
 - `recheck-forfeit-games.yml`
