@@ -1,0 +1,128 @@
+# .github/workflows/fixture-watch-watchdog.yml
+#
+# "CHECK NOW" — a manual single pass. Dispatch only.
+#
+# ⚠️ ITS CRON WAS REMOVED 2026-11-17, DELIBERATELY. DO NOT PUT IT BACK.
+# This started life as a half-hourly backstop, from an assumption that a delivered
+# fire here was worth having. The measurement says otherwise: only a small fraction
+# of requested fires are delivered, so every fire spent on this workflow is a fire
+# NOT spent starting a whole day of 30-minute checks in fixture-watch.yml. One check
+# is worth far less than a day's chain, and fixture-watch.yml now asks half-hourly
+# itself with a stand-down guard, which covers everything this cron used to.
+#
+# It is kept because a manual "check now" button is genuinely useful: it is the
+# quickest way to see the current state of every team without waiting for a pass.
+#
+# ⚠️ IT DOES NOT DISPATCH THE DAEMON. A workflow_dispatch made with GITHUB_TOKEN
+# does not create a new workflow run — GitHub blocks that to prevent recursion — so
+# starting the daemon from here would need a personal access token. Doing the one
+# check inline needs no token, has no chain to break, and is the same proven script.
+#
+# ⚠️ NO `concurrency` GROUP, and the daemon has none either. A shared group would
+# make this QUEUE behind a five-hour leg rather than stand down, and a queued run
+# can be evicted by the next arrival. The in-progress check below is the interlock.
+# If the check and a daemon pass ever did overlap, the watcher is idempotent and its
+# push retries with `merge -X ours`, so the cost is a wasted pass, not bad data.
+#
+# ⚠️ NO actions/setup-node. It calls api.playhq.com.
+
+name: Fixture Watch Watchdog
+
+on:
+  workflow_dispatch:
+    inputs:
+      nc_now:
+        description: 'Netball Connect: ignore the 6-hourly gate and check it in this run'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  actions: read          # to see whether a daemon run is in progress
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # ⚠️ `ref: main` IS LOAD-BEARING. Without it checkout pins the job to the
+          # SHA THAT TRIGGERED THE RUN, so a later leg starts from the repo as it was
+          # when the day began — without the state the earlier legs committed. It
+          # then pushes with `merge -X ours`, so its STALE copy wins, the change is
+          # re-detected, and the same alert goes out again at every leg handover.
+          # Observed 2026-11-24: a renamed opponent alerting several times in a day.
+          # This is trap T21 in the sibling repo's claude_context.md.
+          ref: main
+          fetch-depth: 0
+
+      # Still checked: running a pass while a daemon pass is in flight would race it
+      # on the state commit. The watcher is idempotent and its push retries, so the
+      # cost would be a wasted pass rather than bad data — but there is no reason to
+      # spend one.
+      - name: Stand down if the daemon is already running
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -o pipefail
+          ACTIVE=$(gh run list --workflow=fixture-watch.yml --limit=30 \
+                     --json status \
+                     --jq '[.[] | select(.status=="in_progress" or .status=="queued" or .status=="waiting")] | length')
+          echo "daemon runs active: $ACTIVE"
+          if [ "$ACTIVE" != "0" ]; then
+            echo "run_pass=false" >> "$GITHUB_OUTPUT"
+            echo "A daemon run is active — standing down."
+          else
+            echo "run_pass=true" >> "$GITHUB_OUTPUT"
+            echo "No daemon run is active — doing one check here."
+          fi
+
+      - name: Node version (preinstalled — setup-node is forbidden here)
+        if: steps.check.outputs.run_pass == 'true'
+        run: node --version
+
+      - name: Configure git
+        if: steps.check.outputs.run_pass == 'true'
+        run: |
+          git config user.name  "fixture-watch[bot]"
+          git config user.email "fixture-watch@users.noreply.github.com"
+
+      - name: One check
+        if: steps.check.outputs.run_pass == 'true'
+        env:
+          PUSHOVER_TOKEN: ${{ secrets.PUSHOVER_TOKEN }}
+          PUSHOVER_USER:  ${{ secrets.PUSHOVER_USER }}
+          # Fast publish on FINAL. A PAT with actions:write on
+          # markjovic/sports-players-stats — GITHUB_TOKEN cannot create a run in
+          # another repository. ⚠️ WITHOUT THIS LINE THE WATCHER STILL RUNS AND
+          # STILL ALERTS, and simply never dispatches: the script logs
+          # "publish-on-FINAL configured but INACTIVE". That is exactly how it went
+          # unnoticed for three days from 2026-11-24. If the secret is absent the
+          # value is empty and the behaviour is the same — no dispatch, never a
+          # wrong one.
+          STATTRACK_DISPATCH_TOKEN: ${{ secrets.STATTRACK_DISPATCH_TOKEN }}
+          # Netball Connect — a third SOURCE with its own login (spec §2).
+          # ⚠️ ALL FOUR ARE REQUIRED. Any one missing and the source logs
+          # "Netball Connect — INACTIVE (...)" and does nothing: the watcher still
+          # runs and still alerts on PlayHQ. That is the second time this repo has
+          # shipped a client without its env lines — see
+          # claude/fast-publish-regression-2026-11-27.md.
+          NC_EMAIL:     ${{ secrets.NC_EMAIL }}
+          NC_PASSWORD:  ${{ secrets.NC_PASSWORD }}
+          NC_PLAYERS:   ${{ secrets.NC_PLAYERS }}
+          NC_STATE_KEY: ${{ secrets.NC_STATE_KEY }}
+        run: |
+          set -o pipefail
+          # No --force: the script applies its own Melbourne-time gate, so a fire
+          # delivered in the quiet period exits in a couple of seconds.
+          #
+          # --nc-now skips ONLY the Netball Connect cadence gate, never the
+          # Melbourne window and never the PlayHQ cadence. The gate exists so a
+          # wrong password cannot be retried into an account lockout, so this is a
+          # deliberate manual override and not something a schedule ever passes.
+          ARGS=''
+          if [ "${{ inputs.nc_now }}" = "true" ]; then ARGS='--nc-now'; fi
+          node scripts/fixture-watch.js $ARGS
